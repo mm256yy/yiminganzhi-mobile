@@ -1,0 +1,53 @@
+
+{
+	"pages": [
+		{
+			"name": "home",
+			"path": "pages/home/index",
+			"style": {
+				"navigationBarTitleText": "移民安置首页"
+			}
+		},
+		{
+			"name": "login",
+			"path": "pages/login/index",
+			"style": {
+				"navigationBarTitleText": "登陆页面"
+			}
+		},
+		{
+			"name": "user",
+			"path": "pages/user/index",
+			"style": {
+				"navigationBarTitleText": "个人中心"
+			}
+		}
+	],
+	"tabBar": {
+		"color": "#333333",
+		"selectedColor": "#1296db",
+		"backgroundColor": "#ffffff",
+		"list": [
+			{
+				"iconPath": "/static/home.png",
+				"selectedIconPath": "/static/home_selected.png",
+				"text": "首页",
+				"name": "home",
+				"pagePath": "pages/home/index"
+			},
+			{
+				"iconPath": "/static/user.png",
+				"selectedIconPath": "/static/user_selected.png",
+				"text": "个人",
+				"name": "user",
+				"pagePath": "pages/user/index"
+			}
+		]
+	},
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	}
+}
