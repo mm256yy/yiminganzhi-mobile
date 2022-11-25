@@ -1,6 +1,6 @@
 <template>
   <div>
-    首页
+    移民首页
     <div @click="jump">跳转到登录页面</div>
   </div>
 </template>
