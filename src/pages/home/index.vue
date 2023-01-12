@@ -1,11 +1,13 @@
 <template>
-  <div>
+  <view>
     移民首页
-    <div @click="jump">跳转到登录页面</div>
-  </div>
+    <view @click="jump">跳转到登录页面</view>
+    <Test />
+  </view>
 </template>
 
 <script setup lang="ts">
+import { Test } from './components'
 import { routerForward } from '@/utils'
 
 const jump = () => {
