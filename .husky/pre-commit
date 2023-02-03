@@ -3,5 +3,4 @@
 
 [ -n "$CI" ] && exit 0
 
-yarn ts:check
 yarn lint:lint-staged

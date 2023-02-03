@@ -1,14 +1,13 @@
 <template>
-  <view>
-    移民首页
-    <view @click="jump">跳转到登录页面</view>
-    <view class="test-box">测试</view>
-    <Test />
+  <view class="home-wrap">
+    <view class="map-content">
+      <map class="map"></map>
+      <button type="primary">测试</button>
+    </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import { Test } from './components'
 import { routerForward } from '@/utils'
 
 const jump = () => {
@@ -17,9 +16,8 @@ const jump = () => {
 </script>
 
 <style scoped lang="scss">
-.test-box {
+.home-wrap {
   width: 750rpx;
-  height: 200rpx;
-  background-color: green;
+  height: 300rpx;
 }
 </style>

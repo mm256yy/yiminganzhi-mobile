@@ -7,6 +7,7 @@
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true,
+        "renderer": "native",
         "nvueStyleCompiler" : "uni-app",
         "compilerVersion" : 3,
         "splashscreen" : {
@@ -16,7 +17,8 @@
             "delay" : 0
         },
         "modules" : {
-            "SQLite" : {}
+            "SQLite" : {},
+            "Maps" : {}
         },
         "distribute" : {
             "android" : {
@@ -39,7 +41,14 @@
                 ]
             },
             "ios" : {},
-            "sdkConfigs" : {}
+            "sdkConfigs" : {
+                "maps" : {
+                    "amap" : {
+                        "appkey_ios" : "d68baf269f11b097be37ef0209848981",
+                        "appkey_android" : "e18e8b7e68a17a115993dd05d59bf636"
+                    }
+                }
+            }
         }
     },
     "quickapp" : {},

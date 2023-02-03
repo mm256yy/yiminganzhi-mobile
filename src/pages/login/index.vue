@@ -12,19 +12,66 @@
         <view class="tab">
           <view class="tab-item">账号密码登录</view>
         </view>
-        <input class="ipt" type="text" placeholder="请输入账号" />
-        <input class="ipt" type="text" placeholder="请输入密码" />
-        <label class="auto-login">
+
+        <view class="ipt-wrap">
+          <uni-icons type="person" size="9rpx" color="#295EE6" />
+          <input
+            @input="iptChange('name', $event)"
+            class="ipt"
+            type="text"
+            placeholder="请输入账号"
+          />
+        </view>
+        <view class="ipt-wrap">
+          <uni-icons type="locked-filled" size="9rpx" color="#295EE6" />
+          <input
+            @input="iptChange('password', $event)"
+            class="ipt"
+            type="text"
+            password
+            placeholder="请输入密码"
+          />
+        </view>
+
+        <!-- <label class="auto-login">
           <checkbox class="checkbox" value="cb" :checked="true" />自动登录
-        </label>
-        <button class="btn" hover-class="button-hover" @click="() => {}">登录</button>
+        </label> -->
+        <button class="btn" @click="loginIn">登录</button>
       </view>
       <view class="copy-right">Copyright©浙江省水利水电勘测设计院有限公司</view>
     </view>
   </view>
 </template>
 
-<style lang="scss" scoped>
+<script lang="ts" setup>
+import { ref, unref } from 'vue'
+import { loginApi } from './api'
+
+const name = ref<string>('')
+const password = ref<string>('')
+
+const iptChange = (type: string, event: any) => {
+  console.log(type, event)
+  const { value } = event.detail
+  if (type === 'name') {
+    name.value = value
+  } else {
+    password.value = value
+  }
+}
+
+const loginIn = async () => {
+  console.log('登录', unref(name), unref(password))
+  const result = await loginApi({
+    name: unref(name),
+    password: unref(password)
+  })
+
+  console.log(result, 'login res')
+}
+</script>
+
+<style lang="scss">
 .login-wrap {
   display: flex;
   height: 100vh;
@@ -48,7 +95,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 84rpx 0 25rpx;
-    background-color: #fff;
+    background: linear-gradient(1deg, #ffffff 0%, #e7edfd 100%);
 
     .form-cont {
       width: 216rpx;
@@ -86,13 +133,23 @@
       }
     }
 
-    .ipt {
+    .ipt-wrap {
+      display: flex;
+      align-items: center;
       width: 216rpx;
       height: 28rpx;
+      padding: 0 8rpx;
       margin-top: 14rpx;
       background: #ffffff;
       border: 1rpx solid #d9d9d9;
       border-radius: 5rpx;
+
+      .ipt {
+        flex: 1;
+        margin-left: 4rpx;
+        font-size: 9rpx;
+        color: #000;
+      }
     }
 
     .auto-login {
@@ -107,8 +164,23 @@
     }
 
     .btn {
+      display: flex;
+      width: 216rpx;
+      height: 28rpx;
       margin-top: 14rpx;
+      font-size: 9rpx;
+      color: #fff;
+      background-color: #295ee6;
+      border-radius: 5rpx;
+      box-sizing: border-box;
+      align-items: center;
+      justify-content: center;
     }
+  }
+
+  .copy-right {
+    font-size: 8rpx;
+    color: rgba(0, 0, 0, 0.45);
   }
 }
 </style>

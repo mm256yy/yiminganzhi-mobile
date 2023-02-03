@@ -1,4 +1,3 @@
-
 {
 	"pages": [
 		{
@@ -21,29 +20,14 @@
 			"style": {
 				"navigationBarTitleText": "个人中心"
 			}
+		},
+		{
+			"path": "pages/project/index",
+			"style": {
+				"navigationBarTitleText": "project"
+			}
 		}
 	],
-	"tabBar": {
-		"color": "#333333",
-		"selectedColor": "#1296db",
-		"backgroundColor": "#ffffff",
-		"list": [
-			{
-				"iconPath": "/static/home.png",
-				"selectedIconPath": "/static/home_selected.png",
-				"text": "首页",
-				"name": "home",
-				"pagePath": "pages/home/index"
-			},
-			{
-				"iconPath": "/static/user.png",
-				"selectedIconPath": "/static/user_selected.png",
-				"text": "个人",
-				"name": "user",
-				"pagePath": "pages/user/index"
-			}
-		]
-	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
@@ -55,5 +39,11 @@
 	},
 	"app-plus": {
 		"softinputNavBar": "none"
+	},
+	"easycom": {
+		"autoscan": true,
+		"custom": {
+			"^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
+		}
 	}
 }
