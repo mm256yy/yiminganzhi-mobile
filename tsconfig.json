@@ -9,8 +9,8 @@
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "lib": ["esnext"],
-    "types": ["@dcloudio/types", "@uni-helper/uni-app-types"],
+    "lib": ["esnext", "DOM"],
+    "types": ["@dcloudio/types", "@uni-helper/uni-app-types", "@uni-helper/uni-ui-types"],
     "baseUrl": "./",
     "paths": {
         "@/*": ["src/*"]
@@ -21,5 +21,6 @@
     "experimentalRuntimeMode": "runtime-uni-app",
     "nativeTags": ["block", "component", "template", "slot"]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/**/*.nvue"]
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/**/*.nvue"],
+  "exclude": ["dist", "node_modules"]
 }
