@@ -2,6 +2,13 @@ import { hideLoading, showLoading, getHeaderCommonParams, env } from '@/config'
 import { isDevelopment, isH5 } from './platform'
 import { routerForward } from './router'
 
+enum MethodType {
+  GET = 'GET',
+  POST = 'POST',
+  DELETE = 'DELETE',
+  PUT = 'PUT'
+}
+
 function reject(err: Http.Result) {
   const { message = '正在排队中，请稍后！', code = -1 } = err
   switch (code) {
@@ -21,7 +28,7 @@ function reject(err: Http.Result) {
 // h5环境开启代理
 const apiBaseUrl = isH5 && isDevelopment ? '/api' : env.apiBaseUrl
 
-function baseRequest(method: Http.MethodType, option: UniApp.RequestOptions): Http.Response {
+function baseRequest(method: MethodType, option: UniApp.RequestOptions): Http.Response {
   const { header = {}, data = {}, url } = option
   return new Promise((resolve) => {
     showLoading((data as AnyObject).isLoading)
@@ -34,7 +41,7 @@ function baseRequest(method: Http.MethodType, option: UniApp.RequestOptions): Ht
       header: {
         ...getHeaderCommonParams(),
         'content-type':
-          method === Http.MethodType.GET
+          method === MethodType.GET
             ? 'application/json; charset=utf-8'
             : 'application/x-www-form-urlencoded',
         ...header
@@ -69,7 +76,7 @@ function baseRequest(method: Http.MethodType, option: UniApp.RequestOptions): Ht
 
 export const request = {
   get: (option: Omit<UniApp.RequestOptions, 'method'>): Http.Response =>
-    baseRequest(Http.MethodType.GET, option),
+    baseRequest(MethodType.GET, option),
   post: (option: Omit<UniApp.RequestOptions, 'method'>): Http.Response =>
-    baseRequest(Http.MethodType.POST, option)
+    baseRequest(MethodType.POST, option)
 }

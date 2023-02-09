@@ -1,0 +1,210 @@
+<template>
+  <view class="page-wrap">
+    <image src="@/static/head-bg.png" class="head-bg" />
+    <view :style="{ height: `${statusBarHeight}px` }" />
+    <view class="home-wrap" :style="{ height: `${pageHeight}px` }">
+      <view class="home-header">
+        <view class="header-lt">
+          <image class="logo" src="@/static/logo.png" />
+          <text class="project">清晰水库</text>
+          <text class="status">（实物采集）</text>
+          <view class="tabs">
+            <view
+              class="tab-item"
+              v-for="item in tabArray"
+              :key="item.id"
+              @click="tabChange(item.id)"
+            >
+              <image v-if="item.id === tabId" class="tab-bg" src="@/static/tab-selected.png" />
+              <image v-else class="tab-bg" src="@/static/tab-default.png" />
+              <text :class="['tab-item-text', item.id === tabId ? 'tab-item-text-active' : '']">{{
+                item.name
+              }}</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="header-rt">
+          <text class="data-sync btn-item">数据同步</text>
+          <text class="btn-item">项目切换</text>
+          <view class="btn-item">
+            <image class="admin" src="@/static/admin.png" mode="scaleToFill" />
+            <text class="name">admin</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="home-body">
+        <Landlord />
+      </view>
+    </view>
+  </view>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import Landlord from './components/Landlord.nvue'
+import { routerForward } from '@/utils'
+
+const tabId = ref<number>(1)
+const tabArray = ref([
+  {
+    id: 1,
+    name: '居民户'
+  },
+  {
+    id: 2,
+    name: '个体户'
+  },
+  {
+    id: 3,
+    name: '企业'
+  }
+])
+
+const jump = () => {
+  routerForward('login')
+}
+
+const tabChange = (id: number) => {
+  tabId.value = id
+}
+
+const sysInfo = uni.getSystemInfoSync()
+const statusBarHeight = sysInfo.statusBarHeight
+const screenHeight = sysInfo.screenHeight
+
+const pageHeight = screenHeight - statusBarHeight
+</script>
+
+<style scoped lang="scss">
+.page-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 750rpx;
+}
+.head-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 750rpx;
+  height: 95rpx;
+}
+.home-wrap {
+  position: relative;
+  width: 750rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.home-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 33rpx;
+  padding: 0 9rpx;
+  overflow: hidden;
+}
+
+.header-lt {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 33rpx;
+}
+
+.logo {
+  width: 22rpx;
+  height: 22rpx;
+  margin-right: 6rpx;
+}
+
+.project {
+  font-size: 14rpx;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.status {
+  font-size: 11rpx;
+  font-weight: normal;
+  color: #ffffff;
+}
+
+.tabs {
+  margin-top: 10rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+}
+
+.tab-item {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 76rpx;
+  height: 23rpx;
+}
+
+.tab-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 76rpx;
+  height: 23rpx;
+  z-index: -1;
+  margin-bottom: -1rpx;
+}
+
+.tab-item-text {
+  font-size: 11rpx;
+  font-weight: 500;
+  color: #ffffff;
+}
+.tab-item-text-active {
+  color: #3e6cd7;
+}
+
+.header-rt {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 33rpx;
+}
+
+.btn-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 12rpx;
+  padding: 0 11rpx;
+  font-size: 11rpx;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.data-sync {
+  border-right: 1rpx solid rgba(255, 255, 255, 0.8);
+}
+.admin {
+  width: 13rpx;
+  height: 13rpx;
+  margin-right: 2rpx;
+}
+.name {
+  font-size: 11rpx;
+  font-weight: 400;
+  color: #fff;
+}
+
+.home-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+</style>

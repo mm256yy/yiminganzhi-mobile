@@ -17,8 +17,16 @@
     <!--preload-links-->
     <!--app-context-->
   </head>
+
   <body>
     <div id="app"><!--app-html--></div>
     <script type="module" src="/src/main.ts"></script>
+    <!-- #ifdef H5 -->
+    <script
+      type="text/javascript"
+      defer
+      src="https://webapi.amap.com/maps?v=2.0&key=fad2a9a852e0fd6cbd393943275838ce"
+    ></script>
+    <!-- #endif -->
   </body>
 </html>

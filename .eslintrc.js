@@ -20,8 +20,8 @@ module.exports = defineConfig({
   extends: [
     'plugin:vue/vue3-recommended',
     'plugin:@typescript-eslint/recommended',
-    'prettier',
-    'plugin:prettier/recommended'
+    'prettier'
+    // 'plugin:prettier/recommended'
   ],
   rules: {
     'vue/script-setup-uses-vars': 'error',
@@ -64,6 +64,7 @@ module.exports = defineConfig({
       }
     ],
     'vue/multi-word-component-names': 'off',
-    'vue/no-v-html': 'off'
+    'vue/no-v-html': 'off',
+    'vue/comment-directive': 'off'
   }
 })

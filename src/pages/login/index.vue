@@ -1,18 +1,15 @@
 <template>
   <view class="login-wrap">
-    <view class="logo">
-      <image webp src="" class="img" />
-    </view>
+    <view class="logo" />
     <view class="form">
       <view class="form-cont">
         <view class="title">
-          <image webp src="" class="img" />
+          <image webp src="@/static/logo.png" class="img" />
           <view class="tit">移民安置综合管理服务平台</view>
         </view>
         <view class="tab">
           <view class="tab-item">账号密码登录</view>
         </view>
-
         <view class="ipt-wrap">
           <uni-icons type="person" size="9rpx" color="#295EE6" />
           <input
@@ -80,12 +77,8 @@ const loginIn = async () => {
 
   .logo {
     width: 434rpx;
-    background-color: #295ee6;
-
-    .img {
-      width: 300rpx;
-      height: 300rpx;
-    }
+    background: url('@/static/login-bg.png') top center no-repeat;
+    background-size: cover;
   }
 
   .form {
@@ -106,7 +99,7 @@ const loginIn = async () => {
       align-items: center;
 
       .img {
-        width: 22rpx;
+        width: 28rpx;
         height: 28rpx;
       }
 

@@ -1,18 +1,17 @@
 {
     "name" : "移民安置",
-    "appid" : "",
-    "description" : "",
+    "appid" : "__UNI__7FD06C8",
+    "description" : "浙江省水利水电勘测设计院移民安置综合管理服务平台",
     "versionName" : "1.0.0",
     "versionCode" : "100",
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true,
-        "renderer": "native",
         "nvueStyleCompiler" : "uni-app",
         "compilerVersion" : 3,
         "splashscreen" : {
             "alwaysShowBeforeRender" : true,
-            "waiting" : true,
+            "waiting" : false,
             "autoclose" : true,
             "delay" : 0
         },
@@ -71,5 +70,16 @@
     "uniStatistics" : {
         "enable" : false
     },
-    "vueVersion" : "3"
+    "vueVersion" : "3",
+    "h5" : {
+        "sdkConfigs" : {
+            "maps" : {
+                "amap" : {
+                    "key" : "fad2a9a852e0fd6cbd393943275838ce",
+                    "securityJsCode" : "9d49ba3717171b8e0794b445fee19de0",
+                    "serviceHost" : ""
+                }
+            }
+        }
+    }
 }

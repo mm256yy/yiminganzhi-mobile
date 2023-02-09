@@ -5,11 +5,4 @@ declare namespace Http {
     message: string
   }
   type Response = Promise<Result>
-
-  enum MethodType {
-    GET = 'GET',
-    POST = 'POST',
-    DELETE = 'DELETE',
-    PUT = 'PUT'
-  }
 }

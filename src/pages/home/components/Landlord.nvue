@@ -1,0 +1,247 @@
+<template>
+  <view class="landlord-wrap">
+    <view class="landlord-head">
+      <text class="landlord-head-lt"> 街道(乡镇) > 行政村 </text>
+      <view class="landlord-head-rt">
+        <view
+          class="view-item"
+          v-for="item in viewList"
+          :key="item.type"
+          @click="viewTypeChange(item.type)"
+        >
+          <uni-icons :type="item.type" color="#295EE6" size="9rpx" />
+          <text :class="['name', item.type === viewType ? 'active' : '']">{{ item.name }}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="landlord-cont">
+      <view class="map-content">
+        <map
+          class="map"
+          :enable-satellite="true"
+          :enable-overlooking="true"
+          :latitude="centerLocation.latitude"
+          :longitude="centerLocation.longitude"
+          :markers="markers"
+        ></map>
+
+        <view class="map-info">
+          <MapInfo />
+        </view>
+
+        <view class="list-content" v-if="viewType === 'list'">
+          <view class="list-box">dsfdsa</view>
+        </view>
+
+        <view class="map-tree">
+          <scroll-view scroll-y class="scroll">
+            <Tree :treeData="treeData" @tree-item-click="treeItemClick" />
+          </scroll-view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import MapInfo from './MapInfo.vue'
+import Tree from '@/components/Tree/Index.vue'
+
+const viewType = ref<'list' | 'map'>('list')
+const viewList = ref<any[]>([
+  {
+    type: 'map',
+    name: '地图',
+    icon: 'location-filled'
+  },
+  {
+    type: 'list',
+    name: '列表',
+    icon: 'list'
+  }
+])
+const centerLocation = ref({
+  latitude: 39.909,
+  longitude: 116.39742
+})
+
+const treeData = ref([
+  {
+    id: 1,
+    name: 'a1',
+    children: [
+      {
+        id: 11,
+        name: '范德萨11',
+        children: [
+          {
+            id: 111,
+            name: '范德萨111',
+            children: [
+              {
+                id: 1111,
+                name: '范德萨1111'
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 2,
+    name: 'a2',
+    children: [
+      {
+        id: 22,
+        name: '范德萨22',
+        children: [
+          {
+            id: 222,
+            name: '范德萨222',
+            children: [
+              {
+                id: 2222,
+                name: 'a2222'
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+])
+
+const markers = ref([
+  {
+    latitude: 39.909,
+    longitude: 116.39742,
+    label: {
+      content: '测试哈',
+      color: '#ffffff',
+      fontSize: 16,
+      x: -14,
+      y: -25,
+      bgColor: 'transparent',
+      borderWidth: 0
+    },
+    iconPath:
+      'data:image/png;base64,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',
+    width: 92,
+    height: 32
+  }
+])
+
+const treeItemClick = (data: any) => {
+  console.log(data, 'data')
+}
+
+const viewTypeChange = (type) => {
+  viewType.value = type
+}
+</script>
+
+<style lang="scss">
+.landlord-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.landlord-head {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 23rpx;
+  padding: 0 0 0 9rpx;
+  background-color: #ffffff;
+  // box-shadow: 0rpx 0rpx 12rpx 0rpx rgba(0, 0, 0, 0.08);
+  border-radius: 9rpx 9rpx 0rpx 0rpx;
+}
+.landlord-head-lt {
+  font-size: 8rpx;
+  color: #8c8c8c;
+}
+.landlord-head-rt {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.view-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 9rpx;
+}
+.name {
+  margin-left: 4rpx;
+  font-size: 9rpx;
+  color: #262626;
+}
+.active {
+  color: #1059ff;
+}
+.landlord-cont {
+  flex: 1;
+  position: relative;
+  background-color: #fff;
+}
+.map-content {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 750rpx;
+}
+// 默认撑满
+.map {
+  flex: 1;
+  width: 750rpx;
+}
+
+.map-info {
+  position: absolute;
+  z-index: 1;
+  top: 100rpx;
+  left: 300rpx;
+}
+
+.map-tree {
+  position: absolute;
+  z-index: 3;
+  top: 6rpx;
+  left: 6rpx;
+  bottom: 10rpx;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+}
+
+.scroll {
+  flex: 1;
+}
+
+.list-content {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  width: 750rpx;
+  padding: 6rpx 6rpx 10rpx;
+  background-color: #e7edfd;
+}
+
+.list-box {
+  flex: 1;
+  width: 750rpx;
+  padding-left: 206rpx;
+}
+</style>
