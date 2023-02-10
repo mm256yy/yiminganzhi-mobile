@@ -9,7 +9,14 @@
           :key="item.type"
           @click="viewTypeChange(item.type)"
         >
-          <uni-icons :type="item.type" color="#295EE6" size="9rpx" />
+          <image
+            src="@/static/map.png"
+            mode="scaleToFill"
+            class="icon"
+            v-if="item.type === 'map'"
+          />
+          <image src="@/static/list.png" mode="scaleToFill" class="icon" v-else />
+          <!-- <image class="icon" :src="item.icon" /> -->
           <text :class="['name', item.type === viewType ? 'active' : '']">{{ item.name }}</text>
         </view>
       </view>
@@ -31,10 +38,22 @@
         </view>
 
         <view class="list-content" v-if="viewType === 'list'">
-          <view class="list-box">dsfdsa</view>
+          <view :class="['list-box', showExpend ? '' : 'list-expend']">
+            <view class="box">
+              <view class="list-header">
+                <view class="list-header-lt" @click="expendToggle">
+                  <image class="expend-img" src="@/static/expend.png" mode="scaleToFill" />
+                </view>
+
+                <view class="list-header-rt">替换此处</view>
+              </view>
+
+              <view class="tabs-content">替换此处</view>
+            </view>
+          </view>
         </view>
 
-        <view class="map-tree">
+        <view :class="['map-tree', showExpend ? '' : 'expend']">
           <scroll-view scroll-y class="scroll">
             <Tree :treeData="treeData" @tree-item-click="treeItemClick" />
           </scroll-view>
@@ -53,19 +72,19 @@ const viewType = ref<'list' | 'map'>('list')
 const viewList = ref<any[]>([
   {
     type: 'map',
-    name: '地图',
-    icon: 'location-filled'
+    name: '地图'
   },
   {
     type: 'list',
-    name: '列表',
-    icon: 'list'
+    name: '列表'
   }
 ])
 const centerLocation = ref({
   latitude: 39.909,
   longitude: 116.39742
 })
+
+const showExpend = ref<boolean>(false)
 
 const treeData = ref([
   {
@@ -141,6 +160,10 @@ const treeItemClick = (data: any) => {
 const viewTypeChange = (type) => {
   viewType.value = type
 }
+
+const expendToggle = () => {
+  showExpend.value = !showExpend.value
+}
 </script>
 
 <style lang="scss">
@@ -175,6 +198,12 @@ const viewTypeChange = (type) => {
   align-items: center;
   padding: 0 9rpx;
 }
+
+.icon {
+  width: 9rpx;
+  height: 9rpx;
+}
+
 .name {
   margin-left: 4rpx;
   font-size: 9rpx;
@@ -216,7 +245,11 @@ const viewTypeChange = (type) => {
   bottom: 10rpx;
   display: flex;
   flex-direction: column;
+  width: 0;
   background-color: #fff;
+}
+.expend {
+  width: 200rpx;
 }
 
 .scroll {
@@ -237,11 +270,42 @@ const viewTypeChange = (type) => {
   width: 750rpx;
   padding: 6rpx 6rpx 10rpx;
   background-color: #e7edfd;
+  box-shadow: 0rpx 0rpx 12rpx 0rpx rgba(0, 0, 0, 0.08);
+  border-radius: 2rpx;
 }
 
 .list-box {
   flex: 1;
   width: 750rpx;
+}
+
+.list-expend {
   padding-left: 206rpx;
+}
+
+.box {
+  flex: 1;
+  background-color: #ffffff;
+}
+
+.list-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 33rpx;
+  padding: 0 6rpx 0 9rpx;
+  border-bottom: 1rpx solid #e1e4ea;
+}
+
+.list-header-lt {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.expend-img {
+  width: 12rpx;
+  height: 12rpx;
+  margin-right: 4rpx;
 }
 </style>

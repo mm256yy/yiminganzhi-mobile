@@ -66,7 +66,6 @@ const treeItemClick = () => {
   overflow: hidden;
   font-size: 9rpx;
   color: #171718;
-  word-break: keep-all;
 }
 
 .item-txt {
