@@ -1,6 +1,7 @@
 export const getHeaderCommonParams = () => {
   return {
     Authorization: '',
-    'Project-id': ''
+    'Project-id': '',
+    'USER-AGENT': 'pad'
   }
 }

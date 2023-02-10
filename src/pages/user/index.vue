@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { db } from '@/config/sqlite'
+import { db } from '@/database/db'
 
 const listData = ref<
   Array<{

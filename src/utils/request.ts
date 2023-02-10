@@ -28,7 +28,7 @@ function reject(err: Http.Result) {
 // h5环境开启代理
 const apiBaseUrl = isH5 && isDevelopment ? '/api' : env.apiBaseUrl
 
-function baseRequest(method: MethodType, option: UniApp.RequestOptions): Http.Response {
+function baseRequest(method: MethodType, option: UniApp.RequestOptions) {
   const { header = {}, data = {}, url } = option
   return new Promise((resolve) => {
     showLoading((data as AnyObject).isLoading)
@@ -75,8 +75,8 @@ function baseRequest(method: MethodType, option: UniApp.RequestOptions): Http.Re
 }
 
 export const request = {
-  get: (option: Omit<UniApp.RequestOptions, 'method'>): Http.Response =>
-    baseRequest(MethodType.GET, option),
-  post: (option: Omit<UniApp.RequestOptions, 'method'>): Http.Response =>
-    baseRequest(MethodType.POST, option)
+  get: <T = any>(option: Omit<UniApp.RequestOptions, 'method'>): Promise<T> =>
+    baseRequest(MethodType.GET, option) as Promise<T>,
+  post: <T = any>(option: Omit<UniApp.RequestOptions, 'method'>): Promise<T> =>
+    baseRequest(MethodType.POST, option) as Promise<T>
 }

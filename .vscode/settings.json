@@ -5,6 +5,14 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
+  "files.associations": {
+    "*.cjson": "jsonc",
+    "*.wxss": "css",
+    "*.wxs": "javascript",
+    "*.wpy": "vue",
+    "*.nvue": "vue",
+    "*.js": "javascript"
+  },
   "[vue]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },

@@ -1,6 +1,9 @@
 export enum StorageKey {
   TOKEN = 'Authorization',
-  PROJECTID = 'Project-Id'
+  PROJECTID = 'Project-Id',
+  USERINFO = 'UserInfo',
+  LOGINTIME = 'LoginTime',
+  NETWORK = 'Network'
 }
 
 export const getStorage = (key: StorageKey): any => {
