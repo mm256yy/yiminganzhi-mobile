@@ -45,6 +45,7 @@ const subItemToggleClick = () => {
 .sub-tree-item {
   display: flex;
   flex-direction: column;
+  cursor: pointer;
   background-color: #fff;
 }
 
