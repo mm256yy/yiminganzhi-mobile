@@ -59,6 +59,10 @@ const tabArray = ref([
   {
     id: 3,
     name: '企业'
+  },
+  {
+    id: 4,
+    name: '村集体'
   }
 ])
 
@@ -157,7 +161,6 @@ const pageHeight = screenHeight - statusBarHeight
   left: 0;
   width: 76rpx;
   height: 23rpx;
-  z-index: -1;
   margin-bottom: -1rpx;
 }
 
