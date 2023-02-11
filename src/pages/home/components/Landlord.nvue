@@ -45,10 +45,36 @@
                   <image class="expend-img" src="@/static/expend.png" mode="scaleToFill" />
                 </view>
 
-                <view class="list-header-rt">替换此处</view>
+                <view class="list-header-rt">
+                  <view class="list-header-left">
+                    <image class="icon" src="@/static/landlord-info.png" mode="scaleToFill" />
+                    <view class="name">杨汉中</view>
+                    <view class="account-no">1040092345321464</view>
+                  </view>
+
+                  <view class="list-header-right">
+                    <view class="btn-wrapper print">
+                      <!-- 缺icon -->
+                      <image class="icon" src="@/static/map.png" mode="scaleToFill" />
+                      <view>打印表格</view>
+                    </view>
+
+                    <view class="btn-wrapper report">
+                      <!-- 缺icon -->
+                      <image class="icon" src="@/static/map.png" mode="scaleToFill" />
+                      <view>数据上报</view>
+                    </view>
+                  </view>
+                </view>
               </view>
 
-              <view class="tabs-content">替换此处</view>
+              <view class="tabs-content">
+                <!-- tab 切换 -->
+                <Tabs :dataList="tabsList" @select-tabs="selectTabs" />
+
+                <!-- 居民户信息 -->
+                <Household />
+              </view>
             </view>
           </view>
         </view>
@@ -67,6 +93,8 @@
 import { ref } from 'vue'
 import MapInfo from './MapInfo.vue'
 import Tree from '@/components/Tree/Index.vue'
+import Tabs from '@/components/Tabs/Index.vue'
+import Household from './Household.nvue'
 
 const viewType = ref<'list' | 'map'>('list')
 const viewList = ref<any[]>([
@@ -83,6 +111,16 @@ const centerLocation = ref({
   latitude: 39.909,
   longitude: 116.39742
 })
+const tabsList = ref([
+  { label: '居民户信息', value: 1 },
+  { label: '人口信息', value: 2 },
+  { label: '房屋信息', value: 3 },
+  { label: '附属物信息', value: 4 },
+  { label: '零星 (林) 果木信息', value: 5 },
+  { label: '安置意愿信息', value: 6 },
+  { label: '坟墓信息', value: 7 },
+  { label: '附件上传', value: 8 }
+])
 
 const showExpend = ref<boolean>(false)
 
@@ -164,6 +202,11 @@ const viewTypeChange = (type) => {
 const expendToggle = () => {
   showExpend.value = !showExpend.value
 }
+
+// tab 切换
+const selectTabs = (data: string, index: number) => {
+  console.log('data:', data)
+}
 </script>
 
 <style lang="scss">
@@ -172,6 +215,7 @@ const expendToggle = () => {
   display: flex;
   flex-direction: column;
 }
+
 .landlord-head {
   display: flex;
   flex-direction: row;
@@ -179,19 +223,21 @@ const expendToggle = () => {
   justify-content: space-between;
   height: 23rpx;
   padding: 0 0 0 9rpx;
-  background-color: #ffffff;
-  // box-shadow: 0rpx 0rpx 12rpx 0rpx rgba(0, 0, 0, 0.08);
-  border-radius: 9rpx 9rpx 0rpx 0rpx;
+  border-radius: 9rpx 9rpx 0 0;
+  background-color: #fff;
 }
+
 .landlord-head-lt {
-  font-size: 8rpx;
   color: #8c8c8c;
+  font-size: 8rpx;
 }
+
 .landlord-head-rt {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
+
 .view-item {
   display: flex;
   flex-direction: row;
@@ -206,17 +252,20 @@ const expendToggle = () => {
 
 .name {
   margin-left: 4rpx;
-  font-size: 9rpx;
   color: #262626;
+  font-size: 9rpx;
 }
+
 .active {
   color: #1059ff;
 }
+
 .landlord-cont {
   flex: 1;
   position: relative;
   background-color: #fff;
 }
+
 .map-content {
   flex: 1;
   position: relative;
@@ -224,6 +273,7 @@ const expendToggle = () => {
   flex-direction: column;
   width: 750rpx;
 }
+
 // 默认撑满
 .map {
   flex: 1;
@@ -248,6 +298,7 @@ const expendToggle = () => {
   width: 0;
   background-color: #fff;
 }
+
 .expend {
   width: 200rpx;
 }
@@ -295,17 +346,94 @@ const expendToggle = () => {
   height: 33rpx;
   padding: 0 6rpx 0 9rpx;
   border-bottom: 1rpx solid #e1e4ea;
+
+  .list-header-lt {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 12rpx;
+    height: 33rpx;
+
+    .expend-img {
+      width: 12rpx;
+      height: 12rpx;
+      margin-right: 4rpx;
+    }
+  }
+
+  .list-header-rt {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: calc(100% - 16rpx);
+    height: 33rpx;
+
+    .list-header-left {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .icon {
+        width: 16rpx;
+        height: 16rpx;
+        margin-right: 5rpx;
+      }
+
+      .name {
+        margin-right: 5rpx;
+        color: #171718;
+        font-size: 11rpx;
+      }
+
+      .account-no {
+        color: #1c5df1;
+        font-size: 11rpx;
+      }
+    }
+
+    .list-header-right {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .btn-wrapper {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        width: 68rpx;
+        height: 21rpx;
+        color: #fff;
+        font-size: 9rpx;
+        border-radius: 2rpx;
+
+        &:active {
+          opacity: 0.7;
+        }
+
+        &.print {
+          margin-right: 7rpx;
+          background-color: #30a952;
+        }
+
+        &.report {
+          background-color: #3e73ec;
+        }
+
+        .icon {
+          width: 7rpx;
+          height: 7rpx;
+          margin-right: 3rpx;
+        }
+      }
+    }
+  }
 }
 
-.list-header-lt {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.expend-img {
-  width: 12rpx;
-  height: 12rpx;
-  margin-right: 4rpx;
+.tabs-content {
+  width: 100%;
+  padding: 6rpx;
+  box-sizing: border-box;
 }
 </style>

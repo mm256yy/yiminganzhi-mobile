@@ -1,0 +1,123 @@
+<template>
+  <view class="household-wrapper">
+    <!-- 居民户登记 -->
+    <view class="main">
+      <view class="row">
+        <view class="label">户主姓名：</view>
+        <view class="content">杨汉中</view>
+      </view>
+
+      <view class="row">
+        <view class="label">户号：</view>
+        <view class="content">1040092345321464</view>
+      </view>
+
+      <view class="row">
+        <view class="label">自然村/村民小组：</view>
+        <view class="content">浙江省金华市武义县清溪行政村</view>
+      </view>
+
+      <view class="row">
+        <view class="label">是否财产户：</view>
+        <view class="content">否</view>
+      </view>
+
+      <view class="row">
+        <view class="label">联系方式：</view>
+        <view class="content">17289436274</view>
+      </view>
+
+      <view class="row">
+        <view class="label">户籍所在地：</view>
+        <view class="content">浙江省金华市武义县清溪镇杨村234号</view>
+      </view>
+
+      <view class="row">
+        <view class="label">所在位置：</view>
+        <view class="content">淹没区</view>
+      </view>
+
+      <view class="row">
+        <view class="label">淹没范围：</view>
+        <view class="content">-</view>
+      </view>
+
+      <view class="row">
+        <view class="label">高程：</view>
+        <view class="content">1.5m</view>
+      </view>
+
+      <view class="row">
+        <view class="label">经纬度：</view>
+        <view class="content">29.997117</view>
+      </view>
+
+      <view class="edit" @click="showEdit">
+        <image class="icon" src="@/static/icon_edit.png" mode="scaleToFill" />
+      </view>
+    </view>
+  </view>
+</template>
+
+<script lang="ts" setup>
+const emit = defineEmits(['showEdit'])
+
+const showEdit = () => {
+  emit('showEdit')
+}
+</script>
+
+<style lang="scss" scoped>
+.household-wrapper {
+  width: 100%;
+  padding: 6rpx;
+  box-sizing: border-box;
+
+  .main {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+
+    .row {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-top: 15rpx;
+
+      &:first-child {
+        margin-top: 0;
+      }
+
+      .label {
+        width: 110rpx;
+        line-height: 1;
+        margin-right: 6rpx;
+        color: #171718;
+        font-size: 9rpx;
+      }
+
+      .content {
+        width: calc(100% - 116rpx);
+        line-height: 1;
+        color: #171718;
+        font-size: 9rpx;
+      }
+    }
+
+    .edit {
+      position: fixed;
+      right: 18rpx;
+      bottom: 18rpx;
+      width: 33rpx;
+      height: 33rpx;
+      border-radius: 17rpx;
+
+      .icon {
+        width: 33rpx;
+        height: 33rpx;
+      }
+    }
+  }
+}
+</style>
