@@ -1,0 +1,39 @@
+<template>
+  <view class="back-wrapper">
+    <view class="back" @click="back"> <label class="icon">&lt;</label> 返回 </view>
+  </view>
+</template>
+
+<script lang="ts" setup>
+const back = () => {
+  uni.navigateBack({
+    delta: 1
+  })
+}
+</script>
+
+<style lang="scss" scoped>
+.back-wrapper {
+  width: 100%;
+  height: 23rpx;
+  background-color: #fff;
+
+  .back {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 23rpx;
+    padding: 0 9rpx;
+    box-sizing: border-box;
+    color: #171718;
+    font-size: 8rpx;
+
+    .icon {
+      width: 9rpx;
+      height: 9rpx;
+      margin-right: 2rpx;
+    }
+  }
+}
+</style>

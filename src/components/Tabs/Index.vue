@@ -32,7 +32,7 @@ onMounted(() => {
   }
 })
 
-const selectTabs = (data: string, index: number) => {
+const selectTabs = (data: any, index: number) => {
   currentIndex.value = index
   emit('selectTabs', data)
 }

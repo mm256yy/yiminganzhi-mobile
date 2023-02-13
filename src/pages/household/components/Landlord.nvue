@@ -10,14 +10,15 @@
           @click="viewTypeChange(item.type)"
         >
           <image
-            src="@/static/map.png"
+            src="@/static/images/map.png"
             mode="scaleToFill"
             class="icon"
             v-if="item.type === 'map'"
           />
-          <image src="@/static/list.png" mode="scaleToFill" class="icon" v-else />
-          <!-- <image class="icon" :src="item.icon" /> -->
-          <text :class="['name', item.type === viewType ? 'active' : '']">{{ item.name }}</text>
+          <image src="@/static/images/list.png" mode="scaleToFill" class="icon" v-else />
+          <text :class="['name', item.type === viewType ? 'active' : '']">
+            {{ item.name }}
+          </text>
         </view>
       </view>
     </view>
@@ -42,12 +43,16 @@
             <view class="box">
               <view class="list-header">
                 <view class="list-header-lt" @click="expendToggle">
-                  <image class="expend-img" src="@/static/expend.png" mode="scaleToFill" />
+                  <image class="expend-img" src="@/static/images/expend.png" mode="scaleToFill" />
                 </view>
 
                 <view class="list-header-rt">
                   <view class="list-header-left">
-                    <image class="icon" src="@/static/landlord-info.png" mode="scaleToFill" />
+                    <image
+                      class="icon"
+                      src="@/static/images/landlord_info.png"
+                      mode="scaleToFill"
+                    />
                     <view class="name">杨汉中</view>
                     <view class="account-no">1040092345321464</view>
                   </view>
@@ -55,13 +60,17 @@
                   <view class="list-header-right">
                     <view class="btn-wrapper print">
                       <!-- 缺icon -->
-                      <image class="icon" src="@/static/map.png" mode="scaleToFill" />
+                      <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
                       <view>打印表格</view>
                     </view>
 
                     <view class="btn-wrapper report">
                       <!-- 缺icon -->
-                      <image class="icon" src="@/static/map.png" mode="scaleToFill" />
+                      <image
+                        class="icon"
+                        src="@/static/images/icon_report.png"
+                        mode="scaleToFill"
+                      />
                       <view>数据上报</view>
                     </view>
                   </view>
@@ -73,7 +82,7 @@
                 <Tabs :dataList="tabsList" @select-tabs="selectTabs" />
 
                 <!-- 居民户信息 -->
-                <Household />
+                <household-info />
               </view>
             </view>
           </view>
@@ -94,7 +103,7 @@ import { ref } from 'vue'
 import MapInfo from './MapInfo.vue'
 import Tree from '@/components/Tree/Index.vue'
 import Tabs from '@/components/Tabs/Index.vue'
-import Household from './Household.nvue'
+import householdInfo from '../householdInfo/index.nvue'
 
 const viewType = ref<'list' | 'map'>('list')
 const viewList = ref<any[]>([
@@ -127,41 +136,42 @@ const showExpend = ref<boolean>(false)
 const treeData = ref([
   {
     id: 1,
-    name: 'a1',
+    name: '清溪镇',
     children: [
       {
         id: 11,
-        name: '范德萨11',
+        name: '清溪行政村',
         children: [
           {
             id: 111,
-            name: '范德萨111',
+            name: '杨村自然村',
             children: [
               {
                 id: 1111,
-                name: '范德萨1111'
+                name: '邵丽',
+                accountNo: 1040092345321464,
+                finish: 2,
+                total: 8
+              },
+              {
+                id: 1112,
+                name: '孔毓希',
+                accountNo: 1040092345321465,
+                finish: 0,
+                total: 8
               }
             ]
-          }
-        ]
-      }
-    ]
-  },
-  {
-    id: 2,
-    name: 'a2',
-    children: [
-      {
-        id: 22,
-        name: '范德萨22',
-        children: [
+          },
           {
             id: 222,
-            name: '范德萨222',
+            name: '李村自然村',
             children: [
               {
-                id: 2222,
-                name: 'a2222'
+                id: 1111,
+                name: '邵西',
+                accountNo: 1040092345321454,
+                finish: 3,
+                total: 8
               }
             ]
           }
@@ -204,7 +214,7 @@ const expendToggle = () => {
 }
 
 // tab 切换
-const selectTabs = (data: string, index: number) => {
+const selectTabs = (data: any, index: number) => {
   console.log('data:', data)
 }
 </script>
@@ -272,6 +282,14 @@ const selectTabs = (data: string, index: number) => {
   display: flex;
   flex-direction: column;
   width: 750rpx;
+}
+
+.amap-logo {
+  display: none !important;
+}
+
+.amap-copyright {
+  display: none !important;
 }
 
 // 默认撑满

@@ -2,20 +2,25 @@
   <view class="sub-tree-item">
     <view class="tree-head" @click="subItemToggleClick">
       <view class="item-lt">
-        <uni-icons
+        <image
           v-if="props.expendIds.includes(props.data.id as never)"
-          type="bottom"
-          color="#999999"
-          size="9rpx"
+          class="icon"
+          src="@/static/images/icon_expand_down.png"
+          mode="scaleToFill"
         />
-        <uni-icons v-else type="forward" color="#999999" size="9rpx" />
-        <text class="item-tit">{{ props.data.name }}</text>
+        <image v-else class="icon" src="@/static/images/icon_expand.png" mode="scaleToFill" />
+        <text class="item-title">{{ props.data.name }}</text>
       </view>
 
       <view class="item-rt">
-        <text class="number primary">{{ props.data.id }}</text>
-        <text class="number"> / </text>
-        <text class="number">224444</text>
+        <view class="item">
+          <image class="icon" src="@/static/images/icon_finish.png" mode="scaleToFill" />
+          <text class="number green">{{ props.data.id }}</text>
+        </view>
+        <view class="item">
+          <image class="icon" src="@/static/images/icon_total.png" mode="scaleToFill" />
+          <text class="number blue">22444</text>
+        </view>
       </view>
     </view>
 
@@ -51,25 +56,30 @@ const subItemToggleClick = () => {
 
 .tree-head {
   display: flex;
+  flex-direction: row;
+  align-items: center;
   height: 28rpx;
+  justify-content: space-between;
   padding: 0 8rpx 0 4rpx;
   background-color: #fff;
   border-bottom: 1rpx solid rgba(0, 0, 0, 0.1);
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
 }
 
 .item-lt {
   display: flex;
   flex-direction: row;
   align-items: center;
-}
 
-.item-tit {
-  margin-left: 4rpx;
-  font-size: 9rpx;
-  color: #171718;
+  .icon {
+    width: 9rpx;
+    height: 9rpx;
+  }
+
+  .item-title {
+    margin-left: 4rpx;
+    font-size: 9rpx;
+    color: #171718;
+  }
 }
 
 .item-rt {
@@ -78,15 +88,33 @@ const subItemToggleClick = () => {
   align-items: center;
   height: 12rpx;
   padding: 0 2rpx;
-  background-color: #ededed;
-}
 
-.number {
-  font-size: 8rpx;
-  color: #171718;
-}
+  .item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 
-.primary {
-  color: #3e73ec;
+    &:first-child {
+      margin-right: 6rpx;
+    }
+
+    .icon {
+      width: 9rpx;
+      height: 9rpx;
+      margin-right: 2rpx;
+    }
+
+    .number {
+      font-size: 8rpx;
+
+      &.green {
+        color: #28af45;
+      }
+
+      &.blue {
+        color: #3e73ec;
+      }
+    }
+  }
 }
 </style>
