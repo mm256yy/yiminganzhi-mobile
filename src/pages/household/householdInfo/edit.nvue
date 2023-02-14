@@ -182,7 +182,16 @@ const submit = () => {
       background-color: #fff;
 
       ::v-deep.uni-easyinput__content {
-        width: 176rpx !important;
+        width: 200rpx !important;
+      }
+
+      ::v-deep.uni-stat__select {
+        flex: 0 auto !important;
+        width: 200rpx !important;
+      }
+
+      ::v-deep.uni-select__input-text {
+        width: 90% !important;
       }
     }
 
