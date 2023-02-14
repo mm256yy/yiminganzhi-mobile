@@ -2,15 +2,15 @@
   <view class="tree-item" @click="treeItemClick">
     <view class="tree-item-lt">
       <view class="status">
-        <view class="dot" />
+        <image class="icon" src="@/static/images/icon_complete.png" mode="scaleToFill" />
       </view>
       <text class="item-tit">{{ props.data.name }}</text>
-      <text class="item-txt">{{ props.data.id }}</text>
+      <text class="item-txt">{{ props.data.accountNo }}</text>
     </view>
 
     <view class="tree-item-rt">
-      <text class="number primary">2</text>
-      <text class="number">9</text>
+      <text class="number left">2</text>
+      <text class="number right">9</text>
     </view>
   </view>
 </template>
@@ -51,15 +51,12 @@ const treeItemClick = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 9rpx;
-  height: 9rpx;
-  margin-right: 2rpx;
-}
 
-.dot {
-  width: 4rpx;
-  height: 4rpx;
-  background-color: #44b95d;
+  .icon {
+    width: 9rpx;
+    height: 9rpx;
+    margin-right: 2rpx;
+  }
 }
 
 .item-tit {
@@ -78,22 +75,26 @@ const treeItemClick = () => {
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 24rpx;
   height: 12rpx;
-}
 
-.number {
-  width: 12rpx;
-  height: 12rpx;
-  font-size: 8rpx;
-  line-height: 12rpx;
-  color: #171718;
-  text-align: center;
-  background-color: #ededed;
-}
+  .number {
+    height: 12rpx;
+    padding: 0 4rpx;
+    font-size: 8rpx;
+    line-height: 12rpx;
+    color: #171718;
+    box-sizing: border-box;
 
-.primary {
-  color: #ffffff;
-  background-color: #28af45;
+    &.left {
+      color: #3e73ec;
+      background-color: #d8e6ff;
+      border-radius: 6rpx 0 0 6rpx;
+    }
+
+    &.right {
+      background-color: #f0f0f0;
+      border-radius: 0 6rpx 6rpx 0;
+    }
+  }
 }
 </style>

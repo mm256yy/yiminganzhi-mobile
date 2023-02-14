@@ -4,7 +4,7 @@
     <view class="form">
       <view class="form-cont">
         <view class="title">
-          <image webp src="@/static/logo.png" class="img" />
+          <image webp src="@/static/images/logo.png" class="img" />
           <view class="tit">移民安置综合管理服务平台</view>
         </view>
         <view class="tab">
@@ -29,10 +29,6 @@
             placeholder="请输入密码"
           />
         </view>
-
-        <!-- <label class="auto-login">
-          <checkbox class="checkbox" value="cb" :checked="true" />自动登录
-        </label> -->
         <button class="btn" @click="loginIn">登录</button>
       </view>
       <view class="copy-right">Copyright©浙江省水利水电勘测设计院有限公司</view>
@@ -48,7 +44,7 @@ const name = ref<string>('')
 const password = ref<string>('')
 
 const iptChange = (type: string, event: any) => {
-  console.log(type, event)
+  // console.log(type, event)
   const { value } = event.detail
   if (type === 'name') {
     name.value = value
@@ -58,7 +54,7 @@ const iptChange = (type: string, event: any) => {
 }
 
 const loginIn = async () => {
-  console.log('登录', unref(name), unref(password))
+  // console.log('登录', unref(name), unref(password))
   const result = await loginApi({
     name: unref(name),
     password: unref(password)
@@ -113,9 +109,9 @@ const loginIn = async () => {
 
     .tab {
       display: flex;
-      margin-top: 15rpx;
       align-items: center;
       justify-content: center;
+      margin-top: 15rpx;
 
       .tab-item {
         padding: 5rpx 0;
@@ -128,7 +124,6 @@ const loginIn = async () => {
 
     .ipt-wrap {
       display: flex;
-      align-items: center;
       width: 216rpx;
       height: 28rpx;
       padding: 0 8rpx;
@@ -136,12 +131,13 @@ const loginIn = async () => {
       background: #ffffff;
       border: 1rpx solid #d9d9d9;
       border-radius: 5rpx;
+      align-items: center;
 
       .ipt {
-        flex: 1;
         margin-left: 4rpx;
         font-size: 9rpx;
         color: #000;
+        flex: 1;
       }
     }
 
