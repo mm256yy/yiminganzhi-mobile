@@ -64,11 +64,11 @@ const doRoute = () => {
 }
 
 const loginIn = async () => {
-  console.log('登录', unref(name), unref(password))
   const res = await loginApi({
     userName: unref(name),
     password: unref(password)
   })
+  console.log('login res', res)
   if (res) {
     const { token } = res
     const userInfo = await userInfoApi()

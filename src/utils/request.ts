@@ -19,7 +19,8 @@ function reject(err: Http.Result) {
 
     default:
       uni.showToast({
-        title: message
+        title: message,
+        icon: 'none'
       })
       break
   }
@@ -27,6 +28,7 @@ function reject(err: Http.Result) {
 
 // h5环境开启代理
 const apiBaseUrl = isH5 && isDevelopment ? '/api' : env.apiBaseUrl
+// 'application/x-www-form-urlencoded'
 
 function baseRequest(method: MethodType, option: UniApp.RequestOptions) {
   const { header = {}, data = {}, url } = option
@@ -40,10 +42,7 @@ function baseRequest(method: MethodType, option: UniApp.RequestOptions) {
       timeout: 20000,
       header: {
         ...getHeaderCommonParams(),
-        'content-type':
-          method === MethodType.GET
-            ? 'application/json; charset=utf-8'
-            : 'application/x-www-form-urlencoded',
+        'content-type': 'application/json; charset=utf-8',
         ...header
       },
       data,
@@ -65,8 +64,7 @@ function baseRequest(method: MethodType, option: UniApp.RequestOptions) {
           data: null
         })
       },
-      complete: (data) => {
-        console.log(data, 'data')
+      complete: () => {
         resolve(responseDate)
         hideLoading()
       }

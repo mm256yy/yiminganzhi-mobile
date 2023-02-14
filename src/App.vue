@@ -16,10 +16,10 @@ onLaunch(() => {
         setStorage(StorageKey.NETWORK, true)
         const loginTime = getStorage(StorageKey.LOGINTIME)
         const now = new Date().getTime()
-        const expirationTime = 30 * 24 * 60 * 60 * 1000
-        if (loginTime + expirationTime >= now) {
+        const expirationTime = 365 * 24 * 60 * 60 * 1000
+        if (!loginTime || loginTime + expirationTime >= now) {
           // token过期 需要重新登录
-          routerForward('login')
+          // routerForward('login')
         }
       }
     }

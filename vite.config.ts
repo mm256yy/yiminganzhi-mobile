@@ -2,7 +2,7 @@ import { defineConfig } from "vite"
 import uni from "@dcloudio/vite-plugin-uni"
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import { resolve } from 'path'
-import { env } from './src/config'
+import { env } from './src/config/env'
 
 const root = process.cwd()
 

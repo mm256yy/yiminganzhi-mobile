@@ -101,11 +101,12 @@ const insertTableData = () => {
       // 新增 db.insertTableData(表名, 对应表头列的数据)
       db.insertTableData('chat', sql, condition)
         .then((res) => {
+          console.log(JSON.stringify(res), 'res')
           showToast('新增数据成功')
           selectTableData()
         })
         .catch((error) => {
-          console.log('失败', error)
+          console.log('失败', JSON.stringify(error))
         })
     })
   } else {

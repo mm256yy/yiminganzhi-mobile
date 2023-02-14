@@ -1,18 +1,21 @@
 import { sqliteOptions } from '@/config'
 
-class DB {
+export class DB {
   constructor() {
     this.init()
   }
 
-  init() {
+  init(): any {
+    if (this.isOpen()) {
+      return
+    }
     this.openDB()
   }
 
   /**
    * 打开数据库没有会创建一个
    */
-  openDB() {
+  openDB(): Promise<any> {
     return new Promise((resolve, reject) => {
       plus.sqlite.openDatabase({
         ...sqliteOptions,
@@ -32,7 +35,7 @@ class DB {
    * 数据库是否打开
    */
 
-  isOpen() {
+  isOpen(): Boolean {
     return plus.sqlite.isOpenDatabase(sqliteOptions)
   }
 
@@ -40,7 +43,7 @@ class DB {
    * 关闭数据库
    * 操作结束后需要调用，避免浪费资源
    */
-  closeDB() {
+  closeDB(): Promise<any> {
     return new Promise((resolve, reject) => {
       plus.sqlite.closeDatabase({
         name: sqliteOptions.name,
@@ -58,7 +61,7 @@ class DB {
    * 数据库建表 sql:'CREATE TABLE IF NOT EXISTS tableName("id" varchar(50),"name" TEXT)
    *  创建 CREATE TABLE IF NOT EXISTS 、 tableName 是表名，不能用数字开头、括号里是表格的表头
    */
-  createTable(tableName: string, fields: string) {
+  createTable(tableName: string, fields: string): Promise<any> {
     return new Promise((resolve, reject) => {
       // executeSql: 执行增删改等操作的SQL语句
       plus.sqlite.executeSql({
@@ -74,7 +77,7 @@ class DB {
     })
   }
 
-  createTableWithDDL(sql: string) {
+  createTableWithDDL(sql: string): Promise<any> {
     return new Promise((resolve, reject) => {
       // executeSql: 执行增删改等操作的SQL语句
       plus.sqlite.executeSql({
@@ -93,7 +96,7 @@ class DB {
   /**
    * 数据库删表 sql:'DROP TABLE tableName'
    */
-  dropTable(tableName: string) {
+  dropTable(tableName: string): Promise<any> {
     return new Promise((resolve, reject) => {
       plus.sqlite.executeSql({
         name: sqliteOptions.name,
@@ -118,7 +121,7 @@ class DB {
    * 插入 INSERT INTO  、 tableName 是表名、根据表头列名插入列值
    */
 
-  insertTableData(tableName: string, data: string, condition: string) {
+  insertTableData(tableName: string, data: string, condition: string): Promise<any> {
     // 判断有没有传参
     if (tableName !== undefined && data !== undefined) {
       // 判断传的参是否有值
@@ -163,7 +166,7 @@ class DB {
    * @param condition
    *  (建表时需要设置主键) 例如 --- "roomid" varchar(50) PRIMARY KEY
    */
-  insertOrReplaceData(tableName: string, data: string, condition: string) {
+  insertOrReplaceData(tableName: string, data: string, condition: string): Promise<any> {
     // 判断有没有传参
     if (tableName !== undefined && data !== undefined) {
       let sql = ''
@@ -204,7 +207,13 @@ class DB {
    * 查询 SELECT * FROM 、 tableName 是表名、 WHERE 查找条件 lname,lvalue 是查询条件的列名和列值
    */
 
-  selectTableData(tableName: string, lname?: string, lvalue?: any, cc?: string, dd?: any) {
+  selectTableData(
+    tableName: string,
+    lname?: string,
+    lvalue?: any,
+    cc?: string,
+    dd?: any
+  ): Promise<any> {
     if (tableName !== undefined) {
       // 第一个是表单名称，后两个参数是列表名，用来检索
       let sql = ''
@@ -250,7 +259,13 @@ class DB {
    * sql:'DELETE FROM tableName WHERE lname = 'lvalue''
    * 删除 DELETE FROM 、 tableName 是表名、 WHERE 查找条件 lname,lvalue 是查询条件的列名和列值
    */
-  deleteTableData(tableName: string, lname?: string, lvalue?: any, ww?: string, ee?: any) {
+  deleteTableData(
+    tableName: string,
+    lname?: string,
+    lvalue?: any,
+    ww?: string,
+    ee?: any
+  ): Promise<any> {
     if (tableName !== undefined) {
       let sql = ''
       if (lname == undefined) {
@@ -293,7 +308,7 @@ class DB {
    * sql:"UPDATE tableName SET 列名 = '列值',列名 = '列值' WHERE lname = 'lvalue'"
    * 修改 UPDATE 、 tableName 是表名, data: 要修改的列名=修改后列值, lname,lvalue 是查询条件的列名和列值
    */
-  updateTableData(tableName: string, data: any, lname?: string, lvalue?: any) {
+  updateTableData(tableName: string, data: any, lname?: string, lvalue?: any): Promise<any> {
     let sql = ''
     if (lname == undefined) {
       sql = `UPDATE ${tableName} SET ${data}`
@@ -327,11 +342,11 @@ class DB {
    * 例 初始num设为0，就从最后的数据开始拿15条，下次不拿刚获取的数据，所以可以让num为15，这样就能一步一步的拿完所有的数据
    */
 
-  pullSQL(tableName: string, id: string | number, num: number) {
+  pullSQL(tableName: string, id: string | number, num: number, count = 20): Promise<any> {
     return new Promise((resolve, reject) => {
       plus.sqlite.selectSql({
         name: sqliteOptions.name,
-        sql: `SELECT * FROM ${tableName} ORDER BY '${id}' DESC LIMIT 20 OFFSET '${num}'`,
+        sql: `SELECT * FROM ${tableName} ORDER BY '${id}' ASC LIMIT ${count} OFFSET ${num}`,
         success(e) {
           resolve(e)
         },
@@ -342,7 +357,7 @@ class DB {
     })
   }
 
-  execteSql(sql: string[]) {
+  execteSql(sql: string[]): Promise<any> {
     return new Promise((resolve, reject) => {
       plus.sqlite.executeSql({
         name: sqliteOptions.name,
@@ -357,7 +372,7 @@ class DB {
     })
   }
 
-  selectSql(sql: string) {
+  selectSql(sql: string): Promise<any> {
     return new Promise((resolve, reject) => {
       plus.sqlite.selectSql({
         name: sqliteOptions.name,
