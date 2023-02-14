@@ -13,17 +13,17 @@ const envMap = {
     apiBaseUrl: 'https://r7r-ai.zdwp.net'
   },
   test: {
-    apiBaseUrl: ''
+    apiBaseUrl: 'https://r7r-ai.zdwp.net'
   },
   prod: {
-    apiBaseUrl: ''
+    apiBaseUrl: 'https://r7r-ai.zdwp.net'
   }
 }
 
 type ApiEnv = keyof typeof envMap
 type Env<T extends ApiEnv> = {
   apiEnv: T
-} & typeof envMap[T]
+} & (typeof envMap)[T]
 
 function createEnv(apiEnv: ApiEnv): Env<typeof apiEnv> {
   return Object.assign({ apiEnv }, envMap[apiEnv])

@@ -31,36 +31,48 @@
         </view>
         <button class="btn" @click="loginIn">登录</button>
       </view>
-      <view class="copy-right">Copyright©浙江省水利水电勘测设计院有限公司</view>
+      <view class="copy-right">Copyright©浙江省水利水电勘测设计院有限责任公司</view>
     </view>
   </view>
 </template>
 
 <script lang="ts" setup>
 import { ref, unref } from 'vue'
-import { loginApi } from './api'
+import { loginApi, userInfoApi } from './api'
+import { setStorage, StorageKey, routerForward } from '@/utils'
 
 const name = ref<string>('')
 const password = ref<string>('')
 
 const iptChange = (type: string, event: any) => {
-  // console.log(type, event)
   const { value } = event.detail
   if (type === 'name') {
-    name.value = value
+    name.value = value.trim()
   } else {
-    password.value = value
+    password.value = value.trim()
   }
 }
 
+const doRoute = () => {
+  routerForward('home', {
+    replace: true
+  })
+}
+
 const loginIn = async () => {
-  // console.log('登录', unref(name), unref(password))
-  const result = await loginApi({
-    name: unref(name),
+  const res = await loginApi({
+    userName: unref(name),
     password: unref(password)
   })
-
-  console.log(result, 'login res')
+  console.log('login res', res)
+  if (res) {
+    const { token } = res
+    const userInfo = await userInfoApi()
+    setStorage(StorageKey.TOKEN, token)
+    setStorage(StorageKey.USERINFO, userInfo)
+    setStorage(StorageKey.LOGINTIME, new Date().getTime())
+    doRoute()
+  }
 }
 </script>
 

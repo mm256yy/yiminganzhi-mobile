@@ -19,7 +19,8 @@ function reject(err: Http.Result) {
 
     default:
       uni.showToast({
-        title: message
+        title: message,
+        icon: 'none'
       })
       break
   }
@@ -27,8 +28,9 @@ function reject(err: Http.Result) {
 
 // h5环境开启代理
 const apiBaseUrl = isH5 && isDevelopment ? '/api' : env.apiBaseUrl
+// 'application/x-www-form-urlencoded'
 
-function baseRequest(method: MethodType, option: UniApp.RequestOptions): Http.Response {
+function baseRequest(method: MethodType, option: UniApp.RequestOptions) {
   const { header = {}, data = {}, url } = option
   return new Promise((resolve) => {
     showLoading((data as AnyObject).isLoading)
@@ -40,10 +42,7 @@ function baseRequest(method: MethodType, option: UniApp.RequestOptions): Http.Re
       timeout: 20000,
       header: {
         ...getHeaderCommonParams(),
-        'content-type':
-          method === MethodType.GET
-            ? 'application/json; charset=utf-8'
-            : 'application/x-www-form-urlencoded',
+        'content-type': 'application/json; charset=utf-8',
         ...header
       },
       data,
@@ -65,8 +64,7 @@ function baseRequest(method: MethodType, option: UniApp.RequestOptions): Http.Re
           data: null
         })
       },
-      complete: (data) => {
-        console.log(data, 'data')
+      complete: () => {
         resolve(responseDate)
         hideLoading()
       }
@@ -75,8 +73,8 @@ function baseRequest(method: MethodType, option: UniApp.RequestOptions): Http.Re
 }
 
 export const request = {
-  get: (option: Omit<UniApp.RequestOptions, 'method'>): Http.Response =>
-    baseRequest(MethodType.GET, option),
-  post: (option: Omit<UniApp.RequestOptions, 'method'>): Http.Response =>
-    baseRequest(MethodType.POST, option)
+  get: <T = any>(option: Omit<UniApp.RequestOptions, 'method'>): Promise<T> =>
+    baseRequest(MethodType.GET, option) as Promise<T>,
+  post: <T = any>(option: Omit<UniApp.RequestOptions, 'method'>): Promise<T> =>
+    baseRequest(MethodType.POST, option) as Promise<T>
 }
