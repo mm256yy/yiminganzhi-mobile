@@ -156,7 +156,6 @@ const pageHeight = screenHeight - statusBarHeight
   justify-content: center;
   width: 76rpx;
   height: 23rpx;
-  cursor: pointer;
 }
 
 .tab-bg {

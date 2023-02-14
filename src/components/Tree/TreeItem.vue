@@ -33,7 +33,6 @@ const treeItemClick = () => {
   display: flex;
   height: 28rpx;
   padding: 0 8rpx 0 4rpx;
-  cursor: pointer;
   background-color: #fff;
   border-bottom: 1rpx solid rgba(0, 0, 0, 0.1);
   flex-direction: row;
@@ -83,7 +82,6 @@ const treeItemClick = () => {
     font-size: 8rpx;
     line-height: 12rpx;
     color: #171718;
-    box-sizing: border-box;
 
     &.left {
       color: #3e73ec;

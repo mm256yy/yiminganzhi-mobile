@@ -43,12 +43,6 @@
 			}
 		},
 		{
-			"path": "pages/project/index",
-			"style": {
-				"navigationBarTitleText": "project"
-			}
-		},
-		{
 			"path": "pages/database/index",
 			"style": {
 				"navigationBarTitleText": "数据库"
@@ -65,7 +59,9 @@
 		"rpxCalcMaxDeviceWidth": 2048
 	},
 	"app-plus": {
-		"softinputNavBar": "none"
+		"softinputNavBar": "none",
+		"nvueCompiler": "uni-app",
+		"nvueStyleCompiler" : "uni-app"
 	},
 	"easycom": {
 		"autoscan": true,
@@ -73,8 +69,9 @@
 			"^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
 		}
 	},
+	
   "condition" : {
-    "current": 4,
+    "current": 1,
     "list": [
       {
         "name": "登录页面",
@@ -83,9 +80,14 @@
       },
 			{
         "name": "首页",
-        "path": "pages/home/index",
+        "path": "pages/household/index",
         "query": ""
       },
+			{
+			  "name": "居民户信息编辑",
+			  "path": "pages/household/householdInfo/edit",
+			  "query": ""
+			},
 			{
         "name": "数据同步页面",
         "path": "pages/summary/index",

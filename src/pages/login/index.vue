@@ -85,7 +85,7 @@ const loginIn = async () => {
 
   .logo {
     width: 434rpx;
-    background: url('@/static/login-bg.png') top center no-repeat;
+    background: url('@/static/images/login_bg.png') top center no-repeat;
     background-size: cover;
   }
 
@@ -173,7 +173,6 @@ const loginIn = async () => {
       color: #fff;
       background-color: #295ee6;
       border-radius: 5rpx;
-      box-sizing: border-box;
       align-items: center;
       justify-content: center;
     }
