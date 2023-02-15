@@ -27,10 +27,10 @@ const back = () => {
     flex: 1;
     height: 23rpx;
     padding: 0 9rpx;
-		
-		/* #ifdef H5 */
-		cursor: pointer;
-		/* #endif */
+
+    /* #ifdef H5 */
+    cursor: pointer;
+    /* #endif */
 
     .icon {
       width: 12rpx;
@@ -39,8 +39,8 @@ const back = () => {
     }
 
     .txt {
-      color: #171718;
       font-size: 8rpx;
+      color: #171718;
     }
   }
 }

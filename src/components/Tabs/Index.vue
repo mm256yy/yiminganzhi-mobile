@@ -49,28 +49,17 @@ onMounted(() => {
 
 const selectTabs = (data: any, index: number) => {
   currentIndex.value = index
-  emit('selectTabs', data)
+  emit('selectTabs', data, index)
 }
 </script>
 
 <style lang="scss" scoped>
 .tabs-wrapper {
+  display: flex;
   flex-direction: row;
   flex: 1;
   height: 23rpx;
   margin: 5rpx 0;
-
-  /* #ifdef H5 */
-  overflow-x: scroll;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  &::-moz-scrollbar {
-    display: none;
-  }
-  /* #endif */
 
   .tabs-list {
     display: flex;
@@ -78,11 +67,25 @@ const selectTabs = (data: any, index: number) => {
     align-items: center;
     width: 520rpx;
 
+    /* #ifdef H5 */
+    overflow-x: scroll;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    &::-moz-scrollbar {
+      display: none;
+    }
+    /* #endif */
+
     .tabs-item {
       display: flex;
       height: 23rpx;
       padding: 5rpx 9rpx;
       margin-right: 5rpx;
+      font-size: 11rpx;
+      color: #171718;
 
       /* #ifdef H5 */
       cursor: pointer;
@@ -91,6 +94,7 @@ const selectTabs = (data: any, index: number) => {
       /* #endif */
 
       &.active {
+        color: #3e73ec;
         background-color: #e9f0ff;
         border: 1rpx solid #3e73ec;
         border-radius: 2rpx;
