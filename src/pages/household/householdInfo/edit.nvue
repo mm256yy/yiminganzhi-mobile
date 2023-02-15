@@ -6,7 +6,7 @@
         <uni-forms-item
           required
           label="户主姓名"
-          label-width="150px"
+          label-width="150rpx"
           label-align="right"
           name="formData.name"
         >
@@ -16,7 +16,7 @@
         <uni-forms-item
           required
           label="自然村/村民小组"
-          label-width="150px"
+          label-width="150rpx"
           label-align="right"
           name="formData.name"
         >
@@ -26,7 +26,7 @@
         <uni-forms-item
           required
           label="联系方式"
-          label-width="150px"
+          label-width="150rpx"
           label-align="right"
           name="formData.name"
         >
@@ -36,27 +36,40 @@
         <uni-forms-item
           required
           label="所在位置"
-          label-width="150px"
+          label-width="150rpx"
           label-align="right"
-          name="formData.name"
+          name="formData.position"
         >
-          <uni-easyinput v-model="formData.name" type="text" placeholder="请输入" />
+          <uni-data-select
+            v-model="formData.position"
+            :localdata="positionRange"
+            @change="changePosition"
+          />
         </uni-forms-item>
 
         <uni-forms-item
           required
+          class="account-no"
           label="户号"
-          label-width="150px"
+          label-width="150rpx"
           label-align="right"
-          name="formData.name"
+          name="formData.accountNo"
         >
-          <uni-easyinput v-model="formData.name" type="text" placeholder="请输入" />
+          <view class="pre-txt">
+            <text class="txt">104009234532</text>
+          </view>
+          <input
+            class="account-no-input"
+            type="number"
+            v-model="formData.accountNo"
+            placeholder="请输入"
+          />
         </uni-forms-item>
 
         <uni-forms-item
           required
           label="财产户"
-          label-width="150px"
+          label-width="150rpx"
           label-align="right"
           name="formData.account"
         >
@@ -70,7 +83,7 @@
         <uni-forms-item
           required
           label="户籍所在地"
-          label-width="150px"
+          label-width="150rpx"
           label-align="right"
           name="formData.name"
         >
@@ -80,7 +93,7 @@
         <uni-forms-item
           required
           label="淹没范围"
-          label-width="150px"
+          label-width="150rpx"
           label-align="right"
           name="formData.name"
         >
@@ -90,7 +103,7 @@
         <uni-forms-item
           required
           label="高程"
-          label-width="150px"
+          label-width="150rpx"
           label-align="right"
           name="formData.name"
         >
@@ -100,11 +113,22 @@
         <uni-forms-item
           required
           label="中心经纬度"
-          label-width="150px"
+          label-width="150rpx"
           label-align="right"
-          name="formData.name"
+          name="formData.lg"
         >
-          <uni-data-checkbox v-model="formData.check" :localdata="lgTagList" />
+          <view class="lg-txt-wrapper">
+            <uni-data-checkbox v-model="formData.check" :localdata="lgTagList" />
+            <uni-easyinput
+              class="m-t-5"
+              v-model="formData.lg"
+							:disabled="formData.check === 1"
+              type="text"
+              :placeholder="
+                formData.check === 1 ? '获取定位' : formData.check === 2 ? '输入经纬度' : ''
+              "
+            />
+          </view>
         </uni-forms-item>
       </uni-forms>
 
@@ -128,6 +152,18 @@ const formData = ref<any>({})
 // 表单校验规则
 const rules = ref<any>({})
 
+// 所在位置选项
+const positionRange = ref<array>([
+  {
+    text: '淹没区',
+    value: 0
+  },
+  {
+    text: '非淹没区',
+    value: 1
+  }
+])
+
 // 财产户选项
 const accountRange = ref<array>([
   {
@@ -143,17 +179,24 @@ const accountRange = ref<array>([
 // 中心经纬度输入选项
 const lgTagList = ref<array>([
   {
-    text: '手动定位',
+    text: '获取定位',
     value: 1
   },
   {
-    text: '手动输入',
+    text: '输入经纬度',
     value: 2
   }
 ])
 
+// 所在位置选择
+const changePosition = (data: any) => {
+  console.log('data:', data)
+}
+
 // 财产户选择
-const changeAccount = (data) => {}
+const changeAccount = (data: any) => {
+  console.log('data:', data)
+}
 
 // 表单提交
 const submit = () => {
@@ -163,35 +206,74 @@ const submit = () => {
 
 <style lang="scss" scoped>
 .form-wrapper {
-  width: 100%;
+  flex-direction: column;
+  flex: 1;
+
+  /* #ifdef */
   height: 100vh;
+  /* #endif */
 
   .main {
-    width: 100%;
+    /* #ifdef H5 */
     height: calc(100vh - 23rpx);
+    /* #endif */
+
     padding: 6rpx;
-    box-sizing: border-box;
     border-radius: 2rpx;
     background-color: #e7edfd;
 
     .form {
-      height: 100%;
-      padding: 9rpx 0;
-      box-sizing: border-box;
+      /* #ifdef H5 */
+      height: calc(100vh - 23rpx - 12rpx);
       overflow-y: scroll;
+      /* #endif */
+
+      padding: 9rpx 0;
       background-color: #fff;
 
-      ::v-deep.uni-easyinput__content {
-        width: 200rpx !important;
+      .account-no {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .pre-txt {
+          width: 124rpx;
+          height: 35px;
+          line-height: 35px;
+          padding-left: 7rpx;
+          border: 1rpx solid #d9d9d9;
+          border-top-left-radius: 4px;
+          border-bottom-left-radius: 4px;
+          background-color: #f5f7fa;
+
+          .txt {
+            color: #171718;
+            font-size: 9rpx;
+          }
+        }
+
+        .account-no-input {
+          width: 76rpx;
+          height: 35px;
+          line-height: 35px;
+          padding-left: 11rpx;
+          color: #171718;
+          font-size: 9rpx;
+          border-top: 1rpx solid #d9d9d9;
+          border-right: 1rpx solid #d9d9d9;
+          border-bottom: 1rpx solid #d9d9d9;
+          border-top-right-radius: 4px;
+          border-bottom-right-radius: 4px;
+        }
       }
 
-      ::v-deep.uni-stat__select {
-        flex: 0 auto !important;
-        width: 200rpx !important;
-      }
+      .lg-txt-wrapper {
+        display: flex;
+        flex-direction: column;
 
-      ::v-deep.uni-select__input-text {
-        width: 90% !important;
+        .m-t-5 {
+          margin-top: 5rpx;
+        }
       }
     }
 
@@ -201,8 +283,27 @@ const submit = () => {
       bottom: 0;
       width: 80rpx;
       height: 80rpx;
-      cursor: pointer;
     }
   }
+}
+
+::v-deep.uni-forms-item__label {
+  font-size: 9rpx !important;
+}
+
+::v-deep.uni-easyinput__content {
+  width: 200rpx !important;
+}
+
+::v-deep.uni-stat__select {
+  /* #ifdef H5 */
+  flex: 0 auto !important;
+  /* #endif */
+
+  width: 200rpx !important;
+}
+
+::v-deep.uni-select__input-text {
+  width: 90% !important;
 }
 </style>

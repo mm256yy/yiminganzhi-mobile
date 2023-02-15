@@ -1,5 +1,19 @@
 <template>
   <view class="tabs-wrapper">
+    <!-- #ifdef APP -->
+    <scroll-view class="tabs-list" :scroll-x="true" :show-scrollbar="false">
+      <view
+        v-for="(item, index) in tabsList"
+        :key="item.value"
+        :class="['tabs-item', currentIndex === index ? 'active' : '']"
+        @click="selectTabs(item, index)"
+      >
+        <text :class="['label', currentIndex === index ? 'active' : '']">{{ item.label }}</text>
+      </view>
+    </scroll-view>
+    <!-- #endif -->
+
+    <!-- #ifdef H5 -->
     <view class="tabs-list">
       <view
         v-for="(item, index) in tabsList"
@@ -7,9 +21,10 @@
         :class="['tabs-item', currentIndex === index ? 'active' : '']"
         @click="selectTabs(item, index)"
       >
-        {{ item.label }}
+        <text :class="['label', currentIndex === index ? 'active' : '']">{{ item.label }}</text>
       </view>
     </view>
+    <!-- #endif -->
   </view>
 </template>
 
@@ -40,9 +55,12 @@ const selectTabs = (data: any, index: number) => {
 
 <style lang="scss" scoped>
 .tabs-wrapper {
-  width: 100%;
+  flex-direction: row;
+  flex: 1;
   height: 23rpx;
   margin: 5rpx 0;
+
+  /* #ifdef H5 */
   overflow-x: scroll;
 
   &::-webkit-scrollbar {
@@ -52,34 +70,39 @@ const selectTabs = (data: any, index: number) => {
   &::-moz-scrollbar {
     display: none;
   }
-
-  &::-ms-scrollbar {
-    display: none;
-  }
+  /* #endif */
 
   .tabs-list {
     display: flex;
     flex-direction: row;
     align-items: center;
+    width: 520rpx;
 
     .tabs-item {
       display: flex;
-      width: auto;
       height: 23rpx;
       padding: 5rpx 9rpx;
       margin-right: 5rpx;
-      font-size: 11rpx;
-      color: #171718;
+
+      /* #ifdef H5 */
       cursor: pointer;
       background-color: #ebeef5;
-      box-sizing: border-box;
       justify-content: center;
+      /* #endif */
 
       &.active {
-        color: #3e73ec;
         background-color: #e9f0ff;
         border: 1rpx solid #3e73ec;
         border-radius: 2rpx;
+      }
+
+      .label {
+        font-size: 11rpx;
+        color: #171718;
+
+        &.active {
+          color: #3e73ec;
+        }
       }
     }
   }

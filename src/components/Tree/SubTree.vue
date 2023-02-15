@@ -13,7 +13,7 @@
       </view>
 
       <view class="item-rt">
-        <view class="item">
+        <view class="item left">
           <image class="icon" src="@/static/images/icon_finish.png" mode="scaleToFill" />
           <text class="number green">{{ props.data.id }}</text>
         </view>
@@ -50,7 +50,6 @@ const subItemToggleClick = () => {
 .sub-tree-item {
   display: flex;
   flex-direction: column;
-  cursor: pointer;
   background-color: #fff;
 }
 
@@ -94,7 +93,7 @@ const subItemToggleClick = () => {
     flex-direction: row;
     align-items: center;
 
-    &:first-child {
+    &.left {
       margin-right: 6rpx;
     }
 

@@ -53,15 +53,19 @@
                       src="@/static/images/landlord_info.png"
                       mode="scaleToFill"
                     />
-                    <view class="name">杨汉中</view>
-                    <view class="account-no">1040092345321464</view>
+                    <view class="name">
+                      <text class="txt">杨汉中</text>
+                    </view>
+                    <view class="account-no">
+                      <text class="txt">1040092345321464</text>
+                    </view>
                   </view>
 
                   <view class="list-header-right">
                     <view class="btn-wrapper print">
                       <!-- 缺icon -->
                       <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
-                      <view>打印表格</view>
+                      <text class="txt">打印表格</text>
                     </view>
 
                     <view class="btn-wrapper report">
@@ -71,7 +75,7 @@
                         src="@/static/images/icon_report.png"
                         mode="scaleToFill"
                       />
-                      <view>数据上报</view>
+                      <text class="txt">数据上报</text>
                     </view>
                   </view>
                 </view>
@@ -277,25 +281,27 @@ const selectTabs = (data: any, index: number) => {
 }
 
 .map-content {
-  flex: 1;
   position: relative;
   display: flex;
   flex-direction: column;
+  flex: 1;
   width: 750rpx;
-}
-
-.amap-logo {
-  display: none !important;
-}
-
-.amap-copyright {
-  display: none !important;
 }
 
 // 默认撑满
 .map {
   flex: 1;
   width: 750rpx;
+	
+	/* #ifdef H5 */
+	::v-deep.amap-logo {
+		display: none!important;
+	}
+	
+	::v-deep.amap-copyright {
+		display: none!important;
+	}
+	/* #endif */
 }
 
 .map-info {
@@ -384,7 +390,7 @@ const selectTabs = (data: any, index: number) => {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    width: calc(100% - 16rpx);
+    flex: 1;
     height: 33rpx;
 
     .list-header-left {
@@ -395,18 +401,23 @@ const selectTabs = (data: any, index: number) => {
       .icon {
         width: 16rpx;
         height: 16rpx;
-        margin-right: 5rpx;
+        margin: 0 5rpx 0 8rpx;
       }
 
       .name {
         margin-right: 5rpx;
-        color: #171718;
-        font-size: 11rpx;
+				
+				.txt {
+					color: #171718;
+					font-size: 11rpx;
+				}
       }
 
       .account-no {
-        color: #1c5df1;
-        font-size: 11rpx;
+				.txt {
+					color: #1c5df1;
+					font-size: 11rpx;
+				}
       }
     }
 
@@ -422,8 +433,6 @@ const selectTabs = (data: any, index: number) => {
         justify-content: center;
         width: 68rpx;
         height: 21rpx;
-        color: #fff;
-        font-size: 9rpx;
         border-radius: 2rpx;
 
         &:active {
@@ -444,14 +453,18 @@ const selectTabs = (data: any, index: number) => {
           height: 7rpx;
           margin-right: 3rpx;
         }
+				
+				.txt {
+					color: #fff;
+					font-size: 9rpx;
+				}
       }
     }
   }
 }
 
 .tabs-content {
-  width: 100%;
+  flex-direction: column;
   padding: 6rpx;
-  box-sizing: border-box;
 }
 </style>
