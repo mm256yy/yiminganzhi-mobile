@@ -5,7 +5,8 @@ import {
   HouseType,
   AppendantType,
   WillType,
-  FamilyIncomeType
+  FamilyIncomeType,
+  ImmigrantFile
 } from './datafill'
 import { ProjectType, FamilyIncomeConfigType, WillConfigType, DictConfigType } from './common'
 
@@ -48,6 +49,14 @@ export interface LandlordType {
   immigrantWillList: WillType[]
   // 家庭收入
   immigrantIncomeList: FamilyIncomeType[]
+  // 附件
+  immigrantFile: ImmigrantFile[]
+}
+
+export interface DeleteRecordType {
+  type: string
+  deleteId: number
+  [key: string]: any
 }
 
 /**
@@ -63,8 +72,22 @@ export interface PullDataType {
 export interface StateType {
   pullTime: string
   peasantHouseholdPushDtoList: LandlordType[]
+  deleteRecordList: DeleteRecordType[]
   project: ProjectType[]
-  dict: DictConfigType[]
+  dictValList: DictConfigType[]
   immigrantIncomeConfigList: FamilyIncomeConfigType[]
   immigrantWillConfigList: WillConfigType[]
+  immigrantAppendantConfigList: AppendantType[]
+
+  districtTree: any[]
+  districtList: any[]
+  villageList: any[]
+  collectList: any[]
+  mainTree: any[]
+}
+
+export interface PullStateType {
+  pullTime: string
+  peasantHouseholdPushDtoList: LandlordType[]
+  deleteRecordList: DeleteRecordType[]
 }

@@ -29,6 +29,14 @@ export type WillConfigType = {
   area: string
 }
 
+// 附属物配置信息
+export type AppendantType = {
+  id?: number
+  name: string
+  size: string
+  unit: string
+}
+
 // 字典类型定义
 export type DictConfigType = {
   id: number
@@ -37,4 +45,14 @@ export type DictConfigType = {
   label: string
   value: string
   sort: number
+}
+
+// 数据统计 类型定义
+export type CollectType = {
+  [key: string]: any
+}
+
+// 其他 类型定义
+export type OtherType = {
+  [key: string]: any
 }

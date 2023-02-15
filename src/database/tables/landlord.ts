@@ -5,6 +5,9 @@
 export interface LandlordDDLType {
   uid: string
   content: string
+  name: string
+  reportDate: string
+  reportUser: string
   status: 'modify' | 'default'
   isDelete: '0' | '1'
   updatedDate: string
@@ -15,6 +18,9 @@ export const LandlordTableName = 'landlord'
 export const LandlordDDL = `
 create table if not exists ${LandlordTableName} (
   'uid' text PRIMARY KEY,
+  'name' text,
+  'reportDate' text,
+  'reportUser' text,
   'content' text,
   'status' text,
   'isDelete' text,

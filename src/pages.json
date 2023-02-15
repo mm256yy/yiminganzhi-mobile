@@ -29,15 +29,24 @@
 			}
 		},
 		{
+			"name": "project",
 			"path": "pages/project/index",
 			"style": {
 				"navigationBarTitleText": "project"
 			}
 		},
 		{
+			"name": "database",
 			"path": "pages/database/index",
 			"style": {
 				"navigationBarTitleText": "数据库"
+			}
+		},
+		{
+			"name": "table",
+			"path": "pages/database/table",
+			"style": {
+				"navigationBarTitleText": "数据库详情数据"
 			}
 		}
 	],
@@ -60,7 +69,7 @@
 		}
 	},
   "condition" : {
-    "current": 4,
+    "current": 3,
     "list": [
       {
         "name": "登录页面",

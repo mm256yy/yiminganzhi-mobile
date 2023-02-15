@@ -20,7 +20,7 @@ export function routerForward(name: string, query: QueryType = {}): void {
   uni.redirectTo(params)
 }
 
-export function routerBack(delta: number) {
+export function routerBack(delta = 1) {
   uni.navigateBack({
     delta
   })
