@@ -1,15 +1,10 @@
 <template>
-  <view class="demographic-wrapper">
+  <view class="house-info-wrapper">
     <view class="list">
       <view class="list-item">
         <view class="list-1">
           <view class="left">
-            <view class="icon-wrapper">
-              <text class="txt">户主</text>
-            </view>
-            <view class="name-wrapper">
-              <text class="txt">杨汉中</text>
-            </view>
+            <text class="txt">3幢</text>
           </view>
           <view class="right">
             <image
@@ -23,80 +18,80 @@
           <view class="row">
             <view class="col">
               <view class="label">
-                <text class="txt">性别：</text>
+                <text class="txt">房屋用途：</text>
               </view>
               <view class="content">
-                <text class="txt">男</text>
+                <text class="txt">住宅</text>
               </view>
             </view>
             <view class="col">
               <view class="label">
-                <text class="txt">身份证号：</text>
+                <text class="txt">房屋高程：</text>
               </view>
               <view class="content">
-                <text class="txt">33252196701305515</text>
+                <text class="txt">10（米）</text>
               </view>
             </view>
             <view class="col">
               <view class="label">
-                <text class="txt">职业：</text>
+                <text class="txt">房屋类别：</text>
               </view>
               <view class="content">
-                <text class="txt">种植生产人员</text>
-              </view>
-            </view>
-          </view>
-
-          <view class="row">
-            <view class="col">
-              <view class="label">
-                <text class="txt">民族：</text>
-              </view>
-              <view class="content">
-                <text class="txt">汉</text>
-              </view>
-            </view>
-            <view class="col">
-              <view class="label">
-                <text class="txt">婚姻状况：</text>
-              </view>
-              <view class="content">
-                <text class="txt">已婚</text>
-              </view>
-            </view>
-            <view class="col">
-              <view class="label">
-                <text class="txt">户籍所在地：</text>
-              </view>
-              <view class="content">
-                <text class="txt">浙江省新昌县镜岭镇下潘村438号2-37</text>
+                <text class="txt">生活办公用房</text>
               </view>
             </view>
           </view>
 
           <view class="row">
             <view class="col">
-              <view class="label">
-                <text class="txt">出生年月：</text>
+              <view class="label w-90">
+                <text class="txt">层高：</text>
               </view>
               <view class="content">
-                <text class="txt">1999年1月</text>
+                <text class="txt">10（米）</text>
               </view>
             </view>
             <view class="col">
-              <view class="label">
-                <text class="txt">人口类型：</text>
+              <view class="label w-90">
+                <text class="txt">土地所有权证编号：</text>
               </view>
               <view class="content">
-                <text class="txt">册内人口</text>
+                <text class="txt">888682323232</text>
               </view>
             </view>
             <view class="col">
-              <view class="label">
-                <text class="txt" />
+              <view class="label w-90">
+                <text class="txt">建筑面积：</text>
               </view>
               <view class="content">
-                <text class="txt" />
+                <text class="txt">100（m³）</text>
+              </view>
+            </view>
+          </view>
+
+          <view class="row">
+            <view class="col">
+              <view class="label w-90">
+                <text class="txt">层数：</text>
+              </view>
+              <view class="content">
+                <text class="txt">3（层）</text>
+              </view>
+            </view>
+            <view class="col">
+              <view class="label w-90">
+                <text class="txt">房屋所有权证编号：</text>
+              </view>
+              <view class="content">
+                <text class="txt">224234255555</text>
+              </view>
+            </view>
+            <view class="col">
+              <view class="label w-90">
+                <text class="txt">竣工日期</text>
+              </view>
+              <view class="content">
+                <text class="txt">200年8月</text>
               </view>
             </view>
           </view>
@@ -109,7 +104,7 @@
 <script lang="ts" setup></script>
 
 <style lang="scss" scoped>
-.demographic-wrapper {
+.house-info-wrapper {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -136,37 +131,11 @@
           flex-direction: row;
           align-items: center;
           flex: 1;
+          padding-left: 6rpx;
 
-          .icon-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 32rpx;
-            height: 16rpx;
-            background: #3db6f2;
-            border-top-right-radius: 5rpx;
-            border-bottom-right-radius: 5rpx;
-
-            .txt {
-              font-size: 9rpx;
-              line-height: 16rpx;
-              color: #fff;
-            }
-          }
-
-          .name-wrapper {
-            margin-left: 5rpx;
-
-            .txt {
-              font-size: 9rpx;
-              color: #171718;
-            }
-          }
-
-          .icon {
-            width: 9rpx;
-            height: 9rpx;
-            margin-left: 5rpx;
+          .txt {
+            font-size: 9rpx;
+            color: #171718;
           }
         }
 
@@ -205,6 +174,10 @@
               width: 56rpx;
               height: 16rpx;
               margin-left: 9rpx;
+
+              &.w-90 {
+                width: 90rpx;
+              }
 
               .txt {
                 font-size: 9rpx;

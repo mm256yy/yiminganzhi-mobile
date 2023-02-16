@@ -55,7 +55,7 @@
 				"navigationBarTitleText": "数据库"
 			}
 		}
-	],
+  ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
@@ -63,12 +63,10 @@
 		"backgroundColor": "#F8F8F8",
 		"pageOrientation": "landscape",
 		"navigationStyle": "custom",
-		"rpxCalcMaxDeviceWidth": 2048
-	},
-	"app-plus": {
-		"softinputNavBar": "none",
-		"nvueCompiler": "uni-app",
-		"nvueStyleCompiler" : "uni-app"
+		"rpxCalcMaxDeviceWidth": 2048,
+		"app-plus": {
+			"softinputNavBar": "none"
+		}
 	},
 	"easycom": {
 		"autoscan": true,
@@ -90,6 +88,11 @@
         "path": "pages/home/index",
         "query": ""
       },
+			{
+				"name": "居民户",
+				"path": "pages/household/index",
+				"query": ""
+			},
 			{
         "name": "数据同步页面",
         "path": "pages/summary/index",

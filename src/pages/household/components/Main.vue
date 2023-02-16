@@ -41,12 +41,15 @@
 
               <!-- 人口信息 -->
               <demographic-info v-if="tabVal === 2" />
+
+              <!-- 房屋信息 -->
+              <house-info v-if="tabVal === 3" />
             </view>
           </view>
         </view>
       </view>
 
-      <view :class="['tree-wrapper', showExpand ? '' : 'expand']">
+      <view :class="['tree-wrapper', showExpand ? 'w-0' : 'expand']">
         <Tree :treeData="treeData" @tree-item-click="treeItemClick" />
       </view>
     </view>
@@ -60,6 +63,7 @@ import Tree from '@/components/Tree/Index.vue'
 import Tabs from '@/components/Tabs/Index.vue'
 import householdInfo from '../householdInfo/index.vue' // 引入居民户信息组件
 import demographicInfo from '../demographicInfo/index.vue' // 引入人口信息组件
+import houseInfo from '../houseInfo/index.vue' // 引入房屋信息组件
 
 const tabsList = ref([
   { label: '居民户信息', value: 1 },
@@ -139,9 +143,9 @@ const selectTabs = (data: any) => {
 
 <style lang="scss">
 .main-wrap {
-  flex: 1;
   display: flex;
   flex-direction: column;
+  flex: 1;
 }
 
 .main-nav {
@@ -185,18 +189,13 @@ const selectTabs = (data: any) => {
 }
 
 .list-content {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 2;
   display: flex;
   width: 750rpx;
-  padding: 6rpx 6rpx 10rpx;
+  padding: 6rpx;
   background-color: #e7edfd;
   border-radius: 2rpx;
   box-shadow: 0rpx 0rpx 12rpx 0rpx rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
   flex: 1;
   flex-direction: row;
   align-items: stretch;
@@ -312,8 +311,13 @@ const selectTabs = (data: any) => {
 }
 
 .tabs-content {
-  flex-direction: column;
+  display: flex;
+  width: 100%;
+  height: calc(100vh - 102rpx);
   padding: 6rpx;
+  background-color: #fff;
+  box-sizing: border-box;
+  flex-direction: column;
 }
 
 .tree-wrapper {
@@ -323,10 +327,14 @@ const selectTabs = (data: any) => {
   left: 6rpx;
   z-index: 3;
   display: flex;
+  flex-direction: column;
   height: calc(100vh - 68rpx);
   overflow-y: scroll;
   background-color: #fff;
-  flex-direction: column;
+
+  &.w-0 {
+    width: 0;
+  }
 
   &::-webkit-scrollbar {
     display: none;
