@@ -1,6 +1,13 @@
 {
 	"pages": [
 		{
+			"name": "home",
+			"path": "pages/home/index",
+			"style": {
+				"navigationBarTitleText": "首页"
+			}
+		},
+		{
 			"name": "household",
 			"path": "pages/household/index",
 			"style": {
@@ -80,14 +87,9 @@
       },
 			{
         "name": "首页",
-        "path": "pages/household/index",
+        "path": "pages/home/index",
         "query": ""
       },
-			{
-			  "name": "居民户信息编辑",
-			  "path": "pages/household/householdInfo/edit",
-			  "query": ""
-			},
 			{
         "name": "数据同步页面",
         "path": "pages/summary/index",

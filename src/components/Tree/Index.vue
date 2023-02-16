@@ -98,17 +98,20 @@ const treeItemClick = (data: any) => {
   box-shadow: 0rpx 0rpx 12rpx 0rpx rgba(0, 0, 0, 0.08);
 }
 
+.tree-list {
+  border-top: 1rpx solid #e1e4ea;
+}
+
 .search-box {
   width: 200rpx;
   height: 33rpx;
   padding: 6rpx;
-  background-color: #f5f7fa;
   border-radius: 2rpx;
 }
 
 .ipt-wrap {
   display: flex;
-  width: 188rpx;
+  width: 176rpx;
   height: 21rpx;
   padding: 0 5rpx;
   background-color: #ffffff;

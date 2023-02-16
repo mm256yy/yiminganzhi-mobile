@@ -109,6 +109,7 @@ const toEdit = () => {
 
 <style lang="scss" scoped>
 .household-wrapper {
+  display: flex;
   flex-direction: row;
   padding: 6rpx;
 
@@ -132,14 +133,14 @@ const toEdit = () => {
 
         /* #ifdef H5 */
         width: 110rpx;
+        margin-right: 6rpx;
         /* #endif */
 
         line-height: 1;
-        margin-right: 6rpx;
 
         .txt {
-          color: #171718;
           font-size: 9rpx;
+          color: #171718;
         }
       }
 
@@ -148,8 +149,8 @@ const toEdit = () => {
         line-height: 1;
 
         .txt {
-          color: #171718;
           font-size: 9rpx;
+          color: #171718;
         }
       }
     }
