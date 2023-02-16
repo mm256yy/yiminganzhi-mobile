@@ -57,7 +57,6 @@ const selectTabs = (data: any, index: number) => {
 .tabs-wrapper {
   display: flex;
   flex-direction: row;
-  flex: 1;
   height: 23rpx;
   margin: 5rpx 0;
 
@@ -66,6 +65,7 @@ const selectTabs = (data: any, index: number) => {
     flex-direction: row;
     align-items: center;
     width: 520rpx;
+    height: 23rpx;
 
     /* #ifdef H5 */
     overflow-x: scroll;
@@ -81,6 +81,7 @@ const selectTabs = (data: any, index: number) => {
 
     .tabs-item {
       display: flex;
+      width: auto;
       height: 23rpx;
       padding: 5rpx 9rpx;
       margin-right: 5rpx;
@@ -90,8 +91,14 @@ const selectTabs = (data: any, index: number) => {
       /* #ifdef H5 */
       cursor: pointer;
       background-color: #ebeef5;
+      box-sizing: border-box;
+      align-items: center;
       justify-content: center;
       /* #endif */
+
+      &:last-child {
+        margin-right: 0;
+      }
 
       &.active {
         color: #3e73ec;
