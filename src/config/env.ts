@@ -7,16 +7,20 @@ const apiEnv: ApiEnv = 'dev'
 
 const envMap = {
   local: {
-    apiBaseUrl: '127.0.0.1:8080'
+    apiBaseUrl: '127.0.0.1:8080',
+    apiBasePath: '/api'
   },
   dev: {
-    apiBaseUrl: 'https://r7r-ai.zdwp.net'
+    apiBaseUrl: 'https://r7r-ai.zdwp.net',
+    apiBasePath: '/api'
   },
   test: {
-    apiBaseUrl: 'https://r7r-ai.zdwp.net'
+    apiBaseUrl: 'https://r7r-ai.zdwp.net',
+    apiBasePath: '/api'
   },
   prod: {
-    apiBaseUrl: 'https://r7r-ai.zdwp.net'
+    apiBaseUrl: 'https://r7r-ai.zdwp.net',
+    apiBasePath: '/api'
   }
 }
 

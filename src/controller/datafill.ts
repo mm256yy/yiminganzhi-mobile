@@ -2,7 +2,7 @@
  * 提供居民户 - 数据填报 相关的增删改功能
  */
 
-import { LandlordType } from '@/types/pull'
+import { LandlordType } from '@/types/sync'
 import { guid } from '@/utils'
 import {
   PopulationType,

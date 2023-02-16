@@ -115,7 +115,7 @@ export interface AppendantType {
 
 // 安置意愿类型定义
 export interface WillType {
-  id?: number
+  id: number
   doorNo: string
   householdId: number
   familyNum: number | string
@@ -141,11 +141,11 @@ export interface FamilyIncomeType {
 }
 
 // 附件类型定义
-export interface EnclosureType {
+export interface ImmigrantFileType {
   doorNo: string
   householdId: number
   otherPic: string
-  id?: number
+  id: number
   uid: string
   [key: string]: any
 }

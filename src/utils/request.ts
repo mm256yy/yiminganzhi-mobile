@@ -1,5 +1,5 @@
 import { hideLoading, showLoading, getHeaderCommonParams, env } from '@/config'
-import { isDevelopment, isH5 } from './platform'
+import { isAndroid, isIos } from './platform'
 import { routerForward } from './router'
 
 enum MethodType {
@@ -26,14 +26,16 @@ function reject(err: Http.Result) {
   }
 }
 
-// h5环境开启代理
-const apiBaseUrl = isH5 && isDevelopment ? '/api' : env.apiBaseUrl
+const apiBaseUrl = isAndroid || isIos ? `${env.apiBaseUrl}${env.apiBasePath}` : env.apiBasePath
 // 'application/x-www-form-urlencoded'
 
 function baseRequest(method: MethodType, option: UniApp.RequestOptions) {
   const { header = {}, data = {}, url } = option
   return new Promise((resolve) => {
-    showLoading((data as AnyObject).isLoading)
+    if ((data as AnyObject).showLoading) {
+      showLoading((data as AnyObject).loadingOptions)
+    }
+
     delete (data as AnyObject).isLoading
     let responseDate: any
     uni.request({
@@ -66,7 +68,9 @@ function baseRequest(method: MethodType, option: UniApp.RequestOptions) {
       },
       complete: () => {
         resolve(responseDate)
-        hideLoading()
+        if ((data as AnyObject).showLoading) {
+          hideLoading()
+        }
       }
     })
   })

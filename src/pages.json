@@ -43,6 +43,13 @@
 			}
 		},
 		{
+			"name": "summary",
+			"path": "pages/summary/index",
+			"style": {
+				"navigationBarTitleText": "汇总页面"
+			}
+		},
+		{
 			"name": "user",
 			"path": "pages/user/index",
 			"style": {
@@ -50,9 +57,24 @@
 			}
 		},
 		{
+			"name": "project",
+			"path": "pages/project/index",
+			"style": {
+				"navigationBarTitleText": "数据库"
+			}
+		},
+		{
+			"name": "database",
 			"path": "pages/database/index",
 			"style": {
 				"navigationBarTitleText": "数据库"
+			}
+		},
+		{
+			"name": "table",
+			"path": "pages/database/table",
+			"style": {
+				"navigationBarTitleText": "数据库详情数据"
 			}
 		}
   ],
@@ -74,9 +96,8 @@
 			"^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
 		}
 	},
-	
   "condition" : {
-    "current": 1,
+    "current": 3,
     "list": [
       {
         "name": "登录页面",
@@ -88,11 +109,6 @@
         "path": "pages/home/index",
         "query": ""
       },
-			{
-				"name": "居民户",
-				"path": "pages/household/index",
-				"query": ""
-			},
 			{
         "name": "数据同步页面",
         "path": "pages/summary/index",

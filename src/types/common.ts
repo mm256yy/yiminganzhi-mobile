@@ -29,12 +29,74 @@ export type WillConfigType = {
   area: string
 }
 
-// 字典类型定义
-export type DictConfigType = {
-  id: number
+// 附属物配置信息
+export type AppendantType = {
+  id?: number
+  name: string
+  size: string
+  unit: string
+}
+
+export type DictDetailType = {
+  id?: number
   dictId: number
   projectId: number
   label: string
   value: string
-  sort: number
+  sort: string
+}
+
+// 字典类型定义
+export type DictConfigType = {
+  id: number
+  name: string
+  dictGroup: string
+  remark: string
+  dictValList: DictDetailType[] | null
+}
+
+// 数据统计 类型定义
+export type CollectType = {
+  [key: string]: any
+}
+
+// 其他 类型定义
+export type OtherType = {
+  [key: string]: any
+}
+
+// 行政区划 类型定义
+export type DistrictType = {
+  [key: string]: any
+  id: number
+  parentId: number
+  code: string
+  name: string
+  shortName: string
+  districtType: string
+  latitude: number
+  longitude: number
+  address: string
+  creditCode: string
+  orgType: string
+  introduction: string
+  hasChild: true
+  zoom: number
+  level: number
+  parentCode: string
+  fullName: string
+}
+
+// 自然村类型定义
+export interface VillageType {
+  id: number
+  uid: string
+  address: string
+  code: string
+  introduction: string
+  latitude: number
+  longitude: number
+  name: string
+  parentCode: string
+  projectId: number
 }
