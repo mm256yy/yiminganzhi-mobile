@@ -4,7 +4,6 @@
 
 import { OtherTableName, OtherDDLType, OtherDataType } from '@/database'
 import { Common } from './common'
-import { OtherType } from '@/types/common'
 
 class Other extends Common {
   constructor() {
@@ -13,15 +12,12 @@ class Other extends Common {
   getOtherWithType(type: OtherDataType) {
     return new Promise(async (resolve, reject) => {
       try {
-        const array: OtherType[] = []
         const sql = `select * from ${OtherTableName} where type = '${type}'`
-        const list: OtherDDLType[] = await this.db.selectSql(sql)
-        if (list && Array.isArray(list)) {
-          list.forEach((item) => {
-            array.push(JSON.parse(item.content))
-          })
+        const result: OtherDDLType = await this.db.selectSql(sql)
+        if (result) {
+          resolve(JSON.parse(result.content))
         }
-        resolve(array)
+        reject([])
       } catch (error) {
         console.log(error, 'Other-get-list-error')
         reject([])

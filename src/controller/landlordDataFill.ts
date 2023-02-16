@@ -11,7 +11,8 @@ import {
   TreeType,
   HouseType,
   FamilyIncomeType,
-  GraveType
+  GraveType,
+  ImmigrantFileType
 } from '@/types/datafill'
 import { Landlord } from './landlord'
 
@@ -29,7 +30,8 @@ import { Landlord } from './landlord'
 // immigrantWillList: WillType[]
 // // 家庭收入
 // immigrantIncomeList: FamilyIncomeType[]
-
+// 附件
+// immigrantFile: ImmigrantFile[]
 export class DataFill extends Landlord {
   constructor() {
     super()
@@ -475,6 +477,69 @@ export class DataFill extends Landlord {
       }
     })
   }
+
+  // 居民户-附件新增操作
+  addLandlordImmigrantFile(uid: string, data: ImmigrantFileType): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const itemUid = guid()
+        data.uid = itemUid
+        data.isDelete = '0'
+        const landlordItem = await this.getLandlordByUid(uid)
+        if (landlordItem) {
+          landlordItem.immigrantFile.push(data)
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem as LandlordType)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'addLandlordImmigrantFile-error')
+        reject(false)
+      }
+    })
+  }
+  // 居民户-附件修改操作
+  updateLandlordImmigrantFile(uid: string, data: ImmigrantFileType): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const landlordItem = await this.getLandlordByUid(uid)
+        if (landlordItem) {
+          landlordItem.immigrantFile.forEach((item) => {
+            if (item.uid === data.uid) {
+              item = data
+            }
+          })
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem as LandlordType)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'updateLandlordImmigrantFile-error')
+        reject(false)
+      }
+    })
+  }
+  // 居民户-附件删除操作
+  deleteLandlordImmigrantFile(uid: string, itemUid: string): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const landlordItem = await this.getLandlordByUid(uid)
+        if (landlordItem) {
+          landlordItem.immigrantFile.forEach((item) => {
+            if (item.uid === itemUid) {
+              item.isDelete = '1'
+            }
+          })
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem as LandlordType)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'deleteLandlordImmigrantFile-error')
+        reject(false)
+      }
+    })
+  }
 }
 
-export const DataFillController = new Landlord()
+export const DataFillController = new DataFill()

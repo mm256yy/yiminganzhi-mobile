@@ -13,7 +13,7 @@ class Dictionaries extends Common {
   getDictObj() {
     return new Promise(async (resolve, reject) => {
       try {
-        const array: any[] = []
+        const array: DictConfigType[] = []
         const sql = `select * from ${DictionariesTableName}`
         const list: DictionariesDDLType[] = await this.db.selectSql(sql)
         if (list && Array.isArray(list)) {

@@ -141,7 +141,7 @@ export interface FamilyIncomeType {
 }
 
 // 附件类型定义
-export interface ImmigrantFile {
+export interface ImmigrantFileType {
   doorNo: string
   householdId: number
   otherPic: string

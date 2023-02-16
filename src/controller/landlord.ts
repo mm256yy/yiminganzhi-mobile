@@ -33,7 +33,7 @@ export class Landlord extends Common {
   }
 
   // 获取居民户列表
-  getLandlordListWithPage(page: number, pageSize = 20): Promise<LandlordType[]> {
+  getListWithPage(page: number, pageSize = 20): Promise<LandlordType[]> {
     return new Promise(async (resolve, reject) => {
       try {
         const array: LandlordType[] = []
@@ -52,15 +52,72 @@ export class Landlord extends Common {
                 immigrantHouseList,
                 immigrantWillList,
                 immigrantIncomeList,
+                immigrantFile,
                 ...ret
               } = landlord
               array.push(ret)
             }
           })
         }
-        return array
+        resolve(array)
       } catch (error) {
         console.log(error, 'getLandlordListWithPage-error')
+        reject([])
+      }
+    })
+  }
+
+  // 根据上报时间/上报人/名称搜索
+  getSubmitList(data: any): Promise<LandlordType[]> {
+    // 'name' text,
+    // 'reportDate' text,
+    // 'reportUser' text,
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!data) {
+          reject([])
+        }
+        const { name, timeArray, userId } = data
+        const array: LandlordType[] = []
+        let sql = `select * from ${LandlordTableName} where isDelete = '0'`
+        if (name) {
+          sql += ` and name = '${name}'`
+        }
+        if (timeArray && timeArray.length) {
+          if (timeArray.length === 1) {
+            sql += ` and reportDate = '${timeArray[0]}'`
+          } else if (timeArray.length === 2) {
+            sql += ` and reportDate Between '${timeArray[0]}' and '${timeArray[1]}'`
+          }
+        }
+        if (userId) {
+          sql += ` and reportUser = '${userId}'`
+        }
+        const list: LandlordDDLType[] = await this.db.selectSql(sql)
+        if (list && Array.isArray(list)) {
+          list.forEach((item) => {
+            const landlord = JSON.parse(item.content)
+            if (landlord) {
+              // 去掉多余字段
+              const {
+                demographicList,
+                immigrantAppendantList,
+                immigrantTreeList,
+                immigrantGraveList,
+                immigrantHouseList,
+                immigrantWillList,
+                immigrantIncomeList,
+                immigrantFile,
+                ...ret
+              } = landlord
+              array.push(ret)
+            }
+          })
+        }
+        resolve(array)
+      } catch (error) {
+        console.log(error, 'getSubmitList-error')
+        reject([])
       }
     })
   }
@@ -72,6 +129,9 @@ export class Landlord extends Common {
     // updatedDate: string
     return new Promise(async (resolve, reject) => {
       try {
+        if (!data) {
+          reject(false)
+        }
         const uid = guid()
         data.uid = uid
         data.demographicList = data.demographicList || []
@@ -81,6 +141,7 @@ export class Landlord extends Common {
         data.immigrantIncomeList = data.immigrantIncomeList || []
         data.immigrantTreeList = data.immigrantTreeList || []
         data.immigrantWillList = data.immigrantWillList || []
+        data.immigrantFile = data.immigrantFile || []
 
         const fields = `'uid','status','content','updateDate'`
         const values = `'${uid}','modify','${JSON.stringify(data)}','${getCurrentTimeStamp()}'`
@@ -100,6 +161,9 @@ export class Landlord extends Common {
   updateLandlord(data: LandlordType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!data) {
+          reject(false)
+        }
         const values = `status = 'modify',content = '${JSON.stringify(
           data
         )}',updateDate = '${getCurrentTimeStamp()}'`
@@ -120,6 +184,9 @@ export class Landlord extends Common {
   deleteLandlord(uid: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid) {
+          reject(false)
+        }
         const values = `status = 'modify',isDelete = '1',updateDate = '${getCurrentTimeStamp()}'`
         const res = await this.db.updateTableData(LandlordTableName, values, 'uid', uid)
         if (res && res.code) {
@@ -137,6 +204,9 @@ export class Landlord extends Common {
   getLandlordByUid(uid: string): Promise<LandlordType | null> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid) {
+          reject(null)
+        }
         const res: LandlordType = await this.db.selectTableData(
           LandlordTableName,
           'uid',

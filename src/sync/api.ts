@@ -1,5 +1,12 @@
 import { request } from '@/utils'
 
+// 项目信息
+export const getProjectDataApi = () => {
+  return request.get({
+    url: '/pad/projectPull'
+  })
+}
+
 // 配置信息
 export const getConfigDataApi = () => {
   return request.get({

@@ -6,9 +6,15 @@ import {
   AppendantType,
   WillType,
   FamilyIncomeType,
-  ImmigrantFile
+  ImmigrantFileType
 } from './datafill'
-import { ProjectType, FamilyIncomeConfigType, WillConfigType, DictConfigType } from './common'
+import {
+  ProjectType,
+  FamilyIncomeConfigType,
+  WillConfigType,
+  DictConfigType,
+  VillageType
+} from './common'
 
 // 农户列表
 export interface LandlordType {
@@ -50,7 +56,7 @@ export interface LandlordType {
   // 家庭收入
   immigrantIncomeList: FamilyIncomeType[]
   // 附件
-  immigrantFile: ImmigrantFile[]
+  immigrantFile: ImmigrantFileType[]
 }
 
 export interface DeleteRecordType {
@@ -90,4 +96,5 @@ export interface PullStateType {
   pullTime: string
   peasantHouseholdPushDtoList: LandlordType[]
   deleteRecordList: DeleteRecordType[]
+  villageList: VillageType[]
 }

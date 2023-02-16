@@ -22,9 +22,16 @@ import {
   AppendantTableName,
   OtherDataType
 } from '@/database/index'
-import { getBaseDataApi, getConfigDataApi, getCollectApi, getMainTreeApi } from './api'
+import {
+  getProjectDataApi,
+  getBaseDataApi,
+  getConfigDataApi,
+  getCollectApi,
+  getMainTreeApi
+} from './api'
 import { StateType } from '@/types/sync'
 import { getCurrentTimeStamp } from '@/utils'
+import dayjs from 'dayjs'
 
 class PullData {
   public state: StateType
@@ -63,6 +70,8 @@ class PullData {
 
   public async init() {
     console.log('开始拉取数据')
+    // 拉取项目信息
+    this.getProjectData()
     // 拉取配置数据
     this.getConfigData()
     // 获取农户数据
@@ -71,6 +80,13 @@ class PullData {
     this.getCollect()
     // 主树信息
     this.getMainTree()
+  }
+
+  public async getProjectData() {
+    const result = await getProjectDataApi()
+    if (!result) return
+    this.state.project = result
+    this.pullProject()
   }
 
   public async getConfigData() {
@@ -86,7 +102,7 @@ class PullData {
       districtList,
       villageList
     } = result
-    this.state.project = project
+
     this.state.immigrantIncomeConfigList = immigrantIncomeConfigList
     this.state.immigrantWillConfigList = immigrantWillConfigList
     this.state.dictValList = dictValList
@@ -94,8 +110,6 @@ class PullData {
     this.state.districtList = districtList
     this.state.villageList = villageList
     this.state.immigrantAppendantConfigList = immigrantAppendantConfigList
-
-    this.pullProject()
     this.pullDict()
     this.pullVillageList()
     this.pullFamilyIncome()
@@ -162,17 +176,9 @@ class PullData {
     if (list && list.length) {
       await db.deleteTableData(ProjectTableName)
       list.forEach((item) => {
-        db.insertTableData(
-          ProjectTableName,
-          `'${JSON.stringify(item)}','${getCurrentTimeStamp()}'`,
-          "'content','updatedDate'"
-        )
-          .then((res) => {
-            console.log(res, '项目拉取成功')
-          })
-          .catch((err) => {
-            console.log(err, '项目拉取失败')
-          })
+        const fields = "'content','updatedDate'"
+        const values = `'${JSON.stringify(item)}','${getCurrentTimeStamp()}'`
+        db.insertTableData(ProjectTableName, values, fields)
       })
     }
   }
@@ -192,9 +198,9 @@ class PullData {
       list.forEach((item) => {
         const fields =
           "'uid','name','reportDate','reportUser','status','content','updatedDate','isDelete'"
-        const values = `'${item.uid}','${item.name}','${item.reportDate}','${
-          item.reportUser
-        }','default','${JSON.stringify(item)}','${getCurrentTimeStamp()}','0'`
+        const values = `'${item.uid}','${item.name}','${
+          item.reportDate ? dayjs(item.reportDate).format('YYYY-MM-DD HH:mm:ss') : ''
+        }','${item.reportUser}','default','${JSON.stringify(item)}','${getCurrentTimeStamp()}','0'`
         db.insertOrReplaceData(LandlordTableName, values, fields)
       })
     }
@@ -208,6 +214,10 @@ class PullData {
         if (item.type === 'PeasantHousehold') {
           // 删除居民户数据
           db.deleteTableData(LandlordTableName, 'uid', item.deleteId)
+        }
+        if (item.type === 'village') {
+          // 删除自然村数据
+          db.deleteTableData(VillageTableName, 'uid', item.deleteId)
         }
       })
     }
@@ -236,8 +246,10 @@ class PullData {
     const { villageList } = this.state
     if (villageList && Array.isArray(villageList)) {
       villageList.forEach((item) => {
-        const fields = "'parentCode','content','updatedDate'"
-        const values = `'${item.parentCode}','${JSON.stringify(item)}','${getCurrentTimeStamp()}'`
+        const fields = "'uid','status','parentCode','content','updatedDate'"
+        const values = `'${item.uid}','default','${item.parentCode}','${JSON.stringify(
+          item
+        )}','${getCurrentTimeStamp()}'`
         db.insertOrReplaceData(VillageTableName, values, fields)
       })
     }
@@ -310,7 +322,7 @@ class PullData {
 
   /** 其他 */
   private pullOther() {
-    const { districtTree, mainTree } = this.state
+    const { districtTree, mainTree, pullTime } = this.state
     if (districtTree) {
       // 街道树
       const fields = "'type','content','updatedDate'"
@@ -324,6 +336,15 @@ class PullData {
       // 主树
       const fields = "'type','content','updatedDate'"
       const values = `'${OtherDataType.MainTree}','${JSON.stringify(
+        mainTree
+      )}','${getCurrentTimeStamp()}'`
+      db.insertOrReplaceData(OtherTableName, values, fields)
+    }
+
+    if (pullTime) {
+      // 同步时间
+      const fields = "'type','content','updatedDate'"
+      const values = `'${OtherDataType.PullTime}','${JSON.stringify(
         mainTree
       )}','${getCurrentTimeStamp()}'`
       db.insertOrReplaceData(OtherTableName, values, fields)

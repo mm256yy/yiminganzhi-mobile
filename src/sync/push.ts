@@ -1,4 +1,12 @@
-import { db, LandlordDDLType, LandlordTableName } from '@/database/index'
+import {
+  db,
+  LandlordDDLType,
+  LandlordTableName,
+  OtherDataType,
+  OtherTableName,
+  VillageDDLType,
+  VillageTableName
+} from '@/database/index'
 import { PullStateType, DeleteRecordType } from '@/types/sync'
 
 class PushData {
@@ -17,7 +25,8 @@ class PushData {
     this.state = {
       peasantHouseholdPushDtoList: [],
       deleteRecordList: [],
-      pullTime: ''
+      pullTime: '',
+      villageList: []
     }
   }
   async getModifyLandlordList() {
@@ -30,6 +39,16 @@ class PushData {
     )
     this.state.peasantHouseholdPushDtoList = list.map((item) => JSON.parse(item.content))
     this.getDeleteRecordList()
+  }
+
+  async getModifyVillageList() {
+    const list: VillageDDLType[] = await db.selectTableData(VillageTableName, 'status', 'modify')
+    this.state.villageList = list.map((item) => JSON.parse(item.content))
+  }
+
+  async getPullTime() {
+    const pullTime = await db.selectTableData(OtherTableName, 'type', OtherDataType.PullTime)
+    this.state.pullTime = pullTime
   }
 
   private async getDeleteRecordList() {
