@@ -44,6 +44,12 @@
 
               <!-- 房屋信息 -->
               <house-info v-if="tabVal === 3" />
+
+              <!-- 附属物信息 -->
+              <accessory-info v-if="tabVal === 4" />
+
+              <!-- 零星（林）果木信息 -->
+              <tree-info v-if="tabVal === 5" />
             </view>
           </view>
         </view>
@@ -64,6 +70,8 @@ import Tabs from '@/components/Tabs/Index.vue'
 import householdInfo from '../householdInfo/index.vue' // 引入居民户信息组件
 import demographicInfo from '../demographicInfo/index.vue' // 引入人口信息组件
 import houseInfo from '../houseInfo/index.vue' // 引入房屋信息组件
+import accessoryInfo from '../accessoryInfo/index.vue' // 引入附属物信息组件
+import treeInfo from '../treeInfo/index.vue' // 引入零星（林）果木信息组件
 
 const tabsList = ref([
   { label: '居民户信息', value: 1 },

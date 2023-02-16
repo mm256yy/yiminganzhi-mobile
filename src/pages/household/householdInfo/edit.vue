@@ -294,28 +294,21 @@ const submit = () => {
   display: flex;
   flex-direction: column;
   flex: 1;
-
-  /* #ifdef */
   height: 100vh;
-  /* #endif */
 
   .main {
-    /* #ifdef H5 */
     height: calc(100vh - 23rpx);
-    /* #endif */
-
     padding: 6rpx;
     background-color: #e7edfd;
     border-radius: 2rpx;
+    box-sizing: border-box;
 
     .form {
-      /* #ifdef H5 */
       height: calc(100vh - 23rpx - 12rpx - 18rpx);
-      /* #endif */
-
       padding: 9rpx 0;
       overflow-y: scroll;
       background-color: #fff;
+      box-sizing: border-box;
 
       .account-no {
         display: flex;
@@ -374,7 +367,7 @@ const submit = () => {
 }
 
 ::v-deep.uni-forms-item__label {
-  font-size: 9rpx !important;
+  font-size: 12rpx !important;
 }
 
 ::v-deep.uni-easyinput__content {
@@ -383,10 +376,7 @@ const submit = () => {
 
 ::v-deep.uni-data-tree,
 ::v-deep.uni-stat__select {
-  /* #ifdef H5 */
   flex: 0 auto !important;
-  /* #endif */
-
   width: 200rpx !important;
 }
 
