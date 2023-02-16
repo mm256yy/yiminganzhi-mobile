@@ -43,13 +43,6 @@
 			}
 		},
 		{
-			"name": "summary",
-			"path": "pages/summary/index",
-			"style": {
-				"navigationBarTitleText": "汇总页面"
-			}
-		},
-		{
 			"name": "user",
 			"path": "pages/user/index",
 			"style": {
