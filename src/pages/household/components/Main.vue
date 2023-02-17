@@ -50,6 +50,12 @@
 
               <!-- 零星（林）果木信息 -->
               <tree-info v-if="tabVal === 5" />
+
+              <!-- 坟墓信息 -->
+              <grave-info v-if="tabVal === 6" />
+
+              <!-- 附件上传 -->
+              <attachment-upload v-if="tabVal === 9" />
             </view>
           </view>
         </view>
@@ -72,6 +78,8 @@ import demographicInfo from '../demographicInfo/index.vue' // 引入人口信息
 import houseInfo from '../houseInfo/index.vue' // 引入房屋信息组件
 import accessoryInfo from '../accessoryInfo/index.vue' // 引入附属物信息组件
 import treeInfo from '../treeInfo/index.vue' // 引入零星（林）果木信息组件
+import graveInfo from '../graveInfo/index.vue' // 引入坟墓信息组件
+import attachmentUpload from '../attachmentUpload/index.vue' // 引入附件上传组件
 
 const tabsList = ref([
   { label: '居民户信息', value: 1 },

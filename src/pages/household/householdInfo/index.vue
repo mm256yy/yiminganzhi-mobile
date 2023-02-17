@@ -3,93 +3,53 @@
     <!-- 居民户登记 -->
     <view class="main">
       <view class="row">
-        <view class="label">
-          <text class="txt">户主姓名：</text>
-        </view>
-        <view class="content">
-          <text class="txt">杨汉中</text>
-        </view>
+        <view class="label">户主姓名：</view>
+        <view class="content">杨汉中</view>
       </view>
 
       <view class="row">
-        <view class="label">
-          <text class="txt">户号：</text>
-        </view>
-        <view class="content">
-          <text class="txt">1040092345321464</text>
-        </view>
+        <view class="label">户号：</view>
+        <view class="content">1040092345321464</view>
       </view>
 
       <view class="row">
-        <view class="label">
-          <text class="txt">自然村/村民小组：</text>
-        </view>
-        <view class="content">
-          <text class="txt">浙江省金华市武义县清溪行政村</text>
-        </view>
+        <view class="label">自然村/村民小组：</view>
+        <view class="content">浙江省金华市武义县清溪行政村</view>
       </view>
 
       <view class="row">
-        <view class="label">
-          <text class="txt">是否财产户：</text>
-        </view>
-        <view class="content">
-          <text class="txt">否</text>
-        </view>
+        <view class="label">是否财产户：</view>
+        <view class="content">否</view>
       </view>
 
       <view class="row">
-        <view class="label">
-          <text class="txt">联系方式：</text>
-        </view>
-        <view class="content">
-          <text class="txt">17289436274</text>
-        </view>
+        <view class="label">联系方式：</view>
+        <view class="content">17289436274</view>
       </view>
 
       <view class="row">
-        <view class="label">
-          <text class="txt">户籍所在地：</text>
-        </view>
-        <view class="content">
-          <text class="txt">浙江省金华市武义县清溪镇杨村234号</text>
-        </view>
+        <view class="label">户籍所在地：</view>
+        <view class="content">浙江省金华市武义县清溪镇杨村234号</view>
       </view>
 
       <view class="row">
-        <view class="label">
-          <text class="txt">所在位置：</text>
-        </view>
-        <view class="content">
-          <text class="txt">淹没区</text>
-        </view>
+        <view class="label">所在位置：</view>
+        <view class="content">淹没区</view>
       </view>
 
       <view class="row">
-        <view class="label">
-          <text class="txt">淹没范围：</text>
-        </view>
-        <view class="content">
-          <text class="txt">-</text>
-        </view>
+        <view class="label">淹没范围：</view>
+        <view class="content">-</view>
       </view>
 
       <view class="row">
-        <view class="label">
-          <text class="txt">高程：</text>
-        </view>
-        <view class="content">
-          <text class="txt">1.5m</text>
-        </view>
+        <view class="label">高程：</view>
+        <view class="content">1.5m</view>
       </view>
 
       <view class="row">
-        <view class="label">
-          <text class="txt">经纬度：</text>
-        </view>
-        <view class="content">
-          <text class="txt">29.997117</text>
-        </view>
+        <view class="label">经纬度：</view>
+        <view class="content">29.997117</view>
       </view>
 
       <view class="edit" @click="toEdit">
@@ -109,9 +69,9 @@ const toEdit = () => {
 
 <style lang="scss" scoped>
 .household-wrapper {
-  display: flex;
-  flex-direction: row;
+  width: 100%;
   padding: 6rpx;
+  box-sizing: border-box;
 
   .main {
     position: relative;
@@ -130,28 +90,17 @@ const toEdit = () => {
 
       .label {
         width: 80rpx;
-
-        /* #ifdef H5 */
-        width: 110rpx;
         margin-right: 6rpx;
-        /* #endif */
-
+        font-size: 9rpx;
         line-height: 1;
-
-        .txt {
-          font-size: 9rpx;
-          color: #171718;
-        }
+        color: #171718;
       }
 
       .content {
-        flex: 1;
+        font-size: 9rpx;
         line-height: 1;
-
-        .txt {
-          font-size: 9rpx;
-          color: #171718;
-        }
+        color: #171718;
+        flex: 1;
       }
     }
 

@@ -72,9 +72,7 @@
               name="formData.accountNo"
             >
               <view class="account-no">
-                <view class="pre-txt">
-                  <text class="txt">104009234532</text>
-                </view>
+                <view class="pre-txt">104009234532</view>
                 <input
                   class="account-no-input"
                   type="number"
@@ -317,30 +315,27 @@ const submit = () => {
 
         .pre-txt {
           width: 104rpx;
-          height: 35px;
+          height: 37px;
           padding-left: 7rpx;
-          line-height: 35px;
+          font-size: 9rpx;
+          line-height: 37px;
+          color: #171718;
           background-color: #f5f7fa;
-          border: 1rpx solid #d9d9d9;
+          border: 1px solid #d9d9d9;
           border-bottom-left-radius: 4px;
           border-top-left-radius: 4px;
-
-          .txt {
-            font-size: 9rpx;
-            color: #171718;
-          }
         }
 
         .account-no-input {
-          width: 76rpx;
+          width: 84rpx;
           height: 35px;
           padding-left: 11rpx;
           font-size: 9rpx;
           line-height: 35px;
           color: #171718;
-          border-top: 1rpx solid #d9d9d9;
-          border-right: 1rpx solid #d9d9d9;
-          border-bottom: 1rpx solid #d9d9d9;
+          border-top: 1px solid #d9d9d9;
+          border-right: 1px solid #d9d9d9;
+          border-bottom: 1px solid #d9d9d9;
           border-top-right-radius: 4px;
           border-bottom-right-radius: 4px;
         }
