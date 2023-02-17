@@ -1,85 +1,39 @@
 <template>
-  <uni-section class="box" title="数据库列表" type="line" padding>
-    <swiper class="swiper" :indicator-dots="true">
-      <swiper-item>
-        <uni-grid :square="false" :column="3" :highlight="true" @change="change">
-          <uni-grid-item v-for="(item, index) in list" :index="index" :key="index">
-            <view class="grid-item-box">
-              <uni-icons type="list" :size="30" color="#777" />
-              <text class="text">{{ item.text }}</text>
-              <text class="text">{{ item.name }}</text>
-            </view>
-          </uni-grid-item>
-        </uni-grid>
-      </swiper-item>
-    </swiper>
-  </uni-section>
+  <view class="databse-wrap">
+    <view :style="{ height: `${statusBarHeight}px` }" />
+    <uni-section class="box" title="数据库列表" type="line" padding>
+      <swiper class="swiper" :indicator-dots="true">
+        <swiper-item>
+          <uni-grid :square="false" :column="3" :highlight="true" @change="change">
+            <uni-grid-item v-for="(item, index) in list" :index="index" :key="index">
+              <view class="grid-item-box">
+                <uni-icons type="list" :size="30" color="#777" />
+                <text class="text">{{ item.tbl_name }}</text>
+              </view>
+            </uni-grid-item>
+          </uni-grid>
+        </swiper-item>
+      </swiper>
+    </uni-section>
+  </view>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { pushInstance } from '@/sync'
 // import { getBaseDataApi, getConfigDataApi, getCollectApi, getMainTreeApi } from '@/sync/api'
 import { routerForward } from '@/utils'
 
 const currentTable = ref<string>('')
-const list = ref<any[]>([
-  {
-    text: 'project',
-    name: '项目',
-    badge: '0'
-  },
-  {
-    text: 'landlord',
-    name: '农户',
-    badge: '1'
-  },
-  {
-    text: 'collect',
-    name: '统计',
-    badge: '2'
-  },
-  {
-    text: 'dictionaries',
-    name: '字典',
-    badge: '3'
-  },
-  {
-    text: 'appendant',
-    name: '附属物',
-    badge: '4'
-  },
-  {
-    text: 'family_income',
-    name: '家庭收入',
-    badge: '5'
-  },
-  {
-    text: 'district',
-    name: '行政区划',
-    badge: '6'
-  },
-  {
-    text: 'village',
-    name: '自然村',
-    badge: '7'
-  },
-  {
-    text: 'resettlement',
-    name: '安置意愿',
-    badge: '8'
-  },
-  {
-    text: 'other',
-    name: '其他',
-    badge: '9'
-  }
-])
+const list = ref<any[]>([])
+
+const sysInfo = uni.getSystemInfoSync()
+const statusBarHeight = sysInfo.statusBarHeight || 0
 
 const change = (e: any) => {
-  console.log(e.detail, 'e')
   let { index } = e.detail
 
-  currentTable.value = list.value[index].text
+  currentTable.value = list.value[index].tbl_name
   routerForward('table', {
     table: currentTable.value
   })
@@ -94,6 +48,13 @@ const getApiData = async () => {
 }
 
 getApiData()
+
+const getTables = async () => {
+  const tables = await pushInstance.getTables()
+  list.value = tables || []
+}
+
+getTables()
 </script>
 
 <style lang="scss">

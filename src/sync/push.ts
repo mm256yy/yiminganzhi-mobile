@@ -51,6 +51,19 @@ class PushData {
     this.state.pullTime = pullTime
   }
 
+  getTables(): Promise<any[]> {
+    return new Promise(async (resolve, reject) => {
+      const sql = `SELECT tbl_name FROM sqlite_master WHERE type = 'table';`
+      const res = await db.selectSql(sql)
+      console.log(res, 'res')
+      if (res && Array.isArray(res)) {
+        const tables = res.filter((item) => item.tbl_name !== 'android_metadata')
+        resolve(tables)
+      }
+      reject([])
+    })
+  }
+
   private async getDeleteRecordList() {
     const deleteList: DeleteRecordType[] = []
     const list: LandlordDDLType[] = await db.selectTableData(LandlordTableName, 'isDelete', '1')
