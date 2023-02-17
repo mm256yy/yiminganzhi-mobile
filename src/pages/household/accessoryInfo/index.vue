@@ -168,6 +168,7 @@
         font-size: 9rpx;
         line-height: 28rpx;
         color: #171718;
+        vertical-align: middle;
         border: 1rpx solid #f0f0f0;
 
         &.w-117 {

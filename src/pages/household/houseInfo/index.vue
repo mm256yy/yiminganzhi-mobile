@@ -3,9 +3,7 @@
     <view class="list">
       <view class="list-item">
         <view class="list-1">
-          <view class="left">
-            <text class="txt">3幢</text>
-          </view>
+          <view class="left">3幢</view>
           <view class="right">
             <image
               class="icon m-r-10"
@@ -17,82 +15,46 @@
         <view class="list-2">
           <view class="row">
             <view class="col">
-              <view class="label">
-                <text class="txt">房屋用途：</text>
-              </view>
-              <view class="content">
-                <text class="txt">住宅</text>
-              </view>
+              <view class="label">房屋用途：</view>
+              <view class="content">住宅</view>
             </view>
             <view class="col">
-              <view class="label">
-                <text class="txt">房屋高程：</text>
-              </view>
-              <view class="content">
-                <text class="txt">10（米）</text>
-              </view>
+              <view class="label">房屋高程：</view>
+              <view class="content">10（米）</view>
             </view>
             <view class="col">
-              <view class="label">
-                <text class="txt">房屋类别：</text>
-              </view>
-              <view class="content">
-                <text class="txt">生活办公用房</text>
-              </view>
+              <view class="label">房屋类别：</view>
+              <view class="content">生活办公用房</view>
             </view>
           </view>
 
           <view class="row">
             <view class="col">
-              <view class="label w-90">
-                <text class="txt">层高：</text>
-              </view>
-              <view class="content">
-                <text class="txt">10（米）</text>
-              </view>
+              <view class="label w-90">层高：</view>
+              <view class="content">10（米）</view>
             </view>
             <view class="col">
-              <view class="label w-90">
-                <text class="txt">土地所有权证编号：</text>
-              </view>
-              <view class="content">
-                <text class="txt">888682323232</text>
-              </view>
+              <view class="label w-90">土地所有权证编号：</view>
+              <view class="content">888682323232</view>
             </view>
             <view class="col">
-              <view class="label w-90">
-                <text class="txt">建筑面积：</text>
-              </view>
-              <view class="content">
-                <text class="txt">100（m³）</text>
-              </view>
+              <view class="label w-90">建筑面积：</view>
+              <view class="content">100（m³）</view>
             </view>
           </view>
 
           <view class="row">
             <view class="col">
-              <view class="label w-90">
-                <text class="txt">层数：</text>
-              </view>
-              <view class="content">
-                <text class="txt">3（层）</text>
-              </view>
+              <view class="label w-90">层数：</view>
+              <view class="content">3（层）</view>
             </view>
             <view class="col">
-              <view class="label w-90">
-                <text class="txt">房屋所有权证编号：</text>
-              </view>
-              <view class="content">
-                <text class="txt">224234255555</text>
-              </view>
+              <view class="label w-90">房屋所有权证编号：</view>
+              <view class="content">224234255555</view>
             </view>
             <view class="col">
-              <view class="label w-90">
-                <text class="txt">竣工日期</text>
-              </view>
-              <view class="content">
-                <text class="txt">200年8月</text>
-              </view>
+              <view class="label w-90">竣工日期</view>
+              <view class="content">200年8月</view>
             </view>
           </view>
         </view>
@@ -105,22 +67,17 @@
 
 <style lang="scss" scoped>
 .house-info-wrapper {
-  display: flex;
-  flex-direction: column;
   width: 100%;
 
   .list {
     width: 100%;
 
     .list-item {
-      display: flex;
-      flex-direction: column;
       margin-bottom: 7rpx;
       box-shadow: 0 1rpx 9rpx -2rpx rgba(0, 0, 0, 0.18);
 
       .list-1 {
         display: flex;
-        flex-direction: row;
         align-items: center;
         justify-content: space-between;
         padding: 6rpx 0;
@@ -128,15 +85,11 @@
 
         .left {
           display: flex;
-          flex-direction: row;
+          padding-left: 6rpx;
+          font-size: 9rpx;
+          color: #171718;
           align-items: center;
           flex: 1;
-          padding-left: 6rpx;
-
-          .txt {
-            font-size: 9rpx;
-            color: #171718;
-          }
         }
 
         .right {
@@ -146,20 +99,16 @@
           .icon {
             width: 20rpx;
             height: 20rpx;
-
-            &.m-r-10 {
-              margin-right: 10rpx;
-            }
           }
         }
       }
 
       .list-2 {
         display: flex;
-        flex-direction: row;
         align-items: center;
         justify-content: space-between;
         padding: 4rpx 6rpx 6rpx 0;
+        box-sizing: border-box;
 
         .row {
           display: flex;
@@ -174,26 +123,20 @@
               width: 56rpx;
               height: 16rpx;
               margin-left: 9rpx;
+              font-size: 9rpx;
+              line-height: 16rpx;
+              color: #171718;
 
               &.w-90 {
                 width: 90rpx;
-              }
-
-              .txt {
-                font-size: 9rpx;
-                line-height: 16rpx;
-                color: #171718;
               }
             }
 
             .content {
               height: 16rpx;
-
-              .txt {
-                font-size: 9rpx;
-                line-height: 16rpx;
-                color: #171718;
-              }
+              font-size: 9rpx;
+              line-height: 16rpx;
+              color: #171718;
             }
           }
         }

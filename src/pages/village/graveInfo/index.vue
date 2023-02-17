@@ -1,40 +1,55 @@
 <template>
-  <view class="tree-info-wrapper">
-    <view class="tree-container">
+  <view class="grave-info-wrapper">
+    <view class="grave-container">
       <view class="row">
         <view class="col">序号</view>
-        <view class="col w-63">品种名称</view>
-        <view class="col w-63">用途</view>
-        <view class="col w-64">规格</view>
-        <view class="col w-64">单位</view>
-        <view class="col w-94">数量</view>
-        <view class="col w-129">备注</view>
+        <view class="col w-64">穴位</view>
+        <view class="col w-82">数量（座）</view>
+        <view class="col w-64">材料</view>
+        <view class="col w-110">立墓年份</view>
+        <view class="col w-64">所处位置</view>
+        <view class="col w-91">备注</view>
       </view>
 
       <view class="row">
         <view class="col">1</view>
-        <view class="col w-63">苹果树</view>
-        <view class="col w-63 p-l-2">
+        <view class="col w-64 p-l-2">
           <uni-data-select
-            v-model="formData.purpose"
-            :localdata="purposeData"
-            @change="changePurpose"
+            v-model="formData.acupoint"
+            :localdata="acupointData"
+            @change="changeAcupoint"
           />
         </view>
-        <view class="col w-64 p-l-2">
-          <uni-data-select v-model="formData.spec" :localdata="specData" @change="changeSpec" />
-        </view>
-        <view class="col w-64 p-l-2">
-          <uni-data-select v-model="formData.unit" :localdata="unitData" @change="changeUnit" />
-        </view>
-        <view class="col w-94">
+        <view class="col w-82 p-l-2">
           <view class="input-wrapper">
             <label class="reduce">—</label>
             <input class="num" />
             <label class="plus">+</label>
           </view>
         </view>
-        <view class="col w-129">
+        <view class="col w-64 p-l-2">
+          <uni-data-select
+            v-model="formData.material"
+            :localdata="materialData"
+            @change="changeMaterial"
+          />
+        </view>
+        <view class="col w-110 p-l-2">
+          <uni-datetime-picker
+            type="date"
+            placeholder="选择年份"
+            v-model="formData.year"
+            @change="changeDate"
+          />
+        </view>
+        <view class="col w-64 p-l-2">
+          <uni-data-select
+            v-model="formData.location"
+            :localdata="locationData"
+            @change="changeLocation"
+          />
+        </view>
+        <view class="col w-91">
           <input class="remark" placeholder="请输入内容" />
         </view>
       </view>
@@ -50,72 +65,56 @@ import { ref } from 'vue'
 const formData = ref<any>({})
 const isEdit = ref<boolean>(false)
 
+// 穴位数据列表
+const acupointData = ref<any>([
+  { text: '单穴', value: 1 },
+  { text: '双穴', value: 2 },
+  { text: '多穴', value: 3 }
+])
+
 // 用途数据列表
-const purposeData = ref<any>([
-  {
-    text: '果树',
-    value: 0
-  },
-  {
-    text: '经济树',
-    value: 1
-  },
-  {
-    text: '用材树',
-    value: 2
-  }
+const materialData = ref<any>([
+  { text: '泥', value: 1 },
+  { text: '石', value: 2 },
+  { text: '混凝土', value: 3 },
+  { text: '花岗岩', value: 4 },
+  { text: '其他', value: 5 }
 ])
 
-// 规格数据列表
-const specData = ref<any>([
-  {
-    text: '小树',
-    value: 0
-  },
-  {
-    text: '中树',
-    value: 1
-  },
-  {
-    text: '大树',
-    value: 2
-  }
+// 所处位置数据列表
+const locationData = ref<any>([
+  { text: '线内', value: 1 },
+  { text: '线外', value: 2 },
+  { text: '其他', value: 3 }
 ])
 
-// 单位数据列表
-const unitData = ref<any>([
-  {
-    text: '株',
-    value: 0
-  },
-  {
-    text: '平方米',
-    value: 1
-  }
-])
-
-// 用途选择
-const changePurpose = (data: any) => {
+// 穴位选择
+const changeAcupoint = (data: any) => {
   console.log('data:', data)
 }
 
-// 用途选择
-const changeSpec = (data: any) => {
+// 材料选择
+const changeMaterial = (data: any) => {
   console.log('data:', data)
 }
 
-// 单位选择
-const changeUnit = (data: any) => {
+// 立墓年份选择
+const changeDate = (e: any) => {
+  console.log('e:', e)
+}
+
+// 所处位置选择
+const changeLocation = (data: any) => {
   console.log('data:', data)
 }
 </script>
 
 <style lang="scss" scoped>
-.tree-info-wrapper {
+.grave-info-wrapper {
   display: flex;
   flex-direction: column;
 
-  .tree-container {
+  .grave-container {
     display: table;
     border-collapse: collapse;
 
@@ -149,20 +148,24 @@ const changeUnit = (data: any) => {
         vertical-align: middle;
         border: 1rpx solid #f0f0f0;
 
-        &.w-63 {
-          width: 63rpx;
-        }
-
         &.w-64 {
           width: 64rpx;
+        }
+
+        &.w-82 {
+          width: 82rpx;
+        }
+
+        &.w-91 {
+          width: 91rpx;
         }
 
         &.w-94 {
           width: 94rpx;
         }
 
-        &.w-129 {
-          width: 129rpx;
+        &.w-110 {
+          width: 100rpx;
         }
 
         &.p-l-2 {
@@ -233,6 +236,25 @@ const changeUnit = (data: any) => {
 
         ::v-deep.uniui-clear {
           font-size: 18rpx !important;
+        }
+
+        ::v-deep.uniui-calendar {
+          font-size: 12rpx !important;
+        }
+
+        ::v-deep.uni-date-x,
+        ::v-deep.uni-date-editor--x {
+          width: 106rpx !important;
+          height: 23rpx !important;
+        }
+
+        ::v-deep.uni-date-single {
+          height: 21rpx !important;
+
+          .uni-input-input,
+          .uni-input-placeholder {
+            font-size: 9rpx !important;
+          }
         }
       }
     }
