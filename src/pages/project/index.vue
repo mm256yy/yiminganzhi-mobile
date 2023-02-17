@@ -45,16 +45,12 @@ uni-page-body {
 }
 
 .project-wrap {
-  /* #endif */
   width: 750rpx;
-  /* #ifdef H5 */
   height: 100%;
   padding: 40rpx;
   background-color: #e7edfd;
   border-radius: 9rpx 9rpx 0rpx 0rpx;
-  /* #endif */
 
-  /* #ifdef APP-PLUS */
   flex: 1;
 }
 
