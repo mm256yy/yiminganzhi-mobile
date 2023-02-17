@@ -125,11 +125,12 @@
 
       .list-1 {
         display: flex;
+        padding: 6rpx 0;
+        border-bottom: 1rpx dotted #d0cbcb;
+        box-sizing: border-box;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        padding: 6rpx 0;
-        border-bottom: 1rpx dotted #d0cbcb;
 
         .left {
           display: flex;
@@ -139,13 +140,13 @@
 
           .icon-wrapper {
             display: flex;
-            align-items: center;
-            justify-content: center;
             width: 32rpx;
             height: 16rpx;
             background: #3db6f2;
             border-top-right-radius: 5rpx;
             border-bottom-right-radius: 5rpx;
+            align-items: center;
+            justify-content: center;
 
             .txt {
               font-size: 9rpx;
