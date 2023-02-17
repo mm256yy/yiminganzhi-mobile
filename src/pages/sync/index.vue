@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+// import { ref } from 'vue'
 
 const onSync = () => {}
 </script>
@@ -43,16 +43,12 @@ uni-page-body {
 }
 
 .sync-wrap {
-  /* #endif */
   display: flex;
-  /* #ifdef H5 */
   height: 100%;
   padding: 0 6rpx 9rpx 6rpx;
   background-color: #e7edfd;
   border-radius: 9rpx 9rpx 0rpx 0rpx;
-  /* #endif */
 
-  /* #ifdef APP-PLUS */
   flex: 1;
   flex-direction: column;
 
