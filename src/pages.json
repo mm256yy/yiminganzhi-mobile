@@ -8,6 +8,13 @@
 			}
 		},
 		{
+			"name": "sync",
+			"path": "pages/sync/index",
+			"style": {
+				"navigationBarTitleText": "同步"
+			}
+		},
+		{
 			"name": "household",
 			"path": "pages/household/index",
 			"style": {
@@ -90,7 +97,7 @@
 		}
 	},
   "condition" : {
-    "current": 1,
+    "current": 5,
     "list": [
       {
         "name": "登录页面",
@@ -115,6 +122,11 @@
 			{
         "name": "数据库测试页面",
         "path": "pages/user/index",
+        "query": ""
+      },
+			{
+        "name": "同步页面",
+        "path": "pages/sync/index",
         "query": ""
       }
     ]
