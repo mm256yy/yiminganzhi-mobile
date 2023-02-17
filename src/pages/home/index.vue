@@ -19,7 +19,7 @@
         <view class="txt">村集体</view>
       </view>
       <view class="col">
-        <view class="txt">同步数据</view>
+        <view class="txt" @click="toLink('sync')">同步数据</view>
       </view>
     </view>
     <view class="row">
