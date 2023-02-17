@@ -8,7 +8,7 @@
             <uni-forms-item
               required
               label="户主姓名"
-              :label-width="120"
+              :label-width="150"
               label-align="right"
               name="formData.name"
             >
@@ -19,7 +19,7 @@
             <uni-forms-item
               required
               label="自然村/村民小组"
-              :label-width="120"
+              :label-width="150"
               label-align="right"
               name="formData.village"
             >
@@ -38,7 +38,7 @@
             <uni-forms-item
               required
               label="联系方式"
-              :label-width="120"
+              :label-width="150"
               label-align="right"
               name="formData.name"
             >
@@ -49,7 +49,7 @@
             <uni-forms-item
               required
               label="所在位置"
-              :label-width="120"
+              :label-width="150"
               label-align="right"
               name="formData.position"
             >
@@ -67,7 +67,7 @@
             <uni-forms-item
               required
               label="户号"
-              :label-width="120"
+              :label-width="150"
               label-align="right"
               name="formData.accountNo"
             >
@@ -88,7 +88,7 @@
             <uni-forms-item
               required
               label="财产户"
-              :label-width="120"
+              :label-width="150"
               label-align="right"
               name="formData.account"
             >
@@ -106,7 +106,7 @@
             <uni-forms-item
               required
               label="户籍所在地"
-              :label-width="120"
+              :label-width="150"
               label-align="right"
               name="formData.address"
             >
@@ -117,7 +117,7 @@
             <uni-forms-item
               required
               label="淹没范围"
-              :label-width="120"
+              :label-width="150"
               label-align="right"
               name="formData.name"
             >
@@ -131,7 +131,7 @@
             <uni-forms-item
               required
               label="高程"
-              :label-width="120"
+              :label-width="150"
               label-align="right"
               name="formData.name"
             >
@@ -142,7 +142,7 @@
             <uni-forms-item
               required
               label="中心经纬度"
-              :label-width="120"
+              :label-width="150"
               label-align="right"
               name="formData.lg"
             >
@@ -354,6 +354,30 @@ const submit = () => {
           margin-top: 5rpx;
         }
       }
+
+      ::v-deep.uni-forms-item__label {
+        font-size: 9rpx !important;
+      }
+
+      ::v-deep.uni-easyinput__content {
+        width: 200rpx !important;
+
+        .uni-easyinput__placeholder-class,
+        .uni-input-input {
+          font-size: 9rpx !important;
+        }
+      }
+
+      ::v-deep.uni-data-tree,
+      ::v-deep.uni-stat__select {
+        flex: 0 auto !important;
+        width: 200rpx !important;
+      }
+
+      ::v-deep.uni-select__input-text {
+        width: 90% !important;
+        font-size: 9rpx !important;
+      }
     }
 
     .submit-btn {
@@ -364,23 +388,5 @@ const submit = () => {
       height: 80rpx;
     }
   }
-}
-
-::v-deep.uni-forms-item__label {
-  font-size: 12rpx !important;
-}
-
-::v-deep.uni-easyinput__content {
-  width: 200rpx !important;
-}
-
-::v-deep.uni-data-tree,
-::v-deep.uni-stat__select {
-  flex: 0 auto !important;
-  width: 200rpx !important;
-}
-
-::v-deep.uni-select__input-text {
-  width: 90% !important;
 }
 </style>

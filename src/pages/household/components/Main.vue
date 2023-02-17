@@ -79,9 +79,10 @@ const tabsList = ref([
   { label: '房屋信息', value: 3 },
   { label: '附属物信息', value: 4 },
   { label: '零星 (林) 果木信息', value: 5 },
-  { label: '安置意愿信息', value: 6 },
-  { label: '坟墓信息', value: 7 },
-  { label: '附件上传', value: 8 }
+  { label: '坟墓信息', value: 6 },
+  { label: '家庭收入信息', value: 7 },
+  { label: '安置意愿信息', value: 8 },
+  { label: '附件上传', value: 9 }
 ])
 
 const showExpand = ref<boolean>(false)

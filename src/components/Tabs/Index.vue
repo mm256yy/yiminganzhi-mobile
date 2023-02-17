@@ -1,19 +1,5 @@
 <template>
   <view class="tabs-wrapper">
-    <!-- #ifdef APP -->
-    <scroll-view class="tabs-list" :scroll-x="true" :show-scrollbar="false">
-      <view
-        v-for="(item, index) in tabsList"
-        :key="item.value"
-        :class="['tabs-item', currentIndex === index ? 'active' : '']"
-        @click="selectTabs(item, index)"
-      >
-        <text :class="['label', currentIndex === index ? 'active' : '']">{{ item.label }}</text>
-      </view>
-    </scroll-view>
-    <!-- #endif -->
-
-    <!-- #ifdef H5 -->
     <view class="tabs-list">
       <view
         v-for="(item, index) in tabsList"
@@ -24,7 +10,6 @@
         <text :class="['label', currentIndex === index ? 'active' : '']">{{ item.label }}</text>
       </view>
     </view>
-    <!-- #endif -->
   </view>
 </template>
 
@@ -55,8 +40,7 @@ const selectTabs = (data: any, index: number) => {
 
 <style lang="scss" scoped>
 .tabs-wrapper {
-  display: flex;
-  flex-direction: row;
+  width: 100%;
   height: 23rpx;
   margin: 5rpx 0;
 
@@ -66,8 +50,6 @@ const selectTabs = (data: any, index: number) => {
     align-items: center;
     width: 520rpx;
     height: 23rpx;
-
-    /* #ifdef H5 */
     overflow-x: scroll;
 
     &::-webkit-scrollbar {
@@ -77,24 +59,18 @@ const selectTabs = (data: any, index: number) => {
     &::-moz-scrollbar {
       display: none;
     }
-    /* #endif */
 
     .tabs-item {
       display: flex;
-      width: auto;
       height: 23rpx;
       padding: 5rpx 9rpx;
       margin-right: 5rpx;
       font-size: 11rpx;
       color: #171718;
-
-      /* #ifdef H5 */
-      cursor: pointer;
       background-color: #ebeef5;
       box-sizing: border-box;
       align-items: center;
       justify-content: center;
-      /* #endif */
 
       &:last-child {
         margin-right: 0;
@@ -110,6 +86,8 @@ const selectTabs = (data: any, index: number) => {
       .label {
         font-size: 11rpx;
         color: #171718;
+        word-break: break-all;
+        white-space: nowrap;
 
         &.active {
           color: #3e73ec;
