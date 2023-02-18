@@ -22,17 +22,24 @@
 			}
 		},
 		{
-			"name": "householdInfo",
-			"path": "pages/household/householdInfo/index",
-			"style": {
-				"navigationBarTitleText": "居民户信息"
-			}
-		},
-		{
 			"name": "householdInfoEdit",
 			"path": "pages/household/householdInfo/edit",
 			"style": {
 				"navigationBarTitleText": "居民户信息编辑"
+			}
+		},
+		{
+			"name": "demographicInfoEdit",
+			"path": "pages/household/demographicInfo/edit",
+			"style": {
+				"navigationBarTitleText": "人口信息编辑"
+			}
+		},
+		{
+			"name": "houseInfoEdit",
+			"path": "pages/household/houseInfo/edit",
+			"style": {
+				"navigationBarTitleText": "房屋信息编辑"
 			}
 		},
 		{

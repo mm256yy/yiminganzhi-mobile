@@ -36,7 +36,6 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              required
               label="联系方式"
               :label-width="150"
               label-align="right"
@@ -47,7 +46,6 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              required
               label="所在位置"
               :label-width="150"
               label-align="right"
@@ -84,7 +82,6 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              required
               label="财产户"
               :label-width="150"
               label-align="right"
@@ -102,7 +99,6 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              required
               label="户籍所在地"
               :label-width="150"
               label-align="right"
@@ -113,7 +109,6 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              required
               label="淹没范围"
               :label-width="150"
               label-align="right"
@@ -127,7 +122,6 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              required
               label="高程"
               :label-width="150"
               label-align="right"
@@ -138,7 +132,6 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              required
               label="中心经纬度"
               :label-width="150"
               label-align="right"
@@ -291,7 +284,6 @@ const submit = () => {
 .form-wrapper {
   display: flex;
   flex-direction: column;
-  flex: 1;
   height: 100vh;
 
   .main {

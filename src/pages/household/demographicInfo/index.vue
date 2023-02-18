@@ -15,7 +15,7 @@
             />
           </view>
         </view>
-        <view class="list-2">
+        <view class="list-2" @click="toLink">
           <view class="row">
             <view class="col">
               <view class="label">性别：</view>
@@ -56,8 +56,8 @@
               <view class="content">册内人口</view>
             </view>
             <view class="col">
-              <view class="label"></view>
-              <view class="content"></view>
+              <view class="label" />
+              <view class="content" />
             </view>
           </view>
         </view>
@@ -66,7 +66,13 @@
   </view>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { routerForward } from '@/utils'
+
+const toLink = () => {
+  routerForward('demographicInfoEdit')
+}
+</script>
 
 <style lang="scss" scoped>
 .demographic-wrapper {

@@ -12,7 +12,7 @@
             />
           </view>
         </view>
-        <view class="list-2">
+        <view class="list-2" @click="toEdit">
           <view class="row">
             <view class="col">
               <view class="label">房屋用途：</view>
@@ -63,7 +63,13 @@
   </view>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { routerForward } from '@/utils'
+
+const toEdit = () => {
+  routerForward('houseInfoEdit')
+}
+</script>
 
 <style lang="scss" scoped>
 .house-info-wrapper {
