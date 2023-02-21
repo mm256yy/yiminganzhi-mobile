@@ -89,10 +89,9 @@ export interface StateType {
   districtList: any[]
   villageList: any[]
   collectList: any[]
-  mainTree: any[]
 }
 
-export interface PullStateType {
+export interface PushStateType {
   pullTime: string
   peasantHouseholdPushDtoList: LandlordType[]
   deleteRecordList: DeleteRecordType[]

@@ -372,6 +372,21 @@ export class DB {
     })
   }
 
+  transaction(operation: 'begin' | 'commit' | 'rollback'): Promise<any> {
+    return new Promise((resolve, reject) => {
+      plus.sqlite.transaction({
+        name: sqliteOptions.name,
+        operation,
+        success(e) {
+          resolve(e)
+        },
+        fail(e) {
+          reject(e)
+        }
+      })
+    })
+  }
+
   selectSql(sql: string): Promise<any> {
     return new Promise((resolve, reject) => {
       plus.sqlite.selectSql({

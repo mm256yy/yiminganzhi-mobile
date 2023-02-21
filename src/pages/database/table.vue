@@ -21,6 +21,7 @@ onLoad((option: any) => {
   console.log(option, 'option')
   if (option && option.table) {
     tableName.value = option.table
+    getJsonData()
   }
 })
 
@@ -47,15 +48,18 @@ const getJsonData = async () => {
     const res = await db.selectTableData(tableName.value).catch((err) => {
       console.log(err, 'err')
     })
-    console.log(res, `${tableName.value} 表数据`)
-
-    jsonData.value = (res || []).map((item: any) => {
-      return JSON.parse(item.content)
-    })
+    console.log(res.length, `${tableName.value} 表数据`)
+    jsonData.value = res
+    // jsonData.value = (res || []).map((item: any) => {
+    //   try {
+    //     return JSON.parse(item.content)
+    //   } catch (e) {
+    //     return item
+    //   }
+    // })
+    // console.log(jsonData.value, `页面数据`)
   }
 }
-
-getJsonData()
 
 const back = () => {
   routerBack()

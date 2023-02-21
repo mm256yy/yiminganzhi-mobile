@@ -9,7 +9,7 @@ class Other extends Common {
   constructor() {
     super()
   }
-  getOtherWithType(type: OtherDataType) {
+  getOtherWithType(type: OtherDataType): Promise<any> {
     return new Promise(async (resolve, reject) => {
       try {
         const sql = `select * from ${OtherTableName} where type = '${type}'`
@@ -17,10 +17,10 @@ class Other extends Common {
         if (result) {
           resolve(JSON.parse(result.content))
         }
-        reject([])
+        reject(null)
       } catch (error) {
         console.log(error, 'Other-get-list-error')
-        reject([])
+        reject(null)
       }
     })
   }

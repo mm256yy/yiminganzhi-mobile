@@ -10,7 +10,7 @@ class Dictionaries extends Common {
   constructor() {
     super()
   }
-  getDictObj() {
+  getDictObj(): Promise<{ [key: number]: any[] }> {
     return new Promise(async (resolve, reject) => {
       try {
         const array: DictConfigType[] = []

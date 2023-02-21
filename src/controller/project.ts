@@ -10,7 +10,7 @@ class Project extends Common {
   constructor() {
     super()
   }
-  getList() {
+  getList(): Promise<ProjectType[]> {
     return new Promise(async (resolve, reject) => {
       try {
         const array: ProjectType[] = []

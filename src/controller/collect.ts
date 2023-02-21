@@ -10,7 +10,7 @@ class Collect extends Common {
   constructor() {
     super()
   }
-  getList() {
+  getList(): Promise<CollectType[]> {
     return new Promise(async (resolve, reject) => {
       try {
         const array: CollectType[] = []

@@ -1,7 +1,7 @@
 <template>
   <view class="home-wrapper">
     <view class="row">
-      <view class="col">
+      <view class="col" @click="toLink('project')">
         <view class="txt">项目切换</view>
       </view>
       <view class="col" @click="toLink('household')">
@@ -18,8 +18,8 @@
       <view class="col">
         <view class="txt">村集体</view>
       </view>
-      <view class="col">
-        <view class="txt" @click="toLink('sync')">同步数据</view>
+      <view class="col" @click="toLink('sync')">
+        <view class="txt">同步数据</view>
       </view>
     </view>
     <view class="row">
@@ -29,8 +29,13 @@
       <view class="col">
         <view class="txt">我的工作</view>
       </view>
-      <view class="col">
-        <view class="txt">地图</view>
+      <view class="col" @click="toLink('database')">
+        <view class="txt">数据库</view>
+      </view>
+    </view>
+    <view class="row">
+      <view class="col" @click="toLink('login')">
+        <view class="txt">登录</view>
       </view>
     </view>
   </view>
@@ -44,6 +49,7 @@ import { routerForward } from '@/utils'
  * @params {objcet} name 路由名
  */
 const toLink = (name: string) => {
+  console.log(name, 'nmae')
   routerForward(name)
 }
 </script>
