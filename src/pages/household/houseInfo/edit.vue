@@ -44,14 +44,14 @@
               label-align="right"
               name="formData.layerNum"
             >
-              <view :class="['input-wrapper', focusLayerNum ? 'focus' : '']">
+              <view :class="['input-wrapper', focusIndex === 1 ? 'focus' : '']">
                 <input
                   class="input-txt"
                   placeholder="请输入"
                   type="number"
                   v-model="formData.layerNum"
-                  @focus="layerNumInputFocus"
-                  @blur="layerNumInputBlur"
+                  @focus="inputFocus(1)"
+                  @blur="inputBlur"
                 />
                 <view class="unit">层</view>
               </view>
@@ -214,14 +214,14 @@
               label-align="right"
               name="formData.builtUpArea"
             >
-              <view :class="['input-wrapper', focusBuiltUpArea ? 'focus' : '']">
+              <view :class="['input-wrapper', focusIndex === 2 ? 'focus' : '']">
                 <input
                   class="input-txt"
                   placeholder="请输入"
                   type="number"
                   v-model="formData.builtUpArea"
-                  @focus="builtUpAreaInputFocus"
-                  @blur="builtUpAreaInputBlur"
+                  @focus="inputFocus(2)"
+                  @blur="inputBlur"
                 />
                 <view class="unit">m²</view>
               </view>
@@ -251,14 +251,14 @@
               label-align="right"
               name="formData.houseElevation"
             >
-              <view :class="['input-wrapper', focusHouseElevation ? 'focus' : '']">
+              <view :class="['input-wrapper', focusIndex === 3 ? 'focus' : '']">
                 <input
                   class="input-txt"
                   placeholder="请输入"
                   type="number"
                   v-model="formData.houseElevation"
-                  @focus="houseElevationInputFocus"
-                  @blur="houseElevationInputBlur"
+                  @focus="inputFocus(3)"
+                  @blur="inputBlur"
                 />
                 <view class="unit">m</view>
               </view>
@@ -415,14 +415,8 @@ import Back from '@/components/Back/Index.vue'
 // 表单数据
 const formData = ref<any>({})
 
-// 层数输入框是否获得焦点
-const focusLayerNum = ref<boolean>(false)
-
-// 建筑面积输入框是否获得焦点
-const focusBuiltUpArea = ref<boolean>(false)
-
-// 房屋高程输入框是否获得焦点
-const focusHouseElevation = ref<boolean>(false)
+// 获得焦点的输入框下标
+const focusIndex = ref<number>(-1)
 
 // 表单校验规则
 const rules = ref<any>({})
@@ -511,34 +505,14 @@ const lgTagList = ref<any>([
   { text: '输入经纬度', value: 2 }
 ])
 
-// 层数输入框获得焦点事件
-const layerNumInputFocus = () => {
-  focusLayerNum.value = true
+// 输入框获得焦点事件
+const inputFocus = (index: number) => {
+  focusIndex.value = index
 }
 
-// 建筑面积输入框获得焦点事件
-const builtUpAreaInputFocus = () => {
-  focusBuiltUpArea.value = true
-}
-
-// 房屋高程输入框获得焦点事件
-const houseElevationInputFocus = () => {
-  focusHouseElevation.value = true
-}
-
-// 层数输入框失去焦点事件
-const layerNumInputBlur = () => {
-  focusLayerNum.value = false
-}
-
-// 建筑面积输入框失去焦点事件
-const builtUpAreaInputBlur = () => {
-  focusBuiltUpArea.value = false
-}
-
-// 房屋高程输入框失去焦点事件
-const houseElevationInputBlur = () => {
-  focusHouseElevation.value = false
+// 输入框失去焦点事件
+const inputBlur = () => {
+  focusIndex.value = -1
 }
 
 // 房屋产别选择
@@ -767,9 +741,9 @@ const submit = () => {
 
         .unit {
           width: 23rpx;
-          height: 37px;
+          height: 35px;
           font-size: 9rpx;
-          line-height: 37px;
+          line-height: 35px;
           color: #171718;
           text-align: center;
           background-color: #f5f7fa;
