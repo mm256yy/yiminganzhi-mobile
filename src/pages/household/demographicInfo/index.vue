@@ -1,5 +1,6 @@
 <template>
   <view class="demographic-wrapper">
+    <!-- 个人信息 -->
     <view class="list">
       <view class="list-item">
         <view class="list-1">
