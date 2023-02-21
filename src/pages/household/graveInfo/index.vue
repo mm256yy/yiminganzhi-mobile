@@ -1,5 +1,6 @@
 <template>
   <view class="grave-info-wrapper">
+    <!-- 坟墓信息 -->
     <view class="list">
       <view class="list-item">
         <view class="list-1">

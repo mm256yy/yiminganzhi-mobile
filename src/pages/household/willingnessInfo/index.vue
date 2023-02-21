@@ -48,7 +48,7 @@
     <view class="sub-title">生产安置方式</view>
     <view class="row-2">
       <radio-group @change="productModeChange">
-        <label v-for="(item, index) in productModeData">
+        <label v-for="item in productModeData" :key="item.value">
           <radio :value="item.value">{{ item.name }}</radio>
         </label>
       </radio-group>
@@ -57,7 +57,7 @@
     <view class="row-3 b-b-1">
       <view class="label m-t-5">宅基地安置：</view>
       <radio-group @change="homesteadChange">
-        <label v-for="(item, index) in homesteadData">
+        <label v-for="item in homesteadData" :key="item.value">
           <radio :value="item.value">{{ item.name }}</radio>
         </label>
       </radio-group>
@@ -66,7 +66,7 @@
     <view class="row-3">
       <view class="label m-t-5">公寓房安置：</view>
       <radio-group @change="apartmentChange">
-        <label v-for="(item, index) in apartmentData">
+        <label v-for="item in apartmentData" :key="item.value">
           <radio :value="item.value">{{ item.name }}</radio>
         </label>
       </radio-group>
