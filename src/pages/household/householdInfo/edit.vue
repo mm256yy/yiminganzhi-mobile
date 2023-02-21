@@ -36,7 +36,6 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              required
               label="联系方式"
               :label-width="150"
               label-align="right"
@@ -47,7 +46,6 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              required
               label="所在位置"
               :label-width="150"
               label-align="right"
@@ -71,20 +69,21 @@
               label-align="right"
               name="formData.accountNo"
             >
-              <view class="account-no">
+              <view :class="['input-wrapper', isFocus ? 'focus' : '']">
                 <view class="pre-txt">104009234532</view>
                 <input
-                  class="account-no-input"
+                  class="input-txt"
                   type="number"
-                  v-model="formData.accountNo"
                   placeholder="请输入"
+                  v-model="formData.accountNo"
+                  @focus="inputFocus"
+                  @blur="inputBlur"
                 />
               </view>
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              required
               label="财产户"
               :label-width="150"
               label-align="right"
@@ -102,7 +101,6 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              required
               label="户籍所在地"
               :label-width="150"
               label-align="right"
@@ -113,7 +111,6 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              required
               label="淹没范围"
               :label-width="150"
               label-align="right"
@@ -127,7 +124,6 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              required
               label="高程"
               :label-width="150"
               label-align="right"
@@ -138,7 +134,6 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              required
               label="中心经纬度"
               :label-width="150"
               label-align="right"
@@ -181,28 +176,19 @@ const formData = ref<any>({})
 // 表单校验规则
 const rules = ref<any>({})
 
+// 输入框是否获得焦点
+const isFocus = ref<boolean>(false)
+
 // 所在位置选项
 const positionRange = ref<any>([
-  {
-    text: '淹没区',
-    value: 0
-  },
-  {
-    text: '非淹没区',
-    value: 1
-  }
+  { text: '淹没区', value: 0 },
+  { text: '非淹没区', value: 1 }
 ])
 
 // 财产户选项
 const rangeAccount = ref<any>([
-  {
-    text: '否',
-    value: 0
-  },
-  {
-    text: '是',
-    value: 1
-  }
+  { text: '否', value: 0 },
+  { text: '是', value: 1 }
 ])
 
 // 自然村/村民小组 选项
@@ -251,19 +237,23 @@ const villageData = ref<any>([
 
 // 中心经纬度输入选项
 const lgTagList = ref<any>([
-  {
-    text: '获取定位',
-    value: 1
-  },
-  {
-    text: '输入经纬度',
-    value: 2
-  }
+  { text: '获取定位', value: 1 },
+  { text: '输入经纬度', value: 2 }
 ])
 
 // 所在位置选择
 const changePosition = (data: any) => {
   console.log('data:', data)
+}
+
+// 输入框获得焦点
+const inputFocus = () => {
+  isFocus.value = true
+}
+
+// 输入框失去焦点
+const inputBlur = () => {
+  isFocus.value = false
 }
 
 // 财产户选择
@@ -291,7 +281,6 @@ const submit = () => {
 .form-wrapper {
   display: flex;
   flex-direction: column;
-  flex: 1;
   height: 100vh;
 
   .main {
@@ -308,36 +297,36 @@ const submit = () => {
       background-color: #fff;
       box-sizing: border-box;
 
-      .account-no {
+      .input-wrapper {
         display: flex;
         flex-direction: row;
         align-items: center;
+        width: 200rpx;
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+
+        &.focus {
+          border-color: rgb(41, 121, 255);
+        }
 
         .pre-txt {
           width: 104rpx;
-          height: 37px;
+          height: 35px;
           padding-left: 7rpx;
           font-size: 9rpx;
-          line-height: 37px;
+          line-height: 35px;
           color: #171718;
           background-color: #f5f7fa;
-          border: 1px solid #d9d9d9;
-          border-bottom-left-radius: 4px;
-          border-top-left-radius: 4px;
+          border-right: 1px solid #d9d9d9;
         }
 
-        .account-no-input {
+        .input-txt {
           width: 84rpx;
           height: 35px;
           padding-left: 11rpx;
           font-size: 9rpx;
           line-height: 35px;
           color: #171718;
-          border-top: 1px solid #d9d9d9;
-          border-right: 1px solid #d9d9d9;
-          border-bottom: 1px solid #d9d9d9;
-          border-top-right-radius: 4px;
-          border-bottom-right-radius: 4px;
         }
       }
 

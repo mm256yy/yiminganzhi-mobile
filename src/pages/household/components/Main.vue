@@ -54,6 +54,12 @@
               <!-- 坟墓信息 -->
               <grave-info v-if="tabVal === 6" />
 
+              <!-- 家庭收入信息 -->
+              <revenue-info v-if="tabVal === 7" />
+
+              <!-- 安置意愿信息 -->
+              <willingness-info v-if="tabVal === 8" />
+
               <!-- 附件上传 -->
               <attachment-upload v-if="tabVal === 9" />
             </view>
@@ -79,6 +85,8 @@ import houseInfo from '../houseInfo/index.vue' // 引入房屋信息组件
 import accessoryInfo from '../accessoryInfo/index.vue' // 引入附属物信息组件
 import treeInfo from '../treeInfo/index.vue' // 引入零星（林）果木信息组件
 import graveInfo from '../graveInfo/index.vue' // 引入坟墓信息组件
+import revenueInfo from '../revenueInfo/index.vue' // 引入安置意愿信息组件
+import willingnessInfo from '../willingnessInfo/index.vue' // 引入安置意愿信息组件
 import attachmentUpload from '../attachmentUpload/index.vue' // 引入附件上传组件
 
 const tabsList = ref([

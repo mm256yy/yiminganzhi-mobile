@@ -12,58 +12,82 @@
             />
           </view>
         </view>
-        <view class="list-2">
-          <view class="row">
-            <view class="col">
-              <view class="label">房屋用途：</view>
-              <view class="content">住宅</view>
-            </view>
-            <view class="col">
-              <view class="label">房屋高程：</view>
-              <view class="content">10（米）</view>
-            </view>
-            <view class="col">
-              <view class="label">房屋类别：</view>
-              <view class="content">生活办公用房</view>
-            </view>
-          </view>
+        <view class="list-2" @click="toEdit">
+          <uni-row>
+            <uni-col :span="8">
+              <view class="col">
+                <view class="label">房屋用途：</view>
+                <view class="content">住宅</view>
+              </view>
+            </uni-col>
+            <uni-col :span="8">
+              <view class="col">
+                <view class="label">层高：</view>
+                <view class="content">10（米）</view>
+              </view>
+            </uni-col>
+            <uni-col :span="8">
+              <view class="col">
+                <view class="label">层数：</view>
+                <view class="content">3（层）</view>
+              </view>
+            </uni-col>
+          </uni-row>
 
-          <view class="row">
-            <view class="col">
-              <view class="label w-90">层高：</view>
-              <view class="content">10（米）</view>
-            </view>
-            <view class="col">
-              <view class="label w-90">土地所有权证编号：</view>
-              <view class="content">888682323232</view>
-            </view>
-            <view class="col">
-              <view class="label w-90">建筑面积：</view>
-              <view class="content">100（m³）</view>
-            </view>
-          </view>
+          <uni-row>
+            <uni-col :span="8">
+              <view class="col">
+                <view class="label">房屋高程：</view>
+                <view class="content">10（米）</view>
+              </view>
+            </uni-col>
+            <uni-col :span="8">
+              <view class="col">
+                <view class="label">建筑面积：</view>
+                <view class="content">100（m³）</view>
+              </view>
+            </uni-col>
+            <uni-col :span="8">
+              <view class="col">
+                <view class="label">竣工日期：</view>
+                <view class="content">2000年8月</view>
+              </view>
+            </uni-col>
+          </uni-row>
 
-          <view class="row">
-            <view class="col">
-              <view class="label w-90">层数：</view>
-              <view class="content">3（层）</view>
-            </view>
-            <view class="col">
-              <view class="label w-90">房屋所有权证编号：</view>
-              <view class="content">224234255555</view>
-            </view>
-            <view class="col">
-              <view class="label w-90">竣工日期</view>
-              <view class="content">200年8月</view>
-            </view>
-          </view>
+          <uni-row>
+            <uni-col :span="8">
+              <view class="col">
+                <view class="label">房屋类别：</view>
+                <view class="content">生活办公用房</view>
+              </view>
+            </uni-col>
+            <uni-col :span="8">
+              <view class="col">
+                <view class="label">房屋产别：</view>
+                <view class="content">集体所有房产</view>
+              </view>
+            </uni-col>
+            <uni-col :span="8">
+              <view class="col">
+                <view class="label"></view>
+                <view class="content"></view>
+              </view>
+            </uni-col>
+          </uni-row>
         </view>
       </view>
     </view>
   </view>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { routerForward } from '@/utils'
+
+const toEdit = () => {
+  routerForward('houseInfoEdit')
+}
+</script>
 
 <style lang="scss" scoped>
 .house-info-wrapper {
@@ -104,40 +128,26 @@
       }
 
       .list-2 {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
         padding: 4rpx 6rpx 6rpx 0;
         box-sizing: border-box;
 
-        .row {
+        .col {
           display: flex;
-          flex-direction: column;
+          flex-direction: row;
 
-          .col {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
+          .label {
+            width: 56rpx;
+            height: 16rpx;
+            margin-left: 9rpx;
+            font-size: 9rpx;
+            line-height: 16rpx;
+            color: #171718;
+          }
 
-            .label {
-              width: 56rpx;
-              height: 16rpx;
-              margin-left: 9rpx;
-              font-size: 9rpx;
-              line-height: 16rpx;
-              color: #171718;
-
-              &.w-90 {
-                width: 90rpx;
-              }
-            }
-
-            .content {
-              height: 16rpx;
-              font-size: 9rpx;
-              line-height: 16rpx;
-              color: #171718;
-            }
+          .content {
+            font-size: 9rpx;
+            line-height: 16rpx;
+            color: #171718;
           }
         }
       }

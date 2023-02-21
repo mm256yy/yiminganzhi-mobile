@@ -1,272 +1,137 @@
 <template>
   <view class="grave-info-wrapper">
-    <view class="grave-container">
-      <view class="row">
-        <view class="col">序号</view>
-        <view class="col w-64">穴位</view>
-        <view class="col w-82">数量（座）</view>
-        <view class="col w-64">材料</view>
-        <view class="col w-110">立墓年份</view>
-        <view class="col w-64">所处位置</view>
-        <view class="col w-91">备注</view>
-      </view>
+    <view class="list">
+      <view class="list-item">
+        <view class="list-1">
+          <view class="icon">登记人</view>
+          <view class="name">杨汉中</view>
+        </view>
+        <view class="list-2">
+          <uni-row>
+            <uni-col :span="8">
+              <view class="col">
+                <view class="label">与登记人关系：</view>
+                <view class="content">父子</view>
+              </view>
+            </uni-col>
+            <uni-col :span="8">
+              <view class="col">
+                <view class="label">立墓年份：</view>
+                <view class="content">1999年11月</view>
+              </view>
+            </uni-col>
+            <uni-col :span="8">
+              <view class="col">
+                <view class="label">穴位：</view>
+                <view class="content">单穴</view>
+              </view>
+            </uni-col>
+          </uni-row>
 
-      <view class="row">
-        <view class="col">1</view>
-        <view class="col w-64 p-l-2">
-          <uni-data-select
-            v-model="formData.acupoint"
-            :localdata="acupointData"
-            @change="changeAcupoint"
-          />
-        </view>
-        <view class="col w-82 p-l-2">
-          <view class="input-wrapper">
-            <label class="reduce">—</label>
-            <input class="num" />
-            <label class="plus">+</label>
-          </view>
-        </view>
-        <view class="col w-64 p-l-2">
-          <uni-data-select
-            v-model="formData.material"
-            :localdata="materialData"
-            @change="changeMaterial"
-          />
-        </view>
-        <view class="col w-110 p-l-2">
-          <uni-datetime-picker
-            type="date"
-            placeholder="选择年份"
-            v-model="formData.year"
-            @change="changeDate"
-          />
-        </view>
-        <view class="col w-64 p-l-2">
-          <uni-data-select
-            v-model="formData.location"
-            :localdata="locationData"
-            @change="changeLocation"
-          />
-        </view>
-        <view class="col w-91">
-          <input class="remark" placeholder="请输入内容" />
+          <uni-row>
+            <uni-col :span="8">
+              <view class="col">
+                <view class="label">数量：</view>
+                <view class="content">1（坐）</view>
+              </view>
+            </uni-col>
+            <uni-col :span="8">
+              <view class="col">
+                <view class="label">材料：</view>
+                <view class="content">泥土</view>
+              </view>
+            </uni-col>
+            <uni-col :span="8">
+              <view class="col">
+                <view class="label">所在位置：</view>
+                <view class="content">线内</view>
+              </view>
+            </uni-col>
+          </uni-row>
+
+          <uni-row>
+            <uni-col :span="24">
+              <view class="col">
+                <view class="label">备注：</view>
+                <view class="content"
+                  >撒法的发发是撒法的发发是撒法的发发是撒法的发发是撒法的发发是</view
+                >
+              </view>
+            </uni-col>
+          </uni-row>
         </view>
       </view>
     </view>
-    <image class="btn" src="@/static/images/icon_add.png" mode="scaleToFill" />
-    <image v-show="isEdit" class="btn" src="@/static/images/icon_submit.png" mode="scaleToFill" />
   </view>
 </template>
 
-<script lang="ts" setup>
-import { ref } from 'vue'
-
-const formData = ref<any>({})
-const isEdit = ref<boolean>(false)
-
-// 穴位数据列表
-const acupointData = ref<any>([
-  { text: '单穴', value: 1 },
-  { text: '双穴', value: 2 },
-  { text: '多穴', value: 3 }
-])
-
-// 用途数据列表
-const materialData = ref<any>([
-  { text: '泥', value: 1 },
-  { text: '石', value: 2 },
-  { text: '混凝土', value: 3 },
-  { text: '花岗岩', value: 4 },
-  { text: '其他', value: 5 }
-])
-
-// 所处位置数据列表
-const locationData = ref<any>([
-  { text: '线内', value: 1 },
-  { text: '线外', value: 2 },
-  { text: '其他', value: 3 }
-])
-
-// 穴位选择
-const changeAcupoint = (data: any) => {
-  console.log('data:', data)
-}
-
-// 材料选择
-const changeMaterial = (data: any) => {
-  console.log('data:', data)
-}
-
-// 立墓年份选择
-const changeDate = (e: any) => {
-  console.log('e:', e)
-}
-
-// 所处位置选择
-const changeLocation = (data: any) => {
-  console.log('data:', data)
-}
-</script>
+<script lang="ts" setup></script>
 
 <style lang="scss" scoped>
 .grave-info-wrapper {
-  display: flex;
-  flex-direction: column;
+  width: 100%;
 
-  .grave-container {
-    display: table;
-    border-collapse: collapse;
+  .list {
+    width: 100%;
 
-    .row {
-      display: table-row;
-      width: 100%;
-      height: 28rpx;
+    .list-item {
+      margin-bottom: 7rpx;
+      box-shadow: 0 1rpx 9rpx -2rpx rgba(0, 0, 0, 0.18);
 
-      &:nth-child(2n - 1) {
-        background-color: #f8f8f8;
-      }
-
-      &:first-child {
-        font-size: 9rpx;
-        color: #737374;
-
-        .col {
-          padding: 0;
-          text-align: center;
-        }
-      }
-
-      .col {
-        display: table-cell;
-        width: 35rpx;
+      .list-1 {
+        display: flex;
+        align-items: center;
+        width: 100%;
         height: 28rpx;
-        padding-left: 9rpx;
-        font-size: 9rpx;
-        line-height: 28rpx;
-        color: #171718;
-        vertical-align: middle;
-        border: 1rpx solid #f0f0f0;
+        border-bottom: 1rpx dotted #d0cbcb;
 
-        &.w-64 {
-          width: 64rpx;
-        }
-
-        &.w-82 {
-          width: 82rpx;
-        }
-
-        &.w-91 {
-          width: 91rpx;
-        }
-
-        &.w-94 {
-          width: 94rpx;
-        }
-
-        &.w-110 {
-          width: 100rpx;
-        }
-
-        &.p-l-2 {
-          padding-left: 2rpx;
-        }
-
-        .input-wrapper {
+        .icon {
           display: flex;
+          width: 42rpx;
+          height: 16rpx;
+          font-size: 9rpx;
+          color: #fff;
+          background: #3db6f2;
+          border-top-right-radius: 5rpx;
+          border-bottom-right-radius: 5rpx;
           align-items: center;
           justify-content: center;
-          width: 73rpx;
-          margin-left: 3rpx;
-          border: 1rpx solid #ebebeb;
-          border-radius: 2rpx;
+        }
 
-          .reduce {
-            display: flex;
-            width: 21rpx;
-            height: 21rpx;
-            background: #f8f8f8;
-            border-right: 1rpx solid #ebebeb;
-            border-radius: 2rpx 0 0 2rpx;
-            align-items: center;
-            justify-content: center;
-          }
+        .name {
+          margin-left: 5rpx;
+          font-size: 9rpx;
+          color: #171718;
+        }
+      }
 
-          .num {
-            width: 30rpx;
-            height: 21rpx;
+      .list-2 {
+        padding: 4rpx 6rpx 6rpx 0;
+        box-sizing: border-box;
+
+        .col {
+          display: flex;
+          flex-direction: row;
+
+          .label {
+            width: 65rpx;
+            height: 16rpx;
+            margin-left: 9rpx;
             font-size: 9rpx;
-            line-height: 21rpx;
-            text-align: center;
+            line-height: 16rpx;
+            color: #171718;
           }
 
-          .plus {
-            display: flex;
-            width: 21rpx;
-            height: 21rpx;
-            background: #f8f8f8;
-            border-left: 1rpx solid #ebebeb;
-            border-radius: 2rpx 0 0 2rpx;
-            align-items: center;
-            justify-content: center;
-          }
-        }
-
-        .remark {
-          height: 19rpx;
-          font-size: 9rpx;
-        }
-
-        ::v-deep.uni-select {
-          height: 23rpx;
-        }
-
-        ::v-deep.uni-stat__select {
-          flex: 0 auto !important;
-          width: 60rpx !important;
-        }
-
-        ::v-deep.uni-select__input-placeholder {
-          font-size: 9rpx;
-        }
-
-        ::v-deep.uni-select__selector-item {
-          font-size: 9rpx;
-        }
-
-        ::v-deep.uniui-clear {
-          font-size: 18rpx !important;
-        }
-
-        ::v-deep.uniui-calendar {
-          font-size: 12rpx !important;
-        }
-
-        ::v-deep.uni-date-x,
-        ::v-deep.uni-date-editor--x {
-          width: 106rpx !important;
-          height: 23rpx !important;
-        }
-
-        ::v-deep.uni-date-single {
-          height: 21rpx !important;
-
-          .uni-input-input,
-          .uni-input-placeholder {
-            font-size: 9rpx !important;
+          .content {
+            font-size: 9rpx;
+            line-height: 16rpx;
+            color: #171718;
+            text-align: justify;
+            word-break: break-all;
           }
         }
       }
     }
-  }
-
-  .btn {
-    position: fixed;
-    right: 6rpx;
-    bottom: 6rpx;
-    width: 80rpx;
-    height: 80rpx;
-    border-radius: 40rpx;
   }
 }
 </style>

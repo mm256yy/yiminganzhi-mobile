@@ -15,58 +15,76 @@
             />
           </view>
         </view>
-        <view class="list-2">
-          <view class="row">
-            <view class="col">
-              <view class="label">性别：</view>
-              <view class="content">男</view>
-            </view>
-            <view class="col">
-              <view class="label">身份证号：</view>
-              <view class="content">33252196701305515</view>
-            </view>
-            <view class="col">
-              <view class="label">职业：</view>
-              <view class="content">种植生产人员</view>
-            </view>
-          </view>
+        <view class="list-2" @click="toLink">
+          <uni-row>
+            <uni-col :span="8">
+              <view class="col">
+                <view class="label">性别：</view>
+                <view class="content">男</view>
+              </view>
+            </uni-col>
+            <uni-col :span="8">
+              <view class="col">
+                <view class="label">民族：</view>
+                <view class="content">汉</view>
+              </view>
+            </uni-col>
+            <uni-col :span="8">
+              <view class="col">
+                <view class="label">出生年月：</view>
+                <view class="content">1999年1月</view>
+              </view>
+            </uni-col>
+          </uni-row>
 
-          <view class="row">
-            <view class="col">
-              <view class="label">民族：</view>
-              <view class="content">汉</view>
-            </view>
-            <view class="col">
-              <view class="label">婚姻状况：</view>
-              <view class="content">已婚</view>
-            </view>
-            <view class="col">
-              <view class="label">户籍所在地：</view>
-              <view class="content">浙江省新昌县镜岭镇下潘村438号2-37</view>
-            </view>
-          </view>
+          <uni-row>
+            <uni-col :span="8">
+              <view class="col">
+                <view class="label">身份证：</view>
+                <view class="content">33252196701305515</view>
+              </view>
+            </uni-col>
+            <uni-col :span="8">
+              <view class="col">
+                <view class="label">婚姻状况：</view>
+                <view class="content">已婚</view>
+              </view>
+            </uni-col>
+            <uni-col :span="8">
+              <view class="col">
+                <view class="label">人口类型：</view>
+                <view class="content">册内人口</view>
+              </view>
+            </uni-col>
+          </uni-row>
 
-          <view class="row">
-            <view class="col">
-              <view class="label">出生年月：</view>
-              <view class="content">1999年1月</view>
-            </view>
-            <view class="col">
-              <view class="label">人口类型：</view>
-              <view class="content">册内人口</view>
-            </view>
-            <view class="col">
-              <view class="label"></view>
-              <view class="content"></view>
-            </view>
-          </view>
+          <uni-row>
+            <uni-col :span="8">
+              <view class="col">
+                <view class="label">职业：</view>
+                <view class="content">种植生产人员</view>
+              </view>
+            </uni-col>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">户籍所在地：</view>
+                <view class="content">浙江省新昌县镜岭镇下潘村438号2-37</view>
+              </view>
+            </uni-col>
+          </uni-row>
         </view>
       </view>
     </view>
   </view>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { routerForward } from '@/utils'
+
+const toLink = () => {
+  routerForward('demographicInfoEdit')
+}
+</script>
 
 <style lang="scss" scoped>
 .demographic-wrapper {
@@ -122,36 +140,26 @@
       }
 
       .list-2 {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
         padding: 4rpx 6rpx 6rpx 0;
         box-sizing: border-box;
 
-        .row {
+        .col {
           display: flex;
-          flex-direction: column;
+          flex-direction: row;
 
-          .col {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
+          .label {
+            width: 56rpx;
+            height: 16rpx;
+            margin-left: 9rpx;
+            font-size: 9rpx;
+            line-height: 16rpx;
+            color: #171718;
+          }
 
-            .label {
-              width: 56rpx;
-              height: 16rpx;
-              margin-left: 9rpx;
-              font-size: 9rpx;
-              line-height: 16rpx;
-              color: #171718;
-            }
-
-            .content {
-              height: 16rpx;
-              font-size: 9rpx;
-              line-height: 16rpx;
-              color: #171718;
-            }
+          .content {
+            font-size: 9rpx;
+            line-height: 16rpx;
+            color: #171718;
           }
         }
       }

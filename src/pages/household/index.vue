@@ -6,14 +6,14 @@
       <view class="home-header">
         <view class="header-lt">
           <image class="logo" src="@/static/images/logo.png" />
-          <text class="project">清晰水库</text>
-          <text class="status">（实物采集 — 居民户）</text>
+          <view class="project">清晰水库</view>
+          <view class="status">（实物采集 — 居民户）</view>
         </view>
 
         <view class="header-rt">
           <view class="btn-item">
             <image class="icon" src="@/static/images/admin.png" mode="scaleToFill" />
-            <text class="name">admin</text>
+            <view class="name">admin</view>
           </view>
         </view>
       </view>
@@ -60,41 +60,39 @@ const pageHeight = screenHeight - statusBarHeight
 
     .home-header {
       display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      height: 33rpx;
+      height: 43rpx;
       padding: 0 9rpx;
       overflow: hidden;
+      box-sizing: border-box;
+      align-items: center;
+      justify-content: space-between;
 
       .header-lt {
         display: flex;
-        flex-direction: row;
         align-items: center;
         height: 33rpx;
 
         .logo {
-          width: 22rpx;
-          height: 22rpx;
+          width: 17rpx;
+          height: 17rpx;
           margin-right: 6rpx;
         }
 
         .project {
           font-size: 14rpx;
           font-weight: 600;
-          color: #ffffff;
+          color: #fff;
         }
 
         .status {
           font-size: 11rpx;
           font-weight: normal;
-          color: #ffffff;
+          color: #fff;
         }
       }
 
       .header-rt {
         display: flex;
-        flex-direction: row;
         align-items: center;
         height: 33rpx;
 
@@ -104,7 +102,7 @@ const pageHeight = screenHeight - statusBarHeight
           padding: 0 11rpx;
           font-size: 11rpx;
           font-weight: 500;
-          color: #ffffff;
+          color: #fff;
           flex-direction: row;
           align-items: center;
           justify-content: center;
