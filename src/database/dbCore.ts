@@ -1,14 +1,7 @@
 import { sqliteOptions } from '@/config'
 
-export class DB {
+class DB {
   constructor() {
-    this.init()
-  }
-
-  init(): any {
-    if (this.isOpen()) {
-      return
-    }
     this.openDB()
   }
 
@@ -17,15 +10,20 @@ export class DB {
    */
   openDB(): Promise<any> {
     return new Promise((resolve, reject) => {
+      if (this.isOpen()) {
+        resolve(true)
+        return
+      }
+      console.log('open DB')
       plus.sqlite.openDatabase({
         ...sqliteOptions,
         success: function (e) {
           console.log('openDatabase success!', e)
-          resolve(e)
+          resolve(true)
         },
         fail: function (e) {
           console.log('openDatabase failed: ' + JSON.stringify(e))
-          reject(e)
+          reject(false)
         }
       })
     })
@@ -403,4 +401,4 @@ export class DB {
   }
 }
 
-export const db = new DB()
+export const db: DB = new DB()

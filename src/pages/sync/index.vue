@@ -7,7 +7,7 @@
         <uni-icons type="back" color="#ffffff" size="14rpx" />
       </view>
 
-      <text class="tit">项目切换</text>
+      <text class="tit">数据同步</text>
       <text />
     </view>
 
@@ -214,17 +214,21 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { getListApi, getPullTimeApi } from './service'
-import { pullInstance } from '@/sync/index'
+import { pullInstance, pushInstance } from '@/sync/index'
 import { routerBack } from '@/utils'
 import { CollectType, MainType } from '@/types/common'
+import { hideLoading, showLoading } from '@/config'
 
 const peopleList = ref<CollectType[]>([])
 const individualHouseholdList = ref<CollectType[]>([])
 const companyList = ref<CollectType[]>([])
 const villageList = ref<CollectType[]>([])
 const pullTime = ref<string>('')
+const intervalId = ref(0)
+const count = ref(0)
+const maxCount = ref(30)
 
 const sysInfo = uni.getSystemInfoSync()
 const statusBarHeight = sysInfo.statusBarHeight || 0
@@ -234,9 +238,52 @@ const onBack = () => {
 }
 
 const onSync = () => {
-  // pushInstance.push()
   console.log('同步数据')
-  pullInstance.pull()
+  showLoading({
+    title: '正在同步中...',
+    mask: true
+  })
+  pushInstance
+    .push()
+    .then((res) => {
+      if (res) {
+        // 推送成功
+        console.log('推送成功，开始拉取')
+        pullInstance.pullAll()
+        intervalId.value = setInterval(() => {
+          console.log('轮询拉取状态')
+          if (count.value === maxCount.value) {
+            hideLoading()
+            uni.showToast({
+              title: '同步失败',
+              icon: 'error'
+            })
+            clearInterval(intervalId.value)
+            return
+          }
+          count.value++
+          if (pullInstance.getPullStatus()) {
+            hideLoading()
+            uni.showToast({
+              title: '同步成功',
+              icon: 'success'
+            })
+            clearInterval(intervalId.value)
+            pageInit()
+          }
+        }, 1000)
+      } else {
+        hideLoading()
+        uni.showToast({
+          title: '获取推送数据失败，请重试',
+          mask: true
+        })
+      }
+    })
+    .catch((errData) => {
+      hideLoading()
+      console.log(errData, '推送服务端失败信息')
+    })
 }
 
 const getPullTime = async () => {
@@ -254,9 +301,17 @@ const getData = async () => {
   }
 }
 
-onMounted(() => {
+const pageInit = () => {
   getData()
   getPullTime()
+}
+
+onMounted(() => {
+  pageInit()
+})
+
+onBeforeUnmount(() => {
+  clearInterval(intervalId.value)
 })
 </script>
 

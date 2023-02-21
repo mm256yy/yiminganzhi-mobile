@@ -200,24 +200,45 @@ class PushData {
     })
   }
 
+  public isArrayAndNotNull(list: any): boolean {
+    if (list && Array.isArray(list) && list.length) {
+      return true
+    }
+    return false
+  }
+
   // 推送数据
-  public async push() {
+  public async push(): Promise<any> {
     return new Promise((resolve, reject) => {
       // 一起执行
       Promise.all([this.getModifyLandlordList, this.getModifyVillageList, this.getPullTime])
         .then(() => {
           // 拿到结果了
-          const data = this.state
-          pushDataApi(data)
-            .then((res) => {
-              resolve(true)
+          const { peasantHouseholdPushDtoList, deleteRecordList, pullTime, villageList } =
+            this.state
+          if (
+            this.isArrayAndNotNull(peasantHouseholdPushDtoList) &&
+            this.isArrayAndNotNull(villageList) &&
+            this.isArrayAndNotNull(deleteRecordList)
+          ) {
+            pushDataApi({
+              peasantHouseholdPushDtoList,
+              deleteRecordList,
+              pullTime,
+              villageList
             })
-            .catch(() => {
-              reject(false)
-            })
+              .then(() => {
+                resolve(true)
+              })
+              .catch((err) => {
+                reject(err)
+              })
+          } else {
+            resolve(true)
+          }
         })
         .catch(() => {
-          reject(false)
+          resolve(false)
         })
     })
   }

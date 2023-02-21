@@ -1,5 +1,5 @@
 /**
- * 提供居民户相关的增删改查功能
+ * 提供业主相关的增删改查功能
  */
 
 import { LandlordTableName, LandlordDDLType } from '@/database'
@@ -12,7 +12,7 @@ export class Landlord extends Common {
     super()
   }
 
-  // 获取居民户列表
+  // 获取业主列表
   getList(): Promise<LandlordType[]> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -32,7 +32,7 @@ export class Landlord extends Common {
     })
   }
 
-  // 获取居民户列表
+  // 获取业主列表
   getListWithPage(page: number, pageSize = 20): Promise<LandlordType[]> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -122,7 +122,7 @@ export class Landlord extends Common {
     })
   }
 
-  // 居民户立标 新增
+  // 业主立标 新增
   addLandlord(data: LandlordType): Promise<boolean> {
     // uid: string
     // content: string
@@ -157,7 +157,7 @@ export class Landlord extends Common {
     })
   }
 
-  // 居民户列表修改
+  // 业主列表修改
   updateLandlord(data: LandlordType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -180,7 +180,7 @@ export class Landlord extends Common {
     })
   }
 
-  // 居民户列表删除
+  // 业主列表删除
   deleteLandlord(uid: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -200,7 +200,7 @@ export class Landlord extends Common {
     })
   }
 
-  // 居民户列表-uid查询单个数据
+  // 业主列表-uid查询单个数据
   getLandlordByUid(uid: string): Promise<LandlordType | null> {
     return new Promise(async (resolve, reject) => {
       try {

@@ -15,7 +15,7 @@ class Other extends Common {
         const sql = `select * from ${OtherTableName} where type = '${type}'`
         const result: OtherDDLType = await this.db.selectSql(sql)
         if (result) {
-          resolve(JSON.parse(result.content))
+          resolve(type === OtherDataType.PullTime ? result.content : JSON.parse(result.content))
         }
         reject(null)
       } catch (error) {

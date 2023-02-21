@@ -1,7 +1,7 @@
-import { db, DB } from '@/database'
+import { db } from '@/database'
 
 export class Common {
-  public db: DB
+  public db: any
   constructor() {
     const isOpen = db.isOpen()
     if (!isOpen) {

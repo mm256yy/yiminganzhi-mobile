@@ -36,17 +36,7 @@ class PullData {
   constructor() {
     this.count = 0
     this.needPullCount = 11
-    // 数据库是否打开
-    const isOpen = db.isOpen()
-    if (isOpen) {
-      this.db = db
-      this.createTable()
-    } else {
-      db.openDB().then(() => {
-        this.db = db
-        this.createTable()
-      })
-    }
+
     this.state = {
       pullTime: '',
       peasantHouseholdPushDtoList: [],
@@ -64,6 +54,20 @@ class PullData {
     }
   }
 
+  public init() {
+    // 数据库是否打开
+    const isOpen = db.isOpen()
+    if (isOpen) {
+      this.db = db
+      this.createTable()
+    } else {
+      db.openDB().then(() => {
+        this.db = db
+        this.createTable()
+      })
+    }
+  }
+
   public pull() {
     // 获取农户数据
     this.getBaseData()
@@ -78,6 +82,10 @@ class PullData {
     this.pull()
   }
 
+  public getPullStatus(): boolean {
+    return this.count === this.needPullCount
+  }
+
   public pullProjectData() {
     return new Promise(async (resolve) => {
       const result = await getProjectDataApi()
@@ -86,12 +94,15 @@ class PullData {
         resolve(false)
       }
       this.state.project = result
-      const res = await this.pullProject().catch(() => {
-        this.count++
-        resolve(false)
-      })
-      console.log('拉取项目数据', res)
-      resolve(res)
+      const pullRes = await this.pullProject()
+        .then((res) => {
+          res && this.count++
+        })
+        .catch(() => {
+          resolve(false)
+        })
+      console.log('拉取项目数据', pullRes)
+      resolve(pullRes)
     })
   }
 
@@ -116,27 +127,27 @@ class PullData {
 
     this.state.immigrantAppendantConfigList = immigrantAppendantOptionList
     this.pullDict().then((res: boolean) => {
-      this.count++
+      res && this.count++
       console.log('拉取字典', res)
     })
     this.pullFamilyIncome().then((res) => {
-      this.count++
+      res && this.count++
       console.log('拉取家庭收入', res)
     })
     this.pullResettlement().then((res) => {
-      this.count++
+      res && this.count++
       console.log('拉取安置意愿', res)
     })
     this.pullDistrict().then((res) => {
-      this.count++
+      res && this.count++
       console.log('拉取区划', res)
     })
     this.pullAppendant().then((res) => {
-      this.count++
+      res && this.count++
       console.log('拉取附属物', res)
     })
     this.pullOther().then((res) => {
-      this.count++
+      res && this.count++
       console.log('拉取其他', res)
     })
   }
@@ -153,15 +164,15 @@ class PullData {
 
     // 数据 新增 修改 删除一起进行
     this.pullLandlord().then((res) => {
-      this.count++
+      res && this.count++
       console.log('拉取业主', res)
     })
     this.pullVillageList().then((res) => {
-      this.count++
+      res && this.count++
       console.log('拉取自然村', res)
     })
     this.deleteDb().then((res) => {
-      this.count++
+      res && this.count++
       console.log('删除数据', res)
     })
   }
@@ -172,7 +183,7 @@ class PullData {
     if (!result) return
     this.state.collectList = result
     this.pullCollect().then((res) => {
-      this.count++
+      res && this.count++
       console.log('统计数据', res)
     })
   }
@@ -483,7 +494,6 @@ class PullData {
         })
         resolve(true)
       } else {
-        console.log('走了 ---')
         resolve(false)
       }
     })

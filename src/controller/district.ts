@@ -1,5 +1,5 @@
 /**
- * 安置意愿 相关的增删改查功能
+ * 区划 相关的增删改查功能
  */
 
 import { DistrictTableName, DistrictDDLType } from '@/database'

@@ -1,8 +1,14 @@
 <script setup lang="ts">
 import { onLaunch, onShow, onHide } from '@dcloudio/uni-app'
 import { setStorage, StorageKey, getStorage, routerForward } from './utils'
+import { pullInstance } from './sync'
 
 onLaunch(() => {
+  /* #ifdef APP-PLUS */
+  // 创建数据库
+  pullInstance.init()
+  /* #endif */
+
   // #ifdef APP
   // 隐藏设备顶部 WiFi、电池、日期状态栏
   plus.navigator.setFullscreen(true)

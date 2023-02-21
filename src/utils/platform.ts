@@ -1,5 +1,5 @@
 /**枚举EPlatform*/
-enum EPlatform {
+export enum EPlatform {
   /**App*/
   AppPlus = 'APP-PLUS',
   /**App nvue*/
