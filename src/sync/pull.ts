@@ -22,13 +22,7 @@ import {
   AppendantTableName,
   OtherDataType
 } from '@/database/index'
-import {
-  getProjectDataApi,
-  getBaseDataApi,
-  getConfigDataApi,
-  getCollectApi,
-  getMainTreeApi
-} from './api'
+import { getProjectDataApi, getBaseDataApi, getConfigDataApi, getCollectApi } from './api'
 import { StateType } from '@/types/sync'
 import { getCurrentTimeStamp } from '@/utils'
 import dayjs from 'dayjs'
@@ -36,13 +30,16 @@ import dayjs from 'dayjs'
 class PullData {
   public state: StateType
   public db: any
+  public count: number
+  public needPullCount: number
 
   constructor() {
+    this.count = 0
+    this.needPullCount = 11
     // 数据库是否打开
     const isOpen = db.isOpen()
     if (isOpen) {
       this.db = db
-
       this.createTable()
     } else {
       db.openDB().then(() => {
@@ -63,39 +60,49 @@ class PullData {
       districtTree: [],
       districtList: [],
       villageList: [],
-      collectList: [],
-      mainTree: []
+      collectList: []
     }
   }
 
-  public async init() {
-    console.log('开始拉取数据')
-    // 拉取项目信息
-    this.getProjectData()
-    // 拉取配置数据
-    this.getConfigData()
+  public pull() {
     // 获取农户数据
     this.getBaseData()
+    // 拉取配置数据
+    this.getConfigData()
     // 统计数据
     this.getCollect()
-    // 主树信息
-    this.getMainTree()
   }
 
-  public async getProjectData() {
-    const result = await getProjectDataApi()
-    if (!result) return
-    this.state.project = result
-    this.pullProject()
+  public async pullAll() {
+    await this.pullProjectData()
+    this.pull()
+  }
+
+  public pullProjectData() {
+    return new Promise(async (resolve) => {
+      const result = await getProjectDataApi()
+      console.log('接口项目数据', result)
+      if (!result) {
+        resolve(false)
+      }
+      this.state.project = result
+      const res = await this.pullProject().catch(() => {
+        this.count++
+        resolve(false)
+      })
+      console.log('拉取项目数据', res)
+      resolve(res)
+    })
   }
 
   public async getConfigData() {
     const result = await getConfigDataApi()
+    console.log('接口配置数据', result)
     if (!result) return
     const {
       immigrantIncomeConfigList,
       immigrantWillConfigList,
-      immigrantAppendantConfigList,
+      immigrantAppendantOptionList,
       dictValList,
       districtTree,
       districtList
@@ -106,16 +113,37 @@ class PullData {
     this.state.dictValList = dictValList
     this.state.districtTree = districtTree
     this.state.districtList = districtList
-    this.state.immigrantAppendantConfigList = immigrantAppendantConfigList
-    this.pullDict()
-    this.pullFamilyIncome()
-    this.pullResettlement()
-    this.pullDistrict()
-    this.pullAppendant()
+
+    this.state.immigrantAppendantConfigList = immigrantAppendantOptionList
+    this.pullDict().then((res: boolean) => {
+      this.count++
+      console.log('拉取字典', res)
+    })
+    this.pullFamilyIncome().then((res) => {
+      this.count++
+      console.log('拉取家庭收入', res)
+    })
+    this.pullResettlement().then((res) => {
+      this.count++
+      console.log('拉取安置意愿', res)
+    })
+    this.pullDistrict().then((res) => {
+      this.count++
+      console.log('拉取区划', res)
+    })
+    this.pullAppendant().then((res) => {
+      this.count++
+      console.log('拉取附属物', res)
+    })
+    this.pullOther().then((res) => {
+      this.count++
+      console.log('拉取其他', res)
+    })
   }
 
   public async getBaseData() {
     const result = await getBaseDataApi()
+    console.log('接口基础数据', result)
     if (!result) return
     const { peasantHouseholdPushDtoList, pullTime, deleteRecordList, villageList } = result
     this.state.peasantHouseholdPushDtoList = peasantHouseholdPushDtoList
@@ -124,23 +152,29 @@ class PullData {
     this.state.villageList = villageList
 
     // 数据 新增 修改 删除一起进行
-    this.pullLandlord()
-    this.pullVillageList()
-    this.deleteDb()
+    this.pullLandlord().then((res) => {
+      this.count++
+      console.log('拉取业主', res)
+    })
+    this.pullVillageList().then((res) => {
+      this.count++
+      console.log('拉取自然村', res)
+    })
+    this.deleteDb().then((res) => {
+      this.count++
+      console.log('删除数据', res)
+    })
   }
 
   public async getCollect() {
     const result = await getCollectApi()
+    console.log('接口统计数据', result)
     if (!result) return
     this.state.collectList = result
-    this.pullCollect()
-  }
-
-  public async getMainTree() {
-    const result = await getMainTreeApi()
-    if (!result) return
-    this.state.mainTree = result
-    this.pullOther()
+    this.pullCollect().then((res) => {
+      this.count++
+      console.log('统计数据', res)
+    })
   }
 
   public createTable() {
@@ -171,195 +205,319 @@ class PullData {
       const res = await db.selectSql(sql)
       console.log(res, 'res')
       if (res && Array.isArray(res)) {
-        const tables = res.filter((item) => item.tbl_name !== 'android_metadata')
+        const tables = res.filter(
+          (item) => item.tbl_name !== 'android_metadata' && item.tbl_name !== 'sqlite_sequence'
+        )
         resolve(tables)
       }
       reject([])
     })
   }
 
-  /** 项目 */
-  private async pullProject() {
-    // 'projectId'
-    // 'content'
-    // 'updatedDate'
-    const { project: list } = this.state
-    if (list && list.length) {
-      await db.deleteTableData(ProjectTableName)
-      list.forEach((item) => {
-        const fields = "'content','updatedDate'"
-        const values = `'${JSON.stringify(item)}','${getCurrentTimeStamp()}'`
-        db.insertTableData(ProjectTableName, values, fields)
-      })
+  public IsArrayAndNotNull(list: any): boolean {
+    if (list && Array.isArray(list) && list.length) {
+      return true
     }
+    return false
+  }
+
+  /** 项目 */
+  private pullProject(): Promise<boolean> {
+    return new Promise(async (resolve) => {
+      const { project: list } = this.state
+      if (this.IsArrayAndNotNull(list)) {
+        await db.deleteTableData(ProjectTableName).catch(() => {
+          resolve(false)
+        })
+        await db.transaction('begin').catch(() => {
+          resolve(false)
+        })
+        list.forEach((item) => {
+          const fields = "'content','updatedDate'"
+          const values = `'${JSON.stringify(item)}','${getCurrentTimeStamp()}'`
+          db.insertTableData(ProjectTableName, values, fields)
+        })
+        await db.transaction('commit').catch(() => {
+          resolve(false)
+        })
+        resolve(true)
+      } else {
+        resolve(false)
+      }
+    })
   }
 
   /** 居民户 */
-  private pullLandlord() {
-    // uid: string
-    // content: string
-    // name: string
-    // reportDate: string
-    // reportUser: string
-    // status: 'modify' | 'default'
-    // isDelete: '0' | '1'
-    // updatedDate: string
-    const { peasantHouseholdPushDtoList: list } = this.state
-    if (list && Array.isArray(list)) {
-      list.forEach((item) => {
-        const fields =
-          "'uid','name','reportDate','reportUser','status','content','updatedDate','isDelete'"
-        const values = `'${item.uid}','${item.name}','${
-          item.reportDate ? dayjs(item.reportDate).format('YYYY-MM-DD HH:mm:ss') : ''
-        }','${item.reportUser}','default','${JSON.stringify(item)}','${getCurrentTimeStamp()}','0'`
-        db.insertOrReplaceData(LandlordTableName, values, fields)
+  private pullLandlord(): Promise<boolean> {
+    return new Promise(async (resolve) => {
+      const { peasantHouseholdPushDtoList: list } = this.state
+      // 开启事务
+      await db.transaction('begin').catch(() => {
+        resolve(false)
       })
-    }
+      if (this.IsArrayAndNotNull(list)) {
+        list.forEach((item) => {
+          const fields =
+            "'uid','name','reportDate','reportUser','status','content','updatedDate','isDelete'"
+          const values = `'${item.uid}','${item.name}','${
+            item.reportDate ? dayjs(item.reportDate).format('YYYY-MM-DD HH:mm:ss') : ''
+          }','${item.reportUser}','default','${JSON.stringify(
+            item
+          )}','${getCurrentTimeStamp()}','0'`
+          db.insertOrReplaceData(LandlordTableName, values, fields)
+        })
+        await db.transaction('commit').catch(() => {
+          resolve(false)
+        })
+        resolve(true)
+      } else {
+        resolve(false)
+      }
+    })
   }
 
   /** 删除本地库中数据 */
-  private deleteDb() {
-    const { deleteRecordList } = this.state
-    if (deleteRecordList && Array.isArray(deleteRecordList)) {
-      deleteRecordList.forEach((item) => {
-        if (item.type === 'PeasantHousehold') {
-          // 删除居民户数据
-          db.deleteTableData(LandlordTableName, 'uid', item.deleteId)
-        }
-        if (item.type === 'village') {
-          // 删除自然村数据
-          db.deleteTableData(VillageTableName, 'uid', item.deleteId)
-        }
-      })
-    }
+  private deleteDb(): Promise<boolean> {
+    return new Promise(async (resolve) => {
+      const { deleteRecordList: list } = this.state
+      if (this.IsArrayAndNotNull(list)) {
+        await db.transaction('begin').catch(() => {
+          resolve(false)
+        })
+        list.forEach((item) => {
+          if (item.type === 'PeasantHousehold') {
+            // 删除居民户数据
+            db.deleteTableData(LandlordTableName, 'uid', item.deleteId)
+          }
+          if (item.type === 'village') {
+            // 删除自然村数据
+            db.deleteTableData(VillageTableName, 'uid', item.deleteId)
+          }
+        })
+
+        await db.transaction('commit').catch(() => {
+          resolve(false)
+        })
+        resolve(true)
+      } else {
+        resolve(true)
+      }
+    })
   }
 
   /** 字典 */
-  private async pullDict() {
-    const { dictValList } = this.state
-    if (dictValList && Array.isArray(dictValList)) {
-      // 删除 字典表
-      await db.deleteTableData(DictionariesTableName)
-      dictValList.forEach((item) => {
-        // 重新导入子典
-        const fields = "'content','updatedDate'"
-        const values = `'${JSON.stringify(item)}','${getCurrentTimeStamp()}'`
-        db.insertTableData(DictionariesTableName, values, fields)
-      })
-    }
+  private pullDict(): Promise<boolean> {
+    return new Promise(async (resolve) => {
+      const { dictValList: list } = this.state
+      if (this.IsArrayAndNotNull(list)) {
+        // 删除 字典表
+        await db.deleteTableData(DictionariesTableName).catch(() => {
+          resolve(false)
+        })
+        await db.transaction('begin').catch(() => {
+          resolve(false)
+        })
+        list.forEach((item) => {
+          // 重新导入子典
+          const fields = "'content','updatedDate'"
+          const values = `'${JSON.stringify(item)}','${getCurrentTimeStamp()}'`
+          db.insertTableData(DictionariesTableName, values, fields)
+        })
+        await db.transaction('commit').catch(() => {
+          resolve(false)
+        })
+        resolve(true)
+      } else {
+        resolve(false)
+      }
+    })
   }
 
   /** 自然村 */
-  private pullVillageList() {
-    // parentCode: string
-    // content: string
-    // updatedDate: string
-    const { villageList } = this.state
-    if (villageList && Array.isArray(villageList)) {
-      villageList.forEach((item) => {
-        const fields = "'uid','status','parentCode','content','updatedDate'"
-        const values = `'${item.uid}','default','${item.parentCode}','${JSON.stringify(
-          item
-        )}','${getCurrentTimeStamp()}'`
-        db.insertOrReplaceData(VillageTableName, values, fields)
-      })
-    }
+  private pullVillageList(): Promise<boolean> {
+    return new Promise(async (resolve) => {
+      const { villageList: list } = this.state
+      if (this.IsArrayAndNotNull(list)) {
+        await db.transaction('begin').catch(() => {
+          resolve(false)
+        })
+        list.forEach((item) => {
+          const fields = "'uid','status','parentCode','content','updatedDate'"
+          const values = `'${item.uid}','default','${item.parentCode}','${JSON.stringify(
+            item
+          )}','${getCurrentTimeStamp()}'`
+          db.insertOrReplaceData(VillageTableName, values, fields)
+        })
+        await db.transaction('commit').catch(() => {
+          resolve(false)
+        })
+        resolve(true)
+      } else {
+        resolve(false)
+      }
+    })
   }
 
   /** 家庭收入 */
-  private async pullFamilyIncome() {
-    const { immigrantIncomeConfigList: list } = this.state
-    if (list && Array.isArray(list)) {
-      await db.deleteTableData(FamilyIncomeTableName)
-      list.forEach((item) => {
-        const fields = "'content','updatedDate'"
-        const values = `'${JSON.stringify(item)}','${getCurrentTimeStamp()}'`
-        db.insertOrReplaceData(FamilyIncomeTableName, values, fields)
-      })
-    }
+  private pullFamilyIncome(): Promise<boolean> {
+    return new Promise(async (resolve) => {
+      const { immigrantIncomeConfigList: list } = this.state
+      if (this.IsArrayAndNotNull(list)) {
+        await db.deleteTableData(FamilyIncomeTableName).catch(() => {
+          resolve(false)
+        })
+        await db.transaction('begin').catch(() => {
+          resolve(false)
+        })
+        list.forEach((item) => {
+          const fields = "'content','updatedDate'"
+          const values = `'${JSON.stringify(item)}','${getCurrentTimeStamp()}'`
+          db.insertOrReplaceData(FamilyIncomeTableName, values, fields)
+        })
+        await db.transaction('commit').catch(() => {
+          resolve(false)
+        })
+        resolve(true)
+      } else {
+        resolve(false)
+      }
+    })
   }
 
   /** 安置意愿 */
-  private async pullResettlement() {
-    const { immigrantWillConfigList: list } = this.state
-    if (list && Array.isArray(list)) {
-      await db.deleteTableData(ResettlementTableName)
-      list.forEach((item) => {
-        const fields = "'content','updatedDate'"
-        const values = `'${JSON.stringify(item)}','${getCurrentTimeStamp()}'`
-        db.insertOrReplaceData(ResettlementTableName, values, fields)
-      })
-    }
+  private pullResettlement(): Promise<boolean> {
+    return new Promise(async (resolve) => {
+      const { immigrantWillConfigList: list } = this.state
+      if (this.IsArrayAndNotNull(list)) {
+        await db.deleteTableData(ResettlementTableName).catch(() => {
+          resolve(false)
+        })
+        await db.transaction('begin').catch(() => {
+          resolve(false)
+        })
+        list.forEach((item) => {
+          const fields = "'content','updatedDate'"
+          const values = `'${JSON.stringify(item)}','${getCurrentTimeStamp()}'`
+          db.insertTableData(ResettlementTableName, values, fields)
+        })
+        await db.transaction('commit').catch(() => {
+          resolve(false)
+        })
+        resolve(true)
+      } else {
+        resolve(false)
+      }
+    })
   }
 
   /** 附属物 */
-  private async pullAppendant() {
-    const { immigrantAppendantConfigList: list } = this.state
-    if (list && Array.isArray(list)) {
-      await db.deleteTableData(AppendantTableName)
-      list.forEach((item) => {
-        const fields = "'content','updatedDate'"
-        const values = `'${JSON.stringify(item)}','${getCurrentTimeStamp()}'`
-        db.insertOrReplaceData(AppendantTableName, values, fields)
-      })
-    }
+  private pullAppendant(): Promise<boolean> {
+    return new Promise(async (resolve) => {
+      const { immigrantAppendantConfigList: list } = this.state
+      if (this.IsArrayAndNotNull(list)) {
+        await db.deleteTableData(AppendantTableName).catch(() => {
+          resolve(false)
+        })
+        await db.transaction('begin').catch(() => {
+          resolve(false)
+        })
+        list.forEach((item) => {
+          const fields = "'content','updatedDate'"
+          const values = `'${JSON.stringify(item)}','${getCurrentTimeStamp()}'`
+          db.insertTableData(AppendantTableName, values, fields)
+        })
+        await db.transaction('commit').catch(() => {
+          resolve(false)
+        })
+        resolve(true)
+      } else {
+        resolve(false)
+      }
+    })
   }
 
   /** 行政区划 */
-  private async pullDistrict() {
-    const { districtList: list } = this.state
-    if (list && Array.isArray(list)) {
-      await db.deleteTableData(DistrictTableName)
-      list.forEach((item) => {
-        const fields = "'content','updatedDate'"
-        const values = `'${JSON.stringify(item)}','${getCurrentTimeStamp()}'`
-        db.insertTableData(DistrictTableName, values, fields)
-      })
-    }
+  private pullDistrict(): Promise<boolean> {
+    return new Promise(async (resolve) => {
+      const { districtList: list } = this.state
+      if (this.IsArrayAndNotNull(list)) {
+        await db.deleteTableData(DistrictTableName).catch(() => {
+          resolve(false)
+        })
+        await db.transaction('begin').catch(() => {
+          resolve(false)
+        })
+        list.forEach((item) => {
+          const fields = "'content','updatedDate'"
+          const values = `'${JSON.stringify(item)}','${getCurrentTimeStamp()}'`
+          db.insertTableData(DistrictTableName, values, fields)
+        })
+        await db.transaction('commit').catch(() => {
+          resolve(false)
+        })
+        resolve(true)
+      } else {
+        resolve(false)
+      }
+    })
   }
 
   /** 统计数据 */
-  private async pullCollect() {
-    const { collectList: list } = this.state
-    if (list && Array.isArray(list)) {
-      await db.deleteTableData(CollectTableName)
-      list.forEach((item) => {
-        const fields = "'content','updatedDate'"
-        const values = `'${JSON.stringify(item)}','${getCurrentTimeStamp()}'`
-        db.insertTableData(CollectTableName, values, fields)
-      })
-    }
+  private pullCollect(): Promise<boolean> {
+    return new Promise(async (resolve) => {
+      const { collectList: list } = this.state
+      if (this.IsArrayAndNotNull(list)) {
+        await db.deleteTableData(CollectTableName).catch(() => {
+          resolve(false)
+        })
+        await db.transaction('begin').catch(() => {
+          resolve(false)
+        })
+        list.forEach((item) => {
+          const fields = "'content','updatedDate'"
+          const values = `'${JSON.stringify(item)}','${getCurrentTimeStamp()}'`
+          db.insertTableData(CollectTableName, values, fields)
+        })
+        await db.transaction('commit').catch(() => {
+          resolve(false)
+        })
+        resolve(true)
+      } else {
+        console.log('走了 ---')
+        resolve(false)
+      }
+    })
   }
 
   /** 其他 */
-  private pullOther() {
-    const { districtTree, mainTree, pullTime } = this.state
-    if (districtTree) {
-      // 街道树
-      const fields = "'type','content','updatedDate'"
-      const values = `'${OtherDataType.DistrictTree}','${JSON.stringify(
-        districtTree
-      )}','${getCurrentTimeStamp()}'`
-      db.insertOrReplaceData(OtherTableName, values, fields)
-    }
+  private pullOther(): Promise<boolean> {
+    return new Promise(async (resolve) => {
+      const { districtTree, pullTime } = this.state
+      await db.transaction('begin').catch(() => {
+        resolve(false)
+      })
+      if (districtTree) {
+        // 街道树
+        const fields = "'type','content','updatedDate'"
+        const values = `'${OtherDataType.DistrictTree}','${JSON.stringify(
+          districtTree
+        )}','${getCurrentTimeStamp()}'`
+        db.insertOrReplaceData(OtherTableName, values, fields)
+      }
 
-    if (mainTree) {
-      // 主树
-      const fields = "'type','content','updatedDate'"
-      const values = `'${OtherDataType.MainTree}','${JSON.stringify(
-        mainTree
-      )}','${getCurrentTimeStamp()}'`
-      db.insertOrReplaceData(OtherTableName, values, fields)
-    }
-
-    if (pullTime) {
-      // 同步时间
-      const fields = "'type','content','updatedDate'"
-      const values = `'${OtherDataType.PullTime}','${JSON.stringify(
-        mainTree
-      )}','${getCurrentTimeStamp()}'`
-      db.insertOrReplaceData(OtherTableName, values, fields)
-    }
+      if (pullTime) {
+        // 同步时间
+        const fields = "'type','content','updatedDate'"
+        const values = `'${OtherDataType.PullTime}','${dayjs(pullTime).format(
+          'YYYY-MM-DD HH:mm:ss'
+        )}','${getCurrentTimeStamp()}'`
+        db.insertOrReplaceData(OtherTableName, values, fields)
+      }
+      await db.transaction('commit').catch(() => {
+        resolve(false)
+      })
+      resolve(true)
+    })
   }
 }
 

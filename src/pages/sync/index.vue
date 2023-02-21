@@ -1,23 +1,35 @@
 <template>
   <view class="sync-wrap">
+    <image class="common-bg" src="@/static/images/common_bg.png" mode="widthFix" />
     <view :style="{ height: `${statusBarHeight}px` }" />
-    <view class="header">
-      <view class="back" @click="onBack"><text class="back-txt">返回</text></view>
-      <view class="btn-box" @click="onSync">
-        <text class="btn-txt"> 同步数据 </text>
+    <view class="common-header">
+      <view class="back-box" @click="onBack">
+        <uni-icons type="back" color="#ffffff" size="14rpx" />
       </view>
+
+      <text class="tit">项目切换</text>
+      <text />
     </view>
 
     <view class="body">
       <view class="pull-time">
-        <text class="time">最新同步时间：2022-01-22 12:40</text>
+        <text class="time">最新同步时间：{{ pullTime }}</text>
+        <view class="sync-btn" @click="onSync">
+          <image class="icon" src="@/static/images/sync_btn.png" mode="scaleToFill" />
+          <text class="btn-txt">数据同步</text>
+        </view>
       </view>
 
       <view class="list-wrap">
         <view class="list-item">
           <image class="bg" src="@/static/images/head_1.png" mode="scaleToFill" />
           <view class="title">
-            <text class="tit">居民户 >></text>
+            <text class="tit">居民户</text>
+            <image
+              class="right-arrow"
+              src="@/static/images/sync_right_arrow.png"
+              mode="scaleToFill"
+            />
           </view>
           <view class="inner-box">
             <view class="table-th">
@@ -26,68 +38,45 @@
                   <text class="txt">行政村</text>
                 </view>
                 <view class="td">
-                  <text class="txt">行政村</text>
+                  <text class="txt">总户数</text>
                 </view>
                 <view class="td">
-                  <text class="txt">行政村</text>
+                  <text class="txt">已上报</text>
                 </view>
                 <view class="td">
-                  <text class="txt">行政村</text>
+                  <text class="txt">我的上报</text>
                 </view>
               </view>
             </view>
 
-            <scroll-view scroll-y class="table-tb">
-              <view class="tr">
+            <view class="table-tb">
+              <view class="tr" v-for="(item, index) in peopleList" :key="index">
                 <view class="td">
-                  <text class="txt txt-primary">测试</text>
+                  <text class="txt txt-primary">{{ item.villageName }}</text>
                 </view>
                 <view class="td">
-                  <text class="txt">测试</text>
+                  <text class="txt">{{ item.totalNum }}</text>
                 </view>
                 <view class="td">
-                  <text class="txt">测试</text>
+                  <text class="txt">{{ item.reportNum }}</text>
                 </view>
                 <view class="td">
-                  <text class="txt txt-num">测试</text>
-                </view>
-              </view>
-              <view class="tr">
-                <view class="td">
-                  <text class="txt txt-primary">测试</text>
-                </view>
-                <view class="td">
-                  <text class="txt">测试</text>
-                </view>
-                <view class="td">
-                  <text class="txt">测试</text>
-                </view>
-                <view class="td">
-                  <text class="txt txt-num">测试</text>
+                  <text class="txt txt-num">{{ item.submitNum }}</text>
                 </view>
               </view>
-              <view class="tr">
-                <view class="td">
-                  <text class="txt txt-primary">测试</text>
-                </view>
-                <view class="td">
-                  <text class="txt">测试</text>
-                </view>
-                <view class="td">
-                  <text class="txt">测试</text>
-                </view>
-                <view class="td">
-                  <text class="txt txt-num">测试</text>
-                </view>
-              </view>
-            </scroll-view>
+            </view>
           </view>
         </view>
 
         <view class="list-item">
           <image class="bg" src="@/static/images/head_2.png" mode="scaleToFill" />
           <view class="title">
-            <text class="tit">个体户 >></text>
+            <text class="tit">个体户</text>
+            <image
+              class="right-arrow"
+              src="@/static/images/sync_right_arrow.png"
+              mode="scaleToFill"
+            />
           </view>
           <view class="inner-box">
             <view class="table-th">
@@ -96,40 +85,45 @@
                   <text class="txt">行政村</text>
                 </view>
                 <view class="td">
-                  <text class="txt">行政村</text>
+                  <text class="txt">总户数</text>
                 </view>
                 <view class="td">
-                  <text class="txt">行政村</text>
+                  <text class="txt">已上报</text>
                 </view>
                 <view class="td">
-                  <text class="txt">行政村</text>
+                  <text class="txt">我的上报</text>
                 </view>
               </view>
             </view>
 
-            <scroll-view scroll-y class="table-tb">
-              <view class="tr">
+            <view class="table-tb">
+              <view class="tr" v-for="(item, index) in individualHouseholdList" :key="index">
                 <view class="td">
-                  <text class="txt txt-primary">测试</text>
+                  <text class="txt txt-primary">{{ item.villageName }}</text>
                 </view>
                 <view class="td">
-                  <text class="txt">测试</text>
+                  <text class="txt">{{ item.totalNum }}</text>
                 </view>
                 <view class="td">
-                  <text class="txt">测试</text>
+                  <text class="txt">{{ item.reportNum }}</text>
                 </view>
                 <view class="td">
-                  <text class="txt txt-num">测试</text>
+                  <text class="txt txt-num">{{ item.submitNum }}</text>
                 </view>
               </view>
-            </scroll-view>
+            </view>
           </view>
         </view>
 
         <view class="list-item">
           <image class="bg" src="@/static/images/head_3.png" mode="scaleToFill" />
           <view class="title">
-            <text class="tit">企业 >></text>
+            <text class="tit">企业</text>
+            <image
+              class="right-arrow"
+              src="@/static/images/sync_right_arrow.png"
+              mode="scaleToFill"
+            />
           </view>
           <view class="inner-box">
             <view class="table-th">
@@ -138,40 +132,45 @@
                   <text class="txt">行政村</text>
                 </view>
                 <view class="td">
-                  <text class="txt">行政村</text>
+                  <text class="txt">总户数</text>
                 </view>
                 <view class="td">
-                  <text class="txt">行政村</text>
+                  <text class="txt">已上报</text>
                 </view>
                 <view class="td">
-                  <text class="txt">行政村</text>
+                  <text class="txt">我的上报</text>
                 </view>
               </view>
             </view>
 
-            <scroll-view scroll-y class="table-tb">
-              <view class="tr">
+            <view class="table-tb">
+              <view class="tr" v-for="(item, index) in companyList" :key="index">
                 <view class="td">
-                  <text class="txt txt-primary">测试</text>
+                  <text class="txt txt-primary">{{ item.villageName }}</text>
                 </view>
                 <view class="td">
-                  <text class="txt">测试</text>
+                  <text class="txt">{{ item.totalNum }}</text>
                 </view>
                 <view class="td">
-                  <text class="txt">测试</text>
+                  <text class="txt">{{ item.reportNum }}</text>
                 </view>
                 <view class="td">
-                  <text class="txt txt-num">测试</text>
+                  <text class="txt txt-num">{{ item.submitNum }}</text>
                 </view>
               </view>
-            </scroll-view>
+            </view>
           </view>
         </view>
 
         <view class="list-item">
           <image class="bg" src="@/static/images/head_4.png" mode="scaleToFill" />
           <view class="title">
-            <text class="tit">村集体 >></text>
+            <text class="tit">村集体</text>
+            <image
+              class="right-arrow"
+              src="@/static/images/sync_right_arrow.png"
+              mode="scaleToFill"
+            />
           </view>
           <view class="inner-box">
             <view class="table-th">
@@ -180,33 +179,33 @@
                   <text class="txt">行政村</text>
                 </view>
                 <view class="td">
-                  <text class="txt">行政村</text>
+                  <text class="txt">总户数</text>
                 </view>
                 <view class="td">
-                  <text class="txt">行政村</text>
+                  <text class="txt">已上报</text>
                 </view>
                 <view class="td">
-                  <text class="txt">行政村</text>
+                  <text class="txt">我的上报</text>
                 </view>
               </view>
             </view>
 
-            <scroll-view scroll-y class="table-tb">
-              <view class="tr">
+            <view class="table-tb">
+              <view class="tr" v-for="(item, index) in villageList" :key="index">
                 <view class="td">
-                  <text class="txt txt-primary">测试</text>
+                  <text class="txt txt-primary">{{ item.villageName }}</text>
                 </view>
                 <view class="td">
-                  <text class="txt">测试</text>
+                  <text class="txt">{{ item.totalNum }}</text>
                 </view>
                 <view class="td">
-                  <text class="txt">测试</text>
+                  <text class="txt">{{ item.reportNum }}</text>
                 </view>
                 <view class="td">
-                  <text class="txt txt-num">测试</text>
+                  <text class="txt txt-num">{{ item.submitNum }}</text>
                 </view>
               </view>
-            </scroll-view>
+            </view>
           </view>
         </view>
       </view>
@@ -215,21 +214,50 @@
 </template>
 
 <script lang="ts" setup>
-// import { ref } from 'vue'
-import { pullInstance, pushInstance } from '@/sync/index'
+import { ref, onMounted } from 'vue'
+import { getListApi, getPullTimeApi } from './service'
+import { pullInstance } from '@/sync/index'
 import { routerBack } from '@/utils'
+import { CollectType, MainType } from '@/types/common'
+
+const peopleList = ref<CollectType[]>([])
+const individualHouseholdList = ref<CollectType[]>([])
+const companyList = ref<CollectType[]>([])
+const villageList = ref<CollectType[]>([])
+const pullTime = ref<string>('')
 
 const sysInfo = uni.getSystemInfoSync()
 const statusBarHeight = sysInfo.statusBarHeight || 0
 
-const checkFirst = () => {
-  console.log('is first sync')
-}
-
 const onBack = () => {
   routerBack()
 }
-const onSync = () => {}
+
+const onSync = () => {
+  // pushInstance.push()
+  console.log('同步数据')
+  pullInstance.pull()
+}
+
+const getPullTime = async () => {
+  const time: string = await getPullTimeApi()
+  pullTime.value = time
+}
+
+const getData = async () => {
+  const res = await getListApi()
+  if (res && res.length) {
+    peopleList.value = res.filter((item) => item.type === MainType.PeasantHousehold)
+    individualHouseholdList.value = res.filter((item) => item.type === MainType.IndividualHousehold)
+    companyList.value = res.filter((item) => item.type === MainType.Company)
+    villageList.value = res.filter((item) => item.type === MainType.Village)
+  }
+}
+
+onMounted(() => {
+  getData()
+  getPullTime()
+})
 </script>
 
 <style lang="scss" scoped>
@@ -244,32 +272,43 @@ uni-page-body {
 }
 
 .sync-wrap {
+  position: relative;
   display: flex;
+  flex-direction: column;
+  width: 750rpx;
   height: 100%;
   padding: 0 6rpx 9rpx 6rpx;
-  background-color: #e7edfd;
-  border-radius: 9rpx 9rpx 0rpx 0rpx;
+  overflow: hidden;
 
-  flex: 1;
-  flex-direction: column;
+  .common-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 750rpx;
+    height: 100%;
+  }
 
-  .header {
+  .common-header {
     display: flex;
     flex-direction: row;
+    align-items: center;
     justify-content: space-between;
-    align-items: center;
-    height: 40rpx;
-  }
+    height: 42rpx;
 
-  .back {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
+    .back-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 26rpx;
+      height: 26rpx;
+    }
 
-  .back-txt {
-    font-size: 10rpx;
-    color: #333333;
+    .tit {
+      font-size: 15rpx;
+      font-weight: 600;
+      color: #ffffff;
+    }
   }
 
   .btn-box {
@@ -289,25 +328,47 @@ uni-page-body {
   }
 
   .body {
+    flex: 1;
     display: flex;
+    flex-direction: column;
     padding: 0 12rpx 25rpx;
     background-color: #ffffff;
     border-radius: 5rpx;
     box-shadow: 0rpx 0rpx 12rpx 0rpx rgba(0, 0, 0, 0.08);
-    flex: 1;
-    flex-direction: column;
   }
 
   .pull-time {
     display: flex;
     flex-direction: row;
     align-items: center;
-    height: 38rpx;
-  }
+    justify-content: space-between;
+    height: 58rpx;
 
-  .time {
-    font-size: 9rpx;
-    color: #333333;
+    .time {
+      font-size: 9rpx;
+      color: #171718;
+    }
+
+    .sync-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 23rpx;
+      padding: 0 9rpx;
+      background-color: #1a60ff;
+      border-radius: 12rpx;
+
+      .icon {
+        width: 11rpx;
+        height: 11rpx;
+        margin-right: 4rpx;
+      }
+
+      .btn-txt {
+        font-size: 9rpx;
+        color: #ffffff;
+      }
+    }
   }
 
   .list-wrap {
@@ -327,9 +388,10 @@ uni-page-body {
   .list-item {
     position: relative;
     display: flex;
-    width: 246rpx;
+    width: 214rpx;
     padding: 0 6rpx 5rpx;
-    margin-right: 9rpx;
+    margin-right: 6rpx;
+    overflow: hidden;
     background-color: #d8e6fe;
     border-radius: 5rpx;
     flex: none;
@@ -341,8 +403,8 @@ uni-page-body {
     top: 0;
     left: 0;
     z-index: 0;
-    width: 246rpx;
-    height: 64rpx;
+    width: 214rpx;
+    height: 70rpx;
   }
 
   .title {
@@ -351,13 +413,19 @@ uni-page-body {
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
     height: 36rpx;
-    padding: 2rpx 0 0 13rpx;
+    padding: 2rpx 6rpx 0 13rpx;
 
     .tit {
       font-size: 14rpx;
       font-weight: 600;
-      color: #3e73ec;
+      color: #0a54ff;
+    }
+
+    .right-arrow {
+      width: 12rpx;
+      height: 12rpx;
     }
   }
 
@@ -365,6 +433,7 @@ uni-page-body {
     position: relative;
     z-index: 2;
     display: flex;
+    height: 100%;
     padding: 10rpx 6rpx 5rpx;
     background-color: #fff;
     border: 1rpx solid #ffffff;
@@ -411,7 +480,8 @@ uni-page-body {
   }
 
   .table-tb {
-    flex: 1;
+    height: 205rpx;
+    overflow-y: scroll;
   }
 }
 </style>

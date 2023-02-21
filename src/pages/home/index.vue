@@ -33,6 +33,11 @@
         <view class="txt">数据库</view>
       </view>
     </view>
+    <view class="row">
+      <view class="col" @click="toLink('login')">
+        <view class="txt">登录</view>
+      </view>
+    </view>
   </view>
 </template>
 

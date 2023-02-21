@@ -1,4 +1,5 @@
 import { request } from '@/utils'
+import { PushStateType } from '@/types/sync'
 
 // 项目信息
 export const getProjectDataApi = () => {
@@ -28,16 +29,10 @@ export const getCollectApi = () => {
   })
 }
 
-// 查询主树信息
-export const getMainTreeApi = () => {
-  return request.get({
-    url: '/pad/villageMenu'
-  })
-}
-
 // 推送
-export const pushDataApi = () => {
+export const pushDataApi = (data: PushStateType) => {
   return request.post({
-    url: '/pad/push'
+    url: '/pad/push',
+    data
   })
 }

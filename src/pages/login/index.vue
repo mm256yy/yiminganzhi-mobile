@@ -37,8 +37,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, unref } from 'vue'
+import { nextTick, ref, unref } from 'vue'
 import { loginApi, userInfoApi } from './api'
+import { pullInstance } from '@/sync'
 import { setStorage, StorageKey, routerForward } from '@/utils'
 
 const name = ref<string>('')
@@ -54,7 +55,7 @@ const iptChange = (type: string, event: any) => {
 }
 
 const doRoute = () => {
-  routerForward('home', {
+  routerForward('project', {
     replace: true
   })
 }
@@ -67,11 +68,17 @@ const loginIn = async () => {
   console.log('login res', res)
   if (res) {
     const { token } = res
-    const userInfo = await userInfoApi()
     setStorage(StorageKey.TOKEN, token)
-    setStorage(StorageKey.USERINFO, userInfo)
     setStorage(StorageKey.LOGINTIME, new Date().getTime())
-    doRoute()
+    nextTick(async () => {
+      const userInfo = await userInfoApi()
+      setStorage(StorageKey.USERINFO, userInfo)
+      pullInstance.pullProjectData().then((res) => {
+        if (res) {
+          doRoute()
+        }
+      })
+    })
   }
 }
 </script>
@@ -86,7 +93,7 @@ const loginIn = async () => {
   .logo {
     width: 434rpx;
     background: url('@/static/images/login_bg.png') top center no-repeat;
-    background-size: cover;
+    background-size: 100% auto;
   }
 
   .form {

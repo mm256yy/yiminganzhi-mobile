@@ -55,8 +55,20 @@ export type DictConfigType = {
   dictValList: DictDetailType[] | null
 }
 
+export enum MainType {
+  PeasantHousehold = 'PeasantHousehold',
+  Company = 'Company',
+  IndividualHousehold = 'IndividualHousehold',
+  Village = 'Village'
+}
+
 // 数据统计 类型定义
 export type CollectType = {
+  totalNum: number
+  reportNum: number
+  submitNum: number
+  type: MainType
+  villageName: string
   [key: string]: any
 }
 

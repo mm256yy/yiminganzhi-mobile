@@ -17,9 +17,12 @@ onLaunch(() => {
         const loginTime = getStorage(StorageKey.LOGINTIME)
         const now = new Date().getTime()
         const expirationTime = 365 * 24 * 60 * 60 * 1000
-        if (!loginTime || loginTime + expirationTime >= now) {
+        if (!loginTime) {
+          // 之前一次没登录过/卸载过
+          routerForward('login')
+        } else if (loginTime + expirationTime <= now) {
           // token过期 需要重新登录
-          // routerForward('login')
+          routerForward('login')
         }
       }
     }

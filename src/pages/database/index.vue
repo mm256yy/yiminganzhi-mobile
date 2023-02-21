@@ -20,7 +20,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { pushInstance } from '@/sync'
+import { pullInstance } from '@/sync'
 // import { getBaseDataApi, getConfigDataApi, getCollectApi, getMainTreeApi } from '@/sync/api'
 import { routerForward } from '@/utils'
 
@@ -50,7 +50,7 @@ const getApiData = async () => {
 getApiData()
 
 const getTables = async () => {
-  const tables = await pushInstance.getTables()
+  const tables = await pullInstance.getTables()
   list.value = tables || []
 }
 

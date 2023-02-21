@@ -5,7 +5,7 @@
     </text>
     <text class="symbol">{</text>
     <view class="json-preview-object-block">
-      <view v-for="(item, index) in jsonValue" :key="item.key">
+      <view v-for="(item, index) in jsonValue" :key="index">
         <text v-if="typeof item.value === 'string'">
           <text class="json-preview-key">"{{ item.key }}"</text> :
           <text class="json-preview-string-value">"{{ item.value }}"</text>
@@ -33,7 +33,7 @@
     </text>
     <text class="symbol">[</text>
     <view class="json-preview-object-block">
-      <view v-for="(item, index) in jsonValue" :key="item.key">
+      <view v-for="(item, index) in jsonValue" :key="index">
         <text v-if="typeof item === 'string'">
           <text class="json-preview-string-value">"{{ item }}"</text>
         </text>
