@@ -46,4 +46,9 @@ const treeItemClick = (data: any) => {
 }
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.tree-list-item {
+  border-radius: 5rpx;
+  box-shadow: 0 1rpx 9rpx -2rpx rgba(0, 0, 0, 0.18);
+}
+</style>

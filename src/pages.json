@@ -18,28 +18,35 @@
 			"name": "household",
 			"path": "pages/household/index",
 			"style": {
-				"navigationBarTitleText": "居民户"
+				"navigationBarTitleText": "居民户填报"
 			}
 		},
 		{
 			"name": "householdInfoEdit",
 			"path": "pages/household/householdInfo/edit",
 			"style": {
-				"navigationBarTitleText": "居民户信息编辑"
+				"navigationBarTitleText": "居民户填报-居民户信息编辑"
 			}
 		},
 		{
 			"name": "demographicInfoEdit",
 			"path": "pages/household/demographicInfo/edit",
 			"style": {
-				"navigationBarTitleText": "人口信息编辑"
+				"navigationBarTitleText": "居民户填报-人口信息编辑"
 			}
 		},
 		{
 			"name": "houseInfoEdit",
 			"path": "pages/household/houseInfo/edit",
 			"style": {
-				"navigationBarTitleText": "房屋信息编辑"
+				"navigationBarTitleText": "居民户填报-房屋信息编辑"
+			}
+		},
+		{
+			"name": "enterprise",
+			"path": "pages/enterprise/index",
+			"style": {
+				"navigationBarTitleText": "企业填报"
 			}
 		},
 		{

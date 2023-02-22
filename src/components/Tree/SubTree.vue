@@ -5,23 +5,14 @@
         <image
           v-if="props.expendIds.includes(props.data.id as never)"
           class="icon"
-          src="@/static/images/icon_expand_down.png"
+          src="@/static/images/icon_up.png"
           mode="scaleToFill"
         />
-        <image v-else class="icon" src="@/static/images/icon_expand.png" mode="scaleToFill" />
+        <image v-else class="icon" src="@/static/images/icon_down.png" mode="scaleToFill" />
         <text class="item-title">{{ props.data.name }}</text>
       </view>
 
-      <view class="item-rt">
-        <view class="item left">
-          <image class="icon" src="@/static/images/icon_finish.png" mode="scaleToFill" />
-          <text class="number green">{{ props.data.id }}</text>
-        </view>
-        <view class="item">
-          <image class="icon" src="@/static/images/icon_total.png" mode="scaleToFill" />
-          <text class="number blue">22444</text>
-        </view>
-      </view>
+      <view class="item-rt"> <text class="num green">0</text> / <text class="num">12</text> </view>
     </view>
 
     <view v-if="props.expendIds.includes(props.data.id as never)">
@@ -61,7 +52,6 @@ const subItemToggleClick = () => {
   justify-content: space-between;
   padding: 0 8rpx 0 4rpx;
   background-color: #fff;
-  border-bottom: 1rpx solid rgba(0, 0, 0, 0.1);
 }
 
 .item-lt {
@@ -83,36 +73,18 @@ const subItemToggleClick = () => {
 
 .item-rt {
   display: flex;
-  flex-direction: row;
-  align-items: center;
   height: 12rpx;
   padding: 0 2rpx;
+  font-size: 8rpx;
+  box-sizing: border-box;
+  flex-direction: row;
+  align-items: center;
 
-  .item {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  .num {
+    font-size: 8rpx;
 
-    &.left {
-      margin-right: 6rpx;
-    }
-
-    .icon {
-      width: 9rpx;
-      height: 9rpx;
-      margin-right: 2rpx;
-    }
-
-    .number {
-      font-size: 8rpx;
-
-      &.green {
-        color: #28af45;
-      }
-
-      &.blue {
-        color: #3e73ec;
-      }
+    &.green {
+      color: #28af45;
     }
   }
 }

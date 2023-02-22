@@ -9,8 +9,7 @@
     </view>
 
     <view class="tree-item-rt">
-      <text class="number left">2</text>
-      <text class="number right">9</text>
+      <text class="num gray">0</text> / <text class="num">12</text>
     </view>
   </view>
 </template>
@@ -34,7 +33,6 @@ const treeItemClick = () => {
   height: 28rpx;
   padding: 0 8rpx 0 4rpx;
   background-color: #fff;
-  border-bottom: 1rpx solid rgba(0, 0, 0, 0.1);
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
@@ -74,24 +72,14 @@ const treeItemClick = () => {
   display: flex;
   flex-direction: row;
   align-items: center;
-  height: 12rpx;
+  font-size: 8rpx;
 
-  .number {
-    height: 12rpx;
-    padding: 0 4rpx;
+  .num {
     font-size: 8rpx;
-    line-height: 12rpx;
-    color: #171718;
+    color: rgba(0, 0, 0, 0.85);
 
-    &.left {
-      color: #3e73ec;
-      background-color: #d8e6ff;
-      border-radius: 6rpx 0 0 6rpx;
-    }
-
-    &.right {
-      background-color: #f0f0f0;
-      border-radius: 0 6rpx 6rpx 0;
+    &.gray {
+      color: #999;
     }
   }
 }

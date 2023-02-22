@@ -92,7 +92,7 @@
           height: 16rpx;
           font-size: 9rpx;
           color: #fff;
-          background: #3db6f2;
+          background: #faad14;
           border-top-right-radius: 5rpx;
           border-bottom-right-radius: 5rpx;
           align-items: center;
@@ -120,7 +120,7 @@
             margin-left: 9rpx;
             font-size: 9rpx;
             line-height: 16rpx;
-            color: #171718;
+            color: rgba(23, 23, 24, 0.6);
           }
 
           .content {
