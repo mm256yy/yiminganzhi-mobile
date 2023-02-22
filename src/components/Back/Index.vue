@@ -16,11 +16,12 @@
 <script lang="ts" setup>
 import { routerForward } from '@/utils'
 
-interface PropsType {
-  title: string
-}
-
-const props = defineProps<PropsType>()
+const props = defineProps({
+  title: {
+    type: String,
+    default: ''
+  }
+})
 
 const back = () => {
   uni.navigateBack({
