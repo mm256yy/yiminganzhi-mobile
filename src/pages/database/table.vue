@@ -44,20 +44,17 @@ const pageHeight = screenHeight - statusBarHeight
 
 const getJsonData = async () => {
   if (db.isOpen()) {
-    console.log(tableName.value, '进入了')
     const res = await db.selectTableData(tableName.value).catch((err) => {
       console.log(err, 'err')
     })
-    console.log(res.length, `${tableName.value} 表数据`)
-    jsonData.value = res
-    // jsonData.value = (res || []).map((item: any) => {
-    //   try {
-    //     return JSON.parse(item.content)
-    //   } catch (e) {
-    //     return item
-    //   }
-    // })
-    // console.log(jsonData.value, `页面数据`)
+    console.log(res.length, `${tableName.value} 表数据条数`)
+    jsonData.value = (res || []).map((item: any) => {
+      if (tableName.value !== 'other') {
+        return JSON.parse(item.content)
+      } else {
+        return item
+      }
+    })
   }
 }
 

@@ -1,11 +1,14 @@
 /**
- * 农户表字段定义
+ * 业主表字段定义
  */
+
+import { MainType } from '@/types/common'
 
 export interface LandlordDDLType {
   uid: string
   content: string
   name: string
+  type: MainType
   reportDate: string
   reportUser: string
   status: 'modify' | 'default'
@@ -19,6 +22,7 @@ export const LandlordDDL = `
 create table if not exists ${LandlordTableName} (
   'uid' text PRIMARY KEY,
   'name' text,
+  'type' text,
   'reportDate' text,
   'reportUser' text,
   'content' text,

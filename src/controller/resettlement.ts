@@ -10,7 +10,7 @@ class Resettlement extends Common {
   constructor() {
     super()
   }
-  getList() {
+  getList(): Promise<WillConfigType[]> {
     return new Promise(async (resolve, reject) => {
       try {
         const array: WillConfigType[] = []

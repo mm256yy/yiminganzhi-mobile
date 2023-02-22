@@ -149,3 +149,116 @@ export interface ImmigrantFileType {
   uid: string
   [key: string]: any
 }
+
+// 企业/个体户 字段
+export interface CompanyType {
+  id: number
+  doorNo: string
+  householdId: number
+  uid: string
+  legalPersonName: string
+  legalPersonCard: string
+  legalPersonPhone: string
+  companyType: string
+  companyAddress: string
+  licenceType: string
+  periodValidity: string
+  licenceNo: string
+  taxPeriodValidity: string
+  taxLicenceNo: string
+  taxLicenceCompany: string
+  ohterLicence: string
+  registerType: string
+  establishDate: string
+  natureBusiness: string
+  industryType: string
+  economicNature: string
+  registeredAmount: number
+  fixedAssetsOriginalValue: number
+  fixedAssetsNetValue: number
+  regularWorkerNum: number
+  temporaryWorkerNum: number
+  annualPayroll: number
+  averageAnnualOutputValue: number
+  averageAnnualProfit: number
+  averageAnnualTaxPaid: number
+  managementType: string
+  productCategory: string
+  managementStatus: string
+  informationInvolved: string
+  treatmentScheme: string
+  sellOwnershipArea: number
+  sellOccupiedArea: number
+  sellRemark: string
+  transferOwnershipArea: number
+  transferOccupiedArea: number
+  transferRemark: string
+  rentOwnershipArea: number
+  rentOccupiedArea: number
+  rentRemark: string
+  otherOwnershipArea: number
+  otherOccupiedArea: number
+  otherRemark: string
+  totalOwnershipArea: number
+  totalOccupiedArea: number
+  remark: string
+  licensePic: string
+  otherPic: string
+  [key: string]: any
+}
+
+export interface ManagementType {
+  id: number
+  doorNo: string
+  householdId: number
+  lastYearAmount: number
+  lastTwoYearAmount: number
+  lastThreeYearAmount: number
+  remark: string
+  uid: string
+  name: string
+  type: string
+  [key: string]: any
+}
+
+export interface EquipmentType {
+  id: number
+  doorNo: string
+  householdId: number
+  surveyId: string
+  name: string
+  size: string
+  unit: string
+  number: number
+  remark: string
+  uid: string
+  purpose: string
+  year: string
+  amount: number
+  moveType: string
+  [key: string]: any
+}
+
+export interface FacilitiesType {
+  id: number
+  doorNo: string
+  householdId: number
+  facilitiesName: string
+  facilitiesType: string
+  locationType: string
+  facilitiesCode: string
+  number: number
+  unit: string
+  completedTime: string
+  scopes: string
+  benefit: number
+  cost: number
+  netBal: number
+  originalInvest: number
+  workersNum: number
+  altitude: number
+  inundationRang: string
+  remark: string
+  uid: string
+  [key: string]: any
+}

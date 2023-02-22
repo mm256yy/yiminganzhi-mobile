@@ -6,19 +6,28 @@ import {
   AppendantType,
   WillType,
   FamilyIncomeType,
-  ImmigrantFileType
+  ImmigrantFileType,
+  ManagementType,
+  EquipmentType,
+  FacilitiesType,
+  CompanyType
 } from './datafill'
 import {
   ProjectType,
   FamilyIncomeConfigType,
   WillConfigType,
   DictConfigType,
-  VillageType
+  VillageType,
+  MainType
 } from './common'
 
 // 农户列表
 export interface LandlordType {
+  // 以下两个字段 为了更好的组成树加上的
+  // parentCode = 居民户virutalVillageCode || 其他villageCode
+  // code = id
   id: number
+  code?: number
   uid: string
   name: string
   sex: string
@@ -27,8 +36,9 @@ export interface LandlordType {
   townCode: string
   villageCode: string
   virutalVillageCode: string
+  parentCode?: string
   address: string
-  projectId: 0
+  projectId: number
   longitude: string
   latitude: string
   phone: string
@@ -40,6 +50,12 @@ export interface LandlordType {
   householdNumber: string
   reportDate: string
   reportUser: number
+  fillingUpdateDate: string
+  inundationRange: string
+  altitude: number
+  type: MainType
+  totalNum?: number
+  reportNum?: number
 
   // 人口
   demographicList: PopulationType[]
@@ -57,6 +73,15 @@ export interface LandlordType {
   immigrantIncomeList: FamilyIncomeType[]
   // 附件
   immigrantFile: ImmigrantFileType[]
+
+  // 企业营收
+  immigrantManagementList: ManagementType[]
+  // 企业设备
+  immigrantEquipmentList: EquipmentType[]
+  // 农村小型专项及农副业设施信息
+  immigrantFacilitiesList: FacilitiesType[]
+  // 个体户 / 公司 扩展字段
+  company: CompanyType
 }
 
 export interface DeleteRecordType {
@@ -69,11 +94,6 @@ export interface DeleteRecordType {
  * 拉取数据
  * 结构定义
  */
-
-export interface PullDataType {
-  pullTime: string
-  peasantHouseholdPushDtoList: LandlordType[]
-}
 
 export interface StateType {
   pullTime: string

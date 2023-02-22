@@ -78,6 +78,7 @@ class PullData {
   }
 
   public async pullAll() {
+    this.count = 0
     await this.pullProjectData()
     this.pull()
   }
@@ -95,13 +96,8 @@ class PullData {
       }
       this.state.project = result
       const pullRes = await this.pullProject()
-        .then((res) => {
-          res && this.count++
-        })
-        .catch(() => {
-          resolve(false)
-        })
-      console.log('拉取项目数据', pullRes)
+      pullRes && this.count++
+      console.log('拉取项目', pullRes)
       resolve(pullRes)
     })
   }
@@ -225,7 +221,7 @@ class PullData {
     })
   }
 
-  public IsArrayAndNotNull(list: any): boolean {
+  public isArrayAndNotNull(list: any): boolean {
     if (list && Array.isArray(list) && list.length) {
       return true
     }
@@ -236,11 +232,13 @@ class PullData {
   private pullProject(): Promise<boolean> {
     return new Promise(async (resolve) => {
       const { project: list } = this.state
-      if (this.IsArrayAndNotNull(list)) {
-        await db.deleteTableData(ProjectTableName).catch(() => {
+      if (this.isArrayAndNotNull(list)) {
+        await db.deleteTableData(ProjectTableName).catch((err) => {
+          console.log(77, err)
           resolve(false)
         })
         await db.transaction('begin').catch(() => {
+          console.log(88)
           resolve(false)
         })
         list.forEach((item) => {
@@ -249,10 +247,12 @@ class PullData {
           db.insertTableData(ProjectTableName, values, fields)
         })
         await db.transaction('commit').catch(() => {
+          console.log(99)
           resolve(false)
         })
         resolve(true)
       } else {
+        console.log(111)
         resolve(false)
       }
     })
@@ -266,11 +266,11 @@ class PullData {
       await db.transaction('begin').catch(() => {
         resolve(false)
       })
-      if (this.IsArrayAndNotNull(list)) {
+      if (this.isArrayAndNotNull(list)) {
         list.forEach((item) => {
           const fields =
-            "'uid','name','reportDate','reportUser','status','content','updatedDate','isDelete'"
-          const values = `'${item.uid}','${item.name}','${
+            "'uid','name','type','reportDate','reportUser','status','content','updatedDate','isDelete'"
+          const values = `'${item.uid}','${item.name}','${item.type}','${
             item.reportDate ? dayjs(item.reportDate).format('YYYY-MM-DD HH:mm:ss') : ''
           }','${item.reportUser}','default','${JSON.stringify(
             item
@@ -291,7 +291,7 @@ class PullData {
   private deleteDb(): Promise<boolean> {
     return new Promise(async (resolve) => {
       const { deleteRecordList: list } = this.state
-      if (this.IsArrayAndNotNull(list)) {
+      if (this.isArrayAndNotNull(list)) {
         await db.transaction('begin').catch(() => {
           resolve(false)
         })
@@ -300,6 +300,7 @@ class PullData {
             // 删除居民户数据
             db.deleteTableData(LandlordTableName, 'uid', item.deleteId)
           }
+          // todo
           if (item.type === 'village') {
             // 删除自然村数据
             db.deleteTableData(VillageTableName, 'uid', item.deleteId)
@@ -320,7 +321,7 @@ class PullData {
   private pullDict(): Promise<boolean> {
     return new Promise(async (resolve) => {
       const { dictValList: list } = this.state
-      if (this.IsArrayAndNotNull(list)) {
+      if (this.isArrayAndNotNull(list)) {
         // 删除 字典表
         await db.deleteTableData(DictionariesTableName).catch(() => {
           resolve(false)
@@ -348,7 +349,7 @@ class PullData {
   private pullVillageList(): Promise<boolean> {
     return new Promise(async (resolve) => {
       const { villageList: list } = this.state
-      if (this.IsArrayAndNotNull(list)) {
+      if (this.isArrayAndNotNull(list)) {
         await db.transaction('begin').catch(() => {
           resolve(false)
         })
@@ -373,7 +374,7 @@ class PullData {
   private pullFamilyIncome(): Promise<boolean> {
     return new Promise(async (resolve) => {
       const { immigrantIncomeConfigList: list } = this.state
-      if (this.IsArrayAndNotNull(list)) {
+      if (this.isArrayAndNotNull(list)) {
         await db.deleteTableData(FamilyIncomeTableName).catch(() => {
           resolve(false)
         })
@@ -399,7 +400,7 @@ class PullData {
   private pullResettlement(): Promise<boolean> {
     return new Promise(async (resolve) => {
       const { immigrantWillConfigList: list } = this.state
-      if (this.IsArrayAndNotNull(list)) {
+      if (this.isArrayAndNotNull(list)) {
         await db.deleteTableData(ResettlementTableName).catch(() => {
           resolve(false)
         })
@@ -425,7 +426,7 @@ class PullData {
   private pullAppendant(): Promise<boolean> {
     return new Promise(async (resolve) => {
       const { immigrantAppendantConfigList: list } = this.state
-      if (this.IsArrayAndNotNull(list)) {
+      if (this.isArrayAndNotNull(list)) {
         await db.deleteTableData(AppendantTableName).catch(() => {
           resolve(false)
         })
@@ -451,7 +452,7 @@ class PullData {
   private pullDistrict(): Promise<boolean> {
     return new Promise(async (resolve) => {
       const { districtList: list } = this.state
-      if (this.IsArrayAndNotNull(list)) {
+      if (this.isArrayAndNotNull(list)) {
         await db.deleteTableData(DistrictTableName).catch(() => {
           resolve(false)
         })
@@ -477,7 +478,7 @@ class PullData {
   private pullCollect(): Promise<boolean> {
     return new Promise(async (resolve) => {
       const { collectList: list } = this.state
-      if (this.IsArrayAndNotNull(list)) {
+      if (this.isArrayAndNotNull(list)) {
         await db.deleteTableData(CollectTableName).catch(() => {
           resolve(false)
         })

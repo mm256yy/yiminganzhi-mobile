@@ -62,6 +62,13 @@ export enum MainType {
   Village = 'Village'
 }
 
+export enum DistrictTypeEnum {
+  Country = 'Country',
+  Township = 'Township',
+  Village = 'Village',
+  naturalVillage = 'naturalVillage'
+}
+
 // 数据统计 类型定义
 export type CollectType = {
   totalNum: number
@@ -85,7 +92,7 @@ export type DistrictType = {
   code: string
   name: string
   shortName: string
-  districtType: string
+  districtType: DistrictTypeEnum
   latitude: number
   longitude: number
   address: string
@@ -97,6 +104,8 @@ export type DistrictType = {
   level: number
   parentCode: string
   fullName: string
+  totalNum?: number
+  reportNum?: number
 }
 
 // 自然村类型定义
@@ -111,4 +120,14 @@ export interface VillageType {
   name: string
   parentCode: string
   projectId: number
+  totalNum?: number
+  reportNum?: number
+  [key: string]: any
+}
+
+// 业主筛选
+export interface LandlordQuery {
+  name: string
+  timeArray: string[]
+  userId: number
 }

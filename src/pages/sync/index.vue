@@ -215,11 +215,12 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { getListApi, getPullTimeApi } from './service'
+import { getCollectListApi, getOtherItemApi } from '@/service'
 import { pullInstance, pushInstance } from '@/sync/index'
 import { routerBack } from '@/utils'
 import { CollectType, MainType } from '@/types/common'
 import { hideLoading, showLoading } from '@/config'
+import { OtherDataType } from '@/database'
 
 const peopleList = ref<CollectType[]>([])
 const individualHouseholdList = ref<CollectType[]>([])
@@ -287,12 +288,12 @@ const onSync = () => {
 }
 
 const getPullTime = async () => {
-  const time: string = await getPullTimeApi()
+  const time: string = await getOtherItemApi(OtherDataType.PullTime)
   pullTime.value = time
 }
 
 const getData = async () => {
-  const res = await getListApi()
+  const res = await getCollectListApi()
   if (res && res.length) {
     peopleList.value = res.filter((item) => item.type === MainType.PeasantHousehold)
     individualHouseholdList.value = res.filter((item) => item.type === MainType.IndividualHousehold)

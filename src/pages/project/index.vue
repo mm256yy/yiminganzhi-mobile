@@ -41,7 +41,7 @@
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
-import { getListApi } from './service'
+import { getProjectListApi } from '@/service'
 import { routerBack, routerForward, setStorage, StorageKey, getStorage } from '@/utils'
 import { ProjectType } from '@/types/common'
 import { pullInstance, pushInstance } from '@/sync'
@@ -65,7 +65,7 @@ const spliceIntoChunks = (arr: any[], chunkSize: number) => {
 }
 
 const getList = async () => {
-  const res = await getListApi()
+  const res = await getProjectListApi()
   if (res && res.length) {
     list.value = spliceIntoChunks(res, 8)
   }
@@ -145,13 +145,12 @@ uni-page-body {
 }
 
 .content {
-  height: 100%;
+  flex: 1;
   padding: 35rpx 43rpx 10rpx;
 }
 
 .swiper {
   height: 100%;
-  flex: 1;
 }
 
 .grid {

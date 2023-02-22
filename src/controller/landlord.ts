@@ -6,6 +6,7 @@ import { LandlordTableName, LandlordDDLType } from '@/database'
 import { Common } from './common'
 import { LandlordType } from '@/types/sync'
 import { guid, getCurrentTimeStamp } from '@/utils'
+import { LandlordQuery, MainType } from '@/types/common'
 
 export class Landlord extends Common {
   constructor() {
@@ -13,11 +14,11 @@ export class Landlord extends Common {
   }
 
   // 获取业主列表
-  getList(): Promise<LandlordType[]> {
+  getList(type: MainType): Promise<LandlordType[]> {
     return new Promise(async (resolve, reject) => {
       try {
         const array: LandlordType[] = []
-        const sql = `select * from ${LandlordTableName} where isDelete = '0'`
+        const sql = `select * from ${LandlordTableName} where isDelete = '0' and type = '${type}'`
         const list: LandlordDDLType[] = await this.db.selectSql(sql)
         if (list && Array.isArray(list)) {
           list.forEach((item) => {
@@ -33,30 +34,16 @@ export class Landlord extends Common {
   }
 
   // 获取业主列表
-  getListWithPage(page: number, pageSize = 20): Promise<LandlordType[]> {
+  getListWithPage(type: MainType, page: number, pageSize = 20): Promise<LandlordType[]> {
     return new Promise(async (resolve, reject) => {
       try {
         const array: LandlordType[] = []
-        const sql = `select * from ${LandlordTableName} where isDelete = '0' order by 'id' asc limit ${pageSize} offset ${page}`
+        const sql = `select * from ${LandlordTableName} where isDelete = '0' and type = '${type}' order by 'id' asc limit ${pageSize} offset ${page}`
         const list: LandlordDDLType[] = await this.db.selectSql(sql)
         if (list && Array.isArray(list)) {
           list.forEach((item) => {
             const landlord = JSON.parse(item.content)
-            if (landlord) {
-              // 去掉多余字段
-              const {
-                demographicList,
-                immigrantAppendantList,
-                immigrantTreeList,
-                immigrantGraveList,
-                immigrantHouseList,
-                immigrantWillList,
-                immigrantIncomeList,
-                immigrantFile,
-                ...ret
-              } = landlord
-              array.push(ret)
-            }
+            array.push(landlord)
           })
         }
         resolve(array)
@@ -68,10 +55,7 @@ export class Landlord extends Common {
   }
 
   // 根据上报时间/上报人/名称搜索
-  getSubmitList(data: any): Promise<LandlordType[]> {
-    // 'name' text,
-    // 'reportDate' text,
-    // 'reportUser' text,
+  getSubmitList(data: LandlordQuery): Promise<LandlordType[]> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!data) {
@@ -93,25 +77,12 @@ export class Landlord extends Common {
         if (userId) {
           sql += ` and reportUser = '${userId}'`
         }
+        console.log(sql, 'sql 语句')
         const list: LandlordDDLType[] = await this.db.selectSql(sql)
         if (list && Array.isArray(list)) {
           list.forEach((item) => {
             const landlord = JSON.parse(item.content)
-            if (landlord) {
-              // 去掉多余字段
-              const {
-                demographicList,
-                immigrantAppendantList,
-                immigrantTreeList,
-                immigrantGraveList,
-                immigrantHouseList,
-                immigrantWillList,
-                immigrantIncomeList,
-                immigrantFile,
-                ...ret
-              } = landlord
-              array.push(ret)
-            }
+            array.push(landlord)
           })
         }
         resolve(array)
@@ -123,14 +94,13 @@ export class Landlord extends Common {
   }
 
   // 业主立标 新增
-  addLandlord(data: LandlordType): Promise<boolean> {
-    // uid: string
-    // content: string
-    // updatedDate: string
+  addLandlord(landlord: Omit<LandlordType, 'id' | 'uid'>): Promise<string> {
     return new Promise(async (resolve, reject) => {
       try {
-        if (!data) {
-          reject(false)
+        const data: any = landlord
+        if (!data || data.uid) {
+          console.log('数据为空或者uid已经存在')
+          reject('')
         }
         const uid = guid()
         data.uid = uid
@@ -142,17 +112,21 @@ export class Landlord extends Common {
         data.immigrantTreeList = data.immigrantTreeList || []
         data.immigrantWillList = data.immigrantWillList || []
         data.immigrantFile = data.immigrantFile || []
+        data.immigrantManagementList = data.immigrantManagementList || []
+        data.immigrantEquipmentList = data.immigrantEquipmentList || []
+        data.immigrantFacilitiesList = data.immigrantFacilitiesList || []
 
         const fields = `'uid','status','content','updateDate'`
         const values = `'${uid}','modify','${JSON.stringify(data)}','${getCurrentTimeStamp()}'`
         const res = await this.db.insertTableData(LandlordTableName, values, fields)
+        console.log('插入结果', res)
         if (res && res.code) {
-          reject(false)
+          reject('')
         }
-        resolve(true)
+        resolve(uid)
       } catch (error) {
         console.log(error, 'addLandlord-error')
-        reject(false)
+        reject('')
       }
     })
   }

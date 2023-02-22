@@ -1,5 +1,5 @@
 /**
- * 提供居民户 - 数据填报 相关的增删改功能
+ * 提供业主 - 数据填报 相关的增删改功能
  */
 
 import { LandlordType } from '@/types/sync'
@@ -12,7 +12,11 @@ import {
   HouseType,
   FamilyIncomeType,
   GraveType,
-  ImmigrantFileType
+  ImmigrantFileType,
+  CompanyType,
+  EquipmentType,
+  FacilitiesType,
+  ManagementType
 } from '@/types/datafill'
 import { Landlord } from './landlord'
 
@@ -32,12 +36,12 @@ import { Landlord } from './landlord'
 // immigrantIncomeList: FamilyIncomeType[]
 // 附件
 // immigrantFile: ImmigrantFile[]
-export class DataFill extends Landlord {
+class DataFill extends Landlord {
   constructor() {
     super()
   }
 
-  // 居民户-人口新增操作
+  // 业主-人口新增操作
   addLandlordPeople(uid: string, data: PopulationType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -57,7 +61,7 @@ export class DataFill extends Landlord {
       }
     })
   }
-  // 居民户-人口修改操作
+  // 业主-人口修改操作
   updateLandlordPeople(uid: string, data: PopulationType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -78,7 +82,7 @@ export class DataFill extends Landlord {
       }
     })
   }
-  // 居民户-人口删除操作
+  // 业主-人口删除操作
   deleteLandlordPeople(uid: string, itemUid: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -100,7 +104,7 @@ export class DataFill extends Landlord {
     })
   }
 
-  // 居民户- 附属物新增操作
+  // 业主- 附属物新增操作
   addLandlordAppendant(uid: string, data: AppendantType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -120,7 +124,7 @@ export class DataFill extends Landlord {
       }
     })
   }
-  // 居民户-附属物修改操作
+  // 业主-附属物修改操作
   updateLandlordAppendant(uid: string, data: AppendantType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -141,7 +145,7 @@ export class DataFill extends Landlord {
       }
     })
   }
-  // 居民户-附属物删除操作
+  // 业主-附属物删除操作
   deleteLandlordAppendant(uid: string, itemUid: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -163,7 +167,7 @@ export class DataFill extends Landlord {
     })
   }
 
-  // 居民户- 安置意愿新增操作
+  // 业主- 安置意愿新增操作
   addLandlordWill(uid: string, data: WillType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -183,7 +187,7 @@ export class DataFill extends Landlord {
       }
     })
   }
-  // 居民户-安置意愿修改操作
+  // 业主-安置意愿修改操作
   updateLandlordWill(uid: string, data: WillType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -204,7 +208,7 @@ export class DataFill extends Landlord {
       }
     })
   }
-  // 居民户-安置意愿删除操作
+  // 业主-安置意愿删除操作
   deleteLandlordWill(uid: string, itemUid: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -226,7 +230,7 @@ export class DataFill extends Landlord {
     })
   }
 
-  // 居民户- 果木新增操作
+  // 业主- 果木新增操作
   addLandlordTree(uid: string, data: TreeType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -246,7 +250,7 @@ export class DataFill extends Landlord {
       }
     })
   }
-  // 居民户-果木修改操作
+  // 业主-果木修改操作
   updateLandlordTree(uid: string, data: TreeType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -267,7 +271,7 @@ export class DataFill extends Landlord {
       }
     })
   }
-  // 居民户-果木删除操作
+  // 业主-果木删除操作
   deleteLandlordTree(uid: string, itemUid: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -289,7 +293,7 @@ export class DataFill extends Landlord {
     })
   }
 
-  // 居民户- 坟墓新增操作
+  // 业主- 坟墓新增操作
   addLandlordGrave(uid: string, data: GraveType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -309,7 +313,7 @@ export class DataFill extends Landlord {
       }
     })
   }
-  // 居民户-坟墓修改操作
+  // 业主-坟墓修改操作
   updateLandlordGrave(uid: string, data: GraveType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -330,7 +334,7 @@ export class DataFill extends Landlord {
       }
     })
   }
-  // 居民户-坟墓删除操作
+  // 业主-坟墓删除操作
   deleteLandlordGrave(uid: string, itemUid: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -352,7 +356,7 @@ export class DataFill extends Landlord {
     })
   }
 
-  // 居民户- 房屋新增操作
+  // 业主- 房屋新增操作
   addLandlordHouse(uid: string, data: HouseType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -372,7 +376,7 @@ export class DataFill extends Landlord {
       }
     })
   }
-  // 居民户-房屋修改操作
+  // 业主-房屋修改操作
   updateLandlordHouse(uid: string, data: HouseType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -393,7 +397,7 @@ export class DataFill extends Landlord {
       }
     })
   }
-  // 居民户-房屋删除操作
+  // 业主-房屋删除操作
   deleteLandlordHouse(uid: string, itemUid: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -415,7 +419,7 @@ export class DataFill extends Landlord {
     })
   }
 
-  // 居民户- 家庭收入新增操作
+  // 业主- 家庭收入新增操作
   addLandlordFamilyIncome(uid: string, data: FamilyIncomeType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -435,7 +439,7 @@ export class DataFill extends Landlord {
       }
     })
   }
-  // 居民户-家庭收入修改操作
+  // 业主-家庭收入修改操作
   updateLandlordFamilyIncome(uid: string, data: FamilyIncomeType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -456,7 +460,7 @@ export class DataFill extends Landlord {
       }
     })
   }
-  // 居民户-家庭收入删除操作
+  // 业主-家庭收入删除操作
   deleteLandlordFamilyIncome(uid: string, itemUid: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -478,7 +482,7 @@ export class DataFill extends Landlord {
     })
   }
 
-  // 居民户-附件新增操作
+  // 业主-附件新增操作
   addLandlordImmigrantFile(uid: string, data: ImmigrantFileType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -498,7 +502,7 @@ export class DataFill extends Landlord {
       }
     })
   }
-  // 居民户-附件修改操作
+  // 业主-附件修改操作
   updateLandlordImmigrantFile(uid: string, data: ImmigrantFileType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -519,7 +523,7 @@ export class DataFill extends Landlord {
       }
     })
   }
-  // 居民户-附件删除操作
+  // 业主-附件删除操作
   deleteLandlordImmigrantFile(uid: string, itemUid: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -536,6 +540,250 @@ export class DataFill extends Landlord {
         updateRes ? resolve(true) : reject(false)
       } catch (error) {
         console.log(error, 'deleteLandlordImmigrantFile-error')
+        reject(false)
+      }
+    })
+  }
+
+  // 业主-企业/个体户 新增操作
+  addLandlordCompany(uid: string, data: CompanyType): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const itemUid = guid()
+        data.uid = itemUid
+        data.isDelete = '0'
+        const landlordItem = await this.getLandlordByUid(uid)
+        if (landlordItem) {
+          landlordItem.company = data
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem as LandlordType)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'addLandlordCompany-error')
+        reject(false)
+      }
+    })
+  }
+  // 业主-企业/个体户 修改操作
+  updateLandlordCompany(uid: string, data: CompanyType): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const landlordItem = await this.getLandlordByUid(uid)
+        if (landlordItem) {
+          landlordItem.company = data
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem as LandlordType)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'updateLandlordCompany-error')
+        reject(false)
+      }
+    })
+  }
+  // 业主-企业/个体户 删除操作
+  deleteLandlordCompany(uid: string): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const landlordItem = await this.getLandlordByUid(uid)
+        if (landlordItem) {
+          landlordItem.company.isDelete = '1'
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem as LandlordType)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'deleteLandlordCompany-error')
+        reject(false)
+      }
+    })
+  }
+
+  // 业主-设施设备新增操作
+  addLandlordEquipment(uid: string, data: EquipmentType): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const itemUid = guid()
+        data.uid = itemUid
+        data.isDelete = '0'
+        const landlordItem = await this.getLandlordByUid(uid)
+        if (landlordItem) {
+          landlordItem.immigrantEquipmentList.push(data)
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem as LandlordType)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'addLandlordEquipment-error')
+        reject(false)
+      }
+    })
+  }
+  // 业主-设施设备修改操作
+  updateLandlordEquipment(uid: string, data: EquipmentType): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const landlordItem = await this.getLandlordByUid(uid)
+        if (landlordItem) {
+          landlordItem.immigrantEquipmentList.forEach((item) => {
+            if (item.uid === data.uid) {
+              item = data
+            }
+          })
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem as LandlordType)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'updateLandlordEquipment-error')
+        reject(false)
+      }
+    })
+  }
+  // 业主-设施设备删除操作
+  deleteLandlordEquipment(uid: string, itemUid: string): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const landlordItem = await this.getLandlordByUid(uid)
+        if (landlordItem) {
+          landlordItem.immigrantEquipmentList.forEach((item) => {
+            if (item.uid === itemUid) {
+              item.isDelete = '1'
+            }
+          })
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem as LandlordType)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'deleteLandlordEquipment-error')
+        reject(false)
+      }
+    })
+  }
+
+  // 业主-企业营收新增操作
+  addLandlordManagement(uid: string, data: ManagementType): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const itemUid = guid()
+        data.uid = itemUid
+        data.isDelete = '0'
+        const landlordItem = await this.getLandlordByUid(uid)
+        if (landlordItem) {
+          landlordItem.immigrantManagementList.push(data)
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem as LandlordType)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'addLandlordManagement-error')
+        reject(false)
+      }
+    })
+  }
+  // 业主-企业营收修改操作
+  updateLandlordManagement(uid: string, data: ManagementType): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const landlordItem = await this.getLandlordByUid(uid)
+        if (landlordItem) {
+          landlordItem.immigrantManagementList.forEach((item) => {
+            if (item.uid === data.uid) {
+              item = data
+            }
+          })
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem as LandlordType)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'updateLandlordManagement-error')
+        reject(false)
+      }
+    })
+  }
+  // 业主-企业营收删除操作
+  deleteLandlordManagement(uid: string, itemUid: string): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const landlordItem = await this.getLandlordByUid(uid)
+        if (landlordItem) {
+          landlordItem.immigrantManagementList.forEach((item) => {
+            if (item.uid === itemUid) {
+              item.isDelete = '1'
+            }
+          })
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem as LandlordType)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'deleteLandlordManagement-error')
+        reject(false)
+      }
+    })
+  }
+
+  // 业主-农村专项设施新增操作
+  addLandlordFacilities(uid: string, data: FacilitiesType): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const itemUid = guid()
+        data.uid = itemUid
+        data.isDelete = '0'
+        const landlordItem = await this.getLandlordByUid(uid)
+        if (landlordItem) {
+          landlordItem.immigrantFacilitiesList.push(data)
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem as LandlordType)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'addLandlordFacilities-error')
+        reject(false)
+      }
+    })
+  }
+  // 业主-农村专项设施修改操作
+  updateLandlordFacilities(uid: string, data: FacilitiesType): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const landlordItem = await this.getLandlordByUid(uid)
+        if (landlordItem) {
+          landlordItem.immigrantFacilitiesList.forEach((item) => {
+            if (item.uid === data.uid) {
+              item = data
+            }
+          })
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem as LandlordType)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'updateLandlordFacilities-error')
+        reject(false)
+      }
+    })
+  }
+  // 业主-农村专项设施删除操作
+  deleteLandlordFacilities(uid: string, itemUid: string): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const landlordItem = await this.getLandlordByUid(uid)
+        if (landlordItem) {
+          landlordItem.immigrantFacilitiesList.forEach((item) => {
+            if (item.uid === itemUid) {
+              item.isDelete = '1'
+            }
+          })
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem as LandlordType)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'deleteLandlordFacilities-error')
         reject(false)
       }
     })

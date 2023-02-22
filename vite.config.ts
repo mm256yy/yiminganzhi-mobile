@@ -31,7 +31,7 @@ export default defineConfig({
       // 正则表达式写法
       '^/api': {
         target: env.apiBaseUrl,
-        changeOrigin: true, //开启代理
+        changeOrigin: false, //开启代理
       },
       // '^/api': {
       //   target: 'http://192.168.1.110:8880',

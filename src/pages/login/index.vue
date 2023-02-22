@@ -39,7 +39,9 @@
 <script lang="ts" setup>
 import { nextTick, ref, unref } from 'vue'
 import { loginApi, userInfoApi } from './api'
+/* #ifdef APP-PLUS */
 import { pullInstance } from '@/sync'
+/* #endif */
 import { setStorage, StorageKey, routerForward } from '@/utils'
 
 const name = ref<string>('')
@@ -73,11 +75,13 @@ const loginIn = async () => {
     nextTick(async () => {
       const userInfo = await userInfoApi()
       setStorage(StorageKey.USERINFO, userInfo)
+      /* #ifdef APP-PLUS */
       pullInstance.pullProjectData().then((res) => {
         if (res) {
           doRoute()
         }
       })
+      /* #endif */
     })
   }
 }

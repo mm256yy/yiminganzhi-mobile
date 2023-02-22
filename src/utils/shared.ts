@@ -48,3 +48,37 @@ export function guid() {
 export function getCurrentTimeStamp() {
   return new Date().getTime()
 }
+
+export function arrayToTree(items: any[]) {
+  const result: any[] = [] // 存放结果集
+  const itemMap: any = {} //
+  for (const item of items) {
+    const id = item.code
+    const pid = item.parentCode
+
+    if (!itemMap[id]) {
+      itemMap[id] = {
+        children: []
+      }
+    }
+
+    itemMap[id] = {
+      ...item,
+      children: itemMap[id]['children']
+    }
+
+    const treeItem = itemMap[id]
+
+    if (item.districtType === 'Country') {
+      result.push(treeItem)
+    } else {
+      if (!itemMap[pid]) {
+        itemMap[pid] = {
+          children: []
+        }
+      }
+      itemMap[pid].children.push(treeItem)
+    }
+  }
+  return result
+}
