@@ -1,6 +1,6 @@
 <template>
   <view class="main-wrap">
-    <Back class="main-nav" />
+    <Back class="main-nav" title="居民户填报" />
 
     <view class="main-cont">
       <view class="list-content">
@@ -13,7 +13,6 @@
 
               <view class="list-header-rt">
                 <view class="list-header-left">
-                  <image class="icon" src="@/static/images/icon_header.png" mode="scaleToFill" />
                   <view class="name">杨汉中</view>
                   <view class="account-no">1040092345321464</view>
                 </view>
@@ -34,7 +33,7 @@
 
             <view class="tabs-content">
               <!-- tab 切换 -->
-              <Tabs :dataList="tabsList" @select-tabs="selectTabs" />
+              <Tabs :dataList="tabsList" :expand="showExpand" @select-tabs="selectTabs" />
 
               <!-- 居民户信息 -->
               <household-info v-if="tabVal === 1" />
@@ -68,7 +67,7 @@
       </view>
 
       <view :class="['tree-wrapper', showExpand ? 'w-0' : 'expand']">
-        <Tree :treeData="treeData" @tree-item-click="treeItemClick" />
+        <Tree :treeData="treeData" :iconSrc="iconSrc" @tree-item-click="treeItemClick" />
       </view>
     </view>
   </view>
@@ -89,16 +88,36 @@ import revenueInfo from '../revenueInfo/index.vue' // 引入安置意愿信息�
 import willingnessInfo from '../willingnessInfo/index.vue' // 引入安置意愿信息组件
 import attachmentUpload from '../attachmentUpload/index.vue' // 引入附件上传组件
 
+import iconSrc from '@/static/images/icon_add_household.png' // 侧边栏，添加 icon
+import iconHouseholdDef from '@/static/images/icon_household_default.png' // 引入居民户信息默认 icon
+import iconHouseholdSel from '@/static/images/icon_household_select.png' // 引入居民户信息选中 icon
+import iconDemographicDef from '@/static/images/icon_demographic_default.png' // 引入人口信息默认 icon
+import iconDemographicSel from '@/static/images/icon_demographic_select.png' // 引入人口信息选中 icon
+import iconHouseDef from '@/static/images/icon_house_default.png' // 引入房屋信息默认 icon
+import iconHouseSel from '@/static/images/icon_house_select.png' // 引入房屋信息选中 icon
+import iconAccessoryDef from '@/static/images/icon_accessory_default.png' // 引入附属物信息默认 icon
+import iconAccessorySel from '@/static/images/icon_accessory_select.png' // 引入附属物信息选中 icon
+import iconTreeDef from '@/static/images/icon_tree_default.png' // 引入零星(林)果木默认 icon
+import iconTreeSel from '@/static/images/icon_tree_select.png' // 引入零星(林)果木默认 icon
+import iconGraveDef from '@/static/images/icon_grave_default.png' // 引入坟墓信息默认 icon
+import iconGraveSel from '@/static/images/icon_grave_select.png' // 引入坟墓信息选中 icon
+import iconAttachmentDef from '@/static/images/icon_attachment_default.png' // 引入附件上传默认 icon
+import iconAttachmentSel from '@/static/images/icon_attachment_select.png' // 引入附件上传选中 icon
+import iconRevenueDef from '@/static/images/icon_revenue_default.png' // 引入家庭收入信息默认 icon
+import iconRevenueSel from '@/static/images/icon_revenue_select.png' // 引入家庭收入信息默认 icon
+import iconWillingnessDef from '@/static/images/icon_willingness_default.png' // 引入安置意愿调查默认 icon
+import iconWillingnessSel from '@/static/images/icon_willingness_select.png' // 引入安置意愿调查默认 icon
+
 const tabsList = ref([
-  { label: '居民户信息', value: 1 },
-  { label: '人口信息', value: 2 },
-  { label: '房屋信息', value: 3 },
-  { label: '附属物信息', value: 4 },
-  { label: '零星 (林) 果木信息', value: 5 },
-  { label: '坟墓信息', value: 6 },
-  { label: '家庭收入信息', value: 7 },
-  { label: '安置意愿信息', value: 8 },
-  { label: '附件上传', value: 9 }
+  { label: '居民户信息', value: 1, defIcon: iconHouseholdDef, selIcon: iconHouseholdSel },
+  { label: '人口信息', value: 2, defIcon: iconDemographicDef, selIcon: iconDemographicSel },
+  { label: '房屋信息', value: 3, defIcon: iconHouseDef, selIcon: iconHouseSel },
+  { label: '附属物信息', value: 4, defIcon: iconAccessoryDef, selIcon: iconAccessorySel },
+  { label: '零星 (林) 果木', value: 5, defIcon: iconTreeDef, selIcon: iconTreeSel },
+  { label: '坟墓信息', value: 6, defIcon: iconGraveDef, selIcon: iconGraveSel },
+  { label: '家庭收入信息', value: 7, defIcon: iconRevenueDef, selIcon: iconRevenueSel },
+  { label: '安置意愿信息', value: 8, defIcon: iconWillingnessDef, selIcon: iconWillingnessSel },
+  { label: '附件上传', value: 9, defIcon: iconAttachmentDef, selIcon: iconAttachmentSel }
 ])
 
 const showExpand = ref<boolean>(false)
@@ -108,14 +127,65 @@ const treeData = ref([
   {
     id: 1,
     name: '清溪镇',
+    level: 1,
     children: [
       {
         id: 11,
         name: '清溪行政村',
+        level: 2,
         children: [
           {
             id: 111,
             name: '杨村自然村',
+            level: 3,
+            children: [
+              {
+                id: 1111,
+                name: '邵丽',
+                accountNo: 1040092345321464,
+                finish: 2,
+                total: 8
+              },
+              {
+                id: 1112,
+                name: '孔毓希',
+                accountNo: 1040092345321465,
+                finish: 0,
+                total: 8
+              }
+            ]
+          },
+          {
+            id: 222,
+            name: '李村自然村',
+            children: [
+              {
+                id: 1111,
+                name: '邵西',
+                accountNo: 1040092345321454,
+                finish: 3,
+                total: 8
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 1,
+    name: '清溪镇',
+    level: 1,
+    children: [
+      {
+        id: 11,
+        name: '清溪行政村',
+        level: 2,
+        children: [
+          {
+            id: 111,
+            name: '杨村自然村',
+            level: 3,
             children: [
               {
                 id: 1111,
@@ -275,20 +345,14 @@ const selectTabs = (data: any) => {
       flex-direction: row;
       align-items: center;
 
-      .icon {
-        width: 16rpx;
-        height: 16rpx;
-        margin: 0 5rpx 0 8rpx;
-      }
-
       .name {
-        margin-right: 5rpx;
-        font-size: 11rpx;
+        margin: 0 6rpx 0 10rpx;
+        font-size: 13rpx;
         color: #171718;
       }
 
       .account-no {
-        font-size: 11rpx;
+        font-size: 13rpx;
         color: #1c5df1;
       }
     }
@@ -304,8 +368,8 @@ const selectTabs = (data: any) => {
         align-items: center;
         justify-content: center;
         width: 68rpx;
-        height: 21rpx;
-        border-radius: 2rpx;
+        height: 23rpx;
+        border-radius: 11rpx;
 
         &:active {
           opacity: 0.7;
@@ -352,10 +416,11 @@ const selectTabs = (data: any) => {
   left: 6rpx;
   z-index: 3;
   display: flex;
-  flex-direction: column;
   height: calc(100vh - 68rpx);
   overflow-y: scroll;
   background-color: #fff;
+  border-radius: 5px;
+  flex-direction: column;
 
   &.w-0 {
     width: 0;

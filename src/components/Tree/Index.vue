@@ -1,15 +1,13 @@
 <template>
   <view class="tree-wrap">
     <view class="search-box">
-      <view class="ipt-wrap">
-        <input
-          class="ipt"
-          @confirm="iptConfirm"
-          type="text"
-          placeholder="请输入行政村、自然村、姓名"
-        />
-        <uni-icons type="search" color="#171718" size="9rpx" />
+      <view class="search-wrap">
+        <image class="icon" src="@/static/images/icon_search.png" mode="scaleToFill" />
+        <input class="txt" placeholder="搜索行政村、自然村、姓名" @confirm="iptConfirm" />
       </view>
+      <label class="add-wrap">
+        <image class="add-icon" :src="iconSrc" mode="scaleToFill" />
+      </label>
     </view>
 
     <view class="tree-list">
@@ -24,6 +22,7 @@ import Tree from './Tree.vue'
 
 interface PropsType {
   treeData: any[]
+  iconSrc: string
 }
 
 const props = defineProps<PropsType>()
@@ -94,38 +93,62 @@ const treeItemClick = (data: any) => {
 .tree-wrap {
   width: 200rpx;
   background-color: #ffffff;
-  border-radius: 2rpx;
-  box-shadow: 0rpx 0rpx 12rpx 0rpx rgba(0, 0, 0, 0.08);
-}
+  border-radius: 5rpx;
 
-.tree-list {
-  border-top: 1rpx solid #e1e4ea;
-}
+  .search-box {
+    display: flex;
+    width: 100%;
+    height: 33rpx;
+    padding: 6rpx;
+    border-radius: 7rpx 7rpx 0 0;
+    box-shadow: 0 1rpx 9rpx -2rpx rgba(0, 0, 0, 0.18);
+    box-sizing: border-box;
+    align-items: center;
 
-.search-box {
-  width: 200rpx;
-  height: 33rpx;
-  padding: 6rpx;
-  border-radius: 2rpx;
-}
+    .search-wrap {
+      display: flex;
+      width: 158rpx;
+      height: 23rpx;
+      padding: 0 7rpx;
+      background: #f6f7f9;
+      border: 1px solid #e8e8e8;
+      border-radius: 12rpx;
+      box-sizing: border-box;
+      align-items: center;
 
-.ipt-wrap {
-  display: flex;
-  width: 176rpx;
-  height: 21rpx;
-  padding: 0 5rpx;
-  background-color: #ffffff;
-  border: 1rpx solid #dcdfe6;
-  border-radius: 2rpx;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-}
+      .icon {
+        width: 9rpx;
+        height: 9rpx;
+        margin-right: 7rpx;
+      }
 
-.ipt {
-  flex: 1;
-  margin-right: 4rpx;
-  font-size: 9rpx;
-  color: #171718;
+      .txt {
+        flex: 1;
+        margin-right: 4rpx;
+        font-size: 9rpx;
+        color: #171718;
+      }
+    }
+
+    .add-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 42rpx;
+      height: 23rpx;
+
+      .add-icon {
+        width: 14rpx;
+        height: 14rpx;
+      }
+    }
+  }
+
+  .tree-list {
+    width: 100%;
+    padding: 6rpx;
+    border-radius: 5rpx;
+    box-sizing: border-box;
+  }
 }
 </style>

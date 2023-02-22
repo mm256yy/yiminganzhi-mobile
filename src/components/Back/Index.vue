@@ -1,30 +1,47 @@
 <template>
   <view class="back-wrapper">
-    <view class="back" @click="back">
-      <image class="icon" src="@/static/images/back.png" mode="scaleToFill" />
-      <text class="txt">返回</text>
+    <view class="back">
+      <image class="icon-back" src="@/static/images/back.png" mode="scaleToFill" @click="back" />
+      <view class="title">{{ props.title }}</view>
+      <image
+        class="icon-home"
+        src="@/static/images/icon_home.png"
+        mode="scaleToFill"
+        @click="toHome"
+      />
     </view>
   </view>
 </template>
 
 <script lang="ts" setup>
+import { routerForward } from '@/utils'
+
+interface PropsType {
+  title: string
+}
+
+const props = defineProps<PropsType>()
+
 const back = () => {
   uni.navigateBack({
     delta: 1
   })
 }
+
+const toHome = () => {
+  routerForward('home')
+}
 </script>
 
 <style lang="scss" scoped>
 .back-wrapper {
-  height: 23rpx;
-  background-color: #fff;
+  height: calc(23rpx + var(--status-bar-height));
+  background: transparent;
 
   .back {
     display: flex;
     flex-direction: row;
     align-items: center;
-    flex: 1;
     height: 23rpx;
     padding: 0 9rpx;
 
@@ -32,15 +49,23 @@ const back = () => {
     cursor: pointer;
     /* #endif */
 
-    .icon {
-      width: 12rpx;
-      height: 12rpx;
-      margin-right: 2rpx;
+    .icon-back {
+      width: 14rpx;
+      height: 14rpx;
     }
 
-    .txt {
-      font-size: 8rpx;
-      color: #171718;
+    .title {
+      display: flex;
+      font-size: 15rpx;
+      color: #fff;
+      align-items: center;
+      justify-content: center;
+      flex: 1 auto;
+    }
+
+    .icon-home {
+      width: 23rpx;
+      height: 23rpx;
     }
   }
 }

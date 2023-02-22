@@ -1,7 +1,7 @@
 <template>
   <view class="form-wrapper">
-    <view class="line"></view>
-    <Back />
+    <view class="line" />
+    <Back title="个人信息编辑" />
     <view class="main">
       <uni-forms class="form" ref="form" :modelValue="formData" :rules="rules">
         <uni-row>
@@ -547,6 +547,7 @@ const submit = () => {
 
       ::v-deep.uni-forms-item__label {
         font-size: 9rpx !important;
+        color: rgba(23, 23, 24, 0.6) !important;
       }
 
       ::v-deep.uni-easyinput__content {

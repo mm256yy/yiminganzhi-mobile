@@ -3,21 +3,6 @@
     <image src="@/static/images/head_bg.png" class="head-bg" />
     <view :style="{ height: `${statusBarHeight}px` }" />
     <view class="home-wrap" :style="{ height: `${pageHeight}px` }">
-      <view class="home-header">
-        <view class="header-lt">
-          <image class="logo" src="@/static/images/logo.png" />
-          <view class="project">清晰水库</view>
-          <view class="status">（实物采集 — 居民户）</view>
-        </view>
-
-        <view class="header-rt">
-          <view class="btn-item">
-            <image class="icon" src="@/static/images/admin.png" mode="scaleToFill" />
-            <view class="name">admin</view>
-          </view>
-        </view>
-      </view>
-
       <view class="home-body">
         <Main />
       </view>
@@ -57,70 +42,6 @@ const pageHeight = screenHeight - statusBarHeight
     display: flex;
     width: 750rpx;
     flex-direction: column;
-
-    .home-header {
-      display: flex;
-      height: 43rpx;
-      padding: 0 9rpx;
-      overflow: hidden;
-      box-sizing: border-box;
-      align-items: center;
-      justify-content: space-between;
-
-      .header-lt {
-        display: flex;
-        align-items: center;
-        height: 33rpx;
-
-        .logo {
-          width: 17rpx;
-          height: 17rpx;
-          margin-right: 6rpx;
-        }
-
-        .project {
-          font-size: 14rpx;
-          font-weight: 600;
-          color: #fff;
-        }
-
-        .status {
-          font-size: 11rpx;
-          font-weight: normal;
-          color: #fff;
-        }
-      }
-
-      .header-rt {
-        display: flex;
-        align-items: center;
-        height: 33rpx;
-
-        .btn-item {
-          display: flex;
-          height: 12rpx;
-          padding: 0 11rpx;
-          font-size: 11rpx;
-          font-weight: 500;
-          color: #fff;
-          flex-direction: row;
-          align-items: center;
-          justify-content: center;
-
-          .icon {
-            width: 13rpx;
-            height: 13rpx;
-            margin-right: 2rpx;
-          }
-
-          .name {
-            font-size: 11rpx;
-            font-weight: 400;
-            color: #fff;
-          }
-        }
-      }
-    }
 
     .home-body {
       display: flex;
