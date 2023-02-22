@@ -2,16 +2,168 @@
  * 区划/业主 树 查询
  */
 
-import { DistrictTableName, DistrictDDLType } from '@/database'
 import { Common } from './common'
-import { DistrictType } from '@/types/common'
+import { LandlordController } from './landlord'
+import { DistrictController } from './district'
+import { VillageController } from './village'
+import { MainType } from '@/types/common'
+import { arrayToTree } from '@/utils'
 
 class DistrictTree extends Common {
   constructor() {
     super()
   }
-  getTree(): Promise<any> {
-    return new Promise(async (resolve, reject) => {})
+
+  public isArrayAndNotNull(list: any): boolean {
+    if (list && Array.isArray(list) && list.length) {
+      return true
+    }
+    return false
+  }
+
+  // Country: 'areaCode',
+  // Township: 'townCode',
+  // Village: 'villageCode',
+  // naturalVillage: 'virutalVillageCode'
+
+  getLandlordTree(type: MainType): Promise<any[]> {
+    return new Promise(async (resolve) => {
+      // 拿到 区划列表
+      const districtList = await DistrictController.getList()
+
+      // 拿到 业主列表
+      const landlordList = await LandlordController.getList(type)
+
+      // 空校验
+      if (this.isArrayAndNotNull(districtList) && this.isArrayAndNotNull(landlordList)) {
+        // 统计 信息
+        const totalMap: any = {}
+        const reportMap: any = {}
+        landlordList.forEach((item) => {
+          item.parentCode =
+            item.type === MainType.PeasantHousehold ? item.virutalVillageCode : item.villageCode
+          item.code = item.id
+          item.totalNum = 0
+          item.reportNum = 0
+          // 自热村
+          if (item.virutalVillageCode) {
+            // 总的人口
+            if (!totalMap[item.virutalVillageCode]) {
+              totalMap[item.virutalVillageCode] = 1
+            } else {
+              totalMap[item.virutalVillageCode]++
+            }
+            // 填报的人口
+            if (item.reportStatus === 'ReportSucceed') {
+              if (!reportMap[item.virutalVillageCode]) {
+                reportMap[item.virutalVillageCode] = 1
+              } else {
+                reportMap[item.virutalVillageCode]++
+              }
+            }
+          }
+
+          // 行政村
+          if (item.villageCode) {
+            // 总的人口
+            if (!totalMap[item.villageCode]) {
+              totalMap[item.villageCode] = 1
+            } else {
+              totalMap[item.villageCode]++
+            }
+            // 填报的人口
+            if (item.reportStatus === 'ReportSucceed') {
+              if (!reportMap[item.villageCode]) {
+                reportMap[item.villageCode] = 1
+              } else {
+                reportMap[item.villageCode]++
+              }
+            }
+          }
+
+          // 乡级
+          if (item.townCode) {
+            // 总的人口
+            if (!totalMap[item.townCode]) {
+              totalMap[item.townCode] = 1
+            } else {
+              totalMap[item.townCode]++
+            }
+            // 填报的人口
+            if (item.reportStatus === 'ReportSucceed') {
+              if (!reportMap[item.townCode]) {
+                reportMap[item.townCode] = 1
+              } else {
+                reportMap[item.townCode]++
+              }
+            }
+          }
+
+          // 区/镇级
+          if (item.areaCode) {
+            // 总的人口
+            if (!totalMap[item.areaCode]) {
+              totalMap[item.areaCode] = 1
+            } else {
+              totalMap[item.areaCode]++
+            }
+            // 填报的人口
+            if (item.reportStatus === 'ReportSucceed') {
+              if (!reportMap[item.areaCode]) {
+                reportMap[item.areaCode] = 1
+              } else {
+                reportMap[item.areaCode]++
+              }
+            }
+          }
+        })
+
+        // 拿到自然村
+        let villageList = []
+        if (type === MainType.PeasantHousehold) {
+          // 剧名户 需要拿到自然村
+          villageList = await VillageController.getList()
+          const totalArray = [...districtList, ...villageList]
+          totalArray.forEach((item) => {
+            item.totalNum = totalMap[item.code]
+            item.reportNum = reportMap[item.code]
+          })
+          const treeArray = [...totalArray, ...landlordList]
+          const res = arrayToTree(treeArray)
+          console.log(res, '居民户树')
+          resolve(res)
+        } else {
+          const totalArray = [...districtList]
+          totalArray.forEach((item) => {
+            item.totalNum = totalMap[item.code]
+            item.reportNum = reportMap[item.code]
+          })
+          const treeArray = [...totalArray, ...landlordList]
+          const res = arrayToTree(treeArray)
+          console.log(res, '企业/个体户/村集体树')
+          resolve(res)
+        }
+      } else {
+        resolve([])
+      }
+    })
+  }
+
+  getVillageTree(): Promise<any[]> {
+    return new Promise(async (resolve) => {
+      // 拿到 区划列表
+      const districtList = await DistrictController.getList()
+      // 拿到 自然村列表
+      const villageList = await VillageController.getList()
+      const totalArray = [...districtList, ...villageList]
+      if (this.isArrayAndNotNull(totalArray)) {
+        const res = arrayToTree(totalArray)
+        console.log(res, '自然村树')
+        resolve(res)
+      } else {
+        resolve([])
+      }
+    })
   }
 }
 

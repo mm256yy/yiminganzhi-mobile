@@ -269,8 +269,8 @@ class PullData {
       if (this.isArrayAndNotNull(list)) {
         list.forEach((item) => {
           const fields =
-            "'uid','name','reportDate','reportUser','status','content','updatedDate','isDelete'"
-          const values = `'${item.uid}','${item.name}','${
+            "'uid','name','type','reportDate','reportUser','status','content','updatedDate','isDelete'"
+          const values = `'${item.uid}','${item.name}','${item.type}','${
             item.reportDate ? dayjs(item.reportDate).format('YYYY-MM-DD HH:mm:ss') : ''
           }','${item.reportUser}','default','${JSON.stringify(
             item
@@ -300,6 +300,7 @@ class PullData {
             // 删除居民户数据
             db.deleteTableData(LandlordTableName, 'uid', item.deleteId)
           }
+          // todo
           if (item.type === 'village') {
             // 删除自然村数据
             db.deleteTableData(VillageTableName, 'uid', item.deleteId)

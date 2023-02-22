@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { onLaunch, onShow, onHide } from '@dcloudio/uni-app'
 import { setStorage, StorageKey, getStorage, routerForward } from './utils'
+/* #ifdef APP-PLUS */
 import { pullInstance } from './sync'
+/* #endif */
 
 onLaunch(() => {
   /* #ifdef APP-PLUS */

@@ -52,7 +52,7 @@ class Village extends Common {
     })
   }
 
-  // 居民户立标 新增
+  // 自然村立标 新增
   add(data: VillageType): Promise<boolean> {
     // uid: string
     // content: string
@@ -78,7 +78,7 @@ class Village extends Common {
     })
   }
 
-  // 居民户列表修改
+  // 自然村列表修改
   update(data: VillageType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -101,7 +101,7 @@ class Village extends Common {
     })
   }
 
-  // 居民户列表-uid查询单个数据
+  // 自然村列表-uid查询单个数据
   getVillageByUid(uid: string): Promise<VillageType | null> {
     return new Promise(async (resolve, reject) => {
       try {

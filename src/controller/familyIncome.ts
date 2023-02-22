@@ -10,7 +10,7 @@ class FamilyIncome extends Common {
   constructor() {
     super()
   }
-  getList() {
+  getList(): Promise<FamilyIncomeConfigType[]> {
     return new Promise(async (resolve, reject) => {
       try {
         const array: FamilyIncomeConfigType[] = []
