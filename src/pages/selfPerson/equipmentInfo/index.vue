@@ -72,7 +72,7 @@
 import { routerForward } from '@/utils'
 
 const toLink = () => {
-  routerForward('entEquipmentInfoEdit')
+  routerForward('selfEquipmentInfoEdit')
 }
 </script>
 

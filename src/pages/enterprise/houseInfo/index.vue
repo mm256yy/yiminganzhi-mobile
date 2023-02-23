@@ -58,14 +58,14 @@
           <uni-row>
             <uni-col :span="8">
               <view class="col">
-                <view class="label">房屋类别：</view>
-                <view class="content">生活办公用房</view>
+                <view class="label">所在位置：</view>
+                <view class="content">淹没区</view>
               </view>
             </uni-col>
             <uni-col :span="8">
               <view class="col">
-                <view class="label">房屋产别：</view>
-                <view class="content">集体所有房产</view>
+                <view class="label">淹没范围：</view>
+                <view class="content">线下</view>
               </view>
             </uni-col>
             <uni-col :span="8">
@@ -85,7 +85,7 @@
 import { routerForward } from '@/utils'
 
 const toEdit = () => {
-  routerForward('houseInfoEdit')
+  routerForward('entHouseInfoEdit')
 }
 </script>
 

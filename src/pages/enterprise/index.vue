@@ -1,7 +1,6 @@
 <template>
   <view class="page-wrap">
     <image src="@/static/images/head_bg.png" class="head-bg" />
-    <view :style="{ height: `${statusBarHeight}px` }" />
     <view class="home-wrap" :style="{ height: `${pageHeight}px` }">
       <view class="home-body">
         <Main />

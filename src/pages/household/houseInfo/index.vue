@@ -92,6 +92,7 @@ const toEdit = () => {
 <style lang="scss" scoped>
 .house-info-wrapper {
   width: 100%;
+  overflow-y: scroll;
 
   .list {
     width: 100%;

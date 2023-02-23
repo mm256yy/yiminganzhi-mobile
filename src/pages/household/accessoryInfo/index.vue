@@ -134,8 +134,8 @@
 
 <style lang="scss" scoped>
 .accessory-info-wrapper {
-  display: flex;
-  flex-direction: column;
+  width: 100%;
+  overflow-y: scroll;
 
   .accessory-container {
     display: table;

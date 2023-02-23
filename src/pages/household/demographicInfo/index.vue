@@ -76,6 +76,7 @@
         </view>
       </view>
     </view>
+    <image class="add-btn" src="@/static/images/icon_add.png" mode="scaleToFill" @click="toLink" />
   </view>
 </template>
 
@@ -90,6 +91,7 @@ const toLink = () => {
 <style lang="scss" scoped>
 .demographic-wrapper {
   width: 100%;
+  overflow-y: scroll;
 
   .list {
     width: 100%;
@@ -165,6 +167,14 @@ const toLink = () => {
         }
       }
     }
+  }
+
+  .add-btn {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    width: 66rpx;
+    height: 66rpx;
   }
 }
 </style>

@@ -60,7 +60,7 @@
           </view>
         </view>
 
-        <view class="enter-item">
+        <view class="enter-item" @click="toLink('enterprise')">
           <view class="inner">
             <view class="top">
               <image
@@ -78,7 +78,7 @@
           </view>
         </view>
 
-        <view class="enter-item">
+        <view class="enter-item" @click="toLink('selfPerson')">
           <view class="inner">
             <view class="top">
               <image class="enter-icon" src="@/static/images/single_enter.png" mode="scaleToFill" />

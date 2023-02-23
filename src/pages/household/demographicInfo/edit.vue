@@ -1,6 +1,5 @@
 <template>
   <view class="form-wrapper">
-    <view class="line" />
     <Back title="个人信息编辑" />
     <view class="main">
       <uni-forms class="form" ref="form" :modelValue="formData" :rules="rules">
@@ -524,12 +523,10 @@ const submit = () => {
 .form-wrapper {
   display: flex;
   flex-direction: column;
-  flex: 1;
+  width: 100%;
   height: 100vh;
-
-  .line {
-    height: var(--status-bar-height);
-  }
+  background: url('../../../static/images/common_bg.png') no-repeat;
+  background-size: 100% 100%;
 
   .main {
     height: calc(100vh - 23rpx);

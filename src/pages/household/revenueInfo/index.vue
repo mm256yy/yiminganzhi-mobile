@@ -14,7 +14,7 @@
               @focus="inputFocus(1)"
               @blur="inputBlur"
             />
-            <view class="unit">（万元）</view>
+            <view class="unit">万元</view>
           </view>
         </view>
       </uni-col>
@@ -30,7 +30,7 @@
               @focus="inputFocus(2)"
               @blur="inputBlur"
             />
-            <view class="unit">（万元）</view>
+            <view class="unit">万元</view>
           </view>
         </view>
       </uni-col>
@@ -46,7 +46,7 @@
               @focus="inputFocus(3)"
               @blur="inputBlur"
             />
-            <view class="unit">（万元）</view>
+            <view class="unit">万元</view>
           </view>
         </view>
       </uni-col>
@@ -62,7 +62,7 @@
               @focus="inputFocus(4)"
               @blur="inputBlur"
             />
-            <view class="unit">（万元）</view>
+            <view class="unit">万元</view>
           </view>
         </view>
       </uni-col>
@@ -101,7 +101,7 @@
               @focus="inputFocus(6)"
               @blur="inputBlur"
             />
-            <view class="unit">（万元）</view>
+            <view class="unit">万元</view>
           </view>
         </view>
       </uni-col>
@@ -117,7 +117,7 @@
               @focus="inputFocus(7)"
               @blur="inputBlur"
             />
-            <view class="unit">（万元）</view>
+            <view class="unit">万元</view>
           </view>
         </view>
       </uni-col>
@@ -133,7 +133,7 @@
               @focus="inputFocus(8)"
               @blur="inputBlur"
             />
-            <view class="unit">（万元）</view>
+            <view class="unit">万元</view>
           </view>
         </view>
       </uni-col>
@@ -149,7 +149,7 @@
               @focus="inputFocus(9)"
               @blur="inputBlur"
             />
-            <view class="unit">（万元）</view>
+            <view class="unit">万元</view>
           </view>
         </view>
       </uni-col>
@@ -165,7 +165,7 @@
               @focus="inputFocus(10)"
               @blur="inputBlur"
             />
-            <view class="unit">（万元）</view>
+            <view class="unit">万元</view>
           </view>
         </view>
       </uni-col>
@@ -181,7 +181,7 @@
               @focus="inputFocus(11)"
               @blur="inputBlur"
             />
-            <view class="unit">（万元）</view>
+            <view class="unit">万元</view>
           </view>
         </view>
       </uni-col>
@@ -220,7 +220,7 @@
               @focus="inputFocus(13)"
               @blur="inputBlur"
             />
-            <view class="unit">（万元）</view>
+            <view class="unit">万元</view>
           </view>
         </view>
       </uni-col>
@@ -303,7 +303,7 @@ const inputBlur = () => {
       }
 
       .input-txt {
-        width: 100rpx;
+        width: 120rpx;
         height: 23rpx;
         padding-left: 9rpx;
         font-size: 9rpx;
@@ -312,7 +312,7 @@ const inputBlur = () => {
       }
 
       .unit {
-        width: 50rpx;
+        width: 30rpx;
         height: 22rpx;
         font-size: 9rpx;
         line-height: 22rpx;
@@ -363,7 +363,7 @@ const inputBlur = () => {
     }
 
     .amount {
-      width: 100rpx;
+      width: 124rpx;
       height: 23rpx;
       padding-left: 9rpx;
       font-size: 9rpx;
@@ -372,7 +372,7 @@ const inputBlur = () => {
     }
 
     .unit {
-      width: 50rpx;
+      width: 40rpx;
       height: 23rpx;
       font-size: 9rpx;
       line-height: 23rpx;

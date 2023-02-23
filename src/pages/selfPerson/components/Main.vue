@@ -1,6 +1,6 @@
 <template>
   <view class="main-wrap">
-    <Back title="企业填报" />
+    <Back title="个体工商户填报" />
 
     <view class="main-cont">
       <view class="list-content">
@@ -13,8 +13,8 @@
 
               <view class="list-header-rt">
                 <view class="list-header-left">
-                  <view class="name">武义国康竹木地板有限公司佐溪分公司</view>
-                  <view class="account-no">Q1030004</view>
+                  <view class="name">徐汉超个体户</view>
+                  <view class="account-no">G1030004</view>
                 </view>
 
                 <view class="list-header-right">
@@ -35,7 +35,7 @@
               <!-- tab 切换 -->
               <Tabs :dataList="tabsList" :expand="showExpand" @select-tabs="selectTabs" />
 
-              <!-- 企业基本概况 -->
+              <!-- 个体户基本概况 -->
               <base-info v-if="tabVal === 1" />
 
               <!-- 房屋信息 -->
@@ -50,11 +50,8 @@
               <!-- 设施设备信息 -->
               <equipment-info v-if="tabVal === 5" />
 
-              <!-- 经营现状信息 -->
-              <business-info v-if="tabVal === 6" />
-
               <!-- 照片上传 -->
-              <photo-upload v-if="tabVal === 7" />
+              <photo-upload v-if="tabVal === 6" />
             </view>
           </view>
         </view>
@@ -77,12 +74,11 @@ import houseInfo from '../houseInfo/index.vue' // 引入房屋信息组件
 import treeInfo from '../treeInfo/index.vue' // 引入零星（林）果木信息组件
 import accessoryInfo from '../accessoryInfo/index.vue' // 引入附属物信息组件
 import equipmentInfo from '../equipmentInfo/index.vue' // 引入设施设备信息组件
-import businessInfo from '../businessInfo/index.vue' // 引入经营现状信息组件
 import photoUpload from '../photoUpload/index.vue' // 引入照片上传组件
 
 import iconSrc from '@/static/images/icon_add_enterprise.png' // 侧边栏，添加 icon
-import iconBaseDef from '@/static/images/icon_base_default.png' // 引入企业基本概况默认 icon
-import iconBaseSel from '@/static/images/icon_base_select.png' // 引入企业基本概况选中 icon
+import iconBaseDef from '@/static/images/icon_base_default.png' // 引入个体户基本概况默认 icon
+import iconBaseSel from '@/static/images/icon_base_select.png' // 引入个体户基本概况选中 icon
 import iconHouseDef from '@/static/images/icon_ent_house_default.png' // 引入房屋信息默认 icon
 import iconHouseSel from '@/static/images/icon_ent_house_select.png' // 引入房屋信息选中 icon
 import iconTreeDef from '@/static/images/icon_tree_default.png' // 引入零星(林)果木默认 icon
@@ -91,19 +87,16 @@ import iconAppurtenanceDef from '@/static/images/icon_appurtenance_default.png' 
 import iconAppurtenanceSel from '@/static/images/icon_appurtenance_select.png' // 引入附属物信息选中 icon
 import iconEquipmentDef from '@/static/images/icon_equipment_default.png' // 引入设施设备信息默认 icon
 import iconEquipmentSel from '@/static/images/icon_equipment_select.png' // 引入设施设备信息选中 icon
-import iconBusinessDef from '@/static/images/icon_revenue_default.png' // 引入经营现状默认 icon
-import iconBusinessSel from '@/static/images/icon_revenue_select.png' // 引入经营现状选中 icon
 import iconPhotoDef from '@/static/images/icon_photo_default.png' // 引入照片上传默认 icon
 import iconPhotoSel from '@/static/images/icon_photo_select.png' // 引入照片上传默认 icon
 
 const tabsList = ref([
-  { label: '企业基本概况', value: 1, defIcon: iconBaseDef, selIcon: iconBaseSel },
+  { label: '个体户基本概况', value: 1, defIcon: iconBaseDef, selIcon: iconBaseSel },
   { label: '房屋信息', value: 2, defIcon: iconHouseDef, selIcon: iconHouseSel },
   { label: '零星 (林) 果木', value: 3, defIcon: iconTreeDef, selIcon: iconTreeSel },
   { label: '附属物信息', value: 4, defIcon: iconAppurtenanceDef, selIcon: iconAppurtenanceSel },
   { label: '设施设备信息', value: 5, defIcon: iconEquipmentDef, selIcon: iconEquipmentSel },
-  { label: '经营现状信息', value: 6, defIcon: iconBusinessDef, selIcon: iconBusinessSel },
-  { label: '照片上传', value: 7, defIcon: iconPhotoDef, selIcon: iconPhotoSel }
+  { label: '照片上传', value: 6, defIcon: iconPhotoDef, selIcon: iconPhotoSel }
 ])
 
 const showExpand = ref<boolean>(false)
@@ -122,13 +115,13 @@ const treeData = ref([
         children: [
           {
             id: 111,
-            name: '武义国康竹木地板有限责任有限公司',
+            name: '陈汉超个体户',
             finish: 0,
             total: 12
           },
           {
             id: 112,
-            name: '武义俊俏电子商务有限公司',
+            name: '陈汉个体户',
             finish: 0,
             total: 12
           }
