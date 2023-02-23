@@ -1,5 +1,6 @@
 <template>
   <view class="back-wrapper">
+    <view class="status"></view>
     <view class="back">
       <image class="icon-back" src="@/static/images/back.png" mode="scaleToFill" @click="back" />
       <view class="title">{{ props.title }}</view>
@@ -36,18 +37,22 @@ const toHome = () => {
 
 <style lang="scss" scoped>
 .back-wrapper {
-  height: calc(23rpx + var(--status-bar-height));
   background: transparent;
+
+  .status {
+    height: var(--status-bar-height);
+  }
 
   .back {
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    height: 23rpx;
+    height: 33rpx;
     padding: 0 9rpx;
 
     /* #ifdef H5 */
     cursor: pointer;
+    box-sizing: border-box;
+    flex-direction: row;
+    align-items: center;
     /* #endif */
 
     .icon-back {
@@ -57,10 +62,10 @@ const toHome = () => {
 
     .title {
       display: flex;
-      font-size: 15rpx;
-      color: #fff;
       align-items: center;
       justify-content: center;
+      font-size: 15rpx;
+      color: #fff;
       flex: 1 auto;
     }
 

@@ -4,7 +4,9 @@
       <view class="status">
         <image class="icon" src="@/static/images/icon_complete.png" mode="scaleToFill" />
       </view>
-      <text class="item-tit">{{ props.data.name }}</text>
+      <text :class="['item-name', !props.data.accountNo ? 'w-100' : '']">{{
+        props.data.name
+      }}</text>
       <text class="item-txt">{{ props.data.accountNo }}</text>
     </view>
 
@@ -56,16 +58,26 @@ const treeItemClick = () => {
   }
 }
 
-.item-tit {
-  width: 40rpx;
+.item-name {
+  margin-left: 5rpx;
   overflow: hidden;
   font-size: 9rpx;
   color: #171718;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &.w-100 {
+    width: 100rpx;
+  }
 }
 
 .item-txt {
+  margin-left: 6rpx;
+  overflow: hidden;
   font-size: 8rpx;
   color: #171718;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .tree-item-rt {

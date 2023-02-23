@@ -281,7 +281,10 @@ const submit = () => {
 .form-wrapper {
   display: flex;
   flex-direction: column;
+  width: 100%;
   height: 100vh;
+  background: url('../../../static/images/common_bg.png') no-repeat;
+  background-size: 100% 100%;
 
   .main {
     height: calc(100vh - 23rpx);

@@ -1,13 +1,9 @@
 <template>
-  <view class="equipment-info-wrapper">
-    <!-- 个人信息 -->
+  <view class="house-info-wrapper">
     <view class="list">
       <view class="list-item">
         <view class="list-1">
-          <view class="left">
-            <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-            <view class="name">织布机</view>
-          </view>
+          <view class="left">3幢</view>
           <view class="right">
             <image
               class="icon m-r-10"
@@ -20,20 +16,20 @@
           <uni-row>
             <uni-col :span="8">
               <view class="col">
-                <view class="label">用途：</view>
-                <view class="content">织布</view>
+                <view class="label">房屋用途：</view>
+                <view class="content">住宅</view>
               </view>
             </uni-col>
             <uni-col :span="8">
               <view class="col">
-                <view class="label">建造/购置年份：</view>
-                <view class="content">2006年</view>
+                <view class="label">层高：</view>
+                <view class="content">10（米）</view>
               </view>
             </uni-col>
             <uni-col :span="8">
               <view class="col">
-                <view class="label">原值：</view>
-                <view class="content">10（万元）</view>
+                <view class="label">层数：</view>
+                <view class="content">3（层）</view>
               </view>
             </uni-col>
           </uni-row>
@@ -41,30 +37,47 @@
           <uni-row>
             <uni-col :span="8">
               <view class="col">
-                <view class="label">搬迁方式：</view>
-                <view class="content">可搬迁</view>
+                <view class="label">房屋高程：</view>
+                <view class="content">10（米）</view>
               </view>
             </uni-col>
-            <uni-col :span="16">
+            <uni-col :span="8">
               <view class="col">
-                <view class="label">规格型号：</view>
-                <view class="content">规格型号</view>
+                <view class="label">建筑面积：</view>
+                <view class="content">100（m³）</view>
+              </view>
+            </uni-col>
+            <uni-col :span="8">
+              <view class="col">
+                <view class="label">竣工日期：</view>
+                <view class="content">2000年8月</view>
               </view>
             </uni-col>
           </uni-row>
 
           <uni-row>
-            <uni-col :span="24">
+            <uni-col :span="8">
               <view class="col">
-                <view class="label">备注：</view>
-                <view class="content">备注信息备注信息备注信息备注信息备注信息</view>
+                <view class="label">所在位置：</view>
+                <view class="content">淹没区</view>
+              </view>
+            </uni-col>
+            <uni-col :span="8">
+              <view class="col">
+                <view class="label">淹没范围：</view>
+                <view class="content">线下</view>
+              </view>
+            </uni-col>
+            <uni-col :span="8">
+              <view class="col">
+                <view class="label"></view>
+                <view class="content"></view>
               </view>
             </uni-col>
           </uni-row>
         </view>
       </view>
     </view>
-    <image class="add-btn" src="@/static/images/icon_add.png" mode="scaleToFill" @click="toLink" />
   </view>
 </template>
 
@@ -72,14 +85,13 @@
 import { routerForward } from '@/utils'
 
 const toLink = () => {
-  routerForward('entEquipmentInfoEdit')
+  routerForward('selfHouseInfoEdit')
 }
 </script>
 
 <style lang="scss" scoped>
-.equipment-info-wrapper {
+.house-info-wrapper {
   width: 100%;
-  overflow-y: scroll;
 
   .list {
     width: 100%;
@@ -92,29 +104,21 @@ const toLink = () => {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        width: 100%;
-        height: 28rpx;
+        padding: 6rpx 0;
         border-bottom: 1rpx dotted #d0cbcb;
 
         .left {
           display: flex;
+          padding-left: 6rpx;
+          font-size: 9rpx;
+          color: #171718;
           align-items: center;
-
-          .icon {
-            width: 10rpx;
-            height: 10rpx;
-            margin-left: 10rpx;
-          }
-
-          .name {
-            margin-left: 5rpx;
-            font-size: 9rpx;
-            color: #171718;
-          }
+          flex: 1;
         }
 
         .right {
           display: flex;
+          flex-direction: row;
 
           .icon {
             width: 20rpx;
@@ -132,7 +136,7 @@ const toLink = () => {
           flex-direction: row;
 
           .label {
-            width: 70rpx;
+            width: 56rpx;
             height: 16rpx;
             margin-left: 9rpx;
             font-size: 9rpx;
@@ -148,14 +152,6 @@ const toLink = () => {
         }
       }
     }
-  }
-
-  .add-btn {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    width: 66rpx;
-    height: 66rpx;
   }
 }
 </style>

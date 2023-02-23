@@ -8,7 +8,8 @@
         <view class="col w-64">规格</view>
         <view class="col w-64">单位</view>
         <view class="col w-94">数量</view>
-        <view class="col w-129">备注</view>
+        <view class="col w-100">备注</view>
+        <view class="col w-29">操作</view>
       </view>
 
       <view class="row">
@@ -34,8 +35,13 @@
             <label class="plus">+</label>
           </view>
         </view>
-        <view class="col w-129">
+        <view class="col w-100">
           <input class="remark" placeholder="请输入内容" />
+        </view>
+        <view class="col w-29 p-l-7">
+          <label class="icon-wrapper" @click="deleteData">
+            <image class="icon" src="@/static/images/icon_delete.png" />
+          </label>
         </view>
       </view>
     </view>
@@ -108,12 +114,15 @@ const changeSpec = (data: any) => {
 const changeUnit = (data: any) => {
   console.log('data:', data)
 }
+
+// 删除当前行信息
+const deleteData = () => {}
 </script>
 
 <style lang="scss" scoped>
 .tree-info-wrapper {
-  display: flex;
-  flex-direction: column;
+  width: 100%;
+  overflow-y: scroll;
 
   .tree-container {
     display: table;
@@ -149,6 +158,10 @@ const changeUnit = (data: any) => {
         vertical-align: middle;
         border: 1rpx solid #f0f0f0;
 
+        &.w-29 {
+          width: 29rpx;
+        }
+
         &.w-63 {
           width: 63rpx;
         }
@@ -161,12 +174,16 @@ const changeUnit = (data: any) => {
           width: 94rpx;
         }
 
-        &.w-129 {
-          width: 129rpx;
+        &.w-100 {
+          width: 100rpx;
         }
 
         &.p-l-2 {
           padding-left: 2rpx;
+        }
+
+        &.p-l-7 {
+          padding-left: 7rpx;
         }
 
         .input-wrapper {
@@ -212,6 +229,16 @@ const changeUnit = (data: any) => {
         .remark {
           height: 19rpx;
           font-size: 9rpx;
+        }
+
+        .icon-wrapper {
+          display: flex;
+          align-items: center;
+
+          .icon {
+            width: 15rpx;
+            height: 15rpx;
+          }
         }
 
         ::v-deep.uni-select {

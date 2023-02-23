@@ -50,6 +50,55 @@
 			}
 		},
 		{
+			"name": "baseInfoEdit",
+			"path": "pages/enterprise/baseInfo/edit",
+			"style": {
+				"navigationBarTitleText": "企业填报-企业基本概况编辑"
+			}
+		},
+		{
+			"name": "entHouseInfoEdit",
+			"path": "pages/enterprise/houseInfo/edit",
+			"style": {
+				"navigationBarTitleText": "企业填报-房屋信息编辑"
+			}
+		},
+		{
+			"name": "entEquipmentInfoEdit",
+			"path": "pages/enterprise/equipmentInfo/edit",
+			"style": {
+				"navigationBarTitleText": "企业填报-设施设备信息新增/编辑"
+			}
+		},
+		{
+			"name": "selfPerson",
+			"path": "pages/selfPerson/index",
+			"style": {
+				"navigationBarTitleText": "个体户填报"
+			}
+		},
+		{
+			"name": "selfBaseInfoEdit",
+			"path": "pages/selfPerson/baseInfo/edit",
+			"style": {
+				"navigationBarTitleText": "个体户填报-个体户基本概况编辑"
+			}
+		},
+		{
+			"name": "selfHouseInfoEdit",
+			"path": "pages/selfPerson/houseInfo/edit",
+			"style": {
+				"navigationBarTitleText": "个体户填报-房屋信息编辑"
+			}
+		},
+		{
+			"name": "selfEquipmentInfoEdit",
+			"path": "pages/selfPerson/equipmentInfo/edit",
+			"style": {
+				"navigationBarTitleText": "个体户填报-设施设备信息新增/编辑"
+			}
+		},
+		{
 			"name": "login",
 			"path": "pages/login/index",
 			"style": {

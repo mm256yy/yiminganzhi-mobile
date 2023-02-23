@@ -71,6 +71,7 @@
 <style lang="scss" scoped>
 .grave-info-wrapper {
   width: 100%;
+  overflow-y: scroll;
 
   .list {
     width: 100%;

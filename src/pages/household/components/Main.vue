@@ -402,7 +402,7 @@ const selectTabs = (data: any) => {
 .tabs-content {
   display: flex;
   width: 100%;
-  height: calc(100vh - 102rpx);
+  height: calc(100vh - 33rpx - 12rpx - 33rpx - var(--status-bar-height));
   padding: 6rpx;
   background-color: #fff;
   box-sizing: border-box;
@@ -412,11 +412,10 @@ const selectTabs = (data: any) => {
 .tree-wrapper {
   position: absolute;
   top: 6rpx;
-  bottom: 10rpx;
   left: 6rpx;
   z-index: 3;
   display: flex;
-  height: calc(100vh - 68rpx);
+  height: calc(100vh - 33rpx - 12rpx - var(--status-bar-height));
   overflow-y: scroll;
   background-color: #fff;
   border-radius: 5px;

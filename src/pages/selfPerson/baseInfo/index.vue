@@ -5,14 +5,14 @@
       <view class="list-item">
         <view class="list-1">
           <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-          <view class="title">企业基本信息</view>
+          <view class="title">个体工商户基本信息</view>
         </view>
         <view class="list-2">
           <uni-row>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">法人姓名：</view>
-                <view class="content">曾松新</view>
+                <view class="content">徐汉超</view>
               </view>
             </uni-col>
             <uni-col :span="12">
@@ -32,8 +32,8 @@
             </uni-col>
             <uni-col :span="12">
               <view class="col">
-                <view class="label">企业名称：</view>
-                <view class="content">武义国康竹木地板有限公司佐溪分公司</view>
+                <view class="label">个体工商户名称：</view>
+                <view class="content">徐汉超个体户</view>
               </view>
             </uni-col>
           </uni-row>
@@ -41,8 +41,8 @@
           <uni-row>
             <uni-col :span="12">
               <view class="col">
-                <view class="label">企业编码：</view>
-                <view class="content">Q1030004</view>
+                <view class="label">个体工商户编码：</view>
+                <view class="content">G1030004</view>
               </view>
             </uni-col>
             <uni-col :span="12">
@@ -56,7 +56,7 @@
           <uni-row>
             <uni-col :span="12">
               <view class="col">
-                <view class="label">企业联系方式：</view>
+                <view class="label">个体工商户联系方式：</view>
                 <view class="content">400-88888888</view>
               </view>
             </uni-col>
@@ -73,7 +73,7 @@
       <view class="list-item">
         <view class="list-1">
           <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-          <view class="title">企业证照信息</view>
+          <view class="title">个体工商户证照信息</view>
         </view>
         <view class="list-2">
           <uni-row>
@@ -101,7 +101,7 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">许可证颁布单位：</view>
-                <view class="content">泉溪镇工商局</view>
+                <view class="content">境玲镇工商局</view>
               </view>
             </uni-col>
           </uni-row>
@@ -135,7 +135,7 @@
       <view class="list-item">
         <view class="list-1">
           <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-          <view class="title">企业工商信息</view>
+          <view class="title">个体工商户工商信息</view>
         </view>
         <view class="list-2">
           <uni-row>
@@ -171,7 +171,7 @@
           <uni-row>
             <uni-col :span="12">
               <view class="col">
-                <view class="label">企业地址：</view>
+                <view class="label">个体工商户地址：</view>
                 <view class="content">浙江省绍兴市新昌县镜岭镇</view>
               </view>
             </uni-col>
@@ -214,7 +214,7 @@
       <view class="list-item">
         <view class="list-1">
           <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-          <view class="title">企业资产信息</view>
+          <view class="title">个体工商户资产信息</view>
         </view>
         <view class="list-2">
           <uni-row>
@@ -282,7 +282,7 @@
       <view class="list-item">
         <view class="list-1">
           <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-          <view class="title">企业其他信息</view>
+          <view class="title">个体工商户其他信息</view>
         </view>
         <view class="list-2">
           <uni-row>
@@ -303,13 +303,13 @@
           <uni-row>
             <uni-col :span="12">
               <view class="col">
-                <view class="label">企业涉及情况：</view>
+                <view class="label">个体户涉及情况：</view>
                 <view class="content">不涉及主要生产设施</view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
-                <view class="label">企业初步处理方案：</view>
+                <view class="label">个体户初步处理方案：</view>
                 <view class="content">无需搬迁、改造，需补偿实物</view>
               </view>
             </uni-col>
@@ -319,9 +319,9 @@
             <uni-col :span="24">
               <view class="col">
                 <view class="label">备注：</view>
-                <view class="content"
-                  >企业生产和经营的商品类别、品种及服务项目，反映企业业务活动的内容和生产经营方向</view
-                >
+                <view class="content">
+                  企业生产和经营的商品类别、品种及服务项目，反映企业业务活动的内容和生产经营方向
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -331,95 +331,7 @@
       <view class="list-item">
         <view class="list-1">
           <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-          <view class="title">土地使用情况</view>
-        </view>
-        <view class="list-2">
-          <uni-row>
-            <uni-col :span="12">
-              <view class="col">
-                <view class="label">出让权属面积：</view>
-                <view class="content">10（亩）</view>
-              </view>
-            </uni-col>
-            <uni-col :span="12">
-              <view class="col">
-                <view class="label">出让占用面积：</view>
-                <view class="content">10（亩）</view>
-              </view>
-            </uni-col>
-          </uni-row>
-
-          <uni-row>
-            <uni-col :span="12">
-              <view class="col">
-                <view class="label">划拨权属面积：</view>
-                <view class="content">10（亩）</view>
-              </view>
-            </uni-col>
-            <uni-col :span="12">
-              <view class="col">
-                <view class="label">划拨占用面积：</view>
-                <view class="content">10（亩）</view>
-              </view>
-            </uni-col>
-          </uni-row>
-
-          <uni-row>
-            <uni-col :span="12">
-              <view class="col">
-                <view class="label">租用权属面积：</view>
-                <view class="content">10（亩）</view>
-              </view>
-            </uni-col>
-            <uni-col :span="12">
-              <view class="col">
-                <view class="label">租用占用面积：</view>
-                <view class="content">10（亩）</view>
-              </view>
-            </uni-col>
-          </uni-row>
-
-          <uni-row>
-            <uni-col :span="12">
-              <view class="col">
-                <view class="label">其他权属面积：</view>
-                <view class="content">10（亩）</view>
-              </view>
-            </uni-col>
-            <uni-col :span="12">
-              <view class="col">
-                <view class="label">其他占用面积：</view>
-                <view class="content">10（亩）</view>
-              </view>
-            </uni-col>
-          </uni-row>
-
-          <uni-row>
-            <uni-col :span="24">
-              <view class="col">
-                <view class="label">合计：</view>
-                <view class="content">80（亩）</view>
-              </view>
-            </uni-col>
-          </uni-row>
-
-          <uni-row>
-            <uni-col :span="24">
-              <view class="col">
-                <view class="label">备注：</view>
-                <view class="content"
-                  >企业生产和经营的商品类别、品种及服务项目，反映企业业务活动的内容和生产经营方向</view
-                >
-              </view>
-            </uni-col>
-          </uni-row>
-        </view>
-      </view>
-
-      <view class="list-item">
-        <view class="list-1">
-          <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-          <view class="title">营业执照</view>
+          <view class="title">个体工商户附件信息</view>
         </view>
         <view class="list-2">
           <uni-row>
@@ -445,7 +357,7 @@
 import { routerForward } from '@/utils'
 
 const toLink = () => {
-  routerForward('baseInfoEdit')
+  routerForward('selfBaseInfoEdit')
 }
 </script>
 
