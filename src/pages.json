@@ -8,13 +8,6 @@
 			}
 		},
 		{
-			"name": "respondents",
-			"path": "pages/respondents/index",
-			"style": {
-				"navigationBarTitleText": "调查对象"
-			}
-		},
-		{
 			"name": "sync",
 			"path": "pages/sync/index",
 			"style": {
@@ -148,6 +141,41 @@
 			}
 		},
 		{
+			"name": "respondents",
+			"path": "pages/respondents/index",
+			"style": {
+				"navigationBarTitleText": "移民管理"
+			}
+		},
+		{
+			"name": "villageAdd",
+			"path": "pages/respondents/village/add",
+			"style": {
+				"navigationBarTitleText": "移民管理-自然村-添加自然村"
+			}
+		},
+		{
+			"name": "enterpriseAdd",
+			"path": "pages/respondents/enterprise/add",
+			"style": {
+				"navigationBarTitleText": "移民管理-企业-添加企业"
+			}
+		},
+		{
+			"name": "selfPersonAdd",
+			"path": "pages/respondents/selfPerson/add",
+			"style": {
+				"navigationBarTitleText": "移民管理-个体户-添加个体户"
+			}
+		},
+		{
+			"name": "collectiveAdd",
+			"path": "pages/respondents/collective/add",
+			"style": {
+				"navigationBarTitleText": "移民管理-村集体-添加村集体"
+			}
+		},
+		{
 			"name": "work",
 			"path": "pages/work/index",
 			"style": {
@@ -159,6 +187,13 @@
 			"path": "pages/people/index",
 			"style": {
 				"navigationBarTitleText": "居民户清单"
+			}
+		},
+		{
+			"name": "peopleAdd",
+			"path": "pages/people/add",
+			"style": {
+				"navigationBarTitleText": "居民户清单-居民户新增"
 			}
 		},
 		{

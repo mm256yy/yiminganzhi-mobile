@@ -1,21 +1,10 @@
 <template>
   <view class="form-wrapper">
-    <Back title="居民户信息编辑" />
+    <Back title="新增居民户" />
     <view class="main">
       <uni-forms class="form" ref="form" :modelValue="formData" :rules="rules">
         <uni-row>
-          <uni-col :span="12">
-            <uni-forms-item
-              required
-              label="户主姓名"
-              :label-width="150"
-              label-align="right"
-              name="formData.name"
-            >
-              <uni-easyinput v-model="formData.name" type="text" placeholder="请输入" />
-            </uni-forms-item>
-          </uni-col>
-          <uni-col :span="12">
+          <uni-col :span="24">
             <uni-forms-item
               required
               label="自然村/村民小组"
@@ -23,39 +12,29 @@
               label-align="right"
               name="formData.village"
             >
-              <uni-data-picker
-                :localdata="villageData"
-                popup-title="请选择"
-                @change="changeVillage"
-                @nodeclick="clickVillageNode"
-              />
+              <view class="content-wrapper">
+                <uni-data-picker
+                  :localdata="villageData"
+                  popup-title="请选择"
+                  @change="changeVillage"
+                  @nodeclick="clickVillageNode"
+                />
+                <label class="add-btn" @click="toLink">+ 添加自然村</label>
+              </view>
             </uni-forms-item>
           </uni-col>
         </uni-row>
 
         <uni-row>
-          <uni-col :span="12">
+          <uni-col :span="24">
             <uni-forms-item
-              label="联系方式"
+              required
+              label="居民户姓名"
               :label-width="150"
               label-align="right"
               name="formData.name"
             >
               <uni-easyinput v-model="formData.name" type="text" placeholder="请输入" />
-            </uni-forms-item>
-          </uni-col>
-          <uni-col :span="12">
-            <uni-forms-item
-              label="所在位置"
-              :label-width="150"
-              label-align="right"
-              name="formData.position"
-            >
-              <uni-data-select
-                v-model="formData.position"
-                :localdata="positionRange"
-                @change="changePosition"
-              />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -82,7 +61,10 @@
               </view>
             </uni-forms-item>
           </uni-col>
-          <uni-col :span="12">
+        </uni-row>
+
+        <uni-row>
+          <uni-col :span="24">
             <uni-forms-item
               label="财产户"
               :label-width="150"
@@ -99,7 +81,7 @@
         </uni-row>
 
         <uni-row>
-          <uni-col :span="12">
+          <uni-col :span="24">
             <uni-forms-item
               label="户籍所在地"
               :label-width="150"
@@ -109,48 +91,21 @@
               <uni-easyinput v-model="formData.address" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
-          <uni-col :span="12">
-            <uni-forms-item
-              label="淹没范围"
-              :label-width="150"
-              label-align="right"
-              name="formData.name"
-            >
-              <uni-easyinput v-model="formData.name" type="text" placeholder="请输入" />
-            </uni-forms-item>
-          </uni-col>
         </uni-row>
 
         <uni-row>
-          <uni-col :span="12">
+          <uni-col :span="24">
             <uni-forms-item
-              label="高程"
+              label="所在位置"
               :label-width="150"
               label-align="right"
-              name="formData.name"
+              name="formData.position"
             >
-              <uni-easyinput v-model="formData.name" type="text" placeholder="请输入" />
-            </uni-forms-item>
-          </uni-col>
-          <uni-col :span="12">
-            <uni-forms-item
-              label="中心经纬度"
-              :label-width="150"
-              label-align="right"
-              name="formData.lg"
-            >
-              <view class="lg-txt-wrapper">
-                <uni-data-checkbox v-model="formData.check" :localdata="lgTagList" />
-                <uni-easyinput
-                  class="m-t-5"
-                  v-model="formData.lg"
-                  :disabled="formData.check === 1"
-                  type="text"
-                  :placeholder="
-                    formData.check === 1 ? '获取定位' : formData.check === 2 ? '输入经纬度' : ''
-                  "
-                />
-              </view>
+              <uni-data-select
+                v-model="formData.position"
+                :localdata="positionRange"
+                @change="changePosition"
+              />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -195,19 +150,19 @@ const rangeAccount = ref<any>([
 const villageData = ref<any>([
   {
     text: '清溪镇',
-    value: '1',
+    value: 1,
     children: [
       {
         text: '清溪行政村',
-        value: '1-1',
+        value: 11,
         children: [
           {
             text: '杨村自然村',
-            value: '1-1-1'
+            value: 111
           },
           {
             text: '李村自然村',
-            value: '1-1-2'
+            value: 112
           }
         ]
       }
@@ -215,30 +170,24 @@ const villageData = ref<any>([
   },
   {
     text: '大溪镇',
-    value: '2',
+    value: 2,
     children: [
       {
         text: '大溪行政村',
-        value: '2-1',
+        value: 21,
         children: [
           {
             text: '王村自然村',
-            value: '2-1-1'
+            value: 211
           },
           {
             text: '石村自然村',
-            value: '2-1-2'
+            value: 212
           }
         ]
       }
     ]
   }
-])
-
-// 中心经纬度输入选项
-const lgTagList = ref<any>([
-  { text: '获取定位', value: 1 },
-  { text: '输入经纬度', value: 2 }
 ])
 
 // 所在位置选择
@@ -270,6 +219,9 @@ const changeVillage = (e: any) => {
 const clickVillageNode = (node: any) => {
   console.log('node:', node)
 }
+
+// 跳转至添加自然村页面
+const toLink = () => {}
 
 // 表单提交
 const submit = () => {
@@ -333,9 +285,17 @@ const submit = () => {
         }
       }
 
-      .lg-txt-wrapper {
+      .content-wrapper {
         display: flex;
-        flex-direction: column;
+        align-items: center;
+
+        .add-btn {
+          height: 23rpx;
+          margin-left: 9rpx;
+          font-size: 9rpx;
+          line-height: 23rpx;
+          color: rgba(10, 84, 255, 1);
+        }
       }
 
       ::v-deep.uni-forms-item__label {

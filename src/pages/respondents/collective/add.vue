@@ -1,15 +1,10 @@
 <template>
   <view class="form-wrapper">
-    <Back title="村集体基本情况编辑" />
+    <Back title="添加村集体" />
     <view class="main">
       <uni-forms class="form" ref="form" :modelValue="formData" :rules="rules">
-        <view class="title-wrapper">
-          <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-          <view class="title">村集体基本信息</view>
-        </view>
-
         <uni-row>
-          <uni-col :span="12">
+          <uni-col :span="24">
             <uni-forms-item
               required
               label="村集体名称"
@@ -20,7 +15,10 @@
               <uni-easyinput v-model="formData.name" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
-          <uni-col :span="12">
+        </uni-row>
+
+        <uni-row>
+          <uni-col :span="24">
             <uni-forms-item
               required
               label="村集体编码"
@@ -44,23 +42,9 @@
         </uni-row>
 
         <uni-row>
-          <uni-col :span="12">
+          <uni-col :span="24">
             <uni-forms-item
-              label="所在位置"
-              :label-width="170"
-              label-align="right"
-              name="formData.position"
-            >
-              <uni-data-select
-                v-model="formData.position"
-                :localdata="positionRange"
-                @change="changePosition"
-              />
-            </uni-forms-item>
-          </uni-col>
-          <uni-col :span="12">
-            <uni-forms-item
-              label="村集体联系方式"
+              label="联系方式"
               :label-width="170"
               label-align="right"
               name="formData.phone"
@@ -87,21 +71,39 @@
           </uni-col>
         </uni-row>
 
-        <view class="title-wrapper">
-          <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-          <view class="title">村集体附件信息</view>
-        </view>
+        <uni-row>
+          <uni-col :span="24">
+            <uni-forms-item
+              label="行政村名称"
+              :label-width="170"
+              label-align="right"
+              name="formData.position"
+            >
+              <uni-data-select
+                v-model="formData.position"
+                :localdata="positionRange"
+                @change="changePosition"
+              />
+            </uni-forms-item>
+          </uni-col>
+        </uni-row>
 
-        <view class="upload-wrapper">
-          <uni-file-picker
-            title="最多选择20张图片"
-            :limit="20"
-            @select="select"
-            @progress="progress"
-            @success="success"
-            @fail="fail"
-          />
-        </view>
+        <uni-row>
+          <uni-col :span="24">
+            <uni-forms-item
+              label="所在位置"
+              :label-width="170"
+              label-align="right"
+              name="formData.position"
+            >
+              <uni-data-select
+                v-model="formData.position"
+                :localdata="positionRange"
+                @change="changePosition"
+              />
+            </uni-forms-item>
+          </uni-col>
+        </uni-row>
       </uni-forms>
 
       <image
@@ -148,26 +150,6 @@ const changePosition = (data: any) => {
   console.log('data:', data)
 }
 
-// 获取上传状态
-const select = (e: any) => {
-  console.log('选择文件：', e)
-}
-
-// 获取上传进度
-const progress = (e: any) => {
-  console.log('上传进度：', e)
-}
-
-// 上传成功
-const success = (e: any) => {
-  console.log('上传成功')
-}
-
-// 上传失败
-const fail = (e: any) => {
-  console.log('上传失败：', e)
-}
-
 // 表单提交
 const submit = () => {
   console.log('表单提交')
@@ -197,28 +179,6 @@ const submit = () => {
       overflow-y: scroll;
       background-color: #fff;
       box-sizing: border-box;
-
-      .title-wrapper {
-        display: flex;
-        align-items: center;
-        width: 100%;
-        height: 28rpx;
-        margin-bottom: 10rpx;
-        border-bottom: 1rpx dotted #d0cbcb;
-
-        .icon {
-          width: 10rpx;
-          height: 10rpx;
-          margin-left: 10rpx;
-        }
-
-        .title {
-          margin-left: 5rpx;
-          font-size: 9rpx;
-          font-weight: 600;
-          color: #171718;
-        }
-      }
 
       ::v-deep.uni-forms-item__label {
         font-size: 9rpx !important;
@@ -255,38 +215,6 @@ const submit = () => {
         font-size: 9rpx !important;
       }
 
-      .input-wrapper {
-        display: flex;
-        align-items: center;
-        width: 200rpx;
-        border: 1px solid #d9d9d9;
-        border-radius: 4px;
-
-        &.focus {
-          border-color: rgb(41, 121, 255);
-        }
-
-        .input-txt {
-          width: 168rpx;
-          height: 35px;
-          padding-left: 7rpx;
-          font-size: 9rpx;
-          line-height: 35px;
-          color: #171718;
-        }
-
-        .unit {
-          width: 23rpx;
-          height: 35px;
-          font-size: 9rpx;
-          line-height: 35px;
-          color: #171718;
-          text-align: center;
-          background-color: #f5f7fa;
-          border-left: 1px solid #d9d9d9;
-        }
-      }
-
       .code-wrapper {
         display: flex;
         flex-direction: row;
@@ -318,11 +246,6 @@ const submit = () => {
           line-height: 35px;
           color: #171718;
         }
-      }
-
-      .upload-wrapper {
-        padding: 0 6rpx;
-        box-sizing: border-box;
       }
     }
 
