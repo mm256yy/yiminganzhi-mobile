@@ -1,27 +1,39 @@
 <template>
   <Container>
     <template #title>
-      <view class="title">
+      <view class="title" @click="onSelectVillage">
         <text class="tit">行政村</text>
         <image class="icon" src="@/static/images/respondents_select.png" mode="scaleToFill" />
       </view>
     </template>
 
-    <view class="content">
+    <view class="respondents-wrap">
       <view class="tabs">
-        <view class="tab-item one">
+        <view class="tab-item one" :class="[tabId === 1 ? 'active' : '']" @click="onTabChange(1)">
           <image class="icon" src="@/static/images/respondents_village.png" mode="scaleToFill" />
           <text class="tit">自然村</text>
         </view>
-        <view class="tab-item two other active">
+        <view
+          class="tab-item two other"
+          :class="[tabId === 2 ? 'active' : '']"
+          @click="onTabChange(2)"
+        >
           <image class="icon" src="@/static/images/respondents_company.png" mode="scaleToFill" />
           <text class="tit">企业</text>
         </view>
-        <view class="tab-item thr other">
+        <view
+          class="tab-item thr other"
+          :class="[tabId === 3 ? 'active' : '']"
+          @click="onTabChange(3)"
+        >
           <image class="icon" src="@/static/images/respondents_single.png" mode="scaleToFill" />
           <text class="tit">个体户</text>
         </view>
-        <view class="tab-item for other">
+        <view
+          class="tab-item for other"
+          :class="[tabId === 4 ? 'active' : '']"
+          @click="onTabChange(4)"
+        >
           <image class="icon" src="@/static/images/respondents_jt.png" mode="scaleToFill" />
           <text class="tit">村集体</text>
         </view>
@@ -33,50 +45,40 @@
       </view>
 
       <view class="respondents-list">
-        <view class="respondents-item">
-          <image class="bg" src="@/static/images/respondents_right.png" mode="scaleToFill" />
-          <view class="head">
-            <view class="head-lt">
-              <image
-                class="user-icon"
-                src="@/static/images/respondents_tit.png"
-                mode="scaleToFill"
-              />
-              <view class="name">放假的时间啊了</view>
-            </view>
-            <view class="head-rt">
-              <!-- <view class="status success"><text class="circle" />未上报</view> -->
-              <view class="edit-box">
-                <image class="remove-icon" src="@/static/images/remove.png" mode="scaleToFill" />
-              </view>
-            </view>
-          </view>
-
-          <view class="cont">
-            <view class="cont-item">
-              <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
-              <view class="label">是否财产户:</view>
-              <view class="value">房间打开手</view>
-            </view>
-            <view class="cont-item">
-              <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
-              <view class="label">是否财产户:</view>
-              <view class="value">房间打开手</view>
-            </view>
-            <view class="cont-item">
-              <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
-              <view class="label">是否财产户:</view>
-              <view class="value">房间打开手</view>
-            </view>
-          </view>
-        </view>
+        <CompanyItem />
+        <CompanyItem />
+        <CompanyItem />
+        <VillageItem />
+        <VillageItem />
+        <VillageItem />
       </view>
     </view>
+
+    <VillageSelect
+      v-show="showVillageSelect"
+      :show="showVillageSelect"
+      @on-close="showVillageSelect = false"
+    />
   </Container>
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue'
 import Container from '@/components/Container/index.vue'
+import CompanyItem from './company.vue'
+import VillageItem from './villageItem.vue'
+import VillageSelect from './villageSelect.vue'
+
+const tabId = ref<number>(1)
+const showVillageSelect = ref<boolean>(false)
+
+const onTabChange = (id: number) => {
+  tabId.value = id
+}
+
+const onSelectVillage = () => {
+  showVillageSelect.value = !showVillageSelect.value
+}
 </script>
 
 <style lang="scss">
@@ -98,11 +100,15 @@ import Container from '@/components/Container/index.vue'
   }
 }
 
-.content {
-  padding: 0 25rpx 25rpx;
+.respondents-wrap {
+  display: flex;
+  height: 100%;
+  padding: 0 25rpx 10rpx;
+  flex-direction: column;
 }
 
 .tabs {
+  flex: none;
   display: flex;
   align-items: center;
 
@@ -177,6 +183,7 @@ import Container from '@/components/Container/index.vue'
 }
 
 .search-box {
+  flex: none;
   position: relative;
   z-index: 10;
   display: flex;
@@ -202,135 +209,14 @@ import Container from '@/components/Container/index.vue'
 }
 
 .respondents-list {
+  flex: 1;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
   width: 100%;
-}
-
-.respondents-item {
-  position: relative;
-  width: 229px;
-  padding: 12rpx 15rpx;
-  // height: 108rpx;
-  margin: 7rpx 7rpx 0 0;
-  background-color: #ffffff;
-  border-radius: 7rpx;
-  box-shadow: 0rpx 0rpx 12rpx 0rpx rgba(0, 0, 0, 0.08);
-  flex: none;
-
-  .bg {
-    position: absolute;
-    top: -20rpx;
-    right: -20rpx;
-    width: 30rpx;
-    height: 30rpx;
-  }
-
-  .head {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    padding-bottom: 6rpx;
-    justify-content: space-between;
-
-    .head-lt {
-      display: flex;
-      align-items: center;
-      flex-direction: row;
-
-      .user-icon {
-        width: 19rpx;
-        height: 19rpx;
-        margin-right: 6rpx;
-      }
-
-      .name {
-        margin-right: 6rpx;
-        font-size: 12rpx;
-        font-weight: 600;
-        color: #171718;
-      }
-    }
-
-    .head-rt {
-      display: flex;
-      align-items: center;
-      flex-direction: row;
-
-      .status {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 14rpx;
-        padding: 0 6rpx;
-        margin-right: 8rpx;
-        font-size: 7rpx;
-        color: #ff2d2d;
-        background: #fff1f1;
-        border-radius: 8rpx;
-
-        .circle {
-          width: 4rpx;
-          height: 4rpx;
-          margin-right: 2rpx;
-          background-color: #ff6767;
-          border-radius: 50%;
-        }
-
-        &.success {
-          color: #199f38;
-
-          .circle {
-            background-color: #30b950;
-          }
-        }
-      }
-
-      .edit-box {
-        display: flex;
-        width: 16rpx;
-        height: 16rpx;
-        border: 1rpx solid #ff4242;
-        border-radius: 50%;
-        align-items: center;
-        justify-content: center;
-
-        .remove-icon {
-          width: 9rpx;
-          height: 9rpx;
-        }
-      }
-    }
-  }
-
-  .cont {
-    .cont-item {
-      display: flex;
-      height: 16rpx;
-      margin-top: 6rpx;
-      align-items: center;
-      flex-direction: row;
-
-      .icon {
-        width: 9rpx;
-        height: 9rpx;
-        margin-right: 6rpx;
-      }
-
-      .label {
-        width: 56rpx;
-        overflow: hidden;
-        font-size: 9rpx;
-        color: #171718;
-        word-break: keep-all;
-      }
-
-      .value {
-        font-size: 9rpx;
-        color: #171718;
-      }
-    }
-  }
+  margin-top: 7rpx;
+  overflow-y: scroll;
 }
 
 .add-box {
