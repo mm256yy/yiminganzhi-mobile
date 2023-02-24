@@ -704,14 +704,14 @@ const submit = () => {
   background-size: 100% 100%;
 
   .main {
-    height: calc(100vh - 23rpx);
+    height: calc(100vh - 33rpx);
     padding: 6rpx;
     background-color: #e7edfd;
     border-radius: 2rpx;
     box-sizing: border-box;
 
     .form {
-      height: calc(100vh - 23rpx - 12rpx - 18rpx);
+      height: calc(100vh - 33rpx - 12rpx - var(--status-bar-height));
       padding: 9rpx 0;
       overflow-y: scroll;
       background-color: #fff;

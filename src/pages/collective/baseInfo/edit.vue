@@ -1,13 +1,19 @@
 <template>
   <view class="form-wrapper">
-    <Back title="设施设备信息编辑" />
+    <Back title="村集体基本情况编辑" />
     <view class="main">
       <uni-forms class="form" ref="form" :modelValue="formData" :rules="rules">
+        <view class="title-wrapper">
+          <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
+          <view class="title">村集体基本信息</view>
+        </view>
+
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              label="名称"
-              :label-width="150"
+              required
+              label="村集体名称"
+              :label-width="170"
               label-align="right"
               name="formData.name"
             >
@@ -16,107 +22,76 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              label="规格型号"
-              :label-width="150"
-              label-align="right"
-              name="formData.specModel"
-            >
-              <uni-easyinput v-model="formData.specModel" type="idcard" placeholder="请输入" />
-            </uni-forms-item>
-          </uni-col>
-        </uni-row>
-        <uni-row>
-          <uni-col :span="12">
-            <uni-forms-item label="数量" :label-width="150" label-align="right" name="formData.num">
-              <uni-easyinput v-model="formData.num" type="number" placeholder="请输入" />
-            </uni-forms-item>
-          </uni-col>
-          <uni-col :span="12">
-            <uni-forms-item
               required
-              label="单位"
-              :label-width="150"
+              label="村集体编码"
+              :label-width="170"
               label-align="right"
-              name="formData.unit"
+              name="formData.idCard"
             >
-              <uni-data-select
-                v-model="formData.unit"
-                :localdata="genderData"
-                @change="changeGender"
-              />
+              <uni-easyinput v-model="formData.idCard" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
-        <uni-row>
-          <uni-col :span="12">
-            <uni-forms-item label="用途" :label-width="150" label-align="right" name="formData.use">
-              <uni-easyinput v-model="formData.use" type="number" placeholder="请输入" />
-            </uni-forms-item>
-          </uni-col>
-          <uni-col :span="12">
-            <uni-forms-item
-              label="建造/购置年份"
-              :label-width="150"
-              label-align="right"
-              name="formData.birthday"
-            >
-              <uni-datetime-picker
-                type="date"
-                placeholder="选择年份"
-                v-model="formData.birthday"
-                @change="changeDate"
-              />
-            </uni-forms-item>
-          </uni-col>
-        </uni-row>
+
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              label="原值"
-              :label-width="150"
+              label="所在位置"
+              :label-width="170"
               label-align="right"
-              name="formData.originalVal"
+              name="formData.position"
             >
-              <view :class="['input-wrapper', focusIndex === 1 ? 'focus' : '']">
-                <input
-                  class="input-txt"
-                  placeholder="请输入"
-                  type="text"
-                  v-model="formData.originalVal"
-                  @focus="inputFocus(1)"
-                  @blur="inputBlur"
-                />
-                <view class="unit">万元</view>
-              </view>
+              <uni-data-select
+                v-model="formData.position"
+                :localdata="positionRange"
+                @change="changePosition"
+              />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              label="搬迁方式"
-              :label-width="150"
+              label="村集体联系方式"
+              :label-width="170"
               label-align="right"
-              name="formData.relationship"
+              name="formData.phone"
             >
-              <uni-data-select
-                v-model="formData.relationship"
-                :localdata="relationshipData"
-                @change="changeRelationship"
-              />
+              <uni-easyinput v-model="formData.phone" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
+
         <uni-row>
           <uni-col :span="24">
             <uni-forms-item
-              label="备注"
-              :label-width="150"
+              label="所属区域"
+              :label-width="170"
               label-align="right"
-              name="formData.remark"
+              name="formData.position"
             >
-              <uni-easyinput v-model="formData.remark" type="textarea" placeholder="请输入" />
+              <uni-data-select
+                v-model="formData.position"
+                :localdata="positionRange"
+                @change="changePosition"
+              />
             </uni-forms-item>
           </uni-col>
         </uni-row>
+
+        <view class="title-wrapper">
+          <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
+          <view class="title">村集体附件信息</view>
+        </view>
+
+        <view class="upload-wrapper">
+          <uni-file-picker
+            title="最多选择20张图片"
+            :limit="20"
+            @select="select"
+            @progress="progress"
+            @success="success"
+            @fail="fail"
+          />
+        </view>
       </uni-forms>
 
       <image
@@ -139,49 +114,35 @@ const formData = ref<any>({})
 // 表单校验规则
 const rules = ref<any>({})
 
-// 获得焦点的 input 框下标
-const focusIndex = ref<number>(-1)
-
-// 性别数据选项
-const genderData = ref<any>([
-  { text: '男', value: 1 },
-  { text: '女', value: 2 }
+// 所在位置选项
+const positionRange = ref<any>([
+  { text: '淹没区', value: 0 },
+  { text: '非淹没区', value: 1 }
 ])
 
-// 与户主关系数据选项
-const relationshipData = ref<any>([
-  { text: '户主', value: 1 },
-  { text: '夫', value: 2 },
-  { text: '妻', value: 3 },
-  { text: '子', value: 4 },
-  { text: '独生子', value: 5 },
-  { text: '长子', value: 6 },
-  { text: '次子', value: 7 }
-])
-
-// 性别选择
-const changeGender = (data: any) => {
+// 所在位置选择
+const changePosition = (data: any) => {
   console.log('data:', data)
 }
 
-// 出生年月选择
-const changeDate = (e: any) => {
-  console.log('e:', e)
+// 获取上传状态
+const select = (e: any) => {
+  console.log('选择文件：', e)
 }
 
-// 与户主关系选择
-const changeRelationship = (data: any) => {
-  console.log('data:', data)
+// 获取上传进度
+const progress = (e: any) => {
+  console.log('上传进度：', e)
 }
 
-// 输入框获得焦点事件
-const inputFocus = (index: number) => {
-  focusIndex.value = index
+// 上传成功
+const success = (e: any) => {
+  console.log('上传成功')
 }
 
-// 输入框失去焦点事件
-const inputBlur = () => {
-  focusIndex.value = -1
+// 上传失败
+const fail = (e: any) => {
+  console.log('上传失败：', e)
 }
 
 // 表单提交
@@ -202,6 +163,7 @@ const submit = () => {
   .main {
     height: calc(100vh - 33rpx);
     padding: 6rpx;
+    overflow-y: scroll;
     background-color: #e7edfd;
     border-radius: 2rpx;
     box-sizing: border-box;
@@ -212,6 +174,28 @@ const submit = () => {
       overflow-y: scroll;
       background-color: #fff;
       box-sizing: border-box;
+
+      .title-wrapper {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 28rpx;
+        margin-bottom: 10rpx;
+        border-bottom: 1rpx dotted #d0cbcb;
+
+        .icon {
+          width: 10rpx;
+          height: 10rpx;
+          margin-left: 10rpx;
+        }
+
+        .title {
+          margin-left: 5rpx;
+          font-size: 9rpx;
+          font-weight: 600;
+          color: #171718;
+        }
+      }
 
       ::v-deep.uni-forms-item__label {
         font-size: 9rpx !important;
@@ -278,6 +262,11 @@ const submit = () => {
           background-color: #f5f7fa;
           border-left: 1px solid #d9d9d9;
         }
+      }
+
+      .upload-wrapper {
+        padding: 0 6rpx;
+        box-sizing: border-box;
       }
     }
 
