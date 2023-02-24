@@ -59,12 +59,23 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="企业编码"
               :label-width="170"
               label-align="right"
               name="formData.entCode"
             >
-              <uni-easyinput v-model="formData.entCode" type="text" placeholder="请输入" />
+              <view :class="['code-wrapper', focusIndex === 1 ? 'focus' : '']">
+                <view class="pre-txt">104009234532</view>
+                <input
+                  class="input-txt"
+                  type="number"
+                  placeholder="请输入"
+                  v-model="formData.entCode"
+                  @focus="inputFocus(1)"
+                  @blur="inputBlur"
+                />
+              </view>
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -267,13 +278,13 @@
               label-align="right"
               name="formData.regAmount"
             >
-              <view :class="['input-wrapper', focusIndex === 1 ? 'focus' : '']">
+              <view :class="['input-wrapper', focusIndex === 2 ? 'focus' : '']">
                 <input
                   class="input-txt"
                   placeholder="请输入"
                   type="number"
                   v-model="formData.regAmount"
-                  @focus="inputFocus(1)"
+                  @focus="inputFocus(2)"
                   @blur="inputBlur"
                 />
                 <view class="unit">m</view>
@@ -366,26 +377,6 @@
               label-align="right"
               name="formData.regAmount"
             >
-              <view :class="['input-wrapper', focusIndex === 2 ? 'focus' : '']">
-                <input
-                  class="input-txt"
-                  placeholder="请输入"
-                  type="number"
-                  v-model="formData.regAmount"
-                  @focus="inputFocus(2)"
-                  @blur="inputBlur"
-                />
-                <view class="unit">万元</view>
-              </view>
-            </uni-forms-item>
-          </uni-col>
-          <uni-col :span="12">
-            <uni-forms-item
-              label="固定资产净值"
-              :label-width="170"
-              label-align="right"
-              name="formData.regAmount"
-            >
               <view :class="['input-wrapper', focusIndex === 3 ? 'focus' : '']">
                 <input
                   class="input-txt"
@@ -399,12 +390,9 @@
               </view>
             </uni-forms-item>
           </uni-col>
-        </uni-row>
-
-        <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              label="正式员工人数"
+              label="固定资产净值"
               :label-width="170"
               label-align="right"
               name="formData.regAmount"
@@ -418,13 +406,16 @@
                   @focus="inputFocus(4)"
                   @blur="inputBlur"
                 />
-                <view class="unit">人</view>
+                <view class="unit">万元</view>
               </view>
             </uni-forms-item>
           </uni-col>
+        </uni-row>
+
+        <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              label="临时员工人数"
+              label="正式员工人数"
               :label-width="170"
               label-align="right"
               name="formData.regAmount"
@@ -442,12 +433,9 @@
               </view>
             </uni-forms-item>
           </uni-col>
-        </uni-row>
-
-        <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              label="年工资总金额"
+              label="临时员工人数"
               :label-width="170"
               label-align="right"
               name="formData.regAmount"
@@ -461,13 +449,16 @@
                   @focus="inputFocus(6)"
                   @blur="inputBlur"
                 />
-                <view class="unit">万元</view>
+                <view class="unit">人</view>
               </view>
             </uni-forms-item>
           </uni-col>
+        </uni-row>
+
+        <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              label="近三年平均年产值"
+              label="年工资总金额"
               :label-width="170"
               label-align="right"
               name="formData.regAmount"
@@ -485,12 +476,9 @@
               </view>
             </uni-forms-item>
           </uni-col>
-        </uni-row>
-
-        <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              label="近三年平均年利润"
+              label="近三年平均年产值"
               :label-width="170"
               label-align="right"
               name="formData.regAmount"
@@ -508,9 +496,12 @@
               </view>
             </uni-forms-item>
           </uni-col>
+        </uni-row>
+
+        <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              label="近三年平均年缴税金额"
+              label="近三年平均年利润"
               :label-width="170"
               label-align="right"
               name="formData.regAmount"
@@ -522,6 +513,26 @@
                   type="number"
                   v-model="formData.regAmount"
                   @focus="inputFocus(9)"
+                  @blur="inputBlur"
+                />
+                <view class="unit">万元</view>
+              </view>
+            </uni-forms-item>
+          </uni-col>
+          <uni-col :span="12">
+            <uni-forms-item
+              label="近三年平均年缴税金额"
+              :label-width="170"
+              label-align="right"
+              name="formData.regAmount"
+            >
+              <view :class="['input-wrapper', focusIndex === 10 ? 'focus' : '']">
+                <input
+                  class="input-txt"
+                  placeholder="请输入"
+                  type="number"
+                  v-model="formData.regAmount"
+                  @focus="inputFocus(10)"
                   @blur="inputBlur"
                 />
                 <view class="unit">万元</view>
@@ -623,26 +634,6 @@
               label-align="right"
               name="formData.regAmount"
             >
-              <view :class="['input-wrapper', focusIndex === 10 ? 'focus' : '']">
-                <input
-                  class="input-txt"
-                  placeholder="请输入"
-                  type="number"
-                  v-model="formData.regAmount"
-                  @focus="inputFocus(10)"
-                  @blur="inputBlur"
-                />
-                <view class="unit">亩</view>
-              </view>
-            </uni-forms-item>
-          </uni-col>
-          <uni-col :span="12">
-            <uni-forms-item
-              label="出让占用面积"
-              :label-width="170"
-              label-align="right"
-              name="formData.regAmount"
-            >
               <view :class="['input-wrapper', focusIndex === 11 ? 'focus' : '']">
                 <input
                   class="input-txt"
@@ -656,12 +647,9 @@
               </view>
             </uni-forms-item>
           </uni-col>
-        </uni-row>
-
-        <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              label="划拨权属面积"
+              label="出让占用面积"
               :label-width="170"
               label-align="right"
               name="formData.regAmount"
@@ -679,9 +667,12 @@
               </view>
             </uni-forms-item>
           </uni-col>
+        </uni-row>
+
+        <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              label="划拨占用面积"
+              label="划拨权属面积"
               :label-width="170"
               label-align="right"
               name="formData.regAmount"
@@ -699,12 +690,9 @@
               </view>
             </uni-forms-item>
           </uni-col>
-        </uni-row>
-
-        <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              label="租用权属面积"
+              label="划拨占用面积"
               :label-width="170"
               label-align="right"
               name="formData.regAmount"
@@ -722,9 +710,12 @@
               </view>
             </uni-forms-item>
           </uni-col>
+        </uni-row>
+
+        <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              label="租用占用面积"
+              label="租用权属面积"
               :label-width="170"
               label-align="right"
               name="formData.regAmount"
@@ -742,12 +733,9 @@
               </view>
             </uni-forms-item>
           </uni-col>
-        </uni-row>
-
-        <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              label="其他权属面积"
+              label="租用占用面积"
               :label-width="170"
               label-align="right"
               name="formData.regAmount"
@@ -765,9 +753,12 @@
               </view>
             </uni-forms-item>
           </uni-col>
+        </uni-row>
+
+        <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              label="其他占用面积"
+              label="其他权属面积"
               :label-width="170"
               label-align="right"
               name="formData.regAmount"
@@ -779,6 +770,26 @@
                   type="number"
                   v-model="formData.regAmount"
                   @focus="inputFocus(17)"
+                  @blur="inputBlur"
+                />
+                <view class="unit">亩</view>
+              </view>
+            </uni-forms-item>
+          </uni-col>
+          <uni-col :span="12">
+            <uni-forms-item
+              label="其他占用面积"
+              :label-width="170"
+              label-align="right"
+              name="formData.regAmount"
+            >
+              <view :class="['input-wrapper', focusIndex === 18 ? 'focus' : '']">
+                <input
+                  class="input-txt"
+                  placeholder="请输入"
+                  type="number"
+                  v-model="formData.regAmount"
+                  @focus="inputFocus(18)"
                   @blur="inputBlur"
                 />
                 <view class="unit">亩</view>
@@ -1077,6 +1088,39 @@ const submit = () => {
           text-align: center;
           background-color: #f5f7fa;
           border-left: 1px solid #d9d9d9;
+        }
+      }
+
+      .code-wrapper {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 200rpx;
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+
+        &.focus {
+          border-color: rgb(41, 121, 255);
+        }
+
+        .pre-txt {
+          width: 104rpx;
+          height: 35px;
+          padding-left: 7rpx;
+          font-size: 9rpx;
+          line-height: 35px;
+          color: #171718;
+          background-color: #f5f7fa;
+          border-right: 1px solid #d9d9d9;
+        }
+
+        .input-txt {
+          width: 84rpx;
+          height: 35px;
+          padding-left: 11rpx;
+          font-size: 9rpx;
+          line-height: 35px;
+          color: #171718;
         }
       }
 

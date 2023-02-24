@@ -74,13 +74,17 @@ const selectTabs = (data: any, index: number) => {
     }
 
     .tabs-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: none;
       width: 70rpx;
       height: 60rpx;
       margin-right: 6rpx;
       background: #e1f0ff;
       border-radius: 7rpx;
       box-shadow: 0 0 6rpx 0 rgba(0, 0, 0, 0.08);
-      flex: none;
 
       &.active {
         height: 59rpx;
@@ -114,7 +118,7 @@ const selectTabs = (data: any, index: number) => {
         white-space: nowrap;
 
         &.active {
-          margin-top: 6rpx;
+          margin-top: 2rpx;
           color: #fff;
         }
       }
