@@ -124,7 +124,7 @@
           <image class="arrow-icon" src="@/static/images/home_arrow.png" mode="scaleToFill" />
         </view>
 
-        <view class="other-item">
+        <view class="other-item" @click="toLink('work')">
           <view class="inner">
             <image class="other-icon" src="@/static/images/work_enter.png" mode="scaleToFill" />
             <text class="other-tit">我的工作</text>
@@ -153,6 +153,13 @@
           <view class="inner">
             <image class="other-icon" src="@/static/images/sync_enter.png" mode="scaleToFill" />
             <text class="other-tit">登录页</text>
+          </view>
+          <image class="arrow-icon" src="@/static/images/home_arrow.png" mode="scaleToFill" />
+        </view>
+        <view class="other-item" @click="toLink('people')">
+          <view class="inner">
+            <image class="other-icon" src="@/static/images/sync_enter.png" mode="scaleToFill" />
+            <text class="other-tit">居民户清单</text>
           </view>
           <image class="arrow-icon" src="@/static/images/home_arrow.png" mode="scaleToFill" />
         </view>

@@ -1,7 +1,6 @@
 <template>
   <view class="project-wrap">
     <image class="bg" src="@/static/images/common_bg.png" mode="widthFix" />
-    <view :style="{ height: `${statusBarHeight}px` }" />
     <view class="common-header">
       <view class="back-box" @click="onBack">
         <uni-icons type="back" color="#ffffff" size="14rpx" />
@@ -93,23 +92,12 @@ const onBack = () => {
 </script>
 
 <style lang="scss" scoped>
-uni-page-body {
-  /* #ifdef H5 */
-  /* #endif */
-
-  /* #ifdef APP-PLUS */
-  height: 100%;
-  flex: 1;
-  /* #endif */
-}
-
 .project-wrap {
-  flex: 1;
   position: relative;
-  display: flex;
-  flex-direction: column;
   width: 750rpx;
-  height: 100%;
+  height: 100vh;
+  padding-top: var(--status-bar-height);
+  overflow: hidden;
 }
 
 .bg {
@@ -126,7 +114,7 @@ uni-page-body {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  height: 42rpx;
+  height: 33rpx;
   padding: 0 6rpx;
 
   .back-box {
@@ -145,8 +133,9 @@ uni-page-body {
 }
 
 .content {
-  flex: 1;
+  height: calc(100% - 33rpx - var(--status-bar-height));
   padding: 35rpx 43rpx 10rpx;
+  box-sizing: border-box;
 }
 
 .swiper {

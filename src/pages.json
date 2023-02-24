@@ -8,6 +8,13 @@
 			}
 		},
 		{
+			"name": "respondents",
+			"path": "pages/respondents/index",
+			"style": {
+				"navigationBarTitleText": "调查对象"
+			}
+		},
+		{
 			"name": "sync",
 			"path": "pages/sync/index",
 			"style": {
@@ -57,17 +64,17 @@
 			}
 		},
 		{
-			"name": "summary",
-			"path": "pages/summary/index",
+			"name": "work",
+			"path": "pages/work/index",
 			"style": {
-				"navigationBarTitleText": "汇总页面"
+				"navigationBarTitleText": "我的工作"
 			}
 		},
 		{
-			"name": "user",
-			"path": "pages/user/index",
+			"name": "people",
+			"path": "pages/people/index",
 			"style": {
-				"navigationBarTitleText": "个人中心"
+				"navigationBarTitleText": "居民户清单"
 			}
 		},
 		{
