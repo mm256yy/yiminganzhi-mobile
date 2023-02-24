@@ -65,14 +65,10 @@ export class Landlord extends Common {
         const array: LandlordType[] = []
         let sql = `select * from ${LandlordTableName} where isDelete = '0'`
         if (name) {
-          sql += ` and name = '${name}'`
+          sql += ` and name like '%${name}%'`
         }
         if (timeArray && timeArray.length) {
-          if (timeArray.length === 1) {
-            sql += ` and reportDate = '${timeArray[0]}'`
-          } else if (timeArray.length === 2) {
-            sql += ` and reportDate Between '${timeArray[0]}' and '${timeArray[1]}'`
-          }
+          sql += ` and reportDate Between '${timeArray[0]}' and '${timeArray[1]}'`
         }
         if (userId) {
           sql += ` and reportUser = '${userId}'`
