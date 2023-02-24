@@ -92,7 +92,7 @@
           </view>
         </view>
 
-        <view class="enter-item">
+        <view class="enter-item" @click="toLink('collective')">
           <view class="inner">
             <view class="top">
               <image class="enter-icon" src="@/static/images/jt_enter.png" mode="scaleToFill" />

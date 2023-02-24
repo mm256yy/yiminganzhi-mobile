@@ -99,6 +99,41 @@
 			}
 		},
 		{
+			"name": "collective",
+			"path": "pages/collective/index",
+			"style": {
+				"navigationBarTitleText": "村集体填报"
+			}
+		},
+		{
+			"name": "collectiveBaseInfoEdit",
+			"path": "pages/collective/baseInfo/edit",
+			"style": {
+				"navigationBarTitleText": "村集体填报-村集体基本情况编辑"
+			}
+		},
+		{
+			"name": "collectiveHouseInfoEdit",
+			"path": "pages/collective/houseInfo/edit",
+			"style": {
+				"navigationBarTitleText": "村集体填报-房屋信息编辑"
+			}
+		},
+		{
+			"name": "collectiveGraveInfoEdit",
+			"path": "pages/collective/graveInfo/edit",
+			"style": {
+				"navigationBarTitleText": "村集体填报-坟墓信息新增/编辑"
+			}
+		},
+		{
+			"name": "collectiveEquipmentInfoEdit",
+			"path": "pages/collective/equipmentInfo/edit",
+			"style": {
+				"navigationBarTitleText": "村集体填报-设施设备信息新增/编辑"
+			}
+		},
+		{
 			"name": "login",
 			"path": "pages/login/index",
 			"style": {

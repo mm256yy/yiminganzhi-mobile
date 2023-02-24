@@ -1,112 +1,135 @@
 <template>
   <view class="form-wrapper">
-    <Back title="设施设备信息编辑" />
+    <Back title="坟墓信息编辑" />
     <view class="main">
       <uni-forms class="form" ref="form" :modelValue="formData" :rules="rules">
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              label="名称"
+              required
+              label="登记人姓名"
               :label-width="150"
               label-align="right"
-              name="formData.name"
+              name="formData.householdId"
             >
-              <uni-easyinput v-model="formData.name" type="text" placeholder="请输入" />
+              <uni-easyinput v-model="formData.householdId" type="number" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              label="规格型号"
+              label="户号"
               :label-width="150"
               label-align="right"
-              name="formData.specModel"
+              name="formData.villageDoorNo"
             >
-              <uni-easyinput v-model="formData.specModel" type="idcard" placeholder="请输入" />
+              <uni-easyinput v-model="formData.villageDoorNo" disabled />
             </uni-forms-item>
           </uni-col>
         </uni-row>
+
         <uni-row>
           <uni-col :span="12">
-            <uni-forms-item label="数量" :label-width="150" label-align="right" name="formData.num">
-              <uni-easyinput v-model="formData.num" type="number" placeholder="请输入" />
-            </uni-forms-item>
-          </uni-col>
-          <uni-col :span="12">
             <uni-forms-item
-              required
-              label="单位"
+              label="与登记人关系"
               :label-width="150"
               label-align="right"
-              name="formData.unit"
+              name="formData.relation"
             >
               <uni-data-select
-                v-model="formData.unit"
-                :localdata="genderData"
-                @change="changeGender"
+                v-model="formData.relation"
+                :localdata="housePropertyData"
+                @change="changeHouseProperty"
               />
-            </uni-forms-item>
-          </uni-col>
-        </uni-row>
-        <uni-row>
-          <uni-col :span="12">
-            <uni-forms-item label="用途" :label-width="150" label-align="right" name="formData.use">
-              <uni-easyinput v-model="formData.use" type="number" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              label="建造/购置年份"
+              label="穴位"
               :label-width="150"
               label-align="right"
-              name="formData.birthday"
+              name="formData.graveType"
             >
-              <uni-datetime-picker
-                type="date"
-                placeholder="选择年份"
-                v-model="formData.birthday"
-                @change="changeDate"
+              <uni-data-select
+                v-model="formData.graveType"
+                :localdata="housePropertyData"
+                @change="changeHouseProperty"
               />
             </uni-forms-item>
           </uni-col>
         </uni-row>
+
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              label="原值"
+              label="数量"
               :label-width="150"
               label-align="right"
-              name="formData.originalVal"
+              name="formData.number"
             >
               <view :class="['input-wrapper', focusIndex === 1 ? 'focus' : '']">
                 <input
                   class="input-txt"
                   placeholder="请输入"
-                  type="text"
-                  v-model="formData.originalVal"
+                  type="number"
+                  v-model="formData.number"
                   @focus="inputFocus(1)"
                   @blur="inputBlur"
                 />
-                <view class="unit">万元</view>
+                <view class="unit">座</view>
               </view>
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              label="搬迁方式"
+              label="材料"
               :label-width="150"
               label-align="right"
-              name="formData.relationship"
+              name="formData.materials"
             >
               <uni-data-select
-                v-model="formData.relationship"
-                :localdata="relationshipData"
-                @change="changeRelationship"
+                v-model="formData.materials"
+                :localdata="housePropertyData"
+                @change="changeHouseProperty"
               />
             </uni-forms-item>
           </uni-col>
         </uni-row>
+
         <uni-row>
-          <uni-col :span="24">
+          <uni-col :span="12">
+            <uni-forms-item
+              label="立墓年份"
+              :label-width="150"
+              label-align="right"
+              name="formData.graveYear"
+            >
+              <uni-datetime-picker
+                type="date"
+                placeholder="请选择立墓年份"
+                v-model="formData.graveYear"
+                @change="changeDate"
+              />
+            </uni-forms-item>
+          </uni-col>
+          <uni-col :span="12">
+            <uni-forms-item
+              required
+              label="所处位置"
+              :label-width="150"
+              label-align="right"
+              name="formData.gravePosition"
+            >
+              <uni-data-select
+                v-model="formData.gravePosition"
+                :localdata="houseTypeData"
+                @change="changeHouseType"
+              />
+            </uni-forms-item>
+          </uni-col>
+        </uni-row>
+
+        <uni-row>
+          <uni-col :span="12">
             <uni-forms-item
               label="备注"
               :label-width="150"
@@ -136,43 +159,24 @@ import Back from '@/components/Back/Index.vue'
 // 表单数据
 const formData = ref<any>({})
 
+// 获得焦点的输入框下标
+const focusIndex = ref<number>(-1)
+
 // 表单校验规则
 const rules = ref<any>({})
 
-// 获得焦点的 input 框下标
-const focusIndex = ref<number>(-1)
-
-// 性别数据选项
-const genderData = ref<any>([
-  { text: '男', value: 1 },
-  { text: '女', value: 2 }
+// 房屋产别数据选项
+const housePropertyData = ref<any>([
+  { text: '国有房产', value: 1 },
+  { text: '集体所有房产', value: 2 }
 ])
 
-// 与户主关系数据选项
-const relationshipData = ref<any>([
-  { text: '户主', value: 1 },
-  { text: '夫', value: 2 },
-  { text: '妻', value: 3 },
-  { text: '子', value: 4 },
-  { text: '独生子', value: 5 },
-  { text: '长子', value: 6 },
-  { text: '次子', value: 7 }
+// 房屋类别数据选项
+const houseTypeData = ref<any>([
+  { text: '主房', value: 1 },
+  { text: '杂房', value: 2 },
+  { text: '附属房', value: 3 }
 ])
-
-// 性别选择
-const changeGender = (data: any) => {
-  console.log('data:', data)
-}
-
-// 出生年月选择
-const changeDate = (e: any) => {
-  console.log('e:', e)
-}
-
-// 与户主关系选择
-const changeRelationship = (data: any) => {
-  console.log('data:', data)
-}
 
 // 输入框获得焦点事件
 const inputFocus = (index: number) => {
@@ -182,6 +186,21 @@ const inputFocus = (index: number) => {
 // 输入框失去焦点事件
 const inputBlur = () => {
   focusIndex.value = -1
+}
+
+// 房屋产别选择
+const changeHouseProperty = (data: any) => {
+  console.log('data:', data)
+}
+
+// 房屋类别选择
+const changeHouseType = (data: any) => {
+  console.log('data:', data)
+}
+
+// 竣工日期选择
+const changeDate = (e: any) => {
+  console.log('e:', e)
 }
 
 // 表单提交

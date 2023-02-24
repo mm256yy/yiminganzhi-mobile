@@ -3,7 +3,7 @@
     <view class="search-box">
       <view class="search-wrap">
         <image class="icon" src="@/static/images/icon_search.png" mode="scaleToFill" />
-        <input class="txt" placeholder="搜索行政村、自然村、姓名" @confirm="iptConfirm" />
+        <input class="txt" placeholder="搜索" @confirm="iptConfirm" />
       </view>
       <label class="add-wrap">
         <image class="add-icon" :src="iconSrc" mode="scaleToFill" />
