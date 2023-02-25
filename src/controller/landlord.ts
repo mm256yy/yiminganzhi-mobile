@@ -5,7 +5,7 @@
 import { LandlordTableName, LandlordDDLType } from '@/database'
 import { Common } from './common'
 import { LandlordType } from '@/types/sync'
-import { guid, getCurrentTimeStamp } from '@/utils'
+import { guid, getCurrentTimeStamp, getStorage, StorageKey } from '@/utils'
 import { LandlordQuery, MainType } from '@/types/common'
 
 export class Landlord extends Common {
@@ -23,6 +23,19 @@ export class Landlord extends Common {
         if (list && Array.isArray(list)) {
           list.forEach((item) => {
             array.push(JSON.parse(item.content))
+          })
+          const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
+          // 拿到上级行政区划
+          array.forEach((item) => {
+            // townCode: string
+            // villageCode: string
+            // virutalVillageCode: string
+            // areaCode: string
+            // 331102001201 行政村
+            item.virutalVillageCodeText = districtMap[item.virutalVillageCode]
+            item.villageCodeText = districtMap[item.villageCode]
+            item.townCodeText = districtMap[item.townCode]
+            item.areaCodeText = districtMap[item.areaCode]
           })
         }
         resolve(array)
@@ -44,6 +57,20 @@ export class Landlord extends Common {
           list.forEach((item) => {
             const landlord = JSON.parse(item.content)
             array.push(landlord)
+          })
+          const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
+          // 拿到上级行政区划
+          array.forEach((item) => {
+            // townCode: string
+            // villageCode: string
+            // virutalVillageCode: string
+            // areaCode: string
+            // 331102001201 行政村
+            item.virutalVillageCodeText = districtMap[item.virutalVillageCode]
+            item.villageCodeText = districtMap[item.villageCode]
+            item.townCodeText = districtMap[item.townCode]
+            item.areaCodeText = districtMap[item.areaCode]
+            item.locationTypeText = this.getLocationTypeText(item.locationType)
           })
         }
         resolve(array)
@@ -79,6 +106,19 @@ export class Landlord extends Common {
           list.forEach((item) => {
             const landlord = JSON.parse(item.content)
             array.push(landlord)
+          })
+          const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
+          // 拿到上级行政区划
+          array.forEach((item) => {
+            // townCode: string
+            // villageCode: string
+            // virutalVillageCode: string
+            // areaCode: string
+            // 331102001201 行政村
+            item.virutalVillageCodeText = districtMap[item.virutalVillageCode]
+            item.villageCodeText = districtMap[item.villageCode]
+            item.townCodeText = districtMap[item.townCode]
+            item.areaCodeText = districtMap[item.areaCode]
           })
         }
         resolve(array)
@@ -226,6 +266,13 @@ export class Landlord extends Common {
               (item) => !item.isDelete || item.isDelete === '0'
             )
           }
+
+          const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
+          // 拿到上级行政区划
+          res.virutalVillageCodeText = districtMap[res.virutalVillageCode]
+          res.villageCodeText = districtMap[res.villageCode]
+          res.townCodeText = districtMap[res.townCode]
+          res.areaCodeText = districtMap[res.areaCode]
 
           resolve(res)
         }

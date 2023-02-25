@@ -4,7 +4,8 @@ export enum StorageKey {
   USERINFO = 'UserInfo',
   LOGINTIME = 'LoginTime',
   NETWORK = 'Network',
-  PROJECTINFO = 'ProjectInfo'
+  PROJECTINFO = 'ProjectInfo',
+  DISTRICTMAP = 'DistrictMap'
 }
 
 export const getStorage = (key: StorageKey): any => {

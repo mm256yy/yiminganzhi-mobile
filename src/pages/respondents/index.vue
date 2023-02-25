@@ -10,8 +10,8 @@
     <view class="respondents-wrap">
       <view class="tabs">
         <view class="tab-item one" :class="[tabId === 1 ? 'active' : '']" @click="onTabChange(1)">
-          <image class="icon" src="@/static/images/respondents_village.png" mode="scaleToFill" />
-          <text class="tit">自然村</text>
+          <image class="icon" src="@/static/images/people_icon.png" mode="scaleToFill" />
+          <text class="tit">居民户</text>
         </view>
         <view
           class="tab-item two other"
@@ -68,6 +68,7 @@ import Container from '@/components/Container/index.vue'
 import CompanyItem from './company.vue'
 import VillageItem from './villageItem.vue'
 import VillageSelect from './villageSelect.vue'
+import { getVillageListApi } from '@/service'
 
 const tabId = ref<number>(1)
 const showVillageSelect = ref<boolean>(false)
@@ -79,6 +80,11 @@ const onTabChange = (id: number) => {
 const onSelectVillage = () => {
   showVillageSelect.value = !showVillageSelect.value
 }
+
+const getVillageList = () => {
+  getVillageListApi()
+}
+getVillageList()
 </script>
 
 <style lang="scss">

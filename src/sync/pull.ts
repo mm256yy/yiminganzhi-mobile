@@ -24,14 +24,20 @@ import {
 } from '@/database/index'
 import { getProjectDataApi, getBaseDataApi, getConfigDataApi, getCollectApi } from './api'
 import { StateType } from '@/types/sync'
-import { getCurrentTimeStamp } from '@/utils'
+import { getCurrentTimeStamp, setStorage, StorageKey } from '@/utils'
 import dayjs from 'dayjs'
 
 class PullData {
+  // 接口返回数据存储
   public state: StateType
+  // db实例
   public db: any
+  // 缓存拉取的数量
   public count: number
+  // 需要拉取的数量
   public needPullCount: number
+  // 行政区划 code-name 的map数据
+  private districtMap: { [key: string]: string }
 
   constructor() {
     this.count = 0
@@ -52,6 +58,8 @@ class PullData {
       villageList: [],
       collectList: []
     }
+
+    this.districtMap = {}
   }
 
   public init() {
@@ -136,6 +144,7 @@ class PullData {
     })
     this.pullDistrict().then((res) => {
       res && this.count++
+      setStorage(StorageKey.DISTRICTMAP, this.districtMap)
       console.log('拉取区划', res)
     })
     this.pullAppendant().then((res) => {
@@ -354,12 +363,14 @@ class PullData {
           resolve(false)
         })
         list.forEach((item) => {
+          this.districtMap[item.code] = item.name
           const fields = "'uid','status','parentCode','content','updatedDate'"
           const values = `'${item.uid}','default','${item.parentCode}','${JSON.stringify(
             item
           )}','${getCurrentTimeStamp()}'`
           db.insertOrReplaceData(VillageTableName, values, fields)
         })
+
         await db.transaction('commit').catch(() => {
           resolve(false)
         })
@@ -459,11 +470,15 @@ class PullData {
         await db.transaction('begin').catch(() => {
           resolve(false)
         })
+        // 搞一份map: {code: name}存本地
+
         list.forEach((item) => {
+          this.districtMap[item.code] = item.name
           const fields = "'content','updatedDate'"
           const values = `'${JSON.stringify(item)}','${getCurrentTimeStamp()}'`
           db.insertTableData(DistrictTableName, values, fields)
         })
+
         await db.transaction('commit').catch(() => {
           resolve(false)
         })

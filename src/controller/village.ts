@@ -2,10 +2,17 @@
  * 安置意愿 相关的增删改查功能
  */
 
-import { VillageTableName, VillageDDLType } from '@/database'
+import {
+  VillageTableName,
+  VillageDDLType,
+  DistrictTableName,
+  DistrictDDLType,
+  OtherTableName,
+  OtherDataType
+} from '@/database'
 import { Common } from './common'
-import { VillageType } from '@/types/common'
-import { getCurrentTimeStamp, guid } from '@/utils'
+import { DistrictType, VillageType } from '@/types/common'
+import { getCurrentTimeStamp, guid, getStorage, StorageKey } from '@/utils'
 
 class Village extends Common {
   constructor() {
@@ -18,11 +25,24 @@ class Village extends Common {
       try {
         const array: VillageType[] = []
         const sql = `select * from ${VillageTableName}`
-        const list: VillageDDLType[] = await this.db.selectSql(sql)
-        if (list && Array.isArray(list)) {
-          list.forEach((item) => {
+        const res1: VillageDDLType[] = await this.db.selectSql(sql)
+        const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
+        if (this.isArrayAndNotNull(res1)) {
+          res1.forEach((item) => {
             array.push(JSON.parse(item.content))
           })
+          // 拿到上级行政区划
+          array.forEach((item) => {
+            // townCode: string
+            // villageCode: string
+            // virutalVillageCode: string
+            // areaCode: string
+            // 331102001201 行政村
+            item.villageCodeText = districtMap[item.parentCode]
+            item.townCodeText = districtMap[item.parentCode.slice(0, 9)]
+            item.areaCodeText = districtMap[item.parentCode.slice(0, 6)]
+          })
+          console.log(array, '----')
         }
         resolve(array)
       } catch (error) {

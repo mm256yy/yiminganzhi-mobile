@@ -1,6 +1,6 @@
 import { sqliteOptions } from '@/config'
 
-class DB {
+export class DB {
   constructor() {
     this.openDB()
   }

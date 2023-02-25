@@ -18,7 +18,9 @@ import {
   WillConfigType,
   DictConfigType,
   VillageType,
-  MainType
+  MainType,
+  DistrictType,
+  CollectType
 } from './common'
 
 // 农户列表
@@ -33,9 +35,14 @@ export interface LandlordType {
   sex: string
   card: string
   doorNo: string
+  areaCode: string
+  areaCodeText?: string
   townCode: string
+  townCodeText?: string
   villageCode: string
+  villageCodeText?: string
   virutalVillageCode: string
+  virutalVillageCodeText?: string
   parentCode?: string
   address: string
   projectId: number
@@ -43,8 +50,8 @@ export interface LandlordType {
   latitude: string
   phone: string
   locationType: string
+  locationTypeText?: string
   cityCode: string
-  areaCode: string
   reportStatus: string
   hasPropertyAccount: true
   householdNumber: string
@@ -106,9 +113,9 @@ export interface StateType {
   immigrantAppendantConfigList: AppendantType[]
 
   districtTree: any[]
-  districtList: any[]
-  villageList: any[]
-  collectList: any[]
+  districtList: DistrictType[]
+  villageList: VillageType[]
+  collectList: CollectType[]
 }
 
 export interface PushStateType {
