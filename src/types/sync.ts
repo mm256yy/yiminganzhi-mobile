@@ -63,6 +63,7 @@ export interface LandlordType {
   type: MainType
   totalNum?: number
   reportNum?: number
+  [key: string]: any
 
   // 人口
   demographicList: PopulationType[]

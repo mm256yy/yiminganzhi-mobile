@@ -66,8 +66,10 @@ export function arrayToTree(items: any[]) {
       item.level = 2
     } else if (item.districtType === 'Village') {
       item.level = 3
-    } else {
+    } else if (item.districtType === 'naturalVillage') {
       item.level = 4
+    } else {
+      item.level = 5
     }
 
     if (!itemMap[id]) {

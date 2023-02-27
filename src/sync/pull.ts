@@ -305,7 +305,7 @@ class PullData {
           resolve(false)
         })
         list.forEach((item) => {
-          if (item.type === 'PeasantHousehold') {
+          if (item.type === 'peasantHouseholdPushDtoList') {
             // 删除居民户数据
             db.deleteTableData(LandlordTableName, 'uid', item.deleteId)
           }

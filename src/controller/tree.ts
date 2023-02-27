@@ -40,6 +40,7 @@ class DistrictTree extends Common {
         const totalMap: any = {}
         const reportMap: any = {}
         landlordList.forEach((item) => {
+          item.landlord = true
           item.parentCode =
             item.type === MainType.PeasantHousehold ? item.virutalVillageCode : item.villageCode
           item.code = item.id
@@ -123,6 +124,9 @@ class DistrictTree extends Common {
         if (type === MainType.PeasantHousehold) {
           // 剧名户 需要拿到自然村
           villageList = await VillageController.getList()
+          villageList.forEach((item) => {
+            item.districtType === 'naturalVillage'
+          })
           const totalArray = [...districtList, ...villageList]
           totalArray.forEach((item) => {
             item.totalNum = totalMap[item.code]
