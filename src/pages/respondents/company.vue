@@ -4,10 +4,14 @@
     <view class="head">
       <view class="head-lt">
         <image class="user-icon" src="@/static/images/respondents_tit.png" mode="scaleToFill" />
-        <view class="name">放假的时间啊了</view>
+        <view class="name">{{ props.data.name }}</view>
       </view>
       <view class="head-rt">
-        <view class="status success"><text class="circle" />未上报</view>
+        <view class="status" :class="[props.data.reportStatus === 'ReportSucceed' ? 'success' : '']"
+          ><text class="circle" />{{
+            props.data.reportStatus === 'ReportSucceed' ? '已上报' : '未上报'
+          }}</view
+        >
         <view class="edit-box">
           <image class="remove-icon" src="@/static/images/remove.png" mode="scaleToFill" />
         </view>
@@ -15,29 +19,73 @@
     </view>
 
     <view class="cont">
-      <view class="cont-item">
+      <view class="cont-item" v-if="props.data.type !== MainType.PeasantHousehold">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">联系方式:</view>
-        <view class="value">房间打开手</view>
+        <view class="value">{{ props.data.phone }}</view>
+      </view>
+      <view class="cont-item" v-else>
+        <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
+        <view class="label">是否财产户:</view>
+        <view class="value">{{ props.data.hasPropertyAccount ? '是' : '否' }}</view>
       </view>
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">所在位置:</view>
-        <view class="value">房间打开手</view>
+        <view class="value">{{ props.data.locationTypeText }}</view>
       </view>
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">所属区域:</view>
-        <view class="value">房间打开手</view>
+        <view class="value">{{ props.data.address }}</view>
       </view>
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">行政村名称:</view>
-        <view class="value">房间打开手</view>
+        <view class="value">{{ props.data.villageCodeText }}</view>
       </view>
     </view>
   </view>
 </template>
+
+<script lang="ts" setup>
+import { routerForward } from '@/utils'
+import { LandlordType } from '@/types/sync'
+import { deleteLandlordApi } from '@/service'
+import { MainType } from '@/types/common'
+
+interface PropsType {
+  data: LandlordType
+}
+
+const props = defineProps<PropsType>()
+const emit = defineEmits(['onRefresh'])
+
+const onEdit = () => {
+  // routerForward()
+}
+
+const onDel = (item: LandlordType) => {
+  deleteLandlordApi(item.uid)
+    .then((res) => {
+      if (res) {
+        uni.showToast({
+          title: '删除成功!',
+          icon: 'success',
+          mask: true
+        })
+        emit('onRefresh')
+      }
+    })
+    .catch(() => {
+      uni.showToast({
+        title: '删除失败!',
+        icon: 'error',
+        mask: true
+      })
+    })
+}
+</script>
 
 <style lang="scss" scoped>
 .company-item {

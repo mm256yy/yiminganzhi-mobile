@@ -2,7 +2,7 @@
  * 业主接口列表
  */
 import { LandlordController, DistrictTreeController } from '@/controller'
-import { MainType, LandlordQuery } from '@/types/common'
+import { MainType, LandlordQuery, LandlordSearchType } from '@/types/common'
 import { LandlordType } from '@/types/sync'
 
 // 获取填报页 左侧树
@@ -43,4 +43,9 @@ export const deleteLandlordApi = (uid: string) => {
 // 我的工作 条件查询
 export const getSubmitListApi = (data: LandlordQuery) => {
   return LandlordController.getSubmitList(data)
+}
+
+// 调查对象管理 条件查询
+export const getLandlordListBySearchApi = (data?: LandlordSearchType) => {
+  return LandlordController.getLandlordListBySearch(data)
 }

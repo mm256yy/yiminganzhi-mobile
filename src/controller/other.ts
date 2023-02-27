@@ -13,9 +13,11 @@ class Other extends Common {
     return new Promise(async (resolve, reject) => {
       try {
         const sql = `select * from ${OtherTableName} where type = '${type}'`
-        const result: OtherDDLType = await this.db.selectSql(sql)
-        if (result) {
-          resolve(type === OtherDataType.PullTime ? result.content : JSON.parse(result.content))
+        const result: OtherDDLType[] = await this.db.selectSql(sql)
+        if (result && result[0]) {
+          resolve(
+            type === OtherDataType.PullTime ? result[0].content : JSON.parse(result[0].content)
+          )
         }
         reject(null)
       } catch (error) {

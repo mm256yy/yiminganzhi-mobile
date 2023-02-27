@@ -10,44 +10,41 @@
       <view class="select-item">
         <view class="select-title">街道:</view>
         <view class="select-cont">
-          <view class="common-item">44444</view>
-          <view class="common-item">44444</view>
-          <view class="common-item">44444</view>
-          <view class="common-item">44444</view>
-          <view class="common-item">44444</view>
-          <view class="common-item active">4555555</view>
+          <view
+            class="common-item"
+            :class="[currentSelect[0] === item.code ? 'active' : '']"
+            v-for="item in props.treeData"
+            :key="item.code"
+            @click="areaClick(item)"
+            >{{ item.name }}</view
+          >
         </view>
       </view>
-      <view class="select-item">
+      <view class="select-item" v-if="currentTown && currentTown.length">
         <view class="select-title">乡镇:</view>
         <view class="select-cont">
-          <view class="common-item">44444</view>
-          <view class="common-item">44444</view>
-          <view class="common-item">44444</view>
-          <view class="common-item">44444</view>
-          <view class="common-item">44444</view>
-          <view class="common-item">44444</view>
-          <view class="common-item">44444</view>
-          <view class="common-item active">4555555</view>
+          <view
+            class="common-item"
+            :class="[currentSelect[1] === item.code ? 'active' : '']"
+            v-for="item in currentTown"
+            :key="item.code"
+            @click="townClick(item)"
+            >{{ item.name }}</view
+          >
         </view>
       </view>
-      <view class="line" />
-      <view class="select-item">
+      <view class="line" v-if="currentVillage && currentVillage.length" />
+      <view class="select-item" v-if="currentVillage && currentVillage.length">
         <view class="select-title">行政村:</view>
         <view class="select-cont">
-          <view class="common-item">44444</view>
-          <view class="common-item">44444</view>
-          <view class="common-item">44444</view>
-          <view class="common-item">44444</view>
-          <view class="common-item">44444</view>
-          <view class="common-item">44444</view>
-          <view class="common-item">44444</view>
-          <view class="common-item">44444</view>
-          <view class="common-item">44444</view>
-          <view class="common-item">44444</view>
-          <view class="common-item">44444</view>
-          <view class="common-item">44444</view>
-          <view class="common-item active">4555555</view>
+          <view
+            class="common-item"
+            :class="[currentSelect[2] === item.code ? 'active' : '']"
+            v-for="item in currentVillage"
+            :key="item.code"
+            @click="villageClick(item)"
+            >{{ item.name }}</view
+          >
         </view>
       </view>
     </view>
@@ -55,16 +52,50 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 interface PropsType {
   show: boolean
+  treeData: any
+  selectCodes?: string[]
 }
 
 const props = defineProps<PropsType>()
 const emit = defineEmits(['onClose', 'onConfirm'])
 
-const currentSelect = ref<any>([])
+const currentTown = ref<any>([])
+const currentVillage = ref<any>([])
+const currentSelect = ref<string[]>([])
+
+watch(
+  () => props.selectCodes,
+  (val) => {
+    if (val) {
+      currentSelect.value = val
+      const townList = props.treeData.find((item: any) => item.code === val[0]).children || []
+      currentTown.value = townList
+      currentVillage.value = townList.find((item: any) => item.code === val[1]).children || []
+    }
+  },
+  {
+    immediate: true,
+    deep: true
+  }
+)
+
+const areaClick = (item: any) => {
+  currentTown.value = item.children
+  currentSelect.value[0] = item.code
+}
+
+const townClick = (item: any) => {
+  currentVillage.value = item.children
+  currentSelect.value[1] = item.code
+}
+
+const villageClick = (item: any) => {
+  currentSelect.value[2] = item.code
+}
 
 const cancle = () => {
   emit('onClose')
