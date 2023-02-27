@@ -5,7 +5,7 @@
     <view class="main-cont">
       <view class="list-content">
         <view :class="['list-box', showExpand ? '' : 'list-expand']">
-          <view class="box">
+          <view class="box" v-if="props.dataInfo">
             <view class="list-header">
               <view class="list-header-lt" @click="expandToggle">
                 <image class="expand-img" src="@/static/images/expand.png" mode="scaleToFill" />
@@ -63,6 +63,13 @@
               <attachment-upload v-if="tabVal === 9" />
             </view>
           </view>
+
+          <view class="box" v-else>
+            <view class="null-wrapper">
+              <image class="icon" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
+              <view class="tips">请先选择要填报的居民户</view>
+            </view>
+          </view>
         </view>
       </view>
 
@@ -75,7 +82,6 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { getLandlordTreeApi } from '@/service'
 import Back from '@/components/Back/Index.vue'
 import Tree from '@/components/Tree/Index.vue'
 import Tabs from '@/components/Tabs/Index.vue'
@@ -108,9 +114,12 @@ import iconRevenueDef from '@/static/images/icon_revenue_default.png' // 引入�
 import iconRevenueSel from '@/static/images/icon_revenue_select.png' // 引入家庭收入信息默认 icon
 import iconWillingnessDef from '@/static/images/icon_willingness_default.png' // 引入安置意愿调查默认 icon
 import iconWillingnessSel from '@/static/images/icon_willingness_select.png' // 引入安置意愿调查默认 icon
-import { MainType } from '@/types/common'
 
 const props = defineProps({
+  dataInfo: {
+    type: Object,
+    default: () => {}
+  },
   treeData: {
     type: Array,
     default: () => []
@@ -131,11 +140,11 @@ const tabsList = ref([
 
 const showExpand = ref<boolean>(false)
 const tabVal = ref<number>(1)
-
-const treeData = ref<any[]>([])
+const emit = defineEmits(['treeItemClick'])
 
 const treeItemClick = (data: any) => {
   console.log(data, 'data')
+  emit('treeItemClick', data)
 }
 
 const expandToggle = () => {
@@ -146,13 +155,6 @@ const expandToggle = () => {
 const selectTabs = (data: any) => {
   tabVal.value = data.value
 }
-
-const getTreeData = async () => {
-  const res = await getLandlordTreeApi(MainType.PeasantHousehold)
-  console.log(res, 'res')
-  treeData.value = res
-}
-getTreeData()
 </script>
 
 <style lang="scss">
@@ -326,6 +328,28 @@ getTreeData()
   background-color: #fff;
   box-sizing: border-box;
   flex-direction: column;
+}
+
+.null-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: calc(100vh - 33rpx - 12rpx - var(--status-bar-height));
+  background-color: #fff;
+
+  .icon {
+    width: 152rpx;
+    height: 92rpx;
+  }
+
+  .tips {
+    margin-top: 17rpx;
+    font-size: 9rpx;
+    line-height: 1;
+    color: #171718;
+  }
 }
 
 .tree-wrapper {

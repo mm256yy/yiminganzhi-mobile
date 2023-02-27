@@ -9,11 +9,16 @@
       </view>
 
       <view class="tree-item-rt">
-        <text class="num green">0</text> / <text class="num">12</text>
+        <text class="num green">{{ props.data.reportNum }}</text> /
+        <text class="num">{{ props.data.totalNum }}</text>
       </view>
     </view>
     <!-- 无子集 业主 -->
-    <view v-else-if="!hasChildren && props.data.landlord" class="tree-item" @click="treeItemClick">
+    <view
+      v-else-if="!hasChildren && props.data.landlord"
+      class="tree-item"
+      @click="treeItemClick(props.data)"
+    >
       <view class="tree-item-lt">
         <view class="status">
           <image class="icon" src="@/static/images/icon_complete.png" mode="scaleToFill" />
@@ -23,7 +28,8 @@
       </view>
 
       <view class="tree-item-rt">
-        <text class="num gray">0</text> / <text class="num">12</text>
+        <text class="num gray">{{ props.data.reportNum }}</text> /
+        <text class="num">{{ props.data.totalNum }}</text>
       </view>
     </view>
     <!-- 行政区划 无子集 -->
@@ -35,7 +41,8 @@
       </view>
 
       <view class="tree-item-rt">
-        <text class="num green">0</text> / <text class="num">12</text>
+        <text class="num green">{{ props.data.reportNum }}</text> /
+        <text class="num">{{ props.data.totalNum }}</text>
       </view>
     </view>
     <!-- 子集展开 有数据 -->
@@ -65,8 +72,9 @@ const open = ref<boolean>(false)
 const toggle = () => {
   open.value = !open.value
 }
-const treeItemClick = () => {
-  emit('treeItemClick', props.data)
+
+const treeItemClick = (data: any) => {
+  emit('treeItemClick', data)
 }
 
 const hasChildren = computed(() => {
