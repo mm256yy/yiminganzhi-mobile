@@ -56,6 +56,20 @@ export function arrayToTree(items: any[]) {
     const id = item.code
     const pid = item.parentCode
 
+    // Country = 'Country',
+    // Township = 'Township',
+    // Village = 'Village',
+    // naturalVillage = 'naturalVillage'
+    if (item.districtType === 'Country') {
+      item.level = 1
+    } else if (item.districtType === 'Township') {
+      item.level = 2
+    } else if (item.districtType === 'Village') {
+      item.level = 3
+    } else {
+      item.level = 4
+    }
+
     if (!itemMap[id]) {
       itemMap[id] = {
         children: []
