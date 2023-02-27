@@ -278,12 +278,12 @@ class PullData {
       if (this.isArrayAndNotNull(list)) {
         list.forEach((item) => {
           const fields =
-            "'uid','name','type','reportDate','reportUser','status','content','updatedDate','isDelete'"
+            "'uid','name','type','reportDate','reportUser','status','content','villageCode', 'updatedDate','isDelete'"
           const values = `'${item.uid}','${item.name}','${item.type}','${
             item.reportDate ? dayjs(item.reportDate).format('YYYY-MM-DD HH:mm:ss') : ''
-          }','${item.reportUser}','default','${JSON.stringify(
-            item
-          )}','${getCurrentTimeStamp()}','0'`
+          }','${item.reportUser}','default','${JSON.stringify(item)}','${
+            item.villageCode
+          }','${getCurrentTimeStamp()}','0'`
           db.insertOrReplaceData(LandlordTableName, values, fields)
         })
         await db.transaction('commit').catch(() => {

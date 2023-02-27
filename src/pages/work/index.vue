@@ -67,22 +67,22 @@
         <view class="tab-cont">
           <uni-table ref="table" :loading="loading" border stripe emptyText="暂无更多数据">
             <uni-tr>
-              <uni-th width="78rpx">名称</uni-th>
+              <uni-th>名称</uni-th>
               <uni-th width="120rpx">户号</uni-th>
               <uni-th width="66rpx">是否财产户</uni-th>
               <uni-th width="92rpx">乡镇/街道</uni-th>
               <uni-th width="94rpx">行政村</uni-th>
               <uni-th width="92rpx">自然村</uni-th>
               <uni-th width="72rpx">所处位置</uni-th>
-              <uni-th>提交时间</uni-th>
+              <uni-th width="100rpx">提交时间</uni-th>
             </uni-tr>
             <uni-tr v-for="(item, index) in tableData" :key="index">
               <uni-td>{{ item.name }}</uni-td>
               <uni-td>{{ item.doorNo }}</uni-td>
               <uni-td>{{ item.hasPropertyAccount ? '是' : '否' }}</uni-td>
-              <uni-td>{{ item.townCode }}</uni-td>
-              <uni-td>{{ item.villageCode }}</uni-td>
-              <uni-td>{{ item.virutalVillageCode }}</uni-td>
+              <uni-td>{{ item.townCodeText }}</uni-td>
+              <uni-td>{{ item.villageCodeText }}</uni-td>
+              <uni-td>{{ item.virutalVillageCodeText }}</uni-td>
               <uni-td>{{ getLocationText(item.locationType) }}</uni-td>
               <uni-td>{{ dayjs(item.reportDate).format('YYYY-MM-DD') }}</uni-td>
             </uni-tr>
@@ -166,7 +166,6 @@ const serach = () => {
   }
   getSubmitListApi(params)
     .then((res) => {
-      console.log(res, '返回的列表')
       allTableData.value = res
       tableData.value = res.filter((item) => item.type === tabType.value)
     })

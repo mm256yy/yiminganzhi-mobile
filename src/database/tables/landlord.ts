@@ -11,6 +11,7 @@ export interface LandlordDDLType {
   type: MainType
   reportDate: string
   reportUser: string
+  villageCode: string
   status: 'modify' | 'default'
   isDelete: '0' | '1'
   updatedDate: string
@@ -26,6 +27,7 @@ create table if not exists ${LandlordTableName} (
   'reportDate' text,
   'reportUser' text,
   'content' text,
+  'villageCode' text,
   'status' text,
   'isDelete' text,
   'updatedDate' text DEFAULT NULL

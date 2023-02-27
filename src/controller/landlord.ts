@@ -6,7 +6,7 @@ import { LandlordTableName, LandlordDDLType } from '@/database'
 import { Common } from './common'
 import { LandlordType } from '@/types/sync'
 import { guid, getCurrentTimeStamp, getStorage, StorageKey } from '@/utils'
-import { LandlordQuery, MainType } from '@/types/common'
+import { LandlordQuery, MainType, LandlordSearchType } from '@/types/common'
 
 export class Landlord extends Common {
   constructor() {
@@ -267,6 +267,24 @@ export class Landlord extends Common {
             )
           }
 
+          if (res.immigrantManagementList && res.immigrantManagementList.length) {
+            res.immigrantManagementList = res.immigrantManagementList.filter(
+              (item) => !item.isDelete || item.isDelete === '0'
+            )
+          }
+
+          if (res.immigrantEquipmentList && res.immigrantEquipmentList.length) {
+            res.immigrantEquipmentList = res.immigrantEquipmentList.filter(
+              (item) => !item.isDelete || item.isDelete === '0'
+            )
+          }
+
+          if (res.immigrantFacilitiesList && res.immigrantFacilitiesList.length) {
+            res.immigrantFacilitiesList = res.immigrantFacilitiesList.filter(
+              (item) => !item.isDelete || item.isDelete === '0'
+            )
+          }
+
           const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
           // 拿到上级行政区划
           res.virutalVillageCodeText = districtMap[res.virutalVillageCode]
@@ -280,6 +298,51 @@ export class Landlord extends Common {
       } catch (error) {
         console.log(error, 'getLandlordByUid-error')
         reject(null)
+      }
+    })
+  }
+
+  // 业主列表-根据行政村 和 名称 查询列表
+  getLandlordListBySearch(data?: LandlordSearchType): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { name, villageCode, type } = data || {}
+        const array: LandlordType[] = []
+        let sql = `select * from ${LandlordTableName} where isDelete = '0'`
+        if (type) {
+          sql += ` and type = '${type}'`
+        }
+        if (name) {
+          sql += ` and name like '%${name}%'`
+        }
+        if (villageCode) {
+          sql += ` and villageCode = '${villageCode}'`
+        }
+        console.log(sql, 'sql 语句')
+        const list: LandlordDDLType[] = await this.db.selectSql(sql)
+        if (list && Array.isArray(list)) {
+          list.forEach((item) => {
+            const landlord = JSON.parse(item.content)
+            array.push(landlord)
+          })
+          const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
+          // 拿到上级行政区划
+          array.forEach((item) => {
+            // townCode: string
+            // villageCode: string
+            // virutalVillageCode: string
+            // areaCode: string
+            // 331102001201 行政村
+            item.virutalVillageCodeText = districtMap[item.virutalVillageCode]
+            item.villageCodeText = districtMap[item.villageCode]
+            item.townCodeText = districtMap[item.townCode]
+            item.areaCodeText = districtMap[item.areaCode]
+          })
+        }
+        resolve(array)
+      } catch (error) {
+        console.log(error, 'getLandlordListBySearch-error')
+        reject([])
       }
     })
   }

@@ -131,3 +131,10 @@ export interface LandlordQuery {
   timeArray: string[]
   userId: number
 }
+
+// 根据行政村刷选
+export interface LandlordSearchType {
+  name: string
+  type: MainType
+  villageCode: string
+}

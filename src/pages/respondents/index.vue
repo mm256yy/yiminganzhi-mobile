@@ -1,7 +1,7 @@
 <template>
   <Container>
     <template #title>
-      <view class="title" @click="onSelectVillage">
+      <view class="title" @click="onToggleVillage">
         <text class="tit">行政村</text>
         <image class="icon" src="@/static/images/respondents_select.png" mode="scaleToFill" />
       </view>
@@ -9,30 +9,34 @@
 
     <view class="respondents-wrap">
       <view class="tabs">
-        <view class="tab-item one" :class="[tabId === 1 ? 'active' : '']" @click="onTabChange(1)">
+        <view
+          class="tab-item one"
+          :class="[tabType === MainType.PeasantHousehold ? 'active' : '']"
+          @click="onTabChange(MainType.PeasantHousehold)"
+        >
           <image class="icon" src="@/static/images/people_icon.png" mode="scaleToFill" />
           <text class="tit">居民户</text>
         </view>
         <view
           class="tab-item two other"
-          :class="[tabId === 2 ? 'active' : '']"
-          @click="onTabChange(2)"
+          :class="[tabType === MainType.Company ? 'active' : '']"
+          @click="onTabChange(MainType.Company)"
         >
           <image class="icon" src="@/static/images/respondents_company.png" mode="scaleToFill" />
           <text class="tit">企业</text>
         </view>
         <view
           class="tab-item thr other"
-          :class="[tabId === 3 ? 'active' : '']"
-          @click="onTabChange(3)"
+          :class="[tabType === MainType.IndividualHousehold ? 'active' : '']"
+          @click="onTabChange(MainType.IndividualHousehold)"
         >
           <image class="icon" src="@/static/images/respondents_single.png" mode="scaleToFill" />
           <text class="tit">个体户</text>
         </view>
         <view
           class="tab-item for other"
-          :class="[tabId === 4 ? 'active' : '']"
-          @click="onTabChange(4)"
+          :class="[tabType === MainType.Village ? 'active' : '']"
+          @click="onTabChange(MainType.Village)"
         >
           <image class="icon" src="@/static/images/respondents_jt.png" mode="scaleToFill" />
           <text class="tit">村集体</text>
@@ -41,50 +45,94 @@
 
       <view class="search-box">
         <uni-icons class="icon" type="search" color="#272636" size="9rpx" />
-        <input type="text" class="ipt" placeholder="搜索名称" />
+        <input
+          type="text"
+          class="ipt"
+          placeholder="搜索名称"
+          :value="keyWords"
+          @confirm="iptChange"
+        />
+        <uni-icons v-if="keyWords" @click="clear" type="clear" color="#999999" size="14rpx" />
       </view>
 
       <view class="respondents-list">
-        <CompanyItem />
-        <CompanyItem />
-        <CompanyItem />
-        <VillageItem />
-        <VillageItem />
-        <VillageItem />
+        <CompanyItem v-for="item in list" :data="item" :key="item.uid" />
       </view>
     </view>
 
     <VillageSelect
       v-show="showVillageSelect"
       :show="showVillageSelect"
+      :treeData="treeData"
       @on-close="showVillageSelect = false"
+      @on-confirm="villageConfirm"
     />
   </Container>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, onMounted, nextTick, unref } from 'vue'
 import Container from '@/components/Container/index.vue'
 import CompanyItem from './company.vue'
-import VillageItem from './villageItem.vue'
 import VillageSelect from './villageSelect.vue'
-import { getVillageListApi } from '@/service'
+import { getLandlordListBySearchApi, getOtherItemApi } from '@/service'
+import { LandlordType } from '@/types/sync'
+import { LandlordSearchType, MainType } from '@/types/common'
+import { OtherDataType } from '@/database'
 
-const tabId = ref<number>(1)
+const tabType = ref<MainType>(MainType.Company)
 const showVillageSelect = ref<boolean>(false)
+const list = ref<LandlordType[]>([])
+const keyWords = ref<string>('')
+const villageCode = ref<string[]>([])
+const treeData = ref<any>([])
 
-const onTabChange = (id: number) => {
-  tabId.value = id
+const clear = () => {
+  keyWords.value = ''
+  getList()
 }
 
-const onSelectVillage = () => {
+const onTabChange = (type: MainType) => {
+  tabType.value = type
+  getList()
+}
+
+const onToggleVillage = () => {
   showVillageSelect.value = !showVillageSelect.value
 }
 
-const getVillageList = () => {
-  getVillageListApi()
+const iptChange = (e: any) => {
+  keyWords.value = e.detail.value
+  getList()
 }
-getVillageList()
+
+const villageConfirm = (code: string[]) => {
+  villageCode.value = code
+  onToggleVillage()
+  getList()
+}
+
+const getTreeData = async () => {
+  const res = await getOtherItemApi(OtherDataType.DistrictTree)
+  treeData.value = res || []
+}
+
+const getList = () => {
+  nextTick(async () => {
+    const params: LandlordSearchType = {
+      name: unref(keyWords),
+      type: unref(tabType),
+      villageCode: unref(villageCode)[2] || ''
+    }
+    const res = await getLandlordListBySearchApi(params)
+    list.value = res || []
+  })
+}
+
+onMounted(() => {
+  getTreeData()
+  getList()
+})
 </script>
 
 <style lang="scss">
