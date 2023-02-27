@@ -75,6 +75,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { getLandlordTreeApi } from '@/service'
 import Back from '@/components/Back/Index.vue'
 import Tree from '@/components/Tree/Index.vue'
 import Tabs from '@/components/Tabs/Index.vue'
@@ -107,11 +108,12 @@ import iconRevenueDef from '@/static/images/icon_revenue_default.png' // 引入�
 import iconRevenueSel from '@/static/images/icon_revenue_select.png' // 引入家庭收入信息默认 icon
 import iconWillingnessDef from '@/static/images/icon_willingness_default.png' // 引入安置意愿调查默认 icon
 import iconWillingnessSel from '@/static/images/icon_willingness_select.png' // 引入安置意愿调查默认 icon
+import { MainType } from '@/types/common'
 
 const props = defineProps({
   treeData: {
     type: Array,
-    default: []
+    default: () => []
   }
 })
 
@@ -130,6 +132,8 @@ const tabsList = ref([
 const showExpand = ref<boolean>(false)
 const tabVal = ref<number>(1)
 
+const treeData = ref<any[]>([])
+
 const treeItemClick = (data: any) => {
   console.log(data, 'data')
 }
@@ -142,6 +146,13 @@ const expandToggle = () => {
 const selectTabs = (data: any) => {
   tabVal.value = data.value
 }
+
+const getTreeData = async () => {
+  const res = await getLandlordTreeApi(MainType.PeasantHousehold)
+  console.log(res, 'res')
+  treeData.value = res
+}
+getTreeData()
 </script>
 
 <style lang="scss">
@@ -324,7 +335,7 @@ const selectTabs = (data: any) => {
   z-index: 3;
   display: flex;
   height: calc(100vh - 33rpx - 12rpx - var(--status-bar-height));
-  overflow-y: scroll;
+  overflow: hidden;
   background-color: #fff;
   border-radius: 5px;
   flex-direction: column;

@@ -40,6 +40,7 @@ class DistrictTree extends Common {
         const totalMap: any = {}
         const reportMap: any = {}
         landlordList.forEach((item) => {
+          item.landlord = true
           item.parentCode =
             item.type === MainType.PeasantHousehold ? item.virutalVillageCode : item.villageCode
           item.code = item.id
@@ -123,6 +124,9 @@ class DistrictTree extends Common {
         if (type === MainType.PeasantHousehold) {
           // 剧名户 需要拿到自然村
           villageList = await VillageController.getList()
+          villageList.forEach((item) => {
+            item.districtType === 'naturalVillage'
+          })
           const totalArray = [...districtList, ...villageList]
           totalArray.forEach((item) => {
             item.totalNum = totalMap[item.code]
@@ -130,7 +134,6 @@ class DistrictTree extends Common {
           })
           const treeArray = [...totalArray, ...landlordList]
           const res = arrayToTree(treeArray)
-          console.log(res, '居民户树')
           resolve(res)
         } else {
           const totalArray = [...districtList]
@@ -140,7 +143,6 @@ class DistrictTree extends Common {
           })
           const treeArray = [...totalArray, ...landlordList]
           const res = arrayToTree(treeArray)
-          console.log(res, '企业/个体户/村集体树')
           resolve(res)
         }
       } else {

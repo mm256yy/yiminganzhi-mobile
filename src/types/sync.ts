@@ -63,6 +63,7 @@ export interface LandlordType {
   type: MainType
   totalNum?: number
   reportNum?: number
+  [key: string]: any
 
   // 人口
   demographicList: PopulationType[]
@@ -93,7 +94,7 @@ export interface LandlordType {
 
 export interface DeleteRecordType {
   type: string
-  deleteId: number
+  deleteId: string
   [key: string]: any
 }
 
