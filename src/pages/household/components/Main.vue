@@ -67,7 +67,7 @@
       </view>
 
       <view :class="['tree-wrapper', showExpand ? 'w-0' : 'expand']">
-        <Tree :treeData="treeData" :iconSrc="iconSrc" @tree-item-click="treeItemClick" />
+        <Tree :treeData="props.treeData" :iconSrc="iconSrc" @tree-item-click="treeItemClick" />
       </view>
     </view>
   </view>
@@ -108,6 +108,13 @@ import iconRevenueSel from '@/static/images/icon_revenue_select.png' // 引入�
 import iconWillingnessDef from '@/static/images/icon_willingness_default.png' // 引入安置意愿调查默认 icon
 import iconWillingnessSel from '@/static/images/icon_willingness_select.png' // 引入安置意愿调查默认 icon
 
+const props = defineProps({
+  treeData: {
+    type: Array,
+    default: []
+  }
+})
+
 const tabsList = ref([
   { label: '居民户信息', value: 1, defIcon: iconHouseholdDef, selIcon: iconHouseholdSel },
   { label: '人口信息', value: 2, defIcon: iconDemographicDef, selIcon: iconDemographicSel },
@@ -122,105 +129,6 @@ const tabsList = ref([
 
 const showExpand = ref<boolean>(false)
 const tabVal = ref<number>(1)
-
-const treeData = ref([
-  {
-    id: 1,
-    name: '清溪镇',
-    level: 1,
-    children: [
-      {
-        id: 11,
-        name: '清溪行政村',
-        level: 2,
-        children: [
-          {
-            id: 111,
-            name: '杨村自然村',
-            level: 3,
-            children: [
-              {
-                id: 1111,
-                name: '邵丽',
-                accountNo: 1040092345321464,
-                finish: 2,
-                total: 8
-              },
-              {
-                id: 1112,
-                name: '孔毓希',
-                accountNo: 1040092345321465,
-                finish: 0,
-                total: 8
-              }
-            ]
-          },
-          {
-            id: 222,
-            name: '李村自然村',
-            children: [
-              {
-                id: 1111,
-                name: '邵西',
-                accountNo: 1040092345321454,
-                finish: 3,
-                total: 8
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  {
-    id: 1,
-    name: '清溪镇',
-    level: 1,
-    children: [
-      {
-        id: 11,
-        name: '清溪行政村',
-        level: 2,
-        children: [
-          {
-            id: 111,
-            name: '杨村自然村',
-            level: 3,
-            children: [
-              {
-                id: 1111,
-                name: '邵丽',
-                accountNo: 1040092345321464,
-                finish: 2,
-                total: 8
-              },
-              {
-                id: 1112,
-                name: '孔毓希',
-                accountNo: 1040092345321465,
-                finish: 0,
-                total: 8
-              }
-            ]
-          },
-          {
-            id: 222,
-            name: '李村自然村',
-            children: [
-              {
-                id: 1111,
-                name: '邵西',
-                accountNo: 1040092345321454,
-                finish: 3,
-                total: 8
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  }
-])
 
 const treeItemClick = (data: any) => {
   console.log(data, 'data')

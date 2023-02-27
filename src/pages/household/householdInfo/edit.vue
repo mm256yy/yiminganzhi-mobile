@@ -21,7 +21,7 @@
               label="自然村/村民小组"
               :label-width="150"
               label-align="right"
-              name="formData.village"
+              name="formData.parentCode"
             >
               <uni-data-picker
                 :localdata="villageData"
@@ -39,9 +39,9 @@
               label="联系方式"
               :label-width="150"
               label-align="right"
-              name="formData.name"
+              name="formData.phone"
             >
-              <uni-easyinput v-model="formData.name" type="text" placeholder="请输入" />
+              <uni-easyinput v-model="formData.phone" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -49,13 +49,9 @@
               label="所在位置"
               :label-width="150"
               label-align="right"
-              name="formData.position"
+              name="formData.locationType"
             >
-              <uni-data-select
-                v-model="formData.position"
-                :localdata="positionRange"
-                @change="changePosition"
-              />
+              <uni-data-select v-model="formData.locationType" :localdata="dict[326]" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -67,7 +63,7 @@
               label="户号"
               :label-width="150"
               label-align="right"
-              name="formData.accountNo"
+              name="formData.householdNumber"
             >
               <view :class="['input-wrapper', isFocus ? 'focus' : '']">
                 <view class="pre-txt">104009234532</view>
@@ -75,7 +71,7 @@
                   class="input-txt"
                   type="number"
                   placeholder="请输入"
-                  v-model="formData.accountNo"
+                  v-model="formData.householdNumber"
                   @focus="inputFocus"
                   @blur="inputBlur"
                 />
@@ -87,13 +83,9 @@
               label="财产户"
               :label-width="150"
               label-align="right"
-              name="formData.account"
+              name="formData.hasPropertyAccount"
             >
-              <uni-data-select
-                v-model="formData.account"
-                :localdata="rangeAccount"
-                @change="changeAccount"
-              />
+              <uni-data-select v-model="formData.hasPropertyAccount" :localdata="yesAndNoEnums" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -114,9 +106,9 @@
               label="淹没范围"
               :label-width="150"
               label-align="right"
-              name="formData.name"
+              name="formData.inundationRange"
             >
-              <uni-easyinput v-model="formData.name" type="text" placeholder="请输入" />
+              <uni-data-select v-model="formData.inundationRange" :localdata="dict[346]" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -127,9 +119,9 @@
               label="高程"
               :label-width="150"
               label-align="right"
-              name="formData.name"
+              name="formData.altitude"
             >
-              <uni-easyinput v-model="formData.name" type="text" placeholder="请输入" />
+              <uni-easyinput v-model="formData.altitude" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -137,13 +129,13 @@
               label="中心经纬度"
               :label-width="150"
               label-align="right"
-              name="formData.lg"
+              name="formData.position"
             >
               <view class="lg-txt-wrapper">
                 <uni-data-checkbox v-model="formData.check" :localdata="lgTagList" />
                 <uni-easyinput
                   class="m-t-5"
-                  v-model="formData.lg"
+                  v-model="formData.position"
                   :disabled="formData.check === 1"
                   type="text"
                   :placeholder="
@@ -169,6 +161,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import Back from '@/components/Back/Index.vue'
+import { yesAndNoEnums, lgTagList } from '../config'
 
 // 表单数据
 const formData = ref<any>({})
@@ -178,18 +171,6 @@ const rules = ref<any>({})
 
 // 输入框是否获得焦点
 const isFocus = ref<boolean>(false)
-
-// 所在位置选项
-const positionRange = ref<any>([
-  { text: '淹没区', value: 0 },
-  { text: '非淹没区', value: 1 }
-])
-
-// 财产户选项
-const rangeAccount = ref<any>([
-  { text: '否', value: 0 },
-  { text: '是', value: 1 }
-])
 
 // 自然村/村民小组 选项
 const villageData = ref<any>([
@@ -235,16 +216,8 @@ const villageData = ref<any>([
   }
 ])
 
-// 中心经纬度输入选项
-const lgTagList = ref<any>([
-  { text: '获取定位', value: 1 },
-  { text: '输入经纬度', value: 2 }
-])
-
-// 所在位置选择
-const changePosition = (data: any) => {
-  console.log('data:', data)
-}
+// 获取数据字典
+const dict = uni.getStorageSync('dict')
 
 // 输入框获得焦点
 const inputFocus = () => {
@@ -254,11 +227,6 @@ const inputFocus = () => {
 // 输入框失去焦点
 const inputBlur = () => {
   isFocus.value = false
-}
-
-// 财产户选择
-const changeAccount = (data: any) => {
-  console.log('data:', data)
 }
 
 // 选择自然村/村名小组

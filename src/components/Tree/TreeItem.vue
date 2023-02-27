@@ -4,14 +4,13 @@
       <view class="status">
         <image class="icon" src="@/static/images/icon_complete.png" mode="scaleToFill" />
       </view>
-      <text :class="['item-name', !props.data.accountNo ? 'w-100' : '']">{{
-        props.data.name
-      }}</text>
-      <text class="item-txt">{{ props.data.accountNo }}</text>
+      <text :class="['item-name', !props.data.doorNo ? 'w-100' : '']">{{ props.data.name }}</text>
+      <text class="item-txt">{{ props.data.doorNo }}</text>
     </view>
 
     <view class="tree-item-rt">
-      <text class="num gray">0</text> / <text class="num">12</text>
+      <text class="num gray">{{ props.data.reportNum }}</text> /
+      <text class="num">{{ props.data.totalNum }}</text>
     </view>
   </view>
 </template>

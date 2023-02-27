@@ -27,7 +27,7 @@ class Dictionaries extends Common {
           // 使用Id作为key 保证唯一 避免name作为key改动时影响页面
           dictObj[item.id as number] = (item.dictValList || []).map((dictItem: any) => {
             return {
-              label: dictItem.label,
+              text: dictItem.label,
               value: dictItem.value
             }
           })

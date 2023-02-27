@@ -32,6 +32,7 @@ const treeList = ref<any>([])
 
 onMounted(() => {
   if (props.treeData && props.treeData.length) {
+    console.log('treeData:', props.treeData)
     treeList.value = JSON.parse(JSON.stringify(props.treeData))
   }
 })

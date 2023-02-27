@@ -1,175 +1,177 @@
 <template>
-  <view class="home-wrap">
+  <View class="home-wrap">
     <image class="common-bg" src="@/static/images/common_bg.png" mode="widthFix" />
 
-    <view class="home-content" :style="{ paddingTop: `${statusBarHeight}px` }">
-      <view class="home-header">
-        <view class="header-lt">
+    <View class="home-content" :style="{ paddingTop: `${statusBarHeight}px` }">
+      <View class="home-header">
+        <View class="header-lt">
           <image class="logo" src="@/static/images/logo.png" />
-          <view class="project">移民安置综合管理服务平台</view>
-          <view class="status">（实物采集）</view>
-        </view>
+          <View class="project">移民安置综合管理服务平台</View>
+          <View class="status">（实物采集）</View>
+        </View>
 
-        <view class="header-rt">
-          <view class="btn-item" @click="toLink('project')">
-            <view class="name">项目切换</view>
+        <View class="header-rt">
+          <View class="btn-item" @click="toLink('project')">
+            <View class="name">项目切换</View>
             <image class="icon" src="@/static/images/project_enter.png" mode="scaleToFill" />
-          </view>
-        </view>
-      </view>
+          </View>
+        </View>
+      </View>
 
-      <view class="admin-collect">
-        <view class="admin">
-          <view class="avater-box">
+      <View class="admin-collect">
+        <View class="admin">
+          <View class="avater-box">
             <image class="avater" src="@/static/images/logo.png" mode="scaleToFill" />
-          </view>
+          </View>
 
-          <view class="info">
-            <view class="name">章三</view>
-            <view class="desc">风刀霜剑垃圾焚烧大</view>
-          </view>
-        </view>
-        <view class="collect">
-          <view class="collect-item">
-            <view class="num">4444</view>
-            <view class="tit">以上吧</view>
-          </view>
-          <view class="collect-item">
-            <view class="num">4444</view>
-            <view class="tit">以上吧</view>
-          </view>
-          <view class="collect-item">
-            <view class="num">4444</view>
-            <view class="tit">以上吧</view>
-          </view>
-        </view>
-      </view>
+          <View class="info">
+            <View class="name">章三</View>
+            <View class="desc">风刀霜剑垃圾焚烧大</View>
+          </View>
+        </View>
+        <View class="collect">
+          <View class="collect-item">
+            <View class="num">4444</View>
+            <View class="tit">以上吧</View>
+          </View>
+          <View class="collect-item">
+            <View class="num">4444</View>
+            <View class="tit">以上吧</View>
+          </View>
+          <View class="collect-item">
+            <View class="num">4444</View>
+            <View class="tit">以上吧</View>
+          </View>
+        </View>
+      </View>
 
-      <view class="main-enter">
-        <view class="enter-item" @click="toLink('household')">
-          <view class="inner">
-            <view class="top">
+      <View class="main-enter">
+        <View class="enter-item" @click="toLink('household')">
+          <View class="inner">
+            <View class="top">
               <image class="enter-icon" src="@/static/images/peple_enter.png" mode="scaleToFill" />
-              <view class="enter-name">居民户</view>
-            </view>
+              <View class="enter-name">居民户</View>
+            </View>
 
-            <view class="enter-common">
+            <View class="enter-common">
               <text class="txt">数据填报</text>
               <image class="arrow" src="@/static/images/home_arrow_lite.png" mode="scaleToFill" />
-            </view>
-          </view>
-        </view>
+            </View>
+          </View>
+        </View>
 
-        <view class="enter-item" @click="toLink('enterprise')">
-          <view class="inner">
-            <view class="top">
+        <View class="enter-item" @click="toLink('enterprise')">
+          <View class="inner">
+            <View class="top">
               <image
                 class="enter-icon"
                 src="@/static/images/company_enter.png"
                 mode="scaleToFill"
               />
-              <view class="enter-name">企业</view>
-            </view>
+              <View class="enter-name">企业</View>
+            </View>
 
-            <view class="enter-common">
+            <View class="enter-common">
               <text class="txt">数据填报</text>
               <image class="arrow" src="@/static/images/home_arrow_lite.png" mode="scaleToFill" />
-            </view>
-          </view>
-        </view>
+            </View>
+          </View>
+        </View>
 
-        <view class="enter-item" @click="toLink('selfPerson')">
-          <view class="inner">
-            <view class="top">
+        <View class="enter-item" @click="toLink('selfPerson')">
+          <View class="inner">
+            <View class="top">
               <image class="enter-icon" src="@/static/images/single_enter.png" mode="scaleToFill" />
-              <view class="enter-name">个体户</view>
-            </view>
+              <View class="enter-name">个体户</View>
+            </View>
 
-            <view class="enter-common">
+            <View class="enter-common">
               <text class="txt">数据填报</text>
               <image class="arrow" src="@/static/images/home_arrow_lite.png" mode="scaleToFill" />
-            </view>
-          </view>
-        </view>
+            </View>
+          </View>
+        </View>
 
-        <view class="enter-item" @click="toLink('collective')">
-          <view class="inner">
-            <view class="top">
+        <View class="enter-item" @click="toLink('collective')">
+          <View class="inner">
+            <View class="top">
               <image class="enter-icon" src="@/static/images/jt_enter.png" mode="scaleToFill" />
-              <view class="enter-name">村集体</view>
-            </view>
+              <View class="enter-name">村集体</View>
+            </View>
 
-            <view class="enter-common">
+            <View class="enter-common">
               <text class="txt">数据填报</text>
               <image class="arrow" src="@/static/images/home_arrow_lite.png" mode="scaleToFill" />
-            </view>
-          </view>
-        </view>
-      </view>
+            </View>
+          </View>
+        </View>
+      </View>
 
-      <view class="other-enter">
-        <view class="other-item" @click="toLink('sync')">
-          <view class="inner">
+      <View class="other-enter">
+        <View class="other-item" @click="toLink('sync')">
+          <View class="inner">
             <image class="other-icon" src="@/static/images/sync_enter.png" mode="scaleToFill" />
             <text class="other-tit">数据同步</text>
-          </view>
+          </View>
           <image class="arrow-icon" src="@/static/images/home_arrow.png" mode="scaleToFill" />
-        </view>
+        </View>
 
-        <view class="other-item" @click="toLink('respondents')">
-          <view class="inner">
+        <View class="other-item" @click="toLink('respondents')">
+          <View class="inner">
             <image class="other-icon" src="@/static/images/yimin_enter.png" mode="scaleToFill" />
             <text class="other-tit">移民管理</text>
-          </view>
+          </View>
           <image class="arrow-icon" src="@/static/images/home_arrow.png" mode="scaleToFill" />
-        </view>
+        </View>
 
-        <view class="other-item" @click="toLink('work')">
-          <view class="inner">
+        <View class="other-item" @click="toLink('work')">
+          <View class="inner">
             <image class="other-icon" src="@/static/images/work_enter.png" mode="scaleToFill" />
             <text class="other-tit">我的工作</text>
-          </view>
+          </View>
           <image class="arrow-icon" src="@/static/images/home_arrow.png" mode="scaleToFill" />
-        </view>
+        </View>
 
-        <view class="other-item" @click="toLink('map')">
-          <view class="inner">
+        <View class="other-item" @click="toLink('map')">
+          <View class="inner">
             <image class="other-icon" src="@/static/images/map_enter.png" mode="scaleToFill" />
             <text class="other-tit">查看地图</text>
-          </view>
+          </View>
           <image class="arrow-icon" src="@/static/images/home_arrow.png" mode="scaleToFill" />
-        </view>
-      </view>
+        </View>
+      </View>
 
-      <view class="other-enter self">
-        <view class="other-item" @click="toLink('database')">
-          <view class="inner">
+      <View class="other-enter self">
+        <View class="other-item" @click="toLink('database')">
+          <View class="inner">
             <image class="other-icon" src="@/static/images/sync_enter.png" mode="scaleToFill" />
             <text class="other-tit">数据库</text>
-          </view>
+          </View>
           <image class="arrow-icon" src="@/static/images/home_arrow.png" mode="scaleToFill" />
-        </view>
-        <view class="other-item" @click="toLink('login')">
-          <view class="inner">
+        </View>
+        <View class="other-item" @click="toLink('login')">
+          <View class="inner">
             <image class="other-icon" src="@/static/images/sync_enter.png" mode="scaleToFill" />
             <text class="other-tit">登录页</text>
-          </view>
+          </View>
           <image class="arrow-icon" src="@/static/images/home_arrow.png" mode="scaleToFill" />
-        </view>
-        <view class="other-item" @click="toLink('people')">
-          <view class="inner">
+        </View>
+        <View class="other-item" @click="toLink('people')">
+          <View class="inner">
             <image class="other-icon" src="@/static/images/sync_enter.png" mode="scaleToFill" />
             <text class="other-tit">居民户清单</text>
-          </view>
+          </View>
           <image class="arrow-icon" src="@/static/images/home_arrow.png" mode="scaleToFill" />
-        </view>
-      </view>
-    </view>
-  </view>
+        </View>
+      </View>
+    </View>
+  </View>
 </template>
 
 <script lang="ts" setup>
 import { routerForward } from '@/utils'
+import { onMounted } from 'vue'
+import { getDictObjApi } from '@/service'
 
 const sysInfo = uni.getSystemInfoSync()
 const statusBarHeight = sysInfo.statusBarHeight || 0
@@ -178,6 +180,17 @@ const toLink = (name: string) => {
   console.log(name, 'name')
   routerForward(name)
 }
+
+// 获取所有的字典表，存储为缓存变量 dict
+const getDictObj = async () => {
+  const result = await getDictObjApi()
+  console.log('result:', result)
+  uni.setStorageSync('dict', result)
+}
+
+onMounted(() => {
+  getDictObj()
+})
 </script>
 
 <style lang="scss" scoped>

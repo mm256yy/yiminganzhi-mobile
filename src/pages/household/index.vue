@@ -3,21 +3,34 @@
     <image src="@/static/images/head_bg.png" class="head-bg" />
     <view class="home-wrap" :style="{ height: `${pageHeight}px` }">
       <view class="home-body">
-        <Main />
+        <Main :treeData="treeData" />
       </view>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
-// import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { getLandlordTreeApi } from '@/service'
+import { MainType } from '@/types/common'
 import Main from './components/Main.vue'
 
 const sysInfo = uni.getSystemInfoSync()
 const statusBarHeight = sysInfo.statusBarHeight || 0
 const screenHeight = sysInfo.screenHeight
+const treeData = ref<any>([])
 
 const pageHeight = screenHeight - statusBarHeight
+
+// 获取左侧树列表
+const getTreeData = async () => {
+  const result = await getLandlordTreeApi(MainType.PeasantHousehold)
+  treeData.value = [...result]
+}
+
+onMounted(() => {
+  getTreeData()
+})
 </script>
 
 <style scoped lang="scss">
