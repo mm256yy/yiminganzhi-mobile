@@ -2,16 +2,9 @@
  * 安置意愿 相关的增删改查功能
  */
 
-import {
-  VillageTableName,
-  VillageDDLType,
-  DistrictTableName,
-  DistrictDDLType,
-  OtherTableName,
-  OtherDataType
-} from '@/database'
+import { VillageTableName, VillageDDLType } from '@/database'
 import { Common } from './common'
-import { DistrictType, VillageType } from '@/types/common'
+import { VillageType } from '@/types/common'
 import { getCurrentTimeStamp, guid, getStorage, StorageKey } from '@/utils'
 
 class Village extends Common {

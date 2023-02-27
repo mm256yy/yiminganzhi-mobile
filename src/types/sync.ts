@@ -94,7 +94,7 @@ export interface LandlordType {
 
 export interface DeleteRecordType {
   type: string
-  deleteId: number
+  deleteId: string
   [key: string]: any
 }
 

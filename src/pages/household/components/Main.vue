@@ -75,6 +75,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { getLandlordTreeApi } from '@/service'
 import Back from '@/components/Back/Index.vue'
 import Tree from '@/components/Tree/Index.vue'
 import Tabs from '@/components/Tabs/Index.vue'
@@ -107,6 +108,7 @@ import iconRevenueDef from '@/static/images/icon_revenue_default.png' // 引入�
 import iconRevenueSel from '@/static/images/icon_revenue_select.png' // 引入家庭收入信息默认 icon
 import iconWillingnessDef from '@/static/images/icon_willingness_default.png' // 引入安置意愿调查默认 icon
 import iconWillingnessSel from '@/static/images/icon_willingness_select.png' // 引入安置意愿调查默认 icon
+import { MainType } from '@/types/common'
 
 const tabsList = ref([
   { label: '居民户信息', value: 1, defIcon: iconHouseholdDef, selIcon: iconHouseholdSel },
@@ -123,104 +125,7 @@ const tabsList = ref([
 const showExpand = ref<boolean>(false)
 const tabVal = ref<number>(1)
 
-const treeData = ref([
-  {
-    id: 1,
-    name: '清溪镇',
-    level: 1,
-    children: [
-      {
-        id: 11,
-        name: '清溪行政村',
-        level: 2,
-        children: [
-          {
-            id: 111,
-            name: '杨村自然村',
-            level: 3,
-            children: [
-              {
-                id: 1111,
-                name: '邵丽',
-                accountNo: 1040092345321464,
-                finish: 2,
-                total: 8
-              },
-              {
-                id: 1112,
-                name: '孔毓希',
-                accountNo: 1040092345321465,
-                finish: 0,
-                total: 8
-              }
-            ]
-          },
-          {
-            id: 222,
-            name: '李村自然村',
-            children: [
-              {
-                id: 1111,
-                name: '邵西',
-                accountNo: 1040092345321454,
-                finish: 3,
-                total: 8
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  {
-    id: 1,
-    name: '清溪镇',
-    level: 1,
-    children: [
-      {
-        id: 11,
-        name: '清溪行政村',
-        level: 2,
-        children: [
-          {
-            id: 111,
-            name: '杨村自然村',
-            level: 3,
-            children: [
-              {
-                id: 1111,
-                name: '邵丽',
-                accountNo: 1040092345321464,
-                finish: 2,
-                total: 8
-              },
-              {
-                id: 1112,
-                name: '孔毓希',
-                accountNo: 1040092345321465,
-                finish: 0,
-                total: 8
-              }
-            ]
-          },
-          {
-            id: 222,
-            name: '李村自然村',
-            children: [
-              {
-                id: 1111,
-                name: '邵西',
-                accountNo: 1040092345321454,
-                finish: 3,
-                total: 8
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  }
-])
+const treeData = ref<any[]>([])
 
 const treeItemClick = (data: any) => {
   console.log(data, 'data')
@@ -234,6 +139,13 @@ const expandToggle = () => {
 const selectTabs = (data: any) => {
   tabVal.value = data.value
 }
+
+const getTreeData = async () => {
+  const res = await getLandlordTreeApi(MainType.PeasantHousehold)
+  console.log(res, 'res')
+  treeData.value = res
+}
+getTreeData()
 </script>
 
 <style lang="scss">
@@ -416,7 +328,7 @@ const selectTabs = (data: any) => {
   z-index: 3;
   display: flex;
   height: calc(100vh - 33rpx - 12rpx - var(--status-bar-height));
-  overflow-y: scroll;
+  overflow: hidden;
   background-color: #fff;
   border-radius: 5px;
   flex-direction: column;

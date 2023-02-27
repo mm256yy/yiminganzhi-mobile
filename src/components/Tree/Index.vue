@@ -3,22 +3,30 @@
     <view class="search-box">
       <view class="search-wrap">
         <image class="icon" src="@/static/images/icon_search.png" mode="scaleToFill" />
-        <input class="txt" placeholder="搜索" @confirm="iptConfirm" />
+        <input class="txt" placeholder="搜索" @confirm="iptConfirm" :value="keyWords" />
+        <uni-icons v-if="keyWords" @click="clear" type="clear" color="#999999" size="14rpx" />
       </view>
       <label class="add-wrap">
         <image class="add-icon" :src="iconSrc" mode="scaleToFill" />
       </label>
     </view>
 
-    <view class="tree-list">
-      <Tree :data="treeList" @tree-item-click="treeItemClick" />
+    <view class="tree-box">
+      <view class="tree-list">
+        <TreeItem
+          v-for="item in treeList"
+          :key="item.id"
+          :data="item"
+          @tree-item-click="treeItemClick"
+        />
+      </view>
     </view>
   </view>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
-import Tree from './Tree.vue'
+import { ref, watch } from 'vue'
+import TreeItem from './TreeItem.vue'
 
 interface PropsType {
   treeData: any[]
@@ -27,14 +35,20 @@ interface PropsType {
 
 const props = defineProps<PropsType>()
 const emit = defineEmits(['treeItemClick'])
+const keyWords = ref<string>('')
 
 const treeList = ref<any>([])
 
-onMounted(() => {
-  if (props.treeData && props.treeData.length) {
-    treeList.value = JSON.parse(JSON.stringify(props.treeData))
+watch(
+  () => props.treeData,
+  (val) => {
+    treeList.value = JSON.parse(JSON.stringify(val))
+  },
+  {
+    immediate: true,
+    deep: true
   }
-})
+)
 
 const filterData = (nodes: any[], query: string): any[] => {
   // 条件就是节点的title过滤关键字
@@ -55,33 +69,39 @@ const filterData = (nodes: any[], query: string): any[] => {
     // 1. 子孙节点中存在符合条件的，即 subs 数组中有值
     // 2. 自己本身符合条件
 
-    // let subs = filterData(node.children, query)
-    // if (predicate(node)) {
-    //   newChildren.push(node)
-    // } else if (subs && subs.length) {
-    //   node.children = subs
-    //   newChildren.push(node)
-    // }
-
-    // 以下只需要考虑自身的节点满足条件即可,不用带上父节点
+    let subs = filterData(node.children, query)
     if (predicate(node)) {
       newChildren.push(node)
-      node.children = filterData(node.children, query)
-    } else {
-      newChildren.push(...filterData(node.children, query))
+    } else if (subs && subs.length) {
+      node.children = subs
+      newChildren.push(node)
     }
+
+    // 以下只需要考虑自身的节点满足条件即可,不用带上父节点
+    // if (predicate(node)) {
+    //   newChildren.push(node)
+    //   node.children = filterData(node.children, query)
+    // } else {
+    //   newChildren.push(...filterData(node.children, query))
+    // }
   }
   return newChildren.length ? newChildren : []
 }
 
 const iptConfirm = (e: any) => {
   const val = e.detail.value
+  keyWords.value = val
   if (val) {
     const newList = filterData(treeList.value, val)
     treeList.value = newList
   } else {
-    treeList.value = props.treeData
+    treeList.value = JSON.parse(JSON.stringify(props.treeData))
   }
+}
+
+const clear = () => {
+  keyWords.value = ''
+  treeList.value = JSON.parse(JSON.stringify(props.treeData))
 }
 
 const treeItemClick = (data: any) => {
@@ -91,11 +111,15 @@ const treeItemClick = (data: any) => {
 
 <style lang="scss" scoped>
 .tree-wrap {
+  display: flex;
+  flex-direction: column;
   width: 200rpx;
+  height: 100%;
   background-color: #ffffff;
   border-radius: 5rpx;
 
   .search-box {
+    flex: none;
     display: flex;
     width: 100%;
     height: 33rpx;
@@ -144,11 +168,13 @@ const treeItemClick = (data: any) => {
     }
   }
 
-  .tree-list {
+  .tree-box {
     width: 100%;
     padding: 6rpx;
+    overflow-y: scroll;
     border-radius: 5rpx;
     box-sizing: border-box;
+    flex: 1;
   }
 }
 </style>
