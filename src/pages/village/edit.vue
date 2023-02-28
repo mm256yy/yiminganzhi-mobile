@@ -9,12 +9,15 @@
               label="所属区域"
               :label-width="170"
               label-align="right"
-              name="formData.position"
+              name="formData.parentCode"
             >
-              <uni-data-select
-                v-model="formData.position"
-                :localdata="positionRange"
-                @change="changePosition"
+              <uni-data-picker
+                placeholder="请选择区域"
+                popup-title="请选择所在区域"
+                :localdata="districtTree"
+                :map="{ text: 'name', value: 'code' }"
+                v-model="formData.parentCode"
+                @change="changeDistrict"
               />
             </uni-forms-item>
           </uni-col>
@@ -40,7 +43,7 @@
               label="中心经纬度"
               :label-width="170"
               label-align="right"
-              name="formData.lg"
+              name="formData.position"
             >
               <view class="lg-txt-wrapper">
                 <uni-data-checkbox v-model="formData.check" :localdata="lgTagList" />
@@ -72,6 +75,8 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import Back from '@/components/Back/Index.vue'
+import { getOtherItemApi } from '@/service'
+import { OtherDataType } from '@/database'
 
 // 表单数据
 const formData = ref<any>({})
@@ -81,6 +86,7 @@ const rules = ref<any>({})
 
 // 获得焦点的输入框下标
 const focusIndex = ref<number>(-1)
+const districtTree = ref<any[]>([])
 
 // 中心经纬度输入选项
 const lgTagList = ref<any>([
@@ -88,14 +94,8 @@ const lgTagList = ref<any>([
   { text: '输入经纬度', value: 2 }
 ])
 
-// 所在位置选项
-const positionRange = ref<any>([
-  { text: '淹没区', value: 0 },
-  { text: '非淹没区', value: 1 }
-])
-
 // 所在位置选择
-const changePosition = (data: any) => {
+const changeDistrict = (data: any) => {
   console.log('data:', data)
 }
 
@@ -103,6 +103,14 @@ const changePosition = (data: any) => {
 const submit = () => {
   console.log('表单提交')
 }
+
+const getDistrictTree = async () => {
+  const res = await getOtherItemApi(OtherDataType.DistrictTree)
+  console.log(res, '----')
+  districtTree.value = res
+}
+
+getDistrictTree()
 </script>
 
 <style lang="scss" scoped>

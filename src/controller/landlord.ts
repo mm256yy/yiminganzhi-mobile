@@ -51,7 +51,9 @@ export class Landlord extends Common {
     return new Promise(async (resolve, reject) => {
       try {
         const array: LandlordType[] = []
-        const sql = `select * from ${LandlordTableName} where isDelete = '0' and type = '${type}' order by 'id' asc limit ${pageSize} offset ${page}`
+        const sql = `select * from ${LandlordTableName} where isDelete = '0' and type = '${type}' order by 'id' asc limit ${pageSize} offset ${
+          (page - 1) * pageSize
+        }`
         const list: LandlordDDLType[] = await this.db.selectSql(sql)
         if (list && Array.isArray(list)) {
           list.forEach((item) => {
@@ -306,7 +308,7 @@ export class Landlord extends Common {
   getLandlordListBySearch(data?: LandlordSearchType): Promise<any> {
     return new Promise(async (resolve, reject) => {
       try {
-        const { name, villageCode, type } = data || {}
+        const { name, villageCode, type, pageSize = 10, page = 1 } = data || {}
         const array: LandlordType[] = []
         let sql = `select * from ${LandlordTableName} where isDelete = '0'`
         if (type) {
@@ -318,6 +320,7 @@ export class Landlord extends Common {
         if (villageCode) {
           sql += ` and villageCode = '${villageCode}'`
         }
+        sql += ` order by 'id' limit ${pageSize} offset ${(page - 1) * pageSize}`
         console.log(sql, 'sql 语句')
         const list: LandlordDDLType[] = await this.db.selectSql(sql)
         if (list && Array.isArray(list)) {

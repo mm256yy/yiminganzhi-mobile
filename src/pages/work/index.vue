@@ -101,26 +101,8 @@ import Container from '@/components/Container/index.vue'
 import { getSubmitListApi } from '@/service'
 import { MainType } from '@/types/common'
 import { LandlordType } from '@/types/sync'
-import { hideLoading, showLoading } from '@/config'
+import { hideLoading, showLoading, locationTypes } from '@/config'
 
-const locationTypes = [
-  {
-    label: '淹没区',
-    value: 'SubmergedArea'
-  },
-  {
-    label: '建设区',
-    value: 'ConstructionArea'
-  },
-  {
-    label: '影响区',
-    value: 'InfluenceArea'
-  },
-  {
-    label: '重叠区',
-    value: 'OverlappingArea'
-  }
-]
 const viewFormat = 'YYYY-MM-DD'
 const searchFormat = 'YYYY-MM-DD HH:mm:ss'
 const time = ref<string[]>([dayjs().format(viewFormat), dayjs().format(viewFormat)])

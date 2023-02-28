@@ -2,8 +2,13 @@
   <Container>
     <template #title>
       <view class="title" @click="onToggleVillage">
-        <text class="tit">行政村</text>
-        <image class="icon" src="@/static/images/respondents_select.png" mode="scaleToFill" />
+        <text class="tit">{{ title }}</text>
+        <image
+          class="icon"
+          :style="{ transform: showVillageSelect ? 'rotate(180deg)' : 'rotate(0deg)' }"
+          src="@/static/images/respondents_select.png"
+          mode="scaleToFill"
+        />
       </view>
     </template>
 
@@ -56,22 +61,39 @@
       </view>
 
       <view class="respondents-list">
-        <CompanyItem v-for="item in list" :data="item" :key="item.uid" />
+        <scroll-view
+          v-if="list && list.length"
+          class="scroll-view"
+          scroll-y
+          :enable-flex="true"
+          @scrolltolower="loadMore"
+        >
+          <view class="scroll">
+            <CompanyItem v-for="item in list" :data="item" :key="item.uid" />
+          </view>
+          <uni-load-more iconType="auto" :status="status" />
+        </scroll-view>
+        <view class="no-data-wrap" v-else>
+          <image class="no-data" src="@/static/images/icon_null.png" mode="scaleToFill" />
+          <text class="no-data-txt">暂无数据</text>
+        </view>
       </view>
     </view>
 
-    <VillageSelect
-      v-show="showVillageSelect"
-      :show="showVillageSelect"
-      :treeData="treeData"
-      @on-close="showVillageSelect = false"
-      @on-confirm="villageConfirm"
-    />
+    <template v-if="showVillageSelect">
+      <VillageSelect
+        :treeData="treeData"
+        :selectCodes="villageCode"
+        :title="title"
+        @on-close="showVillageSelect = false"
+        @on-confirm="villageConfirm"
+      />
+    </template>
   </Container>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, nextTick, unref } from 'vue'
+import { ref, onMounted, nextTick, unref, computed } from 'vue'
 import Container from '@/components/Container/index.vue'
 import CompanyItem from './company.vue'
 import VillageSelect from './villageSelect.vue'
@@ -79,6 +101,7 @@ import { getLandlordListBySearchApi, getOtherItemApi } from '@/service'
 import { LandlordType } from '@/types/sync'
 import { LandlordSearchType, MainType } from '@/types/common'
 import { OtherDataType } from '@/database'
+import { isEnumDeclaration } from '@babel/types'
 
 const tabType = ref<MainType>(MainType.Company)
 const showVillageSelect = ref<boolean>(false)
@@ -86,14 +109,23 @@ const list = ref<LandlordType[]>([])
 const keyWords = ref<string>('')
 const villageCode = ref<string[]>([])
 const treeData = ref<any>([])
+const title = ref<string>('选择行政村')
+
+const isLoading = ref<boolean>(false)
+const isEnd = ref<boolean>(false)
+
+const page = ref<number>(1)
+const pageSize = ref<number>(10)
 
 const clear = () => {
   keyWords.value = ''
+  page.value = 1
   getList()
 }
 
 const onTabChange = (type: MainType) => {
   tabType.value = type
+  page.value = 1
   getList()
 }
 
@@ -103,11 +135,14 @@ const onToggleVillage = () => {
 
 const iptChange = (e: any) => {
   keyWords.value = e.detail.value
+  page.value = 1
   getList()
 }
 
-const villageConfirm = (code: string[]) => {
+const villageConfirm = (code: string[], tit: string) => {
   villageCode.value = code
+  title.value = tit
+  page.value = 1
   onToggleVillage()
   getList()
 }
@@ -117,16 +152,49 @@ const getTreeData = async () => {
   treeData.value = res || []
 }
 
+const status = computed(() => {
+  // more/loading/noMore
+  return isEnd.value ? 'noMore' : isLoading.value ? 'loading' : 'more'
+})
+
 const getList = () => {
   nextTick(async () => {
+    isLoading.value = true
     const params: LandlordSearchType = {
       name: unref(keyWords),
       type: unref(tabType),
-      villageCode: unref(villageCode)[2] || ''
+      villageCode: unref(villageCode)[2] || '',
+      page: page.value,
+      pageSize: pageSize.value
     }
-    const res = await getLandlordListBySearchApi(params)
-    list.value = res || []
+    const res = await getLandlordListBySearchApi(params).catch(() => {
+      isLoading.value = false
+    })
+    isLoading.value = false
+    if (res && res.length) {
+      if (page.value === 1) {
+        list.value = res || []
+      } else {
+        list.value = list.value.concat(res)
+      }
+      if (res.length < pageSize.value) {
+        isEnd.value = true
+      } else {
+        page.value = page.value + 1
+      }
+    } else {
+      isEnd.value = true
+    }
   })
+}
+
+const loadMore = () => {
+  if (isEnd.value || isLoading.value) {
+    return
+  }
+  console.log('load more')
+
+  getList()
 }
 
 onMounted(() => {
@@ -264,13 +332,42 @@ onMounted(() => {
 
 .respondents-list {
   flex: 1;
+  width: 100%;
+  margin-top: 7rpx;
+}
+
+.scroll-view {
+  width: 100%;
+  height: calc(100vh - var(--status-bar-height) - 33rpx - 38rpx - 18rpx - 6rpx - 10rpx);
+}
+
+.scroll {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   align-items: flex-start;
+}
+
+.no-data-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  margin-top: 7rpx;
-  overflow-y: scroll;
+  height: 100%;
+}
+
+.no-data {
+  width: 152rpx;
+  height: 92rpx;
+}
+
+.no-data-txt {
+  margin-top: 16rpx;
+  font-size: 9rpx;
+  font-weight: 500;
+  color: #171718;
+  text-align: center;
 }
 
 .add-box {

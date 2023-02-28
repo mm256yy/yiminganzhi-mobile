@@ -4,7 +4,7 @@
     <view class="head">
       <view class="head-lt">
         <image class="user-icon" src="@/static/images/respondents_tit.png" mode="scaleToFill" />
-        <view class="name">放假的时间啊了</view>
+        <view class="name">{{ props.data.name }}</view>
       </view>
       <view class="head-rt">
         <view class="edit-box">
@@ -17,26 +17,32 @@
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">行政村:</view>
-        <view class="value">房间打开手</view>
+        <view class="value">{{ props.data.villageCodeText }}</view>
       </view>
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">街道:</view>
-        <view class="value">房间打开手</view>
+        <view class="value">{{ props.data.townCodeText }}</view>
       </view>
-      <view class="cont-item">
-        <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
-        <view class="label">乡镇:</view>
-        <view class="value">房间打开手</view>
-      </view>
+
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">区县:</view>
-        <view class="value">房间打开手</view>
+        <view class="value">{{ props.data.areaCodeText }}</view>
       </view>
     </view>
   </view>
 </template>
+
+<script lang="ts" setup>
+import { VillageType } from '@/types/common'
+
+interface PropsType {
+  data: VillageType
+}
+
+const props = defineProps<PropsType>()
+</script>
 
 <style lang="scss" scoped>
 .village-item {

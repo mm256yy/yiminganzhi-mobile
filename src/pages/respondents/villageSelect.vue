@@ -1,50 +1,53 @@
 <template>
   <view class="select-wrap">
     <view class="mask" />
-    <view class="cont" :class="[props.show ? 'show' : '']">
+    <view class="content show">
       <view class="head">
         <view class="cancle" @click="cancle">取消</view>
         <view class="name">选择行政村</view>
         <view class="confirm" @click="confirm">确定</view>
       </view>
-      <view class="select-item">
-        <view class="select-title">街道:</view>
-        <view class="select-cont">
-          <view
-            class="common-item"
-            :class="[currentSelect[0] === item.code ? 'active' : '']"
-            v-for="item in props.treeData"
-            :key="item.code"
-            @click="areaClick(item)"
-            >{{ item.name }}</view
-          >
+
+      <view class="body">
+        <view class="select-item">
+          <view class="select-title">街道:</view>
+          <view class="select-cont">
+            <view
+              class="common-item"
+              v-for="item in props.treeData"
+              :key="item.code"
+              @click="areaClick(item)"
+              :class="[currentSelect[0] && currentSelect[0] === item.code ? 'active' : '']"
+              >{{ item.name }}</view
+            >
+          </view>
         </view>
-      </view>
-      <view class="select-item" v-if="currentTown && currentTown.length">
-        <view class="select-title">乡镇:</view>
-        <view class="select-cont">
-          <view
-            class="common-item"
-            :class="[currentSelect[1] === item.code ? 'active' : '']"
-            v-for="item in currentTown"
-            :key="item.code"
-            @click="townClick(item)"
-            >{{ item.name }}</view
-          >
+        <view class="select-item" v-if="currentTown && currentTown.length">
+          <view class="select-title">乡镇:</view>
+          <view class="select-cont">
+            <view
+              class="common-item"
+              :class="[currentSelect[1] && currentSelect[1] === item.code ? 'active' : '']"
+              v-for="item in currentTown"
+              :key="item.code"
+              @click="townClick(item)"
+              >{{ item.name }}</view
+            >
+          </view>
         </view>
-      </view>
-      <view class="line" v-if="currentVillage && currentVillage.length" />
-      <view class="select-item" v-if="currentVillage && currentVillage.length">
-        <view class="select-title">行政村:</view>
-        <view class="select-cont">
-          <view
-            class="common-item"
-            :class="[currentSelect[2] === item.code ? 'active' : '']"
-            v-for="item in currentVillage"
-            :key="item.code"
-            @click="villageClick(item)"
-            >{{ item.name }}</view
-          >
+        <view class="line" v-if="currentVillage && currentVillage.length" />
+        <view class="select-item" v-if="currentVillage && currentVillage.length">
+          <view class="select-title">行政村:</view>
+          <view class="select-cont">
+            <view
+              class="common-item"
+              :class="[currentSelect[2] && currentSelect[2] === item.code ? 'active' : '']"
+              v-for="item in currentVillage"
+              :key="item.code"
+              @click="villageClick(item)"
+              >{{ item.name }}</view
+            >
+          </view>
         </view>
       </view>
     </view>
@@ -52,11 +55,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 
 interface PropsType {
-  show: boolean
   treeData: any
+  title?: string
   selectCodes?: string[]
 }
 
@@ -66,11 +69,12 @@ const emit = defineEmits(['onClose', 'onConfirm'])
 const currentTown = ref<any>([])
 const currentVillage = ref<any>([])
 const currentSelect = ref<string[]>([])
+const title = ref<string>('')
 
 watch(
   () => props.selectCodes,
   (val) => {
-    if (val) {
+    if (val && val.length) {
       currentSelect.value = val
       const townList = props.treeData.find((item: any) => item.code === val[0]).children || []
       currentTown.value = townList
@@ -83,18 +87,33 @@ watch(
   }
 )
 
+onMounted(() => {
+  if (props.title) {
+    title.value = props.title
+  }
+})
+
 const areaClick = (item: any) => {
-  currentTown.value = item.children
-  currentSelect.value[0] = item.code
+  const condition = currentSelect.value[0] && currentSelect.value[0] === item.code
+  currentSelect.value[0] = condition ? '' : item.code
+  currentTown.value = condition ? [] : item.children
+  currentSelect.value[1] = ''
+  currentSelect.value[2] = ''
+  title.value = ''
 }
 
 const townClick = (item: any) => {
-  currentVillage.value = item.children
-  currentSelect.value[1] = item.code
+  const condition = currentSelect.value[1] && currentSelect.value[1] === item.code
+  currentSelect.value[1] = condition ? '' : item.code
+  currentVillage.value = condition ? [] : item.children
+  currentSelect.value[2] = ''
+  title.value = ''
 }
 
 const villageClick = (item: any) => {
-  currentSelect.value[2] = item.code
+  const condition = currentSelect.value[2] && currentSelect.value[2] === item.code
+  currentSelect.value[2] = condition ? '' : item.code
+  title.value = condition ? '' : item.name
 }
 
 const cancle = () => {
@@ -102,7 +121,14 @@ const cancle = () => {
 }
 
 const confirm = () => {
-  emit('onConfirm', currentSelect.value)
+  if (currentSelect.value.length < 3) {
+    uni.showToast({
+      title: '未完成选择',
+      icon: 'none'
+    })
+    return
+  }
+  emit('onConfirm', currentSelect.value, title.value)
 }
 </script>
 <style lang="scss" scoped>
@@ -123,10 +149,12 @@ const confirm = () => {
     background-color: rgba(0, 0, 0, 0.7);
   }
 
-  .cont {
+  .content {
     position: absolute;
     bottom: 0;
     left: 0;
+    display: flex;
+    flex-direction: column;
     width: 100%;
     height: 0rpx;
     padding: 12rpx 18rpx;
@@ -140,6 +168,7 @@ const confirm = () => {
   }
 
   .head {
+    flex: none;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -163,6 +192,11 @@ const confirm = () => {
       line-height: 13rpx;
       color: #0a54ff;
     }
+  }
+
+  .body {
+    flex: 1;
+    overflow-y: scroll;
   }
 
   .line {

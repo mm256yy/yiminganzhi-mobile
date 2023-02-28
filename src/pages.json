@@ -8,13 +8,6 @@
 			}
 		},
 		{
-			"name": "sync",
-			"path": "pages/sync/index",
-			"style": {
-				"navigationBarTitleText": "同步"
-			}
-		},
-		{
 			"name": "household",
 			"path": "pages/household/index",
 			"style": {
@@ -133,6 +126,14 @@
 				"navigationBarTitleText": "村集体填报-设施设备信息新增/编辑"
 			}
 		},
+
+		{
+			"name": "sync",
+			"path": "pages/sync/index",
+			"style": {
+				"navigationBarTitleText": "同步"
+			}
+		},
 		{
 			"name": "login",
 			"path": "pages/login/index",
@@ -148,31 +149,17 @@
 			}
 		},
 		{
-			"name": "villageAdd",
-			"path": "pages/respondents/village/add",
+			"name": "village",
+			"path": "pages/village/index",
 			"style": {
-				"navigationBarTitleText": "移民管理-自然村-添加自然村"
+				"navigationBarTitleText": "自然村列表"
 			}
 		},
 		{
-			"name": "enterpriseAdd",
-			"path": "pages/respondents/enterprise/add",
+			"name": "villageEdit",
+			"path": "pages/village/edit",
 			"style": {
-				"navigationBarTitleText": "移民管理-企业-添加企业"
-			}
-		},
-		{
-			"name": "selfPersonAdd",
-			"path": "pages/respondents/selfPerson/add",
-			"style": {
-				"navigationBarTitleText": "移民管理-个体户-添加个体户"
-			}
-		},
-		{
-			"name": "collectiveAdd",
-			"path": "pages/respondents/collective/add",
-			"style": {
-				"navigationBarTitleText": "移民管理-村集体-添加村集体"
+				"navigationBarTitleText": "自然村-添加/修改自然村"
 			}
 		},
 		{
@@ -183,24 +170,10 @@
 			}
 		},
 		{
-			"name": "people",
-			"path": "pages/people/index",
-			"style": {
-				"navigationBarTitleText": "居民户清单"
-			}
-		},
-		{
-			"name": "peopleAdd",
-			"path": "pages/people/add",
-			"style": {
-				"navigationBarTitleText": "居民户清单-居民户新增"
-			}
-		},
-		{
 			"name": "project",
 			"path": "pages/project/index",
 			"style": {
-				"navigationBarTitleText": "数据库"
+				"navigationBarTitleText": "项目列表"
 			}
 		},
 		{

@@ -46,17 +46,31 @@ class Village extends Common {
   }
 
   // 分页查询
-  getListWithPage(page = 1, pageSize = 20): Promise<VillageType[]> {
+  getListWithPage(page = 1, pageSize = 10): Promise<VillageType[]> {
     return new Promise(async (resolve, reject) => {
       try {
         const array: VillageType[] = []
-        const sql = `select * from ${VillageTableName} order by 'id' asc limit ${pageSize} offset ${page}`
+        const sql = `select * from ${VillageTableName} order by 'id' asc limit ${pageSize} offset ${
+          (page - 1) * pageSize
+        }`
+        const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
         const list: VillageDDLType[] = await this.db.selectSql(sql)
-        if (list && Array.isArray(list)) {
+        if (this.isArrayAndNotNull(list)) {
           list.forEach((item) => {
             array.push(JSON.parse(item.content))
           })
         }
+        // 拿到上级行政区划
+        array.forEach((item) => {
+          // townCode: string
+          // villageCode: string
+          // virutalVillageCode: string
+          // areaCode: string
+          // 331102001201 行政村
+          item.villageCodeText = districtMap[item.parentCode]
+          item.townCodeText = districtMap[item.parentCode.slice(0, 9)]
+          item.areaCodeText = districtMap[item.parentCode.slice(0, 6)]
+        })
         resolve(array)
       } catch (error) {
         console.log(error, 'Village-get-list-error')
@@ -122,8 +136,8 @@ class Village extends Common {
           reject(null)
         }
         const res: VillageType = await this.db.selectTableData(VillageTableName, 'uid', uid)
-        if (res && res.uid) {
-          resolve(res)
+        if (res && res[0]) {
+          resolve(res[0])
         }
         reject(null)
       } catch (error) {

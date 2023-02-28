@@ -156,10 +156,10 @@
           </view>
           <image class="arrow-icon" src="@/static/images/home_arrow.png" mode="scaleToFill" />
         </view>
-        <view class="other-item" @click="toLink('people')">
+        <view class="other-item" @click="toLink('village')">
           <view class="inner">
             <image class="other-icon" src="@/static/images/sync_enter.png" mode="scaleToFill" />
-            <text class="other-tit">居民户清单</text>
+            <text class="other-tit">自然村清单</text>
           </view>
           <image class="arrow-icon" src="@/static/images/home_arrow.png" mode="scaleToFill" />
         </view>

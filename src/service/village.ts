@@ -10,7 +10,7 @@ export const getVillageListApi = () => {
 }
 
 // 分页获取自然村列表
-export const getVillageListWithPageApi = (page = 1, pageSize = 20) => {
+export const getVillageListWithPageApi = (page = 1, pageSize = 10) => {
   return VillageController.getListWithPage(page, pageSize)
 }
 

@@ -119,6 +119,9 @@ export interface VillageType {
   longitude: number
   name: string
   parentCode: string
+  villageCodeText?: string
+  townCodeText?: string
+  areaCodeText?: string
   projectId: number
   totalNum?: number
   reportNum?: number
@@ -137,4 +140,6 @@ export interface LandlordSearchType {
   name: string
   type: MainType
   villageCode: string
+  page: number
+  pageSize: number
 }
