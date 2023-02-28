@@ -46,8 +46,6 @@ import { ProjectType } from '@/types/common'
 import { pullInstance, pushInstance } from '@/sync'
 
 const list = ref<any[]>([])
-const sysInfo = uni.getSystemInfoSync()
-const statusBarHeight = sysInfo.statusBarHeight || 0
 
 const currentProjectId = ref(0)
 
@@ -153,7 +151,7 @@ const onBack = () => {
   position: relative;
   display: flex;
   width: 152rpx;
-  // height: 141rpx;
+  height: 141rpx;
   margin: 0 13rpx 23rpx 0;
   background-color: rgba(255, 255, 255, 0.98);
   border: 1rpx solid #eeeeee;

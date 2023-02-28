@@ -4,7 +4,7 @@
     <view class="head">
       <view class="head-lt">
         <image class="user-icon" src="@/static/images/respondents_tit.png" mode="scaleToFill" />
-        <view class="name">{{ props.data.name }}</view>
+        <view class="name">{{ props.data.id }}</view>
       </view>
       <view class="head-rt">
         <view class="status" :class="[props.data.reportStatus === 'ReportSucceed' ? 'success' : '']"
@@ -32,12 +32,12 @@
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">所在位置:</view>
-        <view class="value">{{ props.data.locationTypeText }}</view>
+        <view class="value">{{ getLocationText(props.data.locationType) }}</view>
       </view>
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">所属区域:</view>
-        <view class="value">{{ props.data.address }}</view>
+        <view class="value">{{ props.data.areaCodeText }}/{{ props.data.townCodeText }}</view>
       </view>
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
@@ -50,6 +50,7 @@
 
 <script lang="ts" setup>
 import { routerForward } from '@/utils'
+import { locationTypes, getLocationText } from '@/config/common'
 import { LandlordType } from '@/types/sync'
 import { deleteLandlordApi } from '@/service'
 import { MainType } from '@/types/common'
