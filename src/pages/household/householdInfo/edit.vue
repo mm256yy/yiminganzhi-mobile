@@ -63,15 +63,15 @@
               label="户号"
               :label-width="150"
               label-align="right"
-              name="formData.householdNumber"
+              name="formData.doorNo"
             >
               <view :class="['input-wrapper', isFocus ? 'focus' : '']">
-                <view class="pre-txt">104009234532</view>
+                <view class="pre-txt">{{ formData.householdNumber }}</view>
                 <input
                   class="input-txt"
                   type="number"
                   placeholder="请输入"
-                  v-model="formData.householdNumber"
+                  v-model="formData.doorNo"
                   @focus="inputFocus"
                   @blur="inputBlur"
                 />
@@ -159,15 +159,22 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { onLoad } from '@dcloudio/uni-app'
+import { ref, reactive } from 'vue'
 import Back from '@/components/Back/Index.vue'
 import { yesAndNoEnums, lgTagList } from '../config'
+import { getStorage, StorageKey } from '@/utils'
+import { updateLandlordApi } from '@/service'
 
 // 表单数据
 const formData = ref<any>({})
 
 // 表单校验规则
-const rules = ref<any>({})
+const rules = reactive({
+  name: { rules: [{ required: true, message: '请输入账号', trigger: 'blur' }] },
+  parentCode: { rules: [{ required: true, message: '请选择', trigger: 'change' }] },
+  doorNo: { rules: [{ required: true, message: '请输入', trigger: 'blur' }] }
+})
 
 // 输入框是否获得焦点
 const isFocus = ref<boolean>(false)
@@ -217,7 +224,14 @@ const villageData = ref<any>([
 ])
 
 // 获取数据字典
-const dict = uni.getStorageSync('dict')
+const dict = getStorage(StorageKey.DICT)
+
+// 获取上个页面传递的参数，给表单赋值
+onLoad((option: any) => {
+  console.log('option:', option)
+  let params = JSON.parse(option.params)
+  formData.value = { ...params }
+})
 
 // 输入框获得焦点
 const inputFocus = () => {
@@ -241,7 +255,14 @@ const clickVillageNode = (node: any) => {
 
 // 表单提交
 const submit = () => {
-  console.log('表单提交')
+  const params = { ...formData.value }
+  formData.value.validate((valid: any) => {
+    if (valid) {
+      updateLandlordApi(params).then((res) => {
+        console.log('res:', res)
+      })
+    }
+  })
 }
 </script>
 

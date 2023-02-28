@@ -2,38 +2,39 @@
   <view class="demographic-wrapper">
     <!-- 个人信息 -->
     <view class="list">
-      <view class="list-item">
+      <view class="list-item" v-for="item in props.dataList" :key="item.id">
         <view class="list-1">
           <view class="left">
             <view class="icon">户主</view>
-            <view class="name">杨汉中</view>
+            <view class="name">{{ item.name }}</view>
           </view>
           <view class="right">
             <image
               class="icon m-r-10"
               src="@/static/images/icon_delete_mini.png"
               mode="scaleToFill"
+              @click="deleteDemographic(item)"
             />
           </view>
         </view>
-        <view class="list-2" @click="toLink">
+        <view class="list-2" @click="toLink('edit', item)">
           <uni-row>
             <uni-col :span="8">
               <view class="col">
                 <view class="label">性别：</view>
-                <view class="content">男</view>
+                <view class="content">{{ dict[292][item.sex].text }}</view>
               </view>
             </uni-col>
             <uni-col :span="8">
               <view class="col">
                 <view class="label">民族：</view>
-                <view class="content">汉</view>
+                <view class="content">{{ dict[278][item.nation].text }}</view>
               </view>
             </uni-col>
             <uni-col :span="8">
               <view class="col">
                 <view class="label">出生年月：</view>
-                <view class="content">1999年1月</view>
+                <view class="content">{{ item.birthday }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -42,19 +43,19 @@
             <uni-col :span="8">
               <view class="col">
                 <view class="label">身份证：</view>
-                <view class="content">33252196701305515</view>
+                <view class="content">{{ item.card }}</view>
               </view>
             </uni-col>
             <uni-col :span="8">
               <view class="col">
                 <view class="label">婚姻状况：</view>
-                <view class="content">已婚</view>
+                <view class="content">{{ dict[260][item.marital].text }}</view>
               </view>
             </uni-col>
             <uni-col :span="8">
               <view class="col">
                 <view class="label">人口类型：</view>
-                <view class="content">册内人口</view>
+                <view class="content">{{ dict[244][item.populationType].text }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -63,28 +64,63 @@
             <uni-col :span="8">
               <view class="col">
                 <view class="label">职业：</view>
-                <view class="content">种植生产人员</view>
+                <view class="content">{{ dict[305][item.occupation].text }}</view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">户籍所在地：</view>
-                <view class="content">浙江省新昌县镜岭镇下潘村438号2-37</view>
+                <view class="content">{{ item.address }}</view>
               </view>
             </uni-col>
           </uni-row>
         </view>
       </view>
     </view>
-    <image class="add-btn" src="@/static/images/icon_add.png" mode="scaleToFill" @click="toLink" />
+
+    <image
+      class="add-btn"
+      src="@/static/images/icon_add.png"
+      mode="scaleToFill"
+      @click="toLink('add', {})"
+    />
   </view>
 </template>
 
 <script lang="ts" setup>
-import { routerForward } from '@/utils'
+import { getStorage, StorageKey } from '@/utils'
 
-const toLink = () => {
-  routerForward('demographicInfoEdit')
+const props = defineProps({
+  dataList: {
+    type: Array as any,
+    default: () => {}
+  }
+})
+
+// 获取数据字典
+const dict = getStorage(StorageKey.DICT)
+const emit = defineEmits(['deleteDemographic'])
+
+const toLink = (type: string, data: any) => {
+  if (type === 'add') {
+    uni.navigateTo({
+      url: '/pages/household/demographicInfo/edit?type=' + type
+    })
+  } else {
+    const params = { ...data }
+    uni.navigateTo({
+      url:
+        '/pages/household/demographicInfo/edit?params=' + JSON.stringify(params) + '&type=' + type
+    })
+  }
+}
+
+/**
+ * 删除当前行数据
+ * @param {Object} data 当前行数据
+ */
+const deleteDemographic = (data: any) => {
+  emit('deleteDemographic', data)
 }
 </script>
 

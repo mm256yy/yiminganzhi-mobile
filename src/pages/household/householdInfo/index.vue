@@ -5,20 +5,20 @@
       <view class="list-item">
         <view class="list-1">
           <view class="icon">户主</view>
-          <view class="name">杨汉中</view>
+          <view class="name">{{ props.dataInfo.name }}</view>
         </view>
         <view class="list-2" @click="toLink">
           <uni-row>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">户号：</view>
-                <view class="content">1040092345321464</view>
+                <view class="content">{{ props.dataInfo.doorNo }}</view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">自然村/村民小组：</view>
-                <view class="content">浙江省金华市武义县清溪行政村</view>
+                <view class="content">{{ props.dataInfo.virutalVillageCodeText }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -27,13 +27,19 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">是否财产户：</view>
-                <view class="content">否</view>
+                <view class="content">
+                  {{
+                    props.dataInfo.hasPropertyAccount
+                      ? dictOption(yesAndNoEnums, props.dataInfo.hasPropertyAccount)
+                      : ''
+                  }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">联系方式：</view>
-                <view class="content">17289436274</view>
+                <view class="content">{{ props.dataInfo.phone }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -42,13 +48,15 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">户籍所在地：</view>
-                <view class="content">浙江省金华市武义县清溪镇杨村234号</view>
+                <view class="content">{{ props.dataInfo.address }}</view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">所在位置：</view>
-                <view class="content">淹没区</view>
+                <view class="content">
+                  {{ props.dataInfo.locationType }}
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -57,13 +65,19 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">淹没范围：</view>
-                <view class="content">-</view>
+                <view class="content">
+                  {{
+                    props.dataInfo.inundationRange
+                      ? dict[346][props.dataInfo.inundationRange].text
+                      : '-'
+                  }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">高程：</view>
-                <view class="content">1.5m</view>
+                <view class="content">{{ props.dataInfo.altitude }}m</view>
               </view>
             </uni-col>
           </uni-row>
@@ -72,7 +86,9 @@
             <uni-col :span="24">
               <view class="col">
                 <view class="label">经纬度：</view>
-                <view class="content">124.23528 29.997117</view>
+                <view class="content">
+                  {{ props.dataInfo.longitude }} {{ props.dataInfo.latitude }}
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -89,10 +105,40 @@
 </template>
 
 <script lang="ts" setup>
-import { routerForward } from '@/utils'
+import { getStorage, StorageKey, dictOption } from '@/utils'
+import { yesAndNoEnums } from '../config'
+
+const props = defineProps({
+  dataInfo: {
+    type: Object,
+    default: () => {}
+  }
+})
+
+// 获取字典表
+const dict = getStorage(StorageKey.DICT)
 
 const toLink = () => {
-  routerForward('householdInfoEdit')
+  const params = {
+    id: props.dataInfo.id,
+    uid: props.dataInfo.uid,
+    name: props.dataInfo.name, // 姓名
+    parentCode: props.dataInfo.parentCode, // 自然村/村民小组
+    phone: props.dataInfo.phone, // 联系方式
+    locationType: props.dataInfo.locationType, // 所在位置
+    householdNumber: props.dataInfo.householdNumber, // 户籍册编号
+    doorNo: props.dataInfo.doorNo, // 户号
+    hasPropertyAccount: props.dataInfo.hasPropertyAccount, // 是否财产户
+    address: props.dataInfo.address, // 户籍所在地
+    inundationRange: props.dataInfo.inundationRange, // 淹没范围
+    altitude: props.dataInfo.altitude, // 高程
+    longitude: props.dataInfo.longitude, // 经度
+    latitude: props.dataInfo.latitude // 纬度
+  }
+
+  uni.navigateTo({
+    url: '/pages/household/householdInfo/edit?params=' + JSON.stringify(params)
+  })
 }
 </script>
 

@@ -21,9 +21,9 @@
               label="身份证号"
               :label-width="150"
               label-align="right"
-              name="formData.idCard"
+              name="formData.card"
             >
-              <uni-easyinput v-model="formData.idCard" type="idcard" placeholder="请输入" />
+              <uni-easyinput v-model="formData.card" type="idcard" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -32,13 +32,9 @@
               label="性别"
               :label-width="150"
               label-align="right"
-              name="formData.gender"
+              name="formData.sex"
             >
-              <uni-data-select
-                v-model="formData.gender"
-                :localdata="genderData"
-                @change="changeGender"
-              />
+              <uni-data-select v-model="formData.sex" :localdata="dict[292]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -73,13 +69,9 @@
               label="与户主关系"
               :label-width="150"
               label-align="right"
-              name="formData.relationship"
+              name="formData.relation"
             >
-              <uni-data-select
-                v-model="formData.relationship"
-                :localdata="relationshipData"
-                @change="changeRelationship"
-              />
+              <uni-data-select v-model="formData.relation" :localdata="dict[307]" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -92,11 +84,7 @@
               label-align="right"
               name="formData.nation"
             >
-              <uni-data-select
-                v-model="formData.nation"
-                :localdata="nationData"
-                @change="changeNation"
-              />
+              <uni-data-select v-model="formData.nation" :localdata="dict[278]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -106,11 +94,7 @@
               label-align="right"
               name="formData.marital"
             >
-              <uni-data-select
-                v-model="formData.marital"
-                :localdata="maritalData"
-                @change="changeMarital"
-              />
+              <uni-data-select v-model="formData.marital" :localdata="dict[260]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -120,11 +104,7 @@
               label-align="right"
               name="formData.education"
             >
-              <uni-data-select
-                v-model="formData.education"
-                :localdata="educationData"
-                @change="changeEducation"
-              />
+              <uni-data-select v-model="formData.education" :localdata="dict[272]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -132,13 +112,9 @@
               label="参保情况"
               :label-width="150"
               label-align="right"
-              name="formData.insurance"
+              name="formData.insuranceType"
             >
-              <uni-data-select
-                v-model="formData.insurance"
-                :localdata="insuranceData"
-                @change="changeInsurance"
-              />
+              <uni-data-select v-model="formData.insuranceType" :localdata="dict[306]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -146,9 +122,9 @@
               label="工作单位"
               :label-width="150"
               label-align="right"
-              name="formData.work"
+              name="formData.company"
             >
-              <uni-easyinput v-model="formData.work" type="text" placeholder="请输入" />
+              <uni-easyinput v-model="formData.company" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -158,11 +134,7 @@
               label-align="right"
               name="formData.occupation"
             >
-              <uni-data-select
-                v-model="formData.occupation"
-                :localdata="occupationData"
-                @change="changeOccupation"
-              />
+              <uni-data-select v-model="formData.occupation" :localdata="dict[305]" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -175,11 +147,7 @@
               label-align="right"
               name="formData.populationType"
             >
-              <uni-data-select
-                v-model="formData.populationType"
-                :localdata="populationTypeData"
-                @change="changePopulationType"
-              />
+              <uni-data-select v-model="formData.populationType" :localdata="dict[244]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -187,13 +155,9 @@
               label="人口类别"
               :label-width="150"
               label-align="right"
-              name="formData.populationCategory"
+              name="formData.populationSort"
             >
-              <uni-data-select
-                v-model="formData.populationCategory"
-                :localdata="populationCategoryData"
-                @change="changePopulationCategory"
-              />
+              <uni-data-select v-model="formData.populationSort" :localdata="dict[274]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -201,13 +165,9 @@
               label="户籍册类别"
               :label-width="150"
               label-align="right"
-              name="formData.registeredResidence"
+              name="formData.censusType"
             >
-              <uni-data-select
-                v-model="formData.registeredResidence"
-                :localdata="registeredResidenceData"
-                @change="changeRegisteredResidence"
-              />
+              <uni-data-select v-model="formData.censusType" :localdata="dict[273]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -215,13 +175,9 @@
               label="户籍册编号"
               :label-width="150"
               label-align="right"
-              name="formData.registeredResidenceNo"
+              name="formData.householdNumber"
             >
-              <uni-easyinput
-                v-model="formData.registeredResidenceNo"
-                type="text"
-                placeholder="请输入"
-              />
+              <uni-easyinput v-model="formData.householdNumber" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -252,7 +208,7 @@
               label="上传身份证照片"
               :label-width="150"
               label-align="right"
-              name="formData.address"
+              name="formData.cardPic"
             >
               <uni-file-picker
                 title="最多选择2张图片"
@@ -269,7 +225,7 @@
               label="上传户口本照片"
               :label-width="150"
               label-align="right"
-              name="formData.householdRegister"
+              name="formData.householdPic"
             >
               <uni-file-picker
                 title="最多选择1张图片"
@@ -312,145 +268,40 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { onLoad } from '@dcloudio/uni-app'
+import { ref, reactive } from 'vue'
+import { getStorage, StorageKey } from '@/utils'
+import { addLandlordPeopleApi, updateLandlordPeopleApi } from '@/service'
 import Back from '@/components/Back/Index.vue'
 
 // 表单数据
 const formData = ref<any>({})
 
+// 表单类型，add 新增表单，edit 编辑表单
+const type = ref<string>('')
+
+// 获取数据字典
+const dict = getStorage(StorageKey.DICT)
+
 // 表单校验规则
-const rules = ref<any>({})
+const rules = reactive({
+  name: { rules: [{ required: true, message: '请输入', trigger: 'blur' }] },
+  card: { rules: [{ required: true, message: '请输入', trigger: 'blur' }] },
+  sex: { rules: [{ required: true, message: '请选择', trigger: 'change' }] },
+  birthday: { rules: [{ required: true, message: '请选择', trigger: 'change' }] },
+  realation: { rules: [{ required: true, message: '请选择', trigger: 'change' }] }
+})
 
-// 性别数据选项
-const genderData = ref<any>([
-  { text: '男', value: 1 },
-  { text: '女', value: 2 }
-])
-
-// 与户主关系数据选项
-const relationshipData = ref<any>([
-  { text: '户主', value: 1 },
-  { text: '夫', value: 2 },
-  { text: '妻', value: 3 },
-  { text: '子', value: 4 },
-  { text: '独生子', value: 5 },
-  { text: '长子', value: 6 },
-  { text: '次子', value: 7 }
-])
-
-// 民族数据选项
-const nationData = ref<any>([
-  { text: '汉族', value: 1 },
-  { text: '蒙古族', value: 2 },
-  { text: '壮族', value: 3 },
-  { text: '苗族', value: 4 }
-])
-
-// 婚姻状况数据选项
-const maritalData = ref<any>([
-  { text: '已婚', value: 1 },
-  { text: '未婚', value: 2 },
-  { text: '离异', value: 3 },
-  { text: '丧偶', value: 4 },
-  { text: '再婚', value: 5 },
-  { text: '复婚', value: 6 }
-])
-
-// 文化程度数据选项
-const educationData = ref<any>([
-  { text: '研究生', value: 1 },
-  { text: '大学生', value: 2 }
-])
-
-// 参保情况数据选项
-const insuranceData = ref<any>([
-  { text: '商业保险', value: 1 },
-  { text: '医疗保险', value: 2 },
-  { text: '养老保险', value: 1 },
-  { text: '其他', value: 2 },
-  { text: '无', value: 1 }
-])
-
-// 职业数据选项
-const occupationData = ref<any>([
-  { text: '专业技术人员', value: 1 },
-  { text: '办事人员和有关人员', value: 2 }
-])
-
-// 人口类型数据选项
-const populationTypeData = ref<any>([
-  { text: '册内人口', value: 1 },
-  { text: '册外人口', value: 2 },
-  { text: '其他人口', value: 3 }
-])
-
-// 人口类别数据选项
-const populationCategoryData = ref<any>([
-  { text: '正常', value: 1 },
-  { text: '婚嫁未出（可迁出）', value: 2 },
-  { text: '婚嫁未出（不可迁出）', value: 3 }
-])
-
-// 户籍册类别数据选项
-const registeredResidenceData = ref<any>([
-  { text: '农村家庭户', value: 1 },
-  { text: '农村集体户', value: 2 },
-  { text: '城镇家庭户', value: 3 }
-])
-
-// 性别选择
-const changeGender = (data: any) => {
-  console.log('data:', data)
-}
+onLoad((option: any) => {
+  type.value = option.type
+  if (option.type === 'edit') {
+    formData.value = JSON.parse(option.params)
+  }
+})
 
 // 出生年月选择
 const changeDate = (e: any) => {
   console.log('e:', e)
-}
-
-// 与户主关系选择
-const changeRelationship = (data: any) => {
-  console.log('data:', data)
-}
-
-// 民族选择
-const changeNation = (data: any) => {
-  console.log('data:', data)
-}
-
-// 婚姻状况选择
-const changeMarital = (data: any) => {
-  console.log('data:', data)
-}
-
-// 文化程度选择
-const changeEducation = (data: any) => {
-  console.log('data:', data)
-}
-
-// 参保情况选择
-const changeInsurance = (data: any) => {
-  console.log('data:', data)
-}
-
-// 职业选择
-const changeOccupation = (data: any) => {
-  console.log('data:', data)
-}
-
-// 人口类型选择
-const changePopulationType = (data: any) => {
-  console.log('data:', data)
-}
-
-// 人口类别选择
-const changePopulationCategory = (data: any) => {
-  console.log('data:', data)
-}
-
-// 户籍册类别选择
-const changeRegisteredResidence = (data: any) => {
-  console.log('data:', data)
 }
 
 // 获取身份证上传状态
@@ -515,7 +366,20 @@ const otherPicFail = (e: any) => {
 
 // 表单提交
 const submit = () => {
-  console.log('表单提交')
+  const params = { ...formData.value }
+  formData.value.validate((valid: any) => {
+    if (valid) {
+      if (type.value === 'add') {
+        addLandlordPeopleApi(params.uid, params).then((res) => {
+          console.log('res:', res)
+        })
+      } else {
+        updateLandlordPeopleApi(params.uid, params).then((res) => {
+          console.log('res:', res)
+        })
+      }
+    }
+  })
 }
 </script>
 

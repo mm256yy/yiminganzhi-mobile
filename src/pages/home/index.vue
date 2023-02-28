@@ -169,7 +169,7 @@
 </template>
 
 <script lang="ts" setup>
-import { routerForward } from '@/utils'
+import { routerForward, setStorage, StorageKey } from '@/utils'
 import { onMounted } from 'vue'
 import { getDictObjApi } from '@/service'
 
@@ -185,7 +185,7 @@ const toLink = (name: string) => {
 const getDictObj = async () => {
   const result = await getDictObjApi()
   console.log('result:', result)
-  uni.setStorageSync('dict', result)
+  setStorage(StorageKey.DICT, result)
 }
 
 onMounted(() => {

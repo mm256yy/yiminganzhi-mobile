@@ -5,7 +5,7 @@
     <view class="main-cont">
       <view class="list-content">
         <view :class="['list-box', showExpand ? '' : 'list-expand']">
-          <view class="box" v-if="props.dataInfo">
+          <view class="box" v-if="JSON.stringify(props.dataInfo) !== '{}'">
             <view class="list-header">
               <view class="list-header-lt" @click="expandToggle">
                 <image class="expand-img" src="@/static/images/expand.png" mode="scaleToFill" />
@@ -13,8 +13,8 @@
 
               <view class="list-header-rt">
                 <view class="list-header-left">
-                  <view class="name">杨汉中</view>
-                  <view class="account-no">1040092345321464</view>
+                  <view class="name">{{ props.dataInfo.name }}</view>
+                  <view class="account-no">{{ props.dataInfo.doorNo }}</view>
                 </view>
 
                 <view class="list-header-right">
@@ -36,10 +36,14 @@
               <Tabs :dataList="tabsList" :expand="showExpand" @select-tabs="selectTabs" />
 
               <!-- 居民户信息 -->
-              <household-info v-if="tabVal === 1" />
+              <household-info v-if="tabVal === 1" :dataInfo="dataInfo" />
 
               <!-- 人口信息 -->
-              <demographic-info v-if="tabVal === 2" />
+              <demographic-info
+                v-if="tabVal === 2"
+                :dataList="dataInfo.demographicList"
+                @deleteDemographic="deleteDemographic"
+              />
 
               <!-- 房屋信息 -->
               <house-info v-if="tabVal === 3" />
@@ -95,6 +99,8 @@ import revenueInfo from '../revenueInfo/index.vue' // 引入安置意愿信息�
 import willingnessInfo from '../willingnessInfo/index.vue' // 引入安置意愿信息组件
 import attachmentUpload from '../attachmentUpload/index.vue' // 引入附件上传组件
 
+import { deleteLandlordApi } from '@/service'
+
 import iconSrc from '@/static/images/icon_add_household.png' // 侧边栏，添加 icon
 import iconHouseholdDef from '@/static/images/icon_household_default.png' // 引入居民户信息默认 icon
 import iconHouseholdSel from '@/static/images/icon_household_select.png' // 引入居民户信息选中 icon
@@ -121,6 +127,7 @@ const props = defineProps({
     default: () => {}
   },
   treeData: {
+    // 左侧树列表
     type: Array,
     default: () => []
   }
@@ -154,6 +161,15 @@ const expandToggle = () => {
 // tab 切换
 const selectTabs = (data: any) => {
   tabVal.value = data.value
+}
+
+/** 人口信息 - 删除
+ * @param(Object) data 被删除的行信息
+ */
+const deleteDemographic = (data: any) => {
+  deleteLandlordApi(data.uid).then((res) => {
+    console.log('res:', res)
+  })
 }
 </script>
 
