@@ -210,6 +210,10 @@
         </view>
       </view>
     </view>
+
+    <uni-popup ref="popup" type="center">
+      <view class="popup-box"> ddsafdsafs </view>
+    </uni-popup>
   </view>
 </template>
 
@@ -230,6 +234,7 @@ const pullTime = ref<string>('')
 const intervalId = ref(0)
 const count = ref(0)
 const maxCount = ref(30)
+const popup = ref<any>(null)
 
 const sysInfo = uni.getSystemInfoSync()
 const statusBarHeight = sysInfo.statusBarHeight || 0
@@ -307,8 +312,17 @@ const pageInit = () => {
   getPullTime()
 }
 
+const openPup = () => {
+  popup.value?.open()
+}
+
+const closePup = () => {
+  popup.value?.close()
+}
+
 onMounted(() => {
   pageInit()
+  openPup()
 })
 
 onBeforeUnmount(() => {
@@ -539,5 +553,12 @@ uni-page-body {
     height: 205rpx;
     overflow-y: scroll;
   }
+}
+
+.popup-box {
+  width: 352rpx;
+  height: 203rpx;
+  background: #ffffff;
+  border-radius: 5rpx;
 }
 </style>

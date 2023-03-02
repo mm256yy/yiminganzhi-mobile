@@ -48,16 +48,16 @@ class DistrictTree extends Common {
           if (item.virutalVillageCode) {
             // 总的人口
             if (!totalMap[item.virutalVillageCode]) {
-              totalMap[item.virutalVillageCode] = 0
+              totalMap[item.virutalVillageCode] = 1
             } else {
-              totalMap[item.virutalVillageCode]++
+              totalMap[item.virutalVillageCode] = totalMap[item.virutalVillageCode] + 1
             }
             // 填报的人口
             if (item.reportStatus === 'ReportSucceed') {
               if (!reportMap[item.virutalVillageCode]) {
-                reportMap[item.virutalVillageCode] = 0
+                reportMap[item.virutalVillageCode] = 1
               } else {
-                reportMap[item.virutalVillageCode]++
+                reportMap[item.virutalVillageCode] = reportMap[item.virutalVillageCode] + 1
               }
             }
           }
@@ -66,16 +66,16 @@ class DistrictTree extends Common {
           if (item.villageCode) {
             // 总的人口
             if (!totalMap[item.villageCode]) {
-              totalMap[item.villageCode] = 0
+              totalMap[item.villageCode] = 1
             } else {
-              totalMap[item.villageCode]++
+              totalMap[item.villageCode] = totalMap[item.villageCode] + 1
             }
             // 填报的人口
             if (item.reportStatus === 'ReportSucceed') {
               if (!reportMap[item.villageCode]) {
-                reportMap[item.villageCode] = 0
+                reportMap[item.villageCode] = 1
               } else {
-                reportMap[item.villageCode]++
+                reportMap[item.villageCode] = reportMap[item.villageCode] + 1
               }
             }
           }
@@ -84,16 +84,16 @@ class DistrictTree extends Common {
           if (item.townCode) {
             // 总的人口
             if (!totalMap[item.townCode]) {
-              totalMap[item.townCode] = 0
+              totalMap[item.townCode] = 1
             } else {
-              totalMap[item.townCode]++
+              totalMap[item.townCode] = totalMap[item.townCode] + 1
             }
             // 填报的人口
             if (item.reportStatus === 'ReportSucceed') {
               if (!reportMap[item.townCode]) {
-                reportMap[item.townCode] = 0
+                reportMap[item.townCode] = 1
               } else {
-                reportMap[item.townCode]++
+                reportMap[item.townCode] = reportMap[item.townCode] + 1
               }
             }
           }
@@ -102,16 +102,16 @@ class DistrictTree extends Common {
           if (item.areaCode) {
             // 总的人口
             if (!totalMap[item.areaCode]) {
-              totalMap[item.areaCode] = 0
+              totalMap[item.areaCode] = 1
             } else {
-              totalMap[item.areaCode]++
+              totalMap[item.areaCode] = totalMap[item.areaCode] + 1
             }
             // 填报的人口
             if (item.reportStatus === 'ReportSucceed') {
               if (!reportMap[item.areaCode]) {
-                reportMap[item.areaCode] = 0
+                reportMap[item.areaCode] = 1
               } else {
-                reportMap[item.areaCode]++
+                reportMap[item.areaCode] = reportMap[item.areaCode] + 1
               }
             }
           }
@@ -141,7 +141,6 @@ class DistrictTree extends Common {
           })
           const treeArray = [...totalArray, ...landlordList]
           const res = arrayToTree(treeArray)
-          console.log(res, '其他res')
           resolve(res)
         }
       } else {
