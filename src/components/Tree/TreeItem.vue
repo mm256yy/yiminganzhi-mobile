@@ -21,15 +21,19 @@
     >
       <view class="tree-item-lt">
         <view class="status">
-          <image class="icon" src="@/static/images/icon_complete.png" mode="scaleToFill" />
+          <image
+            v-if="props.data.reportStatus === 'ReportSucceed'"
+            class="icon"
+            src="@/static/images/icon_complete.png"
+            mode="scaleToFill"
+          />
+          <image class="icon" src="@/static/images/icon_miss.png" mode="scaleToFill" />
         </view>
-        <text :class="['item-name', !props.data.name ? 'w-100' : '']">{{ props.data.name }}</text>
         <text class="item-txt">{{ props.data.name }}</text>
       </view>
 
       <view class="tree-item-rt">
-        <text class="num gray">{{ props.data.reportNum }}</text> /
-        <text class="num">{{ props.data.totalNum }}</text>
+        <text class="num">{{ props.data.doorNo }}</text>
       </view>
     </view>
     <!-- 行政区划 无子集 -->
@@ -60,9 +64,11 @@
 </template>
 
 <script lang="ts" setup>
+import { LandlordType } from '@/types/sync'
 import { ref, computed } from 'vue'
+
 interface PropsType {
-  data: any
+  data: LandlordType
 }
 
 const props = defineProps<PropsType>()
