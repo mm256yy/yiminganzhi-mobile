@@ -29,6 +29,7 @@ const getTreeData = async () => {
   })
   const result = await getLandlordTreeApi(MainType.Company)
   uni.hideLoading()
+  console.log('result:', result)
   treeData.value = [...result]
 }
 

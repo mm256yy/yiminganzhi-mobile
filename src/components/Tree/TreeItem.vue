@@ -27,7 +27,7 @@
             src="@/static/images/icon_complete.png"
             mode="scaleToFill"
           />
-          <image class="icon" src="@/static/images/icon_miss.png" mode="scaleToFill" />
+          <image v-else class="icon" src="@/static/images/icon_miss.png" mode="scaleToFill" />
         </view>
         <text class="item-txt">{{ props.data.name }}</text>
       </view>
@@ -148,6 +148,7 @@ const hasChildren = computed(() => {
 }
 
 .item-txt {
+  width: 40rpx;
   margin-left: 6rpx;
   overflow: hidden;
   font-size: 8rpx;
