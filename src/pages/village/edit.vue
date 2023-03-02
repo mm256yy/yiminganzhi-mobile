@@ -12,13 +12,6 @@
               name="formData.parentCode"
             >
               <VillageSelectFormItem v-model="formData.parentCode" />
-              <!-- <view class="select-box" @click="showVillageSelect = true">
-                <text class="txt black" v-if="villageTitle && villageTitle.length">
-                  {{ villageTitle.join('/') }}
-                </text>
-                <text class="txt" v-else>请选择</text>
-                <uni-icons type="bottom" color="#BFBFBF" size="14rpx" />
-              </view> -->
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -39,22 +32,27 @@
 
         <uni-row>
           <uni-col :span="24">
-            <uni-forms-item
-              label="中心经纬度"
-              :label-width="170"
-              label-align="right"
-              name="formData.position"
-            >
+            <uni-forms-item label="中心经纬度" :label-width="170" label-align="right">
               <view class="lg-txt-wrapper">
-                <uni-data-checkbox v-model="formData.check" :localdata="lgTagList" />
-                <uni-easyinput
-                  class="m-t-5"
-                  :disabled="formData.check === 1"
-                  type="text"
-                  :placeholder="
-                    formData.check === 1 ? '获取定位' : formData.check === 2 ? '输入经纬度' : ''
-                  "
-                />
+                <uni-data-checkbox v-model="check" :localdata="lgTagList" />
+                <view class="position" v-if="check === 1">
+                  <uni-icons type="map" color="#5D8CF7" size="14rpx" />
+                  <text class="txt">获取定位</text>
+                </view>
+                <template v-else-if="check === 2">
+                  <uni-easyinput
+                    class="m-t-5"
+                    type="digit"
+                    v-model="formData.longitude"
+                    placeholder="输入经度"
+                  />
+                  <uni-easyinput
+                    class="m-t-5"
+                    type="digit"
+                    v-model="formData.latitude"
+                    placeholder="输入纬度"
+                  />
+                </template>
               </view>
             </uni-forms-item>
           </uni-col>
@@ -89,18 +87,16 @@ import { getOtherItemApi, addVillageApi, updateVillageApi, getVillageItemApi } f
 import { OtherDataType } from '@/database'
 import { onLoad } from '@dcloudio/uni-app'
 import { guidFour, setStorage, getStorage, StorageKey, routerBack } from '@/utils'
-import { declareTypeAlias } from '@babel/types'
+
 // 表单数据
 const formData = ref<any>({
   parentCode: '',
   name: '',
-  position: {
-    longitude: '',
-    latitude: '',
-    address: ''
-  }
+  longitude: '',
+  latitude: '',
+  address: ''
 })
-const fieldsMap = ref({ text: 'name', value: 'code' })
+
 // 表单校验规则
 const rules = ref<any>({})
 
@@ -114,11 +110,12 @@ const uid = ref<string>('')
 const type = ref<'add' | 'edit'>('add')
 const detail = ref<any>(null)
 
+const check = ref<number>(2)
 const districtMap = getStorage(StorageKey.DISTRICTMAP)
 
 // 中心经纬度输入选项
 const lgTagList = ref<any>([
-  { text: '获取定位', value: 1 },
+  { text: '获取定位', value: 1, disable: true },
   { text: '输入经纬度', value: 2 }
 ])
 
@@ -134,20 +131,16 @@ onLoad((option: any) => {
 const getDetail = () => {
   if (uid.value) {
     getVillageItemApi(uid.value).then((res) => {
-      console.log(res, 'detail')
       if (res) {
         detail.value = res
         formData.value.parentCode = res.parentCode
         formData.value.name = res.name
-        formData.value.position = [res.longitude, res.latitude]
+        formData.value.longitude = res.longitude
+        formData.value.latitude = res.latitude
+        formData.value.address = res.address
       }
     })
   }
-}
-
-// 所在位置选择
-const changeDistrict = (data: any) => {
-  console.log('data:', data)
 }
 
 // 表单提交
@@ -155,9 +148,9 @@ const submit = () => {
   const subData = {
     name: formData.value.name,
     parentCode: formData.value.parentCode,
-    longitude: formData.value.position.longitude,
-    latitude: formData.value.position.latitude,
-    address: formData.value.position.address
+    longitude: formData.value.longitude,
+    latitude: formData.value.latitude,
+    address: formData.value.address
   }
   if (!subData.name || !subData.parentCode) {
     return uni.showToast({
@@ -325,6 +318,24 @@ const villageClose = () => {
       &.black {
         color: #171718;
       }
+    }
+  }
+
+  .position {
+    display: flex;
+    width: 211rpx;
+    height: 23rpx;
+    margin-top: 5rpx;
+    background: #ffffff;
+    border: 1rpx solid #d9d9d9;
+    border-radius: 2rpx;
+    align-items: center;
+    justify-content: center;
+
+    .txt {
+      margin-left: 6rpx;
+      font-size: 9rpx;
+      color: #171718;
     }
   }
 

@@ -12,7 +12,7 @@
             props.data.reportStatus === 'ReportSucceed' ? '已上报' : '未上报'
           }}</view
         >
-        <view class="edit-box">
+        <view class="edit-box" @click.stop="deleteItem">
           <image class="remove-icon" src="@/static/images/remove.png" mode="scaleToFill" />
         </view>
       </view>
@@ -39,10 +39,15 @@
         <view class="label">所属区域:</view>
         <view class="value">{{ props.data.areaCodeText }}/{{ props.data.townCodeText }}</view>
       </view>
-      <view class="cont-item">
+      <view class="cont-item" v-if="props.data.type !== MainType.PeasantHousehold">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">行政村名称:</view>
         <view class="value">{{ props.data.villageCodeText }}</view>
+      </view>
+      <view class="cont-item" v-else>
+        <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
+        <view class="label">自然村名称:</view>
+        <view class="value">{{ props.data.virutalVillageCodeText }}</view>
       </view>
     </view>
   </view>
@@ -50,9 +55,8 @@
 
 <script lang="ts" setup>
 import { routerForward } from '@/utils'
-import { locationTypes, getLocationText } from '@/config/common'
+import { getLocationText } from '@/config/common'
 import { LandlordType } from '@/types/sync'
-import { deleteLandlordApi } from '@/service'
 import { MainType } from '@/types/common'
 
 interface PropsType {
@@ -60,31 +64,10 @@ interface PropsType {
 }
 
 const props = defineProps<PropsType>()
-const emit = defineEmits(['onRefresh'])
+const emit = defineEmits(['delete'])
 
-const onEdit = () => {
-  // routerForward()
-}
-
-const onDel = (item: LandlordType) => {
-  deleteLandlordApi(item.uid)
-    .then((res) => {
-      if (res) {
-        uni.showToast({
-          title: '删除成功!',
-          icon: 'success',
-          mask: true
-        })
-        emit('onRefresh')
-      }
-    })
-    .catch(() => {
-      uni.showToast({
-        title: '删除失败!',
-        icon: 'error',
-        mask: true
-      })
-    })
+const deleteItem = () => {
+  emit('delete')
 }
 </script>
 
