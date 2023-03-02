@@ -20,15 +20,27 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, nextTick } from 'vue'
 import NaturalVillageTreeSelect from '@/components/NaturalVillageTreeSelect/indev.vue'
-import { getOtherItemApi } from '@/service'
-import { OtherDataType } from '@/database'
+import { getVirutalVillageTreeApi } from '@/service'
 
 interface PropsType {
-  modelValue: string
+  areaCode: string
+  townCode: string
+  villageCode: string
+  virutalVillageCode: string
 }
 
+// areaCode
+// townCode
+// villageCode
+// virutalVillageCode
+
 const props = defineProps<PropsType>()
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits([
+  'update:areaCode',
+  'update:townCode',
+  'update:villageCode',
+  'update:virutalVillageCode'
+])
 
 const treeData = ref<any>([])
 const villageTitle = ref<string[]>([])
@@ -36,12 +48,15 @@ const showVillageSelect = ref<boolean>(false)
 const codes = ref<string[]>([])
 
 watch(
-  () => props.modelValue,
-  (val) => {
-    if (val) {
-      const town = val.slice(0, 9)
-      const area = val.slice(0, 6)
-      codes.value = [area, town, val]
+  [
+    () => props.areaCode,
+    () => props.townCode,
+    () => props.villageCode,
+    () => props.virutalVillageCode
+  ],
+  ([val1, val2, val3, val4]) => {
+    if (val1 && val2 && val3 && val4) {
+      codes.value = [val1, val2, val3, val4]
       getTitle()
     }
   },
@@ -58,12 +73,16 @@ const getTitle = () => {
     const townName = townItem.name
     const villageItem = townItem.children.find((item: any) => item.code === codes.value[2])
     const villageName = villageItem.name
-    villageTitle.value = [areaName, townName, villageName]
+    const naturalVillageItem = villageItem.children.find(
+      (item: any) => item.code === codes.value[3]
+    )
+    const naturalVillageName = naturalVillageItem.name
+    villageTitle.value = [areaName, townName, villageName, naturalVillageName]
   }
 }
 
 const getTreeData = async () => {
-  const res = await getOtherItemApi(OtherDataType.DistrictTree)
+  const res = await getVirutalVillageTreeApi()
   treeData.value = res || []
   getTitle()
 }
@@ -71,20 +90,20 @@ const getTreeData = async () => {
 const villageConfirm = (code: string[], tit: string[]) => {
   codes.value = code
   villageTitle.value = tit
-  console.log(code, tit, '---')
   close()
-  emit('update:modelValue', code.length ? code[code.length - 1] : '')
+  emit('update:areaCode', code[0] || '')
+  emit('update:townCode', code[1] || '')
+  emit('update:villageCode', code[2] || '')
+  emit('update:virutalVillageCode', code[3] || '')
 }
 
 const open = () => {
   showVillageSelect.value = true
-  console.log('open', showVillageSelect.value)
 }
 
 const close = () => {
   nextTick(() => {
     showVillageSelect.value = false
-    console.log('close', showVillageSelect.value)
   })
 }
 
