@@ -3,7 +3,7 @@
     <view class="mask" />
     <view class="content show">
       <view class="head">
-        <view class="cancle" @click="cancle">取消</view>
+        <view class="cancle" @click.stop="cancle">取消</view>
         <view class="name">选择行政区划</view>
         <view class="right">
           <view class="confirm" @click.stop="reset">重置</view>
@@ -19,7 +19,7 @@
               class="common-item"
               v-for="item in props.treeData"
               :key="item.code"
-              @click="areaClick(item)"
+              @click.stop="areaClick(item)"
               :class="[currentSelect[0] && currentSelect[0] === item.code ? 'active' : '']"
               >{{ item.name }}</view
             >
@@ -33,7 +33,7 @@
               :class="[currentSelect[1] && currentSelect[1] === item.code ? 'active' : '']"
               v-for="item in currentTown"
               :key="item.code"
-              @click="townClick(item)"
+              @click.stop="townClick(item)"
               >{{ item.name }}</view
             >
           </view>
@@ -47,7 +47,7 @@
               :class="[currentSelect[2] && currentSelect[2] === item.code ? 'active' : '']"
               v-for="item in currentVillage"
               :key="item.code"
-              @click="villageClick(item)"
+              @click.stop="villageClick(item)"
               >{{ item.name }}</view
             >
           </view>
@@ -62,7 +62,7 @@
               :class="[currentSelect[3] && currentSelect[3] === item.code ? 'active' : '']"
               v-for="item in currentNatural"
               :key="item.code"
-              @click="naturalClick(item)"
+              @click.stop="naturalClick(item)"
               >{{ item.name }}</view
             >
           </view>
