@@ -1,17 +1,17 @@
 <template>
   <view class="revenue-info-wrapper">
     <view class="sub-title">第一产业收入</view>
-    <uni-row>
+    <uni-row v-for="(item, index) in firstData" :key="item.id">
       <uni-col :span="12">
         <view class="col">
-          <view class="label">农业种植收入：</view>
-          <view :class="['input-wrapper', focusIndex === 1 ? 'focus' : '']">
+          <view class="label">{{ item.name }}：</view>
+          <view :class="['input-wrapper', focusIndex === index ? 'focus' : '']">
             <input
               class="input-txt"
               placeholder="请输入"
               type="number"
-              v-model="formData.plantIncome"
-              @focus="inputFocus(1)"
+              v-model="item.amount"
+              @focus="inputFocus(index)"
               @blur="inputBlur"
             />
             <view class="unit">万元</view>
@@ -20,85 +20,42 @@
       </uni-col>
       <uni-col :span="12">
         <view class="col">
-          <view class="label">林业收入：</view>
-          <view :class="['input-wrapper', focusIndex === 2 ? 'focus' : '']">
-            <input
-              class="input-txt"
-              placeholder="请输入"
-              type="number"
-              v-model="formData.forestryIncome"
-              @focus="inputFocus(2)"
-              @blur="inputBlur"
-            />
-            <view class="unit">万元</view>
-          </view>
-        </view>
-      </uni-col>
-      <uni-col :span="12">
-        <view class="col">
-          <view class="label">牧业收入：</view>
-          <view :class="['input-wrapper', focusIndex === 3 ? 'focus' : '']">
-            <input
-              class="input-txt"
-              placeholder="请输入"
-              type="number"
-              v-model="formData.animalIncome"
-              @focus="inputFocus(3)"
-              @blur="inputBlur"
-            />
-            <view class="unit">万元</view>
-          </view>
-        </view>
-      </uni-col>
-      <uni-col :span="12">
-        <view class="col">
-          <view class="label">渔业收入：</view>
-          <view :class="['input-wrapper', focusIndex === 4 ? 'focus' : '']">
-            <input
-              class="input-txt"
-              placeholder="请输入"
-              type="number"
-              v-model="formData.fisheryIncome"
-              @focus="inputFocus(4)"
-              @blur="inputBlur"
-            />
-            <view class="unit">万元</view>
-          </view>
-        </view>
-      </uni-col>
-      <uni-col class="m-t-10" :span="24">
-        <view class="txt-wrapper">
-          <view class="label">小计：</view>
-          <view class="amount">0</view>
-          <view class="unit">（万元）</view>
-        </view>
-      </uni-col>
-      <uni-col class="m-b-10" :span="24">
-        <view class="txtarea-wrapper">
           <view class="label">备注：</view>
-          <textarea
-            :class="['txt', focusIndex === 5 ? 'focus' : '']"
-            placeholder="请输入"
-            type="number"
-            v-model="formData.remark"
-            @focus="inputFocus(5)"
-            @blur="inputBlur"
-          ></textarea>
+          <view :class="['input-wrapper', focusIndex === index ? 'focus' : '']">
+            <input
+              class="input-txt w-150"
+              placeholder="请输入"
+              type="number"
+              v-model="item.remark"
+              @focus="inputFocus(index)"
+              @blur="inputBlur"
+            />
+          </view>
         </view>
       </uni-col>
     </uni-row>
+    <uni-row>
+      <uni-col class="m-t-10" :span="24">
+        <view class="txt-wrapper">
+          <view class="label">小计：</view>
+          <view class="amount">{{ statistics('1') }}</view>
+          <view class="unit">（万元）</view>
+        </view>
+      </uni-col>
+    </uni-row>
+
     <view class="sub-title">第二、三产业收入</view>
-    <uni-row>
+    <uni-row v-for="(item, index) in secondData" :key="item.id">
       <uni-col :span="12">
         <view class="col">
-          <view class="label">工业收入：</view>
-          <view :class="['input-wrapper', focusIndex === 6 ? 'focus' : '']">
+          <view class="label">{{ item.name }}：</view>
+          <view :class="['input-wrapper', focusIndex === index ? 'focus' : '']">
             <input
               class="input-txt"
               placeholder="请输入"
               type="number"
-              v-model="formData.plantIncome"
-              @focus="inputFocus(6)"
+              v-model="item.amount"
+              @focus="inputFocus(index)"
               @blur="inputBlur"
             />
             <view class="unit">万元</view>
@@ -107,120 +64,60 @@
       </uni-col>
       <uni-col :span="12">
         <view class="col">
-          <view class="label">建筑业收入：</view>
-          <view :class="['input-wrapper', focusIndex === 7 ? 'focus' : '']">
-            <input
-              class="input-txt"
-              placeholder="请输入"
-              type="number"
-              v-model="formData.forestryIncome"
-              @focus="inputFocus(7)"
-              @blur="inputBlur"
-            />
-            <view class="unit">万元</view>
-          </view>
-        </view>
-      </uni-col>
-      <uni-col :span="12">
-        <view class="col">
-          <view class="label">运输业收入：</view>
-          <view :class="['input-wrapper', focusIndex === 8 ? 'focus' : '']">
-            <input
-              class="input-txt"
-              placeholder="请输入"
-              type="number"
-              v-model="formData.animalIncome"
-              @focus="inputFocus(8)"
-              @blur="inputBlur"
-            />
-            <view class="unit">万元</view>
-          </view>
-        </view>
-      </uni-col>
-      <uni-col :span="12">
-        <view class="col">
-          <view class="label">服务业收入：</view>
-          <view :class="['input-wrapper', focusIndex === 9 ? 'focus' : '']">
-            <input
-              class="input-txt"
-              placeholder="请输入"
-              type="number"
-              v-model="formData.fisheryIncome"
-              @focus="inputFocus(9)"
-              @blur="inputBlur"
-            />
-            <view class="unit">万元</view>
-          </view>
-        </view>
-      </uni-col>
-      <uni-col :span="12">
-        <view class="col">
-          <view class="label">餐饮业收入：</view>
-          <view :class="['input-wrapper', focusIndex === 10 ? 'focus' : '']">
-            <input
-              class="input-txt"
-              placeholder="请输入"
-              type="number"
-              v-model="formData.fisheryIncome"
-              @focus="inputFocus(10)"
-              @blur="inputBlur"
-            />
-            <view class="unit">万元</view>
-          </view>
-        </view>
-      </uni-col>
-      <uni-col :span="12">
-        <view class="col">
-          <view class="label">打工收入：</view>
-          <view :class="['input-wrapper', focusIndex === 11 ? 'focus' : '']">
-            <input
-              class="input-txt"
-              placeholder="请输入"
-              type="number"
-              v-model="formData.fisheryIncome"
-              @focus="inputFocus(11)"
-              @blur="inputBlur"
-            />
-            <view class="unit">万元</view>
-          </view>
-        </view>
-      </uni-col>
-      <uni-col class="m-t-10" :span="24">
-        <view class="txt-wrapper">
-          <view class="label">小计：</view>
-          <view class="amount">0</view>
-          <view class="unit">（万元）</view>
-        </view>
-      </uni-col>
-      <uni-col class="m-b-10" :span="24">
-        <view class="txtarea-wrapper">
           <view class="label">备注：</view>
-          <textarea
-            :class="['txt', focusIndex === 12 ? 'focus' : '']"
-            placeholder="请输入"
-            type="number"
-            v-model="formData.remark"
-            @focus="inputFocus(12)"
-            @blur="inputBlur"
-          ></textarea>
+          <view :class="['input-wrapper', focusIndex === index ? 'focus' : '']">
+            <input
+              class="input-txt w-150"
+              placeholder="请输入"
+              type="number"
+              v-model="item.remark"
+              @focus="inputFocus(index)"
+              @blur="inputBlur"
+            />
+          </view>
         </view>
       </uni-col>
     </uni-row>
-    <view class="sub-title">其他收入</view>
     <uni-row>
-      <uni-col class="m-b-10" :span="24">
+      <uni-col class="m-t-10" :span="24">
+        <view class="txt-wrapper">
+          <view class="label">小计：</view>
+          <view class="amount">{{ statistics('2') }}</view>
+          <view class="unit">（万元）</view>
+        </view>
+      </uni-col>
+    </uni-row>
+
+    <view class="sub-title">其他收入</view>
+    <uni-row v-for="(item, index) in otherData" :key="item.id">
+      <uni-col class="m-b-10" :span="12">
         <view class="col">
-          <view class="label">其他收入：</view>
-          <view :class="['input-wrapper', focusIndex === 13 ? 'focus' : '']">
+          <view class="label">{{ item.name }}：</view>
+          <view :class="['input-wrapper', focusIndex === index ? 'focus' : '']">
             <input
               class="input-txt"
               placeholder="请输入金额"
               type="number"
-              v-model="formData.plantIncome"
-              @focus="inputFocus(13)"
+              v-model="item.amount"
+              @focus="inputFocus(index)"
               @blur="inputBlur"
             />
             <view class="unit">万元</view>
+          </view>
+        </view>
+      </uni-col>
+      <uni-col :span="12">
+        <view class="col">
+          <view class="label">备注：</view>
+          <view :class="['input-wrapper', focusIndex === index ? 'focus' : '']">
+            <input
+              class="input-txt w-150"
+              placeholder="请输入"
+              type="number"
+              v-model="item.remark"
+              @focus="inputFocus(index)"
+              @blur="inputBlur"
+            />
           </view>
         </view>
       </uni-col>
@@ -230,20 +127,51 @@
       <uni-col :span="24">
         <view class="txt-wrapper">
           <view class="label">合计：</view>
-          <view class="amount">0</view>
+          <view class="amount">{{ total() }}</view>
           <view class="unit">（万元）</view>
         </view>
       </uni-col>
     </uni-row>
+
+    <image class="btn" src="@/static/images/icon_submit.png" mode="scaleToFill" @click="submit" />
   </view>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { getFamilyIncomeListApi, updateLandlordFamilyIncomeApi } from '@/service'
+import { MainType } from '@/types/common'
 
-const formData = ref<any>({})
+const props = defineProps({
+  dataList: {
+    type: Array as any,
+    default: () => []
+  },
+  dataInfo: {
+    type: Object as any,
+    default: () => {}
+  }
+})
 
 const focusIndex = ref<number>(-1)
+
+// 公共的参数
+const commonParams = {
+  doorNo: props.dataInfo.doorNo,
+  uid: props.dataInfo.uid,
+  householdId: props.dataInfo.householdId,
+  amount: 0,
+  remark: ''
+}
+
+// 第一产业数据
+const firstData = ref<any>([])
+
+// 第二、三产业数据
+const secondData = ref<any>([])
+
+// 其他
+const otherData = ref<any>([])
 
 // 输入框获得焦点事件
 const inputFocus = (index: number) => {
@@ -254,6 +182,86 @@ const inputFocus = (index: number) => {
 const inputBlur = () => {
   focusIndex.value = -1
 }
+
+/**
+ * 生成新的数组
+ * @param {Object} arr 数组
+ */
+const genArr = (arr?: any[]) => {
+  if (arr && arr.length > 0) {
+    arr.map((item: any) => {
+      if (item.configType === MainType.PeasantHousehold) {
+        if (item.type === '1') {
+          firstData.value.push({
+            ...item,
+            ...commonParams
+          })
+        } else if (item.type === '2') {
+          secondData.value.push({
+            ...item,
+            ...commonParams
+          })
+        } else {
+          otherData.value.push({
+            ...item,
+            ...commonParams
+          })
+        }
+      }
+    })
+  }
+}
+
+// 获取家庭收入信息配置列表
+const getRevenueList = async () => {
+  const result = await getFamilyIncomeListApi()
+  genArr(result)
+}
+
+// 第一产业收入 / 第二、三产业 小计
+const statistics = (type: string) => {
+  let sum = 0
+  if (type === '1') {
+    sum = firstData.value.reduce(
+      (accumulator: number, cur: any) => accumulator + Number(cur.amount),
+      0
+    )
+  } else if (type === '2') {
+    sum = secondData.value.reduce(
+      (accumulator: number, cur: any) => accumulator + Number(cur.amount),
+      0
+    )
+  } else if (type === '3') {
+    sum = otherData.value.reduce(
+      (accumulator: number, cur: any) => accumulator + Number(cur.amount),
+      0
+    )
+  }
+  return sum
+}
+
+// 总计
+const total = () => {
+  let sum = 0
+  sum = statistics('1') + statistics('2') + statistics('3')
+  return sum
+}
+
+// 表单提交
+const submit = () => {
+  const params = { ...firstData.value, ...secondData.value, ...otherData.value }
+  updateLandlordFamilyIncomeApi(props.dataInfo.uid, params).then((res) => {
+    console.log('res:', res)
+  })
+}
+
+onMounted(() => {
+  if (props.dataList && props.dataList.length > 0) {
+    genArr(props.dataList)
+  } else {
+    getRevenueList()
+  }
+})
 </script>
 
 <style lang="scss" scoped>
@@ -309,6 +317,10 @@ const inputBlur = () => {
         font-size: 9rpx;
         line-height: 23rpx;
         color: #171718;
+
+        &.w-150 {
+          width: 150rpx;
+        }
       }
 
       .unit {
@@ -338,16 +350,9 @@ const inputBlur = () => {
     }
 
     .txt {
-      width: 79%;
-      height: 50rpx;
-      padding: 5rpx;
+      width: 200rpx;
+      height: 23rpx;
       font-size: 9rpx;
-      border: 1px solid #d9d9d9;
-      border-radius: 4px;
-
-      &.focus {
-        border-color: rgb(41, 121, 255);
-      }
     }
   }
 
@@ -379,6 +384,15 @@ const inputBlur = () => {
       color: #171718;
       text-align: center;
     }
+  }
+
+  .btn {
+    position: fixed;
+    right: 6rpx;
+    bottom: 6rpx;
+    width: 66rpx;
+    height: 66rpx;
+    border-radius: 50%;
   }
 }
 </style>

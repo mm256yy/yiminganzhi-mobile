@@ -1,35 +1,42 @@
 <template>
   <view class="house-info-wrapper">
     <view class="list">
-      <view class="list-item">
+      <view class="list-item" v-for="item in props.dataList" :key="item.id">
         <view class="list-1">
-          <view class="left">3幢</view>
+          <view class="left">{{ formatStr(item.houseNo, '幢') }}</view>
           <view class="right">
             <image
               class="icon m-r-10"
               src="@/static/images/icon_delete_mini.png"
               mode="scaleToFill"
+              @click="deleteHouse(item)"
             />
           </view>
         </view>
-        <view class="list-2" @click="toEdit">
+        <view class="list-2" @click="toEdit(item)">
           <uni-row>
             <uni-col :span="8">
               <view class="col">
                 <view class="label">房屋用途：</view>
-                <view class="content">住宅</view>
+                <view class="content">
+                  {{ formatDict(item.usageType, 265) }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="8">
               <view class="col">
                 <view class="label">层高：</view>
-                <view class="content">10（米）</view>
+                <view class="content">
+                  {{ formatStr(item.storeyHeight, '（米）') }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="8">
               <view class="col">
                 <view class="label">层数：</view>
-                <view class="content">3（层）</view>
+                <view class="content">
+                  {{ formatStr(item.storeyNumber, '（层）') }}
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -38,19 +45,23 @@
             <uni-col :span="8">
               <view class="col">
                 <view class="label">房屋高程：</view>
-                <view class="content">10（米）</view>
+                <view class="content">
+                  {{ formatStr(item.houseHeight, '（米）') }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="8">
               <view class="col">
                 <view class="label">建筑面积：</view>
-                <view class="content">100（m³）</view>
+                <view class="content">
+                  {{ formatStr(item.landArea, '（m³）') }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="8">
               <view class="col">
                 <view class="label">竣工日期：</view>
-                <view class="content">2000年8月</view>
+                <view class="content">{{ item.completedTime }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -58,14 +69,18 @@
           <uni-row>
             <uni-col :span="8">
               <view class="col">
-                <view class="label">所在位置：</view>
-                <view class="content">淹没区</view>
+                <view class="label">房屋类别：</view>
+                <view class="content">
+                  {{ formatDict(item.houseType, 266) }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="8">
               <view class="col">
-                <view class="label">淹没范围：</view>
-                <view class="content">线下</view>
+                <view class="label">房屋产别：</view>
+                <view class="content">
+                  {{ formatDict(item.propertyType, 284) }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="8">
@@ -82,16 +97,37 @@
 </template>
 
 <script lang="ts" setup>
-import { routerForward } from '@/utils'
+import { formatDict, formatStr } from '@/utils'
 
-const toEdit = () => {
-  routerForward('collectiveHouseInfoEdit')
+const props = defineProps({
+  dataList: {
+    type: Array as any,
+    default: () => []
+  }
+})
+
+const emit = defineEmits(['deleteHouse'])
+
+const toEdit = (data: any) => {
+  const params = { ...data }
+  uni.navigateTo({
+    url: '/pages/common/houseInfo/edit?params=' + JSON.stringify(params)
+  })
+}
+
+/**
+ * 删除当前行数据
+ * @param {Object} data 当前行数据
+ */
+const deleteHouse = (data: any) => {
+  emit('deleteHouse', data)
 }
 </script>
 
 <style lang="scss" scoped>
 .house-info-wrapper {
   width: 100%;
+  overflow-y: scroll;
 
   .list {
     width: 100%;

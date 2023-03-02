@@ -5,20 +5,26 @@
       <view class="list-item">
         <view class="list-1">
           <view class="icon">户主</view>
-          <view class="name">{{ props.dataInfo.name }}</view>
+          <view class="name">
+            {{ formatStr(props.dataInfo.name) }}
+          </view>
         </view>
         <view class="list-2" @click="toLink">
           <uni-row>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">户号：</view>
-                <view class="content">{{ props.dataInfo.doorNo }}</view>
+                <view class="content">
+                  {{ formatStr(props.dataInfo.doorNo) }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">自然村/村民小组：</view>
-                <view class="content">{{ props.dataInfo.virutalVillageCodeText }}</view>
+                <view class="content">
+                  {{ formatStr(props.dataInfo.virutalVillageCodeText) }}
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -28,18 +34,16 @@
               <view class="col">
                 <view class="label">是否财产户：</view>
                 <view class="content">
-                  {{
-                    props.dataInfo.hasPropertyAccount
-                      ? dictOption(yesAndNoEnums, props.dataInfo.hasPropertyAccount)
-                      : ''
-                  }}
+                  {{ dictOption(yesAndNoEnums, props.dataInfo.hasPropertyAccount) }}
                 </view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">联系方式：</view>
-                <view class="content">{{ props.dataInfo.phone }}</view>
+                <view class="content">
+                  {{ formatStr(props.dataInfo.phone) }}
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -48,7 +52,9 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">户籍所在地：</view>
-                <view class="content">{{ props.dataInfo.address }}</view>
+                <view class="content">
+                  {{ formatStr(props.dataInfo.address) }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="12">
@@ -66,18 +72,16 @@
               <view class="col">
                 <view class="label">淹没范围：</view>
                 <view class="content">
-                  {{
-                    props.dataInfo.inundationRange
-                      ? dict[346][props.dataInfo.inundationRange].text
-                      : '-'
-                  }}
+                  {{ formatDict(props.dataInfo.inundationRange, 346) }}
                 </view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">高程：</view>
-                <view class="content">{{ props.dataInfo.altitude }}m</view>
+                <view class="content">
+                  {{ formatStr(props.dataInfo.altitude, 'm') }}
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -105,7 +109,7 @@
 </template>
 
 <script lang="ts" setup>
-import { getStorage, StorageKey, dictOption } from '@/utils'
+import { formatStr, formatDict, dictOption } from '@/utils'
 import { yesAndNoEnums } from '../config'
 
 const props = defineProps({
@@ -114,9 +118,6 @@ const props = defineProps({
     default: () => {}
   }
 })
-
-// 获取字典表
-const dict = getStorage(StorageKey.DICT)
 
 const toLink = () => {
   const params = {
@@ -209,10 +210,11 @@ const toLink = () => {
 
   .edit-btn {
     position: fixed;
-    right: 0;
-    bottom: 0;
+    right: 6rpx;
+    bottom: 6rpx;
     width: 66rpx;
     height: 66rpx;
+    border-radius: 50%;
   }
 }
 </style>

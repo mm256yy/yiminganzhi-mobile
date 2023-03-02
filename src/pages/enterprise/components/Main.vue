@@ -39,13 +39,27 @@
               <base-info v-if="tabVal === 1" />
 
               <!-- 房屋信息 -->
-              <house-info v-if="tabVal === 2" />
+              <house-info
+                v-if="tabVal === 2"
+                :dataList="dataInfo.immigrantHouseList"
+                @delete-house="deleteHouse"
+              />
 
               <!-- 零星（林）果木信息 -->
-              <tree-info v-if="tabVal === 3" />
+              <tree-info
+                v-if="tabVal === 3"
+                :dataList="dataInfo.immigrantTreeList"
+                :dataInfo="dataInfo"
+                @delete-tree="deleteTree"
+                @update-fruit-tree-info="updateFruitTreeInfo"
+              />
 
               <!-- 附属物信息 -->
-              <accessory-info v-if="tabVal === 4" />
+              <accessory-info
+                v-if="tabVal === 4"
+                :dataList="dataInfo.immigrantAppendantList"
+                @submit="updateAccessoryInfo"
+              />
 
               <!-- 设施设备信息 -->
               <equipment-info v-if="tabVal === 5" />
@@ -73,12 +87,19 @@ import Back from '@/components/Back/Index.vue'
 import Tree from '@/components/Tree/Index.vue'
 import Tabs from '@/components/Tabs/Index.vue'
 import baseInfo from '../baseInfo/index.vue' // 引入企业基本概况组件
-import houseInfo from '../houseInfo/index.vue' // 引入房屋信息组件
-import treeInfo from '../treeInfo/index.vue' // 引入零星（林）果木信息组件
-import accessoryInfo from '../accessoryInfo/index.vue' // 引入附属物信息组件
-import equipmentInfo from '../equipmentInfo/index.vue' // 引入设施设备信息组件
+import houseInfo from '../../common/houseInfo/index.vue' // 引入房屋信息组件
+import treeInfo from '../../common/treeInfo/index.vue' // 引入零星（林）果木信息组件
+import accessoryInfo from '../../common/accessoryInfo/index.vue' // 引入附属物信息组件
+import equipmentInfo from '../../common/equipmentInfo/index.vue' // 引入设施设备信息组件
 import businessInfo from '../businessInfo/index.vue' // 引入经营现状信息组件
 import photoUpload from '../photoUpload/index.vue' // 引入照片上传组件
+
+import {
+  deleteLandlordHouseApi,
+  deleteLandlordTreeApi,
+  updateLandlordTreeApi,
+  updateLandlordAppendantApi
+} from '@/service'
 
 import iconSrc from '@/static/images/icon_add_enterprise.png' // 侧边栏，添加 icon
 import iconBaseDef from '@/static/images/icon_base_default.png' // 引入企业基本概况默认 icon
@@ -96,6 +117,18 @@ import iconBusinessSel from '@/static/images/icon_revenue_select.png' // 引入�
 import iconPhotoDef from '@/static/images/icon_photo_default.png' // 引入照片上传默认 icon
 import iconPhotoSel from '@/static/images/icon_photo_select.png' // 引入照片上传默认 icon
 
+const props = defineProps({
+  dataInfo: {
+    type: Object,
+    default: () => {}
+  },
+  treeData: {
+    // 左侧树列表
+    type: Array,
+    default: () => []
+  }
+})
+
 const tabsList = ref([
   { label: '企业基本概况', value: 1, defIcon: iconBaseDef, selIcon: iconBaseSel },
   { label: '房屋信息', value: 2, defIcon: iconHouseDef, selIcon: iconHouseSel },
@@ -108,38 +141,11 @@ const tabsList = ref([
 
 const showExpand = ref<boolean>(false)
 const tabVal = ref<number>(1)
-
-const treeData = ref([
-  {
-    id: 1,
-    name: '泉溪镇',
-    level: 1,
-    children: [
-      {
-        id: 11,
-        name: '佐溪行政村',
-        level: 2,
-        children: [
-          {
-            id: 111,
-            name: '武义国康竹木地板有限责任有限公司',
-            finish: 0,
-            total: 12
-          },
-          {
-            id: 112,
-            name: '武义俊俏电子商务有限公司',
-            finish: 0,
-            total: 12
-          }
-        ]
-      }
-    ]
-  }
-])
+const emit = defineEmits(['treeItemClick'])
 
 const treeItemClick = (data: any) => {
   console.log(data, 'data')
+  emit('treeItemClick', data)
 }
 
 const expandToggle = () => {
@@ -149,6 +155,48 @@ const expandToggle = () => {
 // tab 切换
 const selectTabs = (data: any) => {
   tabVal.value = data.value
+}
+
+/**
+ * 房屋信息 - 删除
+ * @param(Object) data 被删除的行信息
+ */
+const deleteHouse = (data: any) => {
+  deleteLandlordHouseApi(data.uid, data.id).then((res) => {
+    console.log('res:', res)
+  })
+}
+
+/**
+ * 零星（林）果木信息 - 删除
+ * @param(Object) data 被删除的行信息
+ */
+const deleteTree = (data: any) => {
+  deleteLandlordTreeApi(data.uid, data.id).then((res) => {
+    console.log('res:', res)
+  })
+}
+
+/**
+ * 零星（林）果木信息 - 更新
+ * @param(Array) data 提交的参数集合
+ */
+const updateFruitTreeInfo = (data: any) => {
+  const params = { ...data }
+  updateLandlordTreeApi(props.dataInfo.uid, params).then((res) => {
+    console.log('res:', res)
+  })
+}
+
+/**
+ * 更新附属物信息
+ * @param(Array) data
+ */
+const updateAccessoryInfo = (data: any) => {
+  const params = { ...data }
+  updateLandlordAppendantApi(props.dataInfo.uid, params).then((res) => {
+    console.log('res:', res)
+  })
 }
 </script>
 

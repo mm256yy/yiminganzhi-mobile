@@ -2,29 +2,35 @@
   <view class="grave-info-wrapper">
     <!-- 坟墓信息 -->
     <view class="list">
-      <view class="list-item">
+      <view class="list-item" v-for="item in props.dataList" :key="item.id">
         <view class="list-1">
           <view class="icon">登记人</view>
-          <view class="name">杨汉中</view>
+          <view class="name">
+            {{ formatStr(item.registrantName) }}
+          </view>
         </view>
         <view class="list-2">
           <uni-row>
             <uni-col :span="8">
               <view class="col">
                 <view class="label">与登记人关系：</view>
-                <view class="content">父子</view>
+                <view class="content">
+                  {{ formatDict(item.relation, 307) }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="8">
               <view class="col">
                 <view class="label">立墓年份：</view>
-                <view class="content">1999年11月</view>
+                <view class="content">{{ item.graveYear }}</view>
               </view>
             </uni-col>
             <uni-col :span="8">
               <view class="col">
                 <view class="label">穴位：</view>
-                <view class="content">单穴</view>
+                <view class="content">
+                  {{ formatDict(item.graveType, 345) }}
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -33,19 +39,25 @@
             <uni-col :span="8">
               <view class="col">
                 <view class="label">数量：</view>
-                <view class="content">1（坐）</view>
+                <view class="content">
+                  {{ formatStr(item.number, '（坐）') }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="8">
               <view class="col">
                 <view class="label">材料：</view>
-                <view class="content">泥土</view>
+                <view class="content">
+                  {{ formatDict(item.materials, 295) }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="8">
               <view class="col">
                 <view class="label">所在位置：</view>
-                <view class="content">线内</view>
+                <view class="content">
+                  {{ formatDict(item.gravePosition, 288) }}
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -54,9 +66,7 @@
             <uni-col :span="24">
               <view class="col">
                 <view class="label">备注：</view>
-                <view class="content"
-                  >撒法的发发是撒法的发发是撒法的发发是撒法的发发是撒法的发发是</view
-                >
+                <view class="content">{{ formatStr(item.remark) }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -66,7 +76,16 @@
   </view>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { formatStr, formatDict } from '@/utils'
+
+const props = defineProps({
+  dataList: {
+    type: Array as any,
+    default: () => []
+  }
+})
+</script>
 
 <style lang="scss" scoped>
 .grave-info-wrapper {

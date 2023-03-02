@@ -42,26 +42,48 @@
               <demographic-info
                 v-if="tabVal === 2"
                 :dataList="dataInfo.demographicList"
-                @deleteDemographic="deleteDemographic"
+                @delete-demographic="deleteDemographic"
               />
 
               <!-- 房屋信息 -->
-              <house-info v-if="tabVal === 3" />
+              <house-info
+                v-if="tabVal === 3"
+                :dataList="dataInfo.immigrantHouseList"
+                @delete-house="deleteHouse"
+              />
 
               <!-- 附属物信息 -->
-              <accessory-info v-if="tabVal === 4" />
+              <accessory-info
+                v-if="tabVal === 4"
+                :dataList="dataInfo.immigrantAppendantList"
+                @submit="updateAccessoryInfo"
+              />
 
               <!-- 零星（林）果木信息 -->
-              <tree-info v-if="tabVal === 5" />
+              <tree-info
+                v-if="tabVal === 5"
+                :dataList="dataInfo.immigrantTreeList"
+                :dataInfo="dataInfo"
+                @delete-tree="deleteTree"
+                @update-fruit-tree-info="updateFruitTreeInfo"
+              />
 
               <!-- 坟墓信息 -->
-              <grave-info v-if="tabVal === 6" />
+              <grave-info v-if="tabVal === 6" :dataList="dataInfo.immigrantGraveList" />
 
               <!-- 家庭收入信息 -->
-              <revenue-info v-if="tabVal === 7" />
+              <revenue-info
+                v-if="tabVal === 7"
+                :dataList="dataInfo.immigrantIncomeList"
+                :dataInfo="dataInfo"
+              />
 
               <!-- 安置意愿信息 -->
-              <willingness-info v-if="tabVal === 8" />
+              <willingness-info
+                v-if="tabVal === 8"
+                :willData="dataInfo.immigrantWill"
+                :dataInfo="dataInfo"
+              />
 
               <!-- 附件上传 -->
               <attachment-upload v-if="tabVal === 9" />
@@ -91,15 +113,21 @@ import Tree from '@/components/Tree/Index.vue'
 import Tabs from '@/components/Tabs/Index.vue'
 import householdInfo from '../householdInfo/index.vue' // 引入居民户信息组件
 import demographicInfo from '../demographicInfo/index.vue' // 引入人口信息组件
-import houseInfo from '../houseInfo/index.vue' // 引入房屋信息组件
-import accessoryInfo from '../accessoryInfo/index.vue' // 引入附属物信息组件
-import treeInfo from '../treeInfo/index.vue' // 引入零星（林）果木信息组件
+import houseInfo from '../../common/houseInfo/index.vue' // 引入房屋信息组件
+import accessoryInfo from '../../common/accessoryInfo/index.vue' // 引入附属物信息组件
+import treeInfo from '../../common/treeInfo/index.vue' // 引入零星（林）果木信息组件
 import graveInfo from '../graveInfo/index.vue' // 引入坟墓信息组件
 import revenueInfo from '../revenueInfo/index.vue' // 引入安置意愿信息组件
 import willingnessInfo from '../willingnessInfo/index.vue' // 引入安置意愿信息组件
 import attachmentUpload from '../attachmentUpload/index.vue' // 引入附件上传组件
 
-import { deleteLandlordApi } from '@/service'
+import {
+  deleteLandlordApi,
+  deleteLandlordHouseApi,
+  deleteLandlordTreeApi,
+  updateLandlordTreeApi,
+  updateLandlordAppendantApi
+} from '@/service'
 
 import iconSrc from '@/static/images/icon_add_household.png' // 侧边栏，添加 icon
 import iconHouseholdDef from '@/static/images/icon_household_default.png' // 引入居民户信息默认 icon
@@ -163,11 +191,54 @@ const selectTabs = (data: any) => {
   tabVal.value = data.value
 }
 
-/** 人口信息 - 删除
+/**
+ * 人口信息 - 删除
  * @param(Object) data 被删除的行信息
  */
 const deleteDemographic = (data: any) => {
   deleteLandlordApi(data.uid).then((res) => {
+    console.log('res:', res)
+  })
+}
+
+/**
+ * 房屋信息 - 删除
+ * @param(Object) data 被删除的行信息
+ */
+const deleteHouse = (data: any) => {
+  deleteLandlordHouseApi(data.uid, data.id).then((res) => {
+    console.log('res:', res)
+  })
+}
+
+/**
+ * 零星（林）果木信息 - 删除
+ * @param(Object) data 被删除的行信息
+ */
+const deleteTree = (data: any) => {
+  deleteLandlordTreeApi(data.uid, data.id).then((res) => {
+    console.log('res:', res)
+  })
+}
+
+/**
+ * 零星（林）果木信息 - 更新
+ * @param(Array) data 提交的参数集合
+ */
+const updateFruitTreeInfo = (data: any) => {
+  const params = { ...data }
+  updateLandlordTreeApi(props.dataInfo.uid, params).then((res) => {
+    console.log('res:', res)
+  })
+}
+
+/**
+ * 更新附属物信息
+ * @param(Array) data
+ */
+const updateAccessoryInfo = (data: any) => {
+  const params = { ...data }
+  updateLandlordAppendantApi(props.dataInfo.uid, params).then((res) => {
     console.log('res:', res)
   })
 }

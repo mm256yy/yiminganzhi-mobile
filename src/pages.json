@@ -30,9 +30,9 @@
 		},
 		{
 			"name": "houseInfoEdit",
-			"path": "pages/household/houseInfo/edit",
+			"path": "pages/common/houseInfo/edit",
 			"style": {
-				"navigationBarTitleText": "居民户填报-房屋信息编辑"
+				"navigationBarTitleText": "房屋信息编辑"
 			}
 		},
 		{
@@ -50,17 +50,10 @@
 			}
 		},
 		{
-			"name": "entHouseInfoEdit",
-			"path": "pages/enterprise/houseInfo/edit",
+			"name": "equipmentInfoEdit",
+			"path": "pages/common/equipmentInfo/edit",
 			"style": {
-				"navigationBarTitleText": "企业填报-房屋信息编辑"
-			}
-		},
-		{
-			"name": "entEquipmentInfoEdit",
-			"path": "pages/enterprise/equipmentInfo/edit",
-			"style": {
-				"navigationBarTitleText": "企业填报-设施设备信息新增/编辑"
+				"navigationBarTitleText": "设施设备信息新增/编辑"
 			}
 		},
 		{
@@ -78,20 +71,6 @@
 			}
 		},
 		{
-			"name": "selfHouseInfoEdit",
-			"path": "pages/selfPerson/houseInfo/edit",
-			"style": {
-				"navigationBarTitleText": "个体户填报-房屋信息编辑"
-			}
-		},
-		{
-			"name": "selfEquipmentInfoEdit",
-			"path": "pages/selfPerson/equipmentInfo/edit",
-			"style": {
-				"navigationBarTitleText": "个体户填报-设施设备信息新增/编辑"
-			}
-		},
-		{
 			"name": "collective",
 			"path": "pages/collective/index",
 			"style": {
@@ -106,27 +85,12 @@
 			}
 		},
 		{
-			"name": "collectiveHouseInfoEdit",
-			"path": "pages/collective/houseInfo/edit",
-			"style": {
-				"navigationBarTitleText": "村集体填报-房屋信息编辑"
-			}
-		},
-		{
 			"name": "collectiveGraveInfoEdit",
 			"path": "pages/collective/graveInfo/edit",
 			"style": {
 				"navigationBarTitleText": "村集体填报-坟墓信息新增/编辑"
 			}
 		},
-		{
-			"name": "collectiveEquipmentInfoEdit",
-			"path": "pages/collective/equipmentInfo/edit",
-			"style": {
-				"navigationBarTitleText": "村集体填报-设施设备信息新增/编辑"
-			}
-		},
-
 		{
 			"name": "sync",
 			"path": "pages/sync/index",

@@ -12,116 +12,113 @@
         <view class="col w-29">操作</view>
       </view>
 
-      <view class="row">
-        <view class="col">1</view>
-        <view class="col w-63">苹果树</view>
+      <view class="row" v-for="(item, index) in formData" :key="item.id">
+        <view class="col">{{ index }}</view>
+        <view class="col w-63">
+          <uni-data-select v-model="item.name" :localdata="dict[250]" />
+        </view>
         <view class="col w-63 p-l-2">
-          <uni-data-select
-            v-model="formData.purpose"
-            :localdata="purposeData"
-            @change="changePurpose"
-          />
+          <uni-data-select v-model="item.usageType" :localdata="dict[325]" />
         </view>
         <view class="col w-64 p-l-2">
-          <uni-data-select v-model="formData.spec" :localdata="specData" @change="changeSpec" />
+          <uni-data-select v-model="item.size" :localdata="dict[269]" />
         </view>
         <view class="col w-64 p-l-2">
-          <uni-data-select v-model="formData.unit" :localdata="unitData" @change="changeUnit" />
+          <uni-data-select v-model="item.unit" :localdata="dict[264]" />
         </view>
         <view class="col w-94">
           <view class="input-wrapper">
             <label class="reduce">—</label>
-            <input class="num" />
+            <input class="num" v-model="item.num" />
             <label class="plus">+</label>
           </view>
         </view>
         <view class="col w-100">
-          <input class="remark" placeholder="请输入内容" />
+          <input class="remark" v-model="item.remark" placeholder="请输入内容" />
         </view>
         <view class="col w-29 p-l-7">
-          <label class="icon-wrapper" @click="deleteData">
+          <label class="icon-wrapper" @click="deleteTree(item)">
             <image class="icon" src="@/static/images/icon_delete.png" />
           </label>
         </view>
       </view>
     </view>
-    <image class="btn" src="@/static/images/icon_add.png" mode="scaleToFill" />
-    <image v-show="isEdit" class="btn" src="@/static/images/icon_submit.png" mode="scaleToFill" />
+
+    <image class="btn add" src="@/static/images/icon_add.png" mode="scaleToFill" @click="addTree" />
+
+    <image
+      v-show="formData.length > 0"
+      class="btn"
+      src="@/static/images/icon_submit.png"
+      mode="scaleToFill"
+      @click="submit"
+    />
   </view>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import { getStorage, StorageKey } from '@/utils'
 
-const formData = ref<any>({})
-const isEdit = ref<boolean>(false)
-
-// 用途数据列表
-const purposeData = ref<any>([
-  {
-    text: '果树',
-    value: 0
+const props = defineProps({
+  dataList: {
+    type: Array as any,
+    default: () => []
   },
-  {
-    text: '经济树',
-    value: 1
-  },
-  {
-    text: '用材树',
-    value: 2
+  dataInfo: {
+    type: Object as any,
+    default: () => {}
   }
-])
+})
 
-// 规格数据列表
-const specData = ref<any>([
-  {
-    text: '小树',
-    value: 0
-  },
-  {
-    text: '中树',
-    value: 1
-  },
-  {
-    text: '大树',
-    value: 2
-  }
-])
+// 获取数据字典
+const dict = getStorage(StorageKey.DICT)
+const formData = ref<any[]>([])
+const emit = defineEmits(['deleteTree', 'updateFruitTreeInfo'])
 
-// 单位数据列表
-const unitData = ref<any>([
-  {
-    text: '株',
-    value: 0
-  },
-  {
-    text: '平方米',
-    value: 1
-  }
-])
-
-// 用途选择
-const changePurpose = (data: any) => {
-  console.log('data:', data)
+const defaultRow = {
+  householdId: props.dataInfo.householdId,
+  doorNo: props.dataInfo.doorNo,
+  name: '',
+  usageType: '',
+  size: '',
+  unit: '',
+  number: 0,
+  remark: '',
+  isAdd: true
 }
 
-// 用途选择
-const changeSpec = (data: any) => {
-  console.log('data:', data)
-}
-
-// 单位选择
-const changeUnit = (data: any) => {
-  console.log('data:', data)
-}
+watch(
+  () => props.dataList,
+  (val) => {
+    formData.value = JSON.parse(JSON.stringify(val))
+  },
+  {
+    immediate: true,
+    deep: true
+  }
+)
 
 // 删除当前行信息
-const deleteData = () => {}
+const deleteTree = (data: any) => {
+  emit('deleteTree', data)
+}
+
+// 新增零星（林）果木
+const addTree = () => {
+  formData.value.push({ ...defaultRow })
+}
+
+// 表单提交
+const submit = () => {
+  emit('updateFruitTreeInfo', formData.value)
+}
 </script>
 
 <style lang="scss" scoped>
 .tree-info-wrapper {
   width: 100%;
+  height: calc(100vh - 33rpx - 12rpx - 60rpx - var(--status-bar-height));
   overflow-y: scroll;
 
   .tree-container {
@@ -269,9 +266,13 @@ const deleteData = () => {}
     position: fixed;
     right: 6rpx;
     bottom: 6rpx;
-    width: 80rpx;
-    height: 80rpx;
-    border-radius: 40rpx;
+    width: 66rpx;
+    height: 66rpx;
+    border-radius: 50%;
+
+    &.add {
+      bottom: 40rpx;
+    }
   }
 }
 </style>

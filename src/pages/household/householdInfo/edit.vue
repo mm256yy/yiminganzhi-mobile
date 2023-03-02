@@ -355,10 +355,11 @@ const submit = () => {
 
     .submit-btn {
       position: fixed;
-      right: 0;
-      bottom: 0;
-      width: 80rpx;
-      height: 80rpx;
+      right: 6rpx;
+      bottom: 6rpx;
+      width: 66rpx;
+      height: 66rpx;
+      border-radius: 50%;
     }
   }
 }

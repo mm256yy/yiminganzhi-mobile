@@ -10,9 +10,9 @@
               label="幢号"
               :label-width="150"
               label-align="right"
-              name="formData.buildingNo"
+              name="formData.houseNo"
             >
-              <uni-easyinput v-model="formData.buildingNo" type="number" placeholder="请输入" />
+              <uni-easyinput v-model="formData.houseNo" type="number" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -21,9 +21,9 @@
               label="房屋用途"
               :label-width="150"
               label-align="right"
-              name="formData.purpose"
+              name="formData.usageType"
             >
-              <uni-easyinput v-model="formData.purpose" placeholder="请输入" />
+              <uni-data-select v-model="formData.usageType" :localdata="dict[265]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -31,9 +31,9 @@
               label="层高"
               :label-width="150"
               label-align="right"
-              name="formData.storeyH"
+              name="formData.storeyHeight"
             >
-              <uni-easyinput v-model="formData.storeyH" type="number" placeholder="请输入" />
+              <uni-easyinput v-model="formData.storeyHeight" type="number" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -41,14 +41,14 @@
               label="层数"
               :label-width="150"
               label-align="right"
-              name="formData.layerNum"
+              name="formData.storeyNumber"
             >
               <view :class="['input-wrapper', focusIndex === 1 ? 'focus' : '']">
                 <input
                   class="input-txt"
                   placeholder="请输入"
                   type="number"
-                  v-model="formData.layerNum"
+                  v-model="formData.storeyNumber"
                   @focus="inputFocus(1)"
                   @blur="inputBlur"
                 />
@@ -58,50 +58,12 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              label="淹没范围"
-              :label-width="150"
-              label-align="right"
-              name="formData.houseProperty"
-            >
-              <uni-data-select
-                v-model="formData.houseProperty"
-                :localdata="housePropertyData"
-                @change="changeHouseProperty"
-              />
-            </uni-forms-item>
-          </uni-col>
-          <uni-col :span="12">
-            <uni-forms-item
-              label="高程"
-              :label-width="150"
-              label-align="right"
-              name="formData.altitude"
-            >
-              <view :class="['input-wrapper', focusIndex === 2 ? 'focus' : '']">
-                <input
-                  class="input-txt"
-                  placeholder="请输入"
-                  type="number"
-                  v-model="formData.altitude"
-                  @focus="inputFocus(2)"
-                  @blur="inputBlur"
-                />
-                <view class="unit">m</view>
-              </view>
-            </uni-forms-item>
-          </uni-col>
-          <uni-col :span="12">
-            <uni-forms-item
               label="房屋产别"
               :label-width="150"
               label-align="right"
-              name="formData.houseProperty"
+              name="formData.propertyType"
             >
-              <uni-data-select
-                v-model="formData.houseProperty"
-                :localdata="housePropertyData"
-                @change="changeHouseProperty"
-              />
+              <uni-data-select v-model="formData.propertyType" :localdata="dict[284]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -112,11 +74,7 @@
               label-align="right"
               name="formData.houseType"
             >
-              <uni-data-select
-                v-model="formData.houseType"
-                :localdata="houseTypeData"
-                @change="changeHouseType"
-              />
+              <uni-data-select v-model="formData.houseType" :localdata="dict[266]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -124,9 +82,9 @@
               label="土地使用权证编号"
               :label-width="150"
               label-align="right"
-              name="formData.landUseNo"
+              name="formData.landNo"
             >
-              <uni-easyinput v-model="formData.landUseNo" placeholder="请输入" />
+              <uni-easyinput v-model="formData.landNo" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -134,9 +92,9 @@
               label="房产所有权证编号"
               :label-width="150"
               label-align="right"
-              name="formData.houseOwnershipNo"
+              name="formData.propertyNo"
             >
-              <uni-easyinput v-model="formData.houseOwnershipNo" placeholder="请输入" />
+              <uni-easyinput v-model="formData.propertyNo" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -144,16 +102,12 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              label="层面形式"
+              label="屋面形式"
               :label-width="150"
               label-align="right"
-              name="formData.layerForm"
+              name="formData.roofType"
             >
-              <uni-data-select
-                v-model="formData.layerForm"
-                :localdata="layerFormData"
-                @change="changeLayerForm"
-              />
+              <uni-data-select v-model="formData.roofType" :localdata="dict[309]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -161,13 +115,9 @@
               label="层面材料"
               :label-width="150"
               label-align="right"
-              name="formData.layerMaterial"
+              name="formData.roofMaterialsType"
             >
-              <uni-data-select
-                v-model="formData.layerMaterial"
-                :localdata="layerMaterialData"
-                @change="changeLayerMaterial"
-              />
+              <uni-data-select v-model="formData.roofMaterialsType" :localdata="dict[309]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -175,13 +125,9 @@
               label="外墙"
               :label-width="150"
               label-align="right"
-              name="formData.exteriorWall"
+              name="formData.outerWallType"
             >
-              <uni-data-select
-                v-model="formData.exteriorWall"
-                :localdata="exteriorWallData"
-                @change="changeExteriorWall"
-              />
+              <uni-data-select v-model="formData.outerWallType" :localdata="dict[280]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -189,13 +135,9 @@
               label="内墙"
               :label-width="150"
               label-align="right"
-              name="formData.interiorWall"
+              name="formData.interiorWallType"
             >
-              <uni-data-select
-                v-model="formData.interiorWall"
-                :localdata="interiorWallData"
-                @change="changeInteriorWall"
-              />
+              <uni-data-select v-model="formData.interiorWallType" :localdata="dict[257]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -203,13 +145,9 @@
               label="地面"
               :label-width="150"
               label-align="right"
-              name="formData.ground"
+              name="formData.groundType"
             >
-              <uni-data-select
-                v-model="formData.ground"
-                :localdata="groundData"
-                @change="changeGround"
-              />
+              <uni-data-select v-model="formData.groundType" :localdata="dict[320]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -217,13 +155,9 @@
               label="门窗"
               :label-width="150"
               label-align="right"
-              name="formData.doorsAndWindows"
+              name="formData.doorsWindowsType"
             >
-              <uni-data-select
-                v-model="formData.doorsAndWindows"
-                :localdata="doorsAndWindowsData"
-                @change="changeDoorsAndWindows"
-              />
+              <uni-data-select v-model="formData.doorsWindowsType" :localdata="dict[333]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -231,13 +165,9 @@
               label="水电"
               :label-width="150"
               label-align="right"
-              name="formData.hydropower"
+              name="formData.waterElectricityType"
             >
-              <uni-data-select
-                v-model="formData.hydropower"
-                :localdata="hydropowerData"
-                @change="changeHydropower"
-              />
+              <uni-data-select v-model="formData.waterElectricityType" :localdata="dict[241]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -245,15 +175,15 @@
               label="建筑面积"
               :label-width="150"
               label-align="right"
-              name="formData.builtUpArea"
+              name="formData.landArea"
             >
-              <view :class="['input-wrapper', focusIndex === 3 ? 'focus' : '']">
+              <view :class="['input-wrapper', focusIndex === 2 ? 'focus' : '']">
                 <input
                   class="input-txt"
                   placeholder="请输入"
                   type="number"
-                  v-model="formData.builtUpArea"
-                  @focus="inputFocus(3)"
+                  v-model="formData.landArea"
+                  @focus="inputFocus(2)"
                   @blur="inputBlur"
                 />
                 <view class="unit">m²</view>
@@ -268,13 +198,9 @@
               label="结构类型"
               :label-width="150"
               label-align="right"
-              name="formData.structureType"
+              name="formData.constructionType"
             >
-              <uni-data-select
-                v-model="formData.structureType"
-                :localdata="structureTypeData"
-                @change="changeStructureType"
-              />
+              <uni-data-select v-model="formData.constructionType" :localdata="dict[252]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -282,15 +208,15 @@
               label="房屋高程"
               :label-width="150"
               label-align="right"
-              name="formData.houseElevation"
+              name="formData.houseHeight"
             >
-              <view :class="['input-wrapper', focusIndex === 4 ? 'focus' : '']">
+              <view :class="['input-wrapper', focusIndex === 3 ? 'focus' : '']">
                 <input
                   class="input-txt"
                   placeholder="请输入"
                   type="number"
-                  v-model="formData.houseElevation"
-                  @focus="inputFocus(4)"
+                  v-model="formData.houseHeight"
+                  @focus="inputFocus(3)"
                   @blur="inputBlur"
                 />
                 <view class="unit">m</view>
@@ -302,13 +228,9 @@
               label="土地性质"
               :label-width="150"
               label-align="right"
-              name="formData.natureLand"
+              name="formData.landType"
             >
-              <uni-data-select
-                v-model="formData.natureLand"
-                :localdata="natureLandData"
-                @change="changeNatureLand"
-              />
+              <uni-data-select v-model="formData.landType" :localdata="dict[222]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -316,12 +238,12 @@
               label="竣工日期"
               :label-width="150"
               label-align="right"
-              name="formData.completionDate"
+              name="formData.completedTime"
             >
               <uni-datetime-picker
                 type="date"
                 placeholder="请选择竣工日期"
-                v-model="formData.completionDate"
+                v-model="formData.completedTime"
                 @change="changeDate"
               />
             </uni-forms-item>
@@ -365,15 +287,15 @@
               label="房屋平面示意图"
               :label-width="150"
               label-align="right"
-              name="formData.housePlan"
+              name="formData.housePic"
             >
               <uni-file-picker
                 title="最多选择20张图片"
                 :limit="20"
-                @select="selectHousePlan"
-                @progress="housePlanProgress"
-                @success="housePlanSuccess"
-                @fail="housePlanFail"
+                @select="selectHousePic"
+                @progress="housePicProgress"
+                @success="housePicSuccess"
+                @fail="housePicFail"
               />
             </uni-forms-item>
           </uni-col>
@@ -382,15 +304,15 @@
               label="土地证照片"
               :label-width="150"
               label-align="right"
-              name="formData.landCertificate"
+              name="formData.landPic"
             >
               <uni-file-picker
                 title="最多选择1张图片"
                 :limit="1"
-                @select="selectLandCertificate"
-                @progress="landCertificateProgress"
-                @success="landCertificateSuccess"
-                @fail="landCertificateFail"
+                @select="selectLandPic"
+                @progress="landPicProgress"
+                @success="landPicSuccess"
+                @fail="landPicFail"
               />
             </uni-forms-item>
           </uni-col>
@@ -416,15 +338,15 @@
               label="房屋照片"
               :label-width="150"
               label-align="right"
-              name="formData.housePic"
+              name="formData.homePic"
             >
               <uni-file-picker
                 title="最多选择20张图片"
                 :limit="20"
-                @select="selectHousePic"
-                @progress="housePicProgress"
-                @success="housePicSuccess"
-                @fail="housePicFail"
+                @select="selectHomePic"
+                @progress="homePicProgress"
+                @success="homePicSuccess"
+                @fail="homePicFail"
               />
             </uni-forms-item>
           </uni-col>
@@ -442,95 +364,31 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
+import { onLoad } from '@dcloudio/uni-app'
+import { getStorage, StorageKey } from '@/utils'
+import { updateLandlordHouseApi } from '@/service'
 import Back from '@/components/Back/Index.vue'
 
 // 表单数据
 const formData = ref<any>({})
 
+// 获取数据字典
+const dict = getStorage(StorageKey.DICT)
+
 // 获得焦点的输入框下标
 const focusIndex = ref<number>(-1)
 
 // 表单校验规则
-const rules = ref<any>({})
+const rules = reactive({
+  houseNo: { rules: [{ required: true, message: '请输入', trigger: 'blur' }] },
+  usageType: { rules: [{ required: true, message: '请选择', trigger: 'change' }] },
+  houseType: { rules: [{ required: true, message: '请选择', trigger: 'change' }] }
+})
 
-// 房屋产别数据选项
-const housePropertyData = ref<any>([
-  { text: '国有房产', value: 1 },
-  { text: '集体所有房产', value: 2 }
-])
-
-// 房屋类别数据选项
-const houseTypeData = ref<any>([
-  { text: '主房', value: 1 },
-  { text: '杂房', value: 2 },
-  { text: '附属房', value: 3 }
-])
-
-// 层面形式数据选项
-const layerFormData = ref<any>([
-  { text: '平面屋', value: 1 },
-  { text: '坡面屋', value: 2 },
-  { text: '其他（网架、悬索、壳体、拆板等）', value: 3 },
-  { text: '无', value: 4 }
-])
-
-// 层面材料数据选项
-const layerMaterialData = ref<any>([
-  { text: '现烧斜屋面加盖彩瓦', value: 1 },
-  { text: '钢性屋面', value: 2 },
-  { text: '多孔板屋面', value: 3 },
-  { text: '预制小梁平板', value: 4 }
-])
-
-// 外墙数据选项
-const exteriorWallData = ref<any>([
-  { text: '瓷砖', value: 1 },
-  { text: '水泥', value: 2 },
-  { text: '石灰', value: 3 }
-])
-
-// 内墙数据选项
-const interiorWallData = ref<any>([
-  { text: '装饰涂料', value: 1 },
-  { text: '大理石瓷砖', value: 2 },
-  { text: '一般抹灰', value: 3 }
-])
-
-// 地面数据选项
-const groundData = ref<any>([
-  { text: '浇楼板', value: 1 },
-  { text: '多孔板', value: 2 },
-  { text: '预制小梁板', value: 3 }
-])
-
-// 门窗数据选项
-const doorsAndWindowsData = ref<any>([
-  { text: '铝合金窗（塑钢窗）木门', value: 1 },
-  { text: '钢门窗木门', value: 2 },
-  { text: '硬木有腰木门窗', value: 3 }
-])
-
-// 水电数据选项
-const hydropowerData = ref<any>([
-  { text: '管线暗敷', value: 1 },
-  { text: '管线普通', value: 2 },
-  { text: '全通', value: 3 }
-])
-
-// 结构类型数据选项
-const structureTypeData = ref<any>([
-  { text: '钢架', value: 1 },
-  { text: '框架', value: 2 },
-  { text: '砖混', value: 3 }
-])
-
-// 土地性质数据选项
-const natureLandData = ref<any>([
-  { text: '国有划拨', value: 1 },
-  { text: '国有出让', value: 2 },
-  { text: '租用村集体', value: 3 }
-])
+onLoad((option: any) => {
+  formData.value = JSON.parse(option.params)
+})
 
 // 中心经纬度输入选项
 const lgTagList = ref<any>([
@@ -548,103 +406,48 @@ const inputBlur = () => {
   focusIndex.value = -1
 }
 
-// 房屋产别选择
-const changeHouseProperty = (data: any) => {
-  console.log('data:', data)
-}
-
-// 房屋类别选择
-const changeHouseType = (data: any) => {
-  console.log('data:', data)
-}
-
-// 层面形式选择
-const changeLayerForm = (data: any) => {
-  console.log('data:', data)
-}
-
-// 层面材料选择
-const changeLayerMaterial = (data: any) => {
-  console.log('data:', data)
-}
-
-// 外墙选择
-const changeExteriorWall = (data: any) => {
-  console.log('data:', data)
-}
-
-// 内墙选择
-const changeInteriorWall = (data: any) => {
-  console.log('data:', data)
-}
-
-// 地面选择
-const changeGround = (data: any) => {
-  console.log('data:', data)
-}
-
-// 门窗选择
-const changeDoorsAndWindows = (data: any) => {
-  console.log('data:', data)
-}
-
-// 水电选择
-const changeHydropower = (data: any) => {
-  console.log('data:', data)
-}
-
-// 结构类型选择
-const changeStructureType = (data: any) => {
-  console.log('data:', data)
-}
-
-// 土地性质选择
-const changeNatureLand = (data: any) => {
-  console.log('data:', data)
-}
-
 // 竣工日期选择
 const changeDate = (e: any) => {
   console.log('e:', e)
 }
 
 // 获取房屋平面示意图上传状态
-const selectHousePlan = (e: any) => {
+const selectHousePic = (e: any) => {
   console.log('选择文件：', e)
 }
 
 // 获取房屋平面示意图上传进度
-const housePlanProgress = (e: any) => {
+const housePicProgress = (e: any) => {
   console.log('上传进度：', e)
 }
 
 // 房屋平面示意图上传成功
-const housePlanSuccess = (e: any) => {
+const housePicSuccess = (e: any) => {
   console.log('上传成功')
 }
 
 // 房屋平面示意图上传失败
-const housePlanFail = (e: any) => {
+const housePicFail = (e: any) => {
   console.log('上传失败：', e)
 }
 
 // 获取土地证照片上传状态
-const selectLandCertificate = (e: any) => {
+const selectLandPic = (e: any) => {
   console.log('选择文件：', e)
 }
 
 // 获取土地证照片上传进度
-const landCertificateProgress = (e: any) => {
+const landPicProgress = (e: any) => {
   console.log('上传进度：', e)
 }
 
 // 土地证照片上传成功
-const landCertificateSuccess = (e: any) => {
+const landPicSuccess = (e: any) => {
   console.log('上传成功')
 }
 
 // 土地证照片上传失败
-const landCertificateFail = (e: any) => {
+const landPicFail = (e: any) => {
   console.log('上传失败：', e)
 }
 
@@ -669,28 +472,35 @@ const otherPicFail = (e: any) => {
 }
 
 // 获取房屋照片上传状态
-const selectHousePic = (e: any) => {
+const selectHomePic = (e: any) => {
   console.log('选择文件：', e)
 }
 
 // 获取房屋照片上传进度
-const housePicProgress = (e: any) => {
+const homePicProgress = (e: any) => {
   console.log('上传进度：', e)
 }
 
 // 房屋照片上传成功
-const housePicSuccess = (e: any) => {
+const homePicSuccess = (e: any) => {
   console.log('上传成功')
 }
 
 // 房屋照片上传失败
-const housePicFail = (e: any) => {
+const homePicFail = (e: any) => {
   console.log('上传失败：', e)
 }
 
 // 表单提交
 const submit = () => {
-  console.log('表单提交')
+  const params = { ...formData.value }
+  formData.value.validate((valid: any) => {
+    if (valid) {
+      updateLandlordHouseApi(params.uid, params).then((res) => {
+        console.log('res:', res)
+      })
+    }
+  })
 }
 </script>
 
@@ -787,10 +597,11 @@ const submit = () => {
 
     .submit-btn {
       position: fixed;
-      right: 0;
-      bottom: 0;
-      width: 80rpx;
-      height: 80rpx;
+      right: 6rpx;
+      bottom: 6rpx;
+      width: 66rpx;
+      height: 66rpx;
+      border-radius: 50%;
     }
   }
 }

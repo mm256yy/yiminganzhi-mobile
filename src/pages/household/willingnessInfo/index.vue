@@ -9,7 +9,7 @@
             class="input-txt"
             placeholder="请输入"
             type="number"
-            v-model="formData.total"
+            v-model="formData.familyNum"
             @focus="inputFocus(1)"
             @blur="inputBlur"
           />
@@ -23,7 +23,7 @@
             class="input-txt"
             placeholder="请输入"
             type="number"
-            v-model="formData.ruralImmigrantsNum"
+            v-model="formData.countryNum"
             @focus="inputFocus(2)"
             @blur="inputBlur"
           />
@@ -37,7 +37,7 @@
             class="input-txt"
             placeholder="请输入"
             type="number"
-            v-model="formData.noneRuralImmigrantsNum"
+            v-model="formData.unCountryNum"
             @focus="inputFocus(3)"
             @blur="inputBlur"
           />
@@ -77,39 +77,56 @@
         class="remark"
         placeholder="请输入"
         type="texarea"
-        v-model="formData.remark"
+        v-model="formData.opinion"
       ></textarea>
     </view>
+
+    <image
+      class="submit-btn"
+      src="@/static/images/icon_submit.png"
+      mode="scaleToFill"
+      @click="submit"
+    />
   </view>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { getWillListApi, updateLandlordWillApi } from '@/service'
 
-const formData = ref<any>({})
+const props = defineProps({
+  willData: {
+    type: Object as any,
+    default: () => {}
+  },
+  dataInfo: {
+    type: Object as any,
+    default: () => {}
+  }
+})
+
+const defaultParams = {
+  uid: props.dataInfo.uid,
+  doorNo: props.dataInfo.doorNo,
+  householdId: props.dataInfo.householdId,
+  familyNum: '', // 家庭总人数
+  countryNum: '', // 农村移民人数
+  unCountryNum: '', // 非农移民人数
+  productionType: '', // 生产安置方式
+  removalType: '', // 搬迁安置方式
+  opinion: '' // 备注
+}
+
+const formData = ref<any>(defaultParams)
 
 // 生产安置方式数据选项
-const productModeData = ref<any>([
-  { name: '市内县外', value: 1 },
-  { name: '县内安置（有土）', value: 2 },
-  { name: '县内安置（无土）', value: 3 },
-  { name: '自谋出路', value: 4 }
-])
+const productModeData = ref<any>([])
 
 // 搬迁安置方式 —— 宅基地安置数据选项
-const homesteadData = ref<any>([
-  { name: '瑶畈防护地块', value: 1 },
-  { name: '陈村安置地块', value: 2 },
-  { name: '丽新乡本乡安置小区', value: 3 },
-  { name: '自谋出路', value: 4 }
-])
+const homesteadData = ref<any>([])
 
 // 搬迁安置方式 —— 公寓房安置数据选项
-const apartmentData = ref<any>([
-  { name: '联城街道凤鸣区块', value: 1 },
-  { name: '现房安置（联城区块已建安置小区）', value: 2 },
-  { name: '现房安置（碧湖镇已建安置小区）', value: 3 }
-])
+const apartmentData = ref<any>([])
 
 // 获得焦点的输入框下标
 const focusIndex = ref<number>(-1)
@@ -124,20 +141,67 @@ const inputBlur = () => {
   focusIndex.value = -1
 }
 
+// 获取意愿配置信息
+const getWillList = async () => {
+  const result = await getWillListApi()
+  result.map((item: any) => {
+    if (item.type === '生产安置') {
+      productModeData.value.push({
+        name: item.area,
+        value: item.area,
+        checked: false
+      })
+    } else if (item.type === '搬迁安置') {
+      if (item.way === '宅基地安置') {
+        homesteadData.value.push({
+          name: item.area,
+          value: item.area,
+          checked: false
+        })
+      } else if (item.way === '公寓安置') {
+        apartmentData.value.push({
+          name: item.area,
+          value: item.area,
+          checked: false
+        })
+      }
+    }
+  })
+  console.log('result:', result)
+}
+
 // 生产安置方式选择
 const productModeChange = (e: any) => {
-  formData.value.productMode = e.detail.value
+  formData.value.productionType = e.detail.value
 }
 
 // 搬迁安置方式 —— 宅基地安置选择
 const homesteadChange = (e: any) => {
-  formData.value.homestead = e.detail.value
+  formData.value.removalType = e.detail.value
 }
 
 // 搬迁安置方式 —— 公寓房安置选择
 const apartmentChange = (e: any) => {
-  formData.value.apartment = e.detail.value
+  formData.value.removalType = e.detail.value
 }
+
+// 表单提交
+const submit = () => {
+  const params = { ...formData.value }
+  updateLandlordWillApi(props.dataInfo.uid, params).then((res) => {
+    console.log('res:', res)
+  })
+}
+
+onMounted(() => {
+  getWillList()
+  if (JSON.stringify(props.willData) !== '{}') {
+    formData.value = {
+      ...defaultParams,
+      ...props.willData
+    }
+  }
+})
 </script>
 
 <style lang="scss" scoped>
@@ -279,6 +343,15 @@ const apartmentChange = (e: any) => {
       font-size: 9rpx;
       color: #171718;
     }
+  }
+
+  .submit-btn {
+    position: fixed;
+    right: 6rpx;
+    bottom: 6rpx;
+    width: 66rpx;
+    height: 66rpx;
+    border-radius: 50%;
   }
 }
 </style>

@@ -18,17 +18,16 @@ import Main from './components/Main.vue'
 const sysInfo = uni.getSystemInfoSync()
 const statusBarHeight = sysInfo.statusBarHeight || 0
 const screenHeight = sysInfo.screenHeight
+const pageHeight = screenHeight - statusBarHeight
 const treeData = ref<any>([])
 const dataInfo = ref<any>({})
-
-const pageHeight = screenHeight - statusBarHeight
 
 // 获取左侧树列表
 const getTreeData = async () => {
   uni.showLoading({
     title: ''
   })
-  const result = await getLandlordTreeApi(MainType.PeasantHousehold)
+  const result = await getLandlordTreeApi(MainType.Village)
   uni.hideLoading()
   treeData.value = [...result]
 }

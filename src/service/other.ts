@@ -43,7 +43,7 @@ export const getFamilyIncomeListApi = () => {
   return FamilyIncomeController.getList()
 }
 
-// 安置意愿
+// 安置意愿配置
 export const getWillListApi = () => {
   return ResettlementController.getList()
 }

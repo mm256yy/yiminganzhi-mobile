@@ -3,21 +3,46 @@
     <image src="@/static/images/head_bg.png" class="head-bg" />
     <view class="home-wrap" :style="{ height: `${pageHeight}px` }">
       <view class="home-body">
-        <Main />
+        <Main :treeData="treeData" :dataInfo="dataInfo" @tree-item-click="treeItemClick" />
       </view>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
-// import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { getLandlordTreeApi } from '@/service'
+import { MainType } from '@/types/common'
 import Main from './components/Main.vue'
 
 const sysInfo = uni.getSystemInfoSync()
 const statusBarHeight = sysInfo.statusBarHeight || 0
 const screenHeight = sysInfo.screenHeight
-
 const pageHeight = screenHeight - statusBarHeight
+const treeData = ref<any>([])
+const dataInfo = ref<any>({})
+
+// 获取左侧树列表
+const getTreeData = async () => {
+  uni.showLoading({
+    title: ''
+  })
+  const result = await getLandlordTreeApi(MainType.Company)
+  uni.hideLoading()
+  treeData.value = [...result]
+}
+
+/**
+ * 点击左侧列表
+ * @params (object) data 点击的当前节点返回的数据
+ */
+const treeItemClick = (data: any) => {
+  dataInfo.value = { ...data }
+}
+
+onMounted(() => {
+  getTreeData()
+})
 </script>
 
 <style scoped lang="scss">

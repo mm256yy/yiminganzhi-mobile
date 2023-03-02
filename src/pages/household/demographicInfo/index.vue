@@ -6,7 +6,7 @@
         <view class="list-1">
           <view class="left">
             <view class="icon">户主</view>
-            <view class="name">{{ item.name }}</view>
+            <view class="name">{{ formatStr(item.name) }}</view>
           </view>
           <view class="right">
             <image
@@ -22,13 +22,17 @@
             <uni-col :span="8">
               <view class="col">
                 <view class="label">性别：</view>
-                <view class="content">{{ dict[292][item.sex].text }}</view>
+                <view class="content">
+                  {{ formatDict(item.sex, 292) }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="8">
               <view class="col">
                 <view class="label">民族：</view>
-                <view class="content">{{ dict[278][item.nation].text }}</view>
+                <view class="content">
+                  {{ formatDict(item.nation, 278) }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="8">
@@ -43,19 +47,23 @@
             <uni-col :span="8">
               <view class="col">
                 <view class="label">身份证：</view>
-                <view class="content">{{ item.card }}</view>
+                <view class="content">{{ formatStr(item.card) }}</view>
               </view>
             </uni-col>
             <uni-col :span="8">
               <view class="col">
                 <view class="label">婚姻状况：</view>
-                <view class="content">{{ dict[260][item.marital].text }}</view>
+                <view class="content">
+                  {{ formatDict(item.marital, 260) }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="8">
               <view class="col">
                 <view class="label">人口类型：</view>
-                <view class="content">{{ dict[244][item.populationType].text }}</view>
+                <view class="content">
+                  {{ formatDict(item.populationType, 244) }}
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -64,13 +72,15 @@
             <uni-col :span="8">
               <view class="col">
                 <view class="label">职业：</view>
-                <view class="content">{{ dict[305][item.occupation].text }}</view>
+                <view class="content">
+                  {{ formatDict(item.occupation, 305) }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">户籍所在地：</view>
-                <view class="content">{{ item.address }}</view>
+                <view class="content">{{ formatStr(item.address) }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -82,13 +92,13 @@
       class="add-btn"
       src="@/static/images/icon_add.png"
       mode="scaleToFill"
-      @click="toLink('add', {})"
+      @click="toLink('add', null)"
     />
   </view>
 </template>
 
 <script lang="ts" setup>
-import { getStorage, StorageKey } from '@/utils'
+import { formatDict, formatStr } from '@/utils'
 
 const props = defineProps({
   dataList: {
@@ -97,8 +107,6 @@ const props = defineProps({
   }
 })
 
-// 获取数据字典
-const dict = getStorage(StorageKey.DICT)
 const emit = defineEmits(['deleteDemographic'])
 
 const toLink = (type: string, data: any) => {
@@ -207,10 +215,11 @@ const deleteDemographic = (data: any) => {
 
   .add-btn {
     position: fixed;
-    right: 0;
-    bottom: 0;
+    right: 6rpx;
+    bottom: 6rpx;
     width: 66rpx;
     height: 66rpx;
+    border-radius: 50%;
   }
 }
 </style>
