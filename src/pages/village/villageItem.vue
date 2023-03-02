@@ -7,7 +7,7 @@
         <view class="name">{{ props.data.name }}</view>
       </view>
       <view class="head-rt">
-        <view class="edit-box">
+        <view class="edit-box" @click.stop="deleteItem">
           <image class="remove-icon" src="@/static/images/remove.png" mode="scaleToFill" />
         </view>
       </view>
@@ -42,14 +42,20 @@ interface PropsType {
 }
 
 const props = defineProps<PropsType>()
+const emit = defineEmits(['delete'])
+
+const deleteItem = () => {
+  emit('delete')
+}
 </script>
 
 <style lang="scss" scoped>
 .village-item {
+  flex: none;
   position: relative;
-  width: 228px;
+  width: 228rpx;
   padding: 12rpx 15rpx;
-  margin: 0 7rpx 7rpx 0;
+  margin: 7rpx 7rpx 0 0;
   background-color: #ffffff;
   border-radius: 7rpx;
   box-shadow: 0rpx 0rpx 12rpx 0rpx rgba(0, 0, 0, 0.08);

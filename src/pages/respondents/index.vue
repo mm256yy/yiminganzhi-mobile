@@ -2,7 +2,7 @@
   <Container>
     <template #title>
       <view class="title" @click="onToggleVillage">
-        <text class="tit">{{ title }}</text>
+        <text class="tit">{{ title.length ? title.join('/') : '选择行政村' }}</text>
         <image
           class="icon"
           :style="{ transform: showVillageSelect ? 'rotate(180deg)' : 'rotate(0deg)' }"
@@ -69,39 +69,62 @@
           @scrolltolower="loadMore"
         >
           <view class="scroll">
-            <CompanyItem v-for="item in list" :data="item" :key="item.uid" />
+            <CompanyItem
+              v-for="item in list"
+              :data="item"
+              :key="item.uid"
+              @click.stop="editLandlord(item)"
+              @delete="deleteLandlord(item)"
+            />
           </view>
-          <uni-load-more iconType="auto" :status="status" />
+          <view class="load-more">
+            <uni-load-more iconType="auto" :status="status" />
+          </view>
         </scroll-view>
-        <view class="no-data-wrap" v-else>
-          <image class="no-data" src="@/static/images/icon_null.png" mode="scaleToFill" />
-          <text class="no-data-txt">暂无数据</text>
-        </view>
+        <NoData v-else />
       </view>
     </view>
 
+    <view class="add-box" @click="addLandlord">
+      <uni-icons type="plusempty" color="#ffffff" size="10rpx" />
+    </view>
+
     <template v-if="showVillageSelect">
-      <VillageSelect
+      <TreeSelect
         :treeData="treeData"
-        :selectCodes="villageCode"
+        :value="villageCode"
         :title="title"
         @on-close="showVillageSelect = false"
         @on-confirm="villageConfirm"
       />
     </template>
+
+    <uni-popup ref="alertDialog" type="dialog">
+      <uni-popup-dialog
+        type="warn"
+        cancelText="取消"
+        confirmText="确认"
+        title="确认删除？"
+        content=""
+        @confirm="dialogConfirm"
+        @close="dialogClose"
+      />
+    </uni-popup>
   </Container>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted, nextTick, unref, computed } from 'vue'
+import { onShow } from '@dcloudio/uni-app'
 import Container from '@/components/Container/index.vue'
+import NoData from '@/components/NoData/index.vue'
 import CompanyItem from './company.vue'
-import VillageSelect from './villageSelect.vue'
-import { getLandlordListBySearchApi, getOtherItemApi } from '@/service'
+import TreeSelect from '@/components/VillageTreeSelect/index.vue'
+import { getLandlordListBySearchApi, getOtherItemApi, deleteLandlordApi } from '@/service'
 import { LandlordType } from '@/types/sync'
 import { LandlordSearchType, MainType } from '@/types/common'
 import { OtherDataType } from '@/database'
-import { isEnumDeclaration } from '@babel/types'
+import { routerForward } from '@/utils'
 
 const tabType = ref<MainType>(MainType.Company)
 const showVillageSelect = ref<boolean>(false)
@@ -109,7 +132,9 @@ const list = ref<LandlordType[]>([])
 const keyWords = ref<string>('')
 const villageCode = ref<string[]>([])
 const treeData = ref<any>([])
-const title = ref<string>('选择行政村')
+const title = ref<string[]>([])
+const currentItem = ref<LandlordType | null>(null)
+const alertDialog = ref<any>(null)
 
 const isLoading = ref<boolean>(false)
 const isEnd = ref<boolean>(false)
@@ -117,16 +142,21 @@ const isEnd = ref<boolean>(false)
 const page = ref<number>(1)
 const pageSize = ref<number>(10)
 
+const init = () => {
+  page.value = 1
+  isEnd.value = false
+  isLoading.value = false
+  getList()
+}
+
 const clear = () => {
   keyWords.value = ''
-  page.value = 1
-  getList()
+  init()
 }
 
 const onTabChange = (type: MainType) => {
   tabType.value = type
-  page.value = 1
-  getList()
+  init()
 }
 
 const onToggleVillage = () => {
@@ -135,16 +165,14 @@ const onToggleVillage = () => {
 
 const iptChange = (e: any) => {
   keyWords.value = e.detail.value
-  page.value = 1
-  getList()
+  init()
 }
 
-const villageConfirm = (code: string[], tit: string) => {
+const villageConfirm = (code: string[], tit: string[]) => {
   villageCode.value = code
   title.value = tit
-  page.value = 1
   onToggleVillage()
-  getList()
+  init()
 }
 
 const getTreeData = async () => {
@@ -183,6 +211,7 @@ const getList = () => {
         page.value = page.value + 1
       }
     } else {
+      list.value = []
       isEnd.value = true
     }
   })
@@ -197,13 +226,62 @@ const loadMore = () => {
   getList()
 }
 
+// todo
+const routerMap: any = {
+  [MainType.PeasantHousehold]: '',
+  [MainType.IndividualHousehold]: '',
+  [MainType.Company]: '',
+  [MainType.Village]: ''
+}
+
+const addLandlord = () => {
+  const name = routerMap[tabType.value]
+  routerForward(name, {
+    type: 'add'
+  })
+}
+
+const editLandlord = (item: LandlordType) => {
+  const name = routerMap[tabType.value]
+  routerForward(name, {
+    type: 'edit',
+    uid: item.uid
+  })
+}
+
+const deleteLandlord = (item: LandlordType) => {
+  currentItem.value = item
+  alertDialog.value?.open()
+}
+
+const dialogConfirm = () => {
+  if (currentItem.value?.uid) {
+    deleteLandlordApi(currentItem.value.uid).then((res) => {
+      if (res) {
+        uni.showToast({
+          title: '删除成功',
+          icon: 'success'
+        })
+        init()
+      }
+    })
+  }
+}
+
+const dialogClose = () => {
+  alertDialog.value.close()
+}
+
 onMounted(() => {
   getTreeData()
-  getList()
+})
+
+onShow(() => {
+  init()
 })
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .title {
   display: flex;
   align-items: center;
@@ -348,26 +426,9 @@ onMounted(() => {
   align-items: flex-start;
 }
 
-.no-data-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.load-more {
+  flex: none;
   width: 100%;
-  height: 100%;
-}
-
-.no-data {
-  width: 152rpx;
-  height: 92rpx;
-}
-
-.no-data-txt {
-  margin-top: 16rpx;
-  font-size: 9rpx;
-  font-weight: 500;
-  color: #171718;
-  text-align: center;
 }
 
 .add-box {

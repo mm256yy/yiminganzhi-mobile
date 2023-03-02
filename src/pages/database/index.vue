@@ -15,6 +15,7 @@
         </swiper-item>
       </swiper>
     </uni-section>
+    <view style="height: 100px" id="pdf" />
   </view>
 </template>
 

@@ -5,8 +5,10 @@
 export interface VillageDDLType {
   uid: string
   parentCode: string
+  name: string
   content: string
   updatedDate: string
+  isDelete: '0' | '1'
   status: string
 }
 
@@ -18,6 +20,8 @@ create table if not exists ${VillageTableName} (
   'status' text,
   'content' text,
   'parentCode' text,
+  'isDelete' text,
+  'name' text,
   'updatedDate' text DEFAULT NULL
 );
 `

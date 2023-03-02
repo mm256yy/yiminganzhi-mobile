@@ -364,10 +364,10 @@ class PullData {
         })
         list.forEach((item) => {
           this.districtMap[item.code] = item.name
-          const fields = "'uid','status','parentCode','content','updatedDate'"
-          const values = `'${item.uid}','default','${item.parentCode}','${JSON.stringify(
-            item
-          )}','${getCurrentTimeStamp()}'`
+          const fields = "'uid','isDelete','status','parentCode','name','content','updatedDate'"
+          const values = `'${item.uid}','0','default','${item.parentCode}','${
+            item.name
+          }','${JSON.stringify(item)}','${getCurrentTimeStamp()}'`
           db.insertOrReplaceData(VillageTableName, values, fields)
         })
 

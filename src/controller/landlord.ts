@@ -8,6 +8,16 @@ import { LandlordType } from '@/types/sync'
 import { guid, getCurrentTimeStamp, getStorage, StorageKey } from '@/utils'
 import { LandlordQuery, MainType, LandlordSearchType } from '@/types/common'
 
+// uid: string
+// content: string
+// name: string
+// type: MainType
+// reportDate: string
+// reportUser: string
+// villageCode: string
+// status: 'modify' | 'default'
+// isDelete: '0' | '1'
+// updatedDate: string
 export class Landlord extends Common {
   constructor() {
     super()
@@ -18,7 +28,7 @@ export class Landlord extends Common {
     return new Promise(async (resolve, reject) => {
       try {
         const array: LandlordType[] = []
-        const sql = `select * from ${LandlordTableName} where isDelete = '0' and type = '${type}'`
+        const sql = `select * from ${LandlordTableName} where isDelete = '0' and type = '${type}' order by updatedDate desc`
         const list: LandlordDDLType[] = await this.db.selectSql(sql)
         if (list && Array.isArray(list)) {
           list.forEach((item) => {
@@ -51,7 +61,7 @@ export class Landlord extends Common {
     return new Promise(async (resolve, reject) => {
       try {
         const array: LandlordType[] = []
-        const sql = `select * from ${LandlordTableName} where isDelete = '0' and type = '${type}' order by 'id' asc limit ${pageSize} offset ${
+        const sql = `select * from ${LandlordTableName} where isDelete = '0' and type = '${type}' order by updatedDate desc limit ${pageSize} offset ${
           (page - 1) * pageSize
         }`
         const list: LandlordDDLType[] = await this.db.selectSql(sql)
@@ -100,7 +110,7 @@ export class Landlord extends Common {
           sql += ` and reportDate Between '${timeArray[0]}' and '${timeArray[1]}'`
         }
         if (userId) {
-          sql += ` and reportUser = '${userId}'`
+          sql += ` and reportUser = '${userId}' order by updatedDate desc`
         }
         console.log(sql, 'sql 语句')
         const list: LandlordDDLType[] = await this.db.selectSql(sql)
@@ -154,8 +164,10 @@ export class Landlord extends Common {
         data.immigrantEquipmentList = data.immigrantEquipmentList || []
         data.immigrantFacilitiesList = data.immigrantFacilitiesList || []
 
-        const fields = `'uid','status','content','updateDate'`
-        const values = `'${uid}','modify','${JSON.stringify(data)}','${getCurrentTimeStamp()}'`
+        const fields = `'uid','status','type','name','reportDate','reportUser','villageCode','content','updatedDate','isDelete'`
+        const values = `'${uid}','modify','${data.type}','${data.name}','','','${
+          data.villageCode
+        }','${JSON.stringify(data)}','${getCurrentTimeStamp()}','0'`
         const res = await this.db.insertTableData(LandlordTableName, values, fields)
         console.log('插入结果', res)
         if (res && res.code) {
@@ -176,9 +188,11 @@ export class Landlord extends Common {
         if (!data) {
           reject(false)
         }
-        const values = `status = 'modify',content = '${JSON.stringify(
-          data
-        )}',updateDate = '${getCurrentTimeStamp()}'`
+        const values = `status = 'modify',type = '${data.type}',name = '${
+          data.name
+        }',reportDate = '${data.reportDate}',reportUser = '${data.reportUser}',villageCode = '${
+          data.villageCode
+        }',content = '${JSON.stringify(data)}',updatedDate = '${getCurrentTimeStamp()}'`
         const sql = `update ${LandlordTableName} set ${values} where uid = '${data.uid}' and isDelete = '0'`
         const res = await this.db.execteSql([sql])
         if (res && res.code) {
@@ -199,7 +213,7 @@ export class Landlord extends Common {
         if (!uid) {
           reject(false)
         }
-        const values = `status = 'modify',isDelete = '1',updateDate = '${getCurrentTimeStamp()}'`
+        const values = `status = 'modify',isDelete = '1',updatedDate = '${getCurrentTimeStamp()}'`
         const res = await this.db.updateTableData(LandlordTableName, values, 'uid', uid)
         if (res && res.code) {
           reject(false)
@@ -219,13 +233,14 @@ export class Landlord extends Common {
         if (!uid) {
           reject(null)
         }
-        const res: LandlordType = await this.db.selectTableData(
+        const result: LandlordDDLType[] = await this.db.selectTableData(
           LandlordTableName,
           'uid',
           uid,
           'isDelete',
           '0'
         )
+        const res: LandlordType = result && result[0] ? JSON.parse(result[0].content) : {}
         if (res && res.uid) {
           if (res.demographicList && res.demographicList.length) {
             res.demographicList = res.demographicList.filter(
@@ -320,7 +335,7 @@ export class Landlord extends Common {
         if (villageCode) {
           sql += ` and villageCode = '${villageCode}'`
         }
-        sql += ` order by 'id' limit ${pageSize} offset ${(page - 1) * pageSize}`
+        sql += ` order by updatedDate desc limit ${pageSize} offset ${(page - 1) * pageSize}`
         console.log(sql, 'sql 语句')
         const list: LandlordDDLType[] = await this.db.selectSql(sql)
         if (list && Array.isArray(list)) {

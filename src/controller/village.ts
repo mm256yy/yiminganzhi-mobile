@@ -4,7 +4,7 @@
 
 import { VillageTableName, VillageDDLType } from '@/database'
 import { Common } from './common'
-import { VillageType } from '@/types/common'
+import { VillageType, PageQueryType } from '@/types/common'
 import { getCurrentTimeStamp, guid, getStorage, StorageKey } from '@/utils'
 
 class Village extends Common {
@@ -17,7 +17,7 @@ class Village extends Common {
     return new Promise(async (resolve, reject) => {
       try {
         const array: VillageType[] = []
-        const sql = `select * from ${VillageTableName}`
+        const sql = `select * from ${VillageTableName} where isDelete = '0' order by updatedDate desc`
         const res1: VillageDDLType[] = await this.db.selectSql(sql)
         const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
         if (this.isArrayAndNotNull(res1)) {
@@ -35,7 +35,6 @@ class Village extends Common {
             item.townCodeText = districtMap[item.parentCode.slice(0, 9)]
             item.areaCodeText = districtMap[item.parentCode.slice(0, 6)]
           })
-          console.log(array, '----')
         }
         resolve(array)
       } catch (error) {
@@ -46,13 +45,18 @@ class Village extends Common {
   }
 
   // 分页查询
-  getListWithPage(page = 1, pageSize = 10): Promise<VillageType[]> {
+  getListWithPage(data: PageQueryType & { name: string }): Promise<VillageType[]> {
     return new Promise(async (resolve, reject) => {
       try {
+        const { page = 1, pageSize = 10, name } = data
         const array: VillageType[] = []
-        const sql = `select * from ${VillageTableName} order by 'id' asc limit ${pageSize} offset ${
-          (page - 1) * pageSize
-        }`
+        let sql = `select * from ${VillageTableName} where isDelete = '0'`
+        if (name) {
+          sql += ` name like '%${name}%'`
+        }
+        if (page && pageSize) {
+          sql += ` order by updatedDate desc limit ${pageSize} offset ${(page - 1) * pageSize}`
+        }
         const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
         const list: VillageDDLType[] = await this.db.selectSql(sql)
         if (this.isArrayAndNotNull(list)) {
@@ -80,7 +84,7 @@ class Village extends Common {
   }
 
   // 自然村立标 新增
-  add(data: VillageType): Promise<boolean> {
+  add(data: Partial<VillageType>): Promise<boolean> {
     // uid: string
     // content: string
     // updatedDate: string
@@ -91,8 +95,10 @@ class Village extends Common {
         }
         const uid = guid()
         data.uid = uid
-        const fields = `'uid','status','content','updateDate'`
-        const values = `'${uid}','modify','${JSON.stringify(data)}','${getCurrentTimeStamp()}'`
+        const fields = `'uid','isDelete','status','name','parentCode','content','updatedDate'`
+        const values = `'${uid}','0','modify','${data.name}','${data.parentCode}','${JSON.stringify(
+          data
+        )}','${getCurrentTimeStamp()}'`
         const res = await this.db.insertTableData(VillageTableName, values, fields)
         if (res && res.code) {
           reject(false)
@@ -106,15 +112,15 @@ class Village extends Common {
   }
 
   // 自然村列表修改
-  update(data: VillageType): Promise<boolean> {
+  update(data: Partial<VillageType>): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!data) {
           reject(false)
         }
-        const values = `status = 'modify',content = '${JSON.stringify(
-          data
-        )}',updateDate = '${getCurrentTimeStamp()}'`
+        const values = `status = 'modify',name = '${data.name}',parentCode = '${
+          data.parentCode
+        }',content = '${JSON.stringify(data)}',updatedDate = '${getCurrentTimeStamp()}'`
         const sql = `update ${VillageTableName} set ${values} where uid = '${data.uid}'`
         const res = await this.db.execteSql([sql])
         if (res && res.code) {
@@ -128,6 +134,26 @@ class Village extends Common {
     })
   }
 
+  // 自然村列表删除
+  deleteVillage(uid: string): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!uid) {
+          reject(false)
+        }
+        const values = `status = 'modify',isDelete = '1',updatedDate = '${getCurrentTimeStamp()}'`
+        const res = await this.db.updateTableData(VillageTableName, values, 'uid', uid)
+        if (res && res.code) {
+          reject(false)
+        }
+        resolve(true)
+      } catch (error) {
+        console.log(error, 'deleteVillage-error')
+        reject(false)
+      }
+    })
+  }
+
   // 自然村列表-uid查询单个数据
   getVillageByUid(uid: string): Promise<VillageType | null> {
     return new Promise(async (resolve, reject) => {
@@ -135,9 +161,15 @@ class Village extends Common {
         if (!uid) {
           reject(null)
         }
-        const res: VillageType = await this.db.selectTableData(VillageTableName, 'uid', uid)
+        const res: VillageType = await this.db.selectTableData(
+          VillageTableName,
+          'uid',
+          uid,
+          'isDelete',
+          '0'
+        )
         if (res && res[0]) {
-          resolve(res[0])
+          resolve(JSON.parse(res[0].content))
         }
         reject(null)
       } catch (error) {

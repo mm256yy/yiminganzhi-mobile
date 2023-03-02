@@ -127,7 +127,7 @@ export class DB {
       let sql = ''
       if (!bol) {
         if (condition == undefined) {
-          sql = `INSERT INTO ${tableName} VALUES('${data}')`
+          sql = `INSERT INTO ${tableName} VALUES(${data})`
         } else {
           sql = `INSERT INTO ${tableName} (${condition}) VALUES(${data})`
         }
@@ -169,7 +169,7 @@ export class DB {
     if (tableName !== undefined && data !== undefined) {
       let sql = ''
       if (condition == undefined) {
-        sql = `INSERT OR REPLACE INTO ${tableName} VALUES('${data}')`
+        sql = `INSERT OR REPLACE INTO ${tableName} VALUES(${data})`
       } else {
         sql = `INSERT OR REPLACE INTO ${tableName} (${condition}) VALUES(${data})`
       }

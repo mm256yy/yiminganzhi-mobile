@@ -143,3 +143,9 @@ export interface LandlordSearchType {
   page: number
   pageSize: number
 }
+
+// 分页类型
+export interface PageQueryType {
+  page: number
+  pageSize: number
+}

@@ -83,7 +83,7 @@ class PushData {
       villageList.forEach((item) => {
         if (item.id && item.uid) {
           deleteList.push({
-            type: 'demographicList',
+            type: 'village',
             deleteId: item.uid
           })
         }

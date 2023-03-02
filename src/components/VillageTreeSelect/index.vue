@@ -3,9 +3,12 @@
     <view class="mask" />
     <view class="content show">
       <view class="head">
-        <view class="cancle" @click="cancle">取消</view>
+        <view class="cancle" @click.stop="cancle">取消</view>
         <view class="name">选择行政村</view>
-        <view class="confirm" @click="confirm">确定</view>
+        <view class="right">
+          <view class="confirm" @click.stop="reset">重置</view>
+          <view class="confirm ml-10" @click.stop="confirm">确定</view>
+        </view>
       </view>
 
       <view class="body">
@@ -16,7 +19,7 @@
               class="common-item"
               v-for="item in props.treeData"
               :key="item.code"
-              @click="areaClick(item)"
+              @click.stop="areaClick(item)"
               :class="[currentSelect[0] && currentSelect[0] === item.code ? 'active' : '']"
               >{{ item.name }}</view
             >
@@ -30,7 +33,7 @@
               :class="[currentSelect[1] && currentSelect[1] === item.code ? 'active' : '']"
               v-for="item in currentTown"
               :key="item.code"
-              @click="townClick(item)"
+              @click.stop="townClick(item)"
               >{{ item.name }}</view
             >
           </view>
@@ -44,7 +47,7 @@
               :class="[currentSelect[2] && currentSelect[2] === item.code ? 'active' : '']"
               v-for="item in currentVillage"
               :key="item.code"
-              @click="villageClick(item)"
+              @click.stop="villageClick(item)"
               >{{ item.name }}</view
             >
           </view>
@@ -59,8 +62,8 @@ import { ref, watch, onMounted } from 'vue'
 
 interface PropsType {
   treeData: any
-  title?: string
-  selectCodes?: string[]
+  title?: string[]
+  value?: string[]
 }
 
 const props = defineProps<PropsType>()
@@ -69,13 +72,13 @@ const emit = defineEmits(['onClose', 'onConfirm'])
 const currentTown = ref<any>([])
 const currentVillage = ref<any>([])
 const currentSelect = ref<string[]>([])
-const title = ref<string>('')
+const title = ref<string[]>([])
 
 watch(
-  () => props.selectCodes,
+  () => props.value,
   (val) => {
     if (val && val.length) {
-      currentSelect.value = val
+      currentSelect.value = [...val]
       const townList = props.treeData.find((item: any) => item.code === val[0]).children || []
       currentTown.value = townList
       currentVillage.value = townList.find((item: any) => item.code === val[1]).children || []
@@ -89,31 +92,36 @@ watch(
 
 onMounted(() => {
   if (props.title) {
-    title.value = props.title
+    title.value = [...props.title]
   }
 })
 
 const areaClick = (item: any) => {
   const condition = currentSelect.value[0] && currentSelect.value[0] === item.code
   currentSelect.value[0] = condition ? '' : item.code
+  title.value[0] = condition ? '' : item.name
+
   currentTown.value = condition ? [] : item.children
+  currentVillage.value = []
   currentSelect.value[1] = ''
   currentSelect.value[2] = ''
-  title.value = ''
+  title.value[1] = ''
+  title.value[2] = ''
 }
 
 const townClick = (item: any) => {
   const condition = currentSelect.value[1] && currentSelect.value[1] === item.code
   currentSelect.value[1] = condition ? '' : item.code
+  title.value[1] = condition ? '' : item.name
   currentVillage.value = condition ? [] : item.children
   currentSelect.value[2] = ''
-  title.value = ''
+  title.value[2] = ''
 }
 
 const villageClick = (item: any) => {
   const condition = currentSelect.value[2] && currentSelect.value[2] === item.code
   currentSelect.value[2] = condition ? '' : item.code
-  title.value = condition ? '' : item.name
+  title.value[2] = condition ? '' : item.name
 }
 
 const cancle = () => {
@@ -121,7 +129,8 @@ const cancle = () => {
 }
 
 const confirm = () => {
-  if (currentSelect.value.length < 3) {
+  const realArray = currentSelect.value.filter((item) => !!item)
+  if (realArray.length < 3) {
     uni.showToast({
       title: '未完成选择',
       icon: 'none'
@@ -130,10 +139,16 @@ const confirm = () => {
   }
   emit('onConfirm', currentSelect.value, title.value)
 }
+
+const reset = () => {
+  title.value = []
+  currentSelect.value = []
+  emit('onConfirm', currentSelect.value, title.value)
+}
 </script>
 <style lang="scss" scoped>
 .select-wrap {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   z-index: 50;
@@ -187,10 +202,19 @@ const confirm = () => {
       color: #171718;
     }
 
+    .right {
+      display: flex;
+      align-items: center;
+    }
+
     .confirm {
       font-size: 9rpx;
       line-height: 13rpx;
       color: #0a54ff;
+    }
+
+    .ml-10 {
+      padding-left: 10rpx;
     }
   }
 

@@ -4,7 +4,7 @@
     <view class="head">
       <view class="head-lt">
         <image class="user-icon" src="@/static/images/respondents_tit.png" mode="scaleToFill" />
-        <view class="name">{{ props.data.id }}</view>
+        <view class="name">{{ props.data.name }}</view>
       </view>
       <view class="head-rt">
         <view class="status" :class="[props.data.reportStatus === 'ReportSucceed' ? 'success' : '']"

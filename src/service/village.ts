@@ -2,7 +2,7 @@
  * 自然村 接口列表
  */
 import { VillageController } from '@/controller'
-import { VillageType } from '@/types/common'
+import { PageQueryType, VillageType } from '@/types/common'
 
 // 获取自然村列表
 export const getVillageListApi = () => {
@@ -10,18 +10,23 @@ export const getVillageListApi = () => {
 }
 
 // 分页获取自然村列表
-export const getVillageListWithPageApi = (page = 1, pageSize = 10) => {
-  return VillageController.getListWithPage(page, pageSize)
+export const getVillageListWithPageApi = (data: PageQueryType & { name: string }) => {
+  return VillageController.getListWithPage(data)
 }
 
 // 新增自然村
-export const addVillageApi = (data: VillageType) => {
+export const addVillageApi = (data: Partial<VillageType>) => {
   return VillageController.add(data)
 }
 
 // 修改自然村
-export const updateVillageApi = (data: VillageType) => {
+export const updateVillageApi = (data: Partial<VillageType>) => {
   return VillageController.update(data)
+}
+
+// 修改自然村
+export const deleteVillageApi = (uid: string) => {
+  return VillageController.deleteVillage(uid)
 }
 
 // 获取单个自然村详情
