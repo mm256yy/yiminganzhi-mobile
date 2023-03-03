@@ -36,3 +36,13 @@ export const pushDataApi = (data: PushStateType) => {
     data
   })
 }
+
+export const filesUpload = (data: any) => {
+  return request.post({
+    url: '/files',
+    header: {
+      'content-type': 'application/x-www-form-urlencoded'
+    },
+    data
+  })
+}

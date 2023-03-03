@@ -7,9 +7,11 @@ import {
   VillageDDLType,
   VillageTableName
 } from '@/database/index'
+import { ImageTableName } from '@/database/tables/image'
 import { VillageType } from '@/types/common'
 import { PushStateType, DeleteRecordType, LandlordType } from '@/types/sync'
-import { pushDataApi } from './api'
+import dayjs from 'dayjs'
+import { pushDataApi, filesUpload } from './api'
 
 class PushData {
   public db: any
@@ -17,9 +19,8 @@ class PushData {
   constructor() {
     // 数据库是否打开
     const isOpen = db.isOpen()
-    if (isOpen) {
-      this.db = db
-    } else {
+    this.db = db
+    if (!isOpen) {
       db.openDB().then(() => {
         this.db = db
       })
@@ -65,7 +66,7 @@ class PushData {
   async getPullTime() {
     return new Promise(async (resolve, reject) => {
       db.selectTableData(OtherTableName, 'type', OtherDataType.PullTime)
-        .then((res) => {
+        .then((res: any) => {
           this.state.pullTime = res.content
           resolve(res.content)
         })
@@ -245,6 +246,50 @@ class PushData {
       return true
     }
     return false
+  }
+
+  public uploadImages() {
+    // 上传本地图片-更新数据库
+    return new Promise(async (resolve, reject) => {
+      try {
+        const imageList: VillageType[] = await db.selectTableData(ImageTableName, 'status', '0')
+        if (imageList && imageList.length) {
+          // id
+          // 'url' text,
+          // 'file' text,
+          // 'base64' text,
+          // 'status' text,
+          // 'updatedDate' text
+          const files = imageList.map((item) => item.file)
+          filesUpload({
+            files
+          })
+            .then((res) => {
+              // 更新状态
+              if (res && res.length) {
+                const ids: number[] = []
+                // 拿到 需要更新的id
+                imageList.forEach((item) => {
+                  if (res.includes(item.url)) {
+                    ids.push(item.id)
+                  }
+                })
+                const sqls: string[] = []
+                ids.forEach((id) => {
+                  const values = `status = '1',file = '',updatedDate = '${dayjs().valueOf()}'`
+                  sqls.push(`update ${LandlordTableName} set ${values} where id = '${id}'`)
+                })
+                db?.execteSql(sqls)
+              }
+            })
+            .catch(() => {
+              // 失败了 等下次在上传
+            })
+        }
+      } catch (e) {
+        //TODO handle the exception
+      }
+    })
   }
 
   // 推送数据

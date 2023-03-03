@@ -27,6 +27,7 @@ import { StateType } from '@/types/sync'
 import { ReportStatusEnum } from '@/types/common'
 import { getCurrentTimeStamp, setStorage, StorageKey } from '@/utils'
 import dayjs from 'dayjs'
+import { ImageDDL } from '@/database/tables/image'
 
 class PullData {
   // 接口返回数据存储
@@ -232,6 +233,7 @@ class PullData {
     db.createTableWithDDL(DistrictDDL)
     db.createTableWithDDL(VillageDDL)
     db.createTableWithDDL(AppendantDDL)
+    db.createTableWithDDL(ImageDDL)
   }
 
   public execute() {
