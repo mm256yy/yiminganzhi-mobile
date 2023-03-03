@@ -1,6 +1,6 @@
 let loadingCount = 0
 
-export function showLoading(options: UniApp.ShowLoadingOptions) {
+export function showLoading(options?: UniApp.ShowLoadingOptions) {
   uni.showLoading({
     title: '加载中',
     ...options

@@ -92,6 +92,13 @@
 			}
 		},
 		{
+			"name": "collectiveEquipmentInfoEdit",
+			"path": "pages/collective/equipmentInfo/edit",
+			"style": {
+				"navigationBarTitleText": "村集体填报-农村专项设施设备信息新增/编辑"
+			}
+		},
+		{
 			"name": "sync",
 			"path": "pages/sync/index",
 			"style": {

@@ -62,7 +62,12 @@
               />
 
               <!-- 设施设备信息 -->
-              <equipment-info v-if="tabVal === 5" />
+              <equipment-info
+                v-if="tabVal === 5"
+                :dataList="dataInfo.immigrantEquipmentList"
+                :dataInfo="dataInfo"
+                @delete-equipment="deleteEquipment"
+              />
 
               <!-- 照片上传 -->
               <photo-upload v-if="tabVal === 6" />
@@ -94,7 +99,8 @@ import {
   deleteLandlordHouseApi,
   deleteLandlordTreeApi,
   updateLandlordTreeApi,
-  updateLandlordAppendantApi
+  updateLandlordAppendantApi,
+  deleteLandlordEquipmentApi
 } from '@/service'
 
 import iconSrc from '@/static/images/icon_add_enterprise.png' // 侧边栏，添加 icon
@@ -155,7 +161,7 @@ const selectTabs = (data: any) => {
  * @param(Object) data 被删除的行信息
  */
 const deleteHouse = (data: any) => {
-  deleteLandlordHouseApi(data.uid, data.id).then((res) => {
+  deleteLandlordHouseApi(props.dataInfo.uid, data.id).then((res) => {
     console.log('res:', res)
   })
 }
@@ -165,7 +171,7 @@ const deleteHouse = (data: any) => {
  * @param(Object) data 被删除的行信息
  */
 const deleteTree = (data: any) => {
-  deleteLandlordTreeApi(data.uid, data.id).then((res) => {
+  deleteLandlordTreeApi(props.dataInfo.uid, data.id).then((res) => {
     console.log('res:', res)
   })
 }
@@ -188,6 +194,16 @@ const updateFruitTreeInfo = (data: any) => {
 const updateAccessoryInfo = (data: any) => {
   const params = { ...data }
   updateLandlordAppendantApi(props.dataInfo.uid, params).then((res) => {
+    console.log('res:', res)
+  })
+}
+
+/**
+ * 设施设备 - 删除
+ * @param(Object) data 被删除的行信息
+ */
+const deleteEquipment = (data: any) => {
+  deleteLandlordEquipmentApi(props.dataInfo.uid, data.id).then((res: any) => {
     console.log('res:', res)
   })
 }

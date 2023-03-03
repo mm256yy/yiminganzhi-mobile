@@ -30,7 +30,6 @@ export interface LandlordType {
   // code = id
   id: number
   code?: number
-  landlord?: boolean
   uid: string
   name: string
   sex: string

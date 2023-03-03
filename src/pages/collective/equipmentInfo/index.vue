@@ -2,39 +2,38 @@
   <view class="equipment-info-wrapper">
     <!-- 个人信息 -->
     <view class="list">
-      <view class="list-item" v-for="item in props.dataList" :key="item.id">
+      <view class="list-item">
         <view class="list-1">
           <view class="left">
             <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-            <view class="name">{{ formatStr(item.name) }}</view>
+            <view class="name">织布机</view>
           </view>
           <view class="right">
             <image
               class="icon m-r-10"
               src="@/static/images/icon_delete_mini.png"
               mode="scaleToFill"
-              @click="deleteEquipment(item)"
             />
           </view>
         </view>
-        <view class="list-2" @click="toLink('edit', item)">
+        <view class="list-2" @click="toLink">
           <uni-row>
             <uni-col :span="8">
               <view class="col">
                 <view class="label">用途：</view>
-                <view class="content">{{ formatStr(item.purpose) }}</view>
+                <view class="content">织布</view>
               </view>
             </uni-col>
             <uni-col :span="8">
               <view class="col">
                 <view class="label">建造/购置年份：</view>
-                <view class="content">{{ item.year }}</view>
+                <view class="content">2006年</view>
               </view>
             </uni-col>
             <uni-col :span="8">
               <view class="col">
                 <view class="label">原值：</view>
-                <view class="content">{{ formatStr(item.amount, '（万元）') }}</view>
+                <view class="content">10（万元）</view>
               </view>
             </uni-col>
           </uni-row>
@@ -43,13 +42,13 @@
             <uni-col :span="8">
               <view class="col">
                 <view class="label">搬迁方式：</view>
-                <view class="content">{{ formatDict(item.moveType, 221) }}</view>
+                <view class="content">可搬迁</view>
               </view>
             </uni-col>
             <uni-col :span="16">
               <view class="col">
                 <view class="label">规格型号：</view>
-                <view class="content">{{ formatStr(item.size) }}</view>
+                <view class="content">规格型号</view>
               </view>
             </uni-col>
           </uni-row>
@@ -58,58 +57,22 @@
             <uni-col :span="24">
               <view class="col">
                 <view class="label">备注：</view>
-                <view class="content">{{ formatStr(item.remark) }}</view>
+                <view class="content">备注信息备注信息备注信息备注信息备注信息</view>
               </view>
             </uni-col>
           </uni-row>
         </view>
       </view>
     </view>
-
-    <image
-      class="add-btn"
-      src="@/static/images/icon_add.png"
-      mode="scaleToFill"
-      @click="toLink('add')"
-    />
+    <image class="add-btn" src="@/static/images/icon_add.png" mode="scaleToFill" @click="toLink" />
   </view>
 </template>
 
 <script lang="ts" setup>
-import { formatStr, formatDict } from '@/utils'
+import { routerForward } from '@/utils'
 
-const props = defineProps({
-  dataList: {
-    type: Array as any,
-    default: () => []
-  },
-  dataInfo: {
-    type: Object as any,
-    default: () => {}
-  }
-})
-
-const emit = defineEmits(['deleteEquipment'])
-
-const toLink = (type: string, data?: any) => {
-  if (type === 'edit') {
-    const params = { ...data }
-    uni.navigateTo({
-      url: '/pages/common/equipmentInfo/edit?params=' + JSON.stringify(params)
-    })
-  } else {
-    uni.navigateTo({
-      url: '/pages/common/equipmentInfo/edit'
-    })
-  }
-}
-
-/**
- * 删除当前行数据
- * @param {Object} data 当前行数据
- */
-const deleteEquipment = (data: any) => {
-  emit('deleteEquipment', data)
+const toLink = () => {
+  routerForward('collectiveEquipmentInfoEdit')
 }
 </script>
 

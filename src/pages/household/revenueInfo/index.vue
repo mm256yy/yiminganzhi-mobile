@@ -183,6 +183,8 @@ const inputBlur = () => {
   focusIndex.value = -1
 }
 
+const emit = defineEmits(['submit'])
+
 /**
  * 生成新的数组
  * @param {Object} arr 数组
@@ -250,9 +252,7 @@ const total = () => {
 // 表单提交
 const submit = () => {
   const params = { ...firstData.value, ...secondData.value, ...otherData.value }
-  updateLandlordFamilyIncomeApi(props.dataInfo.uid, params).then((res) => {
-    console.log('res:', res)
-  })
+  emit('submit', params)
 }
 
 onMounted(() => {

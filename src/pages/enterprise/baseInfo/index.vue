@@ -114,7 +114,7 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">许可证有效期：</view>
-                <view class="content">{{ formatStr(props.dataInfo.periodValidity) }}</view>
+                <view class="content">{{ fmtDate(props.dataInfo.periodValidity, 7) }}</view>
               </view>
             </uni-col>
             <uni-col :span="12">
@@ -135,7 +135,7 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">税务许可证有效期：</view>
-                <view class="content">{{ formatStr(props.dataInfo.taxPeriodValidity) }}</view>
+                <view class="content">{{ fmtDate(props.dataInfo.taxPeriodValidity, 7) }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -167,7 +167,7 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">成立日期：</view>
-                <view class="content">{{ formatStr(props.dataInfo.establishDate) }}</view>
+                <view class="content">{{ fmtDate(props.dataInfo.establishDate, 7) }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -505,7 +505,7 @@
 </template>
 
 <script lang="ts" setup>
-import { routerForward, dictOption, formatStr, formatDict, splitStr } from '@/utils'
+import { fmtDate, dictOption, formatStr, formatDict, splitStr } from '@/utils'
 import { locationTypes } from '@/config/common'
 
 const props = defineProps({
@@ -520,7 +520,17 @@ const props = defineProps({
 })
 
 const toLink = () => {
-  const { name, doorNo, locationType, phone, parentCode } = props.baseInfo
+  const {
+    name,
+    doorNo,
+    locationType,
+    phone,
+    parentCode,
+    periodValidity,
+    establishDate,
+    taxPeriodValidity
+  } = props.baseInfo
+
   const params = {
     ...props.dataInfo,
     name,
@@ -528,8 +538,12 @@ const toLink = () => {
     phone,
     parentCode,
     preNo: splitStr(doorNo, 0, 8),
-    suffixNo: splitStr(doorNo, 8, 12)
+    suffixNo: splitStr(doorNo, 8, 12),
+    periodValidity: fmtDate(periodValidity),
+    establishDate: fmtDate(establishDate),
+    taxPeriodValidity: fmtDate(taxPeriodValidity)
   }
+
   uni.navigateTo({
     url: '/pages/enterprise/baseInfo/edit?params' + JSON.stringify(params)
   })
