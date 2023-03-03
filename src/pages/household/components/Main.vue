@@ -76,6 +76,7 @@
                 v-if="tabVal === 7"
                 :dataList="dataInfo.immigrantIncomeList"
                 :dataInfo="dataInfo"
+                @submit="updateRevenueInfo"
               />
 
               <!-- 安置意愿信息 -->
@@ -126,7 +127,8 @@ import {
   deleteLandlordHouseApi,
   deleteLandlordTreeApi,
   updateLandlordTreeApi,
-  updateLandlordAppendantApi
+  updateLandlordAppendantApi,
+  updateLandlordFamilyIncomeApi
 } from '@/service'
 
 import iconSrc from '@/static/images/icon_add_household.png' // 侧边栏，添加 icon
@@ -239,6 +241,17 @@ const updateFruitTreeInfo = (data: any) => {
 const updateAccessoryInfo = (data: any) => {
   const params = { ...data }
   updateLandlordAppendantApi(props.dataInfo.uid, params).then((res) => {
+    console.log('res:', res)
+  })
+}
+
+/**
+ * 更新家庭收入信息
+ * @param(Array) data
+ */
+const updateRevenueInfo = (data: any) => {
+  const params = { ...data }
+  updateLandlordFamilyIncomeApi(props.dataInfo.uid, params).then((res) => {
     console.log('res:', res)
   })
 }

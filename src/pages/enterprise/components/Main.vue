@@ -58,14 +58,25 @@
               <accessory-info
                 v-if="tabVal === 4"
                 :dataList="dataInfo.immigrantAppendantList"
+                :dataInfo="dataInfo"
                 @submit="updateAccessoryInfo"
               />
 
               <!-- 设施设备信息 -->
-              <equipment-info v-if="tabVal === 5" />
+              <equipment-info
+                v-if="tabVal === 5"
+                :dataList="dataInfo.immigrantEquipmentList"
+                :dataInfo="dataInfo"
+                @delete-equipment="deleteEquipment"
+              />
 
               <!-- 经营现状信息 -->
-              <business-info v-if="tabVal === 6" />
+              <business-info
+                v-if="tabVal === 6"
+                :dataList="dataInfo.immigrantEquipmentList"
+                :dataInfo="dataInfo"
+                @submit="updateBusinessInfo"
+              />
 
               <!-- 照片上传 -->
               <photo-upload v-if="tabVal === 7" />
@@ -105,7 +116,9 @@ import {
   deleteLandlordHouseApi,
   deleteLandlordTreeApi,
   updateLandlordTreeApi,
-  updateLandlordAppendantApi
+  updateLandlordAppendantApi,
+  deleteLandlordEquipmentApi,
+  updateLandlordManagementApi
 } from '@/service'
 
 import iconSrc from '@/static/images/icon_add_enterprise.png' // 侧边栏，添加 icon
@@ -169,7 +182,7 @@ const selectTabs = (data: any) => {
  * @param(Object) data 被删除的行信息
  */
 const deleteHouse = (data: any) => {
-  deleteLandlordHouseApi(data.uid, data.id).then((res) => {
+  deleteLandlordHouseApi(props.dataInfo.uid, data.id).then((res: any) => {
     console.log('res:', res)
   })
 }
@@ -179,7 +192,7 @@ const deleteHouse = (data: any) => {
  * @param(Object) data 被删除的行信息
  */
 const deleteTree = (data: any) => {
-  deleteLandlordTreeApi(data.uid, data.id).then((res) => {
+  deleteLandlordTreeApi(props.dataInfo.uid, data.id).then((res: any) => {
     console.log('res:', res)
   })
 }
@@ -190,18 +203,35 @@ const deleteTree = (data: any) => {
  */
 const updateFruitTreeInfo = (data: any) => {
   const params = { ...data }
-  updateLandlordTreeApi(props.dataInfo.uid, params).then((res) => {
+  updateLandlordTreeApi(props.dataInfo.uid, params).then((res: any) => {
     console.log('res:', res)
   })
 }
 
 /**
  * 更新附属物信息
- * @param(Array) data
+ * @param(Array) data 提交的参数集合
  */
 const updateAccessoryInfo = (data: any) => {
   const params = { ...data }
-  updateLandlordAppendantApi(props.dataInfo.uid, params).then((res) => {
+  updateLandlordAppendantApi(props.dataInfo.uid, params).then((res: any) => {
+    console.log('res:', res)
+  })
+}
+
+/**
+ * 设施设备 - 删除
+ * @param(Object) data 被删除的行信息
+ */
+const deleteEquipment = (data: any) => {
+  deleteLandlordEquipmentApi(props.dataInfo.uid, data.id).then((res: any) => {
+    console.log('res:', res)
+  })
+}
+
+const updateBusinessInfo = (data: any) => {
+  const params = { ...data }
+  updateLandlordManagementApi(props.dataInfo.uid, params).then((res) => {
     console.log('res:', res)
   })
 }

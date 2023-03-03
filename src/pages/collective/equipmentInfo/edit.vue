@@ -19,43 +19,38 @@
               label="规格型号"
               :label-width="150"
               label-align="right"
-              name="formData.size"
+              name="formData.specModel"
             >
-              <uni-easyinput v-model="formData.size" type="idcard" placeholder="请输入" />
+              <uni-easyinput v-model="formData.specModel" type="idcard" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
         <uni-row>
           <uni-col :span="12">
-            <uni-forms-item
-              label="数量"
-              :label-width="150"
-              label-align="right"
-              name="formData.number"
-            >
-              <uni-easyinput v-model="formData.number" type="number" placeholder="请输入" />
+            <uni-forms-item label="数量" :label-width="150" label-align="right" name="formData.num">
+              <uni-easyinput v-model="formData.num" type="number" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="单位"
               :label-width="150"
               label-align="right"
               name="formData.unit"
             >
-              <uni-data-select v-model="formData.unit" :localdata="dict[268]" />
+              <uni-data-select
+                v-model="formData.unit"
+                :localdata="genderData"
+                @change="changeGender"
+              />
             </uni-forms-item>
           </uni-col>
         </uni-row>
         <uni-row>
           <uni-col :span="12">
-            <uni-forms-item
-              label="用途"
-              :label-width="150"
-              label-align="right"
-              name="formData.purpose"
-            >
-              <uni-easyinput v-model="formData.purpose" placeholder="请输入" />
+            <uni-forms-item label="用途" :label-width="150" label-align="right" name="formData.use">
+              <uni-easyinput v-model="formData.use" type="number" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -63,12 +58,12 @@
               label="建造/购置年份"
               :label-width="150"
               label-align="right"
-              name="formData.year"
+              name="formData.birthday"
             >
               <uni-datetime-picker
                 type="date"
                 placeholder="选择年份"
-                v-model="formData.year"
+                v-model="formData.birthday"
                 @change="changeDate"
               />
             </uni-forms-item>
@@ -80,14 +75,14 @@
               label="原值"
               :label-width="150"
               label-align="right"
-              name="formData.amount"
+              name="formData.originalVal"
             >
               <view :class="['input-wrapper', focusIndex === 1 ? 'focus' : '']">
                 <input
                   class="input-txt"
                   placeholder="请输入"
                   type="number"
-                  v-model="formData.amount"
+                  v-model="formData.originalVal"
                   @focus="inputFocus(1)"
                   @blur="inputBlur"
                 />
@@ -100,9 +95,13 @@
               label="搬迁方式"
               :label-width="150"
               label-align="right"
-              name="formData.moveType"
+              name="formData.relationship"
             >
-              <uni-data-select v-model="formData.moveType" :localdata="dict[221]" />
+              <uni-data-select
+                v-model="formData.relationship"
+                :localdata="relationshipData"
+                @change="changeRelationship"
+              />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -133,8 +132,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { updateLandlordEquipmentApi } from '@/service'
-import { getStorage, StorageKey } from '@/utils/storage'
+import { updateLandlordFacilitiesApi } from '@/service'
 import Back from '@/components/Back/Index.vue'
 
 // 表单数据
@@ -146,17 +144,42 @@ const rules = ref<any>({})
 // 获得焦点的 input 框下标
 const focusIndex = ref<number>(-1)
 
-// 获取数据字典
-const dict = getStorage(StorageKey.DICT)
-
 onLoad((option: any) => {
   formData.value = JSON.parse(option.params)
 })
+
+// 性别数据选项
+const genderData = ref<any>([
+  { text: '男', value: 1 },
+  { text: '女', value: 2 }
+])
+
+// 与户主关系数据选项
+const relationshipData = ref<any>([
+  { text: '户主', value: 1 },
+  { text: '夫', value: 2 },
+  { text: '妻', value: 3 },
+  { text: '子', value: 4 },
+  { text: '独生子', value: 5 },
+  { text: '长子', value: 6 },
+  { text: '次子', value: 7 }
+])
+
+// 性别选择
+const changeGender = (data: any) => {
+  console.log('data:', data)
+}
 
 // 出生年月选择
 const changeDate = (e: any) => {
   console.log('e:', e)
 }
+
+// 与户主关系选择
+const changeRelationship = (data: any) => {
+  console.log('data:', data)
+}
+
 // 输入框获得焦点事件
 const inputFocus = (index: number) => {
   focusIndex.value = index
@@ -170,7 +193,7 @@ const inputBlur = () => {
 // 表单提交
 const submit = () => {
   const params = { ...formData.value }
-  updateLandlordEquipmentApi(params.uid, params).then((res: any) => {
+  updateLandlordFacilitiesApi(params.uid, params).then((res: any) => {
     console.log('res:', res)
   })
 }

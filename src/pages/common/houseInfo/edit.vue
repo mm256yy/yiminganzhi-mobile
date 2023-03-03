@@ -26,6 +26,9 @@
               <uni-data-select v-model="formData.usageType" :localdata="dict[265]" />
             </uni-forms-item>
           </uni-col>
+        </uni-row>
+
+        <uni-row>
           <uni-col :span="12">
             <uni-forms-item
               label="层高"
@@ -56,6 +59,9 @@
               </view>
             </uni-forms-item>
           </uni-col>
+        </uni-row>
+
+        <uni-row>
           <uni-col :span="12">
             <uni-forms-item
               label="房屋产别"
@@ -77,6 +83,9 @@
               <uni-data-select v-model="formData.houseType" :localdata="dict[266]" />
             </uni-forms-item>
           </uni-col>
+        </uni-row>
+
+        <uni-row>
           <uni-col :span="12">
             <uni-forms-item
               label="土地使用权证编号"
@@ -120,6 +129,9 @@
               <uni-data-select v-model="formData.roofMaterialsType" :localdata="dict[309]" />
             </uni-forms-item>
           </uni-col>
+        </uni-row>
+
+        <uni-row>
           <uni-col :span="12">
             <uni-forms-item
               label="外墙"
@@ -140,6 +152,9 @@
               <uni-data-select v-model="formData.interiorWallType" :localdata="dict[257]" />
             </uni-forms-item>
           </uni-col>
+        </uni-row>
+
+        <uni-row>
           <uni-col :span="12">
             <uni-forms-item
               label="地面"
@@ -160,6 +175,9 @@
               <uni-data-select v-model="formData.doorsWindowsType" :localdata="dict[333]" />
             </uni-forms-item>
           </uni-col>
+        </uni-row>
+
+        <uni-row>
           <uni-col :span="12">
             <uni-forms-item
               label="水电"
@@ -223,6 +241,9 @@
               </view>
             </uni-forms-item>
           </uni-col>
+        </uni-row>
+
+        <uni-row>
           <uni-col :span="12">
             <uni-forms-item
               label="土地性质"
@@ -248,6 +269,9 @@
               />
             </uni-forms-item>
           </uni-col>
+        </uni-row>
+
+        <uni-row>
           <uni-col :span="12">
             <uni-forms-item
               label="中心经纬度"

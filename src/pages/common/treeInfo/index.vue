@@ -1,20 +1,20 @@
 <template>
   <view class="tree-info-wrapper">
-    <view class="tree-container">
+    <view class="tree-container" v-if="formData && formData.length > 0">
       <view class="row">
         <view class="col">序号</view>
         <view class="col w-63">品种名称</view>
         <view class="col w-63">用途</view>
         <view class="col w-64">规格</view>
         <view class="col w-64">单位</view>
-        <view class="col w-94">数量</view>
-        <view class="col w-100">备注</view>
+        <view class="col w-64">数量</view>
+        <view class="col w-130">备注</view>
         <view class="col w-29">操作</view>
       </view>
 
       <view class="row" v-for="(item, index) in formData" :key="item.id">
         <view class="col">{{ index }}</view>
-        <view class="col w-63">
+        <view class="col w-63 p-l-2">
           <uni-data-select v-model="item.name" :localdata="dict[250]" />
         </view>
         <view class="col w-63 p-l-2">
@@ -27,11 +27,7 @@
           <uni-data-select v-model="item.unit" :localdata="dict[264]" />
         </view>
         <view class="col w-94">
-          <view class="input-wrapper">
-            <label class="reduce">—</label>
-            <input class="num" v-model="item.num" />
-            <label class="plus">+</label>
-          </view>
+          <input class="remark" type="number" v-model="item.number" placeholder="请输入" />
         </view>
         <view class="col w-100">
           <input class="remark" v-model="item.remark" placeholder="请输入内容" />
@@ -42,6 +38,11 @@
           </label>
         </view>
       </view>
+    </view>
+
+    <view class="null-wrapper" v-else>
+      <image class="icon" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
+      <view class="tips">请先添加零星（林）果木信息</view>
     </view>
 
     <image class="btn add" src="@/static/images/icon_add.png" mode="scaleToFill" @click="addTree" />
@@ -73,7 +74,7 @@ const props = defineProps({
 
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
-const formData = ref<any[]>([])
+const formData = ref<any>([])
 const emit = defineEmits(['deleteTree', 'updateFruitTreeInfo'])
 
 const defaultRow = {
@@ -167,12 +168,8 @@ const submit = () => {
           width: 64rpx;
         }
 
-        &.w-94 {
-          width: 94rpx;
-        }
-
-        &.w-100 {
-          width: 100rpx;
+        &.w-130 {
+          width: 130rpx;
         }
 
         &.p-l-2 {
@@ -259,6 +256,28 @@ const submit = () => {
           font-size: 18rpx !important;
         }
       }
+    }
+  }
+
+  .null-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    height: calc(100vh - 33rpx - 12rpx - 33rpx - 24rpx - 60rpx - var(--status-bar-height));
+    background-color: #fff;
+
+    .icon {
+      width: 152rpx;
+      height: 92rpx;
+    }
+
+    .tips {
+      margin-top: 17rpx;
+      font-size: 9rpx;
+      line-height: 1;
+      color: #171718;
     }
   }
 

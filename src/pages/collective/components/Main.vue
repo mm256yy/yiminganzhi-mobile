@@ -65,7 +65,11 @@
               <grave-info v-if="tabVal === 5" />
 
               <!-- 农村专项及设施 -->
-              <equipment-info v-if="tabVal === 6" />
+              <equipment-info
+                v-if="tabVal === 6"
+                :dataList="dataInfo.immigrantEquipmentList"
+                :dataInfo="dataInfo"
+              />
 
               <!-- 照片上传 -->
               <photo-upload v-if="tabVal === 7" />
@@ -91,7 +95,7 @@ import houseInfo from '../../common/houseInfo/index.vue' // 引入房屋信息�
 import treeInfo from '../../common/treeInfo/index.vue' // 引入零星（林）果木信息组件
 import accessoryInfo from '../../common/accessoryInfo/index.vue' // 引入附属物信息组件
 import graveInfo from '../graveInfo/index.vue' // 引入坟墓信息组件
-import equipmentInfo from '../../common/equipmentInfo/index.vue' // 引入农村专项及设施组件
+import equipmentInfo from '../equipmentInfo/index.vue' // 引入农村专项及设施组件
 import photoUpload from '../photoUpload/index.vue' // 引入照片上传组件
 
 import {

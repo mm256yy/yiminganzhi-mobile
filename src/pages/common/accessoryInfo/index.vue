@@ -10,17 +10,13 @@
         <view class="col w-183">备注</view>
       </view>
 
-      <view class="row" v-for="(item, index) in props.dataList" :key="item.id">
+      <view class="row" v-for="(item, index) in formData" :key="item.id">
         <view class="col">{{ index }}</view>
         <view class="col w-117">{{ item.name }}</view>
         <view class="col w-57">{{ item.size }}</view>
         <view class="col">{{ item.unit }}</view>
         <view class="col w-94">
-          <view class="input-wrapper">
-            <label class="reduce">—</label>
-            <input class="num" v-model="item.number" />
-            <label class="plus">+</label>
-          </view>
+          <input class="remark" type="number" v-model="item.number" placeholder="请输入" />
         </view>
         <view class="col w-183">
           <input class="remark" v-model="item.remark" placeholder="请输入内容" />
@@ -38,19 +34,59 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { getAppendantListApi } from '@/service'
+import { showLoading, hideLoading } from '@/config/loading'
+
 const props = defineProps({
+  dataInfo: {
+    type: Object as any,
+    default: () => {}
+  },
   dataList: {
     type: Array as any,
     default: () => []
   }
 })
 
+const formData = ref<any>([])
 const emit = defineEmits(['submit'])
+const commonParams = {
+  uid: props.dataInfo.uid,
+  householdId: props.dataInfo.id,
+  number: 0,
+  remark: ''
+}
+
+// 获取附属物初始化列表信息
+const getList = async () => {
+  showLoading()
+  await getAppendantListApi().then((res) => {
+    res.map((item: any) => {
+      formData.value.push({
+        surveyId: item.id,
+        name: item.name,
+        size: item.size,
+        unit: item.unit,
+        ...commonParams
+      })
+    })
+    hideLoading()
+  })
+}
 
 // 表单提交
 const submit = () => {
-  emit('submit', props.dataList)
+  emit('submit', formData.value)
 }
+
+onMounted(() => {
+  if (props.dataList && props.dataList.length > 0) {
+    formData.value = [...props.dataList]
+  } else {
+    getList()
+  }
+})
 </script>
 
 <style lang="scss" scoped>

@@ -61,7 +61,7 @@
             <uni-col :span="8">
               <view class="col">
                 <view class="label">竣工日期：</view>
-                <view class="content">{{ item.completedTime }}</view>
+                <view class="content">{{ fmtDate(item.completedTime, 7) }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -110,7 +110,7 @@
 </template>
 
 <script lang="ts" setup>
-import { formatDict, formatStr } from '@/utils'
+import { formatDict, formatStr, fmtDate } from '@/utils'
 
 const props = defineProps({
   dataList: {
