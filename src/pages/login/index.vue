@@ -29,7 +29,7 @@
             placeholder="请输入密码"
           />
         </view>
-        <button class="btn" @click="loginIn">登录</button>
+        <button class="btn" :loading="loading" @click="loginIn">登录</button>
       </view>
       <view class="copy-right">Copyright©浙江省水利水电勘测设计院有限责任公司</view>
     </view>
@@ -43,9 +43,11 @@ import { loginApi, userInfoApi } from './api'
 import { pullInstance } from '@/sync'
 /* #endif */
 import { setStorage, StorageKey, routerForward } from '@/utils'
+import { showLoading, hideLoading } from '@/config'
 
 const name = ref<string>('')
 const password = ref<string>('')
+const loading = ref<boolean>(false)
 
 const iptChange = (type: string, event: any) => {
   const { value } = event.detail
@@ -63,26 +65,38 @@ const doRoute = () => {
 }
 
 const loginIn = async () => {
+  if (loading.value) {
+    return
+  }
+  loading.value = true
   const res = await loginApi({
     userName: unref(name),
     password: unref(password)
+  }).catch(() => {
+    loading.value = false
   })
   console.log('login res', res)
   if (res) {
-    const { token } = res
+    const { token, user } = res
     setStorage(StorageKey.TOKEN, token)
     setStorage(StorageKey.LOGINTIME, new Date().getTime())
+    setStorage(StorageKey.USERINFO, user)
     nextTick(async () => {
-      const userInfo = await userInfoApi()
-      setStorage(StorageKey.USERINFO, userInfo)
       /* #ifdef APP-PLUS */
-      pullInstance.pullProjectData().then((res) => {
-        if (res) {
-          doRoute()
-        }
-      })
+      pullInstance
+        .pullProjectData()
+        .then((res) => {
+          if (res) {
+            doRoute()
+          }
+        })
+        .finally(() => {
+          loading.value = false
+        })
       /* #endif */
     })
+  } else {
+    loading.value = false
   }
 }
 </script>

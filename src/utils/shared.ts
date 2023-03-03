@@ -106,3 +106,23 @@ export function arrayToTree(items: any[]) {
   }
   return result
 }
+
+export const networkCheck = (): Promise<boolean> => {
+  // 检测网络情况
+  return new Promise((resolve, reject) => {
+    uni.getNetworkType({
+      success: function (res) {
+        const networkType = res.networkType
+        if (networkType === 'none' || networkType === '2g') {
+          // 无网络 为离线状态
+          resolve(false)
+        } else {
+          resolve(true)
+        }
+      },
+      fail: function () {
+        reject()
+      }
+    })
+  })
+}

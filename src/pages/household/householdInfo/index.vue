@@ -61,7 +61,7 @@
               <view class="col">
                 <view class="label">所在位置：</view>
                 <view class="content">
-                  {{ props.dataInfo.locationType }}
+                  {{ dictOption(locationTypes, props.dataInfo.locationType) }}
                 </view>
               </view>
             </uni-col>
@@ -111,10 +111,11 @@
 <script lang="ts" setup>
 import { formatStr, formatDict, dictOption } from '@/utils'
 import { yesAndNoEnums } from '../config'
+import { locationTypes } from '@/config/common'
 
 const props = defineProps({
   dataInfo: {
-    type: Object,
+    type: Object as any,
     default: () => {}
   }
 })

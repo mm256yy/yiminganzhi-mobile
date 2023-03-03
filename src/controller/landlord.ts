@@ -6,8 +6,14 @@ import { LandlordTableName, LandlordDDLType } from '@/database'
 import { Common } from './common'
 import { LandlordType } from '@/types/sync'
 import { guid, getCurrentTimeStamp, getStorage, StorageKey } from '@/utils'
-import { LandlordQuery, MainType, LandlordSearchType } from '@/types/common'
-
+import {
+  LandlordQuery,
+  MainType,
+  ReportParamsType,
+  LandlordSearchType,
+  ReportStatusEnum
+} from '@/types/common'
+import dayjs from 'dayjs'
 // uid: string
 // content: string
 // name: string
@@ -99,6 +105,7 @@ export class Landlord extends Common {
       try {
         if (!data) {
           reject([])
+          return
         }
         const { name, timeArray, userId } = data
         const array: LandlordType[] = []
@@ -149,6 +156,7 @@ export class Landlord extends Common {
         if (!data || data.uid) {
           console.log('数据为空或者uid已经存在')
           reject('')
+          return
         }
         const uid = guid()
         data.uid = uid
@@ -164,14 +172,15 @@ export class Landlord extends Common {
         data.immigrantEquipmentList = data.immigrantEquipmentList || []
         data.immigrantFacilitiesList = data.immigrantFacilitiesList || []
 
-        const fields = `'uid','status','type','name','reportDate','reportUser','villageCode','content','updatedDate','isDelete'`
-        const values = `'${uid}','modify','${data.type}','${data.name}','','','${
-          data.villageCode
-        }','${JSON.stringify(data)}','${getCurrentTimeStamp()}','0'`
+        const fields = `'uid','status','type','name','reportStatus','reportDate','reportUser','villageCode','content','updatedDate','isDelete'`
+        const values = `'${uid}','modify','${data.type}','${data.name}','${
+          ReportStatusEnum.UnReport
+        }','','','${data.villageCode}','${JSON.stringify(data)}','${getCurrentTimeStamp()}','0'`
         const res = await this.db.insertTableData(LandlordTableName, values, fields)
         console.log('插入结果', res)
         if (res && res.code) {
           reject('')
+          return
         }
         resolve(uid)
       } catch (error) {
@@ -187,16 +196,20 @@ export class Landlord extends Common {
       try {
         if (!data) {
           reject(false)
+          return
         }
         const values = `status = 'modify',type = '${data.type}',name = '${
           data.name
-        }',reportDate = '${data.reportDate}',reportUser = '${data.reportUser}',villageCode = '${
-          data.villageCode
-        }',content = '${JSON.stringify(data)}',updatedDate = '${getCurrentTimeStamp()}'`
+        }',reportStatus = '${data.reportStatus}',reportDate = '${data.reportDate}',reportUser = '${
+          data.reportUser
+        }',villageCode = '${data.villageCode}',content = '${JSON.stringify(
+          data
+        )}',updatedDate = '${getCurrentTimeStamp()}'`
         const sql = `update ${LandlordTableName} set ${values} where uid = '${data.uid}' and isDelete = '0'`
         const res = await this.db.execteSql([sql])
         if (res && res.code) {
           reject(false)
+          return
         }
         resolve(true)
       } catch (error) {
@@ -212,11 +225,13 @@ export class Landlord extends Common {
       try {
         if (!uid) {
           reject(false)
+          return
         }
         const values = `status = 'modify',isDelete = '1',updatedDate = '${getCurrentTimeStamp()}'`
         const res = await this.db.updateTableData(LandlordTableName, values, 'uid', uid)
         if (res && res.code) {
           reject(false)
+          return
         }
         resolve(true)
       } catch (error) {
@@ -232,6 +247,7 @@ export class Landlord extends Common {
       try {
         if (!uid) {
           reject(null)
+          return
         }
         const result: LandlordDDLType[] = await this.db.selectTableData(
           LandlordTableName,
@@ -336,7 +352,7 @@ export class Landlord extends Common {
           sql += ` and villageCode = '${villageCode}'`
         }
         sql += ` order by updatedDate desc limit ${pageSize} offset ${(page - 1) * pageSize}`
-        console.log(sql, 'sql 语句')
+
         const list: LandlordDDLType[] = await this.db.selectSql(sql)
         if (list && Array.isArray(list)) {
           list.forEach((item) => {
@@ -361,6 +377,139 @@ export class Landlord extends Common {
       } catch (error) {
         console.log(error, 'getLandlordListBySearch-error')
         reject([])
+      }
+    })
+  }
+
+  // 获取首页统计数据
+  getHomeCollection(): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const sql = `select count(reportStatus = 'ReportSucceed' or null) as hasReport,
+        count(reportStatus != 'ReportSucceed' or null) as noReport,
+        count(reportStatus = 'ReportSucceed' and reportDate Between '${dayjs().startOf(
+          'day'
+        )}' and '${dayjs().endOf('day')}' or null) as todayReport
+      from ${LandlordTableName}`
+        const res: LandlordDDLType[] = await this.db.selectSql(sql)
+
+        resolve(res)
+      } catch (error) {
+        console.log(error, 'getHomeCollection-error')
+        reject(null)
+      }
+    })
+  }
+
+  private isNullArray(arr: any) {
+    return !arr || (Array.isArray(arr) && !arr.length)
+  }
+
+  // 数据上报
+  reportData(query: ReportParamsType): Promise<boolean | string[]> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { isCheck, uid, type } = query
+        if (!uid || !type) {
+          reject('参数缺失')
+          return
+        }
+        const data = await this.getLandlordByUid(uid)
+        if (!data) {
+          reject('获取业主信息失败')
+          return
+        }
+        const {
+          demographicList,
+          immigrantAppendantList,
+          immigrantGraveList,
+          immigrantHouseList,
+          immigrantIncomeList,
+          immigrantTreeList,
+          immigrantWillList,
+          immigrantManagementList,
+          immigrantEquipmentList,
+          immigrantFacilitiesList,
+          company
+        } = data
+
+        if (isCheck) {
+          const array: string[] = []
+          if (this.isNullArray(immigrantHouseList)) {
+            array.push('房屋信息采集：未添加房屋记录')
+          }
+          if (this.isNullArray(immigrantTreeList)) {
+            array.push('零星林果木信息采集：未添加林（果）木记录')
+          }
+          if (this.isNullArray(immigrantAppendantList)) {
+            array.push('附属物信息采集：未填写附属物信息')
+          }
+          // 上报开始校验数据
+          if (type === MainType.PeasantHousehold) {
+            // 居民户
+            if (demographicList && demographicList.length <= 1) {
+              array.push('人口信息采集：未添加该户除户主外人口')
+            }
+            if (this.isNullArray(immigrantIncomeList)) {
+              array.push('家庭收入情况信息采集：未填写家庭收入信息')
+            }
+            if (this.isNullArray(immigrantWillList)) {
+              array.push('安置意愿调查信息：未填写安置意愿信息')
+            }
+          } else if (type === MainType.IndividualHousehold) {
+            // 个体户
+            if (!company) {
+              array.push('个体户基本信息：未填写个体户基本信息')
+            }
+          } else if (type === MainType.Company) {
+            // 企业
+            if (!company || JSON.stringify(company) === '{}') {
+              array.push('企业基本信息：未填写企业基本')
+            }
+            if (this.isNullArray(immigrantManagementList)) {
+              array.push('企业经营现状采集：未填写经营现状信息')
+            }
+            if (this.isNullArray(immigrantEquipmentList)) {
+              array.push('企业设施设备采集：未填写企业设施设备信息')
+            }
+          } else if (type === MainType.Village) {
+            // 村集体
+            if (this.isNullArray(immigrantGraveList)) {
+              array.push('坟墓调查信息采集：未添加坟墓调查信息记录')
+            }
+            if (this.isNullArray(immigrantFacilitiesList)) {
+              array.push('农村小型专项及农副业设施信息采集：未添加农村小型专项及农副业设施信息记录')
+            }
+          }
+
+          if (array.length) {
+            // 未通过校验
+            resolve(array)
+            return
+          }
+        }
+
+        const userInfo = getStorage(StorageKey.USERINFO)
+        // 更新上报相关字段
+        data.reportStatus = ReportStatusEnum.ReportSucceed
+        data.reportDate = dayjs().valueOf().toString()
+        data.reportUser = userInfo.id
+
+        const values = `status = 'modify',reportStatus = '${
+          ReportStatusEnum.ReportSucceed
+        }',reportDate = '${dayjs().valueOf()}',reportUser = '${
+          userInfo.id
+        }',content = '${JSON.stringify(data)}',updatedDate = '${getCurrentTimeStamp()}'`
+        const sql = `update ${LandlordTableName} set ${values} where uid = '${data.uid}' and isDelete = '0'`
+        const res = await this.db.execteSql([sql])
+        if (res && res.code) {
+          reject('更新状态失败')
+          return
+        }
+        resolve(true)
+      } catch (error) {
+        console.log(error, 'reportData-error')
+        reject('未知错误')
       }
     })
   }

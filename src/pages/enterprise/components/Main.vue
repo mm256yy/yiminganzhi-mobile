@@ -5,7 +5,7 @@
     <view class="main-cont">
       <view class="list-content">
         <view :class="['list-box', showExpand ? '' : 'list-expand']">
-          <view class="box">
+          <view class="box" v-if="JSON.stringify(props.dataInfo) !== '{}'">
             <view class="list-header">
               <view class="list-header-lt" @click="expandToggle">
                 <image class="expand-img" src="@/static/images/expand.png" mode="scaleToFill" />
@@ -13,8 +13,8 @@
 
               <view class="list-header-rt">
                 <view class="list-header-left">
-                  <view class="name">武义国康竹木地板有限公司佐溪分公司</view>
-                  <view class="account-no">Q1030004</view>
+                  <view class="name">{{ props.dataInfo.name }}</view>
+                  <view class="account-no">{{ props.dataInfo.doorNo }}</view>
                 </view>
 
                 <view class="list-header-right">
@@ -36,7 +36,7 @@
               <Tabs :dataList="tabsList" :expand="showExpand" @select-tabs="selectTabs" />
 
               <!-- 企业基本概况 -->
-              <base-info v-if="tabVal === 1" />
+              <base-info v-if="tabVal === 1" :dataInfo="dataInfo.company" :baseInfo="dataInfo" />
 
               <!-- 房屋信息 -->
               <house-info
@@ -69,6 +69,13 @@
 
               <!-- 照片上传 -->
               <photo-upload v-if="tabVal === 7" />
+            </view>
+          </view>
+
+          <view class="box" v-else>
+            <view class="null-wrapper">
+              <image class="icon" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
+              <view class="tips">请先选择要填报的企业</view>
             </view>
           </view>
         </view>
@@ -119,12 +126,12 @@ import iconPhotoSel from '@/static/images/icon_photo_select.png' // 引入照片
 
 const props = defineProps({
   dataInfo: {
-    type: Object,
+    type: Object as any,
     default: () => {}
   },
   treeData: {
     // 左侧树列表
-    type: Array,
+    type: Array as any,
     default: () => []
   }
 })
@@ -367,6 +374,28 @@ const updateAccessoryInfo = (data: any) => {
   background-color: #fff;
   box-sizing: border-box;
   flex-direction: column;
+}
+
+.null-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: calc(100vh - 33rpx - 12rpx - var(--status-bar-height));
+  background-color: #fff;
+
+  .icon {
+    width: 152rpx;
+    height: 92rpx;
+  }
+
+  .tips {
+    margin-top: 17rpx;
+    font-size: 9rpx;
+    line-height: 1;
+    color: #171718;
+  }
 }
 
 .tree-wrapper {

@@ -256,29 +256,22 @@ class PushData {
           // 拿到结果了
           const { peasantHouseholdPushDtoList, deleteRecordList, pullTime, villageList } =
             this.state
-          if (
-            this.isArrayAndNotNull(peasantHouseholdPushDtoList) &&
-            this.isArrayAndNotNull(villageList) &&
-            this.isArrayAndNotNull(deleteRecordList)
-          ) {
-            pushDataApi({
-              peasantHouseholdPushDtoList,
-              deleteRecordList,
-              pullTime,
-              villageList
+
+          pushDataApi({
+            peasantHouseholdPushDtoList,
+            deleteRecordList,
+            pullTime,
+            villageList
+          })
+            .then((res) => {
+              resolve(res)
             })
-              .then(() => {
-                resolve(true)
-              })
-              .catch((err) => {
-                reject(err)
-              })
-          } else {
-            resolve(true)
-          }
+            .catch((err) => {
+              reject(err)
+            })
         })
         .catch(() => {
-          resolve(false)
+          reject(false)
         })
     })
   }

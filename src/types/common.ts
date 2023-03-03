@@ -69,6 +69,17 @@ export enum DistrictTypeEnum {
   naturalVillage = 'naturalVillage'
 }
 
+export enum ReportStatusEnum {
+  ReportSucceed = 'ReportSucceed',
+  UnReport = 'UnReport'
+}
+
+export interface ReportParamsType {
+  uid: string
+  isCheck: boolean
+  type: MainType
+}
+
 // 数据统计 类型定义
 export type CollectType = {
   totalNum: number

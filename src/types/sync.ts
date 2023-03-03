@@ -30,6 +30,7 @@ export interface LandlordType {
   // code = id
   id: number
   code?: number
+  landlord?: boolean
   uid: string
   name: string
   sex: string
@@ -117,6 +118,11 @@ export interface StateType {
   districtList: DistrictType[]
   villageList: VillageType[]
   collectList: CollectType[]
+
+  peasantHouseholdNum: number
+  companyNum: number
+  individualNum: number
+  villageNum: number
 }
 
 export interface PushStateType {

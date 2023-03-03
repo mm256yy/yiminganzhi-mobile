@@ -1,7 +1,6 @@
 <template>
   <view class="sync-wrap">
     <image class="common-bg" src="@/static/images/common_bg.png" mode="widthFix" />
-    <view :style="{ height: `${statusBarHeight}px` }" />
     <view class="common-header">
       <view class="back-box" @click="onBack">
         <uni-icons type="back" color="#ffffff" size="14rpx" />
@@ -212,16 +211,80 @@
     </view>
 
     <uni-popup ref="popup" type="center">
-      <view class="popup-box"> ddsafdsafs </view>
+      <view class="popup-box">
+        <view class="close" @click.stop="closePup">
+          <uni-icons type="closeempty" color="#979797" size="12rpx" />
+        </view>
+        <view class="pup-title" v-if="syncStatus">
+          <uni-icons type="checkbox-filled" color="#28AF45" size="19rpx" />
+          <text class="tit">数据同步成功</text>
+        </view>
+        <view class="pup-title" v-else>
+          <uni-icons type="info-filled" color="#F75454" size="19rpx" />
+          <text class="tit">数据同步失败</text>
+        </view>
+        <view class="pup-cont">
+          <template v-if="syncStatus">
+            <view class="pup-item" v-if="pushData && pushData.data">
+              <view class="tit">上传成功:&nbsp;</view>
+              <view class="txt"
+                >本次共下载:&nbsp;居民户
+                <text class="num">{{ pushData.data.peasantHouseholdNum }}</text
+                >个，个体户<text class="num">{{ pushData.data.individualNum }}</text
+                >个，企业<text class="num">{{ pushData.data.companyNum }}</text
+                >家，村集体<text class="num">{{ pushData.data.villageNum }}</text
+                >个</view
+              >
+            </view>
+            <view class="pup-item" v-if="pullData">
+              <view class="tit">下载成功:&nbsp;</view>
+              <view class="txt"
+                >本次共下载:&nbsp;居民户<text class="num">{{ pullData.peasantHouseholdNum }}</text
+                >个，个体户<text class="num">{{ pullData.individualNum }}</text
+                >个，企业<text class="num">{{ pullData.companyNum }}</text
+                >家，村集体<text class="num">{{ pullData.villageNum }}</text
+                >个</view
+              >
+            </view>
+          </template>
+
+          <template v-else>
+            <view class="pup-item" v-if="pushData && pushData.data">
+              <view class="tit err">上传失败:&nbsp;</view>
+              <view class="txt"
+                >{{ pushData.data.name }}<text class="err">户号：{{ pushData.data.doorNo }} </text
+                >{{ pushData.message }}</view
+              >
+            </view>
+          </template>
+        </view>
+
+        <view class="pup-btn">
+          <view class="btn" @click="pupConfirm">确定</view>
+        </view>
+      </view>
+    </uni-popup>
+
+    <uni-popup ref="networkPup" type="center">
+      <view class="popup-box">
+        <div class="network">
+          <image class="img" src="@/static/images/network_error.png" mode="scaleToFill" />
+          <view class="txt">数据同步失败</view>
+          <view class="info">网络异常，请到网络状态良好的位置再次上传</view>
+        </div>
+        <view class="pup-btn">
+          <view class="btn" @click="closeNetworkPup">确定</view>
+        </view>
+      </view>
     </uni-popup>
   </view>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { getCollectListApi, getOtherItemApi } from '@/service'
 import { pullInstance, pushInstance } from '@/sync/index'
-import { routerBack } from '@/utils'
+import { routerBack, routerForward, networkCheck } from '@/utils'
 import { CollectType, MainType } from '@/types/common'
 import { hideLoading, showLoading } from '@/config'
 import { OtherDataType } from '@/database'
@@ -231,64 +294,110 @@ const individualHouseholdList = ref<CollectType[]>([])
 const companyList = ref<CollectType[]>([])
 const villageList = ref<CollectType[]>([])
 const pullTime = ref<string>('')
+
 const intervalId = ref(0)
 const count = ref(0)
-const maxCount = ref(30)
+// 拉取次数 一秒检测一次 总共 maxcCount 秒
+const maxCount = ref(60)
 const popup = ref<any>(null)
-
-const sysInfo = uni.getSystemInfoSync()
-const statusBarHeight = sysInfo.statusBarHeight || 0
+const networkPup = ref<any>(null)
+// 同步状态
+const syncStatus = ref<boolean>(false)
+// 同步 拉取统计信息
+const pullData = ref<
+  Partial<{
+    peasantHouseholdNum: number
+    companyNum: number
+    individualNum: number
+    villageNum: number
+  }>
+>({})
+// 同步 推送统计信息
+const pushData = ref<any>({})
 
 const onBack = () => {
   routerBack()
 }
 
-const onSync = () => {
-  console.log('同步数据')
+const polling = () => {
+  intervalId.value = setInterval(() => {
+    console.log('轮询拉取状态')
+    if (count.value === maxCount.value) {
+      hideLoading()
+      clearInterval(intervalId.value)
+      syncStatus.value = false
+      openPup()
+      return
+    }
+    count.value++
+    if (pullInstance.getPullStatus()) {
+      hideLoading()
+      clearInterval(intervalId.value)
+      pageInit()
+      const { peasantHouseholdNum, companyNum, individualNum, villageNum } = pullInstance.state
+      pullData.value = {
+        peasantHouseholdNum,
+        companyNum,
+        individualNum,
+        villageNum
+      }
+      syncStatus.value = true
+      openPup()
+    }
+  }, 1000)
+}
+
+const onSync = async () => {
+  const res = await networkCheck()
+  if (!res) {
+    openNetworkPup()
+    return
+  }
   showLoading({
     title: '正在同步中...',
     mask: true
   })
+  count.value = 0
   pushInstance
     .push()
     .then((res) => {
       if (res) {
+        pushData.value = res
         // 推送成功
         console.log('推送成功，开始拉取')
-        pullInstance.pullAll()
-        intervalId.value = setInterval(() => {
-          console.log('轮询拉取状态')
-          if (count.value === maxCount.value) {
+        pullInstance
+          .pullAll()
+          .then(() => {
+            polling()
+          })
+          .catch(() => {
             hideLoading()
             uni.showToast({
-              title: '同步失败',
-              icon: 'error'
+              title: '登录失效',
+              icon: 'none'
             })
-            clearInterval(intervalId.value)
-            return
-          }
-          count.value++
-          if (pullInstance.getPullStatus()) {
-            hideLoading()
-            uni.showToast({
-              title: '同步成功',
-              icon: 'success'
+            nextTick(() => {
+              routerForward('login')
             })
-            clearInterval(intervalId.value)
-            pageInit()
-          }
-        }, 1000)
+          })
       } else {
         hideLoading()
-        uni.showToast({
-          title: '获取推送数据失败，请重试',
-          mask: true
-        })
+        syncStatus.value = false
+        openPup()
       }
     })
     .catch((errData) => {
       hideLoading()
-      console.log(errData, '推送服务端失败信息')
+      if (errData) {
+        pushData.value = errData
+        syncStatus.value = false
+        openPup()
+        console.log(errData, '推送服务端失败信息')
+      } else {
+        uni.showToast({
+          title: '获取推送数据失败'
+        })
+      }
     })
 }
 
@@ -320,9 +429,27 @@ const closePup = () => {
   popup.value?.close()
 }
 
+const pupConfirm = () => {
+  console.log('确认')
+  if (syncStatus.value) {
+    // 同步成功
+    closePup()
+    routerForward('home')
+  } else {
+    closePup()
+  }
+}
+
+const openNetworkPup = () => {
+  networkPup.value?.open()
+}
+
+const closeNetworkPup = () => {
+  networkPup.value?.close()
+}
+
 onMounted(() => {
   pageInit()
-  openPup()
 })
 
 onBeforeUnmount(() => {
@@ -347,7 +474,7 @@ uni-page-body {
   flex-direction: column;
   width: 750rpx;
   height: 100%;
-  padding: 0 6rpx 9rpx 6rpx;
+  padding: var(--status-bar-height) 6rpx 9rpx 6rpx;
   overflow: hidden;
 
   .common-bg {
@@ -556,9 +683,114 @@ uni-page-body {
 }
 
 .popup-box {
+  position: relative;
   width: 352rpx;
-  height: 203rpx;
+  // height: 203rpx;
   background: #ffffff;
   border-radius: 5rpx;
+
+  .close {
+    position: absolute;
+    top: 0rpx;
+    right: 0rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36rpx;
+    height: 36rpx;
+  }
+
+  .pup-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 28rpx 12rpx 16rpx;
+    font-size: 14rpx;
+    font-weight: 600;
+    color: #333333;
+
+    .tit {
+      margin-left: 7rpx;
+    }
+  }
+
+  .pup-cont {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .pup-item {
+      display: flex;
+      align-items: center;
+      width: 328rpx;
+      height: 33rpx;
+      padding: 0 9rpx;
+      margin-bottom: 9rpx;
+      background: #f6f7f9;
+      border-radius: 2rpx;
+
+      .tit {
+        font-size: 9rpx;
+        color: #28af45;
+      }
+
+      .txt {
+        font-size: 9rpx;
+        color: #171718;
+
+        .num {
+          color: #3e73ec;
+        }
+      }
+
+      .err {
+        color: #f75454;
+      }
+    }
+  }
+
+  .pup-btn {
+    height: 32rpx;
+    border-top: 1rpx solid rgba(0, 0, 0, 0.1);
+
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      font-size: 9rpx;
+      color: #1059ff;
+    }
+  }
+
+  .network {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 23rpx 12rpx 26rpx;
+
+    .img {
+      width: 176rpx;
+      height: 105rpx;
+    }
+
+    .txt {
+      margin-top: 6rpx;
+      font-size: 14rpx;
+      font-weight: 600;
+      line-height: 19rpx;
+      color: #333333;
+    }
+
+    .info {
+      margin-top: 6rpx;
+      font-size: 9rpx;
+      line-height: 13rpx;
+      color: #333333;
+    }
+  }
 }
 </style>

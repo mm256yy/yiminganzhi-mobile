@@ -9,19 +9,20 @@ enum MethodType {
   PUT = 'PUT'
 }
 
-function reject(err: Http.Result) {
-  const { message = '正在排队中，请稍后！', code = -1 } = err
-  switch (code) {
-    case 401:
+function rejectHandle(err: Http.Result, reject: any) {
+  switch (err.status) {
+    case '401':
+      console.log('登录失效')
       // 登录失效
       routerForward('login')
+      reject()
       break
-
     default:
       uni.showToast({
-        title: message,
+        title: err.message || '正在排队中，请稍后！',
         icon: 'none'
       })
+      reject()
       break
   }
 }
@@ -31,13 +32,12 @@ const apiBaseUrl = isAndroid || isIos ? `${env.apiBaseUrl}${env.apiBasePath}` : 
 
 function baseRequest(method: MethodType, option: UniApp.RequestOptions) {
   const { header = {}, data = {}, url } = option
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     if ((data as AnyObject).showLoading) {
       showLoading((data as AnyObject).loadingOptions)
     }
 
     delete (data as AnyObject).isLoading
-    let responseDate: any
     uni.request({
       url: apiBaseUrl + url,
       method,
@@ -51,23 +51,27 @@ function baseRequest(method: MethodType, option: UniApp.RequestOptions) {
       success: (res: any) => {
         if (res.statusCode >= 200 && res.statusCode < 400) {
           if (res.data.code === 0) {
-            responseDate = res.data.data
-          } else {
+            resolve(res.data.data)
+          } else if (res.data.code === -2 || res.data.code === -3) {
             reject(res.data)
+          } else {
+            rejectHandle(res.data, reject)
           }
         } else {
-          reject(res.data)
+          rejectHandle(res.data, reject)
         }
       },
       fail: (err) => {
-        reject({
-          code: -1,
-          message: '网络不给力，请检查你的网络设置~',
-          data: null
-        })
+        rejectHandle(
+          {
+            code: -1,
+            message: '网络不给力，请检查你的网络设置~',
+            data: null
+          },
+          reject
+        )
       },
       complete: () => {
-        resolve(responseDate)
         if ((data as AnyObject).showLoading) {
           hideLoading()
         }

@@ -1,6 +1,6 @@
 <template>
   <view class="house-info-wrapper">
-    <view class="list">
+    <view class="list" v-if="props.dataList && props.dataList.length > 0">
       <view class="list-item" v-for="item in props.dataList" :key="item.id">
         <view class="list-1">
           <view class="left">{{ formatStr(item.houseNo, '幢') }}</view>
@@ -13,7 +13,7 @@
             />
           </view>
         </view>
-        <view class="list-2" @click="toEdit(item)">
+        <view class="list-2" @click="toLink('edit', item)">
           <uni-row>
             <uni-col :span="8">
               <view class="col">
@@ -93,6 +93,19 @@
         </view>
       </view>
     </view>
+    <view class="list" v-else>
+      <view class="null-wrapper">
+        <image class="icon" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
+        <view class="tips">请先添加房屋信息</view>
+      </view>
+    </view>
+
+    <image
+      class="add-btn"
+      src="@/static/images/icon_add.png"
+      mode="scaleToFill"
+      @click="toLink('add')"
+    />
   </view>
 </template>
 
@@ -108,11 +121,17 @@ const props = defineProps({
 
 const emit = defineEmits(['deleteHouse'])
 
-const toEdit = (data: any) => {
-  const params = { ...data }
-  uni.navigateTo({
-    url: '/pages/common/houseInfo/edit?params=' + JSON.stringify(params)
-  })
+const toLink = (type: string, data?: any) => {
+  if (type === 'edit') {
+    const params = { ...data }
+    uni.navigateTo({
+      url: '/pages/common/houseInfo/edit?params=' + JSON.stringify(params)
+    })
+  } else {
+    uni.navigateTo({
+      url: '/pages/common/houseInfo/edit'
+    })
+  }
 }
 
 /**
@@ -188,6 +207,37 @@ const deleteHouse = (data: any) => {
         }
       }
     }
+
+    .null-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      width: 100%;
+      height: calc(100vh - 33rpx - 12rpx - 33rpx - 24rpx - 60rpx - var(--status-bar-height));
+      background-color: #fff;
+
+      .icon {
+        width: 152rpx;
+        height: 92rpx;
+      }
+
+      .tips {
+        margin-top: 17rpx;
+        font-size: 9rpx;
+        line-height: 1;
+        color: #171718;
+      }
+    }
+  }
+
+  .add-btn {
+    position: fixed;
+    right: 6rpx;
+    bottom: 6rpx;
+    width: 66rpx;
+    height: 66rpx;
+    border-radius: 50%;
   }
 }
 </style>

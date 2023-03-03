@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onLaunch, onShow, onHide } from '@dcloudio/uni-app'
-import { setStorage, StorageKey, getStorage, routerForward } from './utils'
+import { StorageKey, getStorage, routerForward } from './utils'
 /* #ifdef APP-PLUS */
 import { pullInstance } from './sync'
 /* #endif */
@@ -23,9 +23,7 @@ onLaunch(() => {
       const networkType = res.networkType
       if (networkType === 'none' || networkType === '2g') {
         // 无网络 为离线状态
-        setStorage(StorageKey.NETWORK, false)
       } else {
-        setStorage(StorageKey.NETWORK, true)
         const loginTime = getStorage(StorageKey.LOGINTIME)
         const now = new Date().getTime()
         const expirationTime = 365 * 24 * 60 * 60 * 1000
@@ -41,7 +39,7 @@ onLaunch(() => {
   })
 })
 onShow(() => {
-  console.log('App Show', uni.getAppBaseInfo())
+  console.log('App Show', uni.getSystemInfoSync())
 })
 onHide(() => {
   console.log('App Hide')

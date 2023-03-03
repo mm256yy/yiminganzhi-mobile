@@ -24,6 +24,7 @@ import {
 } from '@/database/index'
 import { getProjectDataApi, getBaseDataApi, getConfigDataApi, getCollectApi } from './api'
 import { StateType } from '@/types/sync'
+import { ReportStatusEnum } from '@/types/common'
 import { getCurrentTimeStamp, setStorage, StorageKey } from '@/utils'
 import dayjs from 'dayjs'
 
@@ -56,7 +57,12 @@ class PullData {
       districtTree: [],
       districtList: [],
       villageList: [],
-      collectList: []
+      collectList: [],
+
+      peasantHouseholdNum: 0,
+      companyNum: 0,
+      individualNum: 0,
+      villageNum: 0
     }
 
     this.districtMap = {}
@@ -85,10 +91,17 @@ class PullData {
     this.getCollect()
   }
 
-  public async pullAll() {
-    this.count = 0
-    await this.pullProjectData()
-    this.pull()
+  public pullAll() {
+    return new Promise(async (resolve, reject) => {
+      this.count = 0
+      const res = await this.pullProjectData()
+      if (res) {
+        this.pull()
+        resolve(true)
+      } else {
+        reject()
+      }
+    })
   }
 
   public getPullStatus(): boolean {
@@ -101,6 +114,7 @@ class PullData {
       console.log('接口项目数据', result)
       if (!result) {
         resolve(false)
+        return
       }
       this.state.project = result
       const pullRes = await this.pullProject()
@@ -161,11 +175,24 @@ class PullData {
     const result = await getBaseDataApi()
     console.log('接口基础数据', result)
     if (!result) return
-    const { peasantHouseholdPushDtoList, pullTime, deleteRecordList, villageList } = result
+    const {
+      peasantHouseholdPushDtoList,
+      pullTime,
+      deleteRecordList,
+      villageList,
+      peasantHouseholdNum,
+      companyNum,
+      individualNum,
+      villageNum
+    } = result
     this.state.peasantHouseholdPushDtoList = peasantHouseholdPushDtoList
     this.state.deleteRecordList = deleteRecordList
     this.state.pullTime = pullTime
     this.state.villageList = villageList
+    this.state.peasantHouseholdNum = peasantHouseholdNum
+    this.state.companyNum = companyNum
+    this.state.individualNum = individualNum
+    this.state.villageNum = villageNum
 
     // 数据 新增 修改 删除一起进行
     this.pullLandlord().then((res) => {
@@ -278,8 +305,8 @@ class PullData {
       if (this.isArrayAndNotNull(list)) {
         list.forEach((item) => {
           const fields =
-            "'uid','name','type','reportDate','reportUser','status','content','villageCode', 'updatedDate','isDelete'"
-          const values = `'${item.uid}','${item.name}','${item.type}','${
+            "'uid','name','type','reportStatus','reportDate','reportUser','status','content','villageCode', 'updatedDate','isDelete'"
+          const values = `'${item.uid}','${item.name}','${item.type}','${item.reportStatus}','${
             item.reportDate ? dayjs(item.reportDate).format('YYYY-MM-DD HH:mm:ss') : ''
           }','${item.reportUser}','default','${JSON.stringify(item)}','${
             item.villageCode

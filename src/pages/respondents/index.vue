@@ -126,7 +126,7 @@ import { LandlordSearchType, MainType } from '@/types/common'
 import { OtherDataType } from '@/database'
 import { routerForward } from '@/utils'
 
-const tabType = ref<MainType>(MainType.Company)
+const tabType = ref<MainType>(MainType.PeasantHousehold)
 const showVillageSelect = ref<boolean>(false)
 const list = ref<LandlordType[]>([])
 const keyWords = ref<string>('')
@@ -226,12 +226,11 @@ const loadMore = () => {
   getList()
 }
 
-// todo
 const routerMap: any = {
-  [MainType.PeasantHousehold]: '',
-  [MainType.IndividualHousehold]: '',
-  [MainType.Company]: '',
-  [MainType.Village]: ''
+  [MainType.PeasantHousehold]: 'household',
+  [MainType.IndividualHousehold]: 'selfPerson',
+  [MainType.Company]: 'enterprise',
+  [MainType.Village]: 'collective'
 }
 
 const addLandlord = () => {

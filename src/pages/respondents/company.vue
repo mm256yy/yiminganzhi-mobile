@@ -112,10 +112,15 @@ const deleteItem = () => {
       }
 
       .name {
+        width: 220rpx;
         margin-right: 6rpx;
+        overflow: hidden;
         font-size: 12rpx;
         font-weight: 600;
         color: #171718;
+        text-overflow: ellipsis;
+        word-break: keep-all;
+        white-space: nowrap;
       }
     }
 
@@ -198,5 +203,12 @@ const deleteItem = () => {
       }
     }
   }
+}
+
+.test {
+  width: 62rpx;
+  height: 50rpx;
+  background: linear-gradient(274deg, #a8d5ff 0%, #ffffff 100%);
+  opacity: 0.56;
 }
 </style>
