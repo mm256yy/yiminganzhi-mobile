@@ -63,15 +63,15 @@
               label="户号"
               :label-width="150"
               label-align="right"
-              name="formData.doorNo"
+              name="formData.suffixNo"
             >
               <view :class="['input-wrapper', isFocus ? 'focus' : '']">
-                <view class="pre-txt">{{ formData.householdNumber }}</view>
+                <view class="pre-txt">{{ formData.preCode }}</view>
                 <input
                   class="input-txt"
                   type="number"
                   placeholder="请输入"
-                  v-model="formData.doorNo"
+                  v-model="formData.suffixNo"
                   @focus="inputFocus"
                   @blur="inputBlur"
                 />

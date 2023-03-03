@@ -27,7 +27,7 @@ const getTreeData = async () => {
   uni.showLoading({
     title: ''
   })
-  const result = await getLandlordTreeApi(MainType.Village)
+  const result = await getLandlordTreeApi(MainType.PeasantHousehold)
   uni.hideLoading()
   treeData.value = [...result]
 }

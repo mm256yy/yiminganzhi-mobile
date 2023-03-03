@@ -1,5 +1,10 @@
 import { getStorage, StorageKey } from '@/utils'
 
+/**
+ * 枚举数据处理
+ * @param(Array) arr 枚举数据列表
+ * @param(Object) val 枚举的 value 值
+ */
 export const dictOption = (arr: any, val: any) => {
   let str = '-'
   arr.map((item: any) => {
@@ -27,7 +32,6 @@ export const formatDict = (value: any, id: number) => {
   // 获取数据字典
   const dict = getStorage(StorageKey.DICT)
   if (value) {
-    console.log('value:', value)
     return dict[id][value].text
   } else {
     return '-'
@@ -50,5 +54,23 @@ export const formatStr = (str: any, unit?: string) => {
     }
   } else {
     return '-'
+  }
+}
+
+/**
+ * 截取字符串
+ * @param(Object) str 被截取的字符串
+ * @param(Object) startIndex 起始下标
+ * @param(Object) endIndex 结束下标
+ */
+export const splitStr = (str: any, startIndex: number, endIndex: number) => {
+  if (str) {
+    if (startIndex && endIndex) {
+      return str.slice(startIndex, endIndex)
+    } else {
+      return str
+    }
+  } else {
+    return str
   }
 }
