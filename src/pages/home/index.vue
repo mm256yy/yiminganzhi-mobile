@@ -130,7 +130,7 @@
         <view class="other-item" @click="toLink('respondents')">
           <view class="inner">
             <image class="other-icon" src="@/static/images/yimin_enter.png" mode="scaleToFill" />
-            <text class="other-tit">移民管理</text>
+            <text class="other-tit">调查对象管理</text>
           </view>
           <image class="arrow-icon" src="@/static/images/home_arrow.png" mode="scaleToFill" />
         </view>
@@ -495,7 +495,7 @@ onShow(() => {
     margin-top: 36rpx;
 
     &.self {
-      // display: none;
+      display: none;
       margin-top: 10rpx;
     }
 
@@ -524,7 +524,7 @@ onShow(() => {
 
       .other-tit {
         margin-left: 9rpx;
-        font-size: 11rpx;
+        font-size: 9rpx;
         font-weight: 600;
         color: #0a54ff;
       }
