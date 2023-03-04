@@ -42,7 +42,7 @@ watch(
       const town = val.slice(0, 9)
       const area = val.slice(0, 6)
       codes.value = [area, town, val]
-      getTitle()
+      getTitle && getTitle()
     }
   },
   {
