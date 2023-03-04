@@ -29,7 +29,7 @@ export interface LandlordType {
   // parentCode = 居民户virutalVillageCode || 其他villageCode
   // code = id
   id: number
-  code?: number
+  code?: string | number
   landlord?: boolean
   uid: string
   name: string

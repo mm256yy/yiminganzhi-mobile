@@ -17,6 +17,7 @@
     <view
       v-else-if="!hasChildren && props.data.landlord"
       class="tree-item"
+      :class="[props.data.uid === props.uid ? 'active' : '']"
       @click="treeItemClick(props.data)"
     >
       <view class="tree-item-lt">
@@ -55,6 +56,8 @@
         v-for="item in data.children"
         :key="item.id"
         :data="item"
+        :expend-codes="props.expendCodes"
+        :uid="props.uid"
         @tree-item-click="treeItemClick"
       />
     </view>
@@ -65,10 +68,12 @@
 
 <script lang="ts" setup>
 import { LandlordType } from '@/types/sync'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 
 interface PropsType {
   data: LandlordType
+  uid?: string
+  expendCodes?: string[] // 展开的行
 }
 
 const props = defineProps<PropsType>()
@@ -85,6 +90,25 @@ const treeItemClick = (data: any) => {
 
 const hasChildren = computed(() => {
   return props.data.children && props.data.children.length
+})
+
+onMounted(() => {
+  if (props.expendCodes && props.expendCodes.length) {
+    if (props.expendCodes.includes(props.data.code as string)) {
+      open.value = true
+    } else {
+      open.value = false
+    }
+  }
+
+  console.log(props, 'props')
+
+  if (props.uid && props.data.landlord && props.data.uid === props.uid) {
+    setTimeout(() => {
+      console.log('treeItemClick', props.data)
+      emit('treeItemClick', props.data)
+    }, 1000)
+  }
 })
 </script>
 
@@ -103,6 +127,10 @@ const hasChildren = computed(() => {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+
+  &.active {
+    background-color: #e1f0ff;
+  }
 }
 
 .tree-item-lt {

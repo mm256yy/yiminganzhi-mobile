@@ -5,7 +5,7 @@
 export interface ImageDDLType {
   id: number
   url: string
-  file: string
+  file: any
   base64: string
   status: '0' | '1'
   updatedDate: string

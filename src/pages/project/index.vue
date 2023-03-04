@@ -38,7 +38,7 @@
 
     <uni-popup ref="popup" type="center">
       <view class="popup-box">
-        <view class="close" @click.stop="closePup">
+        <view v-if="!syncStatus" class="close" @click.stop="closePup">
           <uni-icons type="closeempty" color="#979797" size="12rpx" />
         </view>
         <view class="pup-title" v-if="syncStatus">
@@ -279,6 +279,9 @@ onMounted(() => {
 
 // 项目切换
 const onChangeProject = (item: ProjectType) => {
+  if (currentProjectId.value === item.id) {
+    return
+  }
   currentProjectId.value = item.id
   setStorage(StorageKey.PROJECTID, item.id)
   setStorage(StorageKey.PROJECTINFO, item)

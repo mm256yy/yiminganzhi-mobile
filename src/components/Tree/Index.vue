@@ -17,6 +17,8 @@
           v-for="item in treeList"
           :key="item.id"
           :data="item"
+          :uid="props.uid"
+          :expendCodes="props.expendCodes || []"
           @tree-item-click="treeItemClick"
         />
       </view>
@@ -30,6 +32,8 @@ import TreeItem from './TreeItem.vue'
 
 interface PropsType {
   treeData: any[]
+  uid?: string
+  expendCodes?: string[] // 展开的行
   iconSrc: string
 }
 

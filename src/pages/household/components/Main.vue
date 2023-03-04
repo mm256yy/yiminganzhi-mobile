@@ -101,7 +101,13 @@
       </view>
 
       <view :class="['tree-wrapper', showExpand ? 'w-0' : 'expand']">
-        <Tree :treeData="props.treeData" :iconSrc="iconSrc" @tree-item-click="treeItemClick" />
+        <Tree
+          :treeData="props.treeData"
+          :expend-codes="props.expendCodes"
+          :uid="props.uid"
+          :iconSrc="iconSrc"
+          @tree-item-click="treeItemClick"
+        />
       </view>
     </view>
   </view>
@@ -158,8 +164,16 @@ const props = defineProps({
   },
   treeData: {
     // 左侧树列表
-    type: Array,
+    type: Array<string>,
     default: () => []
+  },
+  expendCodes: {
+    type: Array<string>,
+    default: () => []
+  },
+  uid: {
+    type: String,
+    default: ''
   }
 })
 

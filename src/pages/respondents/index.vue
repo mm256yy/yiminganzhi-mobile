@@ -244,7 +244,14 @@ const editLandlord = (item: LandlordType) => {
   const name = routerMap[tabType.value]
   routerForward(name, {
     type: 'edit',
-    uid: item.uid
+    uid: item.uid,
+    expendCodes: [
+      item.areaCode,
+      item.townCode,
+      item.villageCode,
+      item.virutalVillageCode,
+      item.code
+    ]
   })
 }
 

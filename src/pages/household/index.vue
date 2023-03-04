@@ -3,7 +3,13 @@
     <image src="@/static/images/head_bg.png" class="head-bg" />
     <view class="home-wrap" :style="{ height: `${pageHeight}px` }">
       <view class="home-body">
-        <Main :treeData="treeData" :dataInfo="dataInfo" @tree-item-click="treeItemClick" />
+        <Main
+          :treeData="treeData"
+          :uid="uid"
+          :expend-codes="expendCodes"
+          :dataInfo="dataInfo"
+          @tree-item-click="treeItemClick"
+        />
       </view>
     </view>
   </view>
@@ -14,6 +20,13 @@ import { ref, onMounted } from 'vue'
 import { getLandlordTreeApi } from '@/service'
 import { MainType } from '@/types/common'
 import Main from './components/Main.vue'
+import { onLoad } from '@dcloudio/uni-app'
+
+interface PageQueryType {
+  uid: string
+  expendCodes: string[]
+  type: 'edit'
+}
 
 const sysInfo = uni.getSystemInfoSync()
 const statusBarHeight = sysInfo.statusBarHeight || 0
@@ -21,6 +34,18 @@ const screenHeight = sysInfo.screenHeight
 const pageHeight = screenHeight - statusBarHeight
 const treeData = ref<any>([])
 const dataInfo = ref<any>({})
+// 默认选择的业主
+const expendCodes = ref<string[]>([])
+const uid = ref<string>('')
+
+onLoad((option) => {
+  // PageQueryType
+  console.log(option, 'option')
+  if (option && option.uid) {
+    expendCodes.value = option.expendCodes.split(',')
+    uid.value = option.uid
+  }
+})
 
 // 获取左侧树列表
 const getTreeData = async () => {

@@ -286,8 +286,8 @@ class PushData {
               // 失败了 等下次在上传
             })
         }
-      } catch (e) {
-        //TODO handle the exception
+      } catch (err) {
+        console.log('uploadImages-error', err)
       }
     })
   }
@@ -296,7 +296,12 @@ class PushData {
   public async push(): Promise<any> {
     return new Promise((resolve, reject) => {
       // 一起执行
-      Promise.all([this.getModifyLandlordList, this.getModifyVillageList, this.getPullTime])
+      Promise.all([
+        this.getModifyLandlordList,
+        this.getModifyVillageList,
+        this.getPullTime,
+        this.uploadImages
+      ])
         .then(() => {
           // 拿到结果了
           const { peasantHouseholdPushDtoList, deleteRecordList, pullTime, villageList } =

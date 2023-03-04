@@ -22,7 +22,7 @@
       <view class="list-wrap">
         <view class="list-item">
           <image class="bg" src="@/static/images/head_1.png" mode="scaleToFill" />
-          <view class="title">
+          <view class="title" @click="jump(MainType.PeasantHousehold)">
             <text class="tit">居民户</text>
             <image
               class="right-arrow"
@@ -69,7 +69,7 @@
 
         <view class="list-item">
           <image class="bg" src="@/static/images/head_2.png" mode="scaleToFill" />
-          <view class="title">
+          <view class="title" @click="jump(MainType.IndividualHousehold)">
             <text class="tit">个体户</text>
             <image
               class="right-arrow"
@@ -116,7 +116,7 @@
 
         <view class="list-item">
           <image class="bg" src="@/static/images/head_3.png" mode="scaleToFill" />
-          <view class="title">
+          <view class="title" @click="jump(MainType.Company)">
             <text class="tit">企业</text>
             <image
               class="right-arrow"
@@ -163,7 +163,7 @@
 
         <view class="list-item">
           <image class="bg" src="@/static/images/head_4.png" mode="scaleToFill" />
-          <view class="title">
+          <view class="title" @click="jump(MainType.Village)">
             <text class="tit">村集体</text>
             <image
               class="right-arrow"
@@ -212,7 +212,7 @@
 
     <uni-popup ref="popup" type="center">
       <view class="popup-box">
-        <view class="close" @click.stop="closePup">
+        <view v-if="!syncStatus" class="close" @click.stop="closePup">
           <uni-icons type="closeempty" color="#979797" size="12rpx" />
         </view>
         <view class="pup-title" v-if="syncStatus">
@@ -314,6 +314,17 @@ const pullData = ref<
 >({})
 // 同步 推送统计信息
 const pushData = ref<any>({})
+
+const routerMap: any = {
+  [MainType.PeasantHousehold]: 'household',
+  [MainType.IndividualHousehold]: 'selfPerson',
+  [MainType.Company]: 'enterprise',
+  [MainType.Village]: 'collective'
+}
+
+const jump = (type: MainType) => {
+  routerForward(routerMap[type])
+}
 
 const onBack = () => {
   routerBack()

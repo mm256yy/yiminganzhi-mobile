@@ -226,13 +226,6 @@ const loginOut = () => {
 }
 
 onShow(() => {
-  getHomeCollectionApi().then((res) => {
-    console.log(res, 'res')
-    collection.value = res ? res[0] : null
-  })
-})
-
-onMounted(() => {
   getDictObj()
 
   const user = getStorage(StorageKey.USERINFO)
@@ -243,6 +236,11 @@ onMounted(() => {
 
   networkCheck().then((res) => {
     netWork.value = res
+  })
+
+  getHomeCollectionApi().then((res) => {
+    console.log(res, 'res')
+    collection.value = res ? res[0] : null
   })
 })
 </script>
