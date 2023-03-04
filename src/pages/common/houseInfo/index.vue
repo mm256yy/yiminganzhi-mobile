@@ -93,11 +93,10 @@
         </view>
       </view>
     </view>
-    <view class="list" v-else>
-      <view class="null-wrapper">
-        <image class="icon" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
-        <view class="tips">请先添加房屋信息</view>
-      </view>
+
+    <view class="null-wrapper" v-else>
+      <image class="icon" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
+      <view class="tips">请先添加房屋信息</view>
     </view>
 
     <image
@@ -207,27 +206,27 @@ const deleteHouse = (data: any) => {
         }
       }
     }
+  }
 
-    .null-wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      width: 100%;
-      height: calc(100vh - 33rpx - 12rpx - 33rpx - 24rpx - 60rpx - var(--status-bar-height));
-      background-color: #fff;
+  .null-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    height: calc(100vh - 33rpx - 12rpx - 33rpx - 24rpx - 60rpx - var(--status-bar-height));
+    background-color: #fff;
 
-      .icon {
-        width: 152rpx;
-        height: 92rpx;
-      }
+    .icon {
+      width: 152rpx;
+      height: 92rpx;
+    }
 
-      .tips {
-        margin-top: 17rpx;
-        font-size: 9rpx;
-        line-height: 1;
-        color: #171718;
-      }
+    .tips {
+      margin-top: 17rpx;
+      font-size: 9rpx;
+      line-height: 1;
+      color: #171718;
     }
   }
 

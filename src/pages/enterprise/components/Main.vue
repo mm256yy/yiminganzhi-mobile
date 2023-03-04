@@ -93,7 +93,12 @@
       </view>
 
       <view :class="['tree-wrapper', showExpand ? 'w-0' : 'expand']">
-        <Tree :treeData="treeData" :iconSrc="iconSrc" @tree-item-click="treeItemClick" />
+        <Tree
+          :treeData="treeData"
+          :iconSrc="iconSrc"
+          @tree-item-click="treeItemClick"
+          @add-click="routerForward('baseInfoEdit')"
+        />
       </view>
     </view>
   </view>
@@ -101,6 +106,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { routerForward } from '@/utils'
 import Back from '@/components/Back/Index.vue'
 import Tree from '@/components/Tree/Index.vue'
 import Tabs from '@/components/Tabs/Index.vue'

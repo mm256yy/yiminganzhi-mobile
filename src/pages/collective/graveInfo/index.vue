@@ -2,34 +2,34 @@
   <view class="grave-info-wrapper">
     <!-- 坟墓信息 -->
     <view class="list">
-      <view class="list-item">
+      <view class="list-item" v-for="item in dataList" :key="item.id">
         <view class="list-1">
           <view class="left">
             <view class="icon">登记人</view>
-            <view class="name">杨汉中</view>
+            <view class="name">{{ formatStr(item.name) }}</view>
           </view>
-          <label class="right" @click="deleteData">
+          <label class="right" @click="deleteGraveInfo(item)">
             <image class="icon" src="@/static/images/icon_delete_mini.png" />
           </label>
         </view>
-        <view class="list-2" @click="toLink">
+        <view class="list-2" @click="toLink('edit', item)">
           <uni-row>
             <uni-col :span="8">
               <view class="col">
                 <view class="label">与登记人关系：</view>
-                <view class="content">父子</view>
+                <view class="content">{{ formatDict(item.relation, 307) }}</view>
               </view>
             </uni-col>
             <uni-col :span="8">
               <view class="col">
                 <view class="label">户号：</view>
-                <view class="content">1234567890</view>
+                <view class="content">{{ formatStr(item.doorNo) }}</view>
               </view>
             </uni-col>
             <uni-col :span="8">
               <view class="col">
                 <view class="label">穴位：</view>
-                <view class="content">单穴</view>
+                <view class="content">{{ formatDict(item.graveType, 345) }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -38,19 +38,19 @@
             <uni-col :span="8">
               <view class="col">
                 <view class="label">数量：</view>
-                <view class="content">1（坐）</view>
+                <view class="content">{{ formatStr(item.number, '（坐）') }}</view>
               </view>
             </uni-col>
             <uni-col :span="8">
               <view class="col">
                 <view class="label">材料：</view>
-                <view class="content">泥土</view>
+                <view class="content">{{ formatDict(item.materials, 295) }}</view>
               </view>
             </uni-col>
             <uni-col :span="8">
               <view class="col">
                 <view class="label">立墓年份：</view>
-                <view class="content">1989年11月</view>
+                <view class="content">{{ item.graveYear }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -59,7 +59,7 @@
             <uni-col :span="24">
               <view class="col">
                 <view class="label">所处位置：</view>
-                <view class="content">线内</view>
+                <view class="content">{{ formatDict(item.gravePosition, 288) }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -68,26 +68,69 @@
             <uni-col :span="24">
               <view class="col">
                 <view class="label">备注：</view>
-                <view class="content">备注</view>
+                <view class="content">{{ formatStr(item.remark) }}</view>
               </view>
             </uni-col>
           </uni-row>
         </view>
       </view>
     </view>
-    <image class="add-btn" src="@/static/images/icon_add.png" mode="scaleToFill" @click="toLink" />
+
+    <image
+      class="add-btn"
+      src="@/static/images/icon_add.png"
+      mode="scaleToFill"
+      @click="toLink('add')"
+    />
   </view>
 </template>
 
 <script lang="ts" setup>
-import { routerForward } from '@/utils'
+import { routerForward, formatStr, formatDict, dictOption } from '@/utils'
+import { locationTypes } from '@/config/common'
 
-const toLink = () => {
-  routerForward('collectiveGraveInfoEdit')
+const props = defineProps({
+  dataList: {
+    type: Array as any,
+    default: () => []
+  },
+  dataInfo: {
+    type: Object as any,
+    default: () => {}
+  }
+})
+
+const emit = defineEmits(['deleteGraveInfo'])
+
+/**
+ * 删除当前行信息
+ * @param data
+ */
+const deleteGraveInfo = (data: any) => {
+  emit('deleteGraveInfo', data)
 }
 
-// 删除当前行信息
-const deleteData = () => {}
+const toLink = (type: string, data?: any) => {
+  let params = {
+    uid: props.dataInfo.uid,
+    doorNo: props.dataInfo.doorNo,
+    householdId: props.dataInfo.householdId
+  }
+
+  if (type === 'edit') {
+    params = {
+      ...params,
+      ...data
+    }
+    uni.navigateTo({
+      url: '/pages/collective/graveInfo/edit?params=' + JSON.stringify(params)
+    })
+  } else {
+    uni.navigateTo({
+      url: '/pages/collective/graveInfo/edit?params=' + JSON.stringify(params)
+    })
+  }
+}
 </script>
 
 <style lang="scss" scoped>

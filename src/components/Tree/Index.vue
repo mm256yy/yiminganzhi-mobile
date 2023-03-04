@@ -6,7 +6,7 @@
         <input class="txt" placeholder="搜索" @confirm="iptConfirm" :value="keyWords" />
         <uni-icons v-if="keyWords" @click="clear" type="clear" color="#999999" size="14rpx" />
       </view>
-      <label class="add-wrap">
+      <label class="add-wrap" @click="addClick">
         <image class="add-icon" :src="iconSrc" mode="scaleToFill" />
       </label>
     </view>
@@ -34,7 +34,7 @@ interface PropsType {
 }
 
 const props = defineProps<PropsType>()
-const emit = defineEmits(['treeItemClick'])
+const emit = defineEmits(['treeItemClick', 'addClick'])
 const keyWords = ref<string>('')
 
 const treeList = ref<any>([])
@@ -106,6 +106,10 @@ const clear = () => {
 
 const treeItemClick = (data: any) => {
   emit('treeItemClick', data)
+}
+
+const addClick = () => {
+  emit('addClick')
 }
 </script>
 

@@ -12,13 +12,13 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">村集体名称：</view>
-                <view class="content">大溪村村集体</view>
+                <view class="content">{{ formatStr(props.dataInfo.name) }}</view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">村集体编码：</view>
-                <view class="content">JT1030004</view>
+                <view class="content">{{ formatStr(props.dataInfo.doorNo) }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -27,13 +27,15 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">所在位置：</view>
-                <view class="content">淹没区</view>
+                <view class="content">{{
+                  dictOption(locationTypes, props.dataInfo.locationType)
+                }}</view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">联系方式：</view>
-                <view class="content">1301234567</view>
+                <view class="content">{{ formatStr(props.dataInfo.phone) }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -42,7 +44,13 @@
             <uni-col :span="24">
               <view class="col">
                 <view class="label">所属区域：</view>
-                <view class="content">浙江省绍兴市新昌县镜岭镇</view>
+                <view class="content">
+                  {{
+                    props.dataInfo.areaCodeText +
+                    props.dataInfo.townCodeText +
+                    props.dataInfo.villageCodeText
+                  }}
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -51,7 +59,7 @@
             <uni-col :span="24">
               <view class="col">
                 <view class="label">备注：</view>
-                <view class="content">备注</view>
+                <view class="content">{{ formatStr(props.dataInfo.remark) }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -74,6 +82,7 @@
         </view>
       </view>
     </view>
+
     <image
       class="edit-btn"
       src="@/static/images/icon_edit.png"
@@ -84,10 +93,30 @@
 </template>
 
 <script lang="ts" setup>
-import { routerForward } from '@/utils'
+import { dictOption, formatStr, splitStr } from '@/utils'
+import { locationTypes } from '@/config/common'
+
+const props = defineProps({
+  dataInfo: {
+    type: Object,
+    default: () => {}
+  }
+})
 
 const toLink = () => {
-  routerForward('collectiveBaseInfoEdit')
+  const params = {
+    uid: props.dataInfo.uid,
+    name: props.dataInfo.name,
+    preNo: splitStr(props.dataInfo.doorNo, 0, 8),
+    suffixNo: splitStr(props.dataInfo.doorNo, 8, 12),
+    locationType: props.dataInfo.locationType,
+    phone: props.dataInfo.phone,
+    parentCode: props.dataInfo.parentCode,
+    immigrantFile: props.dataInfo.immigrantFile
+  }
+  uni.navigateTo({
+    url: '/pages/collective/baseInfo/edit?params=' + JSON.stringify(params)
+  })
 }
 </script>
 
