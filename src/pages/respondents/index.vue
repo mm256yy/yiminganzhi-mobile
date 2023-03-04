@@ -226,6 +226,7 @@ const loadMore = () => {
   getList()
 }
 
+// 填报
 const routerMap: any = {
   [MainType.PeasantHousehold]: 'household',
   [MainType.IndividualHousehold]: 'selfPerson',
@@ -233,8 +234,16 @@ const routerMap: any = {
   [MainType.Village]: 'collective'
 }
 
+// 新增 路由 map
+const addRouterMap: any = {
+  [MainType.PeasantHousehold]: 'householdInfoEdit',
+  [MainType.IndividualHousehold]: 'selfBaseInfoEdit',
+  [MainType.Company]: 'baseInfoEdit',
+  [MainType.Village]: 'collectiveBaseInfoEdit'
+}
+
 const addLandlord = () => {
-  const name = routerMap[tabType.value]
+  const name = addRouterMap[tabType.value]
   routerForward(name, {
     type: 'add'
   })
