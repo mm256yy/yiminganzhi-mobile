@@ -112,7 +112,8 @@ const addTree = () => {
 
 // 表单提交
 const submit = () => {
-  emit('updateFruitTreeInfo', formData.value)
+  const params = { ...formData.value }
+  emit('updateFruitTreeInfo', params)
 }
 </script>
 

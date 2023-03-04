@@ -117,6 +117,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
 import Tree from '@/components/Tree/Index.vue'
 import Tabs from '@/components/Tabs/Index.vue'
@@ -139,8 +140,6 @@ import {
   updateLandlordFamilyIncomeApi,
   updateLandlordWillApi
 } from '@/service'
-import { routerBack } from '@/utils'
-import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 
 import iconSrc from '@/static/images/icon_add_household.png' // 侧边栏，添加 icon
 import iconHouseholdDef from '@/static/images/icon_household_default.png' // 引入居民户信息默认 icon

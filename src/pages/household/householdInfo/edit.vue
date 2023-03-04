@@ -23,12 +23,6 @@
                 v-model:villageCode="formData.villageCode"
                 v-model:virutalVillageCode="formData.virutalVillageCode"
               />
-              <!-- <uni-data-picker
-                :localdata="villageData"
-                popup-title="请选择"
-                @change="changeVillage"
-                @nodeclick="clickVillageNode"
-              /> -->
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -166,6 +160,7 @@ import { routerBack, getStorage, StorageKey } from '@/utils'
 import { addLandlordApi, updateLandlordApi } from '@/service'
 import { locationTypes } from '@/config/common'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
+import { MainType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
 import NaturalVillageSelectFormItem from '@/components/NaturalVillageSelectFormItem/index.vue'
 
@@ -175,7 +170,7 @@ const form = ref<any>(null)
 
 // 表单校验规则
 const rules = reactive({
-  name: { rules: [{ required: true, message: '请输入账号', trigger: 'blur' }] },
+  name: { rules: [{ required: true, message: '请输入', trigger: 'blur' }] },
   parentCode: { rules: [{ required: true, message: '请选择', trigger: 'change' }] },
   doorNo: { rules: [{ required: true, message: '请输入', trigger: 'blur' }] }
 })
@@ -212,10 +207,14 @@ const inputBlur = () => {
 
 // 表单提交
 const submit = () => {
-  const params = { ...formData.value }
+  let params = { ...formData.value }
   form.value?.validate().then((valid: any) => {
     if (valid) {
       if (type.value === 'add') {
+        params = {
+          ...params,
+          type: MainType.PeasantHousehold
+        }
         addLandlordApi(params)
           .then((res) => {
             if (res) {

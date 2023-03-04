@@ -1,6 +1,6 @@
 <template>
   <view class="form-wrapper">
-    <Back title="坟墓信息编辑" />
+    <Back :title="title" />
     <view class="main">
       <uni-forms class="form" ref="form" :modelValue="formData" :rules="rules">
         <uni-row>
@@ -139,15 +139,20 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { getStorage, StorageKey } from '@/utils/storage'
-import { updateLandlordGraveApi } from '@/service'
+import { routerBack, getStorage, StorageKey } from '@/utils'
+import { addLandlordGraveApi, updateLandlordGraveApi } from '@/service'
+import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config'
+import { MainType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
 
 // 表单数据
 const formData = ref<any>({})
+const form = ref<any>(null)
 
 // 获得焦点的输入框下标
 const focusIndex = ref<number>(-1)
+const title = ref<string>('')
+const type = ref<string>('')
 
 // 表单校验规则
 const rules = ref<any>({})
@@ -155,8 +160,16 @@ const rules = ref<any>({})
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
 
+// 获取上个页面传递的参数，给表单赋值
 onLoad((option: any) => {
-  formData.value = JSON.parse(option.params)
+  type.value = option.type
+  if (option.type === 'edit') {
+    let params = JSON.parse(option.params)
+    formData.value = { ...params }
+    title.value = '坟墓信息编辑'
+  } else if (option.type === 'add') {
+    title.value = '添加坟墓'
+  }
 })
 
 // 输入框获得焦点事件
@@ -176,9 +189,37 @@ const changeDate = (e: any) => {
 
 // 表单提交
 const submit = () => {
-  const params = { ...formData.value }
-  updateLandlordGraveApi(params.uid, params).then((res) => {
-    console.log('res:', res)
+  let params = { ...formData.value }
+  form.value?.validate().then((valid: any) => {
+    if (valid) {
+      if (type.value === 'add') {
+        params = {
+          ...params,
+          type: MainType.Village
+        }
+        addLandlordGraveApi(params.uid, params)
+          .then((res) => {
+            if (res) {
+              showToast(SUCCESS_MSG)
+              routerBack()
+            }
+          })
+          .catch((e) => {
+            showToast(ERROR_MSG)
+          })
+      } else if (type.value === 'edit') {
+        updateLandlordGraveApi(params.uid, params)
+          .then((res) => {
+            if (res) {
+              showToast(SUCCESS_MSG)
+              routerBack()
+            }
+          })
+          .catch((e) => {
+            showToast(ERROR_MSG)
+          })
+      }
+    }
   })
 }
 </script>

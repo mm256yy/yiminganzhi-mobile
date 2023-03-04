@@ -10,9 +10,11 @@
 </template>
 
 <script setup lang="ts">
+import { onLoad, onShow } from '@dcloudio/uni-app'
 import { ref, onMounted } from 'vue'
-import { getLandlordTreeApi } from '@/service'
+import { getLandlordTreeApi, getLandlordItemApi } from '@/service'
 import { MainType } from '@/types/common'
+import { showLoading, hideLoading } from '@/config'
 import Main from './components/Main.vue'
 
 const sysInfo = uni.getSystemInfoSync()
@@ -21,14 +23,29 @@ const screenHeight = sysInfo.screenHeight
 const pageHeight = screenHeight - statusBarHeight
 const treeData = ref<any>([])
 const dataInfo = ref<any>({})
+// 默认选择的业主
+const expendCodes = ref<string[]>([])
+const uid = ref<string>('')
+
+onShow(() => {
+  if (uid.value) {
+    getLandlordDetail(uid.value)
+  }
+})
+
+onLoad((option) => {
+  // PageQueryType
+  if (option && option.uid) {
+    expendCodes.value = option.expendCodes.split(',')
+    uid.value = option.uid
+  }
+})
 
 // 获取左侧树列表
 const getTreeData = async () => {
-  uni.showLoading({
-    title: ''
-  })
+  showLoading()
   const result = await getLandlordTreeApi(MainType.Village)
-  uni.hideLoading()
+  hideLoading()
   treeData.value = [...result]
 }
 
@@ -38,6 +55,16 @@ const getTreeData = async () => {
  */
 const treeItemClick = (data: any) => {
   dataInfo.value = { ...data }
+}
+
+/**
+ * 获取企业详情
+ * @param(object) uid
+ */
+const getLandlordDetail = (uid: string) => {
+  getLandlordItemApi(uid).then((res: any) => {
+    dataInfo.value = { ...res }
+  })
 }
 
 onMounted(() => {

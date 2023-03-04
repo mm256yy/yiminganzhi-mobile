@@ -72,13 +72,12 @@
               label="所属区域"
               :label-width="170"
               label-align="right"
-              name="formData.parentCode"
+              name="formData.villageCode"
             >
-              <uni-data-picker
-                :localdata="villageData"
-                popup-title="请选择"
-                @change="changeVillage"
-                @nodeclick="clickVillageNode"
+              <village-select-form-item
+                v-model:areaCode="formData.areaCode"
+                v-model:townCode="formData.townCode"
+                v-model:villageCode="formData.villageCode"
               />
             </uni-forms-item>
           </uni-col>
@@ -854,16 +853,24 @@
 
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
-import { ref } from 'vue'
-import { getStorage, StorageKey } from '@/utils'
+import { ref, reactive } from 'vue'
+import { routerBack, getStorage, StorageKey } from '@/utils'
+import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { addLandlordCompanyApi, updateLandlordCompanyApi } from '@/service'
+import { MainType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
+import VillageSelectFormItem from '@/components/VillageSelectFormItem/index.vue'
 
 // 表单数据
 const formData = ref<any>({})
 
 // 表单校验规则
-const rules = ref<any>({})
+const rules = reactive({
+  legalPersonName: { rules: [{ required: true, message: '请输入', trigger: 'blur' }] },
+  legalPersonCard: { rules: [{ required: true, message: '请输入', trigger: 'blur' }] },
+  suffixNo: { rules: [{ required: true, message: '请输入', trigger: 'blur' }] },
+  villageCode: { rules: [{ required: true, message: '请选择', trigger: 'change' }] }
+})
 
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
@@ -885,50 +892,6 @@ onLoad((option: any) => {
   }
 })
 
-// 自然村/村民小组 选项
-const villageData = ref<any>([
-  {
-    text: '清溪镇',
-    value: '1',
-    children: [
-      {
-        text: '清溪行政村',
-        value: '1-1',
-        children: [
-          {
-            text: '杨村自然村',
-            value: '1-1-1'
-          },
-          {
-            text: '李村自然村',
-            value: '1-1-2'
-          }
-        ]
-      }
-    ]
-  },
-  {
-    text: '大溪镇',
-    value: '2',
-    children: [
-      {
-        text: '大溪行政村',
-        value: '2-1',
-        children: [
-          {
-            text: '王村自然村',
-            value: '2-1-1'
-          },
-          {
-            text: '石村自然村',
-            value: '2-1-2'
-          }
-        ]
-      }
-    ]
-  }
-])
-
 // 税务许可证有效期选择
 const changeDate = (e: any) => {
   console.log('e:', e)
@@ -942,16 +905,6 @@ const inputFocus = (index: number) => {
 // 输入框失去焦点
 const inputBlur = () => {
   focusIndex.value = -1
-}
-
-// 选择所属区域
-const changeVillage = (e: any) => {
-  console.log('e:', e)
-}
-
-// 点击 所属区域 节点
-const clickVillageNode = (node: any) => {
-  console.log('node:', node)
 }
 
 // 获取上传状态
@@ -978,13 +931,31 @@ const fail = (e: any) => {
 const submit = () => {
   let params = { ...formData.value }
   if (type.value === 'add') {
-    addLandlordCompanyApi(params.uid, params).then((res) => {
-      console.log('res:', res)
-    })
+    params = {
+      ...params,
+      type: MainType.Company
+    }
+    addLandlordCompanyApi(params.uid, params)
+      .then((res) => {
+        if (res) {
+          showToast(SUCCESS_MSG)
+          routerBack()
+        }
+      })
+      .catch((e) => {
+        showToast(ERROR_MSG)
+      })
   } else if (type.value === 'edit') {
-    updateLandlordCompanyApi(params.uid, params).then((res) => {
-      console.log('res:', res)
-    })
+    updateLandlordCompanyApi(params.uid, params)
+      .then((res) => {
+        if (res) {
+          showToast(SUCCESS_MSG)
+          routerBack()
+        }
+      })
+      .catch((e) => {
+        showToast(ERROR_MSG)
+      })
   }
 }
 </script>

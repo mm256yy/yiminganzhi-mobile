@@ -145,7 +145,7 @@
     <view class="title" v-if="welfareFundData && welfareFundData.length > 0">职工福利基金</view>
 
     <uni-row v-for="item in welfareFundData" :key="item.id">
-      <uni-col class="sub-title" :span="4"></uni-col>
+      <uni-col class="sub-title" :span="4" />
       <uni-col :span="20">
         <uni-row>
           <uni-col :span="8">
@@ -216,7 +216,7 @@
     <view class="title" v-if="laborUnionFundsData && laborUnionFundsData.length > 0">工会经费</view>
 
     <uni-row v-for="item in laborUnionFundsData" :key="item.id">
-      <uni-col class="sub-title" :span="4"></uni-col>
+      <uni-col class="sub-title" :span="4" />
       <uni-col :span="20">
         <uni-row>
           <uni-col :span="8">
@@ -289,7 +289,7 @@
     >
 
     <uni-row v-for="item in accumulationFundData" :key="item.id">
-      <uni-col class="sub-title" :span="4"></uni-col>
+      <uni-col class="sub-title" :span="4" />
       <uni-col :span="20">
         <uni-row>
           <uni-col :span="8">
@@ -360,7 +360,7 @@
     <view class="title" v-if="leaveExpensesData && leaveExpensesData.length > 0">离休人员费用</view>
 
     <uni-row v-for="item in leaveExpensesData" :key="item.id">
-      <uni-col class="sub-title" :span="4"></uni-col>
+      <uni-col class="sub-title" :span="4" />
       <uni-col :span="20">
         <uni-row>
           <uni-col :span="8">
@@ -431,7 +431,7 @@
     <view class="title" v-if="taxPaidData && taxPaidData.length > 0">上缴税收</view>
 
     <uni-row v-for="item in taxPaidData" :key="item.id">
-      <uni-col class="sub-title" :span="4"></uni-col>
+      <uni-col class="sub-title" :span="4" />
       <uni-col :span="20">
         <uni-row>
           <uni-col :span="8">
@@ -502,7 +502,7 @@
     <view class="title" v-if="entProfitData && entProfitData.length > 0">企业留利</view>
 
     <uni-row v-for="item in entProfitData" :key="item.id">
-      <uni-col class="sub-title" :span="4"></uni-col>
+      <uni-col class="sub-title" :span="4" />
       <uni-col :span="20">
         <uni-row>
           <uni-col :span="8">
@@ -573,7 +573,7 @@
     <view class="title" v-if="currentAssetLoans && currentAssetLoans.length > 0">流动资产贷款</view>
 
     <uni-row v-for="item in currentAssetLoans" :key="item.id">
-      <uni-col class="sub-title" :span="4"></uni-col>
+      <uni-col class="sub-title" :span="4" />
       <uni-col :span="20">
         <uni-row>
           <uni-col :span="8">
@@ -644,7 +644,7 @@
     <view class="title" v-if="mngFeePaidData && mngFeePaidData.length > 0">上交管理费</view>
 
     <uni-row v-for="item in mngFeePaidData" :key="item.id">
-      <uni-col class="sub-title" :span="4"></uni-col>
+      <uni-col class="sub-title" :span="4" />
       <uni-col :span="20">
         <uni-row>
           <uni-col :span="8">
@@ -715,7 +715,7 @@
     <view class="title" v-if="otherExpenseData && otherExpenseData.length > 0">其它财务费用</view>
 
     <uni-row v-for="item in otherExpenseData" :key="item.id">
-      <uni-col class="sub-title" :span="4"></uni-col>
+      <uni-col class="sub-title" :span="4" />
       <uni-col :span="20">
         <uni-row>
           <uni-col :span="8">
@@ -786,7 +786,7 @@
     <view class="title" v-if="otherData && otherData.length > 0">其它</view>
 
     <uni-row v-for="item in otherData" :key="item.id">
-      <uni-col class="sub-title" :span="4"></uni-col>
+      <uni-col class="sub-title" :span="4" />
       <uni-col :span="20">
         <uni-row>
           <uni-col :span="8">

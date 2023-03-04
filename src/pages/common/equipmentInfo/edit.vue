@@ -134,11 +134,13 @@
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { updateLandlordEquipmentApi } from '@/service'
-import { getStorage, StorageKey } from '@/utils/storage'
+import { routerBack, getStorage, StorageKey } from '@/utils'
+import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
 
 // 表单数据
 const formData = ref<any>({})
+const form = ref<any>(null)
 
 // 表单校验规则
 const rules = ref<any>({})
@@ -172,9 +174,16 @@ const inputBlur = () => {
 // 表单提交
 const submit = () => {
   const params = { ...formData.value }
-  updateLandlordEquipmentApi(params.uid, params).then((res: any) => {
-    console.log('res:', res)
-  })
+  updateLandlordEquipmentApi(params.uid, params)
+    .then((res: any) => {
+      if (res) {
+        showToast(SUCCESS_MSG)
+        routerBack()
+      }
+    })
+    .catch((e) => {
+      showToast(ERROR_MSG)
+    })
 }
 </script>
 

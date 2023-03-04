@@ -95,9 +95,11 @@
       <view :class="['tree-wrapper', showExpand ? 'w-0' : 'expand']">
         <Tree
           :treeData="treeData"
+          :expend-codes="props.expendCodes"
+          :uid="props.uid"
           :iconSrc="iconSrc"
           @tree-item-click="treeItemClick"
-          @add-click="routerForward('baseInfoEdit')"
+          @add-click="toLink('add')"
         />
       </view>
     </view>
@@ -106,7 +108,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { routerForward } from '@/utils'
+import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
 import Tree from '@/components/Tree/Index.vue'
 import Tabs from '@/components/Tabs/Index.vue'
@@ -152,6 +154,14 @@ const props = defineProps({
     // 左侧树列表
     type: Array as any,
     default: () => []
+  },
+  expendCodes: {
+    type: Array<string>,
+    default: () => []
+  },
+  uid: {
+    type: String,
+    default: ''
   }
 })
 
@@ -183,14 +193,26 @@ const selectTabs = (data: any) => {
   tabVal.value = data.value
 }
 
+const toLink = (type: string) => {
+  uni.navigateTo({
+    url: '/pages/enterprise/baseInfo/edit?type=' + type
+  })
+}
+
 /**
  * 房屋信息 - 删除
  * @param(Object) data 被删除的行信息
  */
 const deleteHouse = (data: any) => {
-  deleteLandlordHouseApi(props.dataInfo.uid, data.id).then((res: any) => {
-    console.log('res:', res)
-  })
+  deleteLandlordHouseApi(props.dataInfo.uid, data.id)
+    .then((res: any) => {
+      if (res) {
+        showToast(SUCCESS_MSG)
+      }
+    })
+    .catch((e) => {
+      showToast(ERROR_MSG)
+    })
 }
 
 /**
@@ -198,9 +220,15 @@ const deleteHouse = (data: any) => {
  * @param(Object) data 被删除的行信息
  */
 const deleteTree = (data: any) => {
-  deleteLandlordTreeApi(props.dataInfo.uid, data.id).then((res: any) => {
-    console.log('res:', res)
-  })
+  deleteLandlordTreeApi(props.dataInfo.uid, data.id)
+    .then((res: any) => {
+      if (res) {
+        showToast(SUCCESS_MSG)
+      }
+    })
+    .catch((e) => {
+      showToast(ERROR_MSG)
+    })
 }
 
 /**
@@ -209,9 +237,15 @@ const deleteTree = (data: any) => {
  */
 const updateFruitTreeInfo = (data: any) => {
   const params = { ...data }
-  updateLandlordTreeApi(props.dataInfo.uid, params).then((res: any) => {
-    console.log('res:', res)
-  })
+  updateLandlordTreeApi(props.dataInfo.uid, params)
+    .then((res: any) => {
+      if (res) {
+        showToast(SUCCESS_MSG)
+      }
+    })
+    .catch((e) => {
+      showToast(ERROR_MSG)
+    })
 }
 
 /**
@@ -220,9 +254,15 @@ const updateFruitTreeInfo = (data: any) => {
  */
 const updateAccessoryInfo = (data: any) => {
   const params = { ...data }
-  updateLandlordAppendantApi(props.dataInfo.uid, params).then((res: any) => {
-    console.log('res:', res)
-  })
+  updateLandlordAppendantApi(props.dataInfo.uid, params)
+    .then((res: any) => {
+      if (res) {
+        showToast(SUCCESS_MSG)
+      }
+    })
+    .catch((e) => {
+      showToast(ERROR_MSG)
+    })
 }
 
 /**
@@ -230,16 +270,32 @@ const updateAccessoryInfo = (data: any) => {
  * @param(Object) data 被删除的行信息
  */
 const deleteEquipment = (data: any) => {
-  deleteLandlordEquipmentApi(props.dataInfo.uid, data.id).then((res: any) => {
-    console.log('res:', res)
-  })
+  deleteLandlordEquipmentApi(props.dataInfo.uid, data.id)
+    .then((res: any) => {
+      if (res) {
+        showToast(SUCCESS_MSG)
+      }
+    })
+    .catch((e) => {
+      showToast(ERROR_MSG)
+    })
 }
 
+/**
+ * 更新经营现状信息
+ * @param data
+ */
 const updateBusinessInfo = (data: any) => {
   const params = { ...data }
-  updateLandlordManagementApi(props.dataInfo.uid, params).then((res) => {
-    console.log('res:', res)
-  })
+  updateLandlordManagementApi(props.dataInfo.uid, params)
+    .then((res) => {
+      if (res) {
+        showToast(SUCCESS_MSG)
+      }
+    })
+    .catch((e) => {
+      showToast(ERROR_MSG)
+    })
 }
 </script>
 

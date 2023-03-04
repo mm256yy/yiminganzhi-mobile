@@ -1,6 +1,6 @@
 <template>
   <view class="form-wrapper">
-    <Back title="村集体基本情况编辑" />
+    <Back :title="title" />
     <view class="main">
       <uni-forms class="form" ref="form" :modelValue="formData" :rules="rules">
         <view class="title-wrapper">
@@ -114,12 +114,15 @@
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
 import { ref, reactive } from 'vue'
-import { updateLandlordApi } from '@/service'
-import { getStorage, StorageKey } from '@/utils/storage'
+import { addLandlordApi, updateLandlordApi } from '@/service'
+import { routerBack, getStorage, StorageKey } from '@/utils'
+import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
+import { MainType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
 
 // 表单数据
 const formData = ref<any>({})
+const form = ref<any>(null)
 
 // 表单校验规则
 const rules = reactive({
@@ -130,13 +133,21 @@ const rules = reactive({
 
 // 获得焦点的输入框下标
 const focusIndex = ref<number>(-1)
+const title = ref<string>('')
+const type = ref<string>('')
 
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
 
+// 获取上个页面传递的参数，给表单赋值
 onLoad((option: any) => {
-  if (option.params) {
-    formData.value = JSON.parse(option.params)
+  type.value = option.type
+  if (option.type === 'edit') {
+    let params = JSON.parse(option.params)
+    formData.value = { ...params }
+    title.value = '村集体基本情况编辑'
+  } else if (option.type === 'add') {
+    title.value = '添加村集体'
   }
 })
 
@@ -183,12 +194,36 @@ const fail = (e: any) => {
 
 // 表单提交
 const submit = () => {
-  const params = { ...formData.value }
-  formData.value.validate((valid: any) => {
+  let params = { ...formData.value }
+  form.value?.validate().then((valid: any) => {
     if (valid) {
-      updateLandlordApi(params).then((res) => {
-        console.log('res:', res)
-      })
+      if (type.value === 'add') {
+        params = {
+          ...params,
+          type: MainType.Village
+        }
+        addLandlordApi(params)
+          .then((res) => {
+            if (res) {
+              showToast(SUCCESS_MSG)
+              routerBack()
+            }
+          })
+          .catch((e) => {
+            showToast(ERROR_MSG)
+          })
+      } else if (type.value === 'edit') {
+        updateLandlordApi(params)
+          .then((res) => {
+            if (res) {
+              showToast(SUCCESS_MSG)
+              routerBack()
+            }
+          })
+          .catch((e) => {
+            showToast(ERROR_MSG)
+          })
+      }
     }
   })
 }

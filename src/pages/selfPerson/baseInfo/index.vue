@@ -7,7 +7,7 @@
           <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
           <view class="title">个体工商户基本信息</view>
         </view>
-        <view class="list-2">
+        <view class="list-2" @click="toLink('edit')">
           <uni-row>
             <uni-col :span="12">
               <view class="col">
@@ -376,7 +376,7 @@
       class="edit-btn"
       src="@/static/images/icon_edit.png"
       mode="scaleToFill"
-      @click="toLink"
+      @click="toLink('edit')"
     />
   </view>
 </template>

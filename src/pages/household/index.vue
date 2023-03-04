@@ -46,7 +46,6 @@ onShow(() => {
 
 onLoad((option) => {
   // PageQueryType
-  console.log(option, 'option')
   if (option && option.uid) {
     expendCodes.value = option.expendCodes.split(',')
     uid.value = option.uid

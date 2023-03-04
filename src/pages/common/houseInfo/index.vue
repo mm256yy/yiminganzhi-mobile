@@ -85,8 +85,8 @@
             </uni-col>
             <uni-col :span="8">
               <view class="col">
-                <view class="label"></view>
-                <view class="content"></view>
+                <view class="label" />
+                <view class="content" />
               </view>
             </uni-col>
           </uni-row>
