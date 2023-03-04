@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import { ref, watch, onMounted, nextTick } from 'vue'
-import NaturalVillageTreeSelect from '@/components/NaturalVillageTreeSelect/indev.vue'
+import NaturalVillageTreeSelect from '@/components/NaturalVillageTreeSelect/index.vue'
 import { getVirutalVillageTreeApi } from '@/service'
 
 interface PropsType {
@@ -111,4 +111,25 @@ onMounted(() => {
   getTreeData()
 })
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.select-box {
+  display: flex;
+  width: 211rpx;
+  height: 23rpx;
+  padding: 0 4rpx;
+  background: #ffffff;
+  border: 1rpx solid #e6e6e6;
+  border-radius: 1rpx;
+  align-items: center;
+  justify-content: space-between;
+
+  .txt {
+    font-size: 9rpx;
+    color: #d9d9d9;
+
+    &.black {
+      color: #171718;
+    }
+  }
+}
+</style>
