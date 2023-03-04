@@ -17,10 +17,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { getLandlordTreeApi } from '@/service'
+import { getLandlordTreeApi, getLandlordItemApi } from '@/service'
 import { MainType } from '@/types/common'
 import Main from './components/Main.vue'
-import { onLoad } from '@dcloudio/uni-app'
+import { onLoad, onShow } from '@dcloudio/uni-app'
 
 interface PageQueryType {
   uid: string
@@ -37,6 +37,12 @@ const dataInfo = ref<any>({})
 // 默认选择的业主
 const expendCodes = ref<string[]>([])
 const uid = ref<string>('')
+
+onShow(() => {
+  if (uid.value) {
+    getLandlordDetail(uid.value)
+  }
+})
 
 onLoad((option) => {
   // PageQueryType
@@ -63,6 +69,17 @@ const getTreeData = async () => {
  */
 const treeItemClick = (data: any) => {
   dataInfo.value = { ...data }
+  uid.value = data.uid
+}
+
+/**
+ * 获取业主详情
+ * @param(object) uid
+ */
+const getLandlordDetail = (uid: string) => {
+  getLandlordItemApi(uid).then((res: any) => {
+    dataInfo.value = { ...res }
+  })
 }
 
 onMounted(() => {

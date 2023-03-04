@@ -125,7 +125,10 @@ const toLink = (type: string) => {
     id: props.dataInfo.id,
     uid: props.dataInfo.uid,
     name: props.dataInfo.name, // 姓名
-    parentCode: props.dataInfo.parentCode, // 自然村/村民小组
+    areaCode: props.dataInfo.areaCode, // 区/县
+    townCode: props.dataInfo.townCode, // 镇/街道
+    villageCode: props.dataInfo.villageCode, // 行政村
+    virutalVillageCode: props.dataInfo.virutalVillageCode, // 自然村/村民小组
     phone: props.dataInfo.phone, // 联系方式
     locationType: props.dataInfo.locationType, // 所在位置
     householdNumber: props.dataInfo.householdNumber, // 户籍册编号

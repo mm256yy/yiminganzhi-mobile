@@ -84,6 +84,7 @@
                 v-if="tabVal === 8"
                 :willData="dataInfo.immigrantWill"
                 :dataInfo="dataInfo"
+                @submit="updateWillingnessInfo"
               />
 
               <!-- 附件上传 -->
@@ -135,8 +136,11 @@ import {
   deleteLandlordTreeApi,
   updateLandlordTreeApi,
   updateLandlordAppendantApi,
-  updateLandlordFamilyIncomeApi
+  updateLandlordFamilyIncomeApi,
+  updateLandlordWillApi
 } from '@/service'
+import { routerBack } from '@/utils'
+import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 
 import iconSrc from '@/static/images/icon_add_household.png' // 侧边栏，添加 icon
 import iconHouseholdDef from '@/static/images/icon_household_default.png' // 引入居民户信息默认 icon
@@ -223,9 +227,15 @@ const addClick = (type: string) => {
  * @param(Object) data 被删除的行信息
  */
 const deleteDemographic = (data: any) => {
-  deleteLandlordApi(data.uid).then((res) => {
-    console.log('res:', res)
-  })
+  deleteLandlordApi(data.uid)
+    .then((res) => {
+      if (res) {
+        showToast(SUCCESS_MSG)
+      }
+    })
+    .catch((e) => {
+      showToast(ERROR_MSG)
+    })
 }
 
 /**
@@ -233,9 +243,15 @@ const deleteDemographic = (data: any) => {
  * @param(Object) data 被删除的行信息
  */
 const deleteHouse = (data: any) => {
-  deleteLandlordHouseApi(data.uid, data.id).then((res) => {
-    console.log('res:', res)
-  })
+  deleteLandlordHouseApi(data.uid, data.id)
+    .then((res) => {
+      if (res) {
+        showToast(SUCCESS_MSG)
+      }
+    })
+    .catch((e) => {
+      showToast(ERROR_MSG)
+    })
 }
 
 /**
@@ -243,9 +259,15 @@ const deleteHouse = (data: any) => {
  * @param(Object) data 被删除的行信息
  */
 const deleteTree = (data: any) => {
-  deleteLandlordTreeApi(data.uid, data.id).then((res) => {
-    console.log('res:', res)
-  })
+  deleteLandlordTreeApi(data.uid, data.id)
+    .then((res) => {
+      if (res) {
+        showToast(SUCCESS_MSG)
+      }
+    })
+    .catch((e) => {
+      showToast(ERROR_MSG)
+    })
 }
 
 /**
@@ -254,9 +276,15 @@ const deleteTree = (data: any) => {
  */
 const updateFruitTreeInfo = (data: any) => {
   const params = { ...data }
-  updateLandlordTreeApi(props.dataInfo.uid, params).then((res) => {
-    console.log('res:', res)
-  })
+  updateLandlordTreeApi(props.dataInfo.uid, params)
+    .then((res) => {
+      if (res) {
+        showToast(SUCCESS_MSG)
+      }
+    })
+    .catch((e) => {
+      showToast(ERROR_MSG)
+    })
 }
 
 /**
@@ -265,9 +293,15 @@ const updateFruitTreeInfo = (data: any) => {
  */
 const updateAccessoryInfo = (data: any) => {
   const params = { ...data }
-  updateLandlordAppendantApi(props.dataInfo.uid, params).then((res) => {
-    console.log('res:', res)
-  })
+  updateLandlordAppendantApi(props.dataInfo.uid, params)
+    .then((res) => {
+      if (res) {
+        showToast(SUCCESS_MSG)
+      }
+    })
+    .catch((e) => {
+      showToast(ERROR_MSG)
+    })
 }
 
 /**
@@ -276,9 +310,32 @@ const updateAccessoryInfo = (data: any) => {
  */
 const updateRevenueInfo = (data: any) => {
   const params = { ...data }
-  updateLandlordFamilyIncomeApi(props.dataInfo.uid, params).then((res) => {
-    console.log('res:', res)
-  })
+  updateLandlordFamilyIncomeApi(props.dataInfo.uid, params)
+    .then((res) => {
+      if (res) {
+        showToast(SUCCESS_MSG)
+      }
+    })
+    .catch((e) => {
+      showToast(ERROR_MSG)
+    })
+}
+
+/**
+ * 更新安置意愿信息
+ * @param(Array) data
+ */
+const updateWillingnessInfo = (data: any) => {
+  const params = { ...data }
+  updateLandlordWillApi(props.dataInfo.uid, params)
+    .then((res) => {
+      if (res) {
+        showToast(SUCCESS_MSG)
+      }
+    })
+    .catch((e) => {
+      showToast(ERROR_MSG)
+    })
 }
 </script>
 

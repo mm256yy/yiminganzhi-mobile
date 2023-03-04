@@ -270,12 +270,14 @@
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
 import { ref, reactive } from 'vue'
-import { getStorage, StorageKey } from '@/utils'
+import { routerBack, getStorage, StorageKey } from '@/utils'
 import { addLandlordPeopleApi, updateLandlordPeopleApi } from '@/service'
+import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
 
 // 表单数据
 const formData = ref<any>({})
+const form = ref<any>(null)
 
 // 表单类型，add 新增表单，edit 编辑表单
 const type = ref<string>('')
@@ -371,16 +373,30 @@ const otherPicFail = (e: any) => {
 // 表单提交
 const submit = () => {
   const params = { ...formData.value }
-  formData.value.validate((valid: any) => {
+  form.value?.validate().then((valid: any) => {
     if (valid) {
       if (type.value === 'add') {
-        addLandlordPeopleApi(params.uid, params).then((res) => {
-          console.log('res:', res)
-        })
+        addLandlordPeopleApi(params.uid, params)
+          .then((res) => {
+            if (res) {
+              showToast(SUCCESS_MSG)
+              routerBack()
+            }
+          })
+          .catch((e) => {
+            showToast(ERROR_MSG)
+          })
       } else {
-        updateLandlordPeopleApi(params.uid, params).then((res) => {
-          console.log('res:', res)
-        })
+        updateLandlordPeopleApi(params.uid, params)
+          .then((res) => {
+            if (res) {
+              showToast(SUCCESS_MSG)
+              routerBack()
+            }
+          })
+          .catch((e) => {
+            showToast(ERROR_MSG)
+          })
       }
     }
   })

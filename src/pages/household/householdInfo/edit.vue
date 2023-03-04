@@ -16,19 +16,19 @@
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
-            <uni-forms-item
-              required
-              label="自然村/村民小组"
-              :label-width="150"
-              label-align="right"
-              name="formData.parentCode"
-            >
-              <uni-data-picker
+            <uni-forms-item required label="自然村/村民小组" :label-width="150" label-align="right">
+              <natural-village-select-form-item
+                v-model:areaCode="formData.areaCode"
+                v-model:townCode="formData.townCode"
+                v-model:villageCode="formData.villageCode"
+                v-model:virutalVillageCode="formData.virutalVillageCode"
+              />
+              <!-- <uni-data-picker
                 :localdata="villageData"
                 popup-title="请选择"
                 @change="changeVillage"
                 @nodeclick="clickVillageNode"
-              />
+              /> -->
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -161,14 +161,17 @@
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
 import { ref, reactive } from 'vue'
-import Back from '@/components/Back/Index.vue'
 import { yesAndNoEnums, lgTagList } from '../config'
-import { getStorage, StorageKey } from '@/utils'
+import { routerBack, getStorage, StorageKey } from '@/utils'
 import { addLandlordApi, updateLandlordApi } from '@/service'
 import { locationTypes } from '@/config/common'
+import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
+import Back from '@/components/Back/Index.vue'
+import NaturalVillageSelectFormItem from '@/components/NaturalVillageSelectFormItem/index.vue'
 
 // 表单数据
 const formData = ref<any>({})
+const form = ref<any>(null)
 
 // 表单校验规则
 const rules = reactive({
@@ -181,50 +184,6 @@ const rules = reactive({
 const isFocus = ref<boolean>(false)
 const title = ref<string>('')
 const type = ref<string>('')
-
-// 自然村/村民小组 选项
-const villageData = ref<any>([
-  {
-    text: '清溪镇',
-    value: '1',
-    children: [
-      {
-        text: '清溪行政村',
-        value: '1-1',
-        children: [
-          {
-            text: '杨村自然村',
-            value: '1-1-1'
-          },
-          {
-            text: '李村自然村',
-            value: '1-1-2'
-          }
-        ]
-      }
-    ]
-  },
-  {
-    text: '大溪镇',
-    value: '2',
-    children: [
-      {
-        text: '大溪行政村',
-        value: '2-1',
-        children: [
-          {
-            text: '王村自然村',
-            value: '2-1-1'
-          },
-          {
-            text: '石村自然村',
-            value: '2-1-2'
-          }
-        ]
-      }
-    ]
-  }
-])
 
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
@@ -251,29 +210,33 @@ const inputBlur = () => {
   isFocus.value = false
 }
 
-// 选择自然村/村名小组
-const changeVillage = (e: any) => {
-  console.log('e:', e)
-}
-
-// 点击 自然村/村名小组 节点
-const clickVillageNode = (node: any) => {
-  console.log('node:', node)
-}
-
 // 表单提交
 const submit = () => {
   const params = { ...formData.value }
-  formData.value.validate((valid: any) => {
+  form.value?.validate().then((valid: any) => {
     if (valid) {
       if (type.value === 'add') {
-        addLandlordApi(params).then((res) => {
-          console.log('res:', res)
-        })
+        addLandlordApi(params)
+          .then((res) => {
+            if (res) {
+              showToast(SUCCESS_MSG)
+              routerBack()
+            }
+          })
+          .catch((e) => {
+            showToast(ERROR_MSG)
+          })
       } else if (type.value === 'edit') {
-        updateLandlordApi(params).then((res) => {
-          console.log('res:', res)
-        })
+        updateLandlordApi(params)
+          .then((res) => {
+            if (res) {
+              showToast(SUCCESS_MSG)
+              routerBack()
+            }
+          })
+          .catch((e) => {
+            showToast(ERROR_MSG)
+          })
       }
     }
   })

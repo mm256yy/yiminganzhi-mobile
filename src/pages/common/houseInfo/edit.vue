@@ -390,12 +390,14 @@
 <script lang="ts" setup>
 import { ref, reactive } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { getStorage, StorageKey } from '@/utils'
+import { routerBack, getStorage, StorageKey } from '@/utils'
 import { updateLandlordHouseApi } from '@/service'
+import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
 
 // 表单数据
 const formData = ref<any>({})
+const form = ref<any>(null)
 
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
@@ -520,11 +522,18 @@ const homePicFail = (e: any) => {
 // 表单提交
 const submit = () => {
   const params = { ...formData.value }
-  formData.value.validate((valid: any) => {
+  form.value?.validate().then((valid: any) => {
     if (valid) {
-      updateLandlordHouseApi(params.uid, params).then((res) => {
-        console.log('res:', res)
-      })
+      updateLandlordHouseApi(params.uid, params)
+        .then((res) => {
+          if (res) {
+            showToast(SUCCESS_MSG)
+            routerBack()
+          }
+        })
+        .catch((e) => {
+          showToast(ERROR_MSG)
+        })
     }
   })
 }

@@ -131,6 +131,8 @@ const apartmentData = ref<any>([])
 // 获得焦点的输入框下标
 const focusIndex = ref<number>(-1)
 
+const emit = defineEmits(['submit'])
+
 // 输入框获得焦点事件
 const inputFocus = (index: number) => {
   focusIndex.value = index
@@ -167,7 +169,6 @@ const getWillList = async () => {
       }
     }
   })
-  console.log('result:', result)
 }
 
 // 生产安置方式选择
@@ -188,9 +189,7 @@ const apartmentChange = (e: any) => {
 // 表单提交
 const submit = () => {
   const params = { ...formData.value }
-  updateLandlordWillApi(props.dataInfo.uid, params).then((res) => {
-    console.log('res:', res)
-  })
+  emit('submit', params)
 }
 
 onMounted(() => {
