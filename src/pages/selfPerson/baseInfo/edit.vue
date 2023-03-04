@@ -312,7 +312,7 @@
               label-align="right"
               name="formData.economicNature"
             >
-              <<uni-easyinput v-model="formData.economicNature" placeholder="请输入" />
+              <uni-easyinput v-model="formData.economicNature" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
