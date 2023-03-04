@@ -204,7 +204,6 @@ const toLink = (name: string) => {
 // 获取所有的字典表，存储为缓存变量 dict
 const getDictObj = async () => {
   const result = await getDictObjApi()
-  console.log('result:', result)
   setStorage(StorageKey.DICT, result)
 }
 
@@ -230,7 +229,6 @@ onShow(() => {
 
   const user = getStorage(StorageKey.USERINFO)
   const project = getStorage(StorageKey.PROJECTINFO)
-  console.log(user, project, 'user')
   userInfo.value = user
   projectInfo.value = project
 
@@ -239,7 +237,6 @@ onShow(() => {
   })
 
   getHomeCollectionApi().then((res) => {
-    console.log(res, 'res')
     collection.value = res ? res[0] : null
   })
 })

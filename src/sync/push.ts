@@ -283,7 +283,7 @@ class PushData {
               }
             })
             .catch(() => {
-              // 失败了 等下次在上传
+              // 如果失败了 等下次在上传
             })
         }
       } catch (err) {
@@ -296,12 +296,7 @@ class PushData {
   public async push(): Promise<any> {
     return new Promise((resolve, reject) => {
       // 一起执行
-      Promise.all([
-        this.getModifyLandlordList,
-        this.getModifyVillageList,
-        this.getPullTime,
-        this.uploadImages
-      ])
+      Promise.all([this.getModifyLandlordList, this.getModifyVillageList, this.getPullTime])
         .then(() => {
           // 拿到结果了
           const { peasantHouseholdPushDtoList, deleteRecordList, pullTime, villageList } =
@@ -323,6 +318,9 @@ class PushData {
         .catch(() => {
           reject(false)
         })
+
+      // 跑图片上传 不需要关注失败或者成功
+      this.uploadImages()
     })
   }
 }

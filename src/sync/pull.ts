@@ -320,7 +320,8 @@ class PullData {
         })
         resolve(true)
       } else {
-        resolve(false)
+        // 数据为空 不需要拉取
+        resolve(true)
       }
     })
   }
@@ -405,7 +406,8 @@ class PullData {
         })
         resolve(true)
       } else {
-        resolve(false)
+        // 不需要拉取
+        resolve(true)
       }
     })
   }
@@ -539,7 +541,8 @@ class PullData {
         })
         resolve(true)
       } else {
-        resolve(false)
+        // 无统计数据
+        resolve(true)
       }
     })
   }

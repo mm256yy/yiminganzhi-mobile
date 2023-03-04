@@ -24,11 +24,19 @@ import { getOtherItemApi } from '@/service'
 import { OtherDataType } from '@/database'
 
 interface PropsType {
-  modelValue: string
+  modelValue?: string
+  areaCode?: string
+  townCode?: string
+  villageCode?: string
 }
 
 const props = defineProps<PropsType>()
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits([
+  'update:modelValue',
+  'update:areaCode',
+  'update:townCode',
+  'update:villageCode'
+])
 
 const treeData = ref<any>([])
 const villageTitle = ref<string[]>([])
@@ -42,6 +50,19 @@ watch(
       const town = val.slice(0, 9)
       const area = val.slice(0, 6)
       codes.value = [area, town, val]
+      getTitle && getTitle()
+    }
+  },
+  {
+    immediate: true
+  }
+)
+
+watch(
+  [() => props.areaCode, () => props.townCode, () => props.villageCode],
+  ([val1, val2, val3]) => {
+    if (val1 && val2 && val3) {
+      codes.value = [val1, val2, val3]
       getTitle && getTitle()
     }
   },
@@ -71,9 +92,11 @@ const getTreeData = async () => {
 const villageConfirm = (code: string[], tit: string[]) => {
   codes.value = code
   villageTitle.value = tit
-  console.log(code, tit, '---')
   close()
   emit('update:modelValue', code.length ? code[code.length - 1] : '')
+  emit('update:areaCode', code[0] || '')
+  emit('update:townCode', code[1] || '')
+  emit('update:villageCode', code[2] || '')
 }
 
 const open = () => {
