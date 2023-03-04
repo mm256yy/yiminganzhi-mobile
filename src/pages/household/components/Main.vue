@@ -107,6 +107,7 @@
           :uid="props.uid"
           :iconSrc="iconSrc"
           @tree-item-click="treeItemClick"
+          @add-click="addClick('add')"
         />
       </view>
     </view>
@@ -205,6 +206,16 @@ const expandToggle = () => {
 // tab 切换
 const selectTabs = (data: any) => {
   tabVal.value = data.value
+}
+
+/**
+ * 新增居民户
+ * @param(type) 类型，edit 编辑， add 新增
+ */
+const addClick = (type: string) => {
+  uni.navigateTo({
+    url: '/pages/household/householdInfo/edit?type=' + type
+  })
 }
 
 /**

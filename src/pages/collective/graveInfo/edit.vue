@@ -10,9 +10,9 @@
               label="登记人姓名"
               :label-width="150"
               label-align="right"
-              name="formData.householdId"
+              name="formData.registrantName"
             >
-              <uni-easyinput v-model="formData.householdId" type="number" placeholder="请输入" />
+              <uni-easyinput v-model="formData.registrantName" type="number" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -20,9 +20,9 @@
               label="户号"
               :label-width="150"
               label-align="right"
-              name="formData.villageDoorNo"
+              name="formData.doorNo"
             >
-              <uni-easyinput v-model="formData.villageDoorNo" disabled />
+              <uni-easyinput v-model="formData.doorNo" disabled />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -35,11 +35,7 @@
               label-align="right"
               name="formData.relation"
             >
-              <uni-data-select
-                v-model="formData.relation"
-                :localdata="housePropertyData"
-                @change="changeHouseProperty"
-              />
+              <uni-data-select v-model="formData.relation" :localdata="dict[307]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -49,11 +45,7 @@
               label-align="right"
               name="formData.graveType"
             >
-              <uni-data-select
-                v-model="formData.graveType"
-                :localdata="housePropertyData"
-                @change="changeHouseProperty"
-              />
+              <uni-data-select v-model="formData.graveType" :localdata="dict[345]" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -86,11 +78,7 @@
               label-align="right"
               name="formData.materials"
             >
-              <uni-data-select
-                v-model="formData.materials"
-                :localdata="housePropertyData"
-                @change="changeHouseProperty"
-              />
+              <uni-data-select v-model="formData.materials" :localdata="dict[295]" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -119,11 +107,7 @@
               label-align="right"
               name="formData.gravePosition"
             >
-              <uni-data-select
-                v-model="formData.gravePosition"
-                :localdata="houseTypeData"
-                @change="changeHouseType"
-              />
+              <uni-data-select v-model="formData.gravePosition" :localdata="dict[288]" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -154,6 +138,9 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
+import { onLoad } from '@dcloudio/uni-app'
+import { getStorage, StorageKey } from '@/utils/storage'
+import { updateLandlordGraveApi } from '@/service'
 import Back from '@/components/Back/Index.vue'
 
 // 表单数据
@@ -165,18 +152,12 @@ const focusIndex = ref<number>(-1)
 // 表单校验规则
 const rules = ref<any>({})
 
-// 房屋产别数据选项
-const housePropertyData = ref<any>([
-  { text: '国有房产', value: 1 },
-  { text: '集体所有房产', value: 2 }
-])
+// 获取数据字典
+const dict = getStorage(StorageKey.DICT)
 
-// 房屋类别数据选项
-const houseTypeData = ref<any>([
-  { text: '主房', value: 1 },
-  { text: '杂房', value: 2 },
-  { text: '附属房', value: 3 }
-])
+onLoad((option: any) => {
+  formData.value = JSON.parse(option.params)
+})
 
 // 输入框获得焦点事件
 const inputFocus = (index: number) => {
@@ -188,16 +169,6 @@ const inputBlur = () => {
   focusIndex.value = -1
 }
 
-// 房屋产别选择
-const changeHouseProperty = (data: any) => {
-  console.log('data:', data)
-}
-
-// 房屋类别选择
-const changeHouseType = (data: any) => {
-  console.log('data:', data)
-}
-
 // 竣工日期选择
 const changeDate = (e: any) => {
   console.log('e:', e)
@@ -205,7 +176,10 @@ const changeDate = (e: any) => {
 
 // 表单提交
 const submit = () => {
-  console.log('表单提交')
+  const params = { ...formData.value }
+  updateLandlordGraveApi(params.uid, params).then((res) => {
+    console.log('res:', res)
+  })
 }
 </script>
 

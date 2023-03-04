@@ -1,6 +1,6 @@
 <template>
   <view class="form-wrapper">
-    <Back title="居民户信息编辑" />
+    <Back :title="title" />
     <view class="main">
       <uni-forms class="form" ref="form" :modelValue="formData" :rules="rules">
         <uni-row>
@@ -51,7 +51,7 @@
               label-align="right"
               name="formData.locationType"
             >
-              <uni-data-select v-model="formData.locationType" :localdata="dict[326]" />
+              <uni-data-select v-model="formData.locationType" :localdata="locationTypes" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -164,7 +164,8 @@ import { ref, reactive } from 'vue'
 import Back from '@/components/Back/Index.vue'
 import { yesAndNoEnums, lgTagList } from '../config'
 import { getStorage, StorageKey } from '@/utils'
-import { updateLandlordApi } from '@/service'
+import { addLandlordApi, updateLandlordApi } from '@/service'
+import { locationTypes } from '@/config/common'
 
 // 表单数据
 const formData = ref<any>({})
@@ -178,6 +179,8 @@ const rules = reactive({
 
 // 输入框是否获得焦点
 const isFocus = ref<boolean>(false)
+const title = ref<string>('')
+const type = ref<string>('')
 
 // 自然村/村民小组 选项
 const villageData = ref<any>([
@@ -228,9 +231,14 @@ const dict = getStorage(StorageKey.DICT)
 
 // 获取上个页面传递的参数，给表单赋值
 onLoad((option: any) => {
-  console.log('option:', option)
-  let params = JSON.parse(option.params)
-  formData.value = { ...params }
+  type.value = option.type
+  if (option.type === 'edit') {
+    let params = JSON.parse(option.params)
+    formData.value = { ...params }
+    title.value = '居民户信息编辑'
+  } else if (option.type === 'add') {
+    title.value = '添加居民户信息'
+  }
 })
 
 // 输入框获得焦点
@@ -258,9 +266,15 @@ const submit = () => {
   const params = { ...formData.value }
   formData.value.validate((valid: any) => {
     if (valid) {
-      updateLandlordApi(params).then((res) => {
-        console.log('res:', res)
-      })
+      if (type.value === 'add') {
+        addLandlordApi(params).then((res) => {
+          console.log('res:', res)
+        })
+      } else if (type.value === 'edit') {
+        updateLandlordApi(params).then((res) => {
+          console.log('res:', res)
+        })
+      }
     }
   })
 }

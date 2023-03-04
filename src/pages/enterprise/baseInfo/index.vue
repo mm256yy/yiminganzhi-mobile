@@ -182,9 +182,9 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">注册资金：</view>
-                <view class="content">{{
-                  formatStr(props.dataInfo.registeredAmount, '（万元）')
-                }}</view>
+                <view class="content">
+                  {{ formatStr(props.dataInfo.registeredAmount, '（万元）') }}
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -495,6 +495,7 @@
         </view>
       </view>
     </view>
+
     <image
       class="edit-btn"
       src="@/static/images/icon_edit.png"

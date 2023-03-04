@@ -1,7 +1,7 @@
 <template>
   <view class="equipment-info-wrapper">
     <!-- 个人信息 -->
-    <view class="list">
+    <view class="list" v-if="props.dataList && props.dataList.length > 0">
       <view class="list-item" v-for="item in props.dataList" :key="item.id">
         <view class="list-1">
           <view class="left">
@@ -66,6 +66,11 @@
       </view>
     </view>
 
+    <view class="null-wrapper" v-else>
+      <image class="icon" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
+      <view class="tips">请先添加设施设备信息</view>
+    </view>
+
     <image
       class="add-btn"
       src="@/static/images/icon_add.png"
@@ -91,6 +96,11 @@ const props = defineProps({
 
 const emit = defineEmits(['deleteEquipment'])
 
+/**
+ * 页面跳转
+ * @param type 类型，edit 编辑，add 新增
+ * @param data type 为 edit 时，当前行数据
+ */
 const toLink = (type: string, data?: any) => {
   if (type === 'edit') {
     const params = { ...data }
@@ -184,6 +194,28 @@ const deleteEquipment = (data: any) => {
           }
         }
       }
+    }
+  }
+
+  .null-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    height: calc(100vh - 33rpx - 12rpx - 33rpx - 24rpx - 60rpx - var(--status-bar-height));
+    background-color: #fff;
+
+    .icon {
+      width: 152rpx;
+      height: 92rpx;
+    }
+
+    .tips {
+      margin-top: 17rpx;
+      font-size: 9rpx;
+      line-height: 1;
+      color: #171718;
     }
   }
 

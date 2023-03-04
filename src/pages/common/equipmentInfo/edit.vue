@@ -150,7 +150,9 @@ const focusIndex = ref<number>(-1)
 const dict = getStorage(StorageKey.DICT)
 
 onLoad((option: any) => {
-  formData.value = JSON.parse(option.params)
+  if (option.params) {
+    formData.value = JSON.parse(option.params)
+  }
 })
 
 // 出生年月选择

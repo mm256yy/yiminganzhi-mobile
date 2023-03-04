@@ -29,12 +29,12 @@
               name="formData.collectiveCode"
             >
               <view :class="['code-wrapper', focusIndex === 1 ? 'focus' : '']">
-                <view class="pre-txt">104009234532</view>
+                <view class="pre-txt">{{ formData.preNo }}</view>
                 <input
                   class="input-txt"
                   type="number"
                   placeholder="请输入"
-                  v-model="formData.collectiveCode"
+                  v-model="formData.suffixNo"
                   @focus="inputFocus(1)"
                   @blur="inputBlur"
                 />
@@ -49,13 +49,9 @@
               label="所在位置"
               :label-width="170"
               label-align="right"
-              name="formData.position"
+              name="formData.locationType"
             >
-              <uni-data-select
-                v-model="formData.position"
-                :localdata="positionRange"
-                @change="changePosition"
-              />
+              <uni-data-select v-model="formData.locationType" :localdata="dict[326]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -73,13 +69,14 @@
         <uni-row>
           <uni-col :span="24">
             <uni-forms-item
+              required
               label="所属区域"
               :label-width="170"
               label-align="right"
-              name="formData.position"
+              name="formData.parentCode"
             >
               <uni-data-select
-                v-model="formData.position"
+                v-model="formData.parentCode"
                 :localdata="positionRange"
                 @change="changePosition"
               />
@@ -115,17 +112,33 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { onLoad } from '@dcloudio/uni-app'
+import { ref, reactive } from 'vue'
+import { updateLandlordApi } from '@/service'
+import { getStorage, StorageKey } from '@/utils/storage'
 import Back from '@/components/Back/Index.vue'
 
 // 表单数据
 const formData = ref<any>({})
 
 // 表单校验规则
-const rules = ref<any>({})
+const rules = reactive({
+  name: { rules: [{ required: true, message: '请输入', trigger: 'blur' }] },
+  suffixNo: { rules: [{ required: true, message: '请输入', trigger: 'blur' }] },
+  parentCode: { rules: [{ required: true, message: '请选择', trigger: 'change' }] }
+})
 
 // 获得焦点的输入框下标
 const focusIndex = ref<number>(-1)
+
+// 获取数据字典
+const dict = getStorage(StorageKey.DICT)
+
+onLoad((option: any) => {
+  if (option.params) {
+    formData.value = JSON.parse(option.params)
+  }
+})
 
 // 输入框获得焦点
 const inputFocus = (index: number) => {
@@ -170,7 +183,14 @@ const fail = (e: any) => {
 
 // 表单提交
 const submit = () => {
-  console.log('表单提交')
+  const params = { ...formData.value }
+  formData.value.validate((valid: any) => {
+    if (valid) {
+      updateLandlordApi(params).then((res) => {
+        console.log('res:', res)
+      })
+    }
+  })
 }
 </script>
 

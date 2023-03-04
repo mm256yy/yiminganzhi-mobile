@@ -1,6 +1,6 @@
 <template>
   <view class="form-wrapper">
-    <Back title="个体工商户基本概况编辑" />
+    <Back :title="title" />
     <view class="main">
       <uni-forms class="form" ref="form" :modelValue="formData" :rules="rules">
         <view class="title-wrapper">
@@ -15,9 +15,9 @@
               label="法人姓名"
               :label-width="170"
               label-align="right"
-              name="formData.name"
+              name="formData.legalPersonName"
             >
-              <uni-easyinput v-model="formData.name" type="text" placeholder="请输入" />
+              <uni-easyinput v-model="formData.legalPersonName" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -26,9 +26,9 @@
               label="法人身份证号"
               :label-width="170"
               label-align="right"
-              name="formData.idCard"
+              name="formData.legalPersonCard"
             >
-              <uni-easyinput v-model="formData.idCard" type="text" placeholder="请输入" />
+              <uni-easyinput v-model="formData.legalPersonCard" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -36,12 +36,12 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              label="联系方式"
+              label="法人联系方式"
               :label-width="170"
               label-align="right"
-              name="formData.phone"
+              name="formData.legalPersonPhone"
             >
-              <uni-easyinput v-model="formData.phone" type="text" placeholder="请输入" />
+              <uni-easyinput v-model="formData.legalPersonPhone" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -49,9 +49,9 @@
               label="个体工商户名称"
               :label-width="170"
               label-align="right"
-              name="formData.entName"
+              name="formData.name"
             >
-              <uni-easyinput v-model="formData.entName" type="text" placeholder="请输入" />
+              <uni-easyinput v-model="formData.name" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -59,12 +59,23 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="个体工商户编码"
               :label-width="170"
               label-align="right"
-              name="formData.entCode"
+              name="formData.suffixNo"
             >
-              <uni-easyinput v-model="formData.entCode" type="text" placeholder="请输入" />
+              <view :class="['code-wrapper', focusIndex === 1 ? 'focus' : '']">
+                <view class="pre-txt">{{ formData.preNo }}</view>
+                <input
+                  class="input-txt"
+                  type="number"
+                  placeholder="请输入"
+                  v-model="formData.suffixNo"
+                  @focus="inputFocus(1)"
+                  @blur="inputBlur"
+                />
+              </view>
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -72,13 +83,9 @@
               label="所在位置"
               :label-width="170"
               label-align="right"
-              name="formData.position"
+              name="formData.locationType"
             >
-              <uni-data-select
-                v-model="formData.position"
-                :localdata="positionRange"
-                @change="changePosition"
-              />
+              <uni-data-select v-model="formData.locationType" :localdata="dict[326]" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -89,9 +96,9 @@
               label="个体工商户联系方式"
               :label-width="170"
               label-align="right"
-              name="formData.entContactInfo"
+              name="formData.phone"
             >
-              <uni-easyinput v-model="formData.entContactInfo" type="text" placeholder="请输入" />
+              <uni-easyinput v-model="formData.phone" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -100,7 +107,7 @@
               label="所属区域"
               :label-width="170"
               label-align="right"
-              name="formData.village"
+              name="formData.parentCode"
             >
               <uni-data-picker
                 :localdata="villageData"
@@ -123,13 +130,9 @@
               label="许可证类型"
               :label-width="170"
               label-align="right"
-              name="formData.position"
+              name="formData.licenceType"
             >
-              <uni-data-select
-                v-model="formData.position"
-                :localdata="positionRange"
-                @change="changePosition"
-              />
+              <uni-data-select v-model="formData.licenceType" :localdata="dict[217]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -137,9 +140,9 @@
               label="许可证编号"
               :label-width="170"
               label-align="right"
-              name="formData.number"
+              name="formData.licenceNo"
             >
-              <uni-easyinput v-model="formData.number" type="text" placeholder="请输入" />
+              <uni-easyinput v-model="formData.licenceNo" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -150,9 +153,9 @@
               label="许可证有效期"
               :label-width="170"
               label-align="right"
-              name="formData.expirationDate"
+              name="formData.periodValidity"
             >
-              <uni-easyinput v-model="formData.expirationDate" type="text" placeholder="请输入" />
+              <uni-easyinput v-model="formData.periodValidity" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -160,9 +163,9 @@
               label="许可证颁布单位"
               :label-width="170"
               label-align="right"
-              name="formData.issuingUnit"
+              name="formData.issuingCompany"
             >
-              <uni-easyinput v-model="formData.issuingUnit" type="text" placeholder="请输入" />
+              <uni-easyinput v-model="formData.issuingCompany" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -173,9 +176,9 @@
               label="税务许可证编号"
               :label-width="170"
               label-align="right"
-              name="formData.taxLicenseNum"
+              name="formData.taxLicenceNo"
             >
-              <uni-easyinput v-model="formData.taxLicenseNum" type="text" placeholder="请输入" />
+              <uni-easyinput v-model="formData.taxLicenceNo" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -183,12 +186,12 @@
               label="税务许可证有效期"
               :label-width="170"
               label-align="right"
-              name="formData.taxLicenseValidity"
+              name="formData.taxPeriodValidity"
             >
               <uni-datetime-picker
                 type="date"
                 placeholder="请选择"
-                v-model="formData.taxLicenseValidity"
+                v-model="formData.taxPeriodValidity"
                 @change="changeDate"
               />
             </uni-forms-item>
@@ -201,10 +204,10 @@
               label="税务许可证颁布单位"
               :label-width="170"
               label-align="right"
-              name="formData.taxLicenseValidityIsuuingUnit"
+              name="formData.taxLicenceCompany"
             >
               <uni-easyinput
-                v-model="formData.taxLicenseValidityIsuuingUnit"
+                v-model="formData.taxLicenceCompany"
                 type="text"
                 placeholder="请输入"
               />
@@ -220,16 +223,12 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              label="许可证类型"
+              label="登记注册类型"
               :label-width="170"
               label-align="right"
-              name="formData.position"
+              name="formData.registerType"
             >
-              <uni-data-select
-                v-model="formData.position"
-                :localdata="positionRange"
-                @change="changePosition"
-              />
+              <uni-data-select v-model="formData.registerType" :localdata="dict[219]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -237,12 +236,12 @@
               label="成立日期"
               :label-width="170"
               label-align="right"
-              name="formData.estDate"
+              name="formData.establishDate"
             >
               <uni-datetime-picker
                 type="date"
                 placeholder="请选择"
-                v-model="formData.estDate"
+                v-model="formData.establishDate"
                 @change="changeDate"
               />
             </uni-forms-item>
@@ -255,9 +254,9 @@
               label="个体工商户地址"
               :label-width="170"
               label-align="right"
-              name="formData.address"
+              name="formData.companyAddress"
             >
-              <uni-easyinput v-model="formData.address" type="text" placeholder="请输入" />
+              <uni-easyinput v-model="formData.companyAddress" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -265,15 +264,15 @@
               label="注册资金"
               :label-width="170"
               label-align="right"
-              name="formData.regAmount"
+              name="formData.registeredAmount"
             >
-              <view :class="['input-wrapper', focusIndex === 1 ? 'focus' : '']">
+              <view :class="['input-wrapper', focusIndex === 2 ? 'focus' : '']">
                 <input
                   class="input-txt"
                   placeholder="请输入"
                   type="number"
-                  v-model="formData.regAmount"
-                  @focus="inputFocus(1)"
+                  v-model="formData.registeredAmount"
+                  @focus="inputFocus(2)"
                   @blur="inputBlur"
                 />
                 <view class="unit">m</view>
@@ -288,13 +287,9 @@
               label="所属行业"
               :label-width="170"
               label-align="right"
-              name="formData.trade"
+              name="formData.industryType"
             >
-              <uni-data-select
-                v-model="formData.trade"
-                :localdata="positionRange"
-                @change="changePosition"
-              />
+              <uni-data-select v-model="formData.industryType" :localdata="dict[215]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -302,13 +297,9 @@
               label="个体工商户所属分类"
               :label-width="170"
               label-align="right"
-              name="formData.classify"
+              name="formData.companyType"
             >
-              <uni-data-select
-                v-model="formData.classify"
-                :localdata="positionRange"
-                @change="changePosition"
-              />
+              <uni-data-select v-model="formData.companyType" :localdata="dict[216]" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -321,7 +312,7 @@
               label-align="right"
               name="formData.economicNature"
             >
-              <uni-easyinput v-model="formData.economicNature" type="text" placeholder="请输入" />
+              <uni-easyinput v-model="formData.economicNature" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -329,9 +320,9 @@
               label="其他权证情况"
               :label-width="170"
               label-align="right"
-              name="formData.otherWarrants"
+              name="formData.ohterLicence"
             >
-              <uni-easyinput v-model="formData.otherWarrants" type="text" placeholder="请输入" />
+              <uni-easyinput v-model="formData.ohterLicence" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -342,10 +333,10 @@
               label="经营范围"
               :label-width="170"
               label-align="right"
-              name="formData.businessNature"
+              name="formData.natureBusiness"
             >
               <uni-easyinput
-                v-model="formData.businessNature"
+                v-model="formData.natureBusiness"
                 type="textarea"
                 placeholder="请输入"
               />
@@ -364,15 +355,15 @@
               label="固定资产原值"
               :label-width="170"
               label-align="right"
-              name="formData.regAmount"
+              name="formData.fixedAssetsOriginalValue"
             >
-              <view :class="['input-wrapper', focusIndex === 2 ? 'focus' : '']">
+              <view :class="['input-wrapper', focusIndex === 3 ? 'focus' : '']">
                 <input
                   class="input-txt"
                   placeholder="请输入"
                   type="number"
-                  v-model="formData.regAmount"
-                  @focus="inputFocus(2)"
+                  v-model="formData.fixedAssetsOriginalValue"
+                  @focus="inputFocus(3)"
                   @blur="inputBlur"
                 />
                 <view class="unit">万元</view>
@@ -384,15 +375,15 @@
               label="固定资产净值"
               :label-width="170"
               label-align="right"
-              name="formData.regAmount"
+              name="formData.fixedAssetsNetValue"
             >
-              <view :class="['input-wrapper', focusIndex === 3 ? 'focus' : '']">
+              <view :class="['input-wrapper', focusIndex === 4 ? 'focus' : '']">
                 <input
                   class="input-txt"
                   placeholder="请输入"
                   type="number"
-                  v-model="formData.regAmount"
-                  @focus="inputFocus(3)"
+                  v-model="formData.fixedAssetsNetValue"
+                  @focus="inputFocus(4)"
                   @blur="inputBlur"
                 />
                 <view class="unit">万元</view>
@@ -407,15 +398,15 @@
               label="正式员工人数"
               :label-width="170"
               label-align="right"
-              name="formData.regAmount"
+              name="formData.regularWorkerNum"
             >
-              <view :class="['input-wrapper', focusIndex === 4 ? 'focus' : '']">
+              <view :class="['input-wrapper', focusIndex === 5 ? 'focus' : '']">
                 <input
                   class="input-txt"
                   placeholder="请输入"
                   type="number"
-                  v-model="formData.regAmount"
-                  @focus="inputFocus(4)"
+                  v-model="formData.regularWorkerNum"
+                  @focus="inputFocus(5)"
                   @blur="inputBlur"
                 />
                 <view class="unit">人</view>
@@ -427,15 +418,15 @@
               label="临时员工人数"
               :label-width="170"
               label-align="right"
-              name="formData.regAmount"
+              name="formData.temporaryWorkerNum"
             >
-              <view :class="['input-wrapper', focusIndex === 5 ? 'focus' : '']">
+              <view :class="['input-wrapper', focusIndex === 6 ? 'focus' : '']">
                 <input
                   class="input-txt"
                   placeholder="请输入"
                   type="number"
-                  v-model="formData.regAmount"
-                  @focus="inputFocus(5)"
+                  v-model="formData.temporaryWorkerNum"
+                  @focus="inputFocus(6)"
                   @blur="inputBlur"
                 />
                 <view class="unit">人</view>
@@ -450,15 +441,15 @@
               label="年工资总金额"
               :label-width="170"
               label-align="right"
-              name="formData.regAmount"
+              name="formData.annualPayroll"
             >
-              <view :class="['input-wrapper', focusIndex === 6 ? 'focus' : '']">
+              <view :class="['input-wrapper', focusIndex === 7 ? 'focus' : '']">
                 <input
                   class="input-txt"
                   placeholder="请输入"
                   type="number"
-                  v-model="formData.regAmount"
-                  @focus="inputFocus(6)"
+                  v-model="formData.annualPayroll"
+                  @focus="inputFocus(7)"
                   @blur="inputBlur"
                 />
                 <view class="unit">万元</view>
@@ -470,15 +461,15 @@
               label="近三年平均年产值"
               :label-width="170"
               label-align="right"
-              name="formData.regAmount"
+              name="formData.averageAnnualOutputValue"
             >
-              <view :class="['input-wrapper', focusIndex === 7 ? 'focus' : '']">
+              <view :class="['input-wrapper', focusIndex === 8 ? 'focus' : '']">
                 <input
                   class="input-txt"
                   placeholder="请输入"
                   type="number"
-                  v-model="formData.regAmount"
-                  @focus="inputFocus(7)"
+                  v-model="formData.averageAnnualOutputValue"
+                  @focus="inputFocus(8)"
                   @blur="inputBlur"
                 />
                 <view class="unit">万元</view>
@@ -493,15 +484,15 @@
               label="近三年平均年利润"
               :label-width="170"
               label-align="right"
-              name="formData.regAmount"
+              name="formData.averageAnnualProfit"
             >
-              <view :class="['input-wrapper', focusIndex === 8 ? 'focus' : '']">
+              <view :class="['input-wrapper', focusIndex === 9 ? 'focus' : '']">
                 <input
                   class="input-txt"
                   placeholder="请输入"
                   type="number"
-                  v-model="formData.regAmount"
-                  @focus="inputFocus(8)"
+                  v-model="formData.averageAnnualProfit"
+                  @focus="inputFocus(9)"
                   @blur="inputBlur"
                 />
                 <view class="unit">万元</view>
@@ -513,15 +504,15 @@
               label="近三年平均年缴税金额"
               :label-width="170"
               label-align="right"
-              name="formData.regAmount"
+              name="formData.averageAnnualTaxPaid"
             >
-              <view :class="['input-wrapper', focusIndex === 9 ? 'focus' : '']">
+              <view :class="['input-wrapper', focusIndex === 10 ? 'focus' : '']">
                 <input
                   class="input-txt"
                   placeholder="请输入"
                   type="number"
-                  v-model="formData.regAmount"
-                  @focus="inputFocus(9)"
+                  v-model="formData.averageAnnualTaxPaid"
+                  @focus="inputFocus(10)"
                   @blur="inputBlur"
                 />
                 <view class="unit">万元</view>
@@ -541,13 +532,9 @@
               label="生产经营状况"
               :label-width="170"
               label-align="right"
-              name="formData.trade"
+              name="formData.managementStatus"
             >
-              <uni-data-select
-                v-model="formData.trade"
-                :localdata="positionRange"
-                @change="changePosition"
-              />
+              <uni-data-select v-model="formData.managementStatus" :localdata="dict[213]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -555,13 +542,9 @@
               label="主要产品种类"
               :label-width="170"
               label-align="right"
-              name="formData.classify"
+              name="formData.productCategory"
             >
-              <uni-data-select
-                v-model="formData.classify"
-                :localdata="positionRange"
-                @change="changePosition"
-              />
+              <uni-easyinput v-model="formData.productCategory" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -572,13 +555,9 @@
               label="个体户涉及情况"
               :label-width="170"
               label-align="right"
-              name="formData.trade"
+              name="formData.informationInvolved"
             >
-              <uni-data-select
-                v-model="formData.trade"
-                :localdata="positionRange"
-                @change="changePosition"
-              />
+              <uni-data-select v-model="formData.informationInvolved" :localdata="dict[209]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -586,13 +565,9 @@
               label="个体户初步处理方案"
               :label-width="170"
               label-align="right"
-              name="formData.classify"
+              name="formData.treatmentScheme"
             >
-              <uni-data-select
-                v-model="formData.classify"
-                :localdata="positionRange"
-                @change="changePosition"
-              />
+              <uni-data-select v-model="formData.treatmentScheme" :localdata="dict[210]" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -603,9 +578,9 @@
               label="备注"
               :label-width="170"
               label-align="right"
-              name="formData.remark"
+              name="formData.otherRemark"
             >
-              <uni-easyinput v-model="formData.remark" type="textarea" placeholder="请输入" />
+              <uni-easyinput v-model="formData.otherRemark" type="textarea" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -622,7 +597,7 @@
                 label="营业执照"
                 :label-width="170"
                 label-align="right"
-                name="formData.businessLicense"
+                name="formData.licensePic"
               >
                 <uni-file-picker
                   title="最多选择20张图片"
@@ -639,7 +614,7 @@
                 label="其他附件"
                 :label-width="170"
                 label-align="right"
-                name="formData.otherAccessory"
+                name="formData.otherPic"
               >
                 <uni-file-picker
                   title="最多选择20张图片"
@@ -666,7 +641,10 @@
 </template>
 
 <script lang="ts" setup>
+import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
+import { getStorage, StorageKey } from '@/utils'
+import { addLandlordCompanyApi, updateLandlordCompanyApi } from '@/service'
 import Back from '@/components/Back/Index.vue'
 
 // 表单数据
@@ -675,14 +653,13 @@ const formData = ref<any>({})
 // 表单校验规则
 const rules = ref<any>({})
 
+// 获取数据字典
+const dict = getStorage(StorageKey.DICT)
+
 // 获得焦点的输入框下标
 const focusIndex = ref<number>(-1)
-
-// 所在位置选项
-const positionRange = ref<any>([
-  { text: '淹没区', value: 0 },
-  { text: '非淹没区', value: 1 }
-])
+const title = ref<string>('')
+const type = ref<string>('')
 
 // 自然村/村民小组 选项
 const villageData = ref<any>([
@@ -728,10 +705,17 @@ const villageData = ref<any>([
   }
 ])
 
-// 所在位置选择
-const changePosition = (data: any) => {
-  console.log('data:', data)
-}
+// 获取上个页面传递的参数，给表单赋值
+onLoad((option: any) => {
+  type.value = option.type
+  if (option.type === 'edit') {
+    let params = JSON.parse(option.params)
+    formData.value = { ...params }
+    title.value = '个体工商户基本概况编辑'
+  } else if (option.type === 'add') {
+    title.value = '添加个体工商户'
+  }
+})
 
 // 税务许可证有效期选择
 const changeDate = (e: any) => {
@@ -780,7 +764,16 @@ const fail = (e: any) => {
 
 // 表单提交
 const submit = () => {
-  console.log('表单提交')
+  let params = { ...formData.value }
+  if (type.value === 'add') {
+    addLandlordCompanyApi(params.uid, params).then((res) => {
+      console.log('res:', res)
+    })
+  } else if (type.value === 'edit') {
+    updateLandlordCompanyApi(params.uid, params).then((res) => {
+      console.log('res:', res)
+    })
+  }
 }
 </script>
 

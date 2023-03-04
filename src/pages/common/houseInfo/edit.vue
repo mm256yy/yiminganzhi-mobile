@@ -411,7 +411,9 @@ const rules = reactive({
 })
 
 onLoad((option: any) => {
-  formData.value = JSON.parse(option.params)
+  if (option.params) {
+    formData.value = JSON.parse(option.params)
+  }
 })
 
 // 中心经纬度输入选项

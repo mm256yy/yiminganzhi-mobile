@@ -1,6 +1,6 @@
 <template>
   <view class="form-wrapper">
-    <Back title="企业基本概况编辑" />
+    <Back :title="title" />
     <view class="main">
       <uni-forms class="form" ref="form" :modelValue="formData" :rules="rules">
         <view class="title-wrapper">
@@ -264,7 +264,7 @@
               label-align="right"
               name="formData.companyAddress"
             >
-              <uni-easyinput v-model="formData.companyAddress" type="text" placeholder="请输入" />
+              <uni-easyinput v-model="formData.companyAddress" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -320,7 +320,7 @@
               label-align="right"
               name="formData.economicNature"
             >
-              <uni-easyinput v-model="formData.economicNature" type="text" placeholder="请输入" />
+              <uni-easyinput v-model="formData.economicNature" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -330,7 +330,7 @@
               label-align="right"
               name="formData.ohterLicence"
             >
-              <uni-easyinput v-model="formData.ohterLicence" type="text" placeholder="请输入" />
+              <uni-easyinput v-model="formData.ohterLicence" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -855,8 +855,9 @@
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
-import Back from '@/components/Back/Index.vue'
 import { getStorage, StorageKey } from '@/utils'
+import { addLandlordCompanyApi, updateLandlordCompanyApi } from '@/service'
+import Back from '@/components/Back/Index.vue'
 
 // 表单数据
 const formData = ref<any>({})
@@ -869,12 +870,19 @@ const dict = getStorage(StorageKey.DICT)
 
 // 获得焦点的输入框下标
 const focusIndex = ref<number>(-1)
+const title = ref<string>('')
+const type = ref<string>('')
 
 // 获取上个页面传递的参数，给表单赋值
 onLoad((option: any) => {
-  console.log('option:', option)
-  let params = JSON.parse(option.params)
-  formData.value = { ...params }
+  type.value = option.type
+  if (option.type === 'edit') {
+    let params = JSON.parse(option.params)
+    formData.value = { ...params }
+    title.value = '企业基本概况编辑'
+  } else if (option.type === 'add') {
+    title.value = '添加企业'
+  }
 })
 
 // 自然村/村民小组 选项
@@ -968,7 +976,16 @@ const fail = (e: any) => {
 
 // 表单提交
 const submit = () => {
-  console.log('表单提交')
+  let params = { ...formData.value }
+  if (type.value === 'add') {
+    addLandlordCompanyApi(params.uid, params).then((res) => {
+      console.log('res:', res)
+    })
+  } else if (type.value === 'edit') {
+    updateLandlordCompanyApi(params.uid, params).then((res) => {
+      console.log('res:', res)
+    })
+  }
 }
 </script>
 

@@ -1,39 +1,40 @@
 <template>
   <view class="equipment-info-wrapper">
-    <!-- 个人信息 -->
+    <!-- 农村小型专项及农副业设施信息 -->
     <view class="list">
-      <view class="list-item">
+      <view class="list-item" v-for="item in dataList" :key="item.id">
         <view class="list-1">
           <view class="left">
             <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-            <view class="name">织布机</view>
+            <view class="name">{{ formatStr(item.facilitiesName) }}</view>
           </view>
           <view class="right">
             <image
               class="icon m-r-10"
               src="@/static/images/icon_delete_mini.png"
               mode="scaleToFill"
+              @click="deleteEquipment(item)"
             />
           </view>
         </view>
-        <view class="list-2" @click="toLink">
+        <view class="list-2" @click="toLink('edit', item)">
           <uni-row>
             <uni-col :span="8">
               <view class="col">
-                <view class="label">用途：</view>
-                <view class="content">织布</view>
+                <view class="label">设施类别：</view>
+                <view class="content">{{ formatDict(item.facilitiesType, 236) }}</view>
               </view>
             </uni-col>
             <uni-col :span="8">
               <view class="col">
-                <view class="label">建造/购置年份：</view>
-                <view class="content">2006年</view>
+                <view class="label">数量：</view>
+                <view class="content">{{ formatStr(item.number, '（条）') }}</view>
               </view>
             </uni-col>
             <uni-col :span="8">
               <view class="col">
-                <view class="label">原值：</view>
-                <view class="content">10（万元）</view>
+                <view class="label">建成年月：</view>
+                <view class="content">{{ item.completedTime }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -41,14 +42,16 @@
           <uni-row>
             <uni-col :span="8">
               <view class="col">
-                <view class="label">搬迁方式：</view>
-                <view class="content">可搬迁</view>
+                <view class="label">所在位置：</view>
+                <view class="content">
+                  {{ dictOption(locationTypes, props.dataInfo.locationType) }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="16">
               <view class="col">
-                <view class="label">规格型号：</view>
-                <view class="content">规格型号</view>
+                <view class="label">具体位置：</view>
+                <view class="content">{{ formatStr(item.address) }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -57,22 +60,72 @@
             <uni-col :span="24">
               <view class="col">
                 <view class="label">备注：</view>
-                <view class="content">备注信息备注信息备注信息备注信息备注信息</view>
+                <view class="content">{{ formatStr(item.remark) }}</view>
               </view>
             </uni-col>
           </uni-row>
         </view>
       </view>
     </view>
-    <image class="add-btn" src="@/static/images/icon_add.png" mode="scaleToFill" @click="toLink" />
+
+    <image
+      class="add-btn"
+      src="@/static/images/icon_add.png"
+      mode="scaleToFill"
+      @click="toLink('add')"
+    />
   </view>
 </template>
 
 <script lang="ts" setup>
-import { routerForward } from '@/utils'
+import { formatStr, formatDict, dictOption } from '@/utils'
+import { locationTypes } from '@/config/common'
 
-const toLink = () => {
-  routerForward('collectiveEquipmentInfoEdit')
+const props = defineProps({
+  dataList: {
+    type: Array as any,
+    default: () => []
+  },
+  dataInfo: {
+    type: Object as any,
+    default: () => {}
+  }
+})
+
+const emit = defineEmits(['deleteEquipment'])
+
+/**
+ * 删除设施设备信息
+ * @param data
+ */
+const deleteEquipment = (data: any) => {
+  emit('deleteEquipment', data)
+}
+
+/**
+ * 页面跳转
+ * @param type 类型，edit 编辑，add 新增
+ * @param data type 为 edit 时，当前行数据
+ */
+const toLink = (type: string, data?: any) => {
+  let params = {
+    uid: props.dataInfo.uid,
+    householdId: props.dataInfo.householdId,
+    doorNo: props.dataInfo.doorNo
+  }
+  if (type === 'edit') {
+    params = {
+      ...params,
+      ...data
+    }
+    uni.navigateTo({
+      url: '/pages/collective/equipmentInfo/edit?params=' + JSON.stringify(params)
+    })
+  } else {
+    uni.navigateTo({
+      url: '/pages/collective/equipmentInfo/edit?params=' + JSON.stringify(params)
+    })
+  }
 }
 </script>
 

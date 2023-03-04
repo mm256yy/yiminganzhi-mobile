@@ -1,6 +1,6 @@
 <template>
   <view class="form-wrapper">
-    <Back title="个人信息编辑" />
+    <Back :title="title" />
     <view class="main">
       <uni-forms class="form" ref="form" :modelValue="formData" :rules="rules">
         <uni-row>
@@ -279,6 +279,7 @@ const formData = ref<any>({})
 
 // 表单类型，add 新增表单，edit 编辑表单
 const type = ref<string>('')
+const title = ref<string>('')
 
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
@@ -296,6 +297,9 @@ onLoad((option: any) => {
   type.value = option.type
   if (option.type === 'edit') {
     formData.value = JSON.parse(option.params)
+    title.value = '个人信息编辑'
+  } else if (option.type === 'add') {
+    title.value = '新增个人信息'
   }
 })
 

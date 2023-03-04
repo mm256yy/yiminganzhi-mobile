@@ -9,7 +9,7 @@
             {{ formatStr(props.dataInfo.name) }}
           </view>
         </view>
-        <view class="list-2" @click="toLink">
+        <view class="list-2" @click="toLink('edit')">
           <uni-row>
             <uni-col :span="12">
               <view class="col">
@@ -103,7 +103,7 @@
       class="edit-btn"
       src="@/static/images/icon_edit.png"
       mode="scaleToFill"
-      @click="toLink"
+      @click="toLink('edit')"
     />
   </view>
 </template>
@@ -120,7 +120,7 @@ const props = defineProps({
   }
 })
 
-const toLink = () => {
+const toLink = (type: string) => {
   const params = {
     id: props.dataInfo.id,
     uid: props.dataInfo.uid,
@@ -139,7 +139,7 @@ const toLink = () => {
   }
 
   uni.navigateTo({
-    url: '/pages/household/householdInfo/edit?params=' + JSON.stringify(params)
+    url: '/pages/household/householdInfo/edit?type=' + type + '&params=' + JSON.stringify(params)
   })
 }
 </script>
