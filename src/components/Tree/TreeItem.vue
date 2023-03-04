@@ -101,11 +101,8 @@ onMounted(() => {
     }
   }
 
-  console.log(props, 'props')
-
   if (props.uid && props.data.landlord && props.data.uid === props.uid) {
     setTimeout(() => {
-      console.log('treeItemClick', props.data)
       emit('treeItemClick', props.data)
     }, 1000)
   }
