@@ -55,6 +55,7 @@
               <!-- 附属物信息 -->
               <accessory-info
                 v-if="tabVal === 4"
+                :dataInfo="dataInfo"
                 :dataList="dataInfo.immigrantAppendantList"
                 @submit="updateAccessoryInfo"
               />

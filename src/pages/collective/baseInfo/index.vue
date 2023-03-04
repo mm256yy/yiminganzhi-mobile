@@ -75,7 +75,7 @@
           <uni-row>
             <uni-col :span="24">
               <view class="col">
-                <view class="list-img"> 图片列表 </view>
+                <view class="list-img" />
               </view>
             </uni-col>
           </uni-row>

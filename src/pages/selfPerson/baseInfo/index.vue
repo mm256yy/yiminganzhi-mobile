@@ -422,7 +422,7 @@ const toLink = (type: string) => {
   }
 
   uni.navigateTo({
-    url: '/pages/selfPerson/baseInfo/edit?type=' + type + '&params' + JSON.stringify(params)
+    url: '/pages/selfPerson/baseInfo/edit?type=' + type + '&params=' + JSON.stringify(params)
   })
 }
 </script>

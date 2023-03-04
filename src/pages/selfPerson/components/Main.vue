@@ -5,7 +5,7 @@
     <view class="main-cont">
       <view class="list-content">
         <view :class="['list-box', showExpand ? '' : 'list-expand']">
-          <view class="box">
+          <view class="box" v-if="JSON.stringify(props.dataInfo) !== '{}'">
             <view class="list-header">
               <view class="list-header-lt" @click="expandToggle">
                 <image class="expand-img" src="@/static/images/expand.png" mode="scaleToFill" />
@@ -36,7 +36,7 @@
               <Tabs :dataList="tabsList" :expand="showExpand" @select-tabs="selectTabs" />
 
               <!-- 个体户基本概况 -->
-              <base-info v-if="tabVal === 1" />
+              <base-info v-if="tabVal === 1" :dataInfo="dataInfo.company" :baseInfo="dataInfo" />
 
               <!-- 房屋信息 -->
               <house-info
@@ -57,6 +57,7 @@
               <!-- 附属物信息 -->
               <accessory-info
                 v-if="tabVal === 4"
+                :dataInfo="dataInfo"
                 :dataList="dataInfo.immigrantAppendantList"
                 @submit="updateAccessoryInfo"
               />
@@ -71,6 +72,13 @@
 
               <!-- 照片上传 -->
               <photo-upload v-if="tabVal === 6" />
+            </view>
+          </view>
+
+          <view class="box" v-else>
+            <view class="null-wrapper">
+              <image class="icon" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
+              <view class="tips">请先选择要填报的个体工商户</view>
             </view>
           </view>
         </view>
@@ -415,6 +423,28 @@ const deleteEquipment = (data: any) => {
   background-color: #fff;
   box-sizing: border-box;
   flex-direction: column;
+}
+
+.null-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: calc(100vh - 33rpx - 12rpx - var(--status-bar-height));
+  background-color: #fff;
+
+  .icon {
+    width: 152rpx;
+    height: 92rpx;
+  }
+
+  .tips {
+    margin-top: 17rpx;
+    font-size: 9rpx;
+    line-height: 1;
+    color: #171718;
+  }
 }
 
 .tree-wrapper {

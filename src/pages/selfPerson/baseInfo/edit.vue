@@ -672,6 +672,7 @@ const type = ref<string>('')
 
 // 获取上个页面传递的参数，给表单赋值
 onLoad((option: any) => {
+  console.log('option:', option)
   type.value = option.type
   if (option.type === 'edit') {
     let params = JSON.parse(option.params)
