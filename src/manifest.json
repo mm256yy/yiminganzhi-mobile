@@ -3,7 +3,7 @@
     "appid" : "__UNI__7FD06C8",
     "description" : "浙江省水利水电勘测设计院移民安置综合管理服务平台",
     "versionName" : "v1.0",
-    "versionCode" : 1.0,
+    "versionCode" : 1,
     "transformPx" : false,
     "app-plus" : {
         "webView" : {
