@@ -8,7 +8,7 @@
     "app-plus" : {
         "webView" : {
             "x5" : {
-                "timeOut" : 3000,
+                "timeOut" : 5000,
                 "showTipsWithoutWifi" : false,
                 "allowDownloadWithoutWiFi" : true
             },
