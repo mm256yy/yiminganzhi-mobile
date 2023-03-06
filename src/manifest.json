@@ -2,17 +2,17 @@
     "name" : "移民安置",
     "appid" : "__UNI__7FD06C8",
     "description" : "浙江省水利水电勘测设计院移民安置综合管理服务平台",
-    "versionName" : "1.0.0",
-    "versionCode" : "100",
+    "versionName" : "v1.0",
+    "versionCode" : 1.0,
     "transformPx" : false,
     "app-plus" : {
         "webView" : {
-            "minUserAgentVersion" : "64.0.3282.116",
             "x5" : {
                 "timeOut" : 3000,
                 "showTipsWithoutWifi" : false,
                 "allowDownloadWithoutWiFi" : true
-            }
+            },
+            "minUserAgentVersion" : "64.0.3282.116"
         },
         "usingComponents" : true,
         "nvueStyleCompiler" : "uni-app",
@@ -25,10 +25,10 @@
         },
         "modules" : {
             "Maps" : {},
-            "Webview-x5" : {},
             "Bluetooth" : {},
             "Geolocation" : {},
-            "SQLite" : {}
+            "SQLite" : {},
+            "Webview-x5" : {}
         },
         "distribute" : {
             "android" : {
@@ -48,13 +48,19 @@
                     "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
                     "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>",
-                    "<uses-permission android:name=\"android.permission.BLUETOOTH\"/>"
+                    "<uses-permission android:name=\"android.permission.BLUETOOTH\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>"
                 ],
                 "abiFilters" : [ "armeabi-v7a", "arm64-v8a", "x86" ],
-                "minSdkVersion" : 21
+                "minSdkVersion" : 21,
+                "autoSdkPermissions" : true
             },
             "ios" : {
-                "dSYMs" : false
+                "dSYMs" : false,
+                "idfa" : false
             },
             "sdkConfigs" : {
                 "maps" : {
@@ -137,5 +143,6 @@
                 }
             }
         }
-    }
+    },
+    "fallbackLocale" : "zh-Hans"
 }
