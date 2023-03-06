@@ -11,8 +11,7 @@
                 "timeOut" : 3000,
                 "showTipsWithoutWifi" : false,
                 "allowDownloadWithoutWiFi" : true
-            },
-            "minUserAgentVersion" : "64.0.3282.116"
+            }
         },
         "usingComponents" : true,
         "nvueStyleCompiler" : "uni-app",
