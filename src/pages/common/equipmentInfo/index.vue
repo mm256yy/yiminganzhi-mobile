@@ -28,7 +28,7 @@
             <uni-col :span="8">
               <view class="col">
                 <view class="label">建造/购置年份：</view>
-                <view class="content">{{ item.year }}</view>
+                <view class="content">{{ dayjs(item.year).format('YYYY年') }}</view>
               </view>
             </uni-col>
             <uni-col :span="8">
@@ -94,6 +94,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
+import dayjs from 'dayjs'
 import { formatStr, formatDict, routerForward } from '@/utils'
 
 const props = defineProps({
@@ -119,7 +120,10 @@ const currentItem = ref<any>({})
 const toLink = (type: string, data?: any) => {
   const { uid } = props.dataInfo
   if (type === 'edit') {
-    const params = { ...data }
+    const params = {
+      ...data,
+      year: dayjs(data.year).format('YYYY-MM-DD')
+    }
     routerForward('equipmentInfoEdit', {
       params: JSON.stringify(params),
       type,

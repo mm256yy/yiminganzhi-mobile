@@ -158,7 +158,6 @@ const focusIndex = ref<number>(-1)
 // 公共的参数
 const commonParams = {
   doorNo: props.dataInfo.doorNo,
-  uid: props.dataInfo.uid,
   householdId: props.dataInfo.householdId,
   amount: 0,
   remark: ''
@@ -189,25 +188,43 @@ const emit = defineEmits(['submit'])
  * 生成新的数组
  * @param {Object} arr 数组
  */
-const genArr = (arr?: any[]) => {
+const genArr = (arr?: any[], dataType?: number) => {
   if (arr && arr.length > 0) {
     arr.map((item: any) => {
       if (item.configType === MainType.PeasantHousehold) {
         if (item.type === '1') {
-          firstData.value.push({
-            ...item,
-            ...commonParams
-          })
+          if (dataType === 1) {
+            firstData.value.push({
+              ...item,
+              ...commonParams
+            })
+          } else {
+            firstData.value.push({
+              ...item
+            })
+          }
         } else if (item.type === '2') {
-          secondData.value.push({
-            ...item,
-            ...commonParams
-          })
+          if (dataType === 1) {
+            secondData.value.push({
+              ...item,
+              ...commonParams
+            })
+          } else {
+            secondData.value.push({
+              ...item
+            })
+          }
         } else {
-          otherData.value.push({
-            ...item,
-            ...commonParams
-          })
+          if (dataType === 1) {
+            otherData.value.push({
+              ...item,
+              ...commonParams
+            })
+          } else {
+            otherData.value.push({
+              ...item
+            })
+          }
         }
       }
     })
@@ -217,7 +234,7 @@ const genArr = (arr?: any[]) => {
 // 获取家庭收入信息配置列表
 const getRevenueList = async () => {
   const result = await getFamilyIncomeListApi()
-  genArr(result)
+  genArr(result, 1)
 }
 
 // 第一产业收入 / 第二、三产业 小计
@@ -251,13 +268,13 @@ const total = () => {
 
 // 表单提交
 const submit = () => {
-  const params = { ...firstData.value, ...secondData.value, ...otherData.value }
+  const params = [...firstData.value, ...secondData.value, ...otherData.value]
   emit('submit', params)
 }
 
 onMounted(() => {
   if (props.dataList && props.dataList.length > 0) {
-    genArr(props.dataList)
+    genArr(props.dataList, 2)
   } else {
     getRevenueList()
   }

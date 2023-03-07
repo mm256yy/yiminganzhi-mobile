@@ -9,6 +9,7 @@
           :expend-codes="expendCodes"
           :dataInfo="dataInfo"
           @tree-item-click="treeItemClick"
+          @update-data="getLandlordDetail"
         />
       </view>
     </view>

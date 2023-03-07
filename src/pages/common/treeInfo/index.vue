@@ -54,6 +54,18 @@
       mode="scaleToFill"
       @click="submit"
     />
+
+    <uni-popup ref="alertDialog" type="dialog">
+      <uni-popup-dialog
+        type="warn"
+        cancelText="取消"
+        confirmText="确认"
+        title="确认删除？"
+        content=""
+        @confirm="dialogConfirm"
+        @close="dialogClose"
+      />
+    </uni-popup>
   </view>
 </template>
 
@@ -76,6 +88,8 @@ const props = defineProps({
 const dict = getStorage(StorageKey.DICT)
 const formData = ref<any>([])
 const emit = defineEmits(['deleteTree', 'updateFruitTreeInfo'])
+const alertDialog = ref<any>(null)
+const currentItem = ref<any>({})
 
 const defaultRow = {
   householdId: props.dataInfo.householdId,
@@ -100,9 +114,21 @@ watch(
   }
 )
 
-// 删除当前行信息
+/**
+ * 删除当前行数据
+ * @param {Object} data 当前行数据
+ */
 const deleteTree = (data: any) => {
-  emit('deleteTree', data)
+  alertDialog.value?.open()
+  currentItem.value = { ...data }
+}
+
+const dialogConfirm = () => {
+  emit('deleteTree', currentItem.value)
+}
+
+const dialogClose = () => {
+  alertDialog.value.close()
 }
 
 // 新增零星（林）果木
@@ -112,7 +138,7 @@ const addTree = () => {
 
 // 表单提交
 const submit = () => {
-  const params = { ...formData.value }
+  const params = [...formData.value]
   emit('updateFruitTreeInfo', params)
 }
 </script>

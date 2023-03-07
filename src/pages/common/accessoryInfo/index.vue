@@ -77,7 +77,7 @@ const getList = async () => {
 
 // 表单提交
 const submit = () => {
-  const params = { ...formData.value }
+  const params = [...formData.value]
   emit('submit', params)
 }
 

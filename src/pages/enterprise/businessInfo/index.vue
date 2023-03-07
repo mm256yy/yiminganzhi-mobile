@@ -940,69 +940,139 @@ const emit = defineEmits(['submit'])
  * 生成新的数组
  * @param {Object} arr 数组
  */
-const genArr = (arr?: any[]) => {
+const genArr = (arr?: any[], dataType?: number) => {
   if (arr && arr.length > 0) {
     arr.map((item: any) => {
-      if (item.configType === MainType.Company) {
-        if (item.type === '1') {
+      if (item.type === '1') {
+        if (dataType === 1) {
           pevenueData.value.push({
             ...item,
             ...commonParams
           })
-        } else if (item.type === '2') {
+        } else {
+          pevenueData.value.push({
+            ...item
+          })
+        }
+      } else if (item.type === '2') {
+        if (dataType === 1) {
           salaryData.value.push({
             ...item,
             ...commonParams
           })
-        } else if (item.type === '3') {
+        } else {
+          salaryData.value.push({
+            ...item
+          })
+        }
+      } else if (item.type === '3') {
+        if (dataType === 1) {
           welfareFundData.value.push({
             ...item,
             ...commonParams
           })
-        } else if (item.type === '4') {
+        } else {
+          welfareFundData.value.push({
+            ...item
+          })
+        }
+      } else if (item.type === '4') {
+        if (dataType === 1) {
           laborUnionFundsData.value.push({
             ...item,
             ...commonParams
           })
-        } else if (item.type === '5') {
+        } else {
+          laborUnionFundsData.value.push({
+            ...item
+          })
+        }
+      } else if (item.type === '5') {
+        if (dataType === 1) {
           accumulationFundData.value.push({
             ...item,
             ...commonParams
           })
-        } else if (item.type === '6') {
+        } else {
+          accumulationFundData.value.push({
+            ...item
+          })
+        }
+      } else if (item.type === '6') {
+        if (dataType === 1) {
           leaveExpensesData.value.push({
             ...item,
             ...commonParams
           })
-        } else if (item.type === '7') {
+        } else {
+          leaveExpensesData.value.push({
+            ...item
+          })
+        }
+      } else if (item.type === '7') {
+        if (dataType === 1) {
           taxPaidData.value.push({
             ...item,
             ...commonParams
           })
-        } else if (item.type === '8') {
+        } else {
+          taxPaidData.value.push({
+            ...item
+          })
+        }
+      } else if (item.type === '8') {
+        if (dataType === 1) {
           entProfitData.value.push({
             ...item,
             ...commonParams
           })
-        } else if (item.type === '9') {
+        } else {
+          entProfitData.value.push({
+            ...item
+          })
+        }
+      } else if (item.type === '9') {
+        if (dataType === 1) {
           currentAssetLoans.value.push({
             ...item,
             ...commonParams
           })
-        } else if (item.type === '10') {
+        } else {
+          currentAssetLoans.value.push({
+            ...item
+          })
+        }
+      } else if (item.type === '10') {
+        if (dataType === 1) {
           mngFeePaidData.value.push({
             ...item,
             ...commonParams
           })
-        } else if (item.type === '11') {
+        } else {
+          mngFeePaidData.value.push({
+            ...item
+          })
+        }
+      } else if (item.type === '11') {
+        if (dataType === 1) {
           otherExpenseData.value.push({
             ...item,
             ...commonParams
           })
         } else {
+          otherExpenseData.value.push({
+            ...item
+          })
+        }
+      } else {
+        if (dataType === 1) {
           otherData.value.push({
             ...item,
             ...commonParams
+          })
+        } else {
+          otherData.value.push({
+            ...item
           })
         }
       }
@@ -1010,15 +1080,16 @@ const genArr = (arr?: any[]) => {
   }
 }
 
-// 获取家庭收入信息配置列表
+// 获取经营现状信息配置列表
 const getBusinessList = async () => {
   const result = await getFamilyIncomeListApi()
-  genArr(result)
+  console.log('result:', result)
+  genArr(result, 1)
 }
 
 // 表单提交
 const submit = () => {
-  const params = {
+  const params = [
     ...pevenueData.value,
     ...salaryData.value,
     ...welfareFundData.value,
@@ -1031,13 +1102,14 @@ const submit = () => {
     ...mngFeePaidData.value,
     ...otherExpenseData.value,
     ...otherData.value
-  }
+  ]
   emit('submit', params)
 }
 
 onMounted(() => {
   if (props.dataList && props.dataList.length > 0) {
-    genArr(props.dataList)
+    console.log('dataList:', props.dataList)
+    genArr(props.dataList, 2)
   } else {
     getBusinessList()
   }

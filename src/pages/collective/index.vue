@@ -3,7 +3,12 @@
     <image src="@/static/images/head_bg.png" class="head-bg" />
     <view class="home-wrap" :style="{ height: `${pageHeight}px` }">
       <view class="home-body">
-        <Main :treeData="treeData" :dataInfo="dataInfo" @tree-item-click="treeItemClick" />
+        <Main
+          :treeData="treeData"
+          :dataInfo="dataInfo"
+          @tree-item-click="treeItemClick"
+          @update-data="getLandlordDetail"
+        />
       </view>
     </view>
   </view>

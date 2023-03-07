@@ -9,6 +9,7 @@
           :expend-codes="expendCodes"
           :dataInfo="dataInfo"
           @tree-item-click="treeItemClick"
+          @update-data="getLandlordDetail"
         />
       </view>
     </view>
@@ -80,6 +81,7 @@ const treeItemClick = (data: any) => {
  */
 const getLandlordDetail = (uid: string) => {
   getLandlordItemApi(uid).then((res: any) => {
+    console.log('res:', res)
     dataInfo.value = { ...res }
     expendCodes.value = [
       dataInfo.value.areaCode,

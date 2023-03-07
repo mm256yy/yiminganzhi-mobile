@@ -29,10 +29,18 @@ export const dictOption = (arr: any, val: any) => {
  * @param(Object) id 对应字典的 id
  */
 export const formatDict = (value: any, id: number) => {
+  let str = ''
   // 获取数据字典
   const dict = getStorage(StorageKey.DICT)
   if (value) {
-    return dict[id][value].text
+    const arr: any = dict[id]
+    arr.map((item: any) => {
+      if (String(item.value) === String(value)) {
+        str = item.text
+        console.log('str: ', str)
+      }
+    })
+    return str
   } else {
     return '-'
   }

@@ -55,19 +55,15 @@
     </view>
     <view class="sub-title">搬迁安置方式</view>
     <view class="row-3 b-b-1">
-      <view class="label m-t-5">宅基地安置：</view>
       <radio-group @change="homesteadChange">
+        <view class="label m-t-5">宅基地安置：</view>
         <label v-for="item in homesteadData" :key="item.value">
-          <radio :value="item.value">{{ item.name }}</radio>
+          <radio :value="item.value" :checked="item.checked">{{ item.name }}</radio>
         </label>
-      </radio-group>
-    </view>
-    <view class="line" />
-    <view class="row-3">
-      <view class="label m-t-5">公寓房安置：</view>
-      <radio-group @change="apartmentChange">
+        <view class="line" />
+        <view class="label m-t-5">公寓房安置：</view>
         <label v-for="item in apartmentData" :key="item.value">
-          <radio :value="item.value">{{ item.name }}</radio>
+          <radio :value="item.value" :checked="item.checked">{{ item.name }}</radio>
         </label>
       </radio-group>
     </view>
@@ -91,13 +87,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import { getWillListApi } from '@/service'
 
 const props = defineProps({
   willData: {
-    type: Object as any,
-    default: () => {}
+    type: Array as any,
+    default: () => []
   },
   dataInfo: {
     type: Object as any,
@@ -105,19 +101,13 @@ const props = defineProps({
   }
 })
 
-const defaultParams = {
+const commonParams = {
   uid: props.dataInfo.uid,
   doorNo: props.dataInfo.doorNo,
-  householdId: props.dataInfo.householdId,
-  familyNum: '', // 家庭总人数
-  countryNum: '', // 农村移民人数
-  unCountryNum: '', // 非农移民人数
-  productionType: '', // 生产安置方式
-  removalType: '', // 搬迁安置方式
-  opinion: '' // 备注
+  householdId: props.dataInfo.householdId
 }
 
-const formData = ref<any>(defaultParams)
+const formData = ref<any>({})
 
 // 生产安置方式数据选项
 const productModeData = ref<any>([])
@@ -181,11 +171,6 @@ const homesteadChange = (e: any) => {
   formData.value.removalType = e.detail.value
 }
 
-// 搬迁安置方式 —— 公寓房安置选择
-const apartmentChange = (e: any) => {
-  formData.value.removalType = e.detail.value
-}
-
 // 表单提交
 const submit = () => {
   const params = { ...formData.value }
@@ -196,8 +181,18 @@ onMounted(() => {
   getWillList()
   if (JSON.stringify(props.willData) !== '{}') {
     formData.value = {
-      ...defaultParams,
+      ...commonParams,
       ...props.willData
+    }
+  } else {
+    formData.value = {
+      ...commonParams,
+      familyNum: '', // 家庭总人数
+      countryNum: '', // 农村移民人数
+      unCountryNum: '', // 非农移民人数
+      productionType: '', // 生产安置方式
+      removalType: '', // 搬迁安置方式
+      opinion: '' // 备注
     }
   }
 })

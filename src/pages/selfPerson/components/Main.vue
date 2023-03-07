@@ -157,7 +157,7 @@ const tabsList = ref([
 
 const showExpand = ref<boolean>(false)
 const tabVal = ref<number>(1)
-const emit = defineEmits(['treeItemClick'])
+const emit = defineEmits(['treeItemClick', 'updateData'])
 
 const treeItemClick = (data: any) => {
   console.log(data, 'data')
@@ -182,6 +182,7 @@ const deleteHouse = (data: any) => {
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
+        emit('updateData', props.dataInfo.uid)
       }
     })
     .catch((e) => {
@@ -198,6 +199,7 @@ const deleteTree = (data: any) => {
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
+        emit('updateData', props.dataInfo.uid)
       }
     })
     .catch((e) => {
@@ -210,11 +212,12 @@ const deleteTree = (data: any) => {
  * @param(Array) data 提交的参数集合
  */
 const updateFruitTreeInfo = (data: any) => {
-  const params = { ...data }
+  const params = [...data]
   updateLandlordTreeApi(props.dataInfo.uid, params)
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
+        emit('updateData', props.dataInfo.uid)
       }
     })
     .catch((e) => {
@@ -227,11 +230,12 @@ const updateFruitTreeInfo = (data: any) => {
  * @param(Array) data
  */
 const updateAccessoryInfo = (data: any) => {
-  const params = { ...data }
+  const params = [...data]
   updateLandlordAppendantApi(props.dataInfo.uid, params)
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
+        emit('updateData', props.dataInfo.uid)
       }
     })
     .catch((e) => {
@@ -248,6 +252,7 @@ const deleteEquipment = (data: any) => {
     .then((res: any) => {
       if (res) {
         showToast(SUCCESS_MSG)
+        emit('updateData', props.dataInfo.uid)
       }
     })
     .catch((e) => {

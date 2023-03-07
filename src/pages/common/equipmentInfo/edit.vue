@@ -21,7 +21,7 @@
               label-align="right"
               name="formData.size"
             >
-              <uni-easyinput v-model="formData.size" type="idcard" placeholder="请输入" />
+              <uni-easyinput v-model="formData.size" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -186,6 +186,7 @@ const inputBlur = () => {
 // 表单提交
 const submit = () => {
   const params = { ...formData.value }
+  console.log('params:', params)
   form.value?.validate().then((valid: any) => {
     if (valid) {
       if (type.value === 'add') {

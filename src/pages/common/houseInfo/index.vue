@@ -61,7 +61,7 @@
             <uni-col :span="8">
               <view class="col">
                 <view class="label">竣工日期：</view>
-                <view class="content">{{ item.completedTime }}</view>
+                <view class="content">{{ dayjs(item.completedTime).format('YYYY-MM-DD') }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -122,6 +122,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
+import dayjs from 'dayjs'
 import { formatDict, formatStr, routerForward } from '@/utils'
 
 const props = defineProps({

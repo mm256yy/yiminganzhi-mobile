@@ -216,15 +216,15 @@ const inputBlur = () => {
 const submit = () => {
   let params = {
     ...formData.value,
-    doorNo: String(formData.value.villageCode) + formData.value.suffixNo
+    doorNo: String(formData.value.villageCode) + formData.value.suffixNo,
+    type: MainType.PeasantHousehold
   }
   form.value?.validate().then((valid: any) => {
     if (valid) {
       if (type.value === 'add') {
         params = {
           ...params,
-          type: MainType.PeasantHousehold,
-          uid
+          uid: uid.value
         }
         addLandlordApi(params)
           .then((res) => {
@@ -237,6 +237,7 @@ const submit = () => {
             showToast(ERROR_MSG)
           })
       } else if (type.value === 'edit') {
+        console.log('submit-params:', params)
         updateLandlordApi(params)
           .then((res) => {
             if (res) {

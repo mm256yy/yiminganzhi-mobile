@@ -3,7 +3,12 @@
     <image src="@/static/images/head_bg.png" class="head-bg" />
     <view class="home-wrap" :style="{ height: `${pageHeight}px` }">
       <view class="home-body">
-        <Main :treeData="treeData" :dataInfo="dataInfo" @tree-item-click="treeItemClick" />
+        <Main
+          :treeData="treeData"
+          :dataInfo="dataInfo"
+          @tree-item-click="treeItemClick"
+          @update-data="getLandlordDetail"
+        />
       </view>
     </view>
   </view>
@@ -28,8 +33,8 @@ const expendCodes = ref<string[]>([])
 const uid = ref<string>('')
 
 onShow(() => {
-  if (uid.value) {
-    getLandlordDetail(uid.value)
+  if (dataInfo.value.uid) {
+    getLandlordDetail(dataInfo.value.uid)
   }
 })
 
@@ -63,6 +68,7 @@ const treeItemClick = (data: any) => {
  */
 const getLandlordDetail = (uid: string) => {
   getLandlordItemApi(uid).then((res: any) => {
+    console.log('res:', res)
     dataInfo.value = { ...res }
     expendCodes.value = [
       dataInfo.value.areaCode,
