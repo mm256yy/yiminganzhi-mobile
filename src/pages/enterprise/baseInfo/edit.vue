@@ -28,7 +28,7 @@
               name="formData.suffixNo"
             >
               <view :class="['code-wrapper', focusIndex === 1 ? 'focus' : '']">
-                <view class="pre-txt">{{ formData.preNo }}</view>
+                <view class="pre-txt">{{ 'Q' + formData.villageCode }}</view>
                 <input
                   class="input-txt"
                   type="number"
@@ -60,7 +60,12 @@
               label-align="right"
               name="formData.phone"
             >
-              <uni-easyinput v-model="formData.phone" type="text" placeholder="请输入" />
+              <uni-easyinput
+                v-model="formData.phone"
+                type="number"
+                :maxlength="11"
+                placeholder="请输入"
+              />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -857,12 +862,12 @@ import { ref, reactive } from 'vue'
 import { routerBack, getStorage, StorageKey } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { addLandlordCompanyApi, updateLandlordCompanyApi } from '@/service'
-import { MainType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
 import VillageSelectFormItem from '@/components/VillageSelectFormItem/index.vue'
 
 // 表单数据
 const formData = ref<any>({})
+const form = ref<any>(null)
 
 // 表单校验规则
 const rules = reactive({
@@ -879,16 +884,21 @@ const dict = getStorage(StorageKey.DICT)
 const focusIndex = ref<number>(-1)
 const title = ref<string>('')
 const type = ref<string>('')
+const uid = ref<string>('')
 
 // 获取上个页面传递的参数，给表单赋值
 onLoad((option: any) => {
-  type.value = option.type
-  if (option.type === 'edit') {
-    let params = JSON.parse(option.params)
-    formData.value = { ...params }
-    title.value = '企业基本概况编辑'
-  } else if (option.type === 'add') {
-    title.value = '添加企业'
+  if (option) {
+    console.log('params:', JSON.parse(option.params))
+    type.value = option.type
+    uid.value = option.uid
+    if (option.type === 'edit') {
+      let params = JSON.parse(option.params)
+      formData.value = { ...params }
+      title.value = '企业基本概况编辑'
+    } else if (option.type === 'add') {
+      title.value = '添加企业'
+    }
   }
 })
 
@@ -929,34 +939,109 @@ const fail = (e: any) => {
 
 // 表单提交
 const submit = () => {
-  let params = { ...formData.value }
-  if (type.value === 'add') {
-    params = {
-      ...params,
-      type: MainType.Company
-    }
-    addLandlordCompanyApi(params.uid, params)
-      .then((res) => {
-        if (res) {
-          showToast(SUCCESS_MSG)
-          routerBack()
-        }
-      })
-      .catch((e) => {
-        showToast(ERROR_MSG)
-      })
-  } else if (type.value === 'edit') {
-    updateLandlordCompanyApi(params.uid, params)
-      .then((res) => {
-        if (res) {
-          showToast(SUCCESS_MSG)
-          routerBack()
-        }
-      })
-      .catch((e) => {
-        showToast(ERROR_MSG)
-      })
+  let baseInfo = {
+    uid: uid.value,
+    name: formData.value.name,
+    doorNo: 'Q' + formData.value.villageCode + formData.value.suffixNo,
+    areaCode: formData.value.areaCode,
+    townCode: formData.value.townCode,
+    villageCode: formData.value.villageCode,
+    locationType: formData.value.locationType,
+    phone: formData.value.phone,
+    periodValidity: formData.value.periodValidity,
+    establishDate: formData.value.establishDate,
+    taxPeriodValidity: formData.value.taxPeriodValidity
   }
+
+  let company = {
+    id: formData.value.id,
+    doorNo: 'Q' + formData.value.villageCode + formData.value.suffixNo,
+    householdId: formData.value.householdId,
+    uid: formData.value.uid,
+    legalPersonName: formData.value.legalPersonName,
+    legalPersonCard: formData.value.legalPersonCard,
+    legalPersonPhone: formData.value.legalPersonPhone,
+    companyType: formData.value.companyType,
+    companyAddress: formData.value.companyAddress,
+    licenceType: formData.value.licenceType,
+    periodValidity: formData.value.periodValidity,
+    licenceNo: formData.value.licenceNo,
+    taxPeriodValidity: formData.value.taxPeriodValidity,
+    taxLicenceNo: formData.value.taxLicenceNo,
+    taxLicenceCompany: formData.value.taxLicenceCompany,
+    ohterLicence: formData.value.ohterLicence,
+    registerType: formData.value.registerType,
+    establishDate: formData.value.establishDate,
+    natureBusiness: formData.value.natureBusiness,
+    industryType: formData.value.industryType,
+    economicNature: formData.value.economicNature,
+    registeredAmount: formData.value.registeredAmount,
+    fixedAssetsOriginalValue: formData.value.fixedAssetsOriginalValue,
+    fixedAssetsNetValue: formData.value.fixedAssetsNetValue,
+    regularWorkerNum: formData.value.regularWorkerNum,
+    temporaryWorkerNum: formData.value.temporaryWorkerNum,
+    annualPayroll: formData.value.annualPayroll,
+    averageAnnualOutputValue: formData.value.averageAnnualOutputValue,
+    averageAnnualProfit: formData.value.averageAnnualProfit,
+    averageAnnualTaxPaid: formData.value.averageAnnualTaxPaid,
+    managementType: formData.value.managementType,
+    productCategory: formData.value.productCategory,
+    managementStatus: formData.value.managementStatus,
+    informationInvolved: formData.value.informationInvolved,
+    treatmentScheme: formData.value.treatmentScheme,
+    sellOwnershipArea: formData.value.sellOwnershipArea,
+    sellOccupiedArea: formData.value.sellOccupiedArea,
+    sellRemark: formData.value.sellRemark,
+    transferOwnershipArea: formData.value.transferOwnershipArea,
+    transferOccupiedArea: formData.value.transferOccupiedArea,
+    transferRemark: formData.value.transferRemark,
+    rentOwnershipArea: formData.value.rentOwnershipArea,
+    rentOccupiedArea: formData.value.rentOccupiedArea,
+    rentRemark: formData.value.rentRemark,
+    otherOwnershipArea: formData.value.otherOwnershipArea,
+    otherOccupiedArea: formData.value.otherOccupiedArea,
+    otherRemark: formData.value.otherRemark,
+    totalOwnershipArea: formData.value.totalOwnershipArea,
+    totalOccupiedArea: formData.value.totalOccupiedArea,
+    remark: formData.value.remark,
+    licensePic: formData.value.licensePic,
+    otherPic: formData.value.otherPic
+  }
+
+  let params = {
+    ...baseInfo,
+    company
+  }
+
+  console.log('submit-params:', params)
+
+  form.value?.validate().then((valid: any) => {
+    if (valid) {
+      if (type.value === 'add') {
+        addLandlordCompanyApi(uid.value, params)
+          .then((res) => {
+            if (res) {
+              showToast(SUCCESS_MSG)
+              routerBack()
+            }
+          })
+          .catch((e) => {
+            showToast(ERROR_MSG)
+          })
+      } else if (type.value === 'edit') {
+        updateLandlordCompanyApi(uid.value, params)
+          .then((res) => {
+            if (res) {
+              showToast(SUCCESS_MSG)
+              routerBack()
+            }
+          })
+          .catch((e) => {
+            showToast(ERROR_MSG)
+          })
+      }
+    }
+  })
 }
 </script>
 

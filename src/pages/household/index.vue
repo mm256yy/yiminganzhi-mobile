@@ -47,8 +47,11 @@ onShow(() => {
 onLoad((option) => {
   // PageQueryType
   if (option && option.uid) {
-    expendCodes.value = option.expendCodes.split(',')
     uid.value = option.uid
+  }
+
+  if (option && option.expendCodes) {
+    expendCodes.value = option.expendCodes.split(',')
   }
 })
 
@@ -78,6 +81,13 @@ const treeItemClick = (data: any) => {
 const getLandlordDetail = (uid: string) => {
   getLandlordItemApi(uid).then((res: any) => {
     dataInfo.value = { ...res }
+    expendCodes.value = [
+      dataInfo.value.areaCode,
+      dataInfo.value.townCode,
+      dataInfo.value.villageCode,
+      dataInfo.value.virutalVillageCode
+    ]
+    getTreeData()
   })
 }
 

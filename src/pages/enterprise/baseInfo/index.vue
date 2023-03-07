@@ -500,13 +500,13 @@
       class="edit-btn"
       src="@/static/images/icon_edit.png"
       mode="scaleToFill"
-      @click="toLink"
+      @click="toLink('edit')"
     />
   </view>
 </template>
 
 <script lang="ts" setup>
-import { fmtDate, dictOption, formatStr, formatDict, splitStr } from '@/utils'
+import { fmtDate, dictOption, formatStr, formatDict, splitStr, routerForward } from '@/utils'
 import { locationTypes } from '@/config/common'
 
 const props = defineProps({
@@ -520,13 +520,16 @@ const props = defineProps({
   }
 })
 
-const toLink = () => {
+const toLink = (type: string) => {
   const {
+    uid,
     name,
     doorNo,
+    areaCode,
+    townCode,
+    villageCode,
     locationType,
     phone,
-    parentCode,
     periodValidity,
     establishDate,
     taxPeriodValidity
@@ -535,18 +538,22 @@ const toLink = () => {
   const params = {
     ...props.dataInfo,
     name,
+    doorNo,
+    areaCode,
+    townCode,
+    villageCode,
     locationType,
     phone,
-    parentCode,
-    preNo: splitStr(doorNo, 0, 8),
-    suffixNo: splitStr(doorNo, 8, 12),
+    suffixNo: splitStr(doorNo, 13, 17),
     periodValidity: fmtDate(periodValidity),
     establishDate: fmtDate(establishDate),
     taxPeriodValidity: fmtDate(taxPeriodValidity)
   }
 
-  uni.navigateTo({
-    url: '/pages/enterprise/baseInfo/edit?params' + JSON.stringify(params)
+  routerForward('baseInfoEdit', {
+    params: JSON.stringify(params),
+    type,
+    uid
   })
 }
 </script>

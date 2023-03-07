@@ -35,7 +35,12 @@
               label-align="right"
               name="formData.phone"
             >
-              <uni-easyinput v-model="formData.phone" type="text" placeholder="请输入" />
+              <uni-easyinput
+                v-model="formData.phone"
+                type="number"
+                :maxlength="11"
+                placeholder="请输入"
+              />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -60,11 +65,11 @@
               name="formData.suffixNo"
             >
               <view :class="['input-wrapper', isFocus ? 'focus' : '']">
-                <view class="pre-txt">{{ formData.preCode }}</view>
+                <view class="pre-txt">{{ formData.villageCode }}</view>
                 <input
                   class="input-txt"
-                  type="number"
                   placeholder="请输入"
+                  type="text"
                   v-model="formData.suffixNo"
                   @focus="inputFocus"
                   @blur="inputBlur"
@@ -207,7 +212,10 @@ const inputBlur = () => {
 
 // 表单提交
 const submit = () => {
-  let params = { ...formData.value }
+  let params = {
+    ...formData.value,
+    doorNo: String(formData.value.villageCode) + formData.value.suffixNo
+  }
   form.value?.validate().then((valid: any) => {
     if (valid) {
       if (type.value === 'add') {

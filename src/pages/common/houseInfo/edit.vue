@@ -1,6 +1,6 @@
 <template>
   <view class="form-wrapper">
-    <Back title="房屋信息编辑" />
+    <Back :title="title" />
     <view class="main">
       <uni-forms class="form" ref="form" :modelValue="formData" :rules="rules">
         <uni-row>
@@ -391,13 +391,18 @@
 import { ref, reactive } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { routerBack, getStorage, StorageKey } from '@/utils'
-import { updateLandlordHouseApi } from '@/service'
+import { addLandlordHouseApi, updateLandlordHouseApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
 
 // 表单数据
 const formData = ref<any>({})
 const form = ref<any>(null)
+
+// 表单类型，add 新增表单，edit 编辑表单
+const type = ref<string>('')
+const title = ref<string>('')
+const uid = ref<string>('')
 
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
@@ -413,8 +418,15 @@ const rules = reactive({
 })
 
 onLoad((option: any) => {
-  if (option.params) {
-    formData.value = JSON.parse(option.params)
+  if (option) {
+    type.value = option.type
+    uid.value = option.uid
+    if (option.type === 'edit') {
+      formData.value = JSON.parse(option.params)
+      title.value = '房屋信息编辑'
+    } else if (option.type === 'add') {
+      title.value = '新增房屋'
+    }
   }
 })
 
@@ -524,16 +536,29 @@ const submit = () => {
   const params = { ...formData.value }
   form.value?.validate().then((valid: any) => {
     if (valid) {
-      updateLandlordHouseApi(params.uid, params)
-        .then((res) => {
-          if (res) {
-            showToast(SUCCESS_MSG)
-            routerBack()
-          }
-        })
-        .catch((e) => {
-          showToast(ERROR_MSG)
-        })
+      if (type.value === 'add') {
+        addLandlordHouseApi(uid.value, params)
+          .then((res) => {
+            if (res) {
+              showToast(SUCCESS_MSG)
+              routerBack()
+            }
+          })
+          .catch((e) => {
+            showToast(ERROR_MSG)
+          })
+      } else {
+        updateLandlordHouseApi(uid.value, params)
+          .then((res) => {
+            if (res) {
+              showToast(SUCCESS_MSG)
+              routerBack()
+            }
+          })
+          .catch((e) => {
+            showToast(ERROR_MSG)
+          })
+      }
     }
   })
 }

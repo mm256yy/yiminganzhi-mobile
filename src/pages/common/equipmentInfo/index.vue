@@ -81,7 +81,7 @@
 </template>
 
 <script lang="ts" setup>
-import { formatStr, formatDict } from '@/utils'
+import { formatStr, formatDict, routerForward } from '@/utils'
 
 const props = defineProps({
   dataList: {
@@ -102,15 +102,16 @@ const emit = defineEmits(['deleteEquipment'])
  * @param data type 为 edit 时，当前行数据
  */
 const toLink = (type: string, data?: any) => {
+  const { uid } = props.dataInfo
   if (type === 'edit') {
     const params = { ...data }
-    uni.navigateTo({
-      url: '/pages/common/equipmentInfo/edit?params=' + JSON.stringify(params)
+    routerForward('equipmentInfoEdit', {
+      params: JSON.stringify(params),
+      type,
+      uid
     })
   } else {
-    uni.navigateTo({
-      url: '/pages/common/equipmentInfo/edit'
-    })
+    routerForward('equipmentInfoEdit', { type, uid })
   }
 }
 

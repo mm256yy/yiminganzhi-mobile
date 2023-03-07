@@ -272,7 +272,7 @@ export const deleteLandlordImmigrantFileApi = (uid: string, itemId: string) => {
  * @param data 企业/个体户信息
  * @returns
  */
-export const addLandlordCompanyApi = (uid: string, data: CompanyType) => {
+export const addLandlordCompanyApi = (uid: string, data: any) => {
   return DataFillController.addLandlordCompany(uid, data)
 }
 
@@ -282,7 +282,7 @@ export const addLandlordCompanyApi = (uid: string, data: CompanyType) => {
  * @param data 企业/个体户信息
  * @returns
  */
-export const updateLandlordCompanyApi = (uid: string, data: CompanyType) => {
+export const updateLandlordCompanyApi = (uid: string, data: any) => {
   return DataFillController.updateLandlordCompany(uid, data)
 }
 

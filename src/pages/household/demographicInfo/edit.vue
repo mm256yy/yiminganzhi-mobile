@@ -282,6 +282,7 @@ const form = ref<any>(null)
 // 表单类型，add 新增表单，edit 编辑表单
 const type = ref<string>('')
 const title = ref<string>('')
+const uid = ref<string>('')
 
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
@@ -296,12 +297,15 @@ const rules = reactive({
 })
 
 onLoad((option: any) => {
-  type.value = option.type
-  if (option.type === 'edit') {
-    formData.value = JSON.parse(option.params)
-    title.value = '个人信息编辑'
-  } else if (option.type === 'add') {
-    title.value = '新增个人信息'
+  if (option) {
+    type.value = option.type
+    uid.value = option.uid
+    if (option.type === 'edit') {
+      formData.value = JSON.parse(option.params)
+      title.value = '个人信息编辑'
+    } else if (option.type === 'add') {
+      title.value = '新增个人信息'
+    }
   }
 })
 
@@ -376,7 +380,7 @@ const submit = () => {
   form.value?.validate().then((valid: any) => {
     if (valid) {
       if (type.value === 'add') {
-        addLandlordPeopleApi(params.uid, params)
+        addLandlordPeopleApi(uid.value, params)
           .then((res) => {
             if (res) {
               showToast(SUCCESS_MSG)
@@ -387,7 +391,7 @@ const submit = () => {
             showToast(ERROR_MSG)
           })
       } else {
-        updateLandlordPeopleApi(params.uid, params)
+        updateLandlordPeopleApi(uid.value, params)
           .then((res) => {
             if (res) {
               showToast(SUCCESS_MSG)

@@ -109,6 +109,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
+import { routerForward } from '@/utils'
 import Back from '@/components/Back/Index.vue'
 import Tree from '@/components/Tree/Index.vue'
 import Tabs from '@/components/Tabs/Index.vue'
@@ -194,9 +195,8 @@ const selectTabs = (data: any) => {
 }
 
 const toLink = (type: string) => {
-  uni.navigateTo({
-    url: '/pages/enterprise/baseInfo/edit?type=' + type
-  })
+  const uid = props.dataInfo.uid
+  routerForward('baseInfoEdit', { type, uid })
 }
 
 /**

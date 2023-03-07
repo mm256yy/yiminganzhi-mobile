@@ -109,7 +109,7 @@
 </template>
 
 <script lang="ts" setup>
-import { formatStr, formatDict, dictOption } from '@/utils'
+import { formatStr, formatDict, dictOption, splitStr } from '@/utils'
 import { yesAndNoEnums } from '../config'
 import { locationTypes } from '@/config/common'
 
@@ -132,6 +132,7 @@ const toLink = (type: string) => {
     phone: props.dataInfo.phone, // 联系方式
     locationType: props.dataInfo.locationType, // 所在位置
     householdNumber: props.dataInfo.householdNumber, // 户籍册编号
+    suffixNo: splitStr(props.dataInfo.doorNo, 12, 16), // 户号后四位
     doorNo: props.dataInfo.doorNo, // 户号
     hasPropertyAccount: props.dataInfo.hasPropertyAccount, // 是否财产户
     address: props.dataInfo.address, // 户籍所在地

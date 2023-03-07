@@ -38,7 +38,9 @@
             <uni-col :span="8">
               <view class="col">
                 <view class="label">出生年月：</view>
-                <view class="content">{{ item.birthday }}</view>
+                <view class="content">
+                  {{ item.birthday ? dayjs(item.birthday).format('YYYY年MM月') : '-' }}
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -92,33 +94,41 @@
       class="add-btn"
       src="@/static/images/icon_add.png"
       mode="scaleToFill"
-      @click="toLink('add', null)"
+      @click="toLink('add')"
     />
   </view>
 </template>
 
 <script lang="ts" setup>
-import { formatDict, formatStr } from '@/utils'
+import { formatDict, formatStr, routerForward } from '@/utils'
+import dayjs from 'dayjs'
 
 const props = defineProps({
   dataList: {
     type: Array as any,
+    default: () => {}
+  },
+  dataInfo: {
+    type: Object as any,
     default: () => {}
   }
 })
 
 const emit = defineEmits(['deleteDemographic'])
 
-const toLink = (type: string, data: any) => {
+const toLink = (type: string, data?: any) => {
+  const { uid } = props.dataInfo
   if (type === 'add') {
-    uni.navigateTo({
-      url: '/pages/household/demographicInfo/edit?type=' + type
-    })
-  } else {
-    const params = { ...data }
-    uni.navigateTo({
-      url:
-        '/pages/household/demographicInfo/edit?params=' + JSON.stringify(params) + '&type=' + type
+    routerForward('demographicInfoEdit', { type, uid })
+  } else if (type === 'edit') {
+    let params = {
+      ...data,
+      birthday: data.birthday ? dayjs(data.birthday).format('YYYY-MM-DD') : ''
+    }
+    routerForward('demographicInfoEdit', {
+      params: JSON.stringify(params),
+      type,
+      uid
     })
   }
 }

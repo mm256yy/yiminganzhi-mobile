@@ -71,6 +71,12 @@ const treeItemClick = (data: any) => {
 const getLandlordDetail = (uid: string) => {
   getLandlordItemApi(uid).then((res: any) => {
     dataInfo.value = { ...res }
+    expendCodes.value = [
+      dataInfo.value.areaCode,
+      dataInfo.value.townCode,
+      dataInfo.value.villageCode
+    ]
+    getTreeData()
   })
 }
 

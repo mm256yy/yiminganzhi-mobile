@@ -42,6 +42,7 @@
               <demographic-info
                 v-if="tabVal === 2"
                 :dataList="dataInfo.demographicList"
+                :dataInfo="dataInfo"
                 @delete-demographic="deleteDemographic"
               />
 
@@ -49,6 +50,7 @@
               <house-info
                 v-if="tabVal === 3"
                 :dataList="dataInfo.immigrantHouseList"
+                :dataInfo="dataInfo"
                 @delete-house="deleteHouse"
               />
 
