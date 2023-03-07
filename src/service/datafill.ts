@@ -11,7 +11,7 @@ import {
   GraveType,
   FamilyIncomeType,
   ImmigrantFileType,
-  CompanyType,
+  // CompanyType,
   EquipmentType,
   FacilitiesType,
   ManagementType
@@ -142,12 +142,22 @@ export const deleteLandlordTreeApi = (uid: string, itemId: string) => {
 // ---------------
 
 /**
+ * 添加坟墓
+ * @param uid 业主uid
+ * @param data 坟墓信息
+ * @returns
+ */
+export const addLandlordGraveApi = (uid: string, data: GraveType) => {
+  return DataFillController.addLandlordGrave(uid, data)
+}
+
+/**
  * 更新坟墓
  * @param uid 业主uid
  * @param data 坟墓信息
  * @returns
  */
-export const updateLandlordGraveApi = (uid: string, data: GraveType[]) => {
+export const updateLandlordGraveApi = (uid: string, data: GraveType) => {
   return DataFillController.updateLandlordGrave(uid, data)
 }
 
@@ -179,18 +189,8 @@ export const updateLandlordFamilyIncomeApi = (uid: string, data: FamilyIncomeTyp
  * @param data 附件信息
  * @returns
  */
-export const updateLandlordImmigrantFileApi = (uid: string, data: ImmigrantFileType[]) => {
+export const updateLandlordImmigrantFileApi = (uid: string, data: ImmigrantFileType) => {
   return DataFillController.updateLandlordImmigrantFile(uid, data)
-}
-
-/**
- * 删除附件
- * @param uid 业主uid
- * @param itemId 附件uid
- * @returns
- */
-export const deleteLandlordImmigrantFileApi = (uid: string, itemId: string) => {
-  return DataFillController.deleteLandlordImmigrantFile(uid, itemId)
 }
 
 // ---------------
@@ -225,6 +225,16 @@ export const deleteLandlordCompanyApi = (uid: string) => {
 }
 
 // ---------------
+
+/**
+ * 添加企业营收
+ * @param uid 业主uid
+ * @param data 企业营收信息
+ * @returns
+ */
+// export const addLandlordManagementApi = (uid: string, data: ManagementType) => {
+//   return DataFillController.addLandlordManagement(uid, data)
+// }
 
 /**
  * 更新企业营收

@@ -103,8 +103,6 @@ class PushData {
               immigrantHouseList,
               immigrantIncomeList,
               immigrantTreeList,
-              immigrantWillList,
-              immigrantFile,
               immigrantManagementList,
               immigrantEquipmentList,
               immigrantFacilitiesList
@@ -170,26 +168,6 @@ class PushData {
               })
             }
 
-            if (immigrantWillList && immigrantWillList.length) {
-              immigrantWillList.forEach((item) => {
-                if (item.uid && item.isDelete === '1') {
-                  deleteList.push({
-                    type: 'immigrantWillList',
-                    deleteId: item.uid
-                  })
-                }
-              })
-            }
-            if (immigrantFile && immigrantFile.length) {
-              immigrantFile.forEach((item) => {
-                if (item.uid && item.isDelete === '1') {
-                  deleteList.push({
-                    type: 'immigrantFile',
-                    deleteId: item.uid
-                  })
-                }
-              })
-            }
             if (immigrantManagementList && immigrantManagementList.length) {
               immigrantManagementList.forEach((item) => {
                 if (item.uid && item.isDelete === '1') {

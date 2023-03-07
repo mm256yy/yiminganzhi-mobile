@@ -13,7 +13,7 @@ import {
   FamilyIncomeType,
   GraveType,
   ImmigrantFileType,
-  CompanyType,
+  // CompanyType,
   EquipmentType,
   FacilitiesType,
   ManagementType
@@ -346,8 +346,8 @@ class DataFill extends Landlord {
     })
   }
 
-  // 业主-坟墓修改操作
-  updateLandlordGrave(uid: string, data: GraveType[]): Promise<boolean> {
+  // 业主- 坟墓新增操作
+  addLandlordGrave(uid: string, data: GraveType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!uid) {
@@ -355,18 +355,43 @@ class DataFill extends Landlord {
           console.log('业主uid缺失')
           return
         }
-        if (!data || !data.length) {
+        const itemUid = guid()
+        data.uid = itemUid
+        data.isDelete = '0'
+        const landlordItem = await this.getLandlordByUid(uid)
+        if (landlordItem) {
+          if (!landlordItem.immigrantGraveList) {
+            landlordItem.immigrantGraveList = []
+          }
+          landlordItem.immigrantGraveList.push(data)
+        } else {
           reject(false)
-          console.log('坟墓列表缺失')
+          console.log('业主信息查询失败')
+          return
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem as LandlordType)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'addLandlordGrave-error')
+        reject(false)
+      }
+    })
+  }
+  // 业主-坟墓修改操作
+  updateLandlordGrave(uid: string, data: GraveType): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!uid) {
+          reject(false)
+          console.log('业主uid缺失')
           return
         }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
-          landlordItem.immigrantGraveList = data.map((item) => {
-            if (!item.uid) {
-              const itemUid = guid()
-              item.uid = itemUid
-              item.isDelete = '0'
+          landlordItem.immigrantGraveList = landlordItem.immigrantGraveList.map((item) => {
+            if (item.uid === data.uid) {
+              item = { ...item, ...data }
             }
             return item
           })
@@ -552,7 +577,7 @@ class DataFill extends Landlord {
   }
 
   // 业主-附件修改操作
-  updateLandlordImmigrantFile(uid: string, data: ImmigrantFileType[]): Promise<boolean> {
+  updateLandlordImmigrantFile(uid: string, data: ImmigrantFileType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!uid) {
@@ -562,14 +587,12 @@ class DataFill extends Landlord {
         }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
-          landlordItem.immigrantFile = data.map((item) => {
-            if (!item.uid) {
-              const itemUid = guid()
-              item.uid = itemUid
-              item.isDelete = '0'
-            }
-            return item
-          })
+          if (!data.uid) {
+            const itemUid = guid()
+            data.uid = itemUid
+            data.isDelete = '0'
+          }
+          landlordItem.immigrantFile = data
         } else {
           reject(false)
           console.log('业主信息查询失败')
@@ -580,38 +603,6 @@ class DataFill extends Landlord {
         updateRes ? resolve(true) : reject(false)
       } catch (error) {
         console.log(error, 'updateLandlordImmigrantFile-error')
-        reject(false)
-      }
-    })
-  }
-
-  // 业主-附件删除操作
-  deleteLandlordImmigrantFile(uid: string, itemUid: string): Promise<boolean> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        if (!uid || !itemUid) {
-          reject(false)
-          console.log('uid缺失')
-          return
-        }
-        const landlordItem = await this.getLandlordByUid(uid)
-        if (landlordItem) {
-          landlordItem.immigrantFile = landlordItem.immigrantFile.map((item) => {
-            if (item.uid === itemUid) {
-              item.isDelete = '1'
-            }
-            return item
-          })
-        } else {
-          reject(false)
-          console.log('业主信息查询失败')
-          return
-        }
-        // 更新数据
-        const updateRes = await this.updateLandlord(landlordItem as LandlordType)
-        updateRes ? resolve(true) : reject(false)
-      } catch (error) {
-        console.log(error, 'deleteLandlordImmigrantFile-error')
         reject(false)
       }
     })

@@ -166,14 +166,14 @@ export class Landlord extends Common {
         const uid = guid()
         data.uid = uid
         data.company = {}
+        data.immigrantFile = data.immigrantFile || {}
+        data.immigrantWill = data.immigrantWill || {}
         data.demographicList = data.demographicList || []
         data.immigrantAppendantList = data.immigrantAppendantList || []
         data.immigrantGraveList = data.immigrantGraveList || []
         data.immigrantHouseList = data.immigrantHouseList || []
         data.immigrantIncomeList = data.immigrantIncomeList || []
         data.immigrantTreeList = data.immigrantTreeList || []
-        data.immigrantWillList = data.immigrantWillList || []
-        data.immigrantFile = data.immigrantFile || []
         data.immigrantManagementList = data.immigrantManagementList || []
         data.immigrantEquipmentList = data.immigrantEquipmentList || []
         data.immigrantFacilitiesList = data.immigrantFacilitiesList || []
@@ -292,17 +292,6 @@ export class Landlord extends Common {
           }
           if (res.immigrantTreeList && res.immigrantTreeList.length) {
             res.immigrantTreeList = res.immigrantTreeList.filter(
-              (item) => !item.isDelete || item.isDelete === '0'
-            )
-          }
-
-          if (res.immigrantWillList && res.immigrantWillList.length) {
-            res.immigrantWillList = res.immigrantWillList.filter(
-              (item) => !item.isDelete || item.isDelete === '0'
-            )
-          }
-          if (res.immigrantFile && res.immigrantFile.length) {
-            res.immigrantFile = res.immigrantFile.filter(
               (item) => !item.isDelete || item.isDelete === '0'
             )
           }
@@ -435,7 +424,7 @@ export class Landlord extends Common {
           immigrantHouseList,
           immigrantIncomeList,
           immigrantTreeList,
-          immigrantWillList,
+          immigrantWill,
           immigrantManagementList,
           immigrantEquipmentList,
           immigrantFacilitiesList,
@@ -462,7 +451,7 @@ export class Landlord extends Common {
             if (this.isNullArray(immigrantIncomeList)) {
               array.push('家庭收入情况信息采集：未填写家庭收入信息')
             }
-            if (this.isNullArray(immigrantWillList)) {
+            if (!immigrantWill) {
               array.push('安置意愿调查信息：未填写安置意愿信息')
             }
           } else if (type === MainType.IndividualHousehold) {

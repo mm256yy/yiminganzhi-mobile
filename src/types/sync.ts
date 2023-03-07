@@ -78,10 +78,11 @@ export interface LandlordType {
   immigrantHouseList: HouseType[]
   // 安置意愿
   immigrantWillList: WillType[]
+  immigrantWill: WillType
   // 家庭收入
   immigrantIncomeList: FamilyIncomeType[]
   // 附件
-  immigrantFile: ImmigrantFileType[]
+  immigrantFile: ImmigrantFileType
 
   // 企业营收
   immigrantManagementList: ManagementType[]
