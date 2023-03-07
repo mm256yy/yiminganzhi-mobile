@@ -644,22 +644,18 @@ class DataFill extends Landlord {
     })
   }
   // 业主-家庭收入修改操作
-  updateLandlordFamilyIncome(uid: string, data: FamilyIncomeType): Promise<boolean> {
+  updateLandlordFamilyIncome(uid: string, data: FamilyIncomeType[]): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
-        if (!uid) {
+        if (!uid || !data || !data.length) {
           reject(false)
-          console.log('业主uid缺失')
+          console.log('核心字段缺失')
           return
         }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
-          landlordItem.immigrantIncomeList = landlordItem.immigrantIncomeList.map((item) => {
-            if (item.uid === data.uid) {
-              item = { ...item, ...data }
-            }
-            return item
-          })
+          // 每次都是重置
+          landlordItem.immigrantIncomeList = data
         } else {
           reject(false)
           console.log('业主信息查询失败')

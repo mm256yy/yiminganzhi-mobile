@@ -7,7 +7,7 @@
 
     <view class="info-box">
       <view class="info-item">
-        <image class="user-icon" src="@/static/images/landlord_info.png" mode="scaleToFill" />
+        <image class="user-icon" src="@/static/images/icon_header.png" mode="scaleToFill" />
         <text class="name user-name">张江</text>
         <text class="text primary">张江</text>
       </view>

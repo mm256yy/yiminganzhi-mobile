@@ -219,7 +219,7 @@ export const addLandlordFamilyIncomeApi = (uid: string, data: FamilyIncomeType) 
  * @param data 家庭收入信息
  * @returns
  */
-export const updateLandlordFamilyIncomeApi = (uid: string, data: FamilyIncomeType) => {
+export const updateLandlordFamilyIncomeApi = (uid: string, data: FamilyIncomeType[]) => {
   return DataFillController.updateLandlordFamilyIncome(uid, data)
 }
 

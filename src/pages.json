@@ -8,6 +8,13 @@
 			}
 		},
 		{
+			"name": "map",
+			"path": "pages/map/index",
+			"style": {
+				"navigationBarTitleText": "地图"
+			}
+		},
+		{
 			"name": "household",
 			"path": "pages/household/index",
 			"style": {
@@ -181,8 +188,13 @@
 		}
 	},
   "condition" : {
-    "current": 1,
+    "current": 0,
     "list": [
+			{
+        "name": "地图页面",
+        "path": "pages/map/index",
+        "query": ""
+      },
       {
         "name": "登录页面",
         "path": "pages/login/index",
