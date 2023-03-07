@@ -46,8 +46,8 @@ interface LocationType {
 
 // 初始地图坐标
 const centerLocation = ref<LocationType>({
-  latitude: 39.909,
-  longitude: 116.39742
+  latitude: 30.235643678475068,
+  longitude: 120.17327222279103
 })
 
 // 当前地图坐标
@@ -92,6 +92,10 @@ onLoad((option: any) => {
     const longitude = parseFloat(option.longitude)
     const latitude = parseFloat(option.latitude)
     currentLocation.value = {
+      longitude,
+      latitude
+    }
+    centerLocation.value = {
       longitude,
       latitude
     }
