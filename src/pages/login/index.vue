@@ -107,11 +107,12 @@ const loginIn = async () => {
   height: 100vh;
   justify-content: space-between;
   align-items: stretch;
+  overflow: hidden;
 
   .logo {
     width: 434rpx;
     background: url('@/static/images/login_bg.png') top center no-repeat;
-    background-size: 100% auto;
+    background-size: cover;
   }
 
   .form {

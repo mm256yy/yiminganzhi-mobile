@@ -32,6 +32,11 @@ class Image extends Common {
     // updatedDate: string
     return new Promise(async (resolve, reject) => {
       try {
+        if (!data || !data.file || !data.url) {
+          reject(false)
+          console.log('文件缺失')
+          return
+        }
         const fields = `'status','url','file','base64','updatedDate'`
         let base64 = ''
         const reader = new FileReader()
@@ -46,27 +51,40 @@ class Image extends Common {
             })
             .catch(() => {
               reject(false)
+              console.log('插入数据失败')
             })
         })
       } catch (error) {
-        console.log(error, 'Image-get-list-error')
+        console.log(error, 'Image-add-error')
         reject(false)
       }
     })
   }
 
-  batchAddImg(files: Pick<ImageDDLType, 'file' | 'url'>[]) {
+  batchAddImg(files: Pick<ImageDDLType, 'file' | 'url'>[]): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!files || !files.length) {
-          reject()
+          reject(false)
+          console.log('文件列表为空')
           return
         }
+        // 串行
+        let chain = Promise.resolve<any>(null)
         files.forEach((file) => {
-          this.add(file)
+          chain = chain.then(() => this.add(file))
         })
+        chain
+          .then(() => {
+            resolve(true)
+          })
+          .catch(() => {
+            reject(false)
+            console.log('批量插入失败')
+            return
+          })
       } catch (error) {
-        console.log(error, 'Image-get-list-error')
+        console.log(error, 'Image-batchAddImg-error')
         reject(false)
       }
     })

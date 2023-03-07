@@ -45,12 +45,21 @@ class DataFill extends Landlord {
   addLandlordPeople(uid: string, data: PopulationType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid) {
+          reject(false)
+          console.log('业主uid缺失')
+          return
+        }
         const itemUid = guid()
         data.uid = itemUid
         data.isDelete = '0'
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.demographicList.push(data)
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -65,13 +74,22 @@ class DataFill extends Landlord {
   updateLandlordPeople(uid: string, data: PopulationType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid) {
+          reject(false)
+          console.log('业主uid缺失')
+          return
+        }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.demographicList.forEach((item) => {
             if (item.uid === data.uid) {
-              item = data
+              item = { ...item, ...data }
             }
           })
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -86,6 +104,11 @@ class DataFill extends Landlord {
   deleteLandlordPeople(uid: string, itemUid: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid || !itemUid) {
+          reject(false)
+          console.log('uid缺失')
+          return
+        }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.demographicList.forEach((item) => {
@@ -93,6 +116,10 @@ class DataFill extends Landlord {
               item.isDelete = '1'
             }
           })
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -108,12 +135,21 @@ class DataFill extends Landlord {
   addLandlordAppendant(uid: string, data: AppendantType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid) {
+          reject(false)
+          console.log('业主uid缺失')
+          return
+        }
         const itemUid = guid()
         data.uid = itemUid
         data.isDelete = '0'
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.immigrantAppendantList.push(data)
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -128,13 +164,22 @@ class DataFill extends Landlord {
   updateLandlordAppendant(uid: string, data: AppendantType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid) {
+          reject(false)
+          console.log('业主uid缺失')
+          return
+        }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.immigrantAppendantList.forEach((item) => {
             if (item.uid === data.uid) {
-              item = data
+              item = { ...item, ...data }
             }
           })
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -149,6 +194,11 @@ class DataFill extends Landlord {
   deleteLandlordAppendant(uid: string, itemUid: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid || !itemUid) {
+          reject(false)
+          console.log('uid缺失')
+          return
+        }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.immigrantAppendantList.forEach((item) => {
@@ -156,6 +206,10 @@ class DataFill extends Landlord {
               item.isDelete = '1'
             }
           })
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -171,12 +225,21 @@ class DataFill extends Landlord {
   addLandlordWill(uid: string, data: WillType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid) {
+          reject(false)
+          console.log('业主uid缺失')
+          return
+        }
         const itemUid = guid()
         data.uid = itemUid
         data.isDelete = '0'
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.immigrantWillList.push(data)
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -191,13 +254,22 @@ class DataFill extends Landlord {
   updateLandlordWill(uid: string, data: WillType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid) {
+          reject(false)
+          console.log('业主uid缺失')
+          return
+        }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.immigrantWillList.forEach((item) => {
             if (item.uid === data.uid) {
-              item = data
+              item = { ...item, ...data }
             }
           })
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -212,6 +284,11 @@ class DataFill extends Landlord {
   deleteLandlordWill(uid: string, itemUid: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid || !itemUid) {
+          reject(false)
+          console.log('uid缺失')
+          return
+        }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.immigrantWillList.forEach((item) => {
@@ -219,6 +296,10 @@ class DataFill extends Landlord {
               item.isDelete = '1'
             }
           })
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -234,12 +315,21 @@ class DataFill extends Landlord {
   addLandlordTree(uid: string, data: TreeType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid) {
+          reject(false)
+          console.log('业主uid缺失')
+          return
+        }
         const itemUid = guid()
         data.uid = itemUid
         data.isDelete = '0'
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.immigrantTreeList.push(data)
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -254,13 +344,22 @@ class DataFill extends Landlord {
   updateLandlordTree(uid: string, data: TreeType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid) {
+          reject(false)
+          console.log('业主uid缺失')
+          return
+        }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.immigrantTreeList.forEach((item) => {
             if (item.uid === data.uid) {
-              item = data
+              item = { ...item, ...data }
             }
           })
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -275,6 +374,11 @@ class DataFill extends Landlord {
   deleteLandlordTree(uid: string, itemUid: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid || !itemUid) {
+          reject(false)
+          console.log('uid缺失')
+          return
+        }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.immigrantTreeList.forEach((item) => {
@@ -282,6 +386,10 @@ class DataFill extends Landlord {
               item.isDelete = '1'
             }
           })
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -297,12 +405,21 @@ class DataFill extends Landlord {
   addLandlordGrave(uid: string, data: GraveType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid) {
+          reject(false)
+          console.log('业主uid缺失')
+          return
+        }
         const itemUid = guid()
         data.uid = itemUid
         data.isDelete = '0'
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.immigrantGraveList.push(data)
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -317,13 +434,22 @@ class DataFill extends Landlord {
   updateLandlordGrave(uid: string, data: GraveType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid) {
+          reject(false)
+          console.log('业主uid缺失')
+          return
+        }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.immigrantGraveList.forEach((item) => {
             if (item.uid === data.uid) {
-              item = data
+              item = { ...item, ...data }
             }
           })
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -338,6 +464,11 @@ class DataFill extends Landlord {
   deleteLandlordGrave(uid: string, itemUid: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid || !itemUid) {
+          reject(false)
+          console.log('uid缺失')
+          return
+        }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.immigrantGraveList.forEach((item) => {
@@ -345,6 +476,10 @@ class DataFill extends Landlord {
               item.isDelete = '1'
             }
           })
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -360,12 +495,21 @@ class DataFill extends Landlord {
   addLandlordHouse(uid: string, data: HouseType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid) {
+          reject(false)
+          console.log('业主uid缺失')
+          return
+        }
         const itemUid = guid()
         data.uid = itemUid
         data.isDelete = '0'
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.immigrantHouseList.push(data)
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -380,13 +524,22 @@ class DataFill extends Landlord {
   updateLandlordHouse(uid: string, data: HouseType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid) {
+          reject(false)
+          console.log('业主uid缺失')
+          return
+        }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.immigrantHouseList.forEach((item) => {
             if (item.uid === data.uid) {
-              item = data
+              item = { ...item, ...data }
             }
           })
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -401,6 +554,11 @@ class DataFill extends Landlord {
   deleteLandlordHouse(uid: string, itemUid: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid || !itemUid) {
+          reject(false)
+          console.log('uid缺失')
+          return
+        }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.immigrantHouseList.forEach((item) => {
@@ -408,6 +566,10 @@ class DataFill extends Landlord {
               item.isDelete = '1'
             }
           })
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -423,12 +585,21 @@ class DataFill extends Landlord {
   addLandlordFamilyIncome(uid: string, data: FamilyIncomeType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid) {
+          reject(false)
+          console.log('业主uid缺失')
+          return
+        }
         const itemUid = guid()
         data.uid = itemUid
         data.isDelete = '0'
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.immigrantIncomeList.push(data)
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -443,13 +614,22 @@ class DataFill extends Landlord {
   updateLandlordFamilyIncome(uid: string, data: FamilyIncomeType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid) {
+          reject(false)
+          console.log('业主uid缺失')
+          return
+        }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.immigrantIncomeList.forEach((item) => {
             if (item.uid === data.uid) {
-              item = data
+              item = { ...item, ...data }
             }
           })
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -464,6 +644,11 @@ class DataFill extends Landlord {
   deleteLandlordFamilyIncome(uid: string, itemUid: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid || !itemUid) {
+          reject(false)
+          console.log('uid缺失')
+          return
+        }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.immigrantIncomeList.forEach((item) => {
@@ -471,6 +656,10 @@ class DataFill extends Landlord {
               item.isDelete = '1'
             }
           })
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -486,12 +675,21 @@ class DataFill extends Landlord {
   addLandlordImmigrantFile(uid: string, data: ImmigrantFileType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid) {
+          reject(false)
+          console.log('业主uid缺失')
+          return
+        }
         const itemUid = guid()
         data.uid = itemUid
         data.isDelete = '0'
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.immigrantFile.push(data)
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -506,13 +704,22 @@ class DataFill extends Landlord {
   updateLandlordImmigrantFile(uid: string, data: ImmigrantFileType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid) {
+          reject(false)
+          console.log('业主uid缺失')
+          return
+        }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.immigrantFile.forEach((item) => {
             if (item.uid === data.uid) {
-              item = data
+              item = { ...item, ...data }
             }
           })
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -527,6 +734,11 @@ class DataFill extends Landlord {
   deleteLandlordImmigrantFile(uid: string, itemUid: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid || !itemUid) {
+          reject(false)
+          console.log('uid缺失')
+          return
+        }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.immigrantFile.forEach((item) => {
@@ -534,6 +746,10 @@ class DataFill extends Landlord {
               item.isDelete = '1'
             }
           })
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -546,15 +762,24 @@ class DataFill extends Landlord {
   }
 
   // 业主-企业/个体户 新增操作
-  addLandlordCompany(uid: string, data: CompanyType): Promise<boolean> {
+  addLandlordCompany(uid: string, data: any): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid) {
+          reject(false)
+          console.log('业主uid缺失')
+          return
+        }
         const itemUid = guid()
-        data.uid = itemUid
-        data.isDelete = '0'
-        const landlordItem = await this.getLandlordByUid(uid)
+        data.company.uid = itemUid
+        data.company.isDelete = '0'
+        let landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
-          landlordItem.company = data
+          landlordItem = { ...landlordItem, ...data }
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -566,12 +791,21 @@ class DataFill extends Landlord {
     })
   }
   // 业主-企业/个体户 修改操作
-  updateLandlordCompany(uid: string, data: CompanyType): Promise<boolean> {
+  updateLandlordCompany(uid: string, data: any): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
-        const landlordItem = await this.getLandlordByUid(uid)
+        if (!uid) {
+          reject(false)
+          console.log('业主uid缺失')
+          return
+        }
+        let landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
-          landlordItem.company = data
+          landlordItem = { ...landlordItem, ...data }
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -586,9 +820,18 @@ class DataFill extends Landlord {
   deleteLandlordCompany(uid: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid) {
+          reject(false)
+          console.log('业主uid缺失')
+          return
+        }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.company.isDelete = '1'
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -604,12 +847,21 @@ class DataFill extends Landlord {
   addLandlordEquipment(uid: string, data: EquipmentType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid) {
+          reject(false)
+          console.log('业主uid缺失')
+          return
+        }
         const itemUid = guid()
         data.uid = itemUid
         data.isDelete = '0'
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.immigrantEquipmentList.push(data)
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -624,13 +876,22 @@ class DataFill extends Landlord {
   updateLandlordEquipment(uid: string, data: EquipmentType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid) {
+          reject(false)
+          console.log('业主uid缺失')
+          return
+        }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.immigrantEquipmentList.forEach((item) => {
             if (item.uid === data.uid) {
-              item = data
+              item = { ...item, ...data }
             }
           })
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -645,6 +906,11 @@ class DataFill extends Landlord {
   deleteLandlordEquipment(uid: string, itemUid: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid || !itemUid) {
+          reject(false)
+          console.log('uid缺失')
+          return
+        }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.immigrantEquipmentList.forEach((item) => {
@@ -652,6 +918,10 @@ class DataFill extends Landlord {
               item.isDelete = '1'
             }
           })
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -667,12 +937,21 @@ class DataFill extends Landlord {
   addLandlordManagement(uid: string, data: ManagementType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid) {
+          reject(false)
+          console.log('业主uid缺失')
+          return
+        }
         const itemUid = guid()
         data.uid = itemUid
         data.isDelete = '0'
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.immigrantManagementList.push(data)
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -687,13 +966,22 @@ class DataFill extends Landlord {
   updateLandlordManagement(uid: string, data: ManagementType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid) {
+          reject(false)
+          console.log('业主uid缺失')
+          return
+        }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.immigrantManagementList.forEach((item) => {
             if (item.uid === data.uid) {
-              item = data
+              item = { ...item, ...data }
             }
           })
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -708,6 +996,11 @@ class DataFill extends Landlord {
   deleteLandlordManagement(uid: string, itemUid: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid || !itemUid) {
+          reject(false)
+          console.log('uid缺失')
+          return
+        }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.immigrantManagementList.forEach((item) => {
@@ -715,6 +1008,10 @@ class DataFill extends Landlord {
               item.isDelete = '1'
             }
           })
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -730,12 +1027,21 @@ class DataFill extends Landlord {
   addLandlordFacilities(uid: string, data: FacilitiesType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid) {
+          reject(false)
+          console.log('业主uid缺失')
+          return
+        }
         const itemUid = guid()
         data.uid = itemUid
         data.isDelete = '0'
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.immigrantFacilitiesList.push(data)
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -750,13 +1056,22 @@ class DataFill extends Landlord {
   updateLandlordFacilities(uid: string, data: FacilitiesType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid) {
+          reject(false)
+          console.log('业主uid缺失')
+          return
+        }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.immigrantFacilitiesList.forEach((item) => {
             if (item.uid === data.uid) {
-              item = data
+              item = { ...item, ...data }
             }
           })
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)
@@ -771,6 +1086,11 @@ class DataFill extends Landlord {
   deleteLandlordFacilities(uid: string, itemUid: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!uid || !itemUid) {
+          reject(false)
+          console.log('uid缺失')
+          return
+        }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           landlordItem.immigrantFacilitiesList.forEach((item) => {
@@ -778,6 +1098,10 @@ class DataFill extends Landlord {
               item.isDelete = '1'
             }
           })
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem as LandlordType)

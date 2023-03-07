@@ -54,7 +54,7 @@
                     "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
                     "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>"
                 ],
-                "abiFilters" : [ "armeabi-v7a", "arm64-v8a", "x86" ],
+                "abiFilters" : [ "armeabi", "armeabi-v7a", "x86", "mips" ],
                 "minSdkVersion" : 21,
                 "autoSdkPermissions" : true
             },

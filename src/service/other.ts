@@ -11,7 +11,8 @@ import {
   DictionariesController,
   ResettlementController
 } from '@/controller'
-import { OtherDataType } from '@/database'
+import { ImageController } from '@/controller/image'
+import { OtherDataType, ImageDDLType } from '@/database'
 
 // 获取项目列表
 export const getProjectListApi = () => {
@@ -56,4 +57,19 @@ export const getDictObjApi = () => {
 // 获取other
 export const getOtherItemApi = (type: OtherDataType) => {
   return OtherController.getOtherWithType(type)
+}
+
+// 获取图片列表 [{url: xxxx, base64: ''}]
+export const getImgList = () => {
+  return ImageController.getList()
+}
+
+// 图片上传
+export const uploadImg = (data: Pick<ImageDDLType, 'file' | 'url'>) => {
+  return ImageController.add(data)
+}
+
+// 批量图片上传
+export const batchUploadImg = (data: Pick<ImageDDLType, 'file' | 'url'>[]) => {
+  return ImageController.batchAddImg(data)
 }

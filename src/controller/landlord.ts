@@ -158,8 +158,14 @@ export class Landlord extends Common {
           reject('')
           return
         }
+        if (!data.type) {
+          console.log('业主类型缺失')
+          reject('')
+          return
+        }
         const uid = guid()
         data.uid = uid
+        data.company = {}
         data.demographicList = data.demographicList || []
         data.immigrantAppendantList = data.immigrantAppendantList || []
         data.immigrantGraveList = data.immigrantGraveList || []
@@ -194,8 +200,9 @@ export class Landlord extends Common {
   updateLandlord(data: LandlordType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
-        if (!data) {
+        if (!data || !data.uid || !data.type) {
           reject(false)
+          console.log('核心字段缺失')
           return
         }
         const values = `status = 'modify',type = '${data.type}',name = '${
