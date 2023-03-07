@@ -1,5 +1,5 @@
 <template>
-  <Container title="编辑自然村">
+  <Container :title="uid ? '编辑自然村' : '添加自然村'">
     <view class="main">
       <uni-forms class="form" ref="form" :modelValue="formData" :rules="rules">
         <uni-row>
@@ -35,9 +35,13 @@
             <uni-forms-item label="中心经纬度" :label-width="170" label-align="right">
               <view class="lg-txt-wrapper">
                 <uni-data-checkbox v-model="check" :localdata="lgTagList" />
-                <view class="position" v-if="check === 1">
+                <view class="position" v-if="check === 1" @click="gotoMap">
                   <uni-icons type="map" color="#5D8CF7" size="14rpx" />
-                  <text class="txt">获取定位</text>
+                  <text class="txt">{{
+                    formData.longitude && formData.latitude
+                      ? `${formData.longitude},${formData.latitude}`
+                      : '获取定位'
+                  }}</text>
                 </view>
                 <template v-else-if="check === 2">
                   <uni-easyinput
@@ -79,14 +83,22 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import Container from '@/components/Container/index.vue'
 import TreeSelect from '@/components/VillageTreeSelect/index.vue'
 import VillageSelectFormItem from '@/components/VillageSelectFormItem/index.vue'
 import { getOtherItemApi, addVillageApi, updateVillageApi, getVillageItemApi } from '@/service'
 import { OtherDataType } from '@/database'
 import { onLoad } from '@dcloudio/uni-app'
-import { guidFour, setStorage, getStorage, StorageKey, routerBack } from '@/utils'
+import {
+  guidFour,
+  setStorage,
+  getStorage,
+  StorageKey,
+  routerBack,
+  routerForward,
+  networkCheck
+} from '@/utils'
 
 // 表单数据
 const formData = ref<any>({
@@ -110,13 +122,13 @@ const uid = ref<string>('')
 const type = ref<'add' | 'edit'>('add')
 const detail = ref<any>(null)
 
-const check = ref<number>(2)
+const check = ref<number>(1)
 const districtMap = getStorage(StorageKey.DISTRICTMAP)
 
 // 中心经纬度输入选项
 const lgTagList = ref<any>([
-  { text: '获取定位', value: 1, disable: true },
-  { text: '输入经纬度', value: 2 }
+  { text: '获取定位', value: 1, disable: false },
+  { text: '输入经纬度', value: 2, disable: false }
 ])
 
 onLoad((option: any) => {
@@ -127,6 +139,13 @@ onLoad((option: any) => {
     getDetail()
   }
 })
+
+const gotoMap = () => {
+  routerForward('map', {
+    longitude: formData.value.longitude,
+    latitude: formData.value.latitude
+  })
+}
 
 const getDetail = () => {
   if (uid.value) {
@@ -204,6 +223,27 @@ const villageConfirm = (code: string[], tit: string[]) => {
 const villageClose = () => {
   showVillageSelect.value = false
 }
+
+const mapChooseCallBack = (data: any) => {
+  console.log(data, 'map 推送的消息')
+  if (data && data.longitude && data.latitude) {
+    formData.value.longitude = data.longitude
+    formData.value.latitude = data.latitude
+  }
+}
+
+onMounted(() => {
+  networkCheck().then((res) => {
+    if (!res) {
+      lgTagList.value = [
+        { text: '获取定位', value: 1, disable: true },
+        { text: '输入经纬度', value: 2, disable: false }
+      ]
+      check.value = 2
+    }
+  })
+  uni.$on('chooseMap', mapChooseCallBack)
+})
 </script>
 
 <style lang="scss" scoped>

@@ -1,12 +1,13 @@
 <template>
-  <view class="map-wrap">
+  <view class="map-wrap" :style="{ paddingTop: `${statusBarHeight}px` }">
+    <image class="bg" src="@/static/images/common_bg.png" mode="widthFix" />
     <view class="common-header">
       <view class="back-box" @click="onBack">
-        <uni-icons type="back" color="#000000" size="14rpx" />
+        <uni-icons type="back" color="#ffffff" size="14rpx" />
       </view>
 
       <text class="tit">定位选择</text>
-      <text class="tit">确定</text>
+      <text class="right-btn" @click="onConfirm">确定</text>
     </view>
     <view class="map-content">
       <map
@@ -29,10 +30,12 @@
 
 <script setup lang="ts">
 import { onLoad } from '@dcloudio/uni-app'
-import { ref, getCurrentInstance, onMounted } from 'vue'
+import { nextTick, ref, getCurrentInstance, onMounted } from 'vue'
 import { routerBack } from '../../utils'
 // import MapInfo from './components/MapInfo.vue'
 
+const sysInfo = uni.getSystemInfoSync()
+const statusBarHeight = sysInfo.statusBarHeight || 0
 const instance = getCurrentInstance()
 const _this = instance?.appContext.config.globalProperties
 
@@ -84,7 +87,6 @@ const markers = ref<any[]>([
 ])
 
 onLoad((option: any) => {
-  console.log(option, 'option')
   if (option && option.longitude && option.latitude) {
     // 编辑经纬度
     const longitude = parseFloat(option.longitude)
@@ -93,12 +95,11 @@ onLoad((option: any) => {
       longitude,
       latitude
     }
-    updateMaker([
-      {
-        longitude,
-        latitude
+    nextTick(() => {
+      if (currentLocation.value) {
+        updateMaker([currentLocation.value])
       }
-    ])
+    })
   } else {
     // 新增经纬度
     getCurrentLocation()
@@ -167,6 +168,18 @@ const getCurrentLocation = () => {
     }
   })
 }
+
+const onConfirm = () => {
+  if (currentLocation.value?.latitude && currentLocation.value?.longitude) {
+    uni.$emit('chooseMap', currentLocation.value)
+    routerBack()
+  } else {
+    uni.showToast({
+      title: '请选择定位',
+      icon: 'none'
+    })
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -176,7 +189,6 @@ const getCurrentLocation = () => {
   flex-direction: column;
   flex: 1;
   width: 750rpx;
-  padding-top: var(--status-bar-height);
 
   .bg {
     position: absolute;
@@ -193,8 +205,7 @@ const getCurrentLocation = () => {
     align-items: center;
     justify-content: space-between;
     height: 33rpx;
-    padding: 0 6rpx;
-    background-color: #fff;
+    padding: 0 10rpx 0 6rpx;
 
     .back-box {
       display: flex;
@@ -207,7 +218,11 @@ const getCurrentLocation = () => {
     .tit {
       font-size: 15rpx;
       font-weight: 600;
-      color: #000000;
+      color: #ffffff;
+    }
+    .right-btn {
+      font-size: 12rpx;
+      color: #ffffff;
     }
   }
 
