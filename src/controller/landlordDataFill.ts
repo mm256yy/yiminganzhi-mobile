@@ -136,40 +136,8 @@ class DataFill extends Landlord {
     })
   }
 
-  // 业主- 附属物新增操作
-  addLandlordAppendant(uid: string, data: AppendantType): Promise<boolean> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        if (!uid) {
-          reject(false)
-          console.log('业主uid缺失')
-          return
-        }
-        const itemUid = guid()
-        data.uid = itemUid
-        data.isDelete = '0'
-        const landlordItem = await this.getLandlordByUid(uid)
-        if (landlordItem) {
-          if (!landlordItem.immigrantAppendantList) {
-            landlordItem.immigrantAppendantList = []
-          }
-          landlordItem.immigrantAppendantList.push(data)
-        } else {
-          reject(false)
-          console.log('业主信息查询失败')
-          return
-        }
-        // 更新数据
-        const updateRes = await this.updateLandlord(landlordItem as LandlordType)
-        updateRes ? resolve(true) : reject(false)
-      } catch (error) {
-        console.log(error, 'addLandlordAppendant-error')
-        reject(false)
-      }
-    })
-  }
   // 业主-附属物修改操作
-  updateLandlordAppendant(uid: string, data: AppendantType): Promise<boolean> {
+  updateLandlordAppendant(uid: string, data: AppendantType[]): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!uid) {
@@ -177,11 +145,18 @@ class DataFill extends Landlord {
           console.log('业主uid缺失')
           return
         }
+        if (!data || !data.length) {
+          reject(false)
+          console.log('附属物列表缺失')
+          return
+        }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
-          landlordItem.immigrantAppendantList = landlordItem.immigrantAppendantList.map((item) => {
-            if (item.uid === data.uid) {
-              item = { ...item, ...data }
+          landlordItem.immigrantAppendantList = data.map((item) => {
+            if (!item.uid) {
+              const itemUid = guid()
+              item.uid = itemUid
+              item.isDelete = '0'
             }
             return item
           })
@@ -231,38 +206,6 @@ class DataFill extends Landlord {
     })
   }
 
-  // 业主- 安置意愿新增操作
-  addLandlordWill(uid: string, data: WillType): Promise<boolean> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        if (!uid) {
-          reject(false)
-          console.log('业主uid缺失')
-          return
-        }
-        const itemUid = guid()
-        data.uid = itemUid
-        data.isDelete = '0'
-        const landlordItem = await this.getLandlordByUid(uid)
-        if (landlordItem) {
-          if (!landlordItem.immigrantWillList) {
-            landlordItem.immigrantWillList = []
-          }
-          landlordItem.immigrantWillList.push(data)
-        } else {
-          reject(false)
-          console.log('业主信息查询失败')
-          return
-        }
-        // 更新数据
-        const updateRes = await this.updateLandlord(landlordItem as LandlordType)
-        updateRes ? resolve(true) : reject(false)
-      } catch (error) {
-        console.log(error, 'addLandlordWill-error')
-        reject(false)
-      }
-    })
-  }
   // 业主-安置意愿修改操作
   updateLandlordWill(uid: string, data: WillType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
@@ -272,14 +215,21 @@ class DataFill extends Landlord {
           console.log('业主uid缺失')
           return
         }
+        if (!data) {
+          reject(false)
+          console.log('安置意愿信息缺失')
+          return
+        }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
-          landlordItem.immigrantWillList = landlordItem.immigrantWillList.map((item) => {
-            if (item.uid === data.uid) {
-              item = { ...item, ...data }
-            }
-            return item
-          })
+          if (!data.uid) {
+            const itemUid = guid()
+            data.uid = itemUid
+            data.isDelete = '0'
+            landlordItem.immigrantWill = data
+          } else {
+            landlordItem.immigrantWill = data
+          }
         } else {
           reject(false)
           console.log('业主信息查询失败')
@@ -326,40 +276,8 @@ class DataFill extends Landlord {
     })
   }
 
-  // 业主- 果木新增操作
-  addLandlordTree(uid: string, data: TreeType): Promise<boolean> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        if (!uid) {
-          reject(false)
-          console.log('业主uid缺失')
-          return
-        }
-        const itemUid = guid()
-        data.uid = itemUid
-        data.isDelete = '0'
-        const landlordItem = await this.getLandlordByUid(uid)
-        if (landlordItem) {
-          if (!landlordItem.immigrantTreeList) {
-            landlordItem.immigrantTreeList = []
-          }
-          landlordItem.immigrantTreeList.push(data)
-        } else {
-          reject(false)
-          console.log('业主信息查询失败')
-          return
-        }
-        // 更新数据
-        const updateRes = await this.updateLandlord(landlordItem as LandlordType)
-        updateRes ? resolve(true) : reject(false)
-      } catch (error) {
-        console.log(error, 'addLandlordTree-error')
-        reject(false)
-      }
-    })
-  }
   // 业主-果木修改操作
-  updateLandlordTree(uid: string, data: TreeType): Promise<boolean> {
+  updateLandlordTree(uid: string, data: TreeType[]): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!uid) {
@@ -367,11 +285,18 @@ class DataFill extends Landlord {
           console.log('业主uid缺失')
           return
         }
+        if (!data || !data.length) {
+          reject(false)
+          console.log('果木列表缺失')
+          return
+        }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
-          landlordItem.immigrantTreeList = landlordItem.immigrantTreeList.map((item) => {
-            if (item.uid === data.uid) {
-              item = { ...item, ...data }
+          landlordItem.immigrantTreeList = data.map((item) => {
+            if (!item.uid) {
+              const itemUid = guid()
+              item.uid = itemUid
+              item.isDelete = '0'
             }
             return item
           })
@@ -421,40 +346,8 @@ class DataFill extends Landlord {
     })
   }
 
-  // 业主- 坟墓新增操作
-  addLandlordGrave(uid: string, data: GraveType): Promise<boolean> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        if (!uid) {
-          reject(false)
-          console.log('业主uid缺失')
-          return
-        }
-        const itemUid = guid()
-        data.uid = itemUid
-        data.isDelete = '0'
-        const landlordItem = await this.getLandlordByUid(uid)
-        if (landlordItem) {
-          if (!landlordItem.immigrantGraveList) {
-            landlordItem.immigrantGraveList = []
-          }
-          landlordItem.immigrantGraveList.push(data)
-        } else {
-          reject(false)
-          console.log('业主信息查询失败')
-          return
-        }
-        // 更新数据
-        const updateRes = await this.updateLandlord(landlordItem as LandlordType)
-        updateRes ? resolve(true) : reject(false)
-      } catch (error) {
-        console.log(error, 'addLandlordGrave-error')
-        reject(false)
-      }
-    })
-  }
   // 业主-坟墓修改操作
-  updateLandlordGrave(uid: string, data: GraveType): Promise<boolean> {
+  updateLandlordGrave(uid: string, data: GraveType[]): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!uid) {
@@ -462,11 +355,18 @@ class DataFill extends Landlord {
           console.log('业主uid缺失')
           return
         }
+        if (!data || !data.length) {
+          reject(false)
+          console.log('坟墓列表缺失')
+          return
+        }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
-          landlordItem.immigrantGraveList = landlordItem.immigrantGraveList.map((item) => {
-            if (item.uid === data.uid) {
-              item = { ...item, ...data }
+          landlordItem.immigrantGraveList = data.map((item) => {
+            if (!item.uid) {
+              const itemUid = guid()
+              item.uid = itemUid
+              item.isDelete = '0'
             }
             return item
           })
@@ -611,51 +511,31 @@ class DataFill extends Landlord {
     })
   }
 
-  // 业主- 家庭收入新增操作
-  addLandlordFamilyIncome(uid: string, data: FamilyIncomeType): Promise<boolean> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        if (!uid) {
-          reject(false)
-          console.log('业主uid缺失')
-          return
-        }
-        const itemUid = guid()
-        data.uid = itemUid
-        data.isDelete = '0'
-        const landlordItem = await this.getLandlordByUid(uid)
-        if (landlordItem) {
-          if (!landlordItem.immigrantIncomeList) {
-            landlordItem.immigrantIncomeList = []
-          }
-          landlordItem.immigrantIncomeList.push(data)
-        } else {
-          reject(false)
-          console.log('业主信息查询失败')
-          return
-        }
-        // 更新数据
-        const updateRes = await this.updateLandlord(landlordItem as LandlordType)
-        updateRes ? resolve(true) : reject(false)
-      } catch (error) {
-        console.log(error, 'addLandlordFamilyIncome-error')
-        reject(false)
-      }
-    })
-  }
   // 业主-家庭收入修改操作
   updateLandlordFamilyIncome(uid: string, data: FamilyIncomeType[]): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
-        if (!uid || !data || !data.length) {
+        if (!uid) {
           reject(false)
           console.log('核心字段缺失')
+          return
+        }
+        if (!data || !data.length) {
+          reject(false)
+          console.log('列表缺失')
           return
         }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
           // 每次都是重置
-          landlordItem.immigrantIncomeList = data
+          landlordItem.immigrantIncomeList = data.map((item) => {
+            if (!item.uid) {
+              const itemUid = guid()
+              item.uid = itemUid
+              item.isDelete = '0'
+            }
+            return item
+          })
         } else {
           reject(false)
           console.log('业主信息查询失败')
@@ -670,72 +550,9 @@ class DataFill extends Landlord {
       }
     })
   }
-  // 业主-家庭收入删除操作
-  deleteLandlordFamilyIncome(uid: string, itemUid: string): Promise<boolean> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        if (!uid || !itemUid) {
-          reject(false)
-          console.log('uid缺失')
-          return
-        }
-        const landlordItem = await this.getLandlordByUid(uid)
-        if (landlordItem) {
-          landlordItem.immigrantIncomeList = landlordItem.immigrantIncomeList.map((item) => {
-            if (item.uid === itemUid) {
-              item.isDelete = '1'
-            }
-            return item
-          })
-        } else {
-          reject(false)
-          console.log('业主信息查询失败')
-          return
-        }
-        // 更新数据
-        const updateRes = await this.updateLandlord(landlordItem as LandlordType)
-        updateRes ? resolve(true) : reject(false)
-      } catch (error) {
-        console.log(error, 'deleteLandlordFamilyIncome-error')
-        reject(false)
-      }
-    })
-  }
 
-  // 业主-附件新增操作
-  addLandlordImmigrantFile(uid: string, data: ImmigrantFileType): Promise<boolean> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        if (!uid) {
-          reject(false)
-          console.log('业主uid缺失')
-          return
-        }
-        const itemUid = guid()
-        data.uid = itemUid
-        data.isDelete = '0'
-        const landlordItem = await this.getLandlordByUid(uid)
-        if (landlordItem) {
-          if (!landlordItem.immigrantFile) {
-            landlordItem.immigrantFile = []
-          }
-          landlordItem.immigrantFile.push(data)
-        } else {
-          reject(false)
-          console.log('业主信息查询失败')
-          return
-        }
-        // 更新数据
-        const updateRes = await this.updateLandlord(landlordItem as LandlordType)
-        updateRes ? resolve(true) : reject(false)
-      } catch (error) {
-        console.log(error, 'addLandlordImmigrantFile-error')
-        reject(false)
-      }
-    })
-  }
   // 业主-附件修改操作
-  updateLandlordImmigrantFile(uid: string, data: ImmigrantFileType): Promise<boolean> {
+  updateLandlordImmigrantFile(uid: string, data: ImmigrantFileType[]): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!uid) {
@@ -745,9 +562,11 @@ class DataFill extends Landlord {
         }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
-          landlordItem.immigrantFile = landlordItem.immigrantFile.map((item) => {
-            if (item.uid === data.uid) {
-              item = { ...item, ...data }
+          landlordItem.immigrantFile = data.map((item) => {
+            if (!item.uid) {
+              const itemUid = guid()
+              item.uid = itemUid
+              item.isDelete = '0'
             }
             return item
           })
@@ -1008,7 +827,7 @@ class DataFill extends Landlord {
     })
   }
   // 业主-企业营收修改操作
-  updateLandlordManagement(uid: string, data: ManagementType): Promise<boolean> {
+  updateLandlordManagement(uid: string, data: ManagementType[]): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!uid) {
@@ -1016,16 +835,21 @@ class DataFill extends Landlord {
           console.log('业主uid缺失')
           return
         }
+        if (!data || !data.length) {
+          reject(false)
+          console.log('企业营收列表缺失')
+          return
+        }
         const landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
-          landlordItem.immigrantManagementList = landlordItem.immigrantManagementList.map(
-            (item) => {
-              if (item.uid === data.uid) {
-                item = { ...item, ...data }
-              }
-              return item
+          landlordItem.immigrantManagementList = data.map((item) => {
+            if (!item.uid) {
+              const itemUid = guid()
+              item.uid = itemUid
+              item.isDelete = '0'
             }
-          )
+            return item
+          })
         } else {
           reject(false)
           console.log('业主信息查询失败')

@@ -80,22 +80,12 @@ export const deleteLandlordHouseApi = (uid: string, itemId: string) => {
 // ---------------
 
 /**
- * 添加附属物
- * @param uid 业主uid
- * @param data 附属物信息
- * @returns
- */
-export const addLandlordAppendantApi = (uid: string, data: AppendantType) => {
-  return DataFillController.addLandlordAppendant(uid, data)
-}
-
-/**
  * 更新附属物
  * @param uid 业主uid
  * @param data 附属物信息
  * @returns
  */
-export const updateLandlordAppendantApi = (uid: string, data: AppendantType) => {
+export const updateLandlordAppendantApi = (uid: string, data: AppendantType[]) => {
   return DataFillController.updateLandlordAppendant(uid, data)
 }
 
@@ -107,17 +97,6 @@ export const updateLandlordAppendantApi = (uid: string, data: AppendantType) => 
  */
 export const deleteLandlordAppendantApi = (uid: string, itemId: string) => {
   return DataFillController.deleteLandlordAppendant(uid, itemId)
-}
-
-// --------------
-/**
- * 添加安置意愿
- * @param uid 业主uid
- * @param data 房屋信息
- * @returns
- */
-export const addLandlordWillApi = (uid: string, data: WillType) => {
-  return DataFillController.addLandlordWill(uid, data)
 }
 
 /**
@@ -142,22 +121,12 @@ export const deleteLandlordWillApi = (uid: string, itemId: string) => {
 // ---------------
 
 /**
- * 添加果木
- * @param uid 业主uid
- * @param data 果木信息
- * @returns
- */
-export const addLandlordTreeApi = (uid: string, data: TreeType) => {
-  return DataFillController.addLandlordTree(uid, data)
-}
-
-/**
  * 更新果木信息
  * @param uid 业主uid
  * @param data 果木信息
  * @returns
  */
-export const updateLandlordTreeApi = (uid: string, data: TreeType) => {
+export const updateLandlordTreeApi = (uid: string, data: TreeType[]) => {
   return DataFillController.updateLandlordTree(uid, data)
 }
 
@@ -173,22 +142,12 @@ export const deleteLandlordTreeApi = (uid: string, itemId: string) => {
 // ---------------
 
 /**
- * 添加坟墓
- * @param uid 业主uid
- * @param data 坟墓信息
- * @returns
- */
-export const addLandlordGraveApi = (uid: string, data: GraveType) => {
-  return DataFillController.addLandlordGrave(uid, data)
-}
-
-/**
  * 更新坟墓
  * @param uid 业主uid
  * @param data 坟墓信息
  * @returns
  */
-export const updateLandlordGraveApi = (uid: string, data: GraveType) => {
+export const updateLandlordGraveApi = (uid: string, data: GraveType[]) => {
   return DataFillController.updateLandlordGrave(uid, data)
 }
 
@@ -204,16 +163,6 @@ export const deleteLandlordGraveApi = (uid: string, itemId: string) => {
 // ---------------
 
 /**
- * 添加家庭收入
- * @param uid 业主uid
- * @param data 家庭收入信息
- * @returns
- */
-export const addLandlordFamilyIncomeApi = (uid: string, data: FamilyIncomeType) => {
-  return DataFillController.addLandlordFamilyIncome(uid, data)
-}
-
-/**
  * 更新家庭收入
  * @param uid 业主uid
  * @param data 家庭收入信息
@@ -222,27 +171,7 @@ export const addLandlordFamilyIncomeApi = (uid: string, data: FamilyIncomeType) 
 export const updateLandlordFamilyIncomeApi = (uid: string, data: FamilyIncomeType[]) => {
   return DataFillController.updateLandlordFamilyIncome(uid, data)
 }
-
-/**
- * 删除家庭收入
- * @param uid 业主uid
- * @param itemId 家庭收入uid
- * @returns
- */
-export const deleteLandlordFamilyIncomeApi = (uid: string, itemId: string) => {
-  return DataFillController.deleteLandlordFamilyIncome(uid, itemId)
-}
 // ---------------
-
-/**
- * 添加附件
- * @param uid 业主uid
- * @param data 附件信息
- * @returns
- */
-export const addLandlordImmigrantFileApi = (uid: string, data: ImmigrantFileType) => {
-  return DataFillController.addLandlordImmigrantFile(uid, data)
-}
 
 /**
  * 更新附件
@@ -250,7 +179,7 @@ export const addLandlordImmigrantFileApi = (uid: string, data: ImmigrantFileType
  * @param data 附件信息
  * @returns
  */
-export const updateLandlordImmigrantFileApi = (uid: string, data: ImmigrantFileType) => {
+export const updateLandlordImmigrantFileApi = (uid: string, data: ImmigrantFileType[]) => {
   return DataFillController.updateLandlordImmigrantFile(uid, data)
 }
 
@@ -298,22 +227,12 @@ export const deleteLandlordCompanyApi = (uid: string) => {
 // ---------------
 
 /**
- * 添加企业营收
- * @param uid 业主uid
- * @param data 企业营收信息
- * @returns
- */
-export const addLandlordManagementApi = (uid: string, data: ManagementType) => {
-  return DataFillController.addLandlordManagement(uid, data)
-}
-
-/**
  * 更新企业营收
  * @param uid 业主uid
  * @param data 企业营收信息
  * @returns
  */
-export const updateLandlordManagementApi = (uid: string, data: ManagementType) => {
+export const updateLandlordManagementApi = (uid: string, data: ManagementType[]) => {
   return DataFillController.updateLandlordManagement(uid, data)
 }
 
