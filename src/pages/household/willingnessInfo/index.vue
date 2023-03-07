@@ -92,7 +92,7 @@
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
-import { getWillListApi, updateLandlordWillApi } from '@/service'
+import { getWillListApi } from '@/service'
 
 const props = defineProps({
   willData: {

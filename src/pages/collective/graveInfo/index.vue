@@ -87,11 +87,24 @@
       mode="scaleToFill"
       @click="toLink('add')"
     />
+
+    <uni-popup ref="alertDialog" type="dialog">
+      <uni-popup-dialog
+        type="warn"
+        cancelText="取消"
+        confirmText="确认"
+        title="确认删除？"
+        content=""
+        @confirm="dialogConfirm"
+        @close="dialogClose"
+      />
+    </uni-popup>
   </view>
 </template>
 
 <script lang="ts" setup>
-import { formatStr, formatDict } from '@/utils'
+import { ref } from 'vue'
+import { formatStr, formatDict, routerForward } from '@/utils'
 
 const props = defineProps({
   dataList: {
@@ -105,33 +118,42 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['deleteGraveInfo'])
+const alertDialog = ref<any>(null)
+const currentItem = ref<any>({})
 
 /**
  * 删除当前行信息
- * @param data
+ * @param {Object} data 当前行数据
  */
 const deleteGraveInfo = (data: any) => {
-  emit('deleteGraveInfo', data)
+  alertDialog.value?.open()
+  currentItem.value = { ...data }
 }
 
-const toLink = (type: string, data?: any) => {
-  let params = {
-    uid: props.dataInfo.uid,
-    doorNo: props.dataInfo.doorNo,
-    householdId: props.dataInfo.householdId
-  }
+const dialogConfirm = () => {
+  emit('deleteGraveInfo', currentItem.value)
+}
 
+const dialogClose = () => {
+  alertDialog.value.close()
+}
+
+/**
+ * 页面跳转
+ * @param type 类型，edit 编辑，add 新增
+ * @param data type 为 edit 时，当前行数据
+ */
+const toLink = (type: string, data?: any) => {
+  const { uid, doorNo, householdId } = props.dataInfo
+  const commonParams = { type, uid, doorNo, householdId }
   if (type === 'edit') {
-    params = {
-      ...params,
-      ...data
-    }
-    uni.navigateTo({
-      url: '/pages/collective/graveInfo/edit?params=' + JSON.stringify(params)
+    routerForward('collectiveGraveInfoEdit', {
+      params: JSON.stringify(data),
+      commonParams: JSON.stringify(commonParams)
     })
   } else {
-    uni.navigateTo({
-      url: '/pages/collective/graveInfo/edit?params=' + JSON.stringify(params)
+    routerForward('collectiveGraveInfoEdit', {
+      commonParams: JSON.stringify(commonParams)
     })
   }
 }

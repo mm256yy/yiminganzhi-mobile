@@ -61,7 +61,7 @@
             <uni-col :span="8">
               <view class="col">
                 <view class="label">竣工日期：</view>
-                <view class="content">{{ fmtDate(item.completedTime, 7) }}</view>
+                <view class="content">{{ item.completedTime }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -105,11 +105,24 @@
       mode="scaleToFill"
       @click="toLink('add')"
     />
+
+    <uni-popup ref="alertDialog" type="dialog">
+      <uni-popup-dialog
+        type="warn"
+        cancelText="取消"
+        confirmText="确认"
+        title="确认删除？"
+        content=""
+        @confirm="dialogConfirm"
+        @close="dialogClose"
+      />
+    </uni-popup>
   </view>
 </template>
 
 <script lang="ts" setup>
-import { formatDict, formatStr, fmtDate, routerForward } from '@/utils'
+import { ref } from 'vue'
+import { formatDict, formatStr, routerForward } from '@/utils'
 
 const props = defineProps({
   dataList: {
@@ -123,18 +136,19 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['deleteHouse'])
+const alertDialog = ref<any>(null)
+const currentItem = ref<any>({})
 
 const toLink = (type: string, data?: any) => {
-  const { uid } = props.dataInfo
+  const { uid, doorNo, householdId } = props.dataInfo
+  const commonParams = { type, uid, doorNo, householdId }
   if (type === 'edit') {
-    const params = { ...data }
     routerForward('houseInfoEdit', {
-      params: JSON.stringify(params),
-      type,
-      uid
+      params: JSON.stringify(data),
+      commonParams: JSON.stringify(commonParams)
     })
   } else if (type === 'add') {
-    routerForward('houseInfoEdit', { type, uid })
+    routerForward('houseInfoEdit', { commonParams: JSON.stringify(commonParams) })
   }
 }
 
@@ -143,7 +157,16 @@ const toLink = (type: string, data?: any) => {
  * @param {Object} data 当前行数据
  */
 const deleteHouse = (data: any) => {
-  emit('deleteHouse', data)
+  alertDialog.value?.open()
+  currentItem.value = { ...data }
+}
+
+const dialogConfirm = () => {
+  emit('deleteHouse', currentItem.value)
+}
+
+const dialogClose = () => {
+  alertDialog.value.close()
 }
 </script>
 

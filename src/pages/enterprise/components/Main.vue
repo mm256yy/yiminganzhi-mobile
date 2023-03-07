@@ -204,7 +204,7 @@ const toLink = (type: string) => {
  * @param(Object) data 被删除的行信息
  */
 const deleteHouse = (data: any) => {
-  deleteLandlordHouseApi(props.dataInfo.uid, data.id)
+  deleteLandlordHouseApi(props.dataInfo.uid, data.uid)
     .then((res: any) => {
       if (res) {
         showToast(SUCCESS_MSG)
@@ -220,7 +220,7 @@ const deleteHouse = (data: any) => {
  * @param(Object) data 被删除的行信息
  */
 const deleteTree = (data: any) => {
-  deleteLandlordTreeApi(props.dataInfo.uid, data.id)
+  deleteLandlordTreeApi(props.dataInfo.uid, data.uid)
     .then((res: any) => {
       if (res) {
         showToast(SUCCESS_MSG)
@@ -270,7 +270,7 @@ const updateAccessoryInfo = (data: any) => {
  * @param(Object) data 被删除的行信息
  */
 const deleteEquipment = (data: any) => {
-  deleteLandlordEquipmentApi(props.dataInfo.uid, data.id)
+  deleteLandlordEquipmentApi(props.dataInfo.uid, data.uid)
     .then((res: any) => {
       if (res) {
         showToast(SUCCESS_MSG)

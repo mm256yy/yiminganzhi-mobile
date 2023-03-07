@@ -109,7 +109,7 @@
 </template>
 
 <script lang="ts" setup>
-import { formatStr, formatDict, dictOption, splitStr } from '@/utils'
+import { formatStr, formatDict, dictOption, splitStr, routerForward } from '@/utils'
 import { yesAndNoEnums } from '../config'
 import { locationTypes } from '@/config/common'
 
@@ -142,8 +142,9 @@ const toLink = (type: string) => {
     latitude: props.dataInfo.latitude // 纬度
   }
 
-  uni.navigateTo({
-    url: '/pages/household/householdInfo/edit?type=' + type + '&params=' + JSON.stringify(params)
+  routerForward('householdInfoEdit', {
+    params: JSON.stringify(params),
+    type
   })
 }
 </script>

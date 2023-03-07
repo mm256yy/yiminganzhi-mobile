@@ -152,7 +152,7 @@ const form = ref<any>(null)
 // 获得焦点的输入框下标
 const focusIndex = ref<number>(-1)
 const title = ref<string>('')
-const type = ref<string>('')
+const commonParams = ref<any>({})
 
 // 表单校验规则
 const rules = ref<any>({})
@@ -162,13 +162,15 @@ const dict = getStorage(StorageKey.DICT)
 
 // 获取上个页面传递的参数，给表单赋值
 onLoad((option: any) => {
-  type.value = option.type
-  if (option.type === 'edit') {
-    let params = JSON.parse(option.params)
-    formData.value = { ...params }
-    title.value = '坟墓信息编辑'
-  } else if (option.type === 'add') {
-    title.value = '添加坟墓'
+  if (option) {
+    commonParams.value = JSON.stringify(option.commonParams)
+    if (commonParams.value.type === 'edit') {
+      let params = JSON.parse(option.params)
+      formData.value = { ...params }
+      title.value = '坟墓信息编辑'
+    } else if (commonParams.value.type === 'add') {
+      title.value = '添加坟墓'
+    }
   }
 })
 
@@ -189,15 +191,12 @@ const changeDate = (e: any) => {
 
 // 表单提交
 const submit = () => {
-  let params = { ...formData.value }
+  const { type, uid, doorNo, householdId } = commonParams.value
+  let params = { doorNo, householdId, ...formData.value }
   form.value?.validate().then((valid: any) => {
     if (valid) {
-      if (type.value === 'add') {
-        params = {
-          ...params,
-          type: MainType.Village
-        }
-        addLandlordGraveApi(params.uid, params)
+      if (type === 'add') {
+        addLandlordGraveApi(uid, params)
           .then((res) => {
             if (res) {
               showToast(SUCCESS_MSG)
@@ -207,8 +206,8 @@ const submit = () => {
           .catch((e) => {
             showToast(ERROR_MSG)
           })
-      } else if (type.value === 'edit') {
-        updateLandlordGraveApi(params.uid, params)
+      } else if (type === 'edit') {
+        updateLandlordGraveApi(uid, params)
           .then((res) => {
             if (res) {
               showToast(SUCCESS_MSG)

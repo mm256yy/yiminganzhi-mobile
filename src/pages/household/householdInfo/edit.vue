@@ -184,6 +184,7 @@ const rules = reactive({
 const isFocus = ref<boolean>(false)
 const title = ref<string>('')
 const type = ref<string>('')
+const uid = ref<string>('')
 
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
@@ -196,6 +197,7 @@ onLoad((option: any) => {
     formData.value = { ...params }
     title.value = '居民户信息编辑'
   } else if (option.type === 'add') {
+    uid.value = option.uid
     title.value = '添加居民户信息'
   }
 })
@@ -221,7 +223,8 @@ const submit = () => {
       if (type.value === 'add') {
         params = {
           ...params,
-          type: MainType.PeasantHousehold
+          type: MainType.PeasantHousehold,
+          uid
         }
         addLandlordApi(params)
           .then((res) => {

@@ -399,10 +399,8 @@ import Back from '@/components/Back/Index.vue'
 const formData = ref<any>({})
 const form = ref<any>(null)
 
-// 表单类型，add 新增表单，edit 编辑表单
-const type = ref<string>('')
 const title = ref<string>('')
-const uid = ref<string>('')
+const commonParams = ref<any>({})
 
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
@@ -419,12 +417,12 @@ const rules = reactive({
 
 onLoad((option: any) => {
   if (option) {
-    type.value = option.type
-    uid.value = option.uid
-    if (option.type === 'edit') {
-      formData.value = JSON.parse(option.params)
+    commonParams.value = JSON.parse(option.commonParams)
+    if (commonParams.value.type === 'edit') {
+      let params = JSON.parse(option.params)
+      formData.value = { ...params }
       title.value = '房屋信息编辑'
-    } else if (option.type === 'add') {
+    } else if (commonParams.value.type === 'add') {
       title.value = '新增房屋'
     }
   }
@@ -533,11 +531,12 @@ const homePicFail = (e: any) => {
 
 // 表单提交
 const submit = () => {
-  const params = { ...formData.value }
+  const { type, uid, doorNo, householdId } = commonParams.value
+  const params = { doorNo, householdId, ...formData.value }
   form.value?.validate().then((valid: any) => {
     if (valid) {
-      if (type.value === 'add') {
-        addLandlordHouseApi(uid.value, params)
+      if (type === 'add') {
+        addLandlordHouseApi(uid, params)
           .then((res) => {
             if (res) {
               showToast(SUCCESS_MSG)
@@ -547,8 +546,8 @@ const submit = () => {
           .catch((e) => {
             showToast(ERROR_MSG)
           })
-      } else {
-        updateLandlordHouseApi(uid.value, params)
+      } else if (type === 'edit') {
+        updateLandlordHouseApi(uid, params)
           .then((res) => {
             if (res) {
               showToast(SUCCESS_MSG)

@@ -74,11 +74,24 @@
       mode="scaleToFill"
       @click="toLink('add')"
     />
+
+    <uni-popup ref="alertDialog" type="dialog">
+      <uni-popup-dialog
+        type="warn"
+        cancelText="取消"
+        confirmText="确认"
+        title="确认删除？"
+        content=""
+        @confirm="dialogConfirm"
+        @close="dialogClose"
+      />
+    </uni-popup>
   </view>
 </template>
 
 <script lang="ts" setup>
-import { formatStr, formatDict, dictOption } from '@/utils'
+import { ref } from 'vue'
+import { formatStr, formatDict, dictOption, routerForward } from '@/utils'
 import { locationTypes } from '@/config/common'
 
 const props = defineProps({
@@ -93,13 +106,24 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['deleteEquipment'])
+const alertDialog = ref<any>(null)
+const currentItem = ref<any>({})
 
 /**
  * 删除设施设备信息
- * @param data
+ * @param {Object} data 当前行数据
  */
 const deleteEquipment = (data: any) => {
-  emit('deleteEquipment', data)
+  alertDialog.value?.open()
+  currentItem.value = { ...data }
+}
+
+const dialogConfirm = () => {
+  emit('deleteEquipment', currentItem.value)
+}
+
+const dialogClose = () => {
+  alertDialog.value.close()
 }
 
 /**
@@ -108,22 +132,16 @@ const deleteEquipment = (data: any) => {
  * @param data type 为 edit 时，当前行数据
  */
 const toLink = (type: string, data?: any) => {
-  let params = {
-    uid: props.dataInfo.uid,
-    householdId: props.dataInfo.householdId,
-    doorNo: props.dataInfo.doorNo
-  }
+  const { uid, doorNo, householdId } = props.dataInfo
+  const commonParams = { type, uid, doorNo, householdId }
   if (type === 'edit') {
-    params = {
-      ...params,
-      ...data
-    }
-    uni.navigateTo({
-      url: '/pages/collective/equipmentInfo/edit?params=' + JSON.stringify(params)
+    routerForward('collectiveEquipmentInfoEdit', {
+      params: JSON.stringify(data),
+      commonParams: JSON.stringify(commonParams)
     })
   } else {
-    uni.navigateTo({
-      url: '/pages/collective/equipmentInfo/edit?params=' + JSON.stringify(params)
+    routerForward('collectiveEquipmentInfoEdit', {
+      commonParams: JSON.stringify(commonParams)
     })
   }
 }

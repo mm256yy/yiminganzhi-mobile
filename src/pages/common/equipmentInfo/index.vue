@@ -77,10 +77,23 @@
       mode="scaleToFill"
       @click="toLink('add')"
     />
+
+    <uni-popup ref="alertDialog" type="dialog">
+      <uni-popup-dialog
+        type="warn"
+        cancelText="取消"
+        confirmText="确认"
+        title="确认删除？"
+        content=""
+        @confirm="dialogConfirm"
+        @close="dialogClose"
+      />
+    </uni-popup>
   </view>
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue'
 import { formatStr, formatDict, routerForward } from '@/utils'
 
 const props = defineProps({
@@ -95,6 +108,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['deleteEquipment'])
+const alertDialog = ref<any>(null)
+const currentItem = ref<any>({})
 
 /**
  * 页面跳转
@@ -120,7 +135,16 @@ const toLink = (type: string, data?: any) => {
  * @param {Object} data 当前行数据
  */
 const deleteEquipment = (data: any) => {
-  emit('deleteEquipment', data)
+  alertDialog.value?.open()
+  currentItem.value = { ...data }
+}
+
+const dialogConfirm = () => {
+  emit('deleteEquipment', currentItem.value)
+}
+
+const dialogClose = () => {
+  alertDialog.value.close()
 }
 </script>
 

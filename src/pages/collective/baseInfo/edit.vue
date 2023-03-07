@@ -135,6 +135,7 @@ const rules = reactive({
 const focusIndex = ref<number>(-1)
 const title = ref<string>('')
 const type = ref<string>('')
+const uid = ref<string>('')
 
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
@@ -148,6 +149,7 @@ onLoad((option: any) => {
     title.value = '村集体基本情况编辑'
   } else if (option.type === 'add') {
     title.value = '添加村集体'
+    uid.value = option.uid
   }
 })
 
@@ -200,7 +202,8 @@ const submit = () => {
       if (type.value === 'add') {
         params = {
           ...params,
-          type: MainType.Village
+          type: MainType.Village,
+          uid: uid.value
         }
         addLandlordApi(params)
           .then((res) => {

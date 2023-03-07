@@ -93,7 +93,12 @@
       </view>
 
       <view :class="['tree-wrapper', showExpand ? 'w-0' : 'expand']">
-        <Tree :treeData="treeData" :iconSrc="iconSrc" @tree-item-click="treeItemClick" />
+        <Tree
+          :treeData="treeData"
+          :iconSrc="iconSrc"
+          @tree-item-click="treeItemClick"
+          @add-click="addClick('add')"
+        />
       </view>
     </view>
   </view>
@@ -102,6 +107,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
+import { routerForward } from '@/utils'
 import Back from '@/components/Back/Index.vue'
 import Tree from '@/components/Tree/Index.vue'
 import Tabs from '@/components/Tabs/Index.vue'
@@ -187,11 +193,20 @@ const selectTabs = (data: any) => {
 }
 
 /**
+ * 新增村集体
+ * @param(type) 类型，edit 编辑， add 新增
+ */
+const addClick = (type: string) => {
+  const { uid } = props.dataInfo.uid
+  routerForward('collectiveBaseInfoEdit', { type, uid })
+}
+
+/**
  * 房屋信息 - 删除
  * @param(Object) data 被删除的行信息
  */
 const deleteHouse = (data: any) => {
-  deleteLandlordHouseApi(data.uid, data.id)
+  deleteLandlordHouseApi(props.dataInfo.uid, data.uid)
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
@@ -207,7 +222,7 @@ const deleteHouse = (data: any) => {
  * @param(Object) data 被删除的行信息
  */
 const deleteTree = (data: any) => {
-  deleteLandlordTreeApi(data.uid, data.id)
+  deleteLandlordTreeApi(props.dataInfo.uid, data.uid)
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
@@ -257,7 +272,7 @@ const updateAccessoryInfo = (data: any) => {
  * @param data
  */
 const deleteEquipment = (data: any) => {
-  deleteLandlordFacilitiesApi(props.dataInfo.uid, data.id)
+  deleteLandlordFacilitiesApi(props.dataInfo.uid, data.uid)
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
@@ -273,7 +288,7 @@ const deleteEquipment = (data: any) => {
  * @param data
  */
 const deleteGraveInfo = (data: any) => {
-  deleteLandlordGraveApi(props.dataInfo.uid, data.id)
+  deleteLandlordGraveApi(props.dataInfo.uid, data.uid)
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)

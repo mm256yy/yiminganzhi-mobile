@@ -87,13 +87,13 @@
       class="edit-btn"
       src="@/static/images/icon_edit.png"
       mode="scaleToFill"
-      @click="toLink"
+      @click="toLink('edit')"
     />
   </view>
 </template>
 
 <script lang="ts" setup>
-import { dictOption, formatStr, splitStr } from '@/utils'
+import { dictOption, formatStr, splitStr, routerForward } from '@/utils'
 import { locationTypes } from '@/config/common'
 
 const props = defineProps({
@@ -103,7 +103,7 @@ const props = defineProps({
   }
 })
 
-const toLink = () => {
+const toLink = (type: string) => {
   const params = {
     uid: props.dataInfo.uid,
     name: props.dataInfo.name,
@@ -114,8 +114,10 @@ const toLink = () => {
     parentCode: props.dataInfo.parentCode,
     immigrantFile: props.dataInfo.immigrantFile
   }
-  uni.navigateTo({
-    url: '/pages/collective/baseInfo/edit?params=' + JSON.stringify(params)
+
+  routerForward('collectiveBaseInfoEdit', {
+    params: JSON.stringify(params),
+    type
   })
 }
 </script>

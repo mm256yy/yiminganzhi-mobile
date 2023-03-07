@@ -121,6 +121,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
+import { routerForward } from '@/utils'
 import Back from '@/components/Back/Index.vue'
 import Tree from '@/components/Tree/Index.vue'
 import Tabs from '@/components/Tabs/Index.vue'
@@ -219,9 +220,8 @@ const selectTabs = (data: any) => {
  * @param(type) 类型，edit 编辑， add 新增
  */
 const addClick = (type: string) => {
-  uni.navigateTo({
-    url: '/pages/household/householdInfo/edit?type=' + type
-  })
+  const { uid } = props.dataInfo.uid
+  routerForward('householdInfoEdit', { type, uid })
 }
 
 /**
@@ -245,7 +245,7 @@ const deleteDemographic = (data: any) => {
  * @param(Object) data 被删除的行信息
  */
 const deleteHouse = (data: any) => {
-  deleteLandlordHouseApi(data.uid, data.id)
+  deleteLandlordHouseApi(props.dataInfo.uid, data.uid)
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
@@ -261,7 +261,7 @@ const deleteHouse = (data: any) => {
  * @param(Object) data 被删除的行信息
  */
 const deleteTree = (data: any) => {
-  deleteLandlordTreeApi(data.uid, data.id)
+  deleteLandlordTreeApi(props.dataInfo.uid, data.uid)
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)

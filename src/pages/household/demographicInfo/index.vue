@@ -5,10 +5,10 @@
       <view class="list-item" v-for="item in props.dataList" :key="item.id">
         <view class="list-1">
           <view class="left">
-            <view class="icon">户主</view>
+            <view class="icon">{{ formatDict(item.relation, 307) }}</view>
             <view class="name">{{ formatStr(item.name) }}</view>
           </view>
-          <view class="right">
+          <view class="right" v-if="item.relation !== '1'">
             <image
               class="icon m-r-10"
               src="@/static/images/icon_delete_mini.png"
@@ -96,10 +96,23 @@
       mode="scaleToFill"
       @click="toLink('add')"
     />
+
+    <uni-popup ref="alertDialog" type="dialog">
+      <uni-popup-dialog
+        type="warn"
+        cancelText="取消"
+        confirmText="确认"
+        title="确认删除？"
+        content=""
+        @confirm="dialogConfirm"
+        @close="dialogClose"
+      />
+    </uni-popup>
   </view>
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue'
 import { formatDict, formatStr, routerForward } from '@/utils'
 import dayjs from 'dayjs'
 
@@ -115,6 +128,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['deleteDemographic'])
+const alertDialog = ref<any>(null)
+const currentItem = ref<any>({})
 
 const toLink = (type: string, data?: any) => {
   const { uid } = props.dataInfo
@@ -138,7 +153,16 @@ const toLink = (type: string, data?: any) => {
  * @param {Object} data 当前行数据
  */
 const deleteDemographic = (data: any) => {
-  emit('deleteDemographic', data)
+  alertDialog.value?.open()
+  currentItem.value = { ...data }
+}
+
+const dialogConfirm = () => {
+  emit('deleteDemographic', currentItem.value)
+}
+
+const dialogClose = () => {
+  alertDialog.value.close()
 }
 </script>
 
