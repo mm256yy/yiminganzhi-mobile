@@ -10,6 +10,7 @@
             <Header
               :dataInfo="dataInfo"
               :type="MainType.Company"
+              :templateType="PrintType.printCompany"
               @expand-toggle="expandToggle"
               @update-tree="updateTree"
             />
@@ -93,7 +94,7 @@
 import { ref } from 'vue'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { routerForward } from '@/utils'
-import { MainType } from '@/types/common'
+import { MainType, PrintType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
 import Header from '@/components/Header/Index.vue'
 import Tree from '@/components/Tree/Index.vue'

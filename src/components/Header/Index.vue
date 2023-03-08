@@ -11,7 +11,7 @@
       </view>
 
       <view class="list-header-right">
-        <view class="btn-wrapper print" v-if="props.showPrint">
+        <view class="btn-wrapper print" v-if="props.showPrint" @click="printFile">
           <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
           <text class="txt">打印表格</text>
         </view>
@@ -23,7 +23,8 @@
       </view>
     </view>
 
-    <uni-popup ref="popupDialog" :is-mask-click="false">
+    <!-- 数据上报 -->
+    <uni-popup ref="reportDataPopup" :is-mask-click="false">
       <view class="tips-wrapper">
         <view class="tips-title">数据上报</view>
         <view class="tips-content">
@@ -38,8 +39,32 @@
           </view>
         </view>
         <view class="btn-wrapper">
-          <view class="btn cancel" @click="close">取消</view>
-          <view class="btn confirm" @click="confirm">确认</view>
+          <view class="btn cancel" @click="close('report')">取消</view>
+          <view class="btn confirm" @click="confirm('report')">确认</view>
+        </view>
+      </view>
+    </uni-popup>
+
+    <!-- 打印表格 -->
+    <uni-popup ref="printPopup" :is-mask-click="false">
+      <view class="tips-wrapper">
+        <view class="tips-title">打印表格</view>
+        <view class="tips-content">
+          <view class="file-list">
+            <view
+              v-for="(item, index) in fileList"
+              :key="index"
+              :class="['file-item', item.selected ? 'active' : '']"
+              @click="selectFile(item, index)"
+            >
+              <view class="name">{{ item.name }}</view>
+              <image class="icon" src="@/static/images/icon_view_file.png" mode="scaleToFill" />
+            </view>
+          </view>
+        </view>
+        <view class="btn-wrapper">
+          <view class="btn cancel" @click="close('print')">取消</view>
+          <view class="btn confirm" @click="confirm('print')">确认</view>
         </view>
       </view>
     </uni-popup>
@@ -49,6 +74,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { reportDataApi } from '@/service'
+import { getPrintTemplateListApi } from '@/api'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { showLoading, hideLoading } from '@/config'
 import { MainType } from '@/types/common'
@@ -65,12 +91,26 @@ const props = defineProps({
   type: {
     type: String,
     default: ''
+  },
+  templateType: {
+    // 打印模板的类别
+    type: String,
+    default: ''
   }
 })
 
+interface PrintListType {
+  name: string
+  selected: boolean
+  url: string
+  uid: number
+}
+
 const emit = defineEmits(['expandToggle', 'updateTree'])
-const popupDialog = ref<any>(null)
+const reportDataPopup = ref<any>(null)
+const printPopup = ref<any>(null)
 const tipsList = ref<any>([])
+const fileList = ref<PrintListType[]>([])
 
 const expandToggle = () => {
   emit('expandToggle')
@@ -87,7 +127,7 @@ const reportDataCheck = () => {
     .then((res: any) => {
       if (res) {
         tipsList.value = [...res]
-        popupDialog.value?.open()
+        reportDataPopup.value?.open()
       }
     })
     .catch((e) => {
@@ -95,12 +135,8 @@ const reportDataCheck = () => {
     })
 }
 
-const close = () => {
-  popupDialog.value?.close()
-}
-
-// 确认数据上报
-const confirm = () => {
+// 数据上报
+const reportData = () => {
   let query = {
     uid: props.dataInfo.uid,
     isCheck: false,
@@ -114,13 +150,66 @@ const confirm = () => {
         emit('updateTree')
       }
       hideLoading()
-      close()
+      close('report')
     })
     .catch((e) => {
       hideLoading()
       showToast(ERROR_MSG)
-      close()
+      close('report')
     })
+}
+
+/**
+ * 获取打印模板列表
+ * @params{Object} templateType 打印的模板类别
+ */
+const getPrintList = async (templateType: string) => {
+  const res = await getPrintTemplateListApi({ templateType: templateType })
+  if (res && res.content) {
+    const arr: PrintListType[] = []
+    res.content.map((item: any) => {
+      if (item.templateModule === '实物采集') {
+        arr.push({
+          name: item.templateName,
+          url: item.templateUrl,
+          selected: false,
+          uid: item.id
+        })
+      }
+    })
+    fileList.value = [...arr]
+  }
+}
+
+// 打印文件/图片
+const printFile = () => {
+  getPrintList(props.templateType)
+  printPopup.value?.open()
+}
+
+/**
+ * 选择打印的文件
+ * @param(Object) item 当前行文件相关信息
+ * @param(Object) index 文件下标
+ */
+const selectFile = (item: any, index: number) => {
+  fileList.value[index].selected = !item.selected
+}
+
+// 确认 数据上报/打印
+const confirm = (type: string) => {
+  if (type === 'report') {
+    reportData()
+  }
+}
+
+// 关闭弹窗
+const close = (type: string) => {
+  if (type === 'report') {
+    reportDataPopup.value?.close()
+  } else if (type === 'print') {
+    printPopup.value?.close()
+  }
 }
 </script>
 
@@ -263,6 +352,39 @@ const confirm = () => {
       margin-top: 14rpx;
       font-size: 9rpx;
       color: #131313;
+    }
+
+    .file-list {
+      width: 264rpx;
+      height: 135rpx;
+      overflow-y: scroll;
+
+      .file-item {
+        display: flex;
+        width: 264rpx;
+        height: 40rpx;
+        padding: 0 14rpx;
+        margin-bottom: 7rpx;
+        background-color: #fff;
+        border-radius: 3rpx;
+        box-sizing: border-box;
+        align-items: center;
+        justify-content: space-between;
+
+        &.active {
+          border: 1rpx solid #3e73ec;
+        }
+
+        .name {
+          font-size: 9rpx;
+          color: #131313;
+        }
+
+        .icon {
+          width: 10rpx;
+          height: 10rpx;
+        }
+      }
     }
   }
 

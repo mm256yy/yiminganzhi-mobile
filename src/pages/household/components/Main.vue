@@ -10,6 +10,7 @@
             <Header
               :dataInfo="dataInfo"
               :type="MainType.PeasantHousehold"
+              :templateType="PrintType.print"
               @update-tree="updateTree"
               @expand-toggle="expandToggle"
             />
@@ -105,7 +106,7 @@
 import { ref } from 'vue'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { routerForward } from '@/utils'
-import { MainType } from '@/types/common'
+import { MainType, PrintType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
 import Header from '@/components/Header/Index.vue'
 import Tree from '@/components/Tree/Index.vue'

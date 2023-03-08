@@ -262,3 +262,10 @@ export interface FacilitiesType {
   uid: string
   [key: string]: any
 }
+
+export interface TemplateParamsType {
+  templateKey: string
+  projectId: number
+  templateType: string
+  templateModule: string
+}

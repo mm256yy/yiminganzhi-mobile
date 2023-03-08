@@ -160,3 +160,10 @@ export interface PageQueryType {
   page: number
   pageSize: number
 }
+
+// 打印的类别
+export enum PrintType {
+  print = 'print',
+  printCompany = 'printCompany',
+  printIndividualHousehold = 'printIndividualHousehold'
+}
