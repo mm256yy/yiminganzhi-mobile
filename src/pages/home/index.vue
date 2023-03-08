@@ -256,13 +256,13 @@ onShow(() => {
     top: 0;
     left: 0;
     width: 750rpx;
-    min-height: 100%;
   }
 
   .home-content {
     position: relative;
     z-index: 1;
-    padding-top: var(--status-bar-height);
+    padding: var(--status-bar-height) 0 20rpx;
+    overflow: scroll;
   }
 
   .home-header {

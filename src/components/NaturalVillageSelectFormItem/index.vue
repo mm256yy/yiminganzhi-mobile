@@ -57,7 +57,9 @@ watch(
   ([val1, val2, val3, val4]) => {
     if (val1 && val2 && val3 && val4) {
       codes.value = [val1, val2, val3, val4]
-      getTitle && getTitle()
+      nextTick(() => {
+        getTitle && getTitle()
+      })
     }
   },
   {

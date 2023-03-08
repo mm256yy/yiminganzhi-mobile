@@ -13,7 +13,7 @@
 
       <view class="body">
         <view class="select-item">
-          <view class="select-title">街道:</view>
+          <view class="select-title">乡镇:</view>
           <view class="select-cont">
             <view
               class="common-item"
@@ -26,7 +26,7 @@
           </view>
         </view>
         <view class="select-item" v-if="currentTown && currentTown.length">
-          <view class="select-title">乡镇:</view>
+          <view class="select-title">街道:</view>
           <view class="select-cont">
             <view
               class="common-item"

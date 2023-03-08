@@ -279,7 +279,10 @@ class PushData {
           // 拿到结果了
           const { peasantHouseholdPushDtoList, deleteRecordList, pullTime, villageList } =
             this.state
-
+          console.info('推送数据-业主列表:', peasantHouseholdPushDtoList)
+          console.info('推送数据-自然村列表:', villageList)
+          console.info('推送数据-删除列表:', deleteRecordList)
+          console.info('推送数据-拉取时间:', pullTime)
           pushDataApi({
             peasantHouseholdPushDtoList,
             deleteRecordList,
@@ -287,13 +290,16 @@ class PushData {
             villageList
           })
             .then((res) => {
+              console.log('推送: 接口suc:', res)
               resolve(res)
             })
             .catch((err) => {
+              console.error('推送: 接口err', err)
               reject(err)
             })
         })
-        .catch(() => {
+        .catch((err) => {
+          console.error('推送: 操作数据库err', err)
           reject(false)
         })
 

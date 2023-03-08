@@ -1,4 +1,4 @@
-import { request } from '@/utils'
+import { getStorage, request, StorageKey } from '@/utils'
 import { PushStateType } from '@/types/sync'
 
 // 项目信息
@@ -17,8 +17,12 @@ export const getConfigDataApi = () => {
 
 // 农户相关信息
 export const getBaseDataApi = () => {
+  const time = getStorage(StorageKey.PULLTIME)
   return request.get({
-    url: '/pad/pull'
+    url: '/pad/pull',
+    data: {
+      lastPullTime: time || ''
+    }
   })
 }
 

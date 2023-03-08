@@ -24,7 +24,6 @@ import {
 } from '@/database/index'
 import { getProjectDataApi, getBaseDataApi, getConfigDataApi, getCollectApi } from './api'
 import { StateType } from '@/types/sync'
-import { ReportStatusEnum } from '@/types/common'
 import { getCurrentTimeStamp, setStorage, StorageKey } from '@/utils'
 import dayjs from 'dayjs'
 import { ImageDDL } from '@/database/tables/image'
@@ -112,23 +111,27 @@ class PullData {
   public pullProjectData() {
     return new Promise(async (resolve) => {
       const result = await getProjectDataApi()
-      console.log('接口项目数据', result)
+      console.log('接口: 项目数据', result)
       if (!result) {
+        console.error('项目列表获取失败')
         resolve(false)
         return
       }
       this.state.project = result
       const pullRes = await this.pullProject()
       pullRes && this.count++
-      console.log('拉取项目', pullRes)
+      console.log('拉取: 项目', pullRes)
       resolve(pullRes)
     })
   }
 
   public async getConfigData() {
     const result = await getConfigDataApi()
-    console.log('接口配置数据', result)
-    if (!result) return
+    console.log('接口: 配置数据', result)
+    if (!result) {
+      console.error('配置数据获取失败')
+      return
+    }
     const {
       immigrantIncomeConfigList,
       immigrantWillConfigList,
@@ -147,35 +150,38 @@ class PullData {
     this.state.immigrantAppendantConfigList = immigrantAppendantOptionList
     this.pullDict().then((res: boolean) => {
       res && this.count++
-      console.log('拉取字典', res)
+      console.log('拉取: 字典', res)
     })
     this.pullFamilyIncome().then((res) => {
       res && this.count++
-      console.log('拉取家庭收入', res)
+      console.log('拉取: 家庭收入', res)
     })
     this.pullResettlement().then((res) => {
       res && this.count++
-      console.log('拉取安置意愿', res)
+      console.log('拉取: 安置意愿', res)
     })
     this.pullDistrict().then((res) => {
       res && this.count++
       setStorage(StorageKey.DISTRICTMAP, this.districtMap)
-      console.log('拉取区划', res)
+      console.log('拉取: 区划', res)
     })
     this.pullAppendant().then((res) => {
       res && this.count++
-      console.log('拉取附属物', res)
+      console.log('拉取: 附属物', res)
     })
     this.pullOther().then((res) => {
       res && this.count++
-      console.log('拉取其他', res)
+      console.log('拉取: 其他', res)
     })
   }
 
   public async getBaseData() {
     const result = await getBaseDataApi()
-    console.log('接口基础数据', result)
-    if (!result) return
+    console.log('接口: 基础数据', result)
+    if (!result) {
+      console.error('基础数据获取失败')
+      return
+    }
     const {
       peasantHouseholdPushDtoList,
       pullTime,
@@ -198,26 +204,29 @@ class PullData {
     // 数据 新增 修改 删除一起进行
     this.pullLandlord().then((res) => {
       res && this.count++
-      console.log('拉取业主', res)
+      console.log('拉取: 业主', res)
     })
     this.pullVillageList().then((res) => {
       res && this.count++
-      console.log('拉取自然村', res)
+      console.log('拉取: 自然村', res)
     })
     this.deleteDb().then((res) => {
       res && this.count++
-      console.log('删除数据', res)
+      console.log('删除: 数据', res)
     })
   }
 
   public async getCollect() {
     const result = await getCollectApi()
-    console.log('接口统计数据', result)
-    if (!result) return
+    console.log('接口: 统计数据', result)
+    if (!result) {
+      console.error('统计数据获取失败')
+      return
+    }
     this.state.collectList = result
     this.pullCollect().then((res) => {
       res && this.count++
-      console.log('统计数据', res)
+      console.log('拉取: 统计数据', res)
     })
   }
 
@@ -234,6 +243,31 @@ class PullData {
     db.createTableWithDDL(VillageDDL)
     db.createTableWithDDL(AppendantDDL)
     db.createTableWithDDL(ImageDDL)
+  }
+
+  public resetTable(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      Promise.all([
+        db.deleteTableData(ProjectTableName),
+        db.deleteTableData(DictionariesTableName),
+        db.deleteTableData(LandlordTableName),
+        db.deleteTableData(ResettlementTableName),
+        db.deleteTableData(FamilyIncomeTableName),
+        db.deleteTableData(CollectTableName),
+        db.deleteTableData(OtherTableName),
+        db.deleteTableData(DistrictTableName),
+        db.deleteTableData(VillageTableName),
+        db.deleteTableData(AppendantTableName)
+      ])
+        .then((res) => {
+          console.log('reset表: 成功', res)
+          resolve(true)
+        })
+        .catch((err) => {
+          console.error('reset表: 失败', err)
+          reject()
+        })
+    })
   }
 
   public execute() {
@@ -272,11 +306,9 @@ class PullData {
       const { project: list } = this.state
       if (this.isArrayAndNotNull(list)) {
         await db.deleteTableData(ProjectTableName).catch((err) => {
-          console.log(77, err)
           resolve(false)
         })
         await db.transaction('begin').catch(() => {
-          console.log(88)
           resolve(false)
         })
         list.forEach((item) => {
@@ -285,12 +317,10 @@ class PullData {
           db.insertTableData(ProjectTableName, values, fields)
         })
         await db.transaction('commit').catch(() => {
-          console.log(99)
           resolve(false)
         })
         resolve(true)
       } else {
-        console.log(111)
         resolve(false)
       }
     })
@@ -565,6 +595,7 @@ class PullData {
 
       if (pullTime) {
         // 同步时间
+        setStorage(StorageKey.PULLTIME, pullTime)
         const fields = "'type','content','updatedDate'"
         const values = `'${OtherDataType.PullTime}','${dayjs(pullTime).format(
           'YYYY-MM-DD HH:mm:ss'

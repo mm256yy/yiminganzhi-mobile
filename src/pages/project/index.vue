@@ -204,9 +204,15 @@ const onSync = async () => {
   count.value = 0
   pushInstance
     .push()
-    .then((res) => {
+    .then(async (res) => {
       if (res) {
         pushData.value = res
+        // 重置拉取时间
+        setStorage(StorageKey.PULLTIME, '')
+        // 清空所有的表
+        const resetStatus = await pullInstance.resetTable()
+
+        console.log('重置表：', resetStatus)
         // 推送成功
         console.log('推送成功，开始拉取')
         pullInstance
@@ -239,7 +245,8 @@ const onSync = async () => {
         console.log(errData, '推送服务端失败信息')
       } else {
         uni.showToast({
-          title: '获取推送数据失败'
+          title: '获取推送数据失败',
+          icon: 'error'
         })
       }
     })
@@ -336,7 +343,7 @@ const onBack = () => {
 }
 
 .content {
-  height: calc(100% - 33rpx - var(--status-bar-height));
+  height: calc(100vh - 33rpx - var(--status-bar-height));
   padding: 35rpx 43rpx 10rpx;
   box-sizing: border-box;
 }
@@ -350,6 +357,7 @@ const onBack = () => {
   flex-wrap: wrap;
   flex-direction: row;
   height: 100%;
+  overflow-y: scroll;
 }
 
 .project-item {

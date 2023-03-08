@@ -406,7 +406,8 @@ const onSync = async () => {
         console.log(errData, '推送服务端失败信息')
       } else {
         uni.showToast({
-          title: '获取推送数据失败'
+          title: '获取推送数据失败',
+          icon: 'error'
         })
       }
     })
@@ -484,7 +485,7 @@ uni-page-body {
   display: flex;
   flex-direction: column;
   width: 750rpx;
-  height: 100%;
+  height: 100vh;
   padding: var(--status-bar-height) 6rpx 9rpx 6rpx;
   overflow: hidden;
 
@@ -536,13 +537,15 @@ uni-page-body {
   }
 
   .body {
-    flex: 1;
     display: flex;
-    flex-direction: column;
     padding: 0 12rpx 25rpx;
+    overflow-y: scroll;
     background-color: #ffffff;
     border-radius: 5rpx;
     box-shadow: 0rpx 0rpx 12rpx 0rpx rgba(0, 0, 0, 0.08);
+    box-sizing: border-box;
+    flex: 1;
+    flex-direction: column;
   }
 
   .pull-time {

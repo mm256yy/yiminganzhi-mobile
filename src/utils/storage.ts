@@ -6,7 +6,8 @@ export enum StorageKey {
   NETWORK = 'Network',
   PROJECTINFO = 'ProjectInfo',
   DISTRICTMAP = 'DistrictMap',
-  DICT = 'Dict' // 字典表
+  DICT = 'Dict', // 字典表
+  PULLTIME = 'PullTime'
 }
 
 export const getStorage = (key: StorageKey): any => {
