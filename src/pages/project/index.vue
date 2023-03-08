@@ -51,14 +51,13 @@
         </view>
         <view class="pup-cont">
           <template v-if="syncStatus">
-            <view class="pup-item" v-if="pushData && pushData.data">
+            <view class="pup-item" v-if="pushData">
               <view class="tit">上传成功:&nbsp;</view>
               <view class="txt"
-                >本次共下载:&nbsp;居民户
-                <text class="num">{{ pushData.data.peasantHouseholdNum }}</text
-                >个，个体户<text class="num">{{ pushData.data.individualNum }}</text
-                >个，企业<text class="num">{{ pushData.data.companyNum }}</text
-                >家，村集体<text class="num">{{ pushData.data.villageNum }}</text
+                >本次共下载:&nbsp;居民户 <text class="num">{{ pushData.peasantHouseholdNum }}</text
+                >个，个体户<text class="num">{{ pushData.individualNum }}</text
+                >个，企业<text class="num">{{ pushData.companyNum }}</text
+                >家，村集体<text class="num">{{ pushData.villageNum }}</text
                 >个</view
               >
             </view>
@@ -77,10 +76,10 @@
           <template v-else>
             <view class="pup-item" v-if="pushData && pushData.data">
               <view class="tit err">上传失败:&nbsp;</view>
-              <view class="txt"
-                >{{ pushData.data.name }}<text class="err">户号：{{ pushData.data.doorNo }} </text
-                >{{ pushData.message }}</view
-              >
+              <view class="txt">
+                {{ pushData.data.name }}
+                <text class="err">{{ pushData.message }} </text>
+              </view>
             </view>
           </template>
         </view>
@@ -119,11 +118,11 @@ import {
 } from '@/utils'
 import { ProjectType } from '@/types/common'
 import { pullInstance, pushInstance } from '@/sync'
-import { hideLoading, showLoading } from '@/config'
 
 const list = ref<any[]>([])
 
 const currentProjectId = ref(0)
+const currentProjectItem = ref<ProjectType | null>(null)
 
 const intervalId = ref(0)
 const count = ref(0)
@@ -145,10 +144,10 @@ const pullData = ref<
 const pushData = ref<any>({})
 
 const spliceIntoChunks = (arr: any[], chunkSize: number) => {
-  const res = []
   if (arr.length <= chunkSize) {
-    return [[arr]]
+    return [arr]
   }
+  const res = []
   while (arr.length > 0) {
     const chunk = arr.splice(0, chunkSize)
     res.push(chunk)
@@ -167,7 +166,7 @@ const polling = () => {
   intervalId.value = setInterval(() => {
     console.log('轮询拉取状态')
     if (count.value === maxCount.value) {
-      hideLoading()
+      uni.hideLoading()
       clearInterval(intervalId.value)
       syncStatus.value = false
       openPup()
@@ -175,7 +174,7 @@ const polling = () => {
     }
     count.value++
     if (pullInstance.getPullStatus()) {
-      hideLoading()
+      uni.hideLoading()
       clearInterval(intervalId.value)
 
       const { peasantHouseholdNum, companyNum, individualNum, villageNum } = pullInstance.state
@@ -197,7 +196,7 @@ const onSync = async () => {
     openNetworkPup()
     return
   }
-  showLoading({
+  uni.showLoading({
     title: '正在同步中...',
     mask: true
   })
@@ -215,13 +214,16 @@ const onSync = async () => {
         console.log('重置表：', resetStatus)
         // 推送成功
         console.log('推送成功，开始拉取')
+        // 换项目之后 需要用新的项目ID 来调用拉取接口
+        setStorage(StorageKey.PROJECTID, currentProjectId.value)
+        setStorage(StorageKey.PROJECTINFO, currentProjectItem.value)
         pullInstance
           .pullAll()
           .then(() => {
             polling()
           })
           .catch(() => {
-            hideLoading()
+            uni.hideLoading()
             uni.showToast({
               title: '登录失效',
               icon: 'none'
@@ -231,13 +233,13 @@ const onSync = async () => {
             })
           })
       } else {
-        hideLoading()
+        uni.hideLoading()
         syncStatus.value = false
         openPup()
       }
     })
     .catch((errData) => {
-      hideLoading()
+      uni.hideLoading()
       if (errData) {
         pushData.value = errData
         syncStatus.value = false
@@ -290,8 +292,7 @@ const onChangeProject = (item: ProjectType) => {
     return
   }
   currentProjectId.value = item.id
-  setStorage(StorageKey.PROJECTID, item.id)
-  setStorage(StorageKey.PROJECTINFO, item)
+  currentProjectItem.value = item
   // 项目切换需要做数据同步
   onSync()
 }

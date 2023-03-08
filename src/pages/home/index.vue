@@ -16,7 +16,7 @@
             <view class="name">项目切换</view>
             <image class="icon" src="@/static/images/project_enter.png" mode="scaleToFill" />
           </view>
-          <view v-if="userInfo" class="login-out" @click="loginOut">退出登录</view>
+          <view v-if="userInfo" class="login-out" @click="loginOutPre">退出登录</view>
         </view>
       </view>
 
@@ -176,6 +176,18 @@
         </view>
       </view>
     </view>
+
+    <uni-popup ref="alertDialog" type="dialog">
+      <uni-popup-dialog
+        type="warn"
+        cancelText="取消"
+        confirmText="确认"
+        title="确认退出？"
+        content=""
+        @confirm="dialogConfirm"
+        @close="dialogClose"
+      />
+    </uni-popup>
   </view>
 </template>
 
@@ -196,6 +208,7 @@ const userInfo = ref<any>(null)
 const projectInfo = ref<any>(null)
 const netWork = ref<boolean>(true)
 const collection = ref<CollectionType | null>(null)
+const alertDialog = ref<any>(null)
 
 const toLink = (name: string) => {
   routerForward(name)
@@ -209,6 +222,18 @@ const getDictObj = async () => {
 
 const loginIn = () => {
   routerForward('login')
+}
+
+const loginOutPre = () => {
+  alertDialog.value?.open()
+}
+
+const dialogConfirm = () => {
+  loginOut()
+}
+
+const dialogClose = () => {
+  alertDialog.value.close()
 }
 
 const loginOut = () => {

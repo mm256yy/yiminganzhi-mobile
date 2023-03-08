@@ -55,6 +55,11 @@ const getJsonData = async () => {
         return item
       }
     })
+  } else {
+    uni.showToast({
+      title: '数据库未打开',
+      icon: 'error'
+    })
   }
 }
 

@@ -6,6 +6,7 @@ import { pullInstance } from './sync'
 /* #endif */
 
 onLaunch(() => {
+  console.log('onLaunch')
   /* #ifdef APP-PLUS */
   // 创建数据库
   pullInstance.init()

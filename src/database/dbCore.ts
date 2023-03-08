@@ -2,7 +2,7 @@ import { sqliteOptions } from '@/config'
 
 export class DB {
   constructor() {
-    this.openDB()
+    // this.openDB()
   }
 
   /**
