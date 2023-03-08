@@ -29,7 +29,7 @@
               name="formData.collectiveCode"
             >
               <view :class="['code-wrapper', focusIndex === 1 ? 'focus' : '']">
-                <view class="pre-txt">{{ formData.preNo }}</view>
+                <view class="pre-txt">{{ formData.villageCode }}</view>
                 <input
                   class="input-txt"
                   type="number"
@@ -73,12 +73,13 @@
               label="所属区域"
               :label-width="170"
               label-align="right"
-              name="formData.parentCode"
+              name="formData.virutalVillageCode"
             >
-              <uni-data-select
-                v-model="formData.parentCode"
-                :localdata="positionRange"
-                @change="changePosition"
+              <natural-village-select-form-item
+                v-model:areaCode="formData.areaCode"
+                v-model:townCode="formData.townCode"
+                v-model:villageCode="formData.villageCode"
+                v-model:virutalVillageCode="formData.virutalVillageCode"
               />
             </uni-forms-item>
           </uni-col>
@@ -119,6 +120,7 @@ import { routerBack, getStorage, StorageKey } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { MainType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
+import NaturalVillageSelectFormItem from '@/components/NaturalVillageSelectFormItem/index.vue'
 
 // 表单数据
 const formData = ref<any>({})
@@ -128,14 +130,13 @@ const form = ref<any>(null)
 const rules = reactive({
   name: { rules: [{ required: true, message: '请输入', trigger: 'blur' }] },
   suffixNo: { rules: [{ required: true, message: '请输入', trigger: 'blur' }] },
-  parentCode: { rules: [{ required: true, message: '请选择', trigger: 'change' }] }
+  virutalVillageCode: { rules: [{ required: true, message: '请选择', trigger: 'change' }] }
 })
 
 // 获得焦点的输入框下标
 const focusIndex = ref<number>(-1)
 const title = ref<string>('')
 const type = ref<string>('')
-const uid = ref<string>('')
 
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
@@ -149,7 +150,6 @@ onLoad((option: any) => {
     title.value = '村集体基本情况编辑'
   } else if (option.type === 'add') {
     title.value = '添加村集体'
-    uid.value = option.uid
   }
 })
 
@@ -161,17 +161,6 @@ const inputFocus = (index: number) => {
 // 输入框失去焦点
 const inputBlur = () => {
   focusIndex.value = -1
-}
-
-// 所在位置选项
-const positionRange = ref<any>([
-  { text: '淹没区', value: 0 },
-  { text: '非淹没区', value: 1 }
-])
-
-// 所在位置选择
-const changePosition = (data: any) => {
-  console.log('data:', data)
 }
 
 // 获取上传状态
@@ -196,15 +185,14 @@ const fail = (e: any) => {
 
 // 表单提交
 const submit = () => {
-  let params = { ...formData.value }
+  let params = {
+    ...formData.value,
+    doorNo: 'JT' + formData.value.villageCode + formData.value.suffixNo,
+    type: MainType.Village
+  }
   form.value?.validate().then((valid: any) => {
     if (valid) {
       if (type.value === 'add') {
-        params = {
-          ...params,
-          type: MainType.Village,
-          uid: uid.value
-        }
         addLandlordApi(params)
           .then((res) => {
             if (res) {

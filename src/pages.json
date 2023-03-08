@@ -188,7 +188,7 @@
 		}
 	},
   "condition" : {
-    "current": 0,
+    "current": 2,
     "list": [
 			{
         "name": "地图页面",

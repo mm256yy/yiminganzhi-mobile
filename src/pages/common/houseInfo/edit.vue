@@ -265,7 +265,6 @@
                 type="date"
                 placeholder="请选择竣工日期"
                 v-model="formData.completedTime"
-                @change="changeDate"
               />
             </uni-forms-item>
           </uni-col>
@@ -417,10 +416,10 @@ const rules = reactive({
 
 onLoad((option: any) => {
   if (option) {
+    let params = JSON.parse(option.params)
+    formData.value = { ...params }
     commonParams.value = JSON.parse(option.commonParams)
     if (commonParams.value.type === 'edit') {
-      let params = JSON.parse(option.params)
-      formData.value = { ...params }
       title.value = '房屋信息编辑'
     } else if (commonParams.value.type === 'add') {
       title.value = '新增房屋'
@@ -442,11 +441,6 @@ const inputFocus = (index: number) => {
 // 输入框失去焦点事件
 const inputBlur = () => {
   focusIndex.value = -1
-}
-
-// 竣工日期选择
-const changeDate = (e: any) => {
-  console.log('e:', e)
 }
 
 // 获取房屋平面示意图上传状态

@@ -12,7 +12,7 @@
               label-align="right"
               name="formData.registrantName"
             >
-              <uni-easyinput v-model="formData.registrantName" type="number" placeholder="请输入" />
+              <uni-easyinput v-model="formData.registrantName" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -95,7 +95,6 @@
                 type="date"
                 placeholder="请选择立墓年份"
                 v-model="formData.graveYear"
-                @change="changeDate"
               />
             </uni-forms-item>
           </uni-col>
@@ -142,7 +141,6 @@ import { onLoad } from '@dcloudio/uni-app'
 import { routerBack, getStorage, StorageKey } from '@/utils'
 import { addLandlordGraveApi, updateLandlordGraveApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config'
-import { MainType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
 
 // 表单数据
@@ -163,10 +161,10 @@ const dict = getStorage(StorageKey.DICT)
 // 获取上个页面传递的参数，给表单赋值
 onLoad((option: any) => {
   if (option) {
-    commonParams.value = JSON.stringify(option.commonParams)
+    commonParams.value = JSON.parse(option.commonParams)
+    let params = JSON.parse(option.params)
+    formData.value = { ...params }
     if (commonParams.value.type === 'edit') {
-      let params = JSON.parse(option.params)
-      formData.value = { ...params }
       title.value = '坟墓信息编辑'
     } else if (commonParams.value.type === 'add') {
       title.value = '添加坟墓'
@@ -182,11 +180,6 @@ const inputFocus = (index: number) => {
 // 输入框失去焦点事件
 const inputBlur = () => {
   focusIndex.value = -1
-}
-
-// 竣工日期选择
-const changeDate = (e: any) => {
-  console.log('e:', e)
 }
 
 // 表单提交

@@ -34,8 +34,8 @@ const expendCodes = ref<string[]>([])
 const uid = ref<string>('')
 
 onShow(() => {
-  if (uid.value) {
-    getLandlordDetail(uid.value)
+  if (dataInfo.value.uid) {
+    getLandlordDetail(dataInfo.value.uid)
   }
 })
 

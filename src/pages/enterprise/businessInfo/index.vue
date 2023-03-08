@@ -1083,7 +1083,6 @@ const genArr = (arr?: any[], dataType?: number) => {
 // 获取经营现状信息配置列表
 const getBusinessList = async () => {
   const result = await getFamilyIncomeListApi()
-  console.log('result:', result)
   genArr(result, 1)
 }
 
@@ -1108,7 +1107,6 @@ const submit = () => {
 
 onMounted(() => {
   if (props.dataList && props.dataList.length > 0) {
-    console.log('dataList:', props.dataList)
     genArr(props.dataList, 2)
   } else {
     getBusinessList()

@@ -65,12 +65,7 @@
               label-align="right"
               name="formData.year"
             >
-              <uni-datetime-picker
-                type="date"
-                placeholder="选择年份"
-                v-model="formData.year"
-                @change="changeDate"
-              />
+              <uni-datetime-picker type="date" placeholder="选择年份" v-model="formData.year" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -141,11 +136,8 @@ import Back from '@/components/Back/Index.vue'
 // 表单数据
 const formData = ref<any>({})
 const form = ref<any>(null)
-
-// 表单类型，add 新增表单，edit 编辑表单
-const type = ref<string>('')
+const commonParams = ref<any>({})
 const title = ref<string>('')
-const uid = ref<string>('')
 
 // 表单校验规则
 const rules = ref<any>({})
@@ -158,21 +150,17 @@ const dict = getStorage(StorageKey.DICT)
 
 onLoad((option: any) => {
   if (option) {
-    type.value = option.type
-    uid.value = option.uid
-    if (option.type === 'edit') {
-      formData.value = JSON.parse(option.params)
+    let params = JSON.parse(option.params)
+    formData.value = { ...params }
+    commonParams.value = JSON.parse(option.commonParams)
+    if (commonParams.value.type === 'edit') {
       title.value = '设施设备信息编辑'
-    } else if (option.type === 'add') {
+    } else if (commonParams.value.type === 'add') {
       title.value = '新增设施设备'
     }
   }
 })
 
-// 出生年月选择
-const changeDate = (e: any) => {
-  console.log('e:', e)
-}
 // 输入框获得焦点事件
 const inputFocus = (index: number) => {
   focusIndex.value = index
@@ -185,12 +173,12 @@ const inputBlur = () => {
 
 // 表单提交
 const submit = () => {
-  const params = { ...formData.value }
-  console.log('params:', params)
+  const { uid, type, householdId, doorNo } = commonParams.value
+  const params = { uid, householdId, doorNo, ...formData.value }
   form.value?.validate().then((valid: any) => {
     if (valid) {
-      if (type.value === 'add') {
-        addLandlordEquipmentApi(uid.value, params)
+      if (type === 'add') {
+        addLandlordEquipmentApi(uid, params)
           .then((res) => {
             if (res) {
               showToast(SUCCESS_MSG)
@@ -200,8 +188,8 @@ const submit = () => {
           .catch((e) => {
             showToast(ERROR_MSG)
           })
-      } else {
-        updateLandlordEquipmentApi(uid.value, params)
+      } else if (type === 'edit') {
+        updateLandlordEquipmentApi(uid, params)
           .then((res) => {
             if (res) {
               showToast(SUCCESS_MSG)

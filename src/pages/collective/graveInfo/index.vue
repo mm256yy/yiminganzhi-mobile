@@ -6,7 +6,7 @@
         <view class="list-1">
           <view class="left">
             <view class="icon">登记人</view>
-            <view class="name">{{ formatStr(item.name) }}</view>
+            <view class="name">{{ formatStr(item.registrantName) }}</view>
           </view>
           <label class="right" @click="deleteGraveInfo(item)">
             <image class="icon" src="@/static/images/icon_delete_mini.png" />
@@ -152,7 +152,17 @@ const toLink = (type: string, data?: any) => {
       commonParams: JSON.stringify(commonParams)
     })
   } else {
+    const params = {
+      doorNo,
+      graveType: '',
+      number: null,
+      materials: '',
+      graveYear: '',
+      gravePosition: '',
+      remark: ''
+    }
     routerForward('collectiveGraveInfoEdit', {
+      params: JSON.stringify(params),
       commonParams: JSON.stringify(commonParams)
     })
   }

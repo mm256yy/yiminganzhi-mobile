@@ -46,9 +46,13 @@
                 <view class="label">所属区域：</view>
                 <view class="content">
                   {{
-                    props.baseInfo.areaCodeText +
-                    props.baseInfo.townCodeText +
-                    props.baseInfo.villageCodeText
+                    props.dataInfo.areaCodeText
+                      ? props.dataInfo.areaCodeText
+                      : '' + props.dataInfo.townCodeText
+                      ? props.dataInfo.townCodeText
+                      : '' + props.dataInfo.villageCodeText
+                      ? props.dataInfo.villageCodeText
+                      : ''
                   }}
                 </view>
               </view>
@@ -114,7 +118,7 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">许可证有效期：</view>
-                <view class="content">{{ fmtDate(props.dataInfo.periodValidity, 7) }}</view>
+                <view class="content">{{ formatStr(props.baseInfo.periodValidity) }}</view>
               </view>
             </uni-col>
             <uni-col :span="12">
@@ -135,7 +139,13 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">税务许可证有效期：</view>
-                <view class="content">{{ fmtDate(props.dataInfo.taxPeriodValidity, 7) }}</view>
+                <view class="content">
+                  {{
+                    props.baseInfo.taxPeriodValidity
+                      ? dayjs(props.baseInfo.taxPeriodValidity).format('YYYY-MM-DD')
+                      : '-'
+                  }}
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -167,7 +177,13 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">成立日期：</view>
-                <view class="content">{{ fmtDate(props.dataInfo.establishDate, 7) }}</view>
+                <view class="content">
+                  {{
+                    props.baseInfo.establishDate
+                      ? dayjs(props.baseInfo.establishDate).format('YYYY-MM-DD')
+                      : '-'
+                  }}
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -506,7 +522,8 @@
 </template>
 
 <script lang="ts" setup>
-import { fmtDate, dictOption, formatStr, formatDict, splitStr, routerForward } from '@/utils'
+import dayjs from 'dayjs'
+import { dictOption, formatStr, formatDict, splitStr, routerForward } from '@/utils'
 import { locationTypes } from '@/config/common'
 
 const props = defineProps({
@@ -545,9 +562,9 @@ const toLink = (type: string) => {
     locationType,
     phone,
     suffixNo: splitStr(doorNo, 13, 17),
-    periodValidity: fmtDate(periodValidity),
-    establishDate: fmtDate(establishDate),
-    taxPeriodValidity: fmtDate(taxPeriodValidity)
+    periodValidity,
+    establishDate: establishDate ? dayjs(establishDate).format('YYYY-MM-DD') : null,
+    taxPeriodValidity: taxPeriodValidity ? dayjs(taxPeriodValidity).format('YYYY-MM-DD') : null
   }
 
   routerForward('baseInfoEdit', {

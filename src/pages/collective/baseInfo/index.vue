@@ -46,9 +46,15 @@
                 <view class="label">所属区域：</view>
                 <view class="content">
                   {{
-                    props.dataInfo.areaCodeText +
-                    props.dataInfo.townCodeText +
-                    props.dataInfo.villageCodeText
+                    props.dataInfo.areaCodeText
+                      ? props.dataInfo.areaCodeText
+                      : '' + props.dataInfo.townCodeText
+                      ? props.dataInfo.townCodeText
+                      : '' + props.dataInfo.villageCodeText
+                      ? props.dataInfo.villageCodeText
+                      : '' + props.dataInfo.virutalVillageCodeText
+                      ? props.dataInfo.virutalVillageCodeText
+                      : ''
                   }}
                 </view>
               </view>
@@ -105,13 +111,17 @@ const props = defineProps({
 
 const toLink = (type: string) => {
   const params = {
+    id: props.dataInfo.id,
     uid: props.dataInfo.uid,
+    doorNo: props.dataInfo.doorNo,
     name: props.dataInfo.name,
-    preNo: splitStr(props.dataInfo.doorNo, 0, 8),
-    suffixNo: splitStr(props.dataInfo.doorNo, 8, 12),
+    suffixNo: splitStr(props.dataInfo.doorNo, 13, 17),
     locationType: props.dataInfo.locationType,
     phone: props.dataInfo.phone,
-    parentCode: props.dataInfo.parentCode,
+    areaCode: props.dataInfo.areaCode, // 区/县
+    townCode: props.dataInfo.townCode, // 镇/街道
+    villageCode: props.dataInfo.villageCode, // 行政村
+    virutalVillageCode: props.dataInfo.virutalVillageCode, // 自然村/村民小组
     immigrantFile: props.dataInfo.immigrantFile
   }
 

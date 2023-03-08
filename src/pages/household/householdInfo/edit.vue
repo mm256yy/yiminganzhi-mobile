@@ -16,7 +16,13 @@
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
-            <uni-forms-item required label="自然村/村民小组" :label-width="150" label-align="right">
+            <uni-forms-item
+              required
+              label="自然村/村民小组"
+              :label-width="150"
+              label-align="right"
+              name="formData.virutalVillageCode"
+            >
               <natural-village-select-form-item
                 v-model:areaCode="formData.areaCode"
                 v-model:townCode="formData.townCode"
@@ -176,7 +182,7 @@ const form = ref<any>(null)
 // 表单校验规则
 const rules = reactive({
   name: { rules: [{ required: true, message: '请输入', trigger: 'blur' }] },
-  parentCode: { rules: [{ required: true, message: '请选择', trigger: 'change' }] },
+  virutalVillageCode: { rules: [{ required: true, message: '请选择', trigger: 'change' }] },
   doorNo: { rules: [{ required: true, message: '请输入', trigger: 'blur' }] }
 })
 
@@ -237,7 +243,6 @@ const submit = () => {
             showToast(ERROR_MSG)
           })
       } else if (type.value === 'edit') {
-        console.log('submit-params:', params)
         updateLandlordApi(params)
           .then((res) => {
             if (res) {

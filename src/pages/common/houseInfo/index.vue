@@ -61,7 +61,9 @@
             <uni-col :span="8">
               <view class="col">
                 <view class="label">竣工日期：</view>
-                <view class="content">{{ dayjs(item.completedTime).format('YYYY-MM-DD') }}</view>
+                <view class="content">
+                  {{ item.completedTime ? dayjs(item.completedTime).format('YYYY-MM-DD') : '-' }}
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -144,12 +146,46 @@ const toLink = (type: string, data?: any) => {
   const { uid, doorNo, householdId } = props.dataInfo
   const commonParams = { type, uid, doorNo, householdId }
   if (type === 'edit') {
+    let params = {
+      ...data,
+      completedTime: data.completedTime ? dayjs(data.completedTime).format('YYYY-MM-DD') : null
+    }
     routerForward('houseInfoEdit', {
-      params: JSON.stringify(data),
+      params: JSON.stringify(params),
       commonParams: JSON.stringify(commonParams)
     })
   } else if (type === 'add') {
-    routerForward('houseInfoEdit', { commonParams: JSON.stringify(commonParams) })
+    const params = {
+      houseNo: '',
+      propertyType: '',
+      usageType: '',
+      houseType: '',
+      constructionType: '',
+      storeyNumber: null,
+      completedTime: '',
+      propertyNo: '',
+      landNo: '',
+      landType: '',
+      landArea: null,
+      storeyHeight: null,
+      houseHeight: null,
+      outerWallType: '',
+      interiorWallType: '',
+      groundType: '',
+      roofType: '',
+      roofMaterialsType: '',
+      doorsWindowsType: '',
+      waterElectricityType: '',
+      formula: '',
+      longitude: '',
+      latitude: '',
+      housePic: '',
+      remark: ''
+    }
+    routerForward('houseInfoEdit', {
+      params: JSON.stringify(params),
+      commonParams: JSON.stringify(commonParams)
+    })
   }
 }
 

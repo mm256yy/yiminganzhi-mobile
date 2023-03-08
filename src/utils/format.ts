@@ -37,7 +37,6 @@ export const formatDict = (value: any, id: number) => {
     arr.map((item: any) => {
       if (String(item.value) === String(value)) {
         str = item.text
-        console.log('str: ', str)
       }
     })
     return str

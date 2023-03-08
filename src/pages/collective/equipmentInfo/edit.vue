@@ -37,7 +37,7 @@
               <uni-easyinput v-model="formData.facilitiesCode" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
-          <uni-col>
+          <uni-col :span="12">
             <uni-forms-item
               label="职工人数"
               :label-width="150"
@@ -157,7 +157,7 @@
         </uni-row>
 
         <uni-row>
-          <uni-col>
+          <uni-col :span="12">
             <uni-forms-item
               label="固定资产原值"
               :label-width="150"
@@ -177,7 +177,7 @@
               </view>
             </uni-forms-item>
           </uni-col>
-          <uni-col>
+          <uni-col :span="12">
             <uni-forms-item
               label="固定资产净值"
               :label-width="150"
@@ -200,7 +200,7 @@
         </uni-row>
 
         <uni-row>
-          <uni-col>
+          <uni-col :span="12">
             <uni-forms-item
               label="高程"
               :label-width="150"
@@ -282,10 +282,10 @@ const dict = getStorage(StorageKey.DICT)
 // 获取上个页面传递的参数，给表单赋值
 onLoad((option: any) => {
   if (option) {
-    commonParams.value = JSON.stringify(option.commonParams)
+    commonParams.value = JSON.parse(option.commonParams)
+    let params = JSON.parse(option.params)
+    formData.value = { ...params }
     if (commonParams.value.type === 'edit') {
-      let params = JSON.parse(option.params)
-      formData.value = { ...params }
       title.value = '农村小型专项及农副业设施信息编辑'
     } else if (commonParams.value.type === 'add') {
       title.value = '添加农村小型专项及农副业设施'

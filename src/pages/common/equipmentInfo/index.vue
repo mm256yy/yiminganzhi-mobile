@@ -28,7 +28,9 @@
             <uni-col :span="8">
               <view class="col">
                 <view class="label">建造/购置年份：</view>
-                <view class="content">{{ dayjs(item.year).format('YYYY年') }}</view>
+                <view class="content">
+                  {{ item.year ? dayjs(item.year).format('YYYY年') : '-' }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="8">
@@ -118,19 +120,34 @@ const currentItem = ref<any>({})
  * @param data type 为 edit 时，当前行数据
  */
 const toLink = (type: string, data?: any) => {
-  const { uid } = props.dataInfo
+  const { uid, householdId, doorNo } = props.dataInfo
+  const commonParams = { uid, type, householdId, doorNo }
   if (type === 'edit') {
     const params = {
       ...data,
-      year: dayjs(data.year).format('YYYY-MM-DD')
+      year: data.year ? dayjs(data.year).format('YYYY-MM-DD') : null
     }
     routerForward('equipmentInfoEdit', {
       params: JSON.stringify(params),
-      type,
-      uid
+      commonParams: JSON.stringify(commonParams)
     })
   } else {
-    routerForward('equipmentInfoEdit', { type, uid })
+    const params = {
+      name: '',
+      size: '',
+      unit: '',
+      number: '',
+      remark: '',
+      uid: '',
+      purpose: '',
+      year: '',
+      amount: null,
+      moveType: ''
+    }
+    routerForward('equipmentInfoEdit', {
+      params: JSON.stringify(params),
+      commonParams: JSON.stringify(commonParams)
+    })
   }
 }
 

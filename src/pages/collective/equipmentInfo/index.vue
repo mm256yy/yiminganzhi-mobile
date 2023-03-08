@@ -133,14 +133,33 @@ const dialogClose = () => {
  */
 const toLink = (type: string, data?: any) => {
   const { uid, doorNo, householdId } = props.dataInfo
-  const commonParams = { type, uid, doorNo, householdId }
+  const commonParams: any = { type, uid, doorNo, householdId }
   if (type === 'edit') {
     routerForward('collectiveEquipmentInfoEdit', {
       params: JSON.stringify(data),
       commonParams: JSON.stringify(commonParams)
     })
   } else {
+    const params = {
+      facilitiesName: '',
+      facilitiesType: '',
+      locationType: '',
+      facilitiesCode: '',
+      number: null,
+      unit: '',
+      completedTime: '',
+      scopes: '',
+      benefit: null,
+      cost: null,
+      netBal: null,
+      originalInvest: null,
+      workersNum: null,
+      altitude: null,
+      inundationRang: '',
+      remark: ''
+    }
     routerForward('collectiveEquipmentInfoEdit', {
+      params: JSON.stringify(params),
       commonParams: JSON.stringify(commonParams)
     })
   }

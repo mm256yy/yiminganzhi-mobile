@@ -42,6 +42,7 @@
               <house-info
                 v-if="tabVal === 2"
                 :dataList="dataInfo.immigrantHouseList"
+                :dataInfo="dataInfo"
                 @delete-house="deleteHouse"
               />
 
@@ -143,6 +144,7 @@ import iconEquipmentDef from '@/static/images/icon_collect_equipment_default.png
 import iconEquipmentSel from '@/static/images/icon_collect_equipment_select.png' // 引入农村专项及设施选中 icon
 import iconPhotoDef from '@/static/images/icon_photo_default.png' // 引入照片上传默认 icon
 import iconPhotoSel from '@/static/images/icon_photo_select.png' // 引入照片上传默认 icon
+import { Common } from '@/controller/common'
 
 const props = defineProps({
   dataInfo: {
@@ -197,8 +199,7 @@ const selectTabs = (data: any) => {
  * @param(type) 类型，edit 编辑， add 新增
  */
 const addClick = (type: string) => {
-  const { uid } = props.dataInfo.uid
-  routerForward('collectiveBaseInfoEdit', { type, uid })
+  routerForward('collectiveBaseInfoEdit', { type })
 }
 
 /**

@@ -13,8 +13,8 @@
 
               <view class="list-header-rt">
                 <view class="list-header-left">
-                  <view class="name">徐汉超个体户</view>
-                  <view class="account-no">G1030004</view>
+                  <view class="name">{{ props.dataInfo.name }}</view>
+                  <view class="account-no">{{ props.dataInfo.doorNo }}</view>
                 </view>
 
                 <view class="list-header-right">
@@ -42,6 +42,7 @@
               <house-info
                 v-if="tabVal === 2"
                 :dataList="dataInfo.immigrantHouseList"
+                :dataInfo="dataInfo"
                 @delete-house="deleteHouse"
               />
 
@@ -248,7 +249,7 @@ const updateAccessoryInfo = (data: any) => {
  * @param(Object) data 被删除的行信息
  */
 const deleteEquipment = (data: any) => {
-  deleteLandlordEquipmentApi(props.dataInfo.uid, data.id)
+  deleteLandlordEquipmentApi(props.dataInfo.uid, data.uid)
     .then((res: any) => {
       if (res) {
         showToast(SUCCESS_MSG)

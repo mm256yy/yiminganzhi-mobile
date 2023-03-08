@@ -41,7 +41,12 @@
               label-align="right"
               name="formData.legalPersonPhone"
             >
-              <uni-easyinput v-model="formData.legalPersonPhone" type="text" placeholder="请输入" />
+              <uni-easyinput
+                v-model="formData.legalPersonPhone"
+                type="number"
+                :maxlength="11"
+                placeholder="请输入"
+              />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -191,7 +196,6 @@
                 type="date"
                 placeholder="请选择"
                 v-model="formData.taxPeriodValidity"
-                @change="changeDate"
               />
             </uni-forms-item>
           </uni-col>
@@ -241,7 +245,6 @@
                 type="date"
                 placeholder="请选择"
                 v-model="formData.establishDate"
-                @change="changeDate"
               />
             </uni-forms-item>
           </uni-col>
@@ -686,11 +689,6 @@ onLoad((option: any) => {
   }
 })
 
-// 税务许可证有效期选择
-const changeDate = (e: any) => {
-  console.log('e:', e)
-}
-
 // 输入框获得焦点
 const inputFocus = (index: number) => {
   focusIndex.value = index
@@ -778,6 +776,8 @@ const submit = () => {
     ...baseInfo,
     company
   }
+
+  console.log('params: ', params)
 
   form.value?.validate().then((valid: any) => {
     if (valid) {
