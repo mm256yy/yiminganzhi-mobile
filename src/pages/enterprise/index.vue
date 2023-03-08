@@ -4,9 +4,12 @@
     <view class="home-wrap" :style="{ height: `${pageHeight}px` }">
       <view class="home-body">
         <Main
+          :uid="uid"
+          :expend-codes="expendCodes"
           :treeData="treeData"
           :dataInfo="dataInfo"
           @tree-item-click="treeItemClick"
+          @update-tree="getTreeData"
           @update-data="getLandlordDetail"
         />
       </view>

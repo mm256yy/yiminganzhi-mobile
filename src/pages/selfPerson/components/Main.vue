@@ -6,30 +6,13 @@
       <view class="list-content">
         <view :class="['list-box', showExpand ? '' : 'list-expand']">
           <view class="box" v-if="JSON.stringify(props.dataInfo) !== '{}'">
-            <view class="list-header">
-              <view class="list-header-lt" @click="expandToggle">
-                <image class="expand-img" src="@/static/images/expand.png" mode="scaleToFill" />
-              </view>
-
-              <view class="list-header-rt">
-                <view class="list-header-left">
-                  <view class="name">{{ props.dataInfo.name }}</view>
-                  <view class="account-no">{{ props.dataInfo.doorNo }}</view>
-                </view>
-
-                <view class="list-header-right">
-                  <view class="btn-wrapper print">
-                    <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
-                    <text class="txt">打印表格</text>
-                  </view>
-
-                  <view class="btn-wrapper report">
-                    <image class="icon" src="@/static/images/icon_report.png" mode="scaleToFill" />
-                    <text class="txt">数据上报</text>
-                  </view>
-                </view>
-              </view>
-            </view>
+            <!-- 头部 -->
+            <Header
+              :dataInfo="dataInfo"
+              :type="MainType.IndividualHousehold"
+              @expand-toggle="expandToggle"
+              @update-tree="updateTree"
+            />
 
             <view class="tabs-content">
               <!-- tab 切换 -->
@@ -95,7 +78,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
+import { MainType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
+import Header from '@/components/Header/Index.vue'
 import Tree from '@/components/Tree/Index.vue'
 import Tabs from '@/components/Tabs/Index.vue'
 import baseInfo from '../baseInfo/index.vue' // 引入个体户基本概况组件
@@ -158,7 +143,7 @@ const tabsList = ref([
 
 const showExpand = ref<boolean>(false)
 const tabVal = ref<number>(1)
-const emit = defineEmits(['treeItemClick', 'updateData'])
+const emit = defineEmits(['treeItemClick', 'updateData', 'updateTree'])
 
 const treeItemClick = (data: any) => {
   console.log(data, 'data')
@@ -260,6 +245,11 @@ const deleteEquipment = (data: any) => {
       showToast(ERROR_MSG)
     })
 }
+
+// 更新左侧树列表
+const updateTree = () => {
+  emit('updateTree')
+}
 </script>
 
 <style lang="scss">
@@ -330,95 +320,6 @@ const deleteEquipment = (data: any) => {
 .box {
   flex: 1;
   background-color: #ffffff;
-}
-
-.list-header {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  height: 33rpx;
-  padding: 0 6rpx 0 9rpx;
-  border-bottom: 1rpx solid #e1e4ea;
-
-  .list-header-lt {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 12rpx;
-    height: 33rpx;
-
-    .expand-img {
-      width: 12rpx;
-      height: 12rpx;
-      margin-right: 4rpx;
-    }
-  }
-
-  .list-header-rt {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    flex: 1;
-    height: 33rpx;
-
-    .list-header-left {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-
-      .name {
-        margin: 0 6rpx 0 10rpx;
-        font-size: 13rpx;
-        color: #171718;
-      }
-
-      .account-no {
-        font-size: 13rpx;
-        color: #1c5df1;
-      }
-    }
-
-    .list-header-right {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-
-      .btn-wrapper {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        width: 68rpx;
-        height: 23rpx;
-        border-radius: 11rpx;
-
-        &:active {
-          opacity: 0.7;
-        }
-
-        &.print {
-          margin-right: 7rpx;
-          background-color: #30a952;
-        }
-
-        &.report {
-          background-color: #3e73ec;
-        }
-
-        .icon {
-          width: 7rpx;
-          height: 7rpx;
-          margin-right: 3rpx;
-        }
-
-        .txt {
-          font-size: 9rpx;
-          color: #fff;
-        }
-      }
-    }
-  }
 }
 
 .tabs-content {
