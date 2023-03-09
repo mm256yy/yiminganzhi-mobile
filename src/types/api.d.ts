@@ -1,6 +1,6 @@
 declare namespace Http {
   type Result = {
-    code: string
+    code: number
     data: any
     message: string
     [key: string]: any
