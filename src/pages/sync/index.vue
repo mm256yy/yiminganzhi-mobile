@@ -404,7 +404,7 @@ const onSync = async () => {
         console.log(errData, '推送服务端失败信息')
       } else {
         uni.showToast({
-          title: '获取推送数据失败',
+          title: '推送返回为空',
           icon: 'error'
         })
       }

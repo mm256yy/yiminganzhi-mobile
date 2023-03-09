@@ -243,6 +243,7 @@ const loginOut = () => {
     collection.value = null
     setStorage(StorageKey.TOKEN, '')
     setStorage(StorageKey.USERINFO, null)
+    setStorage(StorageKey.LOGINTIME, '')
     setStorage(StorageKey.PROJECTID, '')
     setStorage(StorageKey.PROJECTINFO, null)
     routerForward('login')
@@ -257,6 +258,7 @@ onShow(() => {
   userInfo.value = user
   projectInfo.value = project
 
+  console.log(user, 'user')
   networkCheck().then((res) => {
     netWork.value = res
   })

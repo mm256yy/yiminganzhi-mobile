@@ -34,23 +34,26 @@ class PushData {
   }
 
   getModifyLandlordList() {
-    return new Promise(async (resolve, reject) => {
+    console.log(555)
+    return new Promise((resolve, reject) => {
       db.selectTableData(LandlordTableName, 'status', 'modify', 'isDelete', '0')
         .then((res: LandlordDDLType[]) => {
           const list: LandlordType[] = res.map((item) => JSON.parse(item.content))
           this.state.peasantHouseholdPushDtoList = list
+          console.log('修改过的业主列表:', list)
           this.getDeleteRecordList().finally(() => {
             resolve(list)
           })
         })
-        .catch(() => {
+        .catch((err) => {
+          console.error('推送-获取业主列表失败', err)
           reject([])
         })
     })
   }
 
-  async getModifyVillageList() {
-    return new Promise(async (resolve, reject) => {
+  getModifyVillageList() {
+    return new Promise((resolve, reject) => {
       db.selectTableData(VillageTableName, 'status', 'modify')
         .then((res: VillageDDLType[]) => {
           const result = res.map((item) => JSON.parse(item.content))
@@ -63,8 +66,8 @@ class PushData {
     })
   }
 
-  async getPullTime() {
-    return new Promise(async (resolve, reject) => {
+  getPullTime() {
+    return new Promise((resolve, reject) => {
       db.selectTableData(OtherTableName, 'type', OtherDataType.PullTime)
         .then((res: any) => {
           this.state.pullTime = res.content
@@ -76,7 +79,7 @@ class PushData {
     })
   }
 
-  private async getDeleteRecordList() {
+  private getDeleteRecordList() {
     return new Promise(async (resolve) => {
       const deleteList: DeleteRecordType[] = []
 
@@ -271,10 +274,10 @@ class PushData {
   }
 
   // 推送数据
-  public async push(): Promise<any> {
+  public push(): Promise<any> {
     return new Promise((resolve, reject) => {
       // 一起执行
-      Promise.all([this.getModifyLandlordList, this.getModifyVillageList, this.getPullTime])
+      Promise.all([this.getModifyLandlordList(), this.getModifyVillageList(), this.getPullTime()])
         .then(() => {
           // 拿到结果了
           const { peasantHouseholdPushDtoList, deleteRecordList, pullTime, villageList } =

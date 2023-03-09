@@ -15,6 +15,7 @@
             "minUserAgentVersion" : "64.0.3282.116"
         },
         "usingComponents" : true,
+        "nvueCompiler" : "uni-app",
         "nvueStyleCompiler" : "uni-app",
         "compilerVersion" : 3,
         "splashscreen" : {
@@ -28,7 +29,8 @@
             "Bluetooth" : {},
             "Geolocation" : {},
             "SQLite" : {},
-            "Webview-x5" : {}
+            "Webview-x5" : {},
+            "Camera" : {}
         },
         "distribute" : {
             "android" : {
