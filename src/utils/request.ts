@@ -10,7 +10,7 @@ enum MethodType {
 }
 
 function rejectHandle(err: Http.Result, reject: any) {
-  switch (err.status) {
+  switch (err.code) {
     case '401':
       console.log('登录失效')
       // 登录失效
@@ -38,6 +38,7 @@ function baseRequest(method: MethodType, option: UniApp.RequestOptions) {
     }
 
     delete (data as AnyObject).isLoading
+    console.log('接口参数：', data)
     uni.request({
       url: apiBaseUrl + url,
       method,
@@ -49,10 +50,17 @@ function baseRequest(method: MethodType, option: UniApp.RequestOptions) {
       },
       data,
       success: (res: any) => {
+        console.log('接口返回 suc', res)
         if (res.statusCode >= 200 && res.statusCode < 400) {
           if (res.data.code === 0) {
             resolve(res.data.data)
-          } else if (res.data.code === -2 || res.data.code === -3) {
+          } else {
+            console.log('-1')
+            rejectHandle(res.data, reject)
+          }
+        } else if (res.statusCode === 400) {
+          if (res.data.code === -2 || res.data.code === -3) {
+            console.log('-2, -3')
             reject(res.data)
           } else {
             rejectHandle(res.data, reject)
@@ -62,9 +70,10 @@ function baseRequest(method: MethodType, option: UniApp.RequestOptions) {
         }
       },
       fail: (err) => {
+        console.log('接口返回 err：', err)
         rejectHandle(
           {
-            code: -1,
+            code: '-1',
             message: '网络不给力，请检查你的网络设置~',
             data: null
           },
