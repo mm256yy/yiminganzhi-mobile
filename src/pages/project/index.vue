@@ -291,8 +291,6 @@ const onChangeProject = (item: ProjectType) => {
   if (currentProjectId.value === item.id) {
     return
   }
-  currentProjectId.value = item.id
-  currentProjectItem.value = item
   // 项目切换需要做数据同步
   onSync()
 }
