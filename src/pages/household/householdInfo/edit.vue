@@ -130,23 +130,31 @@
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
-            <uni-forms-item
-              label="中心经纬度"
-              :label-width="150"
-              label-align="right"
-              name="formData.position"
-            >
+            <uni-forms-item label="中心经纬度" :label-width="150" label-align="right">
               <view class="lg-txt-wrapper">
-                <uni-data-checkbox v-model="formData.check" :localdata="lgTagList" />
-                <uni-easyinput
-                  class="m-t-5"
-                  v-model="formData.position"
-                  :disabled="formData.check === 1"
-                  type="text"
-                  :placeholder="
-                    formData.check === 1 ? '获取定位' : formData.check === 2 ? '输入经纬度' : ''
-                  "
-                />
+                <uni-data-checkbox v-model="check" :localdata="lgTagList" />
+                <view class="position" v-if="check === 1" @click="gotoMap">
+                  <uni-icons type="map" color="#5D8CF7" size="14rpx" />
+                  <text class="txt">{{
+                    formData.longitude && formData.latitude
+                      ? `${formData.longitude},${formData.latitude}`
+                      : '获取定位'
+                  }}</text>
+                </view>
+                <view v-else-if="check === 2">
+                  <uni-easyinput
+                    class="m-t-5"
+                    type="digit"
+                    v-model="formData.longitude"
+                    placeholder="输入经度"
+                  />
+                  <uni-easyinput
+                    class="m-t-5"
+                    type="digit"
+                    v-model="formData.latitude"
+                    placeholder="输入纬度"
+                  />
+                </view>
               </view>
             </uni-forms-item>
           </uni-col>
@@ -165,9 +173,9 @@
 
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { yesAndNoEnums, lgTagList } from '../config'
-import { routerBack, getStorage, StorageKey } from '@/utils'
+import { routerBack, getStorage, StorageKey, routerForward, networkCheck } from '@/utils'
 import { addLandlordApi, updateLandlordApi } from '@/service'
 import { locationTypes } from '@/config/common'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
@@ -182,6 +190,13 @@ const formData = ref<any>({})
 const isFocus = ref<boolean>(false)
 const title = ref<string>('')
 const type = ref<string>('')
+const check = ref<number>(1)
+
+// 中心经纬度输入选项
+const lgTagList = ref<any>([
+  { text: '获取定位', value: 1, disable: false },
+  { text: '输入经纬度', value: 2, disable: false }
+])
 
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
@@ -189,10 +204,10 @@ const emit = defineEmits(['updateTree'])
 
 // 获取上个页面传递的参数，给表单赋值
 onLoad((option: any) => {
+  let params = JSON.parse(option.params)
+  formData.value = { ...params }
   type.value = option.type
   if (option.type === 'edit') {
-    let params = JSON.parse(option.params)
-    formData.value = { ...params }
     title.value = '居民户信息编辑'
   } else if (option.type === 'add') {
     title.value = '添加居民户信息'
@@ -207,6 +222,13 @@ const inputFocus = () => {
 // 输入框失去焦点
 const inputBlur = () => {
   isFocus.value = false
+}
+
+const gotoMap = () => {
+  routerForward('map', {
+    longitude: formData.value.longitude,
+    latitude: formData.value.latitude
+  })
 }
 
 // 表单提交
@@ -256,6 +278,27 @@ const submit = () => {
     }
   }
 }
+
+// 地图选择经纬度后回调返回经纬度
+const mapChooseCallBack = (data: any) => {
+  if (data && data.longitude && data.latitude) {
+    formData.value.longitude = data.longitude
+    formData.value.latitude = data.latitude
+  }
+}
+
+onMounted(() => {
+  networkCheck().then((res) => {
+    if (!res) {
+      lgTagList.value = [
+        { text: '获取定位', value: 1, disable: true },
+        { text: '输入经纬度', value: 2, disable: false }
+      ]
+      check.value = 2
+    }
+  })
+  uni.$on('chooseMap', mapChooseCallBack)
+})
 </script>
 
 <style lang="scss" scoped>
@@ -317,6 +360,24 @@ const submit = () => {
       .lg-txt-wrapper {
         display: flex;
         flex-direction: column;
+
+        .position {
+          display: flex;
+          width: 200rpx;
+          height: 23rpx;
+          margin-top: 5rpx;
+          background: #ffffff;
+          border: 1px solid #d9d9d9;
+          border-radius: 2rpx;
+          align-items: center;
+          justify-content: center;
+
+          .txt {
+            margin-left: 6rpx;
+            font-size: 9rpx;
+            color: #171718;
+          }
+        }
       }
 
       ::v-deep.uni-forms-item__label {

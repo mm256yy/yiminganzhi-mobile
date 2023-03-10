@@ -71,22 +71,6 @@
           </uni-row>
         </view>
       </view>
-
-      <view class="list-item">
-        <view class="list-1">
-          <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-          <view class="title">村集体附件信息</view>
-        </view>
-        <view class="list-2">
-          <uni-row>
-            <uni-col :span="24">
-              <view class="col">
-                <view class="list-img" />
-              </view>
-            </uni-col>
-          </uni-row>
-        </view>
-      </view>
     </view>
 
     <image
@@ -120,9 +104,7 @@ const toLink = (type: string) => {
     phone: props.dataInfo.phone,
     areaCode: props.dataInfo.areaCode, // 区/县
     townCode: props.dataInfo.townCode, // 镇/街道
-    villageCode: props.dataInfo.villageCode, // 行政村
-    virutalVillageCode: props.dataInfo.virutalVillageCode, // 自然村/村民小组
-    immigrantFile: props.dataInfo.immigrantFile
+    villageCode: props.dataInfo.villageCode // 行政村
   }
 
   routerForward('collectiveBaseInfoEdit', {
