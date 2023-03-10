@@ -198,6 +198,7 @@ import { getStorage, routerForward, setStorage, StorageKey, networkCheck } from 
 import { loginOutApi } from './api'
 import { getDictObjApi, getHomeCollectionApi } from '@/service'
 import { pullInstance } from '@/sync'
+import dayjs from 'dayjs'
 
 interface CollectionType {
   hasReport: number

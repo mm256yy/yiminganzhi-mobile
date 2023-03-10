@@ -56,7 +56,7 @@ export interface LandlordType {
   reportStatus: string
   hasPropertyAccount: true
   householdNumber: string
-  reportDate: string
+  reportDate: any
   reportUser: number
   fillingUpdateDate: string
   inundationRange: string

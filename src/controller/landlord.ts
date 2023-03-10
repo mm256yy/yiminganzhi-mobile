@@ -114,7 +114,7 @@ export class Landlord extends Common {
           sql += ` and name like '%${name}%'`
         }
         if (timeArray && timeArray.length) {
-          sql += ` and reportDate Between '${timeArray[0]}' and '${timeArray[1]}'`
+          sql += ` and strftime('YYYY-MM:DD HH:mm:ss',[reportDate]) Between '${timeArray[0]}' and '${timeArray[1]}'`
         }
         if (userId) {
           sql += ` and reportUser = '${userId}' order by updatedDate desc`
@@ -383,11 +383,9 @@ export class Landlord extends Common {
       try {
         const sql = `select count(reportStatus = 'ReportSucceed' or null) as hasReport,
         count(reportStatus != 'ReportSucceed' or null) as noReport,
-        count(reportStatus = 'ReportSucceed' and reportDate Between '${dayjs()
-          .startOf('day')
-          .format('YYYY-MM-DD HH:mm:ss')}' and '${dayjs()
-          .endOf('day')
-          .format('YYYY-MM-DD HH:mm:ss')}' or null) as todayReport
+        count(reportStatus = 'ReportSucceed' and reportDate Between '${dayjs().startOf(
+          'day'
+        )}' and '${dayjs().endOf('day')}' or null) as todayReport
       from ${LandlordTableName}`
         const res: LandlordDDLType[] = await this.db.selectSql(sql)
 
@@ -490,13 +488,13 @@ export class Landlord extends Common {
         const userInfo = getStorage(StorageKey.USERINFO)
         // 更新上报相关字段
         data.reportStatus = ReportStatusEnum.ReportSucceed
-        data.reportDate = dayjs().format('YYYY-MM-DD HH:mm:ss')
+        data.reportDate = dayjs()
         data.reportUser = userInfo.id
 
         const values = `status = 'modify',reportStatus = '${
           ReportStatusEnum.ReportSucceed
-        }',reportDate = '${dayjs().format('YYYY-MM-DD HH:mm:ss')}',reportUser = '${
-          userInfo.id
+        }',reportDate = '${data.reportDate}',reportUser = '${
+          data.reportUser
         }',content = '${JSON.stringify(data)}',updatedDate = '${getCurrentTimeStamp()}'`
         const sql = `update ${LandlordTableName} set ${values} where uid = '${data.uid}' and isDelete = '0'`
         const res = await this.db.execteSql([sql])

@@ -597,9 +597,7 @@ class PullData {
         // 同步时间
         setStorage(StorageKey.PULLTIME, pullTime)
         const fields = "'type','content','updatedDate'"
-        const values = `'${OtherDataType.PullTime}','${dayjs(pullTime).format(
-          'YYYY-MM-DD HH:mm:ss'
-        )}','${getCurrentTimeStamp()}'`
+        const values = `'${OtherDataType.PullTime}','${pullTime}','${getCurrentTimeStamp()}'`
         db.insertOrReplaceData(OtherTableName, values, fields)
       }
       await db.transaction('commit').catch(() => {
