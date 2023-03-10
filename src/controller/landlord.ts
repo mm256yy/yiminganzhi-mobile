@@ -25,8 +25,10 @@ import dayjs from 'dayjs'
 // isDelete: '0' | '1'
 // updatedDate: string
 export class Landlord extends Common {
+  public format: string
   constructor() {
     super()
+    this.format = 'YYYY-MM-DD HH:mm:ss'
   }
 
   // 获取业主列表
@@ -114,7 +116,7 @@ export class Landlord extends Common {
           sql += ` and name like '%${name}%'`
         }
         if (timeArray && timeArray.length) {
-          sql += ` and strftime('YYYY-MM:DD HH:mm:ss',[reportDate]) Between '${timeArray[0]}' and '${timeArray[1]}'`
+          sql += ` and reportDate Between '${timeArray[0]}' and '${timeArray[1]}'`
         }
         if (userId) {
           sql += ` and reportUser = '${userId}' order by updatedDate desc`
@@ -383,9 +385,11 @@ export class Landlord extends Common {
       try {
         const sql = `select count(reportStatus = 'ReportSucceed' or null) as hasReport,
         count(reportStatus != 'ReportSucceed' or null) as noReport,
-        count(reportStatus = 'ReportSucceed' and reportDate Between '${dayjs().startOf(
-          'day'
-        )}' and '${dayjs().endOf('day')}' or null) as todayReport
+        count(reportStatus = 'ReportSucceed' and reportDate Between '${dayjs()
+          .startOf('day')
+          .format(this.format)}' and '${dayjs()
+          .endOf('day')
+          .format(this.format)}' or null) as todayReport
       from ${LandlordTableName}`
         const res: LandlordDDLType[] = await this.db.selectSql(sql)
 
@@ -493,7 +497,7 @@ export class Landlord extends Common {
 
         const values = `status = 'modify',reportStatus = '${
           ReportStatusEnum.ReportSucceed
-        }',reportDate = '${data.reportDate}',reportUser = '${
+        }',reportDate = '${dayjs().format(this.format)}',reportUser = '${
           data.reportUser
         }',content = '${JSON.stringify(data)}',updatedDate = '${getCurrentTimeStamp()}'`
         const sql = `update ${LandlordTableName} set ${values} where uid = '${data.uid}' and isDelete = '0'`

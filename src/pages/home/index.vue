@@ -1,7 +1,7 @@
 <template>
   <view class="home-wrap">
     <image class="common-bg" src="@/static/images/common_bg.png" mode="widthFix" />
-
+    <button @click="printPdf">打印</button>
     <view class="home-content">
       <view class="home-header">
         <view class="header-lt">
@@ -206,6 +206,8 @@ interface CollectionType {
   todayReport: number
 }
 
+const YanYuprintPdf = uni.requireNativePlugin('YanYu-PrintPDF')
+
 const userInfo = ref<any>(null)
 const projectInfo = ref<any>(null)
 const netWork = ref<boolean>(true)
@@ -236,6 +238,26 @@ const dialogConfirm = () => {
 
 const dialogClose = () => {
   alertDialog.value.close()
+}
+
+const printPdf = () => {
+  const url =
+    'https://zdwp.oss-cn-hangzhou.aliyuncs.com/migrate/files/zdbim/print/房屋示意图打印.pdf'
+
+  uni.downloadFile({
+    url,
+    //url:"http://61.162.225.227:19000/wechat/static/direct.png",
+    success: function (res) {
+      console.log('save success-------')
+      console.log(res)
+      const path = plus.io.convertLocalFileSystemURL(res.tempFilePath)
+      YanYuprintPdf.managerPrint(path)
+    },
+    fail(err) {
+      console.log('save err-------------')
+      console.log(err)
+    }
+  })
 }
 
 const loginOut = () => {

@@ -109,7 +109,9 @@ const getList = async () => {
       page.value = page.value + 1
     }
   } else {
-    list.value = []
+    if (page.value === 1) {
+      list.value = []
+    }
     isEnd.value = true
   }
 }

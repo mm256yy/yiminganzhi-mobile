@@ -286,6 +286,7 @@ import { pullInstance, pushInstance } from '@/sync/index'
 import { routerBack, routerForward, networkCheck } from '@/utils'
 import { CollectType, MainType } from '@/types/common'
 import { OtherDataType } from '@/database'
+import dayjs from 'dayjs'
 
 const peopleList = ref<CollectType[]>([])
 const individualHouseholdList = ref<CollectType[]>([])
@@ -413,7 +414,7 @@ const onSync = async () => {
 
 const getPullTime = async () => {
   const time: string = await getOtherItemApi(OtherDataType.PullTime)
-  pullTime.value = time
+  pullTime.value = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
 }
 
 const getData = async () => {
