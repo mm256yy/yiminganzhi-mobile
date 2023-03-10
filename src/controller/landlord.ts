@@ -165,7 +165,7 @@ export class Landlord extends Common {
         }
         const uid = guid()
         data.uid = uid
-        data.company = {}
+        data.company = data.company || {}
         data.immigrantFile = data.immigrantFile || {}
         data.immigrantWill = data.immigrantWill || {}
         data.demographicList = data.demographicList || []
