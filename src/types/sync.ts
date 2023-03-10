@@ -77,7 +77,6 @@ export interface LandlordType {
   // 房屋
   immigrantHouseList: HouseType[]
   // 安置意愿
-  immigrantWillList: WillType[]
   immigrantWill: WillType
   // 家庭收入
   immigrantIncomeList: FamilyIncomeType[]

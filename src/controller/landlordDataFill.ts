@@ -225,7 +225,6 @@ class DataFill extends Landlord {
           if (!data.uid) {
             const itemUid = guid()
             data.uid = itemUid
-            data.isDelete = '0'
             landlordItem.immigrantWill = data
           } else {
             landlordItem.immigrantWill = data
@@ -240,37 +239,6 @@ class DataFill extends Landlord {
         updateRes ? resolve(true) : reject(false)
       } catch (error) {
         console.log(error, 'updateLandlordWill-error')
-        reject(false)
-      }
-    })
-  }
-  // 业主-安置意愿删除操作
-  deleteLandlordWill(uid: string, itemUid: string): Promise<boolean> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        if (!uid || !itemUid) {
-          reject(false)
-          console.log('uid缺失')
-          return
-        }
-        const landlordItem = await this.getLandlordByUid(uid)
-        if (landlordItem) {
-          landlordItem.immigrantWillList = landlordItem.immigrantWillList.map((item) => {
-            if (item.uid === itemUid) {
-              item.isDelete = '1'
-            }
-            return item
-          })
-        } else {
-          reject(false)
-          console.log('业主信息查询失败')
-          return
-        }
-        // 更新数据
-        const updateRes = await this.updateLandlord(landlordItem as LandlordType)
-        updateRes ? resolve(true) : reject(false)
-      } catch (error) {
-        console.log(error, 'deleteLandlordWill-error')
         reject(false)
       }
     })
