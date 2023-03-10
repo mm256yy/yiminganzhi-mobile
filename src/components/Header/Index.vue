@@ -200,6 +200,9 @@ const selectFile = (item: any, index: number) => {
 const confirm = (type: string) => {
   if (type === 'report') {
     reportData()
+  } else if (type === 'print') {
+    // 关闭弹框
+    printPopup.value?.close()
   }
 }
 
@@ -216,11 +219,12 @@ const close = (type: string) => {
 <style lang="scss" scoped>
 .list-header {
   display: flex;
-  flex-direction: row;
-  align-items: center;
   height: 33rpx;
   padding: 0 6rpx 0 9rpx;
   border-bottom: 1rpx solid #e1e4ea;
+  box-sizing: border-box;
+  flex-direction: row;
+  align-items: center;
 
   .list-header-lt {
     display: flex;
@@ -387,37 +391,59 @@ const close = (type: string) => {
       }
     }
   }
+}
 
-  .btn-wrapper {
+.device-wrapper {
+  width: 344rpx;
+  height: 221rpx;
+  margin: 0 auto;
+  vertical-align: middle;
+  background-color: #f6f7f9;
+  border-radius: 5rpx;
+
+  .device-list {
     display: flex;
-    width: 344rpx;
-    height: 33rpx;
-    padding: 0 9rpx;
-    background: #fff;
-    border-radius: 0 0 5rpx 5rpx;
-    box-sizing: border-box;
+    flex-direction: column;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
+    width: 264rpx;
+    height: 88rpx;
+    padding: 16rpx 19rpx;
+    overflow-y: scroll;
+    background-color: #fff;
+    box-sizing: border-box;
+  }
+}
 
-    .btn {
-      width: 52rpx;
-      height: 21rpx;
-      font-size: 9rpx;
-      line-height: 21rpx;
-      text-align: center;
-      border-radius: 3rpx;
+.btn-wrapper {
+  display: flex;
+  width: 344rpx;
+  height: 33rpx;
+  padding: 0 9rpx;
+  background: #fff;
+  border-radius: 0 0 5rpx 5rpx;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: flex-end;
 
-      &.cancel {
-        color: rgba(0, 0, 0, 0.85);
-        background: #fff;
-        border: 1rpx solid #d9d9d9;
-      }
+  .btn {
+    width: 52rpx;
+    height: 21rpx;
+    font-size: 9rpx;
+    line-height: 21rpx;
+    text-align: center;
+    border-radius: 3rpx;
 
-      &.confirm {
-        margin-left: 6rpx;
-        color: #fff;
-        background: #3e73ec;
-      }
+    &.cancel {
+      color: rgba(0, 0, 0, 0.85);
+      background: #fff;
+      border: 1rpx solid #d9d9d9;
+    }
+
+    &.confirm {
+      margin-left: 6rpx;
+      color: #fff;
+      background: #3e73ec;
     }
   }
 }

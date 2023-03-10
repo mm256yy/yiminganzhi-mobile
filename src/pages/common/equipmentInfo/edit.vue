@@ -2,7 +2,7 @@
   <view class="form-wrapper">
     <Back :title="title" />
     <view class="main">
-      <uni-forms class="form" ref="form" :modelValue="formData" :rules="rules">
+      <uni-forms class="form" ref="form" :modelValue="formData">
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
@@ -138,9 +138,6 @@ const formData = ref<any>({})
 const form = ref<any>(null)
 const commonParams = ref<any>({})
 const title = ref<string>('')
-
-// 表单校验规则
-const rules = ref<any>({})
 
 // 获得焦点的 input 框下标
 const focusIndex = ref<number>(-1)

@@ -20,7 +20,12 @@
               <Tabs :dataList="tabsList" :expand="showExpand" @select-tabs="selectTabs" />
 
               <!-- 个体户基本概况 -->
-              <base-info v-if="tabVal === 1" :dataInfo="dataInfo.company" :baseInfo="dataInfo" />
+              <base-info
+                v-if="tabVal === 1"
+                :dataInfo="dataInfo.company"
+                :baseInfo="dataInfo"
+                @update-tree="updateTree"
+              />
 
               <!-- 房屋信息 -->
               <house-info
@@ -70,7 +75,14 @@
       </view>
 
       <view :class="['tree-wrapper', showExpand ? 'w-0' : 'expand']">
-        <Tree :treeData="treeData" :iconSrc="iconSrc" @tree-item-click="treeItemClick" />
+        <Tree
+          :treeData="treeData"
+          :expend-codes="props.expendCodes"
+          :uid="props.uid"
+          :iconSrc="iconSrc"
+          @tree-item-click="treeItemClick"
+          @add-click="toLink('add')"
+        />
       </view>
     </view>
   </view>
@@ -80,6 +92,7 @@
 import { ref } from 'vue'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { MainType, PrintType } from '@/types/common'
+import { routerForward } from '@/utils'
 import Back from '@/components/Back/Index.vue'
 import Header from '@/components/Header/Index.vue'
 import Tree from '@/components/Tree/Index.vue'
@@ -158,6 +171,55 @@ const expandToggle = () => {
 // tab 切换
 const selectTabs = (data: any) => {
   tabVal.value = data.value
+}
+
+const toLink = (type: string) => {
+  let params = {
+    name: '',
+    areaCode: '',
+    townCode: '',
+    villageCode: '',
+    locationType: '',
+    phone: '',
+    periodValidity: null,
+    establishDate: null,
+    taxPeriodValidity: null,
+    legalPersonName: '',
+    legalPersonCard: '',
+    legalPersonPhone: '',
+    companyType: '',
+    companyAddress: '',
+    licenceType: '',
+    licenceNo: '',
+    taxLicenceNo: '',
+    taxLicenceCompany: '',
+    ohterLicence: '',
+    registerType: '',
+    natureBusiness: '',
+    industryType: '',
+    economicNature: '',
+    registeredAmount: '',
+    fixedAssetsOriginalValue: '',
+    fixedAssetsNetValue: '',
+    regularWorkerNum: '',
+    temporaryWorkerNum: '',
+    annualPayroll: '',
+    averageAnnualOutputValue: '',
+    averageAnnualProfit: '',
+    averageAnnualTaxPaid: '',
+    productCategory: '',
+    managementStatus: '',
+    informationInvolved: '',
+    treatmentScheme: '',
+    otherRemark: '',
+    licensePic: [],
+    otherPic: []
+  }
+
+  routerForward('selfBaseInfoEdit', {
+    params: JSON.stringify(params),
+    type
+  })
 }
 
 /**

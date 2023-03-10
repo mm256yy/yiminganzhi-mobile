@@ -2,7 +2,7 @@
   <view class="form-wrapper">
     <Back :title="title" />
     <view class="main">
-      <uni-forms class="form" ref="form" :modelValue="formData" :rules="rules">
+      <uni-forms class="form" ref="form" :modelValue="formData">
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
@@ -527,33 +527,40 @@ const homePicFail = (e: any) => {
 const submit = () => {
   const { type, uid, doorNo, householdId } = commonParams.value
   const params = { doorNo, householdId, ...formData.value }
-  form.value?.validate().then((valid: any) => {
-    if (valid) {
-      if (type === 'add') {
-        addLandlordHouseApi(uid, params)
-          .then((res) => {
-            if (res) {
-              showToast(SUCCESS_MSG)
-              routerBack()
-            }
-          })
-          .catch((e) => {
-            showToast(ERROR_MSG)
-          })
-      } else if (type === 'edit') {
-        updateLandlordHouseApi(uid, params)
-          .then((res) => {
-            if (res) {
-              showToast(SUCCESS_MSG)
-              routerBack()
-            }
-          })
-          .catch((e) => {
-            showToast(ERROR_MSG)
-          })
-      }
+
+  if (!formData.value.houseNo) {
+    showToast('请输入幢号')
+    return
+  } else if (!formData.value.usageType) {
+    showToast('请选择房屋用途')
+  } else if (!formData.value.houseType) {
+    showToast('请选择房屋类别')
+    return
+  } else {
+    if (type === 'add') {
+      addLandlordHouseApi(uid, params)
+        .then((res) => {
+          if (res) {
+            showToast(SUCCESS_MSG)
+            routerBack()
+          }
+        })
+        .catch((e) => {
+          showToast(ERROR_MSG)
+        })
+    } else if (type === 'edit') {
+      updateLandlordHouseApi(uid, params)
+        .then((res) => {
+          if (res) {
+            showToast(SUCCESS_MSG)
+            routerBack()
+          }
+        })
+        .catch((e) => {
+          showToast(ERROR_MSG)
+        })
     }
-  })
+  }
 }
 </script>
 

@@ -159,7 +159,7 @@
         </view>
       </view>
 
-      <view class="other-enter self">
+      <view class="other-enter">
         <view class="other-item" @click="toLink('database')">
           <view class="inner">
             <image class="other-icon" src="@/static/images/sync_enter.png" mode="scaleToFill" />

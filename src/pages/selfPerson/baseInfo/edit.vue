@@ -2,7 +2,7 @@
   <view class="form-wrapper">
     <Back :title="title" />
     <view class="main">
-      <uni-forms class="form" ref="form" :modelValue="formData" :rules="rules">
+      <uni-forms class="form" ref="form" :modelValue="formData">
         <view class="title-wrapper">
           <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
           <view class="title">个体工商户基本信息</view>
@@ -65,22 +65,16 @@
           <uni-col :span="12">
             <uni-forms-item
               required
-              label="个体工商户编码"
+              label="所属区域"
               :label-width="170"
               label-align="right"
-              name="formData.suffixNo"
+              name="formData.villageCode"
             >
-              <view :class="['code-wrapper', focusIndex === 1 ? 'focus' : '']">
-                <view class="pre-txt">{{ 'G' + formData.villageCode }}</view>
-                <input
-                  class="input-txt"
-                  type="number"
-                  placeholder="请输入"
-                  v-model="formData.suffixNo"
-                  @focus="inputFocus(1)"
-                  @blur="inputBlur"
-                />
-              </view>
+              <village-select-form-item
+                v-model:areaCode="formData.areaCode"
+                v-model:townCode="formData.townCode"
+                v-model:villageCode="formData.villageCode"
+              />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -98,27 +92,35 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
+              required
+              label="个体工商户编码"
+              :label-width="170"
+              label-align="right"
+              name="formData.suffixNo"
+            >
+              <view :class="['code-wrapper', focusIndex === 1 ? 'focus' : '']">
+                <view class="pre-txt">
+                  {{ formData.villageCode ? 'G' + formData.villageCode : '' }}
+                </view>
+                <input
+                  class="input-txt"
+                  type="number"
+                  placeholder="请输入"
+                  v-model="formData.suffixNo"
+                  @focus="inputFocus(1)"
+                  @blur="inputBlur"
+                />
+              </view>
+            </uni-forms-item>
+          </uni-col>
+          <uni-col :span="12">
+            <uni-forms-item
               label="个体工商户联系方式"
               :label-width="170"
               label-align="right"
               name="formData.phone"
             >
               <uni-easyinput v-model="formData.phone" type="text" placeholder="请输入" />
-            </uni-forms-item>
-          </uni-col>
-          <uni-col :span="12">
-            <uni-forms-item
-              required
-              label="所属区域"
-              :label-width="170"
-              label-align="right"
-              name="formData.villageCode"
-            >
-              <village-select-form-item
-                v-model:areaCode="formData.areaCode"
-                v-model:townCode="formData.townCode"
-                v-model:villageCode="formData.villageCode"
-              />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -644,7 +646,7 @@
 
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
 import { routerBack, getStorage, StorageKey } from '@/utils'
 import { addLandlordCompanyApi, updateLandlordCompanyApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
@@ -655,17 +657,9 @@ import VillageSelectFormItem from '@/components/VillageSelectFormItem/index.vue'
 const formData = ref<any>({})
 const form = ref<any>(null)
 
-// 表单校验规则
-// 表单校验规则
-const rules = reactive({
-  legalPersonName: { rules: [{ required: true, message: '请输入', trigger: 'blur' }] },
-  legalPersonCard: { rules: [{ required: true, message: '请输入', trigger: 'blur' }] },
-  suffixNo: { rules: [{ required: true, message: '请输入', trigger: 'blur' }] },
-  villageCode: { rules: [{ required: true, message: '请选择', trigger: 'change' }] }
-})
-
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
+const emit = defineEmits(['updateTree'])
 
 // 获得焦点的输入框下标
 const focusIndex = ref<number>(-1)
@@ -675,15 +669,14 @@ const uid = ref<string>('')
 
 // 获取上个页面传递的参数，给表单赋值
 onLoad((option: any) => {
-  console.log('option:', option)
   if (option) {
+    let params = JSON.parse(option.params)
+    formData.value = { ...params }
     type.value = option.type
-    uid.value = option.uid
-    if (option.type === 'edit') {
-      let params = JSON.parse(option.params)
-      formData.value = { ...params }
+    if (type.value === 'edit') {
       title.value = '个体工商户基本概况编辑'
-    } else if (option.type === 'add') {
+      uid.value = option.uid
+    } else if (type.value === 'add') {
       title.value = '添加个体工商户'
     }
   }
@@ -721,10 +714,12 @@ const fail = (e: any) => {
 
 // 表单提交
 const submit = () => {
-  let baseInfo = {
+  let baseInfo: any = {
     uid: uid.value,
     name: formData.value.name,
-    doorNo: 'G' + formData.value.villageCode + formData.value.suffixNo,
+    doorNo: formData.value.suffixNo
+      ? 'G' + formData.value.villageCode + formData.value.suffixNo
+      : '',
     areaCode: formData.value.areaCode,
     townCode: formData.value.townCode,
     villageCode: formData.value.villageCode,
@@ -735,11 +730,11 @@ const submit = () => {
     taxPeriodValidity: formData.value.taxPeriodValidity
   }
 
-  let company = {
-    id: formData.value.id,
-    doorNo: 'G' + formData.value.villageCode + formData.value.suffixNo,
+  let company: any = {
+    doorNo: formData.value.suffixNo
+      ? 'G' + formData.value.villageCode + formData.value.suffixNo
+      : '',
     householdId: formData.value.householdId,
-    uid: formData.value.uid,
     legalPersonName: formData.value.legalPersonName,
     legalPersonCard: formData.value.legalPersonCard,
     legalPersonPhone: formData.value.legalPersonPhone,
@@ -772,40 +767,57 @@ const submit = () => {
     otherPic: formData.value.otherPic
   }
 
-  let params = {
-    ...baseInfo,
-    company
-  }
-
-  console.log('params: ', params)
-
-  form.value?.validate().then((valid: any) => {
-    if (valid) {
-      if (type.value === 'add') {
-        addLandlordCompanyApi(uid.value, params)
-          .then((res) => {
-            if (res) {
-              showToast(SUCCESS_MSG)
-              routerBack()
-            }
-          })
-          .catch((e) => {
-            showToast(ERROR_MSG)
-          })
-      } else if (type.value === 'edit') {
-        updateLandlordCompanyApi(uid.value, params)
-          .then((res) => {
-            if (res) {
-              showToast(SUCCESS_MSG)
-              routerBack()
-            }
-          })
-          .catch((e) => {
-            showToast(ERROR_MSG)
-          })
+  if (!formData.value.legalPersonName) {
+    showToast('请输入法人姓名')
+    return
+  } else if (!formData.value.legalPersonCard) {
+    showToast('请输入法人身份证号')
+  } else if (!formData.value.villageCode) {
+    showToast('请选择所属区域')
+    return
+  } else if (!formData.value.suffixNo) {
+    showToast('请输入个体工商户编码后四位')
+    return
+  } else {
+    if (type.value === 'add') {
+      let params = {
+        ...baseInfo,
+        company
       }
+      addLandlordCompanyApi(uid.value, params)
+        .then((res) => {
+          if (res) {
+            showToast(SUCCESS_MSG)
+            emit('updateTree')
+            routerBack()
+          }
+        })
+        .catch((e) => {
+          showToast(ERROR_MSG)
+        })
+    } else if (type.value === 'edit') {
+      company = {
+        id: formData.value.id,
+        uid: formData.value.uid,
+        ...company
+      }
+      let params = {
+        ...baseInfo,
+        company
+      }
+      updateLandlordCompanyApi(uid.value, params)
+        .then((res) => {
+          if (res) {
+            showToast(SUCCESS_MSG)
+            emit('updateTree')
+            routerBack()
+          }
+        })
+        .catch((e) => {
+          showToast(ERROR_MSG)
+        })
     }
-  })
+  }
 }
 </script>
 

@@ -2,7 +2,7 @@
   <view class="form-wrapper">
     <Back :title="title" />
     <view class="main">
-      <uni-forms class="form" ref="form" :modelValue="formData" :rules="rules">
+      <uni-forms class="form" ref="form" :modelValue="formData">
         <view class="title-wrapper">
           <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
           <view class="title">村集体基本信息</view>
@@ -20,6 +20,25 @@
               <uni-easyinput v-model="formData.name" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
+          <uni-col :span="12">
+            <uni-forms-item
+              required
+              label="所属区域"
+              :label-width="170"
+              label-align="right"
+              name="formData.virutalVillageCode"
+            >
+              <natural-village-select-form-item
+                v-model:areaCode="formData.areaCode"
+                v-model:townCode="formData.townCode"
+                v-model:villageCode="formData.villageCode"
+                v-model:virutalVillageCode="formData.virutalVillageCode"
+              />
+            </uni-forms-item>
+          </uni-col>
+        </uni-row>
+
+        <uni-row>
           <uni-col :span="12">
             <uni-forms-item
               required
@@ -41,19 +60,6 @@
               </view>
             </uni-forms-item>
           </uni-col>
-        </uni-row>
-
-        <uni-row>
-          <uni-col :span="12">
-            <uni-forms-item
-              label="所在位置"
-              :label-width="170"
-              label-align="right"
-              name="formData.locationType"
-            >
-              <uni-data-select v-model="formData.locationType" :localdata="dict[326]" />
-            </uni-forms-item>
-          </uni-col>
           <uni-col :span="12">
             <uni-forms-item
               label="村集体联系方式"
@@ -69,18 +75,12 @@
         <uni-row>
           <uni-col :span="24">
             <uni-forms-item
-              required
-              label="所属区域"
+              label="所在位置"
               :label-width="170"
               label-align="right"
-              name="formData.virutalVillageCode"
+              name="formData.locationType"
             >
-              <natural-village-select-form-item
-                v-model:areaCode="formData.areaCode"
-                v-model:townCode="formData.townCode"
-                v-model:villageCode="formData.villageCode"
-                v-model:virutalVillageCode="formData.virutalVillageCode"
-              />
+              <uni-data-select v-model="formData.locationType" :localdata="dict[326]" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -114,7 +114,7 @@
 
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
 import { addLandlordApi, updateLandlordApi } from '@/service'
 import { routerBack, getStorage, StorageKey } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
@@ -124,14 +124,6 @@ import NaturalVillageSelectFormItem from '@/components/NaturalVillageSelectFormI
 
 // 表单数据
 const formData = ref<any>({})
-const form = ref<any>(null)
-
-// 表单校验规则
-const rules = reactive({
-  name: { rules: [{ required: true, message: '请输入', trigger: 'blur' }] },
-  suffixNo: { rules: [{ required: true, message: '请输入', trigger: 'blur' }] },
-  virutalVillageCode: { rules: [{ required: true, message: '请选择', trigger: 'change' }] }
-})
 
 // 获得焦点的输入框下标
 const focusIndex = ref<number>(-1)
@@ -140,6 +132,7 @@ const type = ref<string>('')
 
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
+const emit = defineEmits(['updateTree'])
 
 // 获取上个页面传递的参数，给表单赋值
 onLoad((option: any) => {
@@ -187,36 +180,48 @@ const fail = (e: any) => {
 const submit = () => {
   let params = {
     ...formData.value,
-    doorNo: 'JT' + formData.value.villageCode + formData.value.suffixNo,
+    doorNo: formData.value.suffixNo
+      ? 'JT' + formData.value.villageCode + formData.value.suffixNo
+      : '',
     type: MainType.Village
   }
-  form.value?.validate().then((valid: any) => {
-    if (valid) {
-      if (type.value === 'add') {
-        addLandlordApi(params)
-          .then((res) => {
-            if (res) {
-              showToast(SUCCESS_MSG)
-              routerBack()
-            }
-          })
-          .catch((e) => {
-            showToast(ERROR_MSG)
-          })
-      } else if (type.value === 'edit') {
-        updateLandlordApi(params)
-          .then((res) => {
-            if (res) {
-              showToast(SUCCESS_MSG)
-              routerBack()
-            }
-          })
-          .catch((e) => {
-            showToast(ERROR_MSG)
-          })
-      }
+
+  if (!formData.value.name) {
+    showToast('请输入村集体名称')
+    return
+  } else if (!formData.value.virutalVillageCode) {
+    showToast('请选择所属区域')
+    return
+  } else if (!formData.value.suffixNo) {
+    showToast('请输入村集体编码后四位')
+    return
+  } else {
+    if (type.value === 'add') {
+      addLandlordApi(params)
+        .then((res) => {
+          if (res) {
+            showToast(SUCCESS_MSG)
+            emit('updateTree')
+            routerBack()
+          }
+        })
+        .catch((e) => {
+          showToast(ERROR_MSG)
+        })
+    } else if (type.value === 'edit') {
+      updateLandlordApi(params)
+        .then((res) => {
+          if (res) {
+            showToast(SUCCESS_MSG)
+            emit('updateTree')
+            routerBack()
+          }
+        })
+        .catch((e) => {
+          showToast(ERROR_MSG)
+        })
     }
-  })
+  }
 }
 </script>
 

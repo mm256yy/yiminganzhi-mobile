@@ -152,10 +152,10 @@ export interface ImmigrantFileType {
 
 // 企业/个体户 字段
 export interface CompanyType {
-  id: number
+  id: number | null
   doorNo: string
   householdId: number
-  uid: string
+  uid?: string
   legalPersonName: string
   legalPersonCard: string
   legalPersonPhone: string

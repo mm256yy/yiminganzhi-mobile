@@ -10,19 +10,20 @@ enum MethodType {
 }
 
 function rejectHandle(err: Http.Result, reject: any) {
+  console.log('rejectHandle :', err)
   switch (err.code) {
-    case '401':
+    case 401:
       console.log('登录失效')
       // 登录失效
       routerForward('login')
-      reject()
+      reject(err)
       break
     default:
       uni.showToast({
         title: err.message || '正在排队中，请稍后！',
         icon: 'none'
       })
-      reject()
+      reject(err)
       break
   }
 }
@@ -73,7 +74,7 @@ function baseRequest(method: MethodType, option: UniApp.RequestOptions) {
         console.log('接口返回 err：', err)
         rejectHandle(
           {
-            code: '-1',
+            code: -1,
             message: '网络不给力，请检查你的网络设置~',
             data: null
           },

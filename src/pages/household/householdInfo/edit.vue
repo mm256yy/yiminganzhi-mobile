@@ -2,7 +2,7 @@
   <view class="form-wrapper">
     <Back :title="title" />
     <view class="main">
-      <uni-forms class="form" ref="form" :modelValue="formData" :rules="rules">
+      <uni-forms class="form" ref="form" :modelValue="formData">
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
@@ -165,7 +165,7 @@
 
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
 import { yesAndNoEnums, lgTagList } from '../config'
 import { routerBack, getStorage, StorageKey } from '@/utils'
 import { addLandlordApi, updateLandlordApi } from '@/service'
@@ -177,23 +177,15 @@ import NaturalVillageSelectFormItem from '@/components/NaturalVillageSelectFormI
 
 // 表单数据
 const formData = ref<any>({})
-const form = ref<any>(null)
-
-// 表单校验规则
-const rules = reactive({
-  name: { rules: [{ required: true, message: '请输入', trigger: 'blur' }] },
-  virutalVillageCode: { rules: [{ required: true, message: '请选择', trigger: 'change' }] },
-  doorNo: { rules: [{ required: true, message: '请输入', trigger: 'blur' }] }
-})
 
 // 输入框是否获得焦点
 const isFocus = ref<boolean>(false)
 const title = ref<string>('')
 const type = ref<string>('')
-const uid = ref<string>('')
 
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
+const emit = defineEmits(['updateTree'])
 
 // 获取上个页面传递的参数，给表单赋值
 onLoad((option: any) => {
@@ -203,7 +195,6 @@ onLoad((option: any) => {
     formData.value = { ...params }
     title.value = '居民户信息编辑'
   } else if (option.type === 'add') {
-    uid.value = option.uid
     title.value = '添加居民户信息'
   }
 })
@@ -222,40 +213,48 @@ const inputBlur = () => {
 const submit = () => {
   let params = {
     ...formData.value,
-    doorNo: String(formData.value.villageCode) + formData.value.suffixNo,
+    doorNo: formData.value.villageCode
+      ? String(formData.value.villageCode) + formData.value.suffixNo
+      : '',
     type: MainType.PeasantHousehold
   }
-  form.value?.validate().then((valid: any) => {
-    if (valid) {
-      if (type.value === 'add') {
-        params = {
-          ...params,
-          uid: uid.value
-        }
-        addLandlordApi(params)
-          .then((res) => {
-            if (res) {
-              showToast(SUCCESS_MSG)
-              routerBack()
-            }
-          })
-          .catch((e) => {
-            showToast(ERROR_MSG)
-          })
-      } else if (type.value === 'edit') {
-        updateLandlordApi(params)
-          .then((res) => {
-            if (res) {
-              showToast(SUCCESS_MSG)
-              routerBack()
-            }
-          })
-          .catch((e) => {
-            showToast(ERROR_MSG)
-          })
-      }
+
+  if (!formData.value.name) {
+    showToast('请输入户主姓名')
+    return
+  } else if (!formData.value.virutalVillageCode) {
+    showToast('请选择自然村/村民小组')
+    return
+  } else if (!formData.value.suffixNo) {
+    showToast('请输入户号后四位')
+    return
+  } else {
+    if (type.value === 'add') {
+      addLandlordApi(params)
+        .then((res) => {
+          if (res) {
+            showToast(SUCCESS_MSG)
+            emit('updateTree')
+            routerBack()
+          }
+        })
+        .catch((e) => {
+          showToast(ERROR_MSG)
+        })
+    } else if (type.value === 'edit') {
+      updateLandlordApi(params)
+        .then((res) => {
+          if (res) {
+            showToast(SUCCESS_MSG)
+            emit('updateTree')
+            routerBack()
+          }
+        })
+        .catch((e) => {
+          showToast(ERROR_MSG)
+        })
     }
-  })
+  }
 }
 </script>
 

@@ -2,7 +2,7 @@
   <view class="form-wrapper">
     <Back :title="title" />
     <view class="main">
-      <uni-forms class="form" ref="form" :modelValue="formData" :rules="rules">
+      <uni-forms class="form" ref="form" :modelValue="formData">
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
@@ -266,10 +266,6 @@ import Back from '@/components/Back/Index.vue'
 
 // 表单数据
 const formData = ref<any>({})
-const form = ref<any>(null)
-
-// 表单校验规则
-const rules = ref<any>({})
 
 // 获得焦点的 input 框下标
 const focusIndex = ref<number>(-1)
@@ -312,33 +308,29 @@ const inputBlur = () => {
 const submit = () => {
   const { type, uid, doorNo, householdId } = commonParams.value
   const params = { doorNo, householdId, ...formData.value }
-  form.value?.validate().then((valid: any) => {
-    if (valid) {
-      if (type === 'add') {
-        addLandlordFacilitiesApi(uid, params)
-          .then((res) => {
-            if (res) {
-              showToast(SUCCESS_MSG)
-              routerBack()
-            }
-          })
-          .catch((e) => {
-            showToast(ERROR_MSG)
-          })
-      } else if (type === 'edit') {
-        updateLandlordFacilitiesApi(uid, params)
-          .then((res) => {
-            if (res) {
-              showToast(SUCCESS_MSG)
-              routerBack()
-            }
-          })
-          .catch((e) => {
-            showToast(ERROR_MSG)
-          })
-      }
-    }
-  })
+  if (type === 'add') {
+    addLandlordFacilitiesApi(uid, params)
+      .then((res) => {
+        if (res) {
+          showToast(SUCCESS_MSG)
+          routerBack()
+        }
+      })
+      .catch((e) => {
+        showToast(ERROR_MSG)
+      })
+  } else if (type === 'edit') {
+    updateLandlordFacilitiesApi(uid, params)
+      .then((res) => {
+        if (res) {
+          showToast(SUCCESS_MSG)
+          routerBack()
+        }
+      })
+      .catch((e) => {
+        showToast(ERROR_MSG)
+      })
+  }
 }
 </script>
 

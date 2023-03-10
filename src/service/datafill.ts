@@ -201,8 +201,8 @@ export const updateLandlordImmigrantFileApi = (uid: string, data: ImmigrantFileT
  * @param data 企业/个体户信息
  * @returns
  */
-export const addLandlordCompanyApi = (uid: string, data: any) => {
-  return DataFillController.addLandlordCompany(uid, data)
+export const addLandlordCompanyApi = (data: any, uid?: any) => {
+  return DataFillController.addLandlordCompany(data, uid)
 }
 
 /**

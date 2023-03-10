@@ -609,7 +609,7 @@ class DataFill extends Landlord {
   }
 
   // 业主-企业/个体户 新增操作
-  addLandlordCompany(uid: string, data: any): Promise<boolean> {
+  addLandlordCompany(data: any, uid?: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!uid) {

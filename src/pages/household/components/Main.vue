@@ -20,7 +20,7 @@
               <Tabs :dataList="tabsList" :expand="showExpand" @select-tabs="selectTabs" />
 
               <!-- 居民户信息 -->
-              <household-info v-if="tabVal === 1" :dataInfo="dataInfo" />
+              <household-info v-if="tabVal === 1" :dataInfo="dataInfo" @update-tree="updateTree" />
 
               <!-- 人口信息 -->
               <demographic-info
@@ -206,8 +206,8 @@ const selectTabs = (data: any) => {
  * @param(type) 类型，edit 编辑， add 新增
  */
 const addClick = (type: string) => {
-  const { uid } = props.dataInfo.uid
-  routerForward('householdInfoEdit', { type, uid })
+  // const { uid } = props.dataInfo.uid
+  routerForward('householdInfoEdit', { type })
 }
 
 /**

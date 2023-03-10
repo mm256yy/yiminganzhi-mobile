@@ -34,7 +34,6 @@ class PushData {
   }
 
   getModifyLandlordList() {
-    console.log(555)
     return new Promise((resolve, reject) => {
       db.selectTableData(LandlordTableName, 'status', 'modify', 'isDelete', '0')
         .then((res: LandlordDDLType[]) => {
@@ -54,7 +53,7 @@ class PushData {
 
   getModifyVillageList() {
     return new Promise((resolve, reject) => {
-      db.selectTableData(VillageTableName, 'status', 'modify')
+      db.selectTableData(VillageTableName, 'status', 'modify', 'isDelete', '0')
         .then((res: VillageDDLType[]) => {
           const result = res.map((item) => JSON.parse(item.content))
           this.state.villageList = result

@@ -2,7 +2,7 @@
   <view class="form-wrapper">
     <Back :title="title" />
     <view class="main">
-      <uni-forms class="form" ref="form" :modelValue="formData" :rules="rules">
+      <uni-forms class="form" ref="form" :modelValue="formData">
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
@@ -274,7 +274,7 @@
 
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
 import { routerBack, getStorage, StorageKey } from '@/utils'
 import { addLandlordPeopleApi, updateLandlordPeopleApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
@@ -282,7 +282,6 @@ import Back from '@/components/Back/Index.vue'
 
 // 表单数据
 const formData = ref<any>({})
-const form = ref<any>(null)
 
 // 表单类型，add 新增表单，edit 编辑表单
 const type = ref<string>('')
@@ -291,15 +290,6 @@ const uid = ref<string>('')
 
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
-
-// 表单校验规则
-const rules = reactive({
-  name: { rules: [{ required: true, message: '请输入', trigger: 'blur' }] },
-  card: { rules: [{ required: true, message: '请输入', trigger: 'blur' }] },
-  sex: { rules: [{ required: true, message: '请选择', trigger: 'change' }] },
-  birthday: { rules: [{ required: true, message: '请选择', trigger: 'change' }] },
-  realation: { rules: [{ required: true, message: '请选择', trigger: 'change' }] }
-})
 
 onLoad((option: any) => {
   if (option) {
@@ -382,33 +372,46 @@ const otherPicFail = (e: any) => {
 // 表单提交
 const submit = () => {
   const params = { ...formData.value }
-  form.value?.validate().then((valid: any) => {
-    if (valid) {
-      if (type.value === 'add') {
-        addLandlordPeopleApi(uid.value, params)
-          .then((res) => {
-            if (res) {
-              showToast(SUCCESS_MSG)
-              routerBack()
-            }
-          })
-          .catch((e) => {
-            showToast(ERROR_MSG)
-          })
-      } else {
-        updateLandlordPeopleApi(uid.value, params)
-          .then((res) => {
-            if (res) {
-              showToast(SUCCESS_MSG)
-              routerBack()
-            }
-          })
-          .catch((e) => {
-            showToast(ERROR_MSG)
-          })
-      }
+  if (!formData.value.name) {
+    showToast('请输入姓名')
+    return
+  } else if (!formData.value.card) {
+    showToast('请输入身份证号')
+    return
+  } else if (!formData.value.sex) {
+    showToast('请选择性别')
+    return
+  } else if (!formData.value.birthday) {
+    showToast('请选择出生年月')
+    return
+  } else if (!formData.value.realation) {
+    showToast('请选择与户主关系')
+    return
+  } else {
+    if (type.value === 'add') {
+      addLandlordPeopleApi(uid.value, params)
+        .then((res) => {
+          if (res) {
+            showToast(SUCCESS_MSG)
+            routerBack()
+          }
+        })
+        .catch((e) => {
+          showToast(ERROR_MSG)
+        })
+    } else {
+      updateLandlordPeopleApi(uid.value, params)
+        .then((res) => {
+          if (res) {
+            showToast(SUCCESS_MSG)
+            routerBack()
+          }
+        })
+        .catch((e) => {
+          showToast(ERROR_MSG)
+        })
     }
-  })
+  }
 }
 </script>
 

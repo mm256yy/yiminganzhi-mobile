@@ -20,7 +20,7 @@
               <Tabs :dataList="tabsList" :expand="showExpand" @select-tabs="selectTabs" />
 
               <!-- 村集体基本情况 -->
-              <base-info v-if="tabVal === 1" :dataInfo="dataInfo" />
+              <base-info v-if="tabVal === 1" :dataInfo="dataInfo" @update-tree="updateTree" />
 
               <!-- 房屋信息 -->
               <house-info
@@ -80,6 +80,8 @@
       <view :class="['tree-wrapper', showExpand ? 'w-0' : 'expand']">
         <Tree
           :treeData="treeData"
+          :expend-codes="props.expendCodes"
+          :uid="props.uid"
           :iconSrc="iconSrc"
           @tree-item-click="treeItemClick"
           @add-click="addClick('add')"

@@ -112,7 +112,8 @@
                     }
                 }
             }
-        }
+        },
+        "nativePlugins" : {}
     },
     "quickapp" : {},
     "mp-weixin" : {

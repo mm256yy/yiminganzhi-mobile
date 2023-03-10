@@ -2,7 +2,7 @@
   <view class="form-wrapper">
     <Back :title="title" />
     <view class="main">
-      <uni-forms class="form" ref="form" :modelValue="formData" :rules="rules">
+      <uni-forms class="form" ref="form" :modelValue="formData">
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
@@ -152,9 +152,6 @@ const focusIndex = ref<number>(-1)
 const title = ref<string>('')
 const commonParams = ref<any>({})
 
-// 表单校验规则
-const rules = ref<any>({})
-
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
 
@@ -186,33 +183,29 @@ const inputBlur = () => {
 const submit = () => {
   const { type, uid, doorNo, householdId } = commonParams.value
   let params = { doorNo, householdId, ...formData.value }
-  form.value?.validate().then((valid: any) => {
-    if (valid) {
-      if (type === 'add') {
-        addLandlordGraveApi(uid, params)
-          .then((res) => {
-            if (res) {
-              showToast(SUCCESS_MSG)
-              routerBack()
-            }
-          })
-          .catch((e) => {
-            showToast(ERROR_MSG)
-          })
-      } else if (type === 'edit') {
-        updateLandlordGraveApi(uid, params)
-          .then((res) => {
-            if (res) {
-              showToast(SUCCESS_MSG)
-              routerBack()
-            }
-          })
-          .catch((e) => {
-            showToast(ERROR_MSG)
-          })
-      }
-    }
-  })
+  if (type === 'add') {
+    addLandlordGraveApi(uid, params)
+      .then((res) => {
+        if (res) {
+          showToast(SUCCESS_MSG)
+          routerBack()
+        }
+      })
+      .catch((e) => {
+        showToast(ERROR_MSG)
+      })
+  } else if (type === 'edit') {
+    updateLandlordGraveApi(uid, params)
+      .then((res) => {
+        if (res) {
+          showToast(SUCCESS_MSG)
+          routerBack()
+        }
+      })
+      .catch((e) => {
+        showToast(ERROR_MSG)
+      })
+  }
 }
 </script>
 

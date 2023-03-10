@@ -20,7 +20,12 @@
               <Tabs :dataList="tabsList" :expand="showExpand" @select-tabs="selectTabs" />
 
               <!-- 企业基本概况 -->
-              <base-info v-if="tabVal === 1" :dataInfo="dataInfo.company" :baseInfo="dataInfo" />
+              <base-info
+                v-if="tabVal === 1"
+                :dataInfo="dataInfo.company"
+                :baseInfo="dataInfo"
+                @update-tree="updateTree"
+              />
 
               <!-- 房屋信息 -->
               <house-info
@@ -181,8 +186,69 @@ const selectTabs = (data: any) => {
 }
 
 const toLink = (type: string) => {
-  const uid = props.dataInfo.uid
-  routerForward('baseInfoEdit', { type, uid })
+  let params = {
+    name: '',
+    doorNo: '',
+    suffixNo: '',
+    areaCode: '',
+    townCode: '',
+    villageCode: '',
+    locationType: '',
+    phone: '',
+    periodValidity: null,
+    establishDate: null,
+    taxPeriodValidity: null,
+    legalPersonName: '',
+    legalPersonCard: '',
+    legalPersonPhone: '',
+    companyType: '',
+    companyAddress: '',
+    licenceType: '',
+    licenceNo: '',
+    taxLicenceNo: '',
+    taxLicenceCompany: '',
+    ohterLicence: '',
+    registerType: '',
+    natureBusiness: '',
+    industryType: '',
+    economicNature: '',
+    registeredAmount: '',
+    fixedAssetsOriginalValue: '',
+    fixedAssetsNetValue: '',
+    regularWorkerNum: '',
+    temporaryWorkerNum: '',
+    annualPayroll: '',
+    averageAnnualOutputValue: '',
+    averageAnnualProfit: '',
+    averageAnnualTaxPaid: '',
+    managementType: '',
+    productCategory: '',
+    managementStatus: '',
+    informationInvolved: '',
+    treatmentScheme: '',
+    sellOwnershipArea: '',
+    sellOccupiedArea: '',
+    sellRemark: '',
+    transferOwnershipArea: '',
+    transferOccupiedArea: '',
+    transferRemark: '',
+    rentOwnershipArea: '',
+    rentOccupiedArea: '',
+    rentRemark: '',
+    otherOwnershipArea: '',
+    otherOccupiedArea: '',
+    otherRemark: '',
+    totalOwnershipArea: '',
+    totalOccupiedArea: '',
+    remark: '',
+    licensePic: [],
+    otherPic: []
+  }
+
+  routerForward('baseInfoEdit', {
+    params: JSON.stringify(params),
+    type
+  })
 }
 
 /**

@@ -122,9 +122,10 @@ import { pullInstance, pushInstance } from '@/sync'
 const list = ref<any[]>([])
 
 const currentProjectId = ref(0)
-const currentProjectItem = ref<ProjectType | null>(null)
+const projectId = ref()
+const projectItem = ref<ProjectType | null>(null)
 
-const intervalId = ref(0)
+const intervalId = ref<any>(0)
 const count = ref(0)
 // 拉取次数 一秒检测一次 总共 maxcCount 秒
 const maxCount = ref(60)
@@ -215,8 +216,9 @@ const onSync = async () => {
         // 推送成功
         console.log('推送成功，开始拉取')
         // 换项目之后 需要用新的项目ID 来调用拉取接口
-        setStorage(StorageKey.PROJECTID, currentProjectId.value)
-        setStorage(StorageKey.PROJECTINFO, currentProjectItem.value)
+        currentProjectId.value = projectId.value
+        setStorage(StorageKey.PROJECTID, projectId.value)
+        setStorage(StorageKey.PROJECTINFO, projectItem.value)
         pullInstance
           .pullAll()
           .then(() => {
@@ -291,8 +293,8 @@ const onChangeProject = (item: ProjectType) => {
   if (currentProjectId.value === item.id) {
     return
   }
-  currentProjectId.value = item.id
-  currentProjectItem.value = item
+  projectId.value = item.id
+  projectItem.value = item
   // 项目切换需要做数据同步
   onSync()
 }
