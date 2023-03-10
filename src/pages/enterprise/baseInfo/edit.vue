@@ -861,7 +861,7 @@ import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 import { routerBack, getStorage, StorageKey } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
-import { addLandlordCompanyApi, updateLandlordCompanyApi } from '@/service'
+import { addLandlordApi, updateLandlordCompanyApi } from '@/service'
 import Back from '@/components/Back/Index.vue'
 import VillageSelectFormItem from '@/components/VillageSelectFormItem/index.vue'
 
@@ -1014,7 +1014,7 @@ const submit = () => {
         ...baseInfo,
         company
       }
-      addLandlordCompanyApi(params)
+      addLandlordApi(params)
         .then((res) => {
           if (res) {
             showToast(SUCCESS_MSG)

@@ -293,7 +293,7 @@ const companyList = ref<CollectType[]>([])
 const villageList = ref<CollectType[]>([])
 const pullTime = ref<string>('')
 
-const intervalId = ref(0)
+const intervalId = ref<any>(0)
 const count = ref(0)
 // 拉取次数 一秒检测一次 总共 maxcCount 秒
 const maxCount = ref(60)

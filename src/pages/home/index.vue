@@ -183,7 +183,7 @@
         cancelText="取消"
         confirmText="确认"
         title="确认退出？"
-        content=""
+        content="将清除本地所有数据(包含未同步数据)"
         @confirm="dialogConfirm"
         @close="dialogClose"
       />
@@ -192,11 +192,12 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import { getStorage, routerForward, setStorage, StorageKey, networkCheck } from '@/utils'
 import { loginOutApi } from './api'
 import { getDictObjApi, getHomeCollectionApi } from '@/service'
+import { pullInstance } from '@/sync'
 
 interface CollectionType {
   hasReport: number
@@ -237,17 +238,33 @@ const dialogClose = () => {
 }
 
 const loginOut = () => {
-  loginOutApi().then(() => {
-    userInfo.value = null
-    projectInfo.value = null
-    collection.value = null
-    setStorage(StorageKey.TOKEN, '')
-    setStorage(StorageKey.USERINFO, null)
-    setStorage(StorageKey.LOGINTIME, '')
-    setStorage(StorageKey.PROJECTID, '')
-    setStorage(StorageKey.PROJECTINFO, null)
-    routerForward('login')
+  uni.showLoading({
+    title: '正在退出...',
+    mask: true
   })
+  loginOutApi()
+    .then(() => {
+      userInfo.value = null
+      projectInfo.value = null
+      collection.value = null
+      setStorage(StorageKey.TOKEN, '')
+      setStorage(StorageKey.USERINFO, null)
+      setStorage(StorageKey.LOGINTIME, '')
+      setStorage(StorageKey.PROJECTID, '')
+      setStorage(StorageKey.PROJECTINFO, null)
+      pullInstance
+        .resetTable()
+        .then(() => {
+          uni.hideLoading()
+          routerForward('login')
+        })
+        .catch(() => {
+          uni.hideLoading()
+        })
+    })
+    .catch(() => {
+      uni.hideLoading()
+    })
 }
 
 onShow(() => {

@@ -20,7 +20,8 @@
     "types": [
       "@dcloudio/types",
       "@uni-helper/uni-app-types",
-      "@uni-helper/uni-ui-types"
+      "@uni-helper/uni-ui-types",
+      "node"
     ],
     "typeRoots": ["./node_modules/@types", "./src/types"],
     "paths": {

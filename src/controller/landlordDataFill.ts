@@ -608,35 +608,6 @@ class DataFill extends Landlord {
     })
   }
 
-  // 业主-企业/个体户 新增操作
-  addLandlordCompany(data: any, uid?: string): Promise<boolean> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        if (!uid) {
-          reject(false)
-          console.log('业主uid缺失')
-          return
-        }
-        const itemUid = guid()
-        data.company.uid = itemUid
-        data.company.isDelete = '0'
-        let landlordItem = await this.getLandlordByUid(uid)
-        if (landlordItem) {
-          landlordItem = { ...landlordItem, ...data }
-        } else {
-          reject(false)
-          console.log('业主信息查询失败')
-          return
-        }
-        // 更新数据
-        const updateRes = await this.updateLandlord(landlordItem as LandlordType)
-        updateRes ? resolve(true) : reject(false)
-      } catch (error) {
-        console.log(error, 'addLandlordCompany-error')
-        reject(false)
-      }
-    })
-  }
   // 业主-企业/个体户 修改操作
   updateLandlordCompany(uid: string, data: any): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
@@ -646,9 +617,19 @@ class DataFill extends Landlord {
           console.log('业主uid缺失')
           return
         }
+        if (!data || !data.company) {
+          reject(false)
+          console.log('company缺失')
+          return
+        }
+
         let landlordItem = await this.getLandlordByUid(uid)
         if (landlordItem) {
-          landlordItem = { ...landlordItem, ...data }
+          landlordItem = {
+            ...landlordItem,
+            ...data,
+            company: { ...landlordItem.company, ...data.company }
+          }
         } else {
           reject(false)
           console.log('业主信息查询失败')
