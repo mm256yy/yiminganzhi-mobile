@@ -1,6 +1,6 @@
 <template>
   <view class="business-info-wrapper">
-    <view class="title" v-if="pevenueData && pevenueData.length > 0">收入概况</view>
+    <view class="title" v-if="pevenueData && pevenueData.length > 0">收入情况</view>
 
     <uni-row v-for="item in pevenueData" :key="item.id">
       <uni-col class="sub-title" :span="4">{{ item.name }}：</uni-col>
@@ -60,7 +60,6 @@
               <textarea
                 :class="['txt', focusIndex === item.id * 4 ? 'focus' : '']"
                 placeholder="请输入"
-                type="number"
                 v-model="item.remark"
                 @focus="inputFocus(item.id * 4)"
                 @blur="inputBlur"
@@ -71,10 +70,10 @@
       </uni-col>
     </uni-row>
 
-    <view class="title" v-if="salaryData && salaryData.length > 0">工资概况</view>
+    <view class="title" v-if="salaryData && salaryData.length > 0">工资情况</view>
 
     <uni-row v-for="item in salaryData" :key="item.id">
-      <uni-col class="sub-title" :span="4">员工工资总数：</uni-col>
+      <uni-col class="sub-title" :span="4">{{ item.name }}</uni-col>
       <uni-col :span="20">
         <uni-row>
           <uni-col :span="8">
@@ -131,7 +130,6 @@
               <textarea
                 :class="['txt', focusIndex === item.id * 4 ? 'focus' : '']"
                 placeholder="请输入"
-                type="number"
                 v-model="item.remark"
                 @focus="inputFocus(item.id * 4)"
                 @blur="inputBlur"
@@ -202,7 +200,6 @@
               <textarea
                 :class="['txt', focusIndex === item.id * 4 ? 'focus' : '']"
                 placeholder="请输入"
-                type="number"
                 v-model="item.remark"
                 @focus="inputFocus(item.id * 4)"
                 @blur="inputBlur"
@@ -273,7 +270,6 @@
               <textarea
                 :class="['txt', focusIndex === item.id * 4 ? 'focus' : '']"
                 placeholder="请输入"
-                type="number"
                 v-model="item.remark"
                 @focus="inputFocus(item.id * 4)"
                 @blur="inputBlur"
@@ -346,7 +342,6 @@
               <textarea
                 :class="['txt', focusIndex === item.id * 4 ? 'focus' : '']"
                 placeholder="请输入"
-                type="number"
                 v-model="item.remark"
                 @focus="inputFocus(item.id * 4)"
                 @blur="inputBlur"
@@ -417,7 +412,6 @@
               <textarea
                 :class="['txt', focusIndex === item.id * 4 ? 'focus' : '']"
                 placeholder="请输入"
-                type="number"
                 v-model="item.remark"
                 @focus="inputFocus(item.id * 4)"
                 @blur="inputBlur"
@@ -488,7 +482,6 @@
               <textarea
                 :class="['txt', focusIndex === item.id * 4 ? 'focus' : '']"
                 placeholder="请输入"
-                type="number"
                 v-model="item.remark"
                 @focus="inputFocus(item.id * 4)"
                 @blur="inputBlur"
@@ -559,7 +552,6 @@
               <textarea
                 :class="['txt', focusIndex === item.id * 4 ? 'focus' : '']"
                 placeholder="请输入"
-                type="number"
                 v-model="item.remark"
                 @focus="inputFocus(item.id * 4)"
                 @blur="inputBlur"
@@ -630,7 +622,6 @@
               <textarea
                 :class="['txt', focusIndex === item.id * 4 ? 'focus' : '']"
                 placeholder="请输入"
-                type="number"
                 v-model="item.remark"
                 @focus="inputFocus(item.id * 4)"
                 @blur="inputBlur"
@@ -701,7 +692,6 @@
               <textarea
                 :class="['txt', focusIndex === item.id * 4 ? 'focus' : '']"
                 placeholder="请输入"
-                type="number"
                 v-model="item.remark"
                 @focus="inputFocus(item.id * 4)"
                 @blur="inputBlur"
@@ -772,7 +762,6 @@
               <textarea
                 :class="['txt', focusIndex === item.id * 4 ? 'focus' : '']"
                 placeholder="请输入"
-                type="number"
                 v-model="item.remark"
                 @focus="inputFocus(item.id * 4)"
                 @blur="inputBlur"
@@ -843,7 +832,6 @@
               <textarea
                 :class="['txt', focusIndex === item.id * 4 ? 'focus' : '']"
                 placeholder="请输入"
-                type="number"
                 v-model="item.remark"
                 @focus="inputFocus(item.id * 4)"
                 @blur="inputBlur"
@@ -943,137 +931,139 @@ const emit = defineEmits(['submit'])
 const genArr = (arr?: any[], dataType?: number) => {
   if (arr && arr.length > 0) {
     arr.map((item: any) => {
-      if (item.type === '1') {
-        if (dataType === 1) {
-          pevenueData.value.push({
-            ...item,
-            ...commonParams
-          })
+      if (item.configType === MainType.Company) {
+        if (item.type === '1') {
+          if (dataType === 1) {
+            pevenueData.value.push({
+              ...item,
+              ...commonParams
+            })
+          } else {
+            pevenueData.value.push({
+              ...item
+            })
+          }
+        } else if (item.type === '2') {
+          if (dataType === 1) {
+            salaryData.value.push({
+              ...item,
+              ...commonParams
+            })
+          } else {
+            salaryData.value.push({
+              ...item
+            })
+          }
+        } else if (item.type === '3') {
+          if (dataType === 1) {
+            welfareFundData.value.push({
+              ...item,
+              ...commonParams
+            })
+          } else {
+            welfareFundData.value.push({
+              ...item
+            })
+          }
+        } else if (item.type === '4') {
+          if (dataType === 1) {
+            laborUnionFundsData.value.push({
+              ...item,
+              ...commonParams
+            })
+          } else {
+            laborUnionFundsData.value.push({
+              ...item
+            })
+          }
+        } else if (item.type === '5') {
+          if (dataType === 1) {
+            accumulationFundData.value.push({
+              ...item,
+              ...commonParams
+            })
+          } else {
+            accumulationFundData.value.push({
+              ...item
+            })
+          }
+        } else if (item.type === '6') {
+          if (dataType === 1) {
+            leaveExpensesData.value.push({
+              ...item,
+              ...commonParams
+            })
+          } else {
+            leaveExpensesData.value.push({
+              ...item
+            })
+          }
+        } else if (item.type === '7') {
+          if (dataType === 1) {
+            taxPaidData.value.push({
+              ...item,
+              ...commonParams
+            })
+          } else {
+            taxPaidData.value.push({
+              ...item
+            })
+          }
+        } else if (item.type === '8') {
+          if (dataType === 1) {
+            entProfitData.value.push({
+              ...item,
+              ...commonParams
+            })
+          } else {
+            entProfitData.value.push({
+              ...item
+            })
+          }
+        } else if (item.type === '9') {
+          if (dataType === 1) {
+            currentAssetLoans.value.push({
+              ...item,
+              ...commonParams
+            })
+          } else {
+            currentAssetLoans.value.push({
+              ...item
+            })
+          }
+        } else if (item.type === '10') {
+          if (dataType === 1) {
+            mngFeePaidData.value.push({
+              ...item,
+              ...commonParams
+            })
+          } else {
+            mngFeePaidData.value.push({
+              ...item
+            })
+          }
+        } else if (item.type === '11') {
+          if (dataType === 1) {
+            otherExpenseData.value.push({
+              ...item,
+              ...commonParams
+            })
+          } else {
+            otherExpenseData.value.push({
+              ...item
+            })
+          }
         } else {
-          pevenueData.value.push({
-            ...item
-          })
-        }
-      } else if (item.type === '2') {
-        if (dataType === 1) {
-          salaryData.value.push({
-            ...item,
-            ...commonParams
-          })
-        } else {
-          salaryData.value.push({
-            ...item
-          })
-        }
-      } else if (item.type === '3') {
-        if (dataType === 1) {
-          welfareFundData.value.push({
-            ...item,
-            ...commonParams
-          })
-        } else {
-          welfareFundData.value.push({
-            ...item
-          })
-        }
-      } else if (item.type === '4') {
-        if (dataType === 1) {
-          laborUnionFundsData.value.push({
-            ...item,
-            ...commonParams
-          })
-        } else {
-          laborUnionFundsData.value.push({
-            ...item
-          })
-        }
-      } else if (item.type === '5') {
-        if (dataType === 1) {
-          accumulationFundData.value.push({
-            ...item,
-            ...commonParams
-          })
-        } else {
-          accumulationFundData.value.push({
-            ...item
-          })
-        }
-      } else if (item.type === '6') {
-        if (dataType === 1) {
-          leaveExpensesData.value.push({
-            ...item,
-            ...commonParams
-          })
-        } else {
-          leaveExpensesData.value.push({
-            ...item
-          })
-        }
-      } else if (item.type === '7') {
-        if (dataType === 1) {
-          taxPaidData.value.push({
-            ...item,
-            ...commonParams
-          })
-        } else {
-          taxPaidData.value.push({
-            ...item
-          })
-        }
-      } else if (item.type === '8') {
-        if (dataType === 1) {
-          entProfitData.value.push({
-            ...item,
-            ...commonParams
-          })
-        } else {
-          entProfitData.value.push({
-            ...item
-          })
-        }
-      } else if (item.type === '9') {
-        if (dataType === 1) {
-          currentAssetLoans.value.push({
-            ...item,
-            ...commonParams
-          })
-        } else {
-          currentAssetLoans.value.push({
-            ...item
-          })
-        }
-      } else if (item.type === '10') {
-        if (dataType === 1) {
-          mngFeePaidData.value.push({
-            ...item,
-            ...commonParams
-          })
-        } else {
-          mngFeePaidData.value.push({
-            ...item
-          })
-        }
-      } else if (item.type === '11') {
-        if (dataType === 1) {
-          otherExpenseData.value.push({
-            ...item,
-            ...commonParams
-          })
-        } else {
-          otherExpenseData.value.push({
-            ...item
-          })
-        }
-      } else {
-        if (dataType === 1) {
-          otherData.value.push({
-            ...item,
-            ...commonParams
-          })
-        } else {
-          otherData.value.push({
-            ...item
-          })
+          if (dataType === 1) {
+            otherData.value.push({
+              ...item,
+              ...commonParams
+            })
+          } else {
+            otherData.value.push({
+              ...item
+            })
+          }
         }
       }
     })
