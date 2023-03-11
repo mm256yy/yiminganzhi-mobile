@@ -52,11 +52,12 @@ class Village extends Common {
         const array: VillageType[] = []
         let sql = `select * from ${VillageTableName} where isDelete = '0'`
         if (name) {
-          sql += ` name like '%${name}%'`
+          sql += ` and name like '%${name}%'`
         }
         if (page && pageSize) {
           sql += ` order by updatedDate desc limit ${pageSize} offset ${(page - 1) * pageSize}`
         }
+        console.log(sql, 'sql')
         const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
         const list: VillageDDLType[] = await this.db.selectSql(sql)
         if (this.isArrayAndNotNull(list)) {
