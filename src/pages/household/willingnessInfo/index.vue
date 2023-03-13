@@ -45,13 +45,22 @@
         </view>
       </view>
     </view>
-    <view class="sub-title">生产安置方式</view>
-    <view class="row-2">
-      <radio-group @change="productModeChange">
-        <label v-for="item in productModeData" :key="item.value">
-          <radio :value="item.value">{{ item.name }}</radio>
-        </label>
-      </radio-group>
+    <view class="sub-title">生产安置</view>
+    <view class="row-1">
+      <view class="col" v-for="(item, index) in productModeData" :key="item.name">
+        <view class="label">{{ item.name }}：</view>
+        <view :class="['input-wrapper', focusIndex === (index + 1) * 10 ? 'focus' : '']">
+          <input
+            class="input-txt w-200"
+            placeholder="请输入"
+            type="number"
+            v-model="item.number"
+            @focus="inputFocus((index + 1) * 10)"
+            @blur="inputBlur"
+          />
+          <view class="unit">人</view>
+        </view>
+      </view>
     </view>
     <view class="sub-title">搬迁安置方式</view>
     <view class="row-3 b-b-1">
@@ -87,7 +96,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { getWillListApi } from '@/service'
 
 const props = defineProps({
@@ -141,7 +150,7 @@ const getWillList = async () => {
       productModeData.value.push({
         name: item.area,
         value: item.area,
-        checked: false
+        number: ''
       })
     } else if (item.type === '搬迁安置') {
       if (item.way === '宅基地安置') {
@@ -161,24 +170,7 @@ const getWillList = async () => {
   })
 }
 
-// 生产安置方式选择
-const productModeChange = (e: any) => {
-  formData.value.productionType = e.detail.value
-}
-
-// 搬迁安置方式 —— 宅基地安置选择
-const homesteadChange = (e: any) => {
-  formData.value.removalType = e.detail.value
-}
-
-// 表单提交
-const submit = () => {
-  const params = { ...formData.value }
-  emit('submit', params)
-}
-
-onMounted(() => {
-  getWillList()
+const initData = async () => {
   if (JSON.stringify(props.willData) !== '{}') {
     formData.value = {
       ...commonParams,
@@ -190,11 +182,29 @@ onMounted(() => {
       familyNum: '', // 家庭总人数
       countryNum: '', // 农村移民人数
       unCountryNum: '', // 非农移民人数
-      productionType: '', // 生产安置方式
+      immigrantWillProductionList: productModeData.value, // 生产安置
       removalType: '', // 搬迁安置方式
       opinion: '' // 备注
     }
   }
+}
+
+// 搬迁安置方式 —— 宅基地安置选择
+const homesteadChange = (e: any) => {
+  formData.value.removalType = e.detail.value
+}
+
+// 表单提交
+const submit = () => {
+  const params = {
+    ...formData.value
+  }
+  emit('submit', params)
+}
+
+onMounted(async () => {
+  await getWillList()
+  await initData()
 })
 </script>
 
@@ -255,6 +265,10 @@ onMounted(() => {
           font-size: 9rpx;
           line-height: 23rpx;
           color: #171718;
+
+          &.w-200 {
+            width: 200rpx;
+          }
         }
 
         .unit {

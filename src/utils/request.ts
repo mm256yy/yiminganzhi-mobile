@@ -28,7 +28,8 @@ function rejectHandle(err: Http.Result, reject: any) {
   }
 }
 
-const apiBaseUrl = isAndroid || isIos ? `${env.apiBaseUrl}${env.apiBasePath}` : env.apiBasePath
+export const apiBaseUrl =
+  isAndroid || isIos ? `${env.apiBaseUrl}${env.apiBasePath}` : env.apiBasePath
 // 'application/x-www-form-urlencoded'
 
 function baseRequest(method: MethodType, option: UniApp.RequestOptions) {

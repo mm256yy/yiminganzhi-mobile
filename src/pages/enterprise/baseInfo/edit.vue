@@ -11,6 +11,7 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="企业名称"
               :label-width="170"
               label-align="right"
@@ -864,6 +865,7 @@ import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { addLandlordApi, updateLandlordCompanyApi } from '@/service'
 import Back from '@/components/Back/Index.vue'
 import VillageSelectFormItem from '@/components/VillageSelectFormItem/index.vue'
+import { MainType } from '@/types/common'
 
 // 表单数据
 const formData = ref<any>({})
@@ -938,7 +940,8 @@ const submit = () => {
     phone: formData.value.phone,
     periodValidity: formData.value.periodValidity,
     establishDate: formData.value.establishDate,
-    taxPeriodValidity: formData.value.taxPeriodValidity
+    taxPeriodValidity: formData.value.taxPeriodValidity,
+    type: MainType.Company
   }
 
   let company: any = {
@@ -995,8 +998,10 @@ const submit = () => {
     licensePic: formData.value.licensePic,
     otherPic: formData.value.otherPic
   }
-
-  if (!formData.value.villageCode) {
+  if (!formData.value.name) {
+    showToast('请输入企业名称')
+    return
+  } else if (!formData.value.villageCode) {
     showToast('请选择所属区域')
     return
   } else if (!formData.value.suffixNo) {

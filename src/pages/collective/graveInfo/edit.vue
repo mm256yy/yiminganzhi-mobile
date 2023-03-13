@@ -136,12 +136,14 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { routerBack, getStorage, StorageKey } from '@/utils'
-import { addLandlordGraveApi, updateLandlordGraveApi } from '@/service'
+import { addLandlordGraveApi, updateLandlordGraveApi, getLandlordListBySearchApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config'
+import { MainType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
+import SearchInput from '@/components/Search/Index.vue'
 
 // 表单数据
 const formData = ref<any>({})
@@ -151,6 +153,7 @@ const form = ref<any>(null)
 const focusIndex = ref<number>(-1)
 const title = ref<string>('')
 const commonParams = ref<any>({})
+const landlordList = ref<any>([])
 
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
@@ -177,6 +180,23 @@ const inputFocus = (index: number) => {
 // 输入框失去焦点事件
 const inputBlur = () => {
   focusIndex.value = -1
+}
+
+/**
+ * 搜索居民户
+ * @param{object} name 居民姓名
+ * @param{Object} type 居民户类型
+ */
+const getLandlordListBySearch = (name: string, type: MainType) => {
+  let params = {
+    name,
+    type,
+    villageCode: formData.value.villageCode,
+    pageSize: 50
+  }
+  getLandlordListBySearchApi(params).then((res) => {
+    console.log('res:', res)
+  })
 }
 
 // 表单提交

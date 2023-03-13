@@ -25,7 +25,7 @@
             <input
               class="input-txt w-150"
               placeholder="请输入"
-              type="number"
+              type="text"
               v-model="item.remark"
               @focus="inputFocus(index)"
               @blur="inputBlur"
@@ -69,7 +69,7 @@
             <input
               class="input-txt w-150"
               placeholder="请输入"
-              type="number"
+              type="text"
               v-model="item.remark"
               @focus="inputFocus(index)"
               @blur="inputBlur"
@@ -113,7 +113,7 @@
             <input
               class="input-txt w-150"
               placeholder="请输入"
-              type="number"
+              type="text"
               v-model="item.remark"
               @focus="inputFocus(index)"
               @blur="inputBlur"
@@ -139,7 +139,7 @@
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
-import { getFamilyIncomeListApi, updateLandlordFamilyIncomeApi } from '@/service'
+import { getFamilyIncomeListApi } from '@/service'
 import { MainType } from '@/types/common'
 
 const props = defineProps({
@@ -277,6 +277,7 @@ onMounted(() => {
     genArr(props.dataList, 2)
   } else {
     getRevenueList()
+    console.log('firstData:', firstData.value)
   }
 })
 </script>

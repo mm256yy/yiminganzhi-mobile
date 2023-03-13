@@ -74,7 +74,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { reportDataApi } from '@/service'
-import { getPrintTemplateListApi } from '@/api'
+import { getPrintTemplateListApi, printLandlordApi } from '@/api'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { showLoading, hideLoading } from '@/config'
 import { MainType } from '@/types/common'
@@ -109,8 +109,10 @@ interface PrintListType {
 const emit = defineEmits(['expandToggle', 'updateTree'])
 const reportDataPopup = ref<any>(null)
 const printPopup = ref<any>(null)
+const selectedTemplateIds = ref<any>([])
 const tipsList = ref<any>([])
 const fileList = ref<PrintListType[]>([])
+const YanYuprintPdf = uni.requireNativePlugin('YanYu-PrintPDF')
 
 const expandToggle = () => {
   emit('expandToggle')
@@ -171,7 +173,7 @@ const getPrintList = async (templateType: string) => {
       if (item.templateModule === '实物采集') {
         arr.push({
           name: item.templateName,
-          url: item.templateUrl,
+          url: item.previewUrl,
           selected: false,
           uid: item.id
         })
@@ -194,6 +196,22 @@ const printFile = () => {
  */
 const selectFile = (item: any, index: number) => {
   fileList.value[index].selected = !item.selected
+  if (fileList.value[index].selected) {
+    selectedTemplateIds.value.push(fileList.value[index].uid)
+  } else {
+    selectedTemplateIds.value.splice(index, 1)
+  }
+}
+
+// 获取已选择的模板 ID 数组集合
+const getSelectedTemplateIds = () => {
+  let arr: any = []
+  fileList.value.map((item) => {
+    if (item.selected) {
+      arr.push(item.uid)
+    }
+  })
+  return [...arr]
 }
 
 // 确认 数据上报/打印
@@ -201,9 +219,35 @@ const confirm = (type: string) => {
   if (type === 'report') {
     reportData()
   } else if (type === 'print') {
-    // 关闭弹框
-    printPopup.value?.close()
+    if (selectedTemplateIds.value.length > 0) {
+      printPdf(getSelectedTemplateIds(), [props.dataInfo.id])
+      // 关闭弹框
+      printPopup.value?.close()
+    } else {
+      showToast('请选择要打印的文件')
+    }
   }
+}
+
+// 打印 PDF 文件
+const printPdf = (templateIds: any[], peasantHouseholdIds: any[]) => {
+  console.log('templateIds:', templateIds)
+  printLandlordApi(templateIds, peasantHouseholdIds).then((res) => {
+    console.log('打印地址：', res)
+    if (res) {
+      uni.downloadFile({
+        url: res,
+        success(res) {
+          console.log('save success-------：', res)
+          const path = plus.io.convertLocalFileSystemURL(res.tempFilePath)
+          YanYuprintPdf.managerPrint(path)
+        },
+        fail(err) {
+          console.log('save err:', err)
+        }
+      })
+    }
+  })
 }
 
 // 关闭弹窗

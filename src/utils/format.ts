@@ -65,6 +65,28 @@ export const formatStr = (str: any, unit?: string) => {
 }
 
 /**
+ * 保留两位小数
+ * @param {Object} value 需要截取的数字
+ */
+export const formatNum = (value: any, unit?: string) => {
+  let result = ''
+  if (value) {
+    if (String(value).indexOf('.') !== -1) {
+      result = String(value).substr(0, String(value).indexOf('.') + 3)
+      if (unit) {
+        return result + unit
+      } else {
+        return result
+      }
+    } else {
+      return value
+    }
+  } else {
+    return '-'
+  }
+}
+
+/**
  * 截取字符串
  * @param(Object) str 被截取的字符串
  * @param(Object) startIndex 起始下标

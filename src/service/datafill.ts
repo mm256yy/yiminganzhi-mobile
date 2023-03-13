@@ -110,17 +110,6 @@ export const updateLandlordWillApi = (uid: string, data: WillType) => {
 }
 
 /**
- * 删除安置意愿
- * @param uid 业主uid
- * @param itemId 安置意愿uid
- * @returns
- */
-export const deleteLandlordWillApi = (uid: string, itemId: string) => {
-  return DataFillController.deleteLandlordWill(uid, itemId)
-}
-// ---------------
-
-/**
  * 更新果木信息
  * @param uid 业主uid
  * @param data 果木信息

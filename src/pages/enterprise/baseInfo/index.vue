@@ -46,13 +46,9 @@
                 <view class="label">所属区域：</view>
                 <view class="content">
                   {{
-                    props.dataInfo.areaCodeText
-                      ? props.dataInfo.areaCodeText
-                      : '' + props.dataInfo.townCodeText
-                      ? props.dataInfo.townCodeText
-                      : '' + props.dataInfo.villageCodeText
-                      ? props.dataInfo.villageCodeText
-                      : ''
+                    (props.baseInfo.areaCodeText ? props.baseInfo.areaCodeText : '') +
+                    (props.baseInfo.townCodeText ? props.baseInfo.townCodeText : '') +
+                    (props.baseInfo.villageCodeText ? props.baseInfo.villageCodeText : '')
                   }}
                 </view>
               </view>

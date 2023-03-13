@@ -144,8 +144,8 @@ const dialogClose = () => {
  * @param data type 为 edit 时，当前行数据
  */
 const toLink = (type: string, data?: any) => {
-  const { uid, doorNo, householdId } = props.dataInfo
-  const commonParams = { type, uid, doorNo, householdId }
+  const { uid, doorNo, householdId, villageCode } = props.dataInfo
+  const commonParams = { type, uid, doorNo, householdId, villageCode }
   if (type === 'edit') {
     routerForward('collectiveGraveInfoEdit', {
       params: JSON.stringify(data),

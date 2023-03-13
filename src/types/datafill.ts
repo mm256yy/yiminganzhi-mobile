@@ -113,6 +113,15 @@ export interface AppendantType {
   [key: string]: any
 }
 
+export interface WillProductionType {
+  id: number
+  doorNo: string
+  householdId: number
+  productionType: string
+  number: number
+  uid?: string
+}
+
 // 安置意愿类型定义
 export interface WillType {
   id: number
@@ -124,6 +133,7 @@ export interface WillType {
   opinion: string
   productionType: string
   removalType: string
+  immigrantWillProductionList: WillProductionType[]
   [key: string]: any
 }
 

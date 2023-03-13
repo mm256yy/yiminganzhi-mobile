@@ -21,6 +21,7 @@
 import { ref, onMounted } from 'vue'
 import { getLandlordTreeApi, getLandlordItemApi } from '@/service'
 import { MainType } from '@/types/common'
+import { showLoading, hideLoading } from '@/config'
 import Main from './components/Main.vue'
 import { onLoad, onShow } from '@dcloudio/uni-app'
 
@@ -59,11 +60,9 @@ onLoad((option) => {
 
 // 获取左侧树列表
 const getTreeData = async () => {
-  uni.showLoading({
-    title: ''
-  })
+  showLoading()
   const result = await getLandlordTreeApi(MainType.PeasantHousehold)
-  uni.hideLoading()
+  hideLoading()
   treeData.value = [...result]
 }
 
@@ -73,6 +72,7 @@ const getTreeData = async () => {
  */
 const treeItemClick = (data: any) => {
   dataInfo.value = { ...data }
+  expendCodes.value = data.code
   uid.value = data.uid
 }
 

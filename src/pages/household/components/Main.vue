@@ -207,7 +207,28 @@ const selectTabs = (data: any) => {
  */
 const addClick = (type: string) => {
   // const { uid } = props.dataInfo.uid
-  routerForward('householdInfoEdit', { type })
+  const params = {
+    name: '', // 姓名
+    areaCode: '', // 区/县
+    townCode: '', // 镇/街道
+    villageCode: '', // 行政村
+    virutalVillageCode: '', // 自然村/村民小组
+    phone: '', // 联系方式
+    locationType: '', // 所在位置
+    householdNumber: '', // 户籍册编号
+    suffixNo: '', // 户号后四位
+    doorNo: '', // 户号
+    hasPropertyAccount: '', // 是否财产户
+    address: '', // 户籍所在地
+    inundationRange: '', // 淹没范围
+    altitude: '', // 高程
+    longitude: '', // 经度
+    latitude: '' // 纬度
+  }
+  routerForward('householdInfoEdit', {
+    params: JSON.stringify(params),
+    type
+  })
 }
 
 /**
@@ -337,6 +358,7 @@ const updateWillingnessInfo = (data: any) => {
 // 更新左侧树列表
 const updateTree = () => {
   emit('updateTree')
+  console.log('开始更新')
 }
 </script>
 

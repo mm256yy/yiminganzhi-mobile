@@ -26,13 +26,12 @@
               label="所属区域"
               :label-width="170"
               label-align="right"
-              name="formData.virutalVillageCode"
+              name="formData.villageCode"
             >
-              <natural-village-select-form-item
+              <village-select-form-item
                 v-model:areaCode="formData.areaCode"
                 v-model:townCode="formData.townCode"
                 v-model:villageCode="formData.villageCode"
-                v-model:virutalVillageCode="formData.virutalVillageCode"
               />
             </uni-forms-item>
           </uni-col>
@@ -48,7 +47,9 @@
               name="formData.collectiveCode"
             >
               <view :class="['code-wrapper', focusIndex === 1 ? 'focus' : '']">
-                <view class="pre-txt">{{ formData.villageCode }}</view>
+                <view class="pre-txt">
+                  {{ formData.villageCode ? 'JT' + formData.villageCode : '' }}
+                </view>
                 <input
                   class="input-txt"
                   type="number"
@@ -84,22 +85,6 @@
             </uni-forms-item>
           </uni-col>
         </uni-row>
-
-        <view class="title-wrapper">
-          <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-          <view class="title">村集体附件信息</view>
-        </view>
-
-        <view class="upload-wrapper">
-          <uni-file-picker
-            title="最多选择20张图片"
-            :limit="20"
-            @select="select"
-            @progress="progress"
-            @success="success"
-            @fail="fail"
-          />
-        </view>
       </uni-forms>
 
       <image
@@ -120,7 +105,7 @@ import { routerBack, getStorage, StorageKey } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { MainType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
-import NaturalVillageSelectFormItem from '@/components/NaturalVillageSelectFormItem/index.vue'
+import VillageSelectFormItem from '@/components/VillageSelectFormItem/index.vue'
 
 // 表单数据
 const formData = ref<any>({})
@@ -156,26 +141,6 @@ const inputBlur = () => {
   focusIndex.value = -1
 }
 
-// 获取上传状态
-const select = (e: any) => {
-  console.log('选择文件：', e)
-}
-
-// 获取上传进度
-const progress = (e: any) => {
-  console.log('上传进度：', e)
-}
-
-// 上传成功
-const success = (e: any) => {
-  console.log('上传成功')
-}
-
-// 上传失败
-const fail = (e: any) => {
-  console.log('上传失败：', e)
-}
-
 // 表单提交
 const submit = () => {
   let params = {
@@ -189,7 +154,7 @@ const submit = () => {
   if (!formData.value.name) {
     showToast('请输入村集体名称')
     return
-  } else if (!formData.value.virutalVillageCode) {
+  } else if (!formData.value.villageCode) {
     showToast('请选择所属区域')
     return
   } else if (!formData.value.suffixNo) {
@@ -369,11 +334,6 @@ const submit = () => {
           line-height: 35px;
           color: #171718;
         }
-      }
-
-      .upload-wrapper {
-        padding: 0 6rpx;
-        box-sizing: border-box;
       }
     }
 

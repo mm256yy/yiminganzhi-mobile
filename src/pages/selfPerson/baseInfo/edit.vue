@@ -652,6 +652,7 @@ import { addLandlordApi, updateLandlordCompanyApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
 import VillageSelectFormItem from '@/components/VillageSelectFormItem/index.vue'
+import { MainType } from '@/types/common'
 
 // 表单数据
 const formData = ref<any>({})
@@ -727,7 +728,8 @@ const submit = () => {
     phone: formData.value.phone,
     periodValidity: formData.value.periodValidity,
     establishDate: formData.value.establishDate,
-    taxPeriodValidity: formData.value.taxPeriodValidity
+    taxPeriodValidity: formData.value.taxPeriodValidity,
+    type: MainType.IndividualHousehold
   }
 
   let company: any = {

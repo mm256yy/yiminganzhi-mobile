@@ -63,6 +63,8 @@ const getTreeData = async () => {
  */
 const treeItemClick = (data: any) => {
   dataInfo.value = { ...data }
+  expendCodes.value = data.code
+  uid.value = data.uid
 }
 
 /**

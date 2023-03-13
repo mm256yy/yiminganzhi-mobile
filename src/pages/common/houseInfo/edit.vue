@@ -12,7 +12,7 @@
               label-align="right"
               name="formData.houseNo"
             >
-              <uni-easyinput v-model="formData.houseNo" type="number" placeholder="请输入" />
+              <uni-easyinput v-model="formData.houseNo" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">

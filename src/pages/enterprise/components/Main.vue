@@ -31,6 +31,7 @@
               <house-info
                 v-if="tabVal === 2"
                 :dataList="dataInfo.immigrantHouseList"
+                :dataInfo="dataInfo"
                 @delete-house="deleteHouse"
               />
 

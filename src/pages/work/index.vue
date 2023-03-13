@@ -130,13 +130,23 @@ const tabs = ref([
     type: MainType.Village
   }
 ])
-const userId = getStorage(StorageKey.USERINFO).id
 
 const serach = () => {
+  uni.hideToast()
+  const userInfo = getStorage(StorageKey.USERINFO)
+  if (!userInfo) {
+    uni.showToast({
+      title: '未登录',
+      icon: 'none'
+    })
+    return
+  }
+  const userId = userInfo.id
   showLoading({
     title: '加载中...',
     mask: true
   })
+
   const timeArray = [
     dayjs(time.value[0]).startOf('day').format(searchFormat),
     dayjs(time.value[1]).endOf('day').format(searchFormat)

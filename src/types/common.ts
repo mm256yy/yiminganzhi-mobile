@@ -150,9 +150,9 @@ export interface LandlordQuery {
 export interface LandlordSearchType {
   name: string
   type: MainType
-  villageCode: string
-  page: number
-  pageSize: number
+  villageCode?: string
+  page?: number
+  pageSize?: number
 }
 
 // 分页类型

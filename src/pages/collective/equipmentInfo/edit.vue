@@ -121,13 +121,12 @@
               label="建成年月"
               :label-width="150"
               label-align="right"
-              name="formData.year"
+              name="formData.completedTime"
             >
               <uni-datetime-picker
                 type="date"
                 placeholder="选择年份"
-                v-model="formData.year"
-                @change="changeDate"
+                v-model="formData.completedTime"
               />
             </uni-forms-item>
           </uni-col>
@@ -288,11 +287,6 @@ onLoad((option: any) => {
     }
   }
 })
-
-// 建成年月选择
-const changeDate = (e: any) => {
-  console.log('e:', e)
-}
 
 // 输入框获得焦点事件
 const inputFocus = (index: number) => {

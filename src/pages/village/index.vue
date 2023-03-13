@@ -1,11 +1,5 @@
 <template>
   <Container title="自然村清单">
-    <!-- <template #right>
-      <view class="icon-box">
-        <image class="home-icon" src="@/static/images/icon_home.png" mode="scaleToFill" />
-      </view>
-    </template> -->
-
     <view class="village-box">
       <view class="search-box">
         <uni-icons class="icon" type="search" color="#272636" size="9rpx" />
@@ -26,8 +20,8 @@
           :enable-flex="true"
           :refresher-triggered="true"
           @scrolltolower="loadMore"
-          @scrolltoupper="init"
         >
+          <!-- @scrolltoupper="init" -->
           <view class="scroll">
             <VillageItem
               v-for="item in list"
@@ -109,7 +103,9 @@ const getList = async () => {
       page.value = page.value + 1
     }
   } else {
-    list.value = []
+    if (page.value === 1) {
+      list.value = []
+    }
     isEnd.value = true
   }
 }

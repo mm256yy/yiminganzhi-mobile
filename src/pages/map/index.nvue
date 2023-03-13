@@ -91,6 +91,10 @@ onLoad((option: any) => {
     // 编辑经纬度
     const longitude = parseFloat(option.longitude)
     const latitude = parseFloat(option.latitude)
+    if (!longitude || !latitude) {
+      getCurrentLocation()
+      return
+    }
     currentLocation.value = {
       longitude,
       latitude

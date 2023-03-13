@@ -13,9 +13,9 @@
       </view>
 
       <view class="row" v-for="(item, index) in formData" :key="item.id">
-        <view class="col">{{ index }}</view>
+        <view class="col">{{ index + 1 }}</view>
         <view class="col w-63 p-l-2">
-          <uni-data-select v-model="item.name" :localdata="dict[250]" />
+          <input class="remark" v-model="item.name" placeholder="请输入" />
         </view>
         <view class="col w-63 p-l-2">
           <uni-data-select v-model="item.usageType" :localdata="dict[325]" />
@@ -98,7 +98,7 @@ const defaultRow = {
   usageType: '',
   size: '',
   unit: '',
-  number: 0,
+  number: '',
   remark: '',
   isAdd: true
 }

@@ -54,7 +54,7 @@ const emit = defineEmits(['submit'])
 const commonParams = {
   uid: props.dataInfo.uid,
   householdId: props.dataInfo.id,
-  number: 0,
+  number: '',
   remark: ''
 }
 

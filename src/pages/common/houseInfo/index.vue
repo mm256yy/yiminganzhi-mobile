@@ -27,7 +27,7 @@
               <view class="col">
                 <view class="label">层高：</view>
                 <view class="content">
-                  {{ formatStr(item.storeyHeight, '（米）') }}
+                  {{ formatNum(item.storeyHeight, '（米）') }}
                 </view>
               </view>
             </uni-col>
@@ -35,7 +35,7 @@
               <view class="col">
                 <view class="label">层数：</view>
                 <view class="content">
-                  {{ formatStr(item.storeyNumber, '（层）') }}
+                  {{ formatNum(item.storeyNumber, '（层）') }}
                 </view>
               </view>
             </uni-col>
@@ -46,7 +46,7 @@
               <view class="col">
                 <view class="label">房屋高程：</view>
                 <view class="content">
-                  {{ formatStr(item.houseHeight, '（米）') }}
+                  {{ formatNum(item.houseHeight, '（米）') }}
                 </view>
               </view>
             </uni-col>
@@ -54,7 +54,7 @@
               <view class="col">
                 <view class="label">建筑面积：</view>
                 <view class="content">
-                  {{ formatStr(item.landArea, '（m³）') }}
+                  {{ formatNum(item.landArea, '（m³）') }}
                 </view>
               </view>
             </uni-col>
@@ -125,7 +125,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import dayjs from 'dayjs'
-import { formatDict, formatStr, routerForward } from '@/utils'
+import { formatDict, formatStr, formatNum, routerForward } from '@/utils'
 
 const props = defineProps({
   dataList: {

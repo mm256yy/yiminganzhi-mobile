@@ -1,7 +1,6 @@
 <template>
   <view class="home-wrap">
     <image class="common-bg" src="@/static/images/common_bg.png" mode="widthFix" />
-
     <view class="home-content">
       <view class="home-header">
         <view class="header-lt">
@@ -198,7 +197,6 @@ import { getStorage, routerForward, setStorage, StorageKey, networkCheck } from 
 import { loginOutApi } from './api'
 import { getDictObjApi, getHomeCollectionApi } from '@/service'
 import { pullInstance } from '@/sync'
-import dayjs from 'dayjs'
 
 interface CollectionType {
   hasReport: number

@@ -14,3 +14,19 @@ export const getPrintTemplateListApi = (data: Partial<TemplateParamsType>): Prom
     data
   })
 }
+
+/**
+ * 打印/下载
+ */
+export const printLandlordApi = (
+  templateIds: Array<number | string>,
+  peasantHouseholdIds: number[]
+): Promise<any> => {
+  return request.post({
+    url: `/peasantHousehold/printPad`,
+    data: {
+      templateIds: templateIds.join(','),
+      peasantHouseholdIds: peasantHouseholdIds.join(',')
+    }
+  })
+}

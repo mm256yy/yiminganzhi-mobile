@@ -11,7 +11,7 @@
           <view class="tab-item">账号密码登录</view>
         </view>
         <view class="ipt-wrap">
-          <uni-icons type="person" size="9rpx" color="#295EE6" />
+          <uni-icons type="person" size="12rpx" color="#295EE6" />
           <input
             @input="iptChange('name', $event)"
             class="ipt"
@@ -20,13 +20,20 @@
           />
         </view>
         <view class="ipt-wrap">
-          <uni-icons type="locked-filled" size="9rpx" color="#295EE6" />
+          <uni-icons type="locked-filled" size="12rpx" color="#295EE6" />
           <input
             @input="iptChange('password', $event)"
             class="ipt"
             type="text"
-            password
+            :password="showPassword"
             placeholder="请输入密码"
+          />
+
+          <uni-icons
+            @click="changePassword"
+            type="eye"
+            :color="!showPassword ? '#295ee6' : '#666666'"
+            size="12rpx"
           />
         </view>
         <button class="btn" :loading="loading" @click="loginIn">登录</button>
@@ -48,6 +55,11 @@ import { showLoading, hideLoading } from '@/config'
 const name = ref<string>('')
 const password = ref<string>('')
 const loading = ref<boolean>(false)
+const showPassword = ref<boolean>(true)
+
+const changePassword = () => {
+  showPassword.value = !showPassword.value
+}
 
 const iptChange = (type: string, event: any) => {
   const { value } = event.detail
@@ -207,6 +219,10 @@ const loginIn = async () => {
   .copy-right {
     font-size: 8rpx;
     color: rgba(0, 0, 0, 0.45);
+  }
+
+  .uni-eye-active {
+    color: #295ee6;
   }
 }
 </style>
