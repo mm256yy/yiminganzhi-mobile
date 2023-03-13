@@ -250,10 +250,13 @@
           <template v-else>
             <view class="pup-item" v-if="pushData && pushData.data">
               <view class="tit err">上传失败:&nbsp;</view>
-              <view class="txt"
-                >{{ pushData.data.name }}<text class="err">户号：{{ pushData.data.doorNo }} </text
-                >{{ pushData.message }}</view
-              >
+              <view class="txt" @click="gotoEdit(pushData)">
+                <text class="txt">{{ pushData.data.name }}</text>
+                <text class="err" v-if="pushData.code === -3"
+                  >户号：{{ pushData.data.doorNo }}</text
+                >
+                <text class="txt">{{ pushData.message }}</text>
+              </view>
             </view>
           </template>
         </view>
@@ -410,6 +413,36 @@ const onSync = async () => {
         })
       }
     })
+}
+
+const gotoEdit = (data: any) => {
+  if (data.code === -2) {
+    // 自然村失败
+    routerForward('villageEdit', {
+      type: 'edit',
+      uid: data.data.uid
+    })
+  } else if (data.code === -3) {
+    // 业主失败
+    // 填报
+    const routerMap: any = {
+      [MainType.PeasantHousehold]: 'household',
+      [MainType.IndividualHousehold]: 'selfPerson',
+      [MainType.Company]: 'enterprise',
+      [MainType.Village]: 'collective'
+    }
+    routerForward(routerMap[data.data.type], {
+      uid: data.data.uid,
+      type: 'edit',
+      expendCodes: [
+        data.data.areaCode,
+        data.data.townCode,
+        data.data.villageCode,
+        data.data.virutalVillageCode,
+        data.data.code
+      ]
+    })
+  }
 }
 
 const getPullTime = async () => {
