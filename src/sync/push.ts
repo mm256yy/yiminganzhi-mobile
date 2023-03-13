@@ -7,11 +7,12 @@ import {
   VillageDDLType,
   VillageTableName
 } from '@/database/index'
-import { ImageTableName } from '@/database/tables/image'
+import { ImageDDLType, ImageTableName } from '@/database/tables/image'
 import { VillageType } from '@/types/common'
 import { PushStateType, DeleteRecordType, LandlordType } from '@/types/sync'
 import dayjs from 'dayjs'
-import { pushDataApi, filesUpload } from './api'
+import { pushDataApi } from './api'
+import { env, getHeaderCommonParams } from '@/config'
 
 class PushData {
   public db: any
@@ -232,39 +233,40 @@ class PushData {
     // 上传本地图片-更新数据库
     return new Promise(async (resolve, reject) => {
       try {
-        const imageList: VillageType[] = await db.selectTableData(ImageTableName, 'status', '0')
+        const imageList: ImageDDLType[] = await db.selectTableData(ImageTableName, 'status', '0')
         if (imageList && imageList.length) {
           // id
+          // 'path' text,
           // 'url' text,
-          // 'file' text,
-          // 'base64' text,
           // 'status' text,
           // 'updatedDate' text
-          const files = imageList.map((item) => item.file)
-          filesUpload({
-            files
-          })
-            .then((res) => {
-              // 更新状态
-              if (res && res.length) {
-                const ids: number[] = []
-                // 拿到 需要更新的id
-                imageList.forEach((item) => {
-                  if (res.includes(item.url)) {
-                    ids.push(item.id)
+          imageList.forEach((item) => {
+            uni.uploadFile({
+              url: `${env.apiBaseUrl}${env.apiBasePath}/files`,
+              filePath: item.path,
+              name: 'files',
+              header: {
+                ...getHeaderCommonParams(),
+                'content-type': 'application/x-www-form-urlencoded'
+              },
+              success: (res) => {
+                console.log('推送数据-图片上传:', res.data)
+                if (res && res.data) {
+                  const responseData = JSON.parse(res.data)
+                  if (responseData && responseData.data && responseData.data[0]) {
+                    const values = `status = '1',url = '${
+                      responseData.data[0]
+                    }',updatedDate = '${dayjs().valueOf()}'`
+                    const sql = `update ${ImageTableName} set ${values} where id = '${item.id}'`
+                    db.execteSql([sql])
                   }
-                })
-                const sqls: string[] = []
-                ids.forEach((id) => {
-                  const values = `status = '1',file = '',updatedDate = '${dayjs().valueOf()}'`
-                  sqls.push(`update ${LandlordTableName} set ${values} where id = '${id}'`)
-                })
-                db?.execteSql(sqls)
+                }
+              },
+              fail: () => {
+                console.log('图片上传失败:', item.path)
               }
             })
-            .catch(() => {
-              // 如果失败了 等下次在上传
-            })
+          })
         }
       } catch (err) {
         console.log('uploadImages-error', err)

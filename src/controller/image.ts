@@ -24,44 +24,31 @@ class Image extends Common {
     })
   }
 
-  add(data: Pick<ImageDDLType, 'file' | 'url'>) {
-    // url: string
-    // file: any
-    // base64: string
-    // status: '0' | '1'
-    // updatedDate: string
-    return new Promise(async (resolve, reject) => {
-      try {
-        if (!data || !data.file || !data.url) {
-          reject(false)
-          console.log('文件缺失')
-          return
-        }
-        const fields = `'status','url','file','base64','updatedDate'`
-        let base64 = ''
-        const reader = new FileReader()
-        reader.readAsDataURL(data.file)
-        reader.addEventListener('load', () => {
-          base64 = reader.result as string
-          const values = `'0','${data.url}','${data.file}','${base64}','${dayjs().valueOf()}'`
-          this.db
-            .insertTableData(ImageTableName, values, fields)
-            .then(() => {
-              resolve(true)
-            })
-            .catch(() => {
-              reject(false)
-              console.log('插入数据失败')
-            })
-        })
-      } catch (error) {
-        console.log(error, 'Image-add-error')
-        reject(false)
+  private doneSave(localPaths: string[]) {
+    console.log('localPaths:', localPaths)
+    return new Promise(async (resolve) => {
+      if (!localPaths || !localPaths.length) {
+        resolve(false)
+        return
       }
+      await this.db.transaction('begin').catch(() => {
+        resolve(false)
+      })
+      localPaths.forEach((item) => {
+        const fields = `'status','path','url','updatedDate'`
+        const values = `'0','${item}','','${dayjs().valueOf()}'`
+        this.db.insertTableData(ImageTableName, values, fields)
+      })
+      await this.db.transaction('commit').catch(() => {
+        resolve(false)
+      })
+      resolve(true)
     })
   }
 
-  batchAddImg(files: Pick<ImageDDLType, 'file' | 'url'>[]): Promise<boolean> {
+  batchAddImg(files: string[]): Promise<string[]> {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const _that = this
     return new Promise(async (resolve, reject) => {
       try {
         if (!files || !files.length) {
@@ -69,20 +56,39 @@ class Image extends Common {
           console.log('文件列表为空')
           return
         }
-        // 串行
-        let chain = Promise.resolve<any>(null)
-        files.forEach((file) => {
-          chain = chain.then(() => this.add(file))
+        // 本地路径地址存储
+        let localPaths: string[] = []
+        files.forEach((file, index) => {
+          uni.saveFile({
+            tempFilePath: file,
+            success: function (res) {
+              const savedFilePath = res.savedFilePath
+              localPaths[index] = savedFilePath
+            },
+            fail: function () {
+              localPaths[index] = ''
+            },
+            complete: function () {
+              if (localPaths.length === files.length) {
+                // 此时已经全部转了
+                _that
+                  .doneSave(localPaths)
+                  .then((res) => {
+                    if (res) {
+                      // 存入数据库成功
+                      console.log('图片：存入数据库成功')
+                      resolve(localPaths)
+                    } else {
+                      reject()
+                    }
+                  })
+                  .finally(() => {
+                    localPaths = []
+                  })
+              }
+            }
+          })
         })
-        chain
-          .then(() => {
-            resolve(true)
-          })
-          .catch(() => {
-            reject(false)
-            console.log('批量插入失败')
-            return
-          })
       } catch (error) {
         console.log(error, 'Image-batchAddImg-error')
         reject(false)

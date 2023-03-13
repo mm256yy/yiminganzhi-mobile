@@ -64,12 +64,7 @@ export const getImgList = () => {
   return ImageController.getList()
 }
 
-// 图片上传
-export const uploadImg = (data: Pick<ImageDDLType, 'file' | 'url'>) => {
-  return ImageController.add(data)
-}
-
 // 批量图片上传
-export const batchUploadImg = (data: Pick<ImageDDLType, 'file' | 'url'>[]) => {
+export const batchUploadImg = (data: string[]) => {
   return ImageController.batchAddImg(data)
 }

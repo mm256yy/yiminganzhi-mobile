@@ -27,12 +27,8 @@ onLoad((option: any) => {
 
 const jsonData = ref<any[]>([
   {
-    id: 22,
-    name: 'dafdsafdsa'
-  },
-  {
-    id: 333,
-    name: '范德萨发大'
+    id: 1,
+    name: '默认数据'
   }
 ])
 
@@ -48,13 +44,13 @@ const getJsonData = async () => {
       console.log(err, 'err')
     })
     console.log(res.length, `${tableName.value} 表数据条数`)
-    jsonData.value = (res || []).map((item: any) => {
-      if (tableName.value !== 'other') {
+    if (tableName.value === 'other' || tableName.value === 'image') {
+      jsonData.value = res
+    } else {
+      jsonData.value = (res || []).map((item: any) => {
         return JSON.parse(item.content)
-      } else {
-        return item
-      }
-    })
+      })
+    }
   } else {
     uni.showToast({
       title: '数据库未打开',

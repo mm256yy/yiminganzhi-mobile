@@ -20,13 +20,13 @@ import {
   DistrictTableName,
   VillageTableName,
   AppendantTableName,
-  OtherDataType
+  OtherDataType,
+  ImageDDL
 } from '@/database/index'
 import { getProjectDataApi, getBaseDataApi, getConfigDataApi, getCollectApi } from './api'
 import { StateType } from '@/types/sync'
 import { getCurrentTimeStamp, setStorage, StorageKey } from '@/utils'
 import dayjs from 'dayjs'
-import { ImageDDL } from '@/database/tables/image'
 
 class PullData {
   // 接口返回数据存储

@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-// import { batchUploadImg } from '@/service'
+import { batchUploadImg } from '@/service'
 // import UploadFile from '@/components/UploadFile/uni-file-picker.vue'
 
 // 获取人口其他照片上传状态
@@ -51,6 +51,12 @@ const uploadImg = () => {
     sourceType: ['album'],
     success: function (res) {
       console.log('res:', res)
+      if (res && res.tempFilePaths) {
+        const paths = Array.isArray(res.tempFilePaths) ? res.tempFilePaths : [res.tempFilePaths]
+        batchUploadImg(paths).then((res) => {
+          console.log(res, '图片上传结果')
+        })
+      }
     }
   })
 }

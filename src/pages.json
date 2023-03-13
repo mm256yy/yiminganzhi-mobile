@@ -8,6 +8,13 @@
 			}
 		},
 		{
+			"name": "test",
+			"path": "pages/test/index",
+			"style": {
+				"navigationBarTitleText": "首页"
+			}
+		},
+		{
 			"name": "map",
 			"path": "pages/map/index",
 			"style": {
