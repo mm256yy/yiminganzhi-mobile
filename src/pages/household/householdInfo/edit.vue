@@ -133,15 +133,13 @@
             <uni-forms-item label="中心经纬度" :label-width="150" label-align="right">
               <view class="lg-txt-wrapper">
                 <uni-data-checkbox v-model="check" :localdata="lgTagList" />
-                <view class="position" v-if="check === 1" @click.stop="gotoMap">
+                <view class="position" v-if="check === 1" @click="gotoMap">
                   <uni-icons type="map" color="#5D8CF7" size="14rpx" />
-                  <view class="txt">
-                    {{
-                      formData.longitude && formData.latitude
-                        ? `${formData.longitude},${formData.latitude}`
-                        : '获取定位'
-                    }}
-                  </view>
+                  <text class="txt">{{
+                    formData.longitude && formData.latitude
+                      ? `${formData.longitude},${formData.latitude}`
+                      : '获取定位'
+                  }}</text>
                 </view>
                 <view v-else-if="check === 2">
                   <uni-easyinput
