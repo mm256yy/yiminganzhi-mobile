@@ -17,7 +17,6 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              required
               label="身份证号"
               :label-width="150"
               label-align="right"
@@ -27,13 +26,7 @@
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
-            <uni-forms-item
-              required
-              label="性别"
-              :label-width="150"
-              label-align="right"
-              name="formData.sex"
-            >
+            <uni-forms-item label="性别" :label-width="150" label-align="right" name="formData.sex">
               <uni-data-select v-model="formData.sex" :localdata="dict[292]" />
             </uni-forms-item>
           </uni-col>
@@ -54,7 +47,6 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              required
               label="出生年月"
               :label-width="150"
               label-align="right"
@@ -215,13 +207,12 @@
               label-align="right"
               name="formData.cardPic"
             >
-              <uni-file-picker
-                title="最多选择2张图片"
+              <upload-file
+                v-model="formData.cardPic"
+                :file-list="formData.cardPic"
                 :limit="2"
-                @select="selectIdCard"
-                @progress="idCardProgress"
-                @success="idCardSuccess"
-                @fail="idCardFail"
+                show-type="list"
+                :accepts="['.jpg', '.png']"
               />
             </uni-forms-item>
           </uni-col>
@@ -232,13 +223,12 @@
               label-align="right"
               name="formData.householdPic"
             >
-              <uni-file-picker
-                title="最多选择1张图片"
-                :limit="1"
-                @select="selectHouseholdRegister"
-                @progress="householdRegisterProgress"
-                @success="householdRegisterSuccess"
-                @fail="householdRegisterFail"
+              <upload-file
+                v-model="formData.householdPic"
+                :file-list="formData.householdPic"
+                :limit="10"
+                show-type="list"
+                :accepts="['.jpg', '.png']"
               />
             </uni-forms-item>
           </uni-col>
@@ -249,13 +239,12 @@
               label-align="right"
               name="formData.otherPic"
             >
-              <uni-file-picker
-                title="最多选择20张图片"
-                :limit="20"
-                @select="selectOtherPic"
-                @progress="otherPicProgress"
-                @success="otherPicSuccess"
-                @fail="otherPicFail"
+              <upload-file
+                v-model="formData.otherPic"
+                :file-list="formData.otherPic"
+                :limit="10"
+                show-type="list"
+                :accepts="['.jpg', '.png']"
               />
             </uni-forms-item>
           </uni-col>
@@ -279,9 +268,31 @@ import { routerBack, getStorage, StorageKey } from '@/utils'
 import { addLandlordPeopleApi, updateLandlordPeopleApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
+import UploadFile from '@/components/UploadFile/index.vue'
 
 // 表单数据
-const formData = ref<any>({})
+const formData = ref<any>({
+  name: '',
+  sex: '',
+  phone: '',
+  birthday: null,
+  relation: '',
+  nation: '',
+  marital: '',
+  education: '',
+  insuranceType: '',
+  company: '',
+  occupation: '',
+  populationType: '',
+  populationSort: '',
+  censusType: '',
+  householdNumber: '',
+  address: '',
+  remark: '',
+  cardPic: '[]',
+  householdPic: '[]',
+  otherPic: '[]'
+})
 
 // 表单类型，add 新增表单，edit 编辑表单
 const type = ref<string>('')
@@ -309,80 +320,11 @@ const changeDate = (e: any) => {
   console.log('e:', e)
 }
 
-// 获取身份证上传状态
-const selectIdCard = (e: any) => {
-  console.log('选择文件：', e)
-}
-
-// 获取身份证上传进度
-const idCardProgress = (e: any) => {
-  console.log('上传进度：', e)
-}
-
-// 户口本上传成功
-const idCardSuccess = (e: any) => {
-  console.log('上传成功')
-}
-
-// 户口本上传失败
-const idCardFail = (e: any) => {
-  console.log('上传失败：', e)
-}
-
-// 获取户口本上传状态
-const selectHouseholdRegister = (e: any) => {
-  console.log('选择文件：', e)
-}
-
-// 获取户口本上传进度
-const householdRegisterProgress = (e: any) => {
-  console.log('上传进度：', e)
-}
-
-// 户口本上传成功
-const householdRegisterSuccess = (e: any) => {
-  console.log('上传成功')
-}
-
-// 户口本上传失败
-const householdRegisterFail = (e: any) => {
-  console.log('上传失败：', e)
-}
-
-// 获取人口其他照片上传状态
-const selectOtherPic = (e: any) => {
-  console.log('选择文件：', e)
-}
-
-// 获取人口其他照片上传进度
-const otherPicProgress = (e: any) => {
-  console.log('上传进度：', e)
-}
-
-// 人口其他照片上传成功
-const otherPicSuccess = (e: any) => {
-  console.log('上传成功')
-}
-
-// 人口其他照片上传失败
-const otherPicFail = (e: any) => {
-  console.log('上传失败：', e)
-}
-
 // 表单提交
 const submit = () => {
   const params = { ...formData.value }
   if (!formData.value.name) {
     showToast('请输入姓名')
-    return
-  } else if (!formData.value.card) {
-    showToast('请输入身份证号')
-    return
-  } else if (!formData.value.sex) {
-    showToast('请选择性别')
-    return
-  } else if (!formData.value.birthday) {
-    showToast('请选择出生年月')
     return
   } else if (!formData.value.relation) {
     showToast('请选择与户主关系')

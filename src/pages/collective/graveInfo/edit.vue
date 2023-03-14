@@ -219,9 +219,10 @@ const inputBlur = () => {
 
 // 表单提交
 const submit = () => {
-  const { type, uid, doorNo, householdId } = commonParams.value
-  let params = { doorNo, householdId, ...formData.value }
+  const { type } = commonParams.value
   if (type === 'add') {
+    const { uid, doorNo, householdId } = commonParams.value
+    let params = { doorNo, householdId, ...formData.value }
     addLandlordGraveApi(uid, params)
       .then((res) => {
         if (res) {
@@ -233,6 +234,8 @@ const submit = () => {
         showToast(ERROR_MSG)
       })
   } else if (type === 'edit') {
+    const { uid, householdId } = commonParams.value
+    let params = { householdId, ...formData.value }
     updateLandlordGraveApi(uid, params)
       .then((res) => {
         if (res) {

@@ -76,7 +76,11 @@
               />
 
               <!-- 附件上传 -->
-              <attachment-upload v-if="tabVal === 9" />
+              <attachment-upload
+                v-if="tabVal === 9"
+                :dataInfo="dataInfo"
+                @submit="updateAttachment"
+              />
             </view>
           </view>
 
@@ -129,7 +133,8 @@ import {
   updateLandlordTreeApi,
   updateLandlordAppendantApi,
   updateLandlordFamilyIncomeApi,
-  updateLandlordWillApi
+  updateLandlordWillApi,
+  updateLandlordImmigrantFileApi
 } from '@/service'
 
 import iconSrc from '@/static/images/icon_add_household.png' // 侧边栏，添加 icon
@@ -328,6 +333,20 @@ const updateWillingnessInfo = (data: any) => {
   const params = { ...data }
   console.log('submit-params:', params)
   updateLandlordWillApi(props.dataInfo.uid, params)
+    .then((res) => {
+      if (res) {
+        showToast(SUCCESS_MSG)
+        updateData()
+      }
+    })
+    .catch((e) => {
+      showToast(ERROR_MSG)
+    })
+}
+
+// 更新附件
+const updateAttachment = (params: any) => {
+  updateLandlordImmigrantFileApi(props.dataInfo.uid, params)
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)

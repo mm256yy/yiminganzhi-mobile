@@ -156,3 +156,19 @@ export const fmtDate = (time: any, fmt = 1) => {
     }
   }
 }
+
+/**
+ * 处理图片 URL
+ * @param {Object} url
+ */
+export const fmtPicUrl = (url: any) => {
+  if (url) {
+    if (typeof url === 'string') {
+      return url
+    } else {
+      return JSON.parse(url)
+    }
+  } else {
+    return '[]'
+  }
+}

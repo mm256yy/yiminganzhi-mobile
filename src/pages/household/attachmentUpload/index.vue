@@ -1,12 +1,11 @@
 <template>
   <view class="attachment-upload-wrapper">
-    <uni-file-picker
-      title="最多选择20张图片"
+    <upload-file
+      v-model="otherPic"
+      :file-list="otherPic"
       :limit="20"
-      @select="select"
-      @progress="progress"
-      @success="success"
-      @fail="fail"
+      show-type="list"
+      :accepts="['.jpg', '.png']"
     />
 
     <image
@@ -19,7 +18,8 @@
 </template>
 
 <script lang="ts" setup>
-import { updateLandlordImmigrantFileApi } from '@/service'
+import { ref } from 'vue'
+import UploadFile from '@/components/UploadFile/index.vue'
 
 const props = defineProps({
   dataInfo: {
@@ -28,39 +28,23 @@ const props = defineProps({
   }
 })
 
-// 获取上传状态
-const select = (e: any) => {
-  console.log('选择文件：', e)
-}
-
-// 获取上传进度
-const progress = (e: any) => {
-  console.log('上传进度：', e)
-}
-
-// 上传成功
-const success = (e: any) => {
-  console.log('上传成功')
-}
-
-// 上传失败
-const fail = (e: any) => {
-  console.log('上传失败：', e)
-}
+const emit = defineEmits(['submit'])
+const otherPic = ref<string>(
+  JSON.stringify(props.dataInfo.immigrantFile) !== '{}'
+    ? props.dataInfo.immigrantFile.otherPic
+    : '[]'
+)
 
 // 表单提交
 const submit = () => {
-  const otherPic = ''
   const params = {
     id: props.dataInfo.id,
     uid: props.dataInfo.uid,
     doorNo: props.dataInfo.doorNo,
     householdId: props.dataInfo.householdId,
-    otherPic
+    otherPic: otherPic.value
   }
-  updateLandlordImmigrantFileApi(props.dataInfo.uid, params).then((res) => {
-    console.log('res:', res)
-  })
+  emit('submit', params)
 }
 </script>
 

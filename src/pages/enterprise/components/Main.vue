@@ -70,7 +70,7 @@
               />
 
               <!-- 照片上传 -->
-              <photo-upload v-if="tabVal === 7" />
+              <photo-upload v-if="tabVal === 7" :dataInfo="dataInfo" @submit="updatePhoto" />
             </view>
           </view>
 
@@ -120,7 +120,8 @@ import {
   updateLandlordTreeApi,
   updateLandlordAppendantApi,
   deleteLandlordEquipmentApi,
-  updateLandlordManagementApi
+  updateLandlordManagementApi,
+  updateLandlordImmigrantFileApi
 } from '@/service'
 
 import iconSrc from '@/static/images/icon_add_enterprise.png' // 侧边栏，添加 icon
@@ -291,6 +292,20 @@ const deleteEquipment = (data: any) => {
 const updateBusinessInfo = (data: any) => {
   const params = [...data]
   updateLandlordManagementApi(props.dataInfo.uid, params)
+    .then((res) => {
+      if (res) {
+        showToast(SUCCESS_MSG)
+        updateData()
+      }
+    })
+    .catch((e) => {
+      showToast(ERROR_MSG)
+    })
+}
+
+// 更新照片
+const updatePhoto = (params: any) => {
+  updateLandlordImmigrantFileApi(props.dataInfo.uid, params)
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)

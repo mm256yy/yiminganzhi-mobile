@@ -603,13 +603,12 @@
                 label-align="right"
                 name="formData.licensePic"
               >
-                <uni-file-picker
-                  title="最多选择20张图片"
+                <upload-file
+                  v-model="formData.licensePic"
+                  :file-list="formData.licensePic"
                   :limit="20"
-                  @select="select"
-                  @progress="progress"
-                  @success="success"
-                  @fail="fail"
+                  show-type="list"
+                  :accepts="['.jpg', '.png']"
                 />
               </uni-forms-item>
             </uni-col>
@@ -620,13 +619,12 @@
                 label-align="right"
                 name="formData.otherPic"
               >
-                <uni-file-picker
-                  title="最多选择20张图片"
+                <upload-file
+                  v-model="formData.otherPic"
+                  :file-list="formData.otherPic"
                   :limit="20"
-                  @select="select"
-                  @progress="progress"
-                  @success="success"
-                  @fail="fail"
+                  show-type="list"
+                  :accepts="['.jpg', '.png']"
                 />
               </uni-forms-item>
             </uni-col>
@@ -647,11 +645,12 @@
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
-import { routerBack, getStorage, StorageKey } from '@/utils'
+import { routerBack, getStorage, StorageKey, fmtPicUrl } from '@/utils'
 import { addLandlordApi, updateLandlordCompanyApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
 import VillageSelectFormItem from '@/components/VillageSelectFormItem/index.vue'
+import UploadFile from '@/components/UploadFile/index.vue'
 import { MainType } from '@/types/common'
 
 // 表单数据
@@ -693,8 +692,8 @@ const formData = ref<any>({
   informationInvolved: '',
   treatmentScheme: '',
   otherRemark: '',
-  licensePic: [],
-  otherPic: []
+  licensePic: '[]',
+  otherPic: '[]'
 })
 
 // 获取数据字典
@@ -804,8 +803,8 @@ const submit = () => {
     informationInvolved: formData.value.informationInvolved,
     treatmentScheme: formData.value.treatmentScheme,
     otherRemark: formData.value.otherRemark,
-    licensePic: formData.value.licensePic,
-    otherPic: formData.value.otherPic
+    licensePic: fmtPicUrl(formData.value.licensePic),
+    otherPic: fmtPicUrl(formData.value.otherPic)
   }
 
   if (!formData.value.legalPersonName) {

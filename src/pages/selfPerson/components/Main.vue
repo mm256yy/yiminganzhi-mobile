@@ -62,7 +62,7 @@
               />
 
               <!-- 照片上传 -->
-              <photo-upload v-if="tabVal === 6" />
+              <photo-upload v-if="tabVal === 6" :dataInfo="dataInfo" @submit="updateAttachment" />
             </view>
           </view>
 
@@ -110,7 +110,8 @@ import {
   deleteLandlordTreeApi,
   updateLandlordTreeApi,
   updateLandlordAppendantApi,
-  deleteLandlordEquipmentApi
+  deleteLandlordEquipmentApi,
+  updateLandlordImmigrantFileApi
 } from '@/service'
 
 import iconSrc from '@/static/images/icon_add_enterprise.png' // 侧边栏，添加 icon
@@ -260,6 +261,20 @@ const updateAccessoryInfo = (data: any) => {
 const deleteEquipment = (data: any) => {
   deleteLandlordEquipmentApi(props.dataInfo.uid, data.uid)
     .then((res: any) => {
+      if (res) {
+        showToast(SUCCESS_MSG)
+        updateData()
+      }
+    })
+    .catch((e) => {
+      showToast(ERROR_MSG)
+    })
+}
+
+// 更新附件
+const updateAttachment = (params: any) => {
+  updateLandlordImmigrantFileApi(props.dataInfo.uid, params)
+    .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
         updateData()

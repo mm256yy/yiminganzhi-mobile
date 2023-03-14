@@ -519,7 +519,7 @@
 
 <script lang="ts" setup>
 import dayjs from 'dayjs'
-import { dictOption, formatStr, formatDict, splitStr, routerForward } from '@/utils'
+import { dictOption, formatStr, formatDict, splitStr, routerForward, fmtPicUrl } from '@/utils'
 import { locationTypes } from '@/config/common'
 
 const props = defineProps({
@@ -560,7 +560,9 @@ const toLink = (type: string) => {
     suffixNo: splitStr(doorNo, 13, 17),
     periodValidity,
     establishDate: establishDate ? dayjs(establishDate).format('YYYY-MM-DD') : null,
-    taxPeriodValidity: taxPeriodValidity ? dayjs(taxPeriodValidity).format('YYYY-MM-DD') : null
+    taxPeriodValidity: taxPeriodValidity ? dayjs(taxPeriodValidity).format('YYYY-MM-DD') : null,
+    licensePic: fmtPicUrl(props.dataInfo.licensePic),
+    otherPic: fmtPicUrl(props.dataInfo.otherPic)
   }
 
   routerForward('baseInfoEdit', {

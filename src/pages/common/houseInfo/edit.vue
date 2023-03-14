@@ -320,13 +320,12 @@
               label-align="right"
               name="formData.housePic"
             >
-              <uni-file-picker
-                title="最多选择20张图片"
+              <upload-file
+                v-model="formData.housePic"
+                :file-list="formData.housePic"
                 :limit="20"
-                @select="selectHousePic"
-                @progress="housePicProgress"
-                @success="housePicSuccess"
-                @fail="housePicFail"
+                show-type="list"
+                :accepts="['.jpg', '.png']"
               />
             </uni-forms-item>
           </uni-col>
@@ -337,13 +336,12 @@
               label-align="right"
               name="formData.landPic"
             >
-              <uni-file-picker
-                title="最多选择1张图片"
-                :limit="1"
-                @select="selectLandPic"
-                @progress="landPicProgress"
-                @success="landPicSuccess"
-                @fail="landPicFail"
+              <upload-file
+                v-model="formData.landPic"
+                :file-list="formData.landPic"
+                :limit="20"
+                show-type="list"
+                :accepts="['.jpg', '.png']"
               />
             </uni-forms-item>
           </uni-col>
@@ -354,13 +352,12 @@
               label-align="right"
               name="formData.otherPic"
             >
-              <uni-file-picker
-                title="最多选择20张图片"
+              <upload-file
+                v-model="formData.otherPic"
+                :file-list="formData.otherPic"
                 :limit="20"
-                @select="selectOtherPic"
-                @progress="otherPicProgress"
-                @success="otherPicSuccess"
-                @fail="otherPicFail"
+                show-type="list"
+                :accepts="['.jpg', '.png']"
               />
             </uni-forms-item>
           </uni-col>
@@ -371,13 +368,12 @@
               label-align="right"
               name="formData.homePic"
             >
-              <uni-file-picker
-                title="最多选择20张图片"
+              <upload-file
+                v-model="formData.homePic"
+                :file-list="formData.homePic"
                 :limit="20"
-                @select="selectHomePic"
-                @progress="homePicProgress"
-                @success="homePicSuccess"
-                @fail="homePicFail"
+                show-type="list"
+                :accepts="['.jpg', '.png']"
               />
             </uni-forms-item>
           </uni-col>
@@ -401,10 +397,39 @@ import { routerBack, getStorage, StorageKey, routerForward, networkCheck } from 
 import { addLandlordHouseApi, updateLandlordHouseApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
+import UploadFile from '@/components/UploadFile/index.vue'
 
 // 表单数据
-const formData = ref<any>({})
-const form = ref<any>(null)
+const formData = ref<any>({
+  houseNo: '',
+  propertyType: '',
+  usageType: '',
+  houseType: '',
+  constructionType: '',
+  storeyNumber: '',
+  completedTime: null,
+  propertyNo: '',
+  landNo: '',
+  landType: '',
+  landArea: '',
+  storeyHeight: '',
+  houseHeight: '',
+  outerWallType: '',
+  interiorWallType: '',
+  groundType: '',
+  roofType: '',
+  roofMaterialsType: '',
+  doorsWindowsType: '',
+  waterElectricityType: '',
+  formula: '',
+  longitude: '',
+  latitude: '',
+  remark: '',
+  housePic: '[]',
+  landPic: '[]',
+  otherPic: '[]',
+  homePic: '[]'
+})
 
 const title = ref<string>('')
 const commonParams = ref<any>({})
@@ -450,86 +475,6 @@ const gotoMap = () => {
     longitude: formData.value.longitude,
     latitude: formData.value.latitude
   })
-}
-
-// 获取房屋平面示意图上传状态
-const selectHousePic = (e: any) => {
-  console.log('选择文件：', e)
-}
-
-// 获取房屋平面示意图上传进度
-const housePicProgress = (e: any) => {
-  console.log('上传进度：', e)
-}
-
-// 房屋平面示意图上传成功
-const housePicSuccess = (e: any) => {
-  console.log('上传成功')
-}
-
-// 房屋平面示意图上传失败
-const housePicFail = (e: any) => {
-  console.log('上传失败：', e)
-}
-
-// 获取土地证照片上传状态
-const selectLandPic = (e: any) => {
-  console.log('选择文件：', e)
-}
-
-// 获取土地证照片上传进度
-const landPicProgress = (e: any) => {
-  console.log('上传进度：', e)
-}
-
-// 土地证照片上传成功
-const landPicSuccess = (e: any) => {
-  console.log('上传成功')
-}
-
-// 土地证照片上传失败
-const landPicFail = (e: any) => {
-  console.log('上传失败：', e)
-}
-
-// 获取房屋其他附件照片上传状态
-const selectOtherPic = (e: any) => {
-  console.log('选择文件：', e)
-}
-
-// 获取房屋其他附件照片上传进度
-const otherPicProgress = (e: any) => {
-  console.log('上传进度：', e)
-}
-
-// 房屋其他附件照片上传成功
-const otherPicSuccess = (e: any) => {
-  console.log('上传成功')
-}
-
-// 房屋其他附件照片上传失败
-const otherPicFail = (e: any) => {
-  console.log('上传失败：', e)
-}
-
-// 获取房屋照片上传状态
-const selectHomePic = (e: any) => {
-  console.log('选择文件：', e)
-}
-
-// 获取房屋照片上传进度
-const homePicProgress = (e: any) => {
-  console.log('上传进度：', e)
-}
-
-// 房屋照片上传成功
-const homePicSuccess = (e: any) => {
-  console.log('上传成功')
-}
-
-// 房屋照片上传失败
-const homePicFail = (e: any) => {
-  console.log('上传失败：', e)
 }
 
 // 表单提交

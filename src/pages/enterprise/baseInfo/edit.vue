@@ -835,14 +835,12 @@
         </view>
 
         <view class="upload-wrapper">
-          <uni-file-picker
-            title="最多选择20张图片"
+          <upload-file
             v-model="formData.licensePic"
-            :limit="20"
-            @select="select"
-            @progress="progress"
-            @success="success"
-            @fail="fail"
+            :file-list="formData.licensePic"
+            :limit="10"
+            show-type="list"
+            :accepts="['.jpg', '.png']"
           />
         </view>
       </uni-forms>
@@ -865,6 +863,7 @@ import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { addLandlordApi, updateLandlordCompanyApi } from '@/service'
 import Back from '@/components/Back/Index.vue'
 import VillageSelectFormItem from '@/components/VillageSelectFormItem/index.vue'
+import UploadFile from '@/components/UploadFile/index.vue'
 import { MainType } from '@/types/common'
 
 // 表单数据
@@ -924,8 +923,8 @@ const formData = ref<any>({
   totalOwnershipArea: '',
   totalOccupiedArea: '',
   remark: '',
-  licensePic: [],
-  otherPic: []
+  licensePic: '[]',
+  otherPic: '[]'
 })
 
 // 获取数据字典
