@@ -6,7 +6,7 @@
           class="file-image"
           :src="item.padPath ? item.padPath : netWork ? item.url : defaultImg"
           mode="aspectFill"
-          @click.stop="prviewImage(item)"
+          @click.stop="prviewImage(item, index)"
         />
         <view class="icon-del-box" @click.stop="delFile(index)">
           <view class="icon-del" />
@@ -48,9 +48,8 @@ const choose = () => {
   emit('choose')
 }
 
-const prviewImage = (item: any) => {
-  const url = netWork.value ? item.url : item.padPath ? item.padPath : defaultImg
-  emit('prviewImage', url)
+const prviewImage = (item: any, index: number) => {
+  emit('prviewImage', item, index)
 }
 
 const delFile = (index: number) => {

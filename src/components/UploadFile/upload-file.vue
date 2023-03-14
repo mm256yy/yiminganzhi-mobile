@@ -15,7 +15,7 @@
               class="header-image"
               :src="item.padPath ? item.padPath : netWork ? item.url : defaultImg"
               mode="aspectFit"
-              @click.stop="prviewImage(item)"
+              @click.stop="prviewImage(item, index)"
             />
           </view>
           <view v-if="!item.isEdit" class="files__name">{{ item.name }}</view>
@@ -79,9 +79,8 @@ const choose = () => {
   emit('choose')
 }
 
-const prviewImage = (item: any) => {
-  const url = netWork.value ? item.url : item.padPath ? item.padPath : defaultImg
-  emit('prviewImage', url)
+const prviewImage = (item: any, index: number) => {
+  emit('prviewImage', item, index)
 }
 
 const delFile = (index: number) => {
@@ -90,8 +89,6 @@ const delFile = (index: number) => {
 </script>
 
 <style lang="scss">
-
-
 /* #ifdef H5 */
 @media all and (min-width: 768px) {
   .uni-file-picker__files {
@@ -143,10 +140,9 @@ const delFile = (index: number) => {
 }
 
 .uni-file-picker__item {
-  /* #ifndef APP-NVUE */
   display: flex;
-  /* #endif */
   align-items: center;
+  flex-direction: row;
   padding: 8px 5px 8px 10px;
 }
 

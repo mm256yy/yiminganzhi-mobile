@@ -3,7 +3,7 @@
     <upload-file
       :limit="20"
       @update-file-list="updateFilesList"
-      show-type="list"
+      show-type="grid"
       :file-list="fileList"
       :accepts="['.jpg', '.png']"
     />

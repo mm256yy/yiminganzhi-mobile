@@ -33,10 +33,12 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import uploadImage from './upload-image.vue'
 import uploadFile from './upload-file.vue'
 import { batchUploadImg } from '@/service'
+import { networkCheck } from '@/utils'
+import defaultImg from '@/static/images/icon_null_data.png'
 
 interface PropsType {
   showType: 'grid' | 'list'
@@ -54,6 +56,7 @@ interface FileItemType {
   isEdit?: boolean
 }
 
+const netWork = ref<boolean>(true)
 const props = defineProps<PropsType>()
 const emit = defineEmits(['updateFileList', 'update:modelValue'])
 const filesList = ref<FileItemType[]>([])
@@ -106,6 +109,12 @@ watch(
   }
 )
 
+onMounted(() => {
+  networkCheck().then((res) => {
+    netWork.value = res
+  })
+})
+
 const choose = () => {
   // 选择图片文件
 
@@ -157,10 +166,13 @@ const updateFilesList = () => {
   emit('update:modelValue', str)
 }
 
-const prviewImage = (item: any) => {
+const prviewImage = (item: any, index: number) => {
+  const urls = filesList.value.map((fileItem) => {
+    return fileItem.padPath ? fileItem.padPath : netWork.value ? fileItem.url : defaultImg
+  })
   uni.previewImage({
-    urls: item.url || item.padPath,
-    current: 0
+    urls,
+    current: index
   })
 }
 </script>
