@@ -101,6 +101,8 @@ const delFile = (index: number) => {
 </script>
 
 <style lang="scss">
+
+
 /* #ifdef H5 */
 @media all and (min-width: 768px) {
   .uni-file-picker__files {
@@ -114,6 +116,10 @@ const delFile = (index: number) => {
   /* #endif */
   flex-direction: column;
   justify-content: flex-start;
+}
+
+.files-button {
+  // border: 1px red solid;
 }
 
 .uni-file-picker__lists {
@@ -166,6 +172,7 @@ const delFile = (index: number) => {
   /* #ifndef APP-NVUE */
   word-break: break-all;
   word-wrap: break-word;
+  flex: 1;
   /* #endif */
 }
 
@@ -192,12 +199,12 @@ const delFile = (index: number) => {
   align-items: center;
 
   .name {
+    width: 100rpx;
     height: 30rpx;
     padding-left: 5rpx;
     font-size: 9rpx;
     background-color: #fff;
     border-radius: 3rpx;
-    flex: 1;
   }
 
   .txt-btn {
@@ -298,6 +305,5 @@ const delFile = (index: number) => {
     margin-right: 5px;
   }
 }
-
 /* #endif */
 </style>
