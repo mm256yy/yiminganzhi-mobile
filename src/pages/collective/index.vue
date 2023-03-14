@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import { onLoad, onShow } from '@dcloudio/uni-app'
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { getLandlordTreeApi, getLandlordItemApi } from '@/service'
 import { MainType } from '@/types/common'
 import { showLoading, hideLoading } from '@/config'
@@ -38,8 +38,8 @@ const uid = ref<string>('')
 onShow(() => {
   if (dataInfo.value.uid) {
     getLandlordDetail(dataInfo.value.uid)
-    // getTreeData()
   }
+  getTreeData()
 })
 
 onLoad((option) => {
@@ -82,13 +82,8 @@ const getLandlordDetail = (uid: string) => {
       dataInfo.value.villageCode,
       dataInfo.value.virutalVillageCode
     ]
-    getTreeData()
   })
 }
-
-onMounted(() => {
-  getTreeData()
-})
 </script>
 
 <style scoped lang="scss">
