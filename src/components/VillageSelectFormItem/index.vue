@@ -43,36 +43,6 @@ const villageTitle = ref<string[]>([])
 const showVillageSelect = ref<boolean>(false)
 const codes = ref<string[]>([])
 
-watch(
-  () => props.modelValue,
-  (val) => {
-    if (val) {
-      const town = val.slice(0, 9)
-      const area = val.slice(0, 6)
-      codes.value = [area, town, val]
-      nextTick(() => {
-        getTitle && getTitle()
-      })
-    }
-  },
-  {
-    immediate: false
-  }
-)
-
-watch(
-  [() => props.areaCode, () => props.townCode, () => props.villageCode],
-  ([val1, val2, val3]) => {
-    if (val1 && val2 && val3) {
-      codes.value = [val1, val2, val3]
-      getTitle && getTitle()
-    }
-  },
-  {
-    immediate: false
-  }
-)
-
 const getTitle = () => {
   if (treeData.value && treeData.value.length && codes.value && codes.value.length) {
     const areaItem = treeData.value.find((item: any) => item.code === codes.value[0])
@@ -112,6 +82,36 @@ const close = () => {
     console.log('close', showVillageSelect.value)
   })
 }
+
+watch(
+  () => props.modelValue,
+  (val) => {
+    if (val) {
+      const town = val.slice(0, 9)
+      const area = val.slice(0, 6)
+      codes.value = [area, town, val]
+      nextTick(() => {
+        getTitle && getTitle()
+      })
+    }
+  },
+  {
+    immediate: true
+  }
+)
+
+watch(
+  [() => props.areaCode, () => props.townCode, () => props.villageCode],
+  ([val1, val2, val3]) => {
+    if (val1 && val2 && val3) {
+      codes.value = [val1, val2, val3]
+      getTitle && getTitle()
+    }
+  },
+  {
+    immediate: true
+  }
+)
 
 onMounted(() => {
   getTreeData()

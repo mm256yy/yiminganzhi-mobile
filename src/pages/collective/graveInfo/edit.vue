@@ -203,6 +203,7 @@ const confirmSelect = (data: any) => {
   if (data) {
     formData.value.registrantName = data.label
     formData.value.doorNo = data.value
+    formData.value.landlordUid = data.uid
   }
   close()
 }

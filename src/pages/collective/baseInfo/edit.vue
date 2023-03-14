@@ -116,7 +116,7 @@ const formData = ref<any>({
   suffixNo: '',
   collectiveCode: '',
   phone: '',
-  locationType: ''
+  locationType: null
 })
 
 // 获得焦点的输入框下标

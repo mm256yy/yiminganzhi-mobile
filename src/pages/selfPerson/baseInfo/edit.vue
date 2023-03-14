@@ -659,7 +659,7 @@ const formData = ref<any>({
   areaCode: '',
   townCode: '',
   villageCode: '',
-  locationType: '',
+  locationType: null,
   phone: '',
   periodValidity: null,
   establishDate: null,
@@ -713,6 +713,7 @@ onLoad((option: any) => {
     if (type.value === 'edit') {
       let params = JSON.parse(option.params)
       formData.value = { ...params }
+      console.log('formData:', formData.value)
       title.value = '个体工商户基本概况编辑'
       uid.value = option.uid
     } else if (type.value === 'add') {
@@ -729,26 +730,6 @@ const inputFocus = (index: number) => {
 // 输入框失去焦点
 const inputBlur = () => {
   focusIndex.value = -1
-}
-
-// 获取上传状态
-const select = (e: any) => {
-  console.log('选择文件：', e)
-}
-
-// 获取上传进度
-const progress = (e: any) => {
-  console.log('上传进度：', e)
-}
-
-// 上传成功
-const success = (e: any) => {
-  console.log('上传成功')
-}
-
-// 上传失败
-const fail = (e: any) => {
-  console.log('上传失败：', e)
 }
 
 // 表单提交

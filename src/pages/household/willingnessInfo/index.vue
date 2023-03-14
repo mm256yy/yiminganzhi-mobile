@@ -46,7 +46,7 @@
       </view>
     </view>
     <view class="sub-title">生产安置</view>
-    <view class="row-1">
+    <view class="row-4">
       <view class="col" v-for="(item, index) in productModeData" :key="item.name">
         <view class="label">{{ item.name }}：</view>
         <view :class="['input-wrapper', focusIndex === (index + 1) * 10 ? 'focus' : '']">
@@ -96,13 +96,14 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted } from 'vue'
 import { getWillListApi } from '@/service'
+import { onShow } from '@dcloudio/uni-app'
 
 const props = defineProps({
   willData: {
-    type: Array as any,
-    default: () => []
+    type: Object as any,
+    default: () => {}
   },
   dataInfo: {
     type: Object as any,
@@ -112,8 +113,7 @@ const props = defineProps({
 
 const commonParams = {
   uid: props.dataInfo.uid,
-  doorNo: props.dataInfo.doorNo,
-  householdId: props.dataInfo.householdId
+  doorNo: props.dataInfo.doorNo
 }
 
 const formData = ref<any>({})
@@ -142,47 +142,106 @@ const inputBlur = () => {
   focusIndex.value = -1
 }
 
-// 获取意愿配置信息
-const getWillList = async () => {
+// 获取生产安置、搬迁安置方式数据
+const getWillList = async (dataType?: number) => {
   const result = await getWillListApi()
-  result.map((item: any) => {
+  console.log('result:', result)
+  genArr(result, dataType)
+}
+
+// 组合生产安置、搬迁安置方式配置信息
+const genArr = (arr: any[], dataType?: number) => {
+  arr.map((item: any) => {
+    if (item.type === '生产安置') {
+      if (dataType === 1) {
+        productModeData.value.push({
+          type: item.type,
+          name: item.area,
+          value: item.area,
+          number: '',
+          ...commonParams
+        })
+      } else if (dataType === 2) {
+        productModeData.value.push({
+          ...item
+        })
+      }
+    } else if (item.type === '搬迁安置') {
+      if (item.way === '宅基地安置') {
+        if (dataType === 1) {
+          homesteadData.value.push({
+            name: item.area,
+            value: item.area,
+            checked: false,
+            type: item.type,
+            way: item.way,
+            ...commonParams
+          })
+        } else if (dataType === 2) {
+          homesteadData.value.push({
+            ...item
+          })
+        }
+      } else if (item.way === '公寓安置') {
+        if (dataType === 1) {
+          apartmentData.value.push({
+            name: item.area,
+            value: item.area,
+            type: item.type,
+            way: item.way,
+            checked: false,
+            ...commonParams
+          })
+        } else if (dataType === 2) {
+          apartmentData.value.push({
+            ...item
+          })
+        }
+      }
+    }
+  })
+}
+
+// 回显时组合生产安置、搬迁安置方式配置信息
+const genNewArr = (arr: any[]) => {
+  arr.map((item: any) => {
     if (item.type === '生产安置') {
       productModeData.value.push({
-        name: item.area,
-        value: item.area,
-        number: ''
+        ...item
       })
     } else if (item.type === '搬迁安置') {
       if (item.way === '宅基地安置') {
         homesteadData.value.push({
-          name: item.area,
-          value: item.area,
-          checked: false
+          ...item
         })
       } else if (item.way === '公寓安置') {
         apartmentData.value.push({
-          name: item.area,
-          value: item.area,
-          checked: false
+          ...item
         })
       }
     }
   })
 }
 
-const initData = async () => {
+// 页面数据初始化
+const initData = () => {
   if (JSON.stringify(props.willData) !== '{}') {
+    if (props.willData.immigrantWillProductionList) {
+      console.log('immigrantWillProductionList:', props.willData.immigrantWillProductionList)
+      genNewArr(props.willData.immigrantWillProductionList)
+    } else {
+      getWillList(1)
+    }
     formData.value = {
-      ...commonParams,
       ...props.willData
     }
   } else {
+    getWillList(1)
     formData.value = {
-      ...commonParams,
       familyNum: '', // 家庭总人数
       countryNum: '', // 农村移民人数
       unCountryNum: '', // 非农移民人数
-      immigrantWillProductionList: productModeData.value, // 生产安置
+      immigrantWillProductionList: [], // 生产安置
       removalType: '', // 搬迁安置方式
       opinion: '' // 备注
     }
@@ -197,15 +256,18 @@ const homesteadChange = (e: any) => {
 // 表单提交
 const submit = () => {
   const params = {
-    ...formData.value
+    ...formData.value,
+    immigrantWillProductionList: [...productModeData.value]
   }
   emit('submit', params)
 }
 
-onMounted(async () => {
-  await getWillList()
-  await initData()
+onShow(() => {
+  initData()
 })
+// onMounted(() => {
+//   initData()
+// })
 </script>
 
 <style lang="scss" scoped>
@@ -330,6 +392,64 @@ onMounted(async () => {
         .uni-radio-input {
           width: 8rpx !important;
           height: 8rpx !important;
+        }
+      }
+    }
+  }
+
+  .row-4 {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+
+    .col {
+      display: flex;
+      align-items: center;
+      margin: 5rpx 0 5rpx 10rpx;
+
+      .label {
+        width: 50rpx;
+        font-size: 9rpx;
+        color: #171718;
+      }
+
+      .input-wrapper {
+        display: flex;
+        align-items: center;
+        width: 150rpx;
+        height: 23rpx;
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+
+        &.focus {
+          border-color: rgb(41, 121, 255);
+        }
+
+        .input-txt {
+          width: 40rpx;
+          height: 23rpx;
+          padding-left: 9rpx;
+          font-size: 9rpx;
+          line-height: 23rpx;
+          color: #171718;
+
+          &.w-200 {
+            width: 200rpx;
+          }
+        }
+
+        .unit {
+          width: 23rpx;
+          height: 22rpx;
+          font-size: 9rpx;
+          line-height: 22rpx;
+          color: #171718;
+          text-align: center;
+          background-color: #f5f7fa;
+          border-left: 1px solid #d9d9d9;
+          border-top-right-radius: 3rpx;
+          border-bottom-right-radius: 3rpx;
         }
       }
     }

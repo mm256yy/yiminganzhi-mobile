@@ -874,7 +874,7 @@ const formData = ref<any>({
   areaCode: '',
   townCode: '',
   villageCode: '',
-  locationType: '',
+  locationType: null,
   phone: '',
   periodValidity: null,
   establishDate: null,
