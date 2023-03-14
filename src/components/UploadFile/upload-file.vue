@@ -101,15 +101,6 @@ const delFile = (index: number) => {
 </script>
 
 <style lang="scss">
-
-
-/* #ifdef H5 */
-@media all and (min-width: 768px) {
-  .uni-file-picker__files {
-    max-width: 375px;
-  }
-}
-
 .uni-file-picker__files {
   /* #ifndef APP-NVUE */
   display: flex;
@@ -129,19 +120,19 @@ const delFile = (index: number) => {
 }
 
 .file-picker__mask {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
   /* #ifndef APP-NVUE */
   display: flex;
-  font-size: 14px;
-  color: #fff;
-  background-color: rgba(0, 0, 0, 0.4);
   /* #endif */
   justify-content: center;
   align-items: center;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  color: #fff;
+  font-size: 14px;
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .uni-file-picker__lists-box {
@@ -166,13 +157,13 @@ const delFile = (index: number) => {
 }
 
 .files__name {
-  margin-right: 25px;
+  flex: 1;
   font-size: 9rpx;
   color: #666;
+  margin-right: 25px;
   /* #ifndef APP-NVUE */
   word-break: break-all;
   word-wrap: break-word;
-  flex: 1;
   /* #endif */
 }
 
@@ -202,9 +193,9 @@ const delFile = (index: number) => {
     width: 100rpx;
     height: 30rpx;
     padding-left: 5rpx;
+    border-radius: 3rpx;
     font-size: 9rpx;
     background-color: #fff;
-    border-radius: 3rpx;
   }
 
   .txt-btn {
@@ -222,11 +213,11 @@ const delFile = (index: number) => {
 }
 
 .is-list-card {
-  padding: 5px;
-  margin-bottom: 5px;
   border: 1px #eee solid;
+  margin-bottom: 5px;
   border-radius: 5px;
   box-shadow: 0 0 2px 0px rgba(0, 0, 0, 0.1);
+  padding: 5px;
 }
 
 .files__image {
@@ -260,18 +251,18 @@ const delFile = (index: number) => {
 
 .icon-edit-box,
 .icon-del-box {
-  position: absolute;
-  top: 0px;
-  bottom: 0;
-  z-index: 2;
   /* #ifndef APP-NVUE */
   display: flex;
-  width: 26rpx;
-  height: 26rpx;
   margin: auto 0;
   /* #endif */
   align-items: center;
   justify-content: center;
+  position: absolute;
+  top: 0px;
+  bottom: 0;
+  height: 26rpx;
+  width: 26rpx;
+  z-index: 2;
 }
 
 .icon-edit-box {
@@ -287,6 +278,13 @@ const delFile = (index: number) => {
   height: 1px;
   background-color: #333;
   // border-radius: 1px;
+}
+
+/* #ifdef H5 */
+@media all and (min-width: 768px) {
+  .uni-file-picker__files {
+    max-width: 375px;
+  }
 }
 /* #endif */
 
