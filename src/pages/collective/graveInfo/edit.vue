@@ -12,7 +12,12 @@
               label-align="right"
               name="formData.registrantName"
             >
-              <uni-easyinput v-model="formData.registrantName" placeholder="请输入" />
+              <view
+                :class="['name-wrapper', formData.registrantName ? 'isSelected' : '']"
+                @click="selectName"
+              >
+                {{ formData.registrantName ? formData.registrantName : '请选择' }}
+              </view>
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -22,7 +27,7 @@
               label-align="right"
               name="formData.doorNo"
             >
-              <uni-easyinput v-model="formData.doorNo" disabled />
+              <uni-easyinput v-model="formData.doorNo" disabled placeholde="请选择" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -132,18 +137,26 @@
         @click="submit"
       />
     </view>
+    <!-- 搜索选择户号 -->
+    <search-list
+      v-show="showSearch"
+      :type="MainType.PeasantHousehold"
+      :villageCode="commonParams.villageCode"
+      @close="close"
+      @confirm-select="confirmSelect"
+    />
   </view>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { routerBack, getStorage, StorageKey } from '@/utils'
-import { addLandlordGraveApi, updateLandlordGraveApi, getLandlordListBySearchApi } from '@/service'
+import { addLandlordGraveApi, updateLandlordGraveApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config'
 import { MainType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
-import SearchInput from '@/components/Search/Index.vue'
+import SearchList from '@/components/SearchList/Index.vue'
 
 // 表单数据
 const formData = ref<any>({})
@@ -153,7 +166,7 @@ const form = ref<any>(null)
 const focusIndex = ref<number>(-1)
 const title = ref<string>('')
 const commonParams = ref<any>({})
-const landlordList = ref<any>([])
+const showSearch = ref<Boolean>(false)
 
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
@@ -172,6 +185,28 @@ onLoad((option: any) => {
   }
 })
 
+// 选择户主姓名/户号
+const selectName = () => {
+  showSearch.value = true
+}
+
+// 关闭搜索组件
+const close = () => {
+  showSearch.value = false
+}
+
+/**
+ * 确认搜索户主姓名/户号
+ * @param{Object} data
+ */
+const confirmSelect = (data: any) => {
+  if (data) {
+    formData.value.registrantName = data.label
+    formData.value.doorNo = data.value
+  }
+  close()
+}
+
 // 输入框获得焦点事件
 const inputFocus = (index: number) => {
   focusIndex.value = index
@@ -180,23 +215,6 @@ const inputFocus = (index: number) => {
 // 输入框失去焦点事件
 const inputBlur = () => {
   focusIndex.value = -1
-}
-
-/**
- * 搜索居民户
- * @param{object} name 居民姓名
- * @param{Object} type 居民户类型
- */
-const getLandlordListBySearch = (name: string, type: MainType) => {
-  let params = {
-    name,
-    type,
-    villageCode: formData.value.villageCode,
-    pageSize: 50
-  }
-  getLandlordListBySearchApi(params).then((res) => {
-    console.log('res:', res)
-  })
 }
 
 // 表单提交
@@ -285,6 +303,21 @@ const submit = () => {
       ::v-deep.uni-input-input,
       ::v-deep.uni-input-placeholder {
         font-size: 9rpx !important;
+      }
+
+      .name-wrapper {
+        width: 200rpx;
+        height: 23rpx;
+        padding-left: 7rpx;
+        font-size: 9rpx;
+        line-height: 23rpx;
+        color: #999;
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+
+        &.isSelected {
+          color: #171718;
+        }
       }
 
       .input-wrapper {

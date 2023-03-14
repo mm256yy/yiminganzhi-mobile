@@ -1,11 +1,11 @@
 <template>
   <view class="upload-wrapper">
     <upload-file
-      :limit="20"
-      @update-file-list="updateFilesList"
-      show-type="grid"
       :file-list="fileList"
+      :limit="20"
+      show-type="list"
       :accepts="['.jpg', '.png']"
+      @update-file-list="updateFilesList"
     />
   </view>
 </template>

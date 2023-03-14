@@ -868,7 +868,65 @@ import VillageSelectFormItem from '@/components/VillageSelectFormItem/index.vue'
 import { MainType } from '@/types/common'
 
 // 表单数据
-const formData = ref<any>({})
+const formData = ref<any>({
+  name: '',
+  doorNo: '',
+  suffixNo: '',
+  areaCode: '',
+  townCode: '',
+  villageCode: '',
+  locationType: '',
+  phone: '',
+  periodValidity: null,
+  establishDate: null,
+  taxPeriodValidity: null,
+  legalPersonName: '',
+  legalPersonCard: '',
+  legalPersonPhone: '',
+  companyType: '',
+  companyAddress: '',
+  issuingCompany: '',
+  licenceType: '',
+  licenceNo: '',
+  taxLicenceNo: '',
+  taxLicenceCompany: '',
+  ohterLicence: '',
+  registerType: '',
+  natureBusiness: '',
+  industryType: '',
+  economicNature: '',
+  registeredAmount: '',
+  fixedAssetsOriginalValue: '',
+  fixedAssetsNetValue: '',
+  regularWorkerNum: '',
+  temporaryWorkerNum: '',
+  annualPayroll: '',
+  averageAnnualOutputValue: '',
+  averageAnnualProfit: '',
+  averageAnnualTaxPaid: '',
+  managementType: '',
+  productCategory: '',
+  managementStatus: '',
+  informationInvolved: '',
+  treatmentScheme: '',
+  sellOwnershipArea: '',
+  sellOccupiedArea: '',
+  sellRemark: '',
+  transferOwnershipArea: '',
+  transferOccupiedArea: '',
+  transferRemark: '',
+  rentOwnershipArea: '',
+  rentOccupiedArea: '',
+  rentRemark: '',
+  otherOwnershipArea: '',
+  otherOccupiedArea: '',
+  otherRemark: '',
+  totalOwnershipArea: '',
+  totalOccupiedArea: '',
+  remark: '',
+  licensePic: [],
+  otherPic: []
+})
 
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
@@ -883,11 +941,10 @@ const uid = ref<string>('')
 // 获取上个页面传递的参数，给表单赋值
 onLoad((option: any) => {
   if (option) {
-    let params = JSON.parse(option.params)
-    formData.value = { ...params }
-    console.log('form:', formData.value)
     type.value = option.type
     if (type.value === 'edit') {
+      let params = JSON.parse(option.params)
+      formData.value = { ...params }
       title.value = '企业基本概况编辑'
       uid.value = option.uid
     } else if (type.value === 'add') {
@@ -957,6 +1014,7 @@ const submit = () => {
     licenceType: formData.value.licenceType,
     periodValidity: formData.value.periodValidity,
     licenceNo: formData.value.licenceNo,
+    issuingCompany: formData.value.issuingCompany,
     taxPeriodValidity: formData.value.taxPeriodValidity,
     taxLicenceNo: formData.value.taxLicenceNo,
     taxLicenceCompany: formData.value.taxLicenceCompany,

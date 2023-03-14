@@ -159,7 +159,7 @@ const focusIndex = ref<number>(-1)
 const commonParams = {
   doorNo: props.dataInfo.doorNo,
   householdId: props.dataInfo.householdId,
-  amount: 0,
+  amount: '',
   remark: ''
 }
 
@@ -198,7 +198,7 @@ const genArr = (arr?: any[], dataType?: number) => {
               ...item,
               ...commonParams
             })
-          } else {
+          } else if (dataType === 2) {
             firstData.value.push({
               ...item
             })
@@ -209,7 +209,7 @@ const genArr = (arr?: any[], dataType?: number) => {
               ...item,
               ...commonParams
             })
-          } else {
+          } else if (dataType === 2) {
             secondData.value.push({
               ...item
             })
@@ -220,7 +220,7 @@ const genArr = (arr?: any[], dataType?: number) => {
               ...item,
               ...commonParams
             })
-          } else {
+          } else if (dataType === 2) {
             otherData.value.push({
               ...item
             })
@@ -276,6 +276,7 @@ onMounted(() => {
   if (props.dataList && props.dataList.length > 0) {
     genArr(props.dataList, 2)
   } else {
+    console.log('重新渲染表格')
     getRevenueList()
     console.log('firstData:', firstData.value)
   }

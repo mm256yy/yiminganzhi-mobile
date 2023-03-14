@@ -46,23 +46,14 @@
                 <view class="label">所属区域：</view>
                 <view class="content">
                   {{
-                    (props.baseInfo.areaCodeText ? props.baseInfo.areaCodeText : '') +
-                    (props.baseInfo.townCodeText ? props.baseInfo.townCodeText : '') +
-                    (props.baseInfo.villageCodeText ? props.baseInfo.villageCodeText : '') +
-                    (props.baseInfo.virutalVillageCodeText
-                      ? props.baseInfo.virutalVillageCodeText
+                    (props.dataInfo.areaCodeText ? props.dataInfo.areaCodeText : '') +
+                    (props.dataInfo.townCodeText ? props.dataInfo.townCodeText : '') +
+                    (props.dataInfo.villageCodeText ? props.dataInfo.villageCodeText : '') +
+                    (props.dataInfo.virutalVillageCodeText
+                      ? props.dataInfo.virutalVillageCodeText
                       : '')
                   }}
                 </view>
-              </view>
-            </uni-col>
-          </uni-row>
-
-          <uni-row>
-            <uni-col :span="24">
-              <view class="col">
-                <view class="label">备注：</view>
-                <view class="content">{{ formatStr(props.dataInfo.remark) }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -85,10 +76,6 @@ import { locationTypes } from '@/config/common'
 
 const props = defineProps({
   dataInfo: {
-    type: Object as any,
-    default: () => {}
-  },
-  baseInfo: {
     type: Object as any,
     default: () => {}
   }

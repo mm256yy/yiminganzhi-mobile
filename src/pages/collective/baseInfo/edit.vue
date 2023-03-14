@@ -108,7 +108,16 @@ import Back from '@/components/Back/Index.vue'
 import VillageSelectFormItem from '@/components/VillageSelectFormItem/index.vue'
 
 // 表单数据
-const formData = ref<any>({})
+const formData = ref<any>({
+  name: '',
+  areaCode: '',
+  townCode: '',
+  villageCode: '',
+  suffixNo: '',
+  collectiveCode: '',
+  phone: '',
+  locationType: ''
+})
 
 // 获得焦点的输入框下标
 const focusIndex = ref<number>(-1)
@@ -121,13 +130,15 @@ const emit = defineEmits(['updateTree'])
 
 // 获取上个页面传递的参数，给表单赋值
 onLoad((option: any) => {
-  type.value = option.type
-  if (option.type === 'edit') {
-    let params = JSON.parse(option.params)
-    formData.value = { ...params }
-    title.value = '村集体基本情况编辑'
-  } else if (option.type === 'add') {
-    title.value = '添加村集体'
+  if (option) {
+    type.value = option.type
+    if (type.value === 'edit') {
+      let params = JSON.parse(option.params)
+      formData.value = { ...params }
+      title.value = '村集体基本情况编辑'
+    } else if (type.value === 'add') {
+      title.value = '添加村集体'
+    }
   }
 })
 

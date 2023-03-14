@@ -13,6 +13,7 @@
               :templateType="PrintType.printIndividualHousehold"
               @expand-toggle="expandToggle"
               @update-tree="updateTree"
+              @update-data="updateData"
             />
 
             <view class="tabs-content">
@@ -174,52 +175,12 @@ const selectTabs = (data: any) => {
 }
 
 const toLink = (type: string) => {
-  let params = {
-    name: '',
-    areaCode: '',
-    townCode: '',
-    villageCode: '',
-    locationType: '',
-    phone: '',
-    periodValidity: null,
-    establishDate: null,
-    taxPeriodValidity: null,
-    legalPersonName: '',
-    legalPersonCard: '',
-    legalPersonPhone: '',
-    companyType: '',
-    companyAddress: '',
-    licenceType: '',
-    licenceNo: '',
-    taxLicenceNo: '',
-    taxLicenceCompany: '',
-    ohterLicence: '',
-    registerType: '',
-    natureBusiness: '',
-    industryType: '',
-    economicNature: '',
-    registeredAmount: '',
-    fixedAssetsOriginalValue: '',
-    fixedAssetsNetValue: '',
-    regularWorkerNum: '',
-    temporaryWorkerNum: '',
-    annualPayroll: '',
-    averageAnnualOutputValue: '',
-    averageAnnualProfit: '',
-    averageAnnualTaxPaid: '',
-    productCategory: '',
-    managementStatus: '',
-    informationInvolved: '',
-    treatmentScheme: '',
-    otherRemark: '',
-    licensePic: [],
-    otherPic: []
-  }
+  routerForward('selfBaseInfoEdit', { type })
+}
 
-  routerForward('selfBaseInfoEdit', {
-    params: JSON.stringify(params),
-    type
-  })
+// 更新整体数据
+const updateData = () => {
+  emit('updateData', props.dataInfo.uid)
 }
 
 /**
@@ -231,7 +192,7 @@ const deleteHouse = (data: any) => {
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
-        emit('updateData', props.dataInfo.uid)
+        updateData()
       }
     })
     .catch((e) => {
@@ -248,7 +209,7 @@ const deleteTree = (data: any) => {
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
-        emit('updateData', props.dataInfo.uid)
+        updateData()
       }
     })
     .catch((e) => {
@@ -266,7 +227,7 @@ const updateFruitTreeInfo = (data: any) => {
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
-        emit('updateData', props.dataInfo.uid)
+        updateData()
       }
     })
     .catch((e) => {
@@ -284,7 +245,7 @@ const updateAccessoryInfo = (data: any) => {
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
-        emit('updateData', props.dataInfo.uid)
+        updateData()
       }
     })
     .catch((e) => {
@@ -301,7 +262,7 @@ const deleteEquipment = (data: any) => {
     .then((res: any) => {
       if (res) {
         showToast(SUCCESS_MSG)
-        emit('updateData', props.dataInfo.uid)
+        updateData()
       }
     })
     .catch((e) => {

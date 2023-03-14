@@ -11,7 +11,7 @@
       </view>
 
       <view class="row" v-for="(item, index) in formData" :key="item.id">
-        <view class="col">{{ index }}</view>
+        <view class="col">{{ index + 1 }}</view>
         <view class="col w-117">{{ item.name }}</view>
         <view class="col w-57">{{ item.size }}</view>
         <view class="col">{{ item.unit }}</view>

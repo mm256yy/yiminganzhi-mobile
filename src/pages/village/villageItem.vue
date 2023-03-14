@@ -7,9 +7,9 @@
         <view class="name">{{ props.data.name }}</view>
       </view>
       <view class="head-rt">
-        <view class="edit-box" @click.stop="deleteItem">
+        <!-- <view class="edit-box" @click.stop="deleteItem">
           <image class="remove-icon" src="@/static/images/remove.png" mode="scaleToFill" />
-        </view>
+        </view> -->
       </view>
     </view>
 

@@ -1,5 +1,9 @@
 <template>
   <view class="uni-file-picker">
+    <view v-if="title" class="uni-file-picker__header">
+      <text class="file-title">{{ title }}</text>
+      <text class="file-count">{{ filesList.length }}/{{ limit }}</text>
+    </view>
     <upload-image
       v-if="showType === 'grid'"
       :files-list="filesList"
@@ -25,9 +29,11 @@
       @prview-image="prviewImage"
       @update-file-list="childUpdateFilesList"
     >
-      <slot
-        ><button type="primary"> <text class="txt">选择文件</text></button></slot
-      >
+      <slot>
+        <button type="primary">
+          <text class="txt">选择文件</text>
+        </button>
+      </slot>
     </upload-file>
   </view>
 </template>
@@ -46,6 +52,7 @@ interface PropsType {
   accepts?: string[]
   fileList: string
   modelValue?: string
+  title?: string
 }
 
 interface FileItemType {
@@ -115,9 +122,20 @@ onMounted(() => {
   })
 })
 
+// 选择文件
 const choose = () => {
-  // 选择图片文件
+  if (props.fileList.length >= Number(props.limit) && props.showType !== 'grid') {
+    uni.showToast({
+      title: `您最多选择 ${props.limit} 个文件`,
+      icon: 'none'
+    })
+    return
+  }
+  chooseFiles()
+}
 
+const chooseFiles = () => {
+  // 选择图片文件
   uni.chooseImage({
     count: props.limit,
     extension: props.accepts || [],

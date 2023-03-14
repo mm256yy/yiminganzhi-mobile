@@ -13,6 +13,7 @@
               :templateType="PrintType.printCompany"
               @expand-toggle="expandToggle"
               @update-tree="updateTree"
+              @update-data="updateData"
             />
 
             <view class="tabs-content">
@@ -187,69 +188,12 @@ const selectTabs = (data: any) => {
 }
 
 const toLink = (type: string) => {
-  let params = {
-    name: '',
-    doorNo: '',
-    suffixNo: '',
-    areaCode: '',
-    townCode: '',
-    villageCode: '',
-    locationType: '',
-    phone: '',
-    periodValidity: null,
-    establishDate: null,
-    taxPeriodValidity: null,
-    legalPersonName: '',
-    legalPersonCard: '',
-    legalPersonPhone: '',
-    companyType: '',
-    companyAddress: '',
-    licenceType: '',
-    licenceNo: '',
-    taxLicenceNo: '',
-    taxLicenceCompany: '',
-    ohterLicence: '',
-    registerType: '',
-    natureBusiness: '',
-    industryType: '',
-    economicNature: '',
-    registeredAmount: '',
-    fixedAssetsOriginalValue: '',
-    fixedAssetsNetValue: '',
-    regularWorkerNum: '',
-    temporaryWorkerNum: '',
-    annualPayroll: '',
-    averageAnnualOutputValue: '',
-    averageAnnualProfit: '',
-    averageAnnualTaxPaid: '',
-    managementType: '',
-    productCategory: '',
-    managementStatus: '',
-    informationInvolved: '',
-    treatmentScheme: '',
-    sellOwnershipArea: '',
-    sellOccupiedArea: '',
-    sellRemark: '',
-    transferOwnershipArea: '',
-    transferOccupiedArea: '',
-    transferRemark: '',
-    rentOwnershipArea: '',
-    rentOccupiedArea: '',
-    rentRemark: '',
-    otherOwnershipArea: '',
-    otherOccupiedArea: '',
-    otherRemark: '',
-    totalOwnershipArea: '',
-    totalOccupiedArea: '',
-    remark: '',
-    licensePic: [],
-    otherPic: []
-  }
+  routerForward('baseInfoEdit', { type })
+}
 
-  routerForward('baseInfoEdit', {
-    params: JSON.stringify(params),
-    type
-  })
+// 更新整体数据
+const updateData = () => {
+  emit('updateData', props.dataInfo.uid)
 }
 
 /**
@@ -261,7 +205,7 @@ const deleteHouse = (data: any) => {
     .then((res: any) => {
       if (res) {
         showToast(SUCCESS_MSG)
-        emit('updateData', props.dataInfo.uid)
+        updateData()
       }
     })
     .catch((e) => {
@@ -278,7 +222,7 @@ const deleteTree = (data: any) => {
     .then((res: any) => {
       if (res) {
         showToast(SUCCESS_MSG)
-        emit('updateData', props.dataInfo.uid)
+        updateData()
       }
     })
     .catch((e) => {
@@ -296,7 +240,7 @@ const updateFruitTreeInfo = (data: any) => {
     .then((res: any) => {
       if (res) {
         showToast(SUCCESS_MSG)
-        emit('updateData', props.dataInfo.uid)
+        updateData()
       }
     })
     .catch((e) => {
@@ -315,7 +259,7 @@ const updateAccessoryInfo = (data: any) => {
     .then((res: any) => {
       if (res) {
         showToast(SUCCESS_MSG)
-        emit('updateData', props.dataInfo.uid)
+        updateData()
       }
     })
     .catch((e) => {
@@ -332,7 +276,7 @@ const deleteEquipment = (data: any) => {
     .then((res: any) => {
       if (res) {
         showToast(SUCCESS_MSG)
-        emit('updateData', props.dataInfo.uid)
+        updateData()
       }
     })
     .catch((e) => {
@@ -350,7 +294,7 @@ const updateBusinessInfo = (data: any) => {
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
-        emit('updateData', props.dataInfo.uid)
+        updateData()
       }
     })
     .catch((e) => {

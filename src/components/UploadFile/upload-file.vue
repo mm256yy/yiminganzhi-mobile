@@ -89,6 +89,8 @@ const delFile = (index: number) => {
 </script>
 
 <style lang="scss">
+
+
 /* #ifdef H5 */
 @media all and (min-width: 768px) {
   .uni-file-picker__files {
@@ -140,9 +142,10 @@ const delFile = (index: number) => {
 }
 
 .uni-file-picker__item {
+  /* #ifndef APP-NVUE */
   display: flex;
+  /* #endif */
   align-items: center;
-  flex-direction: row;
   padding: 8px 5px 8px 10px;
 }
 

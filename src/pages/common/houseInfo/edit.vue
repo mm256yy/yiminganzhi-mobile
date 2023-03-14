@@ -272,23 +272,31 @@
 
         <uni-row>
           <uni-col :span="12">
-            <uni-forms-item
-              label="中心经纬度"
-              :label-width="150"
-              label-align="right"
-              name="formData.lg"
-            >
+            <uni-forms-item label="中心经纬度" :label-width="150" label-align="right">
               <view class="lg-txt-wrapper">
-                <uni-data-checkbox v-model="formData.check" :localdata="lgTagList" />
-                <uni-easyinput
-                  class="m-t-5"
-                  v-model="formData.lg"
-                  :disabled="formData.check === 1"
-                  type="text"
-                  :placeholder="
-                    formData.check === 1 ? '获取定位' : formData.check === 2 ? '输入经纬度' : ''
-                  "
-                />
+                <uni-data-checkbox v-model="check" :localdata="lgTagList" />
+                <view class="position" v-if="check === 1" @click="gotoMap">
+                  <uni-icons type="map" color="#5D8CF7" size="14rpx" />
+                  <text class="txt">{{
+                    formData.longitude && formData.latitude
+                      ? `${formData.longitude},${formData.latitude}`
+                      : '获取定位'
+                  }}</text>
+                </view>
+                <view v-else-if="check === 2">
+                  <uni-easyinput
+                    class="m-t-5"
+                    type="digit"
+                    v-model="formData.longitude"
+                    placeholder="输入经度"
+                  />
+                  <uni-easyinput
+                    class="m-t-5"
+                    type="digit"
+                    v-model="formData.latitude"
+                    placeholder="输入纬度"
+                  />
+                </view>
               </view>
             </uni-forms-item>
           </uni-col>
@@ -387,9 +395,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive } from 'vue'
+import { ref, onMounted } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { routerBack, getStorage, StorageKey } from '@/utils'
+import { routerBack, getStorage, StorageKey, routerForward, networkCheck } from '@/utils'
 import { addLandlordHouseApi, updateLandlordHouseApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
@@ -406,13 +414,13 @@ const dict = getStorage(StorageKey.DICT)
 
 // 获得焦点的输入框下标
 const focusIndex = ref<number>(-1)
+const check = ref<number>(1)
 
-// 表单校验规则
-const rules = reactive({
-  houseNo: { rules: [{ required: true, message: '请输入', trigger: 'blur' }] },
-  usageType: { rules: [{ required: true, message: '请选择', trigger: 'change' }] },
-  houseType: { rules: [{ required: true, message: '请选择', trigger: 'change' }] }
-})
+// 中心经纬度输入选项
+const lgTagList = ref<any>([
+  { text: '获取定位', value: 1, disable: false },
+  { text: '输入经纬度', value: 2, disable: false }
+])
 
 onLoad((option: any) => {
   if (option) {
@@ -427,12 +435,6 @@ onLoad((option: any) => {
   }
 })
 
-// 中心经纬度输入选项
-const lgTagList = ref<any>([
-  { text: '获取定位', value: 1 },
-  { text: '输入经纬度', value: 2 }
-])
-
 // 输入框获得焦点事件
 const inputFocus = (index: number) => {
   focusIndex.value = index
@@ -441,6 +443,13 @@ const inputFocus = (index: number) => {
 // 输入框失去焦点事件
 const inputBlur = () => {
   focusIndex.value = -1
+}
+
+const gotoMap = () => {
+  routerForward('map', {
+    longitude: formData.value.longitude,
+    latitude: formData.value.latitude
+  })
 }
 
 // 获取房屋平面示意图上传状态
@@ -562,6 +571,26 @@ const submit = () => {
     }
   }
 }
+
+const mapChooseCallBack = (data: any) => {
+  if (data && data.longitude && data.latitude) {
+    formData.value.longitude = data.longitude
+    formData.value.latitude = data.latitude
+  }
+}
+
+onMounted(() => {
+  networkCheck().then((res) => {
+    if (!res) {
+      lgTagList.value = [
+        { text: '获取定位', value: 1, disable: true },
+        { text: '输入经纬度', value: 2, disable: false }
+      ]
+      check.value = 2
+    }
+  })
+  uni.$on('chooseMap', mapChooseCallBack)
+})
 </script>
 
 <style lang="scss" scoped>
@@ -620,6 +649,29 @@ const submit = () => {
       ::v-deep.uni-input-input,
       ::v-deep.uni-input-placeholder {
         font-size: 9rpx !important;
+      }
+
+      .lg-txt-wrapper {
+        display: flex;
+        flex-direction: column;
+
+        .position {
+          display: flex;
+          width: 200rpx;
+          height: 23rpx;
+          margin-top: 5rpx;
+          background: #ffffff;
+          border: 1px solid #d9d9d9;
+          border-radius: 2rpx;
+          align-items: center;
+          justify-content: center;
+
+          .txt {
+            margin-left: 6rpx;
+            font-size: 9rpx;
+            color: #171718;
+          }
+        }
       }
 
       .input-wrapper {

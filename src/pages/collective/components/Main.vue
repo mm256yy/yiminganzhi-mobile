@@ -13,6 +13,7 @@
               :showPrint="false"
               @expand-toggle="expandToggle"
               @update-tree="updateTree"
+              @update-data="updateData"
             />
 
             <view class="tabs-content">
@@ -189,6 +190,11 @@ const addClick = (type: string) => {
   routerForward('collectiveBaseInfoEdit', { type })
 }
 
+// 更新整体数据
+const updateData = () => {
+  emit('updateData', props.dataInfo.uid)
+}
+
 /**
  * 房屋信息 - 删除
  * @param(Object) data 被删除的行信息
@@ -198,7 +204,7 @@ const deleteHouse = (data: any) => {
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
-        emit('updateData', props.dataInfo.uid)
+        updateData()
       }
     })
     .catch((e) => {
@@ -215,7 +221,7 @@ const deleteTree = (data: any) => {
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
-        emit('updateData', props.dataInfo.uid)
+        updateData()
       }
     })
     .catch((e) => {
@@ -233,7 +239,7 @@ const updateFruitTreeInfo = (data: any) => {
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
-        emit('updateData', props.dataInfo.uid)
+        updateData()
       }
     })
     .catch((e) => {
@@ -251,7 +257,7 @@ const updateAccessoryInfo = (data: any) => {
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
-        emit('updateData', props.dataInfo.uid)
+        updateData()
       }
     })
     .catch((e) => {
@@ -268,7 +274,7 @@ const deleteEquipment = (data: any) => {
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
-        emit('updateData', props.dataInfo.uid)
+        updateData()
       }
     })
     .catch((e) => {
@@ -285,7 +291,7 @@ const deleteGraveInfo = (data: any) => {
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
-        emit('updateData', props.dataInfo.uid)
+        updateData()
       }
     })
     .catch((e) => {

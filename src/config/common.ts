@@ -44,3 +44,8 @@ export const locationTypes = [
 export const getLocationText = (key: string) => {
   return locationTypes.find((item) => item.value === key)?.label
 }
+
+export const yesAndNoEnums = [
+  { text: '是', value: 'true', disable: false },
+  { text: '否', value: 'false', disable: false }
+]
