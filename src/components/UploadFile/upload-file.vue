@@ -286,6 +286,7 @@ const delFile = (index: number) => {
   background-color: #333;
   // border-radius: 1px;
 }
+/* #endif */
 
 .picker-btn-wrapper {
   display: flex;
@@ -305,5 +306,4 @@ const delFile = (index: number) => {
     margin-right: 5px;
   }
 }
-/* #endif */
 </style>
