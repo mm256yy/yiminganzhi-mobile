@@ -243,6 +243,8 @@ const delFile = (index: number) => {
 .is-text-box {
   display: flex;
   flex-wrap: wrap;
+  border: 1px #eee solid;
+  border-radius: 5px;
 }
 
 .is-text-image {
