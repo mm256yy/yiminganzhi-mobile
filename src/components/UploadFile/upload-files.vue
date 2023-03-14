@@ -100,20 +100,9 @@ const delFile = (index: number) => {
 }
 </script>
 
-<style lang="scss">
-
-
-/* #ifdef H5 */
-@media all and (min-width: 768px) {
-  .uni-file-picker__files {
-    max-width: 375px;
-  }
-}
-
+<style lang="scss" scoped>
 .uni-file-picker__files {
-  /* #ifndef APP-NVUE */
   display: flex;
-  /* #endif */
   flex-direction: column;
   justify-content: flex-start;
 }
@@ -130,12 +119,10 @@ const delFile = (index: number) => {
   right: 0;
   bottom: 0;
   left: 0;
-  /* #ifndef APP-NVUE */
   display: flex;
   font-size: 14px;
   color: #fff;
   background-color: rgba(0, 0, 0, 0.4);
-  /* #endif */
   justify-content: center;
   align-items: center;
 }
@@ -150,9 +137,7 @@ const delFile = (index: number) => {
 }
 
 .uni-file-picker__item {
-  /* #ifndef APP-NVUE */
   display: flex;
-  /* #endif */
   align-items: center;
   padding: 8px 5px 8px 10px;
 }
@@ -165,30 +150,20 @@ const delFile = (index: number) => {
   margin-right: 25px;
   font-size: 9rpx;
   color: #666;
-  /* #ifndef APP-NVUE */
   word-break: break-all;
   word-wrap: break-word;
   flex: 1;
-  /* #endif */
 }
 
 .icon-files {
-  /* #ifndef APP-NVUE */
   position: static;
   background-color: initial;
-  /* #endif */
 }
 
 .icon_img {
   width: 26rpx;
   height: 26rpx;
 }
-
-// .icon-files .icon-del {
-// 	background-color: #333;
-// 	width: 12px;
-// 	height: 1px;
-// }
 
 .rename-input {
   display: flex;
@@ -258,12 +233,10 @@ const delFile = (index: number) => {
   top: 0px;
   bottom: 0;
   z-index: 2;
-  /* #ifndef APP-NVUE */
   display: flex;
   width: 26rpx;
   height: 26rpx;
   margin: auto 0;
-  /* #endif */
   align-items: center;
   justify-content: center;
 }
@@ -280,9 +253,7 @@ const delFile = (index: number) => {
   width: 15rpx;
   height: 1px;
   background-color: #333;
-  // border-radius: 1px;
 }
-/* #endif */
 
 .picker-btn-wrapper {
   display: flex;
