@@ -30,7 +30,7 @@ const props = defineProps({
 
 const emit = defineEmits(['submit'])
 const otherPic = ref<string>(
-  JSON.stringify(props.dataInfo.immigrantFile) !== '{}'
+  props.dataInfo.immigrantFile && JSON.stringify(props.dataInfo.immigrantFile) !== '{}'
     ? props.dataInfo.immigrantFile.otherPic
     : '[]'
 )
