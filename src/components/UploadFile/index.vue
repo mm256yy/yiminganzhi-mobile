@@ -37,7 +37,7 @@
 <script lang="ts" setup>
 import { ref, watch, onMounted } from 'vue'
 import uploadImage from './upload-image.vue'
-import uploadFile from './upload-file.vue'
+import uploadFile from './upload-files.vue'
 import { batchUploadImg } from '@/service'
 import { networkCheck } from '@/utils'
 import defaultImg from '@/static/images/icon_null_data.png'
