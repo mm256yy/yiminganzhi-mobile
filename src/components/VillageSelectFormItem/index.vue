@@ -56,7 +56,7 @@ watch(
     }
   },
   {
-    immediate: true
+    immediate: false
   }
 )
 
@@ -69,7 +69,7 @@ watch(
     }
   },
   {
-    immediate: true
+    immediate: false
   }
 )
 

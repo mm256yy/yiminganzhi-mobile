@@ -33,7 +33,7 @@ class DistrictTree extends Common {
 
       // 拿到 业主列表
       const landlordList = await LandlordController.getList(type)
-
+      console.log(landlordList, '----')
       // 空校验
       if (this.isArrayAndNotNull(districtList) && this.isArrayAndNotNull(landlordList)) {
         // 统计 信息
@@ -212,7 +212,8 @@ class DistrictTree extends Common {
       districtList.forEach((item) => {
         item.totalNum = totalMap[item.code] || 0
       })
-      const newDistrictList = districtList.map((item) => item.totalNum !== 0)
+
+      const newDistrictList = districtList.filter((item) => item.totalNum !== 0)
       const totalArray = [...newDistrictList, ...villageList]
       if (this.isArrayAndNotNull(totalArray)) {
         const res = arrayToTree(totalArray)
