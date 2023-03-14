@@ -82,8 +82,6 @@ watch(
         })
         filesList.value = list
       }
-    } else {
-      filesList.value = []
     }
   },
   {
@@ -106,8 +104,6 @@ watch(
         })
         filesList.value = list
       }
-    } else {
-      filesList.value = []
     }
   },
   {
