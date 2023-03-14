@@ -117,7 +117,6 @@ onMounted(() => {
 // 选择文件
 const choose = () => {
   const fileList = JSON.parse(props.fileList)
-  console.log('fileList:', fileList.length)
   if (fileList.length >= Number(props.limit) && props.showType !== 'grid') {
     uni.showToast({
       title: `您最多选择 ${props.limit} 个文件`,
