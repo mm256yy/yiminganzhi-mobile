@@ -522,6 +522,33 @@ export class Landlord extends Common {
       }
     })
   }
+
+  // 查询行政村
+  getVillageCodes(type?: MainType): Promise<string[]> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const array: string[] = []
+        let sql = `select * from ${LandlordTableName} where isDelete = '0'`
+        if (type) {
+          sql += ` and type = '${type}'`
+        }
+        const list: LandlordDDLType[] = await this.db.selectSql(sql)
+
+        if (list && Array.isArray(list)) {
+          list.forEach((item) => {
+            const content = JSON.parse(item.content)
+            array.push(content.villageCode)
+            array.push(content.townCode)
+            array.push(content.areaCode)
+          })
+        }
+        resolve(array)
+      } catch (error) {
+        console.log(error, 'landlord-getVillageCodes-error')
+        reject([])
+      }
+    })
+  }
 }
 
 export const LandlordController = new Landlord()

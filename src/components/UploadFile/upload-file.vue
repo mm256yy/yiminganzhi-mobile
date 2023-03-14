@@ -44,7 +44,7 @@
     <view v-if="props.filesList.length === 0" class="file-picker__box">
       <view class="file-picker__box-content is-add" @click="choose">
         <slot>
-          <view class="picker-btn-wrapper">
+          <view class="picker-btn-wrapper m-0">
             <image class="icon" src="@/static/images/icon_photo.png" mode="scaleToFill" />上传照片
           </view>
         </slot>
@@ -116,10 +116,6 @@ const delFile = (index: number) => {
   /* #endif */
   flex-direction: column;
   justify-content: flex-start;
-}
-
-.files-button {
-  // border: 1px red solid;
 }
 
 .uni-file-picker__lists {
@@ -243,8 +239,6 @@ const delFile = (index: number) => {
 .is-text-box {
   display: flex;
   flex-wrap: wrap;
-  border: 1px #eee solid;
-  border-radius: 5px;
 }
 
 .is-text-image {
@@ -301,6 +295,10 @@ const delFile = (index: number) => {
   border-radius: 5px;
   align-items: center;
   justify-content: center;
+
+  &.m-0 {
+    margin: 0;
+  }
 
   .icon {
     width: 15rpx;

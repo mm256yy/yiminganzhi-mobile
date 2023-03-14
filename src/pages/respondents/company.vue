@@ -49,7 +49,7 @@
       <view class="cont-item" v-else>
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">自然村名称:</view>
-        <view class="value">{{ props.data.virutalVillageCodeText }}</view>
+        <view class="value">{{ props.data.virutalVillageCodeText || '' }}</view>
       </view>
     </view>
   </view>

@@ -120,10 +120,13 @@ import Container from '@/components/Container/index.vue'
 import NoData from '@/components/NoData/index.vue'
 import CompanyItem from './company.vue'
 import TreeSelect from '@/components/VillageTreeSelect/index.vue'
-import { getLandlordListBySearchApi, getOtherItemApi, deleteLandlordApi } from '@/service'
+import {
+  getLandlordListBySearchApi,
+  getVillageTreeWithoutNullApi,
+  deleteLandlordApi
+} from '@/service'
 import { LandlordType } from '@/types/sync'
 import { LandlordSearchType, MainType } from '@/types/common'
-import { OtherDataType } from '@/database'
 import { routerForward } from '@/utils'
 
 const tabType = ref<MainType>(MainType.PeasantHousehold)
@@ -157,6 +160,7 @@ const clear = () => {
 const onTabChange = (type: MainType) => {
   tabType.value = type
   init()
+  getTreeData()
 }
 
 const onToggleVillage = () => {
@@ -176,7 +180,7 @@ const villageConfirm = (code: string[], tit: string[]) => {
 }
 
 const getTreeData = async () => {
-  const res = await getOtherItemApi(OtherDataType.DistrictTree)
+  const res = await getVillageTreeWithoutNullApi()
   treeData.value = res || []
 }
 

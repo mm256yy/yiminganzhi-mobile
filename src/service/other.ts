@@ -13,6 +13,7 @@ import {
 } from '@/controller'
 import { ImageController } from '@/controller/image'
 import { OtherDataType, ImageDDLType } from '@/database'
+import { MainType } from '@/types/common'
 
 // 获取项目列表
 export const getProjectListApi = () => {
@@ -24,14 +25,19 @@ export const getCollectListApi = () => {
   return CollectController.getList()
 }
 
-// 获取行政村 下拉树
+// 获取行政村 下拉树 全量
 export const getVillageTreeApi = () => {
   return OtherController.getOtherWithType(OtherDataType.DistrictTree)
 }
 
-// 获取自然村 下拉树
+// 获取行政村 下拉树 过滤了空数据
+export const getVillageTreeWithoutNullApi = (type?: MainType) => {
+  return DistrictTreeController.getVillageTree(type)
+}
+
+// 获取自然村 下拉树 过滤了空数据
 export const getVirutalVillageTreeApi = () => {
-  return DistrictTreeController.getVillageTree()
+  return DistrictTreeController.getVirutalVillageTree()
 }
 
 // 附属物配置列表

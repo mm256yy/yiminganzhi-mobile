@@ -31,6 +31,10 @@ class Village extends Common {
             // virutalVillageCode: string
             // areaCode: string
             // 331102001201 行政村
+            item.villageCode = item.parentCode
+            item.townCode = item.parentCode.slice(0, 9)
+            item.areaCode = item.parentCode.slice(0, 6)
+
             item.villageCodeText = districtMap[item.parentCode]
             item.townCodeText = districtMap[item.parentCode.slice(0, 9)]
             item.areaCodeText = districtMap[item.parentCode.slice(0, 6)]
@@ -72,6 +76,10 @@ class Village extends Common {
           // virutalVillageCode: string
           // areaCode: string
           // 331102001201 行政村
+          item.villageCode = item.parentCode
+          item.townCode = item.parentCode.slice(0, 9)
+          item.areaCode = item.parentCode.slice(0, 6)
+
           item.villageCodeText = districtMap[item.parentCode]
           item.townCodeText = districtMap[item.parentCode.slice(0, 9)]
           item.areaCodeText = districtMap[item.parentCode.slice(0, 6)]
