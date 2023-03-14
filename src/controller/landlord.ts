@@ -14,6 +14,7 @@ import {
   ReportStatusEnum
 } from '@/types/common'
 import dayjs from 'dayjs'
+
 // uid: string
 // content: string
 // name: string
@@ -176,10 +177,34 @@ export class Landlord extends Common {
         data.reportStatus = ReportStatusEnum.UnReport
         data.reportUser = ''
         data.reportDate = ''
+
         data.company = data.company || {}
+        if (data.type === MainType.Company || data.type === MainType.IndividualHousehold) {
+          const companyUid = guid()
+          data.company.uid = companyUid
+        }
+        data.demographicList = data.demographicList || []
+
+        if (data.type === MainType.PeasantHousehold) {
+          const demographicUid = guid()
+          data.demographicList.push({
+            name: data.name,
+            card: '',
+            relation: '1',
+            doorNo: data.doorNo,
+            townCode: data.townCode,
+            villageCode: data.villageCode,
+            virutalVillageCode: data.virutalVillageCode,
+            address: data.address || '',
+            cityCode: '',
+            areaCode: data.areaCode,
+            phone: data.phone,
+            uid: demographicUid
+          })
+        }
+
         data.immigrantFile = data.immigrantFile || {}
         data.immigrantWill = data.immigrantWill || {}
-        data.demographicList = data.demographicList || []
         data.immigrantAppendantList = data.immigrantAppendantList || []
         data.immigrantGraveList = data.immigrantGraveList || []
         data.immigrantHouseList = data.immigrantHouseList || []
@@ -207,6 +232,37 @@ export class Landlord extends Common {
     })
   }
 
+  updateBaseLandlord(data: LandlordType): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!data || !data.uid || !data.type) {
+          reject(false)
+          console.log('核心字段缺失')
+          return
+        }
+        const landlord = await this.getLandlordByUid(data.uid)
+        const newData = { ...landlord, ...data }
+        const values = `status = 'modify',type = '${newData.type}',name = '${
+          newData.name
+        }',reportStatus = '${newData.reportStatus}',reportDate = '${
+          newData.reportDate
+        }',reportUser = '${newData.reportUser}',villageCode = '${
+          newData.villageCode
+        }',content = '${JSON.stringify(newData)}',updatedDate = '${getCurrentTimeStamp()}'`
+        const sql = `update ${LandlordTableName} set ${values} where uid = '${newData.uid}' and isDelete = '0'`
+        const res = await this.db.execteSql([sql])
+        if (res && res.code) {
+          reject(false)
+          return
+        }
+        resolve(true)
+      } catch (error) {
+        console.log(error, 'updateLandlord-error')
+        reject(false)
+      }
+    })
+  }
+
   // 业主列表修改
   updateLandlord(data: LandlordType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
@@ -216,6 +272,7 @@ export class Landlord extends Common {
           console.log('核心字段缺失')
           return
         }
+
         const values = `status = 'modify',type = '${data.type}',name = '${
           data.name
         }',reportStatus = '${data.reportStatus}',reportDate = '${data.reportDate}',reportUser = '${
@@ -494,6 +551,7 @@ export class Landlord extends Common {
           if (array.length) {
             // 未通过校验
             resolve(array)
+            console.log('未通过校验')
             return
           }
         }
@@ -513,6 +571,7 @@ export class Landlord extends Common {
         const res = await this.db.execteSql([sql])
         if (res && res.code) {
           reject('更新状态失败')
+          console.log('更新状态失败')
           return
         }
         resolve(true)

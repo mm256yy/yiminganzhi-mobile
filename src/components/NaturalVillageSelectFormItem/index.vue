@@ -63,7 +63,7 @@ watch(
     }
   },
   {
-    immediate: false
+    immediate: true
   }
 )
 

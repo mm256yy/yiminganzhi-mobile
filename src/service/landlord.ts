@@ -32,7 +32,7 @@ export const addLandlordApi = (data: Omit<LandlordType, 'id' | 'uid'>) => {
 
 // 修改业主
 export const updateLandlordApi = (data: LandlordType) => {
-  return LandlordController.updateLandlord(data)
+  return LandlordController.updateBaseLandlord(data)
 }
 
 // 删除业主

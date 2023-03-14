@@ -62,7 +62,7 @@
       />
     </view>
     <!-- 子集展开 无数据 -->
-    <view v-else-if="!hasChildren && open" class="no-data">暂无数据</view>
+    <view v-else-if="!hasChildren && !props.data.landlord && open" class="no-data">暂无数据</view>
   </view>
 </template>
 
