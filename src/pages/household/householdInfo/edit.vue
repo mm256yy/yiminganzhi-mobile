@@ -224,7 +224,6 @@ onLoad((option: any) => {
   if (option.type === 'edit') {
     let params = JSON.parse(option.params)
     formData.value = { ...params }
-    console.log(formData, 'formData')
     title.value = '居民户信息编辑'
   } else if (option.type === 'add') {
     title.value = '添加居民户信息'
