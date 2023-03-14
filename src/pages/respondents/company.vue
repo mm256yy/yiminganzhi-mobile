@@ -27,7 +27,9 @@
       <view class="cont-item" v-else>
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">是否财产户:</view>
-        <view class="value">{{ props.data.hasPropertyAccount ? '是' : '否' }}</view>
+        <view class="value">
+          {{ dictOption(yesAndNoEnums, props.data.hasPropertyAccount) }}
+        </view>
       </view>
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
@@ -54,8 +56,8 @@
 </template>
 
 <script lang="ts" setup>
-import { routerForward } from '@/utils'
-import { getLocationText } from '@/config/common'
+import { dictOption } from '@/utils'
+import { getLocationText, yesAndNoEnums } from '@/config/common'
 import { LandlordType } from '@/types/sync'
 import { MainType } from '@/types/common'
 

@@ -655,8 +655,47 @@ import VillageSelectFormItem from '@/components/VillageSelectFormItem/index.vue'
 import { MainType } from '@/types/common'
 
 // 表单数据
-const formData = ref<any>({})
-const form = ref<any>(null)
+const formData = ref<any>({
+  name: '',
+  areaCode: '',
+  townCode: '',
+  villageCode: '',
+  locationType: '',
+  phone: '',
+  periodValidity: null,
+  establishDate: null,
+  taxPeriodValidity: null,
+  legalPersonName: '',
+  legalPersonCard: '',
+  legalPersonPhone: '',
+  companyType: '',
+  companyAddress: '',
+  licenceType: '',
+  licenceNo: '',
+  taxLicenceNo: '',
+  taxLicenceCompany: '',
+  ohterLicence: '',
+  registerType: '',
+  natureBusiness: '',
+  industryType: '',
+  economicNature: '',
+  registeredAmount: '',
+  fixedAssetsOriginalValue: '',
+  fixedAssetsNetValue: '',
+  regularWorkerNum: '',
+  temporaryWorkerNum: '',
+  annualPayroll: '',
+  averageAnnualOutputValue: '',
+  averageAnnualProfit: '',
+  averageAnnualTaxPaid: '',
+  productCategory: '',
+  managementStatus: '',
+  informationInvolved: '',
+  treatmentScheme: '',
+  otherRemark: '',
+  licensePic: [],
+  otherPic: []
+})
 
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
@@ -671,10 +710,10 @@ const uid = ref<string>('')
 // 获取上个页面传递的参数，给表单赋值
 onLoad((option: any) => {
   if (option) {
-    let params = JSON.parse(option.params)
-    formData.value = { ...params }
     type.value = option.type
     if (type.value === 'edit') {
+      let params = JSON.parse(option.params)
+      formData.value = { ...params }
       title.value = '个体工商户基本概况编辑'
       uid.value = option.uid
     } else if (type.value === 'add') {
@@ -932,6 +971,39 @@ const submit = () => {
           text-align: center;
           background-color: #f5f7fa;
           border-left: 1px solid #d9d9d9;
+        }
+      }
+
+      .code-wrapper {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 200rpx;
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+
+        &.focus {
+          border-color: rgb(41, 121, 255);
+        }
+
+        .pre-txt {
+          width: 104rpx;
+          height: 35px;
+          padding-left: 7rpx;
+          font-size: 9rpx;
+          line-height: 35px;
+          color: #171718;
+          background-color: #f5f7fa;
+          border-right: 1px solid #d9d9d9;
+        }
+
+        .input-txt {
+          width: 84rpx;
+          height: 35px;
+          padding-left: 11rpx;
+          font-size: 9rpx;
+          line-height: 35px;
+          color: #171718;
         }
       }
 

@@ -209,7 +209,7 @@
       },
 			{
         "name": "首页",
-        "path": "pages/home/index",
+        "path": "pages/test/index",
         "query": ""
       },
 			{

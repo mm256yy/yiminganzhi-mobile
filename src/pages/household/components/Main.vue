@@ -12,6 +12,7 @@
               :type="MainType.PeasantHousehold"
               :templateType="PrintType.print"
               @update-tree="updateTree"
+              @update-data="updateData"
               @expand-toggle="expandToggle"
             />
 
@@ -201,34 +202,17 @@ const selectTabs = (data: any) => {
   tabVal.value = data.value
 }
 
+// 更新整体数据
+const updateData = () => {
+  emit('updateData', props.dataInfo.uid)
+}
+
 /**
  * 新增居民户
  * @param(type) 类型，edit 编辑， add 新增
  */
 const addClick = (type: string) => {
-  // const { uid } = props.dataInfo.uid
-  const params = {
-    name: '', // 姓名
-    areaCode: '', // 区/县
-    townCode: '', // 镇/街道
-    villageCode: '', // 行政村
-    virutalVillageCode: '', // 自然村/村民小组
-    phone: '', // 联系方式
-    locationType: '', // 所在位置
-    householdNumber: '', // 户籍册编号
-    suffixNo: '', // 户号后四位
-    doorNo: '', // 户号
-    hasPropertyAccount: '', // 是否财产户
-    address: '', // 户籍所在地
-    inundationRange: '', // 淹没范围
-    altitude: '', // 高程
-    longitude: '', // 经度
-    latitude: '' // 纬度
-  }
-  routerForward('householdInfoEdit', {
-    params: JSON.stringify(params),
-    type
-  })
+  routerForward('householdInfoEdit', { type })
 }
 
 /**
@@ -240,7 +224,7 @@ const deleteDemographic = (data: any) => {
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
-        emit('updateData', props.dataInfo.uid)
+        updateData()
       }
     })
     .catch((e) => {
@@ -257,7 +241,7 @@ const deleteHouse = (data: any) => {
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
-        emit('updateData', props.dataInfo.uid)
+        updateData()
       }
     })
     .catch((e) => {
@@ -274,7 +258,7 @@ const deleteTree = (data: any) => {
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
-        emit('updateData', props.dataInfo.uid)
+        updateData()
       }
     })
     .catch((e) => {
@@ -292,7 +276,7 @@ const updateFruitTreeInfo = (data: any) => {
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
-        emit('updateData', props.dataInfo.uid)
+        updateData()
       }
     })
     .catch((e) => {
@@ -310,7 +294,7 @@ const updateAccessoryInfo = (data: any) => {
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
-        emit('updateData', props.dataInfo.uid)
+        updateData()
       }
     })
     .catch((e) => {
@@ -328,7 +312,7 @@ const updateRevenueInfo = (data: any) => {
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
-        emit('updateData', props.dataInfo.uid)
+        updateData()
       }
     })
     .catch((e) => {
@@ -347,7 +331,7 @@ const updateWillingnessInfo = (data: any) => {
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
-        emit('updateData', props.dataInfo.uid)
+        updateData()
       }
     })
     .catch((e) => {

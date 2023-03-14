@@ -95,9 +95,9 @@ const defaultRow = {
   householdId: props.dataInfo.householdId,
   doorNo: props.dataInfo.doorNo,
   name: '',
-  usageType: '',
-  size: '',
-  unit: '',
+  usageType: '1', // 默认果树
+  size: '2', // 默认中树
+  unit: '1', // 默认株
   number: '',
   remark: '',
   isAdd: true

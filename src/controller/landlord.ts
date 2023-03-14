@@ -165,8 +165,17 @@ export class Landlord extends Common {
           reject('')
           return
         }
+        if (!data.doorNo) {
+          console.log('doorNo缺失')
+          reject('')
+          return
+        }
         const uid = guid()
         data.uid = uid
+        // 预设字段
+        data.reportStatus = ReportStatusEnum.UnReport
+        data.reportUser = ''
+        data.reportDate = ''
         data.company = data.company || {}
         data.immigrantFile = data.immigrantFile || {}
         data.immigrantWill = data.immigrantWill || {}
@@ -185,7 +194,7 @@ export class Landlord extends Common {
           ReportStatusEnum.UnReport
         }','','','${data.villageCode}','${JSON.stringify(data)}','${getCurrentTimeStamp()}','0'`
         const res = await this.db.insertTableData(LandlordTableName, values, fields)
-        console.log('插入结果', res)
+
         if (res && res.code) {
           reject('')
           return

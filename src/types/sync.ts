@@ -54,7 +54,7 @@ export interface LandlordType {
   locationTypeText?: string
   cityCode: string
   reportStatus: string
-  hasPropertyAccount: true
+  hasPropertyAccount?: boolean
   householdNumber: string
   reportDate: any
   reportUser: number

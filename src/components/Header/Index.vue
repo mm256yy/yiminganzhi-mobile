@@ -16,7 +16,11 @@
           <text class="txt">打印表格</text>
         </view>
 
-        <view class="btn-wrapper report" @click="reportDataCheck">
+        <view
+          v-if="!dataInfo.reportStatus || dataInfo.reportStatus === ReportStatusEnum.UnReport"
+          class="btn-wrapper report"
+          @click="reportDataCheck"
+        >
           <image class="icon" src="@/static/images/icon_report.png" mode="scaleToFill" />
           <text class="txt">数据上报</text>
         </view>
@@ -77,7 +81,7 @@ import { reportDataApi } from '@/service'
 import { getPrintTemplateListApi, printLandlordApi } from '@/api'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { showLoading, hideLoading } from '@/config'
-import { MainType } from '@/types/common'
+import { MainType, ReportStatusEnum } from '@/types/common'
 
 const props = defineProps({
   dataInfo: {
@@ -106,7 +110,7 @@ interface PrintListType {
   uid: number
 }
 
-const emit = defineEmits(['expandToggle', 'updateTree'])
+const emit = defineEmits(['expandToggle', 'updateTree', 'updateData'])
 const reportDataPopup = ref<any>(null)
 const printPopup = ref<any>(null)
 const selectedTemplateIds = ref<any>([])
@@ -150,6 +154,7 @@ const reportData = () => {
       if (res) {
         showToast(SUCCESS_MSG)
         emit('updateTree')
+        emit('updateData')
       }
       hideLoading()
       close('report')
@@ -231,14 +236,11 @@ const confirm = (type: string) => {
 
 // 打印 PDF 文件
 const printPdf = (templateIds: any[], peasantHouseholdIds: any[]) => {
-  console.log('templateIds:', templateIds)
   printLandlordApi(templateIds, peasantHouseholdIds).then((res) => {
-    console.log('打印地址：', res)
     if (res) {
       uni.downloadFile({
         url: res,
         success(res) {
-          console.log('save success-------：', res)
           const path = plus.io.convertLocalFileSystemURL(res.tempFilePath)
           YanYuprintPdf.managerPrint(path)
         },

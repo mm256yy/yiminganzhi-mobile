@@ -174,17 +174,33 @@
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
 import { ref, onMounted } from 'vue'
-import { yesAndNoEnums } from '../config'
 import { routerBack, getStorage, StorageKey, routerForward, networkCheck } from '@/utils'
 import { addLandlordApi, updateLandlordApi } from '@/service'
-import { locationTypes } from '@/config/common'
+import { locationTypes, yesAndNoEnums } from '@/config/common'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { MainType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
 import NaturalVillageSelectFormItem from '@/components/NaturalVillageSelectFormItem/index.vue'
 
 // 表单数据
-const formData = ref<any>({})
+const formData = ref<any>({
+  name: '', // 姓名
+  areaCode: '', // 区/县
+  townCode: '', // 镇/街道
+  villageCode: '', // 行政村
+  virutalVillageCode: '', // 自然村/村民小组
+  phone: '', // 联系方式
+  locationType: '', // 所在位置
+  householdNumber: '', // 户籍册编号
+  suffixNo: '', // 户号后四位
+  doorNo: '', // 户号
+  hasPropertyAccount: 'true', // 是否财产户, 默认是
+  address: '', // 户籍所在地
+  inundationRange: '', // 淹没范围
+  altitude: '', // 高程
+  longitude: '', // 经度
+  latitude: '' // 纬度
+})
 
 // 输入框是否获得焦点
 const isFocus = ref<boolean>(false)
@@ -204,10 +220,10 @@ const emit = defineEmits(['updateTree'])
 
 // 获取上个页面传递的参数，给表单赋值
 onLoad((option: any) => {
-  let params = JSON.parse(option.params)
-  formData.value = { ...params }
   type.value = option.type
   if (option.type === 'edit') {
+    let params = JSON.parse(option.params)
+    formData.value = { ...params }
     title.value = '居民户信息编辑'
   } else if (option.type === 'add') {
     title.value = '添加居民户信息'

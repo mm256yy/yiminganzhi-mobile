@@ -1,63 +1,30 @@
 <template>
   <view class="upload-wrapper">
-    <!-- upload-file
-      title="最多选择20张图片"
-      mode="list"
+    <upload-file
+      :file-list="fileList"
       :limit="20"
-      @select="selectOtherPic"
-      @progress="otherPicProgress"
-      @success="otherPicSuccess"
-      @fail="otherPicFail"
-			@update-files-list="updateFilesList"
-    /> -->
+      show-type="list"
+      :accepts="['.jpg', '.png']"
+      @update-file-list="updateFilesList"
+    />
   </view>
-
-  <view @click="uploadImg">选择图片</view>
 </template>
 
 <script lang="ts" setup>
-import { batchUploadImg } from '@/service'
-// import UploadFile from '@/components/UploadFile/uni-file-picker.vue'
+import { ref } from 'vue'
+import UploadFile from '@/components/UploadFile/index.vue'
 
-// 获取人口其他照片上传状态
-// const selectOtherPic = (e: any) => {
-//   console.log('选择文件：', e.tempFilePaths)
-// }
-
-// 获取人口其他照片上传进度
-// const otherPicProgress = (e: any) => {
-//   console.log('上传进度：', e)
-// }
-
-// 人口其他照片上传成功
-// const otherPicSuccess = (e: any) => {
-//   console.log('上传成功e:', e)
-// }
-
-// 人口其他照片上传失败
-// const otherPicFail = (e: any) => {
-//   console.log('上传失败：', e)
-// }
-
-// 更新更改后文件名的已上传文件对象列表
-// const updateFilesList = (data: any) => {
-// 	console.log('data:', data)
-// }
-
-const uploadImg = () => {
-  uni.chooseImage({
-    count: 6,
-    sizeType: ['compressed'],
-    sourceType: ['album'],
-    success: function (res) {
-      console.log('res:', res)
-      if (res && res.tempFilePaths) {
-        const paths = Array.isArray(res.tempFilePaths) ? res.tempFilePaths : [res.tempFilePaths]
-        batchUploadImg(paths).then((res) => {
-          console.log(res, '图片上传结果')
-        })
-      }
+const fileList = ref<string>(
+  JSON.stringify([
+    {
+      padPath: '_doc/uniapp_save/16787101987160.png',
+      name: '16787101987160.png',
+      url: 'https://zdwp.oss-cn-hangzhou.aliyuncs.com/migrate/files/image/16787101987160.png'
     }
-  })
+  ])
+)
+
+const updateFilesList = (data: any) => {
+  console.log(data, '------')
 }
 </script>

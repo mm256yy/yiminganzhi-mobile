@@ -384,7 +384,7 @@ const submit = () => {
   } else if (!formData.value.birthday) {
     showToast('请选择出生年月')
     return
-  } else if (!formData.value.realation) {
+  } else if (!formData.value.relation) {
     showToast('请选择与户主关系')
     return
   } else {
