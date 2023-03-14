@@ -101,6 +101,8 @@ const delFile = (index: number) => {
 </script>
 
 <style lang="scss">
+
+
 /* #ifdef H5 */
 @media all and (min-width: 768px) {
   .uni-file-picker__files {
