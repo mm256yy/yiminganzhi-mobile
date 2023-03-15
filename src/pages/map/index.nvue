@@ -87,8 +87,8 @@ const markers = ref<any[]>([
 ])
 
 onLoad((option: any) => {
+  console.log(option, 'map - option')
   if (option && option.longitude && option.latitude) {
-    console.log(option, 'map - option')
     // 编辑经纬度
     const longitude = option.longitude
     const latitude = option.latitude
@@ -154,6 +154,7 @@ const mapTap = (e) => {
 
 // 获取当前位置 并标记
 const getCurrentLocation = () => {
+  console.log('d')
   nextTick(() => {
     uni.getLocation({
       type: 'gcj02',
