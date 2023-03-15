@@ -42,11 +42,11 @@ class DataFill extends Landlord {
   }
 
   // 业主-人口新增操作
-  addLandlordPeople(uid: string, data: PopulationType): Promise<boolean> {
+  addLandlordPeople(uid: string, data: PopulationType): Promise<boolean | string> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!uid) {
-          reject(false)
+          reject('业主uid缺失')
           console.log('业主uid缺失')
           return
         }
@@ -58,9 +58,15 @@ class DataFill extends Landlord {
           if (!landlordItem.demographicList) {
             landlordItem.demographicList = []
           }
+          const arr = landlordItem.demographicList.filter((item) => item.relation === '1')
+          if (arr && arr.length > 1) {
+            reject('户主不能有多个')
+            console.log('户主不能有多个')
+            return
+          }
           landlordItem.demographicList.push(data)
         } else {
-          reject(false)
+          reject('业主信息查询失败')
           console.log('业主信息查询失败')
           return
         }
@@ -74,11 +80,11 @@ class DataFill extends Landlord {
     })
   }
   // 业主-人口修改操作
-  updateLandlordPeople(uid: string, data: PopulationType): Promise<boolean> {
+  updateLandlordPeople(uid: string, data: PopulationType): Promise<boolean | string> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!uid) {
-          reject(false)
+          reject('业主uid缺失')
           console.log('业主uid缺失')
           return
         }
@@ -90,8 +96,14 @@ class DataFill extends Landlord {
             }
             return item
           })
+          const arr = landlordItem.demographicList.filter((item) => item.relation === '1')
+          if (arr && arr.length > 1) {
+            reject('户主不能有多个')
+            console.log('户主不能有多个')
+            return
+          }
         } else {
-          reject(false)
+          reject('业主信息查询失败')
           console.log('业主信息查询失败')
           return
         }
@@ -225,6 +237,15 @@ class DataFill extends Landlord {
           if (!data.uid) {
             const itemUid = guid()
             data.uid = itemUid
+            if (data.immigrantWillProductionList && data.immigrantWillProductionList.length) {
+              data.immigrantWillProductionList = data.immigrantWillProductionList.map((will) => {
+                if (!will.uid) {
+                  const willUid = guid()
+                  will.uid = willUid
+                }
+                return will
+              })
+            }
             landlordItem.immigrantWill = data
           } else {
             landlordItem.immigrantWill = data

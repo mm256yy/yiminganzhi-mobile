@@ -332,6 +332,7 @@ export class Landlord extends Common {
           '0'
         )
         const res: LandlordType = result && result[0] ? JSON.parse(result[0].content) : {}
+        console.log(res, '业主详情')
         if (res && res.uid) {
           if (res.demographicList && res.demographicList.length) {
             res.demographicList = res.demographicList.filter(

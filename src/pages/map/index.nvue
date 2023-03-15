@@ -88,10 +88,11 @@ const markers = ref<any[]>([
 
 onLoad((option: any) => {
   if (option && option.longitude && option.latitude) {
+    console.log(option, 'map - option')
     // 编辑经纬度
     const longitude = option.longitude
     const latitude = option.latitude
-    if (!longitude || !latitude) {
+    if (!longitude || !latitude || longitude === '0' || latitude === '0') {
       getCurrentLocation()
       return
     }

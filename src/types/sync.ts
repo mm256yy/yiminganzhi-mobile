@@ -123,6 +123,7 @@ export interface StateType {
   companyNum: number
   individualNum: number
   villageNum: number
+  virutalVillageNum: number
 }
 
 export interface PushStateType {

@@ -228,10 +228,11 @@
             <view class="pup-item" v-if="pushData">
               <view class="tit">上传成功:&nbsp;</view>
               <view class="txt"
-                >本次共下载:&nbsp;居民户 <text class="num">{{ pushData.peasantHouseholdNum }}</text
+                >本次共上传:&nbsp;居民户 <text class="num">{{ pushData.peasantHouseholdNum }}</text
                 >个，个体户<text class="num">{{ pushData.individualNum }}</text
                 >个，企业<text class="num">{{ pushData.companyNum }}</text
                 >家，村集体<text class="num">{{ pushData.villageNum }}</text
+                >个，自然村<text class="num">{{ pushData.virutalVillageNum }}</text
                 >个</view
               >
             </view>
@@ -242,6 +243,7 @@
                 >个，个体户<text class="num">{{ pullData.individualNum }}</text
                 >个，企业<text class="num">{{ pullData.companyNum }}</text
                 >家，村集体<text class="num">{{ pullData.villageNum }}</text
+                >个，自然村<text class="num">{{ pushData.virutalVillageNum }}</text
                 >个</view
               >
             </view>
@@ -312,6 +314,7 @@ const pullData = ref<
     companyNum: number
     individualNum: number
     villageNum: number
+    virutalVillageNum: number
   }>
 >({})
 // 同步 推送统计信息
@@ -347,12 +350,14 @@ const polling = () => {
       uni.hideLoading()
       clearInterval(intervalId.value)
       pageInit()
-      const { peasantHouseholdNum, companyNum, individualNum, villageNum } = pullInstance.state
+      const { peasantHouseholdNum, companyNum, individualNum, villageNum, virutalVillageNum } =
+        pullInstance.state
       pullData.value = {
         peasantHouseholdNum,
         companyNum,
         individualNum,
-        villageNum
+        villageNum,
+        virutalVillageNum
       }
       syncStatus.value = true
       openPup()
@@ -730,7 +735,7 @@ uni-page-body {
 
 .popup-box {
   position: relative;
-  width: 352rpx;
+  width: 372rpx;
   // height: 203rpx;
   background: #ffffff;
   border-radius: 5rpx;
@@ -768,8 +773,9 @@ uni-page-body {
 
     .pup-item {
       display: flex;
+      flex-direction: row;
       align-items: center;
-      width: 328rpx;
+      width: 348rpx;
       height: 33rpx;
       padding: 0 9rpx;
       margin-bottom: 9rpx;
@@ -777,6 +783,8 @@ uni-page-body {
       border-radius: 2rpx;
 
       .tit {
+        flex: none;
+        width: 46rpx;
         font-size: 9rpx;
         color: #28af45;
       }
@@ -784,6 +792,7 @@ uni-page-body {
       .txt {
         font-size: 9rpx;
         color: #171718;
+        word-break: break-all;
 
         .num {
           color: #3e73ec;

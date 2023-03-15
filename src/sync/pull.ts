@@ -62,7 +62,8 @@ class PullData {
       peasantHouseholdNum: 0,
       companyNum: 0,
       individualNum: 0,
-      villageNum: 0
+      villageNum: 0,
+      virutalVillageNum: 0
     }
 
     this.districtMap = {}
@@ -190,7 +191,8 @@ class PullData {
       peasantHouseholdNum,
       companyNum,
       individualNum,
-      villageNum
+      villageNum,
+      virutalVillageNum
     } = result
     this.state.peasantHouseholdPushDtoList = peasantHouseholdPushDtoList
     this.state.deleteRecordList = deleteRecordList
@@ -200,6 +202,7 @@ class PullData {
     this.state.companyNum = companyNum
     this.state.individualNum = individualNum
     this.state.villageNum = villageNum
+    this.state.virutalVillageNum = virutalVillageNum
 
     // 数据 新增 修改 删除一起进行
     this.pullLandlord().then((res) => {
@@ -428,10 +431,13 @@ class PullData {
           const values = `'${item.uid}','0','default','${item.parentCode}','${
             item.name
           }','${JSON.stringify(item)}','${getCurrentTimeStamp()}'`
-          db.insertOrReplaceData(VillageTableName, values, fields)
+          db.insertOrReplaceData(VillageTableName, values, fields).catch((err) => {
+            console.log(err, 'err village')
+          })
         })
 
-        await db.transaction('commit').catch(() => {
+        await db.transaction('commit').catch((err) => {
+          console.log(err, 'commit err')
           resolve(false)
         })
         resolve(true)
