@@ -1,13 +1,14 @@
 <template>
   <view class="uni-file-picker">
-    <view v-if="title" class="uni-file-picker__header">
+    <!-- <view v-if="title" class="uni-file-picker__header">
       <text class="file-title">{{ title }}</text>
       <text class="file-count">{{ filesList.length }}/{{ limit }}</text>
-    </view>
+    </view> -->
     <upload-image
       v-if="showType === 'grid'"
       :files-list="filesList"
       :limit="limit"
+      :is-preview="isPreview"
       @upload-files="updateFilesList"
       @choose="choose"
       @del-file="delFile"
@@ -24,6 +25,7 @@
       v-if="showType !== 'grid'"
       :files-list="filesList"
       :limit="limit"
+      :is-preview="isPreview"
       @choose="choose"
       @del-file="delFile"
       @prview-image="prviewImage"
@@ -49,6 +51,7 @@ interface PropsType {
   fileList: string
   modelValue?: string
   title?: string
+  isPreview?: boolean
 }
 
 interface FileItemType {

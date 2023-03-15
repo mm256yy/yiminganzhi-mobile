@@ -393,6 +393,7 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
+import dayjs from 'dayjs'
 import { routerBack, getStorage, StorageKey, routerForward, networkCheck } from '@/utils'
 import { addLandlordHouseApi, updateLandlordHouseApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
@@ -449,10 +450,10 @@ const lgTagList = ref<any>([
 
 onLoad((option: any) => {
   if (option) {
-    let params = JSON.parse(option.params)
-    formData.value = { ...params }
     commonParams.value = JSON.parse(option.commonParams)
     if (commonParams.value.type === 'edit') {
+      let params = JSON.parse(option.params)
+      formData.value = { ...params }
       title.value = '房屋信息编辑'
     } else if (commonParams.value.type === 'add') {
       title.value = '新增房屋'
@@ -480,7 +481,14 @@ const gotoMap = () => {
 // 表单提交
 const submit = () => {
   const { type, uid, doorNo, householdId } = commonParams.value
-  const params = { doorNo, householdId, ...formData.value }
+  const params = {
+    doorNo,
+    householdId,
+    ...formData.value,
+    completedTime: formData.value.completedTime
+      ? dayjs(formData.value.completedTime)
+      : formData.value.completedTime
+  }
 
   if (!formData.value.houseNo) {
     showToast('请输入幢号')

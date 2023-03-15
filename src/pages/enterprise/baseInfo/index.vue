@@ -496,14 +496,42 @@
           <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
           <view class="title">营业执照</view>
         </view>
-        <view class="list-2">
-          <uni-row>
-            <uni-col :span="24">
-              <view class="col">
-                <view class="list-img"> 图片列表 </view>
-              </view>
-            </uni-col>
-          </uni-row>
+        <view
+          class="list-2"
+          v-if="props.dataInfo.licensePic && fmtPicUrl(props.dataInfo.licensePic) !== '[]'"
+        >
+          <upload-file
+            :file-list="props.dataInfo.licensePic"
+            :is-preview="true"
+            :limit="10"
+            show-type="list"
+            :accepts="['.jpg', '.png']"
+          />
+        </view>
+        <view class="list-2" v-else>
+          <view class="no-data">暂未上传</view>
+        </view>
+      </view>
+
+      <view class="list-item">
+        <view class="list-1">
+          <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
+          <view class="title">其他附件</view>
+        </view>
+        <view
+          class="list-2"
+          v-if="props.dataInfo.otherPic && fmtPicUrl(props.dataInfo.otherPic) !== '[]'"
+        >
+          <upload-file
+            :file-list="props.dataInfo.otherPic"
+            :is-preview="true"
+            :limit="10"
+            show-type="list"
+            :accepts="['.jpg', '.png']"
+          />
+        </view>
+        <view class="list-2" v-else>
+          <view class="no-data">暂未上传</view>
         </view>
       </view>
     </view>
@@ -521,6 +549,7 @@
 import dayjs from 'dayjs'
 import { dictOption, formatStr, formatDict, splitStr, routerForward, fmtPicUrl } from '@/utils'
 import { locationTypes } from '@/config/common'
+import UploadFile from '@/components/UploadFile/index.vue'
 
 const props = defineProps({
   dataInfo: {
@@ -639,6 +668,15 @@ const toLink = (type: string) => {
             align-items: center;
             justify-content: space-between;
           }
+        }
+
+        .no-data {
+          width: 100%;
+          height: 30rpx;
+          padding-left: 10rpx;
+          font-size: 9rpx;
+          line-height: 30rpx;
+          color: #171718;
         }
       }
     }

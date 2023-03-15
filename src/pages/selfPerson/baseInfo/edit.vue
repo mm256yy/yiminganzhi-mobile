@@ -51,6 +51,7 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="个体工商户名称"
               :label-width="170"
               label-align="right"
@@ -646,6 +647,7 @@
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
+import dayjs from 'dayjs'
 import { routerBack, getStorage, StorageKey, fmtPicUrl } from '@/utils'
 import { addLandlordApi, updateLandlordCompanyApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
@@ -747,8 +749,12 @@ const submit = () => {
     locationType: formData.value.locationType,
     phone: formData.value.phone,
     periodValidity: formData.value.periodValidity,
-    establishDate: formData.value.establishDate,
-    taxPeriodValidity: formData.value.taxPeriodValidity,
+    establishDate: formData.value.establishDate
+      ? dayjs(formData.value.establishDate)
+      : formData.value.establishDate,
+    taxPeriodValidity: formData.value.taxPeriodValidity
+      ? dayjs(formData.value.taxPeriodValidity)
+      : formData.value.taxPeriodValidity,
     type: MainType.IndividualHousehold
   }
 
@@ -794,6 +800,10 @@ const submit = () => {
     return
   } else if (!formData.value.legalPersonCard) {
     showToast('请输入法人身份证号')
+    return
+  } else if (!formData.value.name) {
+    showToast('请输入个体工商户名称')
+    return
   } else if (!formData.value.villageCode) {
     showToast('请选择所属区域')
     return

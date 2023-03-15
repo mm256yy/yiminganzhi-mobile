@@ -56,7 +56,6 @@
                 type="date"
                 placeholder="选择出生年月"
                 v-model="formData.birthday"
-                @change="changeDate"
               />
             </uni-forms-item>
           </uni-col>
@@ -264,6 +263,7 @@
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
+import dayjs from 'dayjs'
 import { routerBack, getStorage, StorageKey } from '@/utils'
 import { addLandlordPeopleApi, updateLandlordPeopleApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
@@ -315,14 +315,12 @@ onLoad((option: any) => {
   }
 })
 
-// 出生年月选择
-const changeDate = (e: any) => {
-  console.log('e:', e)
-}
-
 // 表单提交
 const submit = () => {
-  const params = { ...formData.value }
+  const params = {
+    ...formData.value,
+    birthday: formData.value.birthday ? dayjs(formData.value.birthday) : formData.value.birthday
+  }
   if (!formData.value.name) {
     showToast('请输入姓名')
     return

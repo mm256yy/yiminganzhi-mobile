@@ -99,6 +99,7 @@
 import { ref } from 'vue'
 import { getWillListApi } from '@/service'
 import { onShow } from '@dcloudio/uni-app'
+import { showToast } from '@/config'
 
 const props = defineProps({
   willData: {
@@ -112,8 +113,8 @@ const props = defineProps({
 })
 
 const commonParams = {
-  uid: props.dataInfo.uid,
-  doorNo: props.dataInfo.doorNo
+  doorNo: props.dataInfo.doorNo,
+  householdId: props.dataInfo.householdId
 }
 
 const formData = ref<any>({})
@@ -145,7 +146,6 @@ const inputBlur = () => {
 // 获取生产安置、搬迁安置方式数据
 const getWillList = async (dataType?: number) => {
   const result = await getWillListApi()
-  console.log('result:', result)
   genArr(result, dataType)
 }
 
@@ -227,7 +227,6 @@ const genNewArr = (arr: any[]) => {
 const initData = () => {
   if (JSON.stringify(props.willData) !== '{}') {
     if (props.willData.immigrantWillProductionList) {
-      console.log('immigrantWillProductionList:', props.willData.immigrantWillProductionList)
       genNewArr(props.willData.immigrantWillProductionList)
     } else {
       getWillList(1)
@@ -255,25 +254,32 @@ const homesteadChange = (e: any) => {
 
 // 表单提交
 const submit = () => {
+  let arr: any = [...productModeData.value, ...homesteadData.value, ...apartmentData.value]
+
+  arr.map((item: any, index: number) => {
+    if (item.value === formData.value.removalType) {
+      arr[index].checked = true
+    } else {
+      arr[index].checked = false
+    }
+  })
+
   const params = {
     ...formData.value,
-    immigrantWillProductionList: [
-      ...productModeData.value,
-      ...homesteadData.value,
-      ...apartmentData.value
-    ]
+    immigrantWillProductionList: [...arr]
   }
-
-  console.log('param:', params)
-  emit('submit', params)
+  console.log('params:', params)
+  if (!formData.value.removalType) {
+    showToast('请选择搬迁安置方式')
+    return
+  } else {
+    emit('submit', params)
+  }
 }
 
 onShow(() => {
   initData()
 })
-// onMounted(() => {
-//   initData()
-// })
 </script>
 
 <style lang="scss" scoped>

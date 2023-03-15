@@ -151,6 +151,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
+import dayjs from 'dayjs'
 import { routerBack, getStorage, StorageKey } from '@/utils'
 import { addLandlordGraveApi, updateLandlordGraveApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config'
@@ -223,7 +224,14 @@ const submit = () => {
   const { type } = commonParams.value
   if (type === 'add') {
     const { uid, doorNo, householdId } = commonParams.value
-    let params = { doorNo, householdId, ...formData.value }
+    let params = {
+      doorNo,
+      householdId,
+      ...formData.value,
+      graveYear: formData.value.graveYear
+        ? dayjs(formData.value.graveYear)
+        : formData.value.graveYear
+    }
     addLandlordGraveApi(uid, params)
       .then((res) => {
         if (res) {
@@ -236,7 +244,13 @@ const submit = () => {
       })
   } else if (type === 'edit') {
     const { uid, householdId } = commonParams.value
-    let params = { householdId, ...formData.value }
+    let params = {
+      householdId,
+      ...formData.value,
+      graveYear: formData.value.graveYear
+        ? dayjs(formData.value.graveYear)
+        : formData.value.graveYear
+    }
     updateLandlordGraveApi(uid, params)
       .then((res) => {
         if (res) {

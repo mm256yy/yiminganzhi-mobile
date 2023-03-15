@@ -155,35 +155,7 @@ const toLink = (type: string, data?: any) => {
       commonParams: JSON.stringify(commonParams)
     })
   } else if (type === 'add') {
-    const params = {
-      houseNo: '',
-      propertyType: '',
-      usageType: '',
-      houseType: '',
-      constructionType: '',
-      storeyNumber: null,
-      completedTime: '',
-      propertyNo: '',
-      landNo: '',
-      landType: '',
-      landArea: null,
-      storeyHeight: null,
-      houseHeight: null,
-      outerWallType: '',
-      interiorWallType: '',
-      groundType: '',
-      roofType: '',
-      roofMaterialsType: '',
-      doorsWindowsType: '',
-      waterElectricityType: '',
-      formula: '',
-      longitude: '',
-      latitude: '',
-      housePic: '',
-      remark: ''
-    }
     routerForward('houseInfoEdit', {
-      params: JSON.stringify(params),
       commonParams: JSON.stringify(commonParams)
     })
   }

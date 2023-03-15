@@ -289,7 +289,7 @@
                   @focus="inputFocus(2)"
                   @blur="inputBlur"
                 />
-                <view class="unit">m</view>
+                <view class="unit">万元</view>
               </view>
             </uni-forms-item>
           </uni-col>
@@ -839,7 +839,22 @@
           <upload-file
             v-model="formData.licensePic"
             :file-list="formData.licensePic"
-            :limit="10"
+            :limit="20"
+            show-type="list"
+            :accepts="['.jpg', '.png']"
+          />
+        </view>
+
+        <view class="title-wrapper">
+          <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
+          <view class="title">其他附件</view>
+        </view>
+
+        <view class="upload-wrapper">
+          <upload-file
+            v-model="formData.otherPic"
+            :file-list="formData.otherPic"
+            :limit="20"
             show-type="list"
             :accepts="['.jpg', '.png']"
           />
@@ -859,6 +874,7 @@
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
+import dayjs from 'dayjs'
 import { routerBack, getStorage, StorageKey } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { addLandlordApi, updateLandlordCompanyApi } from '@/service'
@@ -976,8 +992,12 @@ const submit = () => {
     locationType: formData.value.locationType,
     phone: formData.value.phone,
     periodValidity: formData.value.periodValidity,
-    establishDate: formData.value.establishDate,
-    taxPeriodValidity: formData.value.taxPeriodValidity,
+    establishDate: formData.value.establishDate
+      ? dayjs(formData.value.establishDate)
+      : formData.value.establishDate,
+    taxPeriodValidity: formData.value.taxPeriodValidity
+      ? dayjs(formData.value.taxPeriodValidity)
+      : formData.value.taxPeriodValidity,
     type: MainType.Company
   }
 

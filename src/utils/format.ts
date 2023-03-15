@@ -35,11 +35,13 @@ export const formatDict = (value: any, id: number) => {
   if (value) {
     const arr: any = dict[id]
     arr.map((item: any) => {
-      if (typeof item.value === typeof value) {
+      if (typeof item.value === typeof value && item.value === value) {
         str = item.text
+        return str
       } else {
         if (String(item.value) === String(value)) {
           str = item.text
+          return str
         }
       }
     })
@@ -167,8 +169,11 @@ export const fmtDate = (time: any, fmt = 1) => {
  */
 export const fmtPicUrl = (url: any) => {
   if (url) {
+    console.log(typeof url)
     if (typeof url === 'string') {
       return url
+    } else if (typeof url === 'object') {
+      return JSON.stringify(url)
     } else {
       return JSON.parse(url)
     }

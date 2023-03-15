@@ -8,13 +8,13 @@
           mode="aspectFill"
           @click.stop="prviewImage(item, index)"
         />
-        <view class="icon-del-box" @click.stop="delFile(index)">
+        <view v-if="!props.isPreview" class="icon-del-box" @click.stop="delFile(index)">
           <view class="icon-del" />
           <view class="icon-del rotate" />
         </view>
       </view>
     </view>
-    <view v-if="props.filesList.length < props.limit" class="file-picker__box">
+    <view v-if="props.filesList.length < props.limit && !props.isPreview" class="file-picker__box">
       <view class="file-picker__box-content is-add" @click="choose">
         <slot>
           <!-- <view class="icon-add" />
@@ -33,6 +33,7 @@ import defaultImg from '@/static/images/icon_null_data.png'
 interface PropsType {
   filesList: any[]
   limit: number
+  isPreview?: boolean
 }
 const netWork = ref<boolean>(true)
 const props = defineProps<PropsType>()

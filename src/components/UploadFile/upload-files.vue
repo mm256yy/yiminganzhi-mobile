@@ -19,12 +19,12 @@
             />
           </view>
           <view v-if="!item.isEdit" class="files__name">{{ item.name }}</view>
-          <view v-if="item.isEdit" class="files__name rename-input">
+          <view v-if="item.isEdit && !props.isPreview" class="files__name rename-input">
             <input class="name" type="text" v-model="item.editName" />
             <label class="txt-btn cancel" @click.stop="cancel(item)">取消</label>
             <label class="txt-btn save" @click.stop="save(item)">保存</label>
           </view>
-          <view v-if="!item.isEdit" class="icon-edit-box icon-files">
+          <view v-if="!item.isEdit && !props.isPreview" class="icon-edit-box icon-files">
             <image
               class="icon_img"
               src="@/static/images/icon_edit_mini.png"
@@ -32,16 +32,24 @@
               @click.stop="editFileName(item)"
             />
           </view>
-          <view v-if="!item.isEdit" class="icon-del-box icon-files" @click="delFile(index)">
+          <view
+            v-if="!item.isEdit && !props.isPreview"
+            class="icon-del-box icon-files"
+            @click="delFile(index)"
+          >
             <image class="icon_img" src="@/static/images/icon_delete_mini.png" mode="scaleToFill" />
           </view>
         </view>
       </view>
-      <view v-if="props.filesList.length < props.limit" class="picker-btn-wrapper" @click="choose">
+      <view
+        v-if="props.filesList.length < props.limit && !props.isPreview"
+        class="picker-btn-wrapper"
+        @click="choose"
+      >
         <image class="icon" src="@/static/images/icon_photo.png" mode="scaleToFill" />上传照片
       </view>
     </view>
-    <view v-if="props.filesList.length === 0" class="file-picker__box">
+    <view v-if="props.filesList.length === 0 && !props.isPreview" class="file-picker__box">
       <view class="file-picker__box-content is-add" @click="choose">
         <slot>
           <view class="picker-btn-wrapper m-0">
@@ -61,6 +69,7 @@ import defaultImg from '@/static/images/icon_null_data.png'
 interface PropsType {
   filesList: any[]
   limit: number
+  isPreview?: boolean
 }
 
 const netWork = ref<boolean>(true)

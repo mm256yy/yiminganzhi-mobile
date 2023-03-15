@@ -118,7 +118,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { formatDict, formatStr, routerForward } from '@/utils'
+import { formatDict, formatStr, routerForward, fmtPicUrl } from '@/utils'
 import dayjs from 'dayjs'
 
 const props = defineProps({
@@ -143,6 +143,9 @@ const toLink = (type: string, data?: any) => {
   } else if (type === 'edit') {
     let params = {
       ...data,
+      cardPic: fmtPicUrl(data.cardPic),
+      householdPic: fmtPicUrl(data.householdPic),
+      otherPic: fmtPicUrl(data.otherPic),
       birthday: data.birthday ? dayjs(data.birthday).format('YYYY-MM-DD') : ''
     }
     routerForward('demographicInfoEdit', {
@@ -197,13 +200,15 @@ const dialogClose = () => {
 
           .icon {
             display: flex;
-            width: 32rpx;
+            width: auto;
             height: 16rpx;
+            padding: 0 5rpx;
             font-size: 9rpx;
             color: #fff;
             background: #faad14;
             border-top-right-radius: 5rpx;
             border-bottom-right-radius: 5rpx;
+            box-sizing: border-box;
             align-items: center;
             justify-content: center;
           }

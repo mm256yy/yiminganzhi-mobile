@@ -104,6 +104,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
+import dayjs from 'dayjs'
 import { formatStr, formatDict, routerForward } from '@/utils'
 
 const props = defineProps({
@@ -147,11 +148,18 @@ const toLink = (type: string, data?: any) => {
   const { uid, householdId, villageCode } = props.dataInfo
   let commonParams = { type, uid, householdId, villageCode }
   if (type === 'edit') {
-    const { doorNo } = data
-    let params = { ...commonParams, doorNo }
+    let newData = {
+      ...data,
+      graveYear: data.graveYear ? dayjs(data.graveYear).format('YYYY-MM-DD') : null
+    }
+    let newCommonParams = {
+      ...commonParams,
+      doorNo: data.doorNo
+    }
+
     routerForward('collectiveGraveInfoEdit', {
-      params: JSON.stringify(data),
-      commonParams: JSON.stringify(params)
+      params: JSON.stringify(newData),
+      commonParams: JSON.stringify(newCommonParams)
     })
   } else {
     const params = {

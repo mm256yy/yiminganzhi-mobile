@@ -128,6 +128,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
+import dayjs from 'dayjs'
 import { addLandlordEquipmentApi, updateLandlordEquipmentApi } from '@/service'
 import { routerBack, getStorage, StorageKey } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
@@ -171,7 +172,13 @@ const inputBlur = () => {
 // 表单提交
 const submit = () => {
   const { uid, type, householdId, doorNo } = commonParams.value
-  const params = { uid, householdId, doorNo, ...formData.value }
+  const params = {
+    uid,
+    householdId,
+    doorNo,
+    ...formData.value,
+    year: formData.value.year ? dayjs(formData.value.year) : formData.value.year
+  }
   form.value?.validate().then((valid: any) => {
     if (valid) {
       if (type === 'add') {

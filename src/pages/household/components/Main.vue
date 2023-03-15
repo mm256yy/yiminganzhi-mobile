@@ -127,7 +127,7 @@ import willingnessInfo from '../willingnessInfo/index.vue' // 引入安置意愿
 import attachmentUpload from '../attachmentUpload/index.vue' // 引入附件上传组件
 
 import {
-  deleteLandlordApi,
+  deleteLandlordPeopleApi,
   deleteLandlordHouseApi,
   deleteLandlordTreeApi,
   updateLandlordTreeApi,
@@ -164,11 +164,11 @@ const props = defineProps({
   },
   treeData: {
     // 左侧树列表
-    type: Array<string>,
+    type: Array as any,
     default: () => []
   },
   expendCodes: {
-    type: Array<string>,
+    type: Array as any,
     default: () => []
   },
   uid: {
@@ -207,11 +207,6 @@ const selectTabs = (data: any) => {
   tabVal.value = data.value
 }
 
-// 更新整体数据
-const updateData = () => {
-  emit('updateData', props.dataInfo.uid)
-}
-
 /**
  * 新增居民户
  * @param(type) 类型，edit 编辑， add 新增
@@ -225,7 +220,7 @@ const addClick = (type: string) => {
  * @param(Object) data 被删除的行信息
  */
 const deleteDemographic = (data: any) => {
-  deleteLandlordApi(data.uid)
+  deleteLandlordPeopleApi(props.dataInfo.uid, data.uid)
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
@@ -331,12 +326,12 @@ const updateRevenueInfo = (data: any) => {
  */
 const updateWillingnessInfo = (data: any) => {
   const params = { ...data }
-  console.log('submit-params:', params)
   updateLandlordWillApi(props.dataInfo.uid, params)
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
         updateData()
+        updateTree()
       }
     })
     .catch(() => {
@@ -356,6 +351,11 @@ const updateAttachment = (params: any) => {
     .catch(() => {
       showToast(ERROR_MSG)
     })
+}
+
+// 更新整体数据
+const updateData = () => {
+  emit('updateData', props.dataInfo.uid)
 }
 
 // 更新左侧树列表
