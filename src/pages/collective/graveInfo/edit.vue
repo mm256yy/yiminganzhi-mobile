@@ -231,7 +231,7 @@ const submit = () => {
           routerBack()
         }
       })
-      .catch((e) => {
+      .catch(() => {
         showToast(ERROR_MSG)
       })
   } else if (type === 'edit') {
@@ -244,7 +244,7 @@ const submit = () => {
           routerBack()
         }
       })
-      .catch((e) => {
+      .catch(() => {
         showToast(ERROR_MSG)
       })
   }

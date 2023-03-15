@@ -96,7 +96,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { getWillListApi } from '@/service'
 import { onShow } from '@dcloudio/uni-app'
 

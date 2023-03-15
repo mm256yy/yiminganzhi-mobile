@@ -196,7 +196,7 @@ const deleteHouse = (data: any) => {
         updateData()
       }
     })
-    .catch((e) => {
+    .catch(() => {
       showToast(ERROR_MSG)
     })
 }
@@ -213,7 +213,7 @@ const deleteTree = (data: any) => {
         updateData()
       }
     })
-    .catch((e) => {
+    .catch(() => {
       showToast(ERROR_MSG)
     })
 }
@@ -231,7 +231,7 @@ const updateFruitTreeInfo = (data: any) => {
         updateData()
       }
     })
-    .catch((e) => {
+    .catch(() => {
       showToast(ERROR_MSG)
     })
 }
@@ -249,7 +249,7 @@ const updateAccessoryInfo = (data: any) => {
         updateData()
       }
     })
-    .catch((e) => {
+    .catch(() => {
       showToast(ERROR_MSG)
     })
 }
@@ -266,7 +266,7 @@ const deleteEquipment = (data: any) => {
         updateData()
       }
     })
-    .catch((e) => {
+    .catch(() => {
       showToast(ERROR_MSG)
     })
 }
@@ -280,7 +280,7 @@ const updateAttachment = (params: any) => {
         updateData()
       }
     })
-    .catch((e) => {
+    .catch(() => {
       showToast(ERROR_MSG)
     })
 }

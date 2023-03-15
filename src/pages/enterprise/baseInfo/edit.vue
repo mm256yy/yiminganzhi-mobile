@@ -54,6 +54,7 @@
                   class="input-txt"
                   type="number"
                   placeholder="请输入"
+                  :maxlength="4"
                   v-model="formData.suffixNo"
                   @focus="inputFocus(1)"
                   @blur="inputBlur"
@@ -962,26 +963,6 @@ const inputBlur = () => {
   focusIndex.value = -1
 }
 
-// 获取上传状态
-const select = (e: any) => {
-  console.log('选择文件：', e)
-}
-
-// 获取上传进度
-const progress = (e: any) => {
-  console.log('上传进度：', e)
-}
-
-// 上传成功
-const success = (e: any) => {
-  console.log('上传成功')
-}
-
-// 上传失败
-const fail = (e: any) => {
-  console.log('上传失败：', e)
-}
-
 // 表单提交
 const submit = () => {
   let baseInfo: any = {
@@ -1084,7 +1065,7 @@ const submit = () => {
             routerBack()
           }
         })
-        .catch((e) => {
+        .catch(() => {
           showToast(ERROR_MSG)
         })
     } else if (type.value === 'edit') {
@@ -1105,7 +1086,7 @@ const submit = () => {
             routerBack()
           }
         })
-        .catch((e) => {
+        .catch(() => {
           showToast(ERROR_MSG)
         })
     }

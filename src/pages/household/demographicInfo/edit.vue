@@ -338,7 +338,7 @@ const submit = () => {
             routerBack()
           }
         })
-        .catch((e) => {
+        .catch(() => {
           showToast(ERROR_MSG)
         })
     } else {
@@ -349,7 +349,7 @@ const submit = () => {
             routerBack()
           }
         })
-        .catch((e) => {
+        .catch(() => {
           showToast(ERROR_MSG)
         })
     }

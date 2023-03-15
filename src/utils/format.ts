@@ -35,8 +35,12 @@ export const formatDict = (value: any, id: number) => {
   if (value) {
     const arr: any = dict[id]
     arr.map((item: any) => {
-      if (String(item.value) === String(value)) {
+      if (typeof item.value === typeof value) {
         str = item.text
+      } else {
+        if (String(item.value) === String(value)) {
+          str = item.text
+        }
       }
     })
     return str

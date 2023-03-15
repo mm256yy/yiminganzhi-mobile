@@ -54,6 +54,7 @@
                   class="input-txt"
                   type="number"
                   placeholder="请输入"
+                  :maxlength="4"
                   v-model="formData.suffixNo"
                   @focus="inputFocus(1)"
                   @blur="inputBlur"

@@ -106,6 +106,7 @@
                   class="input-txt"
                   type="number"
                   placeholder="请输入"
+                  :maxlength="4"
                   v-model="formData.suffixNo"
                   @focus="inputFocus(1)"
                   @blur="inputBlur"
@@ -813,7 +814,7 @@ const submit = () => {
             routerBack()
           }
         })
-        .catch((e) => {
+        .catch(() => {
           showToast(ERROR_MSG)
         })
     } else if (type.value === 'edit') {
@@ -834,7 +835,7 @@ const submit = () => {
             routerBack()
           }
         })
-        .catch((e) => {
+        .catch(() => {
           showToast(ERROR_MSG)
         })
     }

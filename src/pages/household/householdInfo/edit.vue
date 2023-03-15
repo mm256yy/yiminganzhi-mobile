@@ -75,7 +75,8 @@
                 <input
                   class="input-txt"
                   placeholder="请输入"
-                  type="text"
+                  type="number"
+                  :maxlength="4"
                   v-model="formData.suffixNo"
                   @focus="inputFocus"
                   @blur="inputBlur"
@@ -276,7 +277,7 @@ const submit = () => {
             routerBack()
           }
         })
-        .catch((e) => {
+        .catch(() => {
           showToast(ERROR_MSG)
         })
     } else if (type.value === 'edit') {
@@ -288,7 +289,7 @@ const submit = () => {
             routerBack()
           }
         })
-        .catch((e) => {
+        .catch(() => {
           showToast(ERROR_MSG)
         })
     }

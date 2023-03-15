@@ -108,7 +108,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { routerForward } from '@/utils'
 import { MainType, PrintType } from '@/types/common'
@@ -232,7 +232,7 @@ const deleteDemographic = (data: any) => {
         updateData()
       }
     })
-    .catch((e) => {
+    .catch(() => {
       showToast(ERROR_MSG)
     })
 }
@@ -249,7 +249,7 @@ const deleteHouse = (data: any) => {
         updateData()
       }
     })
-    .catch((e) => {
+    .catch(() => {
       showToast(ERROR_MSG)
     })
 }
@@ -266,7 +266,7 @@ const deleteTree = (data: any) => {
         updateData()
       }
     })
-    .catch((e) => {
+    .catch(() => {
       showToast(ERROR_MSG)
     })
 }
@@ -284,7 +284,7 @@ const updateFruitTreeInfo = (data: any) => {
         updateData()
       }
     })
-    .catch((e) => {
+    .catch(() => {
       showToast(ERROR_MSG)
     })
 }
@@ -302,7 +302,7 @@ const updateAccessoryInfo = (data: any) => {
         updateData()
       }
     })
-    .catch((e) => {
+    .catch(() => {
       showToast(ERROR_MSG)
     })
 }
@@ -320,7 +320,7 @@ const updateRevenueInfo = (data: any) => {
         updateData()
       }
     })
-    .catch((e) => {
+    .catch(() => {
       showToast(ERROR_MSG)
     })
 }
@@ -339,7 +339,7 @@ const updateWillingnessInfo = (data: any) => {
         updateData()
       }
     })
-    .catch((e) => {
+    .catch(() => {
       showToast(ERROR_MSG)
     })
 }
@@ -353,7 +353,7 @@ const updateAttachment = (params: any) => {
         updateData()
       }
     })
-    .catch((e) => {
+    .catch(() => {
       showToast(ERROR_MSG)
     })
 }

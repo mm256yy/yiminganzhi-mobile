@@ -25,12 +25,6 @@ import { showLoading, hideLoading } from '@/config'
 import Main from './components/Main.vue'
 import { onLoad, onShow } from '@dcloudio/uni-app'
 
-interface PageQueryType {
-  uid: string
-  expendCodes: string[]
-  type: 'edit'
-}
-
 const sysInfo = uni.getSystemInfoSync()
 const statusBarHeight = sysInfo.statusBarHeight || 0
 const screenHeight = sysInfo.screenHeight
@@ -49,7 +43,6 @@ onShow(() => {
 })
 
 onLoad((option) => {
-  // PageQueryType
   if (option && option.uid) {
     uid.value = option.uid
   }

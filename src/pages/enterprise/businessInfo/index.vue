@@ -850,7 +850,6 @@
 import { ref, onMounted } from 'vue'
 import { getFamilyIncomeListApi } from '@/service'
 import { MainType } from '@/types/common'
-import { showLoading, hideLoading } from '@/config/loading'
 
 const props = defineProps({
   dataList: {
