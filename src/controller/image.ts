@@ -37,7 +37,9 @@ class Image extends Common {
       localPaths.forEach((item) => {
         const fields = `'status','path','url','updatedDate'`
         const values = `'0','${item}','','${dayjs().valueOf()}'`
-        this.db.insertTableData(ImageTableName, values, fields)
+        this.db.insertTableData(ImageTableName, values, fields).catch((err) => {
+          console.log(err, '上传err')
+        })
       })
       await this.db.transaction('commit').catch(() => {
         resolve(false)
