@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 import { onLoad } from '@dcloudio/uni-app'
-import { nextTick, ref, getCurrentInstance, onMounted } from 'vue'
+import { nextTick, ref, getCurrentInstance } from 'vue'
 import { routerBack } from '../../utils'
 // import MapInfo from './components/MapInfo.vue'
 
@@ -154,27 +154,29 @@ const mapTap = (e) => {
 
 // 获取当前位置 并标记
 const getCurrentLocation = () => {
-  uni.getLocation({
-    type: 'gcj02',
-    success: function (res) {
-      const { longitude, latitude } = res
-      if (longitude && latitude) {
-        centerLocation.value = {
-          longitude,
-          latitude
-        }
-        currentLocation.value = {
-          longitude,
-          latitude
-        }
-        updateMaker([
-          {
+  nextTick(() => {
+    uni.getLocation({
+      type: 'gcj02',
+      success: function (res) {
+        const { longitude, latitude } = res
+        if (longitude && latitude) {
+          centerLocation.value = {
             longitude,
             latitude
           }
-        ])
+          currentLocation.value = {
+            longitude,
+            latitude
+          }
+          updateMaker([
+            {
+              longitude,
+              latitude
+            }
+          ])
+        }
       }
-    }
+    })
   })
 }
 
