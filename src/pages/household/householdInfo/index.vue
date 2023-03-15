@@ -129,7 +129,7 @@ const toLink = (type: string) => {
     villageCode: props.dataInfo.villageCode, // 行政村
     virutalVillageCode: props.dataInfo.virutalVillageCode, // 自然村/村民小组
     phone: props.dataInfo.phone, // 联系方式
-    locationType: props.dataInfo.locationType, // 所在位置
+    locationType: props.dataInfo.locationType ? props.dataInfo.locationType : null, // 所在位置
     householdNumber: props.dataInfo.householdNumber, // 户籍册编号
     suffixNo: splitStr(props.dataInfo.doorNo, 12, 16), // 户号后四位
     doorNo: props.dataInfo.doorNo, // 户号

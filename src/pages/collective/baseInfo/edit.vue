@@ -172,6 +172,9 @@ const submit = () => {
   } else if (!formData.value.suffixNo) {
     showToast('请输入村集体编码后四位')
     return
+  } else if (formData.value.suffixNo && formData.value.suffixNo.length !== 4) {
+    showToast('村集体编码不全，请输入四位数字')
+    return
   } else {
     if (type.value === 'add') {
       addLandlordApi(params)

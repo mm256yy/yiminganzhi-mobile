@@ -191,7 +191,7 @@ const formData = ref<any>({
   villageCode: '', // 行政村
   virutalVillageCode: '', // 自然村/村民小组
   phone: '', // 联系方式
-  locationType: '', // 所在位置
+  locationType: null, // 所在位置
   householdNumber: '', // 户籍册编号
   suffixNo: '', // 户号后四位
   doorNo: '', // 户号
@@ -266,6 +266,9 @@ const submit = () => {
     return
   } else if (!formData.value.suffixNo) {
     showToast('请输入户号后四位')
+    return
+  } else if (formData.value.suffixNo && formData.value.suffixNo.length !== 4) {
+    showToast('户号不全，请输入四位数字')
     return
   } else {
     if (type.value === 'add') {

@@ -257,8 +257,14 @@ const homesteadChange = (e: any) => {
 const submit = () => {
   const params = {
     ...formData.value,
-    immigrantWillProductionList: [...productModeData.value]
+    immigrantWillProductionList: [
+      ...productModeData.value,
+      ...homesteadData.value,
+      ...apartmentData.value
+    ]
   }
+
+  console.log('param:', params)
   emit('submit', params)
 }
 

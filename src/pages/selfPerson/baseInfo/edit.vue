@@ -800,6 +800,9 @@ const submit = () => {
   } else if (!formData.value.suffixNo) {
     showToast('请输入个体工商户编码后四位')
     return
+  } else if (formData.value.suffixNo && formData.value.suffixNo.length !== 4) {
+    showToast('个体工商户编码不全，请输入四位数字')
+    return
   } else {
     if (type.value === 'add') {
       let params = {

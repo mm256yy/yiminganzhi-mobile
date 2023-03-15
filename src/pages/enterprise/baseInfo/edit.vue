@@ -1045,6 +1045,9 @@ const submit = () => {
   } else if (!formData.value.suffixNo) {
     showToast('请输入企业编码后四位')
     return
+  } else if (formData.value.suffixNo && formData.value.suffixNo.length !== 4) {
+    showToast('企业编码不全，请输入四位数字')
+    return
   } else if (!formData.value.legalPersonName) {
     showToast('请输入法人姓名')
     return

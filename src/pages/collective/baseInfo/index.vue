@@ -88,7 +88,7 @@ const toLink = (type: string) => {
     doorNo: props.dataInfo.doorNo,
     name: props.dataInfo.name,
     suffixNo: splitStr(props.dataInfo.doorNo, 13, 17),
-    locationType: props.dataInfo.locationType,
+    locationType: props.dataInfo.locationType ? props.dataInfo.locationType : null,
     phone: props.dataInfo.phone,
     areaCode: props.dataInfo.areaCode, // 区/县
     townCode: props.dataInfo.townCode, // 镇/街道
