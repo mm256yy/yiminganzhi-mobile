@@ -480,10 +480,9 @@ const gotoMap = () => {
 
 // 表单提交
 const submit = () => {
-  const { type, uid, doorNo, householdId } = commonParams.value
+  const { type, uid, doorNo } = commonParams.value
   const params = {
     doorNo,
-    householdId,
     ...formData.value,
     completedTime: formData.value.completedTime
       ? dayjs(formData.value.completedTime)

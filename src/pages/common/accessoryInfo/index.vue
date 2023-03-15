@@ -52,8 +52,6 @@ const props = defineProps({
 const formData = ref<any>([])
 const emit = defineEmits(['submit'])
 const commonParams = {
-  uid: props.dataInfo.uid,
-  householdId: props.dataInfo.id,
   number: '',
   remark: ''
 }

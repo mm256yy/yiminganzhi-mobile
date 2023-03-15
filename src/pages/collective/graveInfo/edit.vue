@@ -223,10 +223,9 @@ const inputBlur = () => {
 const submit = () => {
   const { type } = commonParams.value
   if (type === 'add') {
-    const { uid, doorNo, householdId } = commonParams.value
+    const { uid, doorNo } = commonParams.value
     let params = {
       doorNo,
-      householdId,
       ...formData.value,
       graveYear: formData.value.graveYear
         ? dayjs(formData.value.graveYear)
@@ -243,9 +242,8 @@ const submit = () => {
         showToast(ERROR_MSG)
       })
   } else if (type === 'edit') {
-    const { uid, householdId } = commonParams.value
+    const { uid } = commonParams.value
     let params = {
-      householdId,
       ...formData.value,
       graveYear: formData.value.graveYear
         ? dayjs(formData.value.graveYear)

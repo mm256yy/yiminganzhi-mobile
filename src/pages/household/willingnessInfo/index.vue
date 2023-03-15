@@ -113,8 +113,7 @@ const props = defineProps({
 })
 
 const commonParams = {
-  doorNo: props.dataInfo.doorNo,
-  householdId: props.dataInfo.householdId
+  doorNo: props.dataInfo.doorNo
 }
 
 const formData = ref<any>({})
@@ -268,7 +267,7 @@ const submit = () => {
     ...formData.value,
     immigrantWillProductionList: [...arr]
   }
-  console.log('params:', params)
+
   if (!formData.value.removalType) {
     showToast('请选择搬迁安置方式')
     return

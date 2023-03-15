@@ -92,7 +92,6 @@ const alertDialog = ref<any>(null)
 const currentItem = ref<any>({})
 
 const defaultRow = {
-  householdId: props.dataInfo.householdId,
   doorNo: props.dataInfo.doorNo,
   name: '',
   usageType: '1', // 默认果树
@@ -124,7 +123,6 @@ const deleteTree = (data: any, index: number) => {
     currentItem.value = { ...data }
   } else {
     formData.value.splice(index, 1)
-    console.log('formData:', formData.value[index])
   }
 }
 

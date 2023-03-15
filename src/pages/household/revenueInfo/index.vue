@@ -158,7 +158,6 @@ const focusIndex = ref<number>(-1)
 // 公共的参数
 const commonParams = {
   doorNo: props.dataInfo.doorNo,
-  householdId: props.dataInfo.householdId,
   amount: '',
   remark: ''
 }
@@ -276,9 +275,7 @@ onMounted(() => {
   if (props.dataList && props.dataList.length > 0) {
     genArr(props.dataList, 2)
   } else {
-    console.log('重新渲染表格')
     getRevenueList()
-    console.log('firstData:', firstData.value)
   }
 })
 </script>

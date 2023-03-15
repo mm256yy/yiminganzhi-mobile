@@ -867,8 +867,6 @@ const focusIndex = ref<number>(-1)
 // 公共的参数
 const commonParams = {
   doorNo: props.dataInfo.doorNo,
-  uid: props.dataInfo.uid,
-  householdId: props.dataInfo.householdId,
   lastYearAmount: '', // 近一年收入
   lastTwoYearAmount: '', // 近两年收入
   lastThreeYearAmount: '', // 近三年收入

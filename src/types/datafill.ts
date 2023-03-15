@@ -1,6 +1,6 @@
 // 人口列表
 export interface PopulationType {
-  id: number
+  id?: number
   name: string
   sex: string
   card: string
@@ -154,18 +154,18 @@ export interface FamilyIncomeType {
 // 附件类型定义
 export interface ImmigrantFileType {
   doorNo: string
-  householdId: number
+  householdId?: number
   otherPic: string
-  id: number
-  uid: string
+  id?: number
+  uid?: string
   [key: string]: any
 }
 
 // 企业/个体户 字段
 export interface CompanyType {
-  id: number | null
+  id?: number | null
   doorNo: string
-  householdId: number
+  householdId?: number
   uid?: string
   legalPersonName: string
   legalPersonCard: string
@@ -219,30 +219,30 @@ export interface CompanyType {
 }
 
 export interface ManagementType {
-  id: number
+  id?: number
   doorNo: string
-  householdId: number
+  householdId?: number
   lastYearAmount: number
   lastTwoYearAmount: number
   lastThreeYearAmount: number
   remark: string
-  uid: string
+  uid?: string
   name: string
   type: string
   [key: string]: any
 }
 
 export interface EquipmentType {
-  id: number
+  id?: number
   doorNo: string
-  householdId: number
+  householdId?: number
   surveyId: string
   name: string
   size: string
   unit: string
   number: number
   remark: string
-  uid: string
+  uid?: string
   purpose: string
   year: string
   amount: number
@@ -251,9 +251,9 @@ export interface EquipmentType {
 }
 
 export interface FacilitiesType {
-  id: number
+  id?: number
   doorNo: string
-  householdId: number
+  householdId?: number
   facilitiesName: string
   facilitiesType: string
   locationType: string
@@ -270,7 +270,7 @@ export interface FacilitiesType {
   altitude: number
   inundationRang: string
   remark: string
-  uid: string
+  uid?: string
   [key: string]: any
 }
 

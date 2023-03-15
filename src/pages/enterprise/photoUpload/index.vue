@@ -38,10 +38,7 @@ const otherPic = ref<string>(
 // 表单提交
 const submit = () => {
   const params = {
-    id: props.dataInfo.id,
-    uid: props.dataInfo.uid,
     doorNo: props.dataInfo.doorNo,
-    householdId: props.dataInfo.householdId,
     otherPic: otherPic.value
   }
   emit('submit', params)

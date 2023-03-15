@@ -171,10 +171,8 @@ const inputBlur = () => {
 
 // 表单提交
 const submit = () => {
-  const { uid, type, householdId, doorNo } = commonParams.value
+  const { uid, type, doorNo } = commonParams.value
   const params = {
-    uid,
-    householdId,
     doorNo,
     ...formData.value,
     year: formData.value.year ? dayjs(formData.value.year) : formData.value.year
