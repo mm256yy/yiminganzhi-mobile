@@ -205,7 +205,7 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">企业地址：</view>
-                <view class="content">{{ formatStr(props.baseInfo.address) }}</view>
+                <view class="content">{{ formatStr(props.dataInfo.companyAddress) }}</view>
               </view>
             </uni-col>
             <uni-col :span="12">

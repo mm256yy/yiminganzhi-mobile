@@ -11,7 +11,7 @@
       </view>
 
       <view class="list-header-right">
-        <view class="btn-wrapper print" v-if="props.showPrint" @click="printFile">
+        <view class="btn-wrapper print" v-if="props.showPrint && netWork" @click="printFile">
           <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
           <text class="txt">打印表格</text>
         </view>
@@ -62,7 +62,12 @@
               @click="selectFile(item, index)"
             >
               <view class="name">{{ item.name }}</view>
-              <image class="icon" src="@/static/images/icon_view_file.png" mode="scaleToFill" />
+              <image
+                class="icon"
+                src="@/static/images/icon_view_file.png"
+                mode="scaleToFill"
+                @click.stop="prviewImage(item, index)"
+              />
             </view>
           </view>
         </view>
@@ -76,8 +81,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { reportDataApi } from '@/service'
+import { networkCheck } from '@/utils'
 import { getPrintTemplateListApi, printLandlordApi } from '@/api'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { showLoading, hideLoading } from '@/config'
@@ -116,6 +122,9 @@ const printPopup = ref<any>(null)
 const selectedTemplateIds = ref<any>([])
 const tipsList = ref<any>([])
 const fileList = ref<PrintListType[]>([])
+const netWork = ref<boolean>(true)
+const showPreview = ref<boolean>(false)
+const pdfUrl = ref<string>('')
 const YanYuprintPdf = uni.requireNativePlugin('YanYu-PrintPDF')
 
 const expandToggle = () => {
@@ -252,6 +261,16 @@ const printPdf = (templateIds: any[], peasantHouseholdIds: any[]) => {
   })
 }
 
+/**
+ * 预览PDF
+ * @param{Object} item
+ * @param{Object} index
+ */
+const prviewImage = (item: any, index: number) => {
+  pdfUrl.value = item.url
+  showPreview.value = true
+}
+
 // 关闭弹窗
 const close = (type: string) => {
   if (type === 'report') {
@@ -260,6 +279,12 @@ const close = (type: string) => {
     printPopup.value?.close()
   }
 }
+
+onMounted(() => {
+  networkCheck().then((res) => {
+    netWork.value = res
+  })
+})
 </script>
 
 <style lang="scss" scoped>

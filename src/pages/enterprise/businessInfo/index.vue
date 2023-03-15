@@ -922,146 +922,134 @@ const otherData = ref<any>([])
 const emit = defineEmits(['submit'])
 
 /**
- * 生成新的数组
+ * 初始化生成新的数组
  * @param {Object} arr 数组
  */
-const genArr = (arr?: any[], dataType?: number) => {
+const genArr = (arr?: any[]) => {
   if (arr && arr.length > 0) {
     arr.map((item: any) => {
       if (item.configType === MainType.Company) {
         if (item.type === '1') {
-          if (dataType === 1) {
-            pevenueData.value.push({
-              ...item,
-              ...commonParams
-            })
-          } else {
-            pevenueData.value.push({
-              ...item
-            })
-          }
+          pevenueData.value.push({
+            ...item,
+            ...commonParams
+          })
         } else if (item.type === '2') {
-          if (dataType === 1) {
-            salaryData.value.push({
-              ...item,
-              ...commonParams
-            })
-          } else {
-            salaryData.value.push({
-              ...item
-            })
-          }
+          salaryData.value.push({
+            ...item,
+            ...commonParams
+          })
         } else if (item.type === '3') {
-          if (dataType === 1) {
-            welfareFundData.value.push({
-              ...item,
-              ...commonParams
-            })
-          } else {
-            welfareFundData.value.push({
-              ...item
-            })
-          }
+          welfareFundData.value.push({
+            ...item,
+            ...commonParams
+          })
         } else if (item.type === '4') {
-          if (dataType === 1) {
-            laborUnionFundsData.value.push({
-              ...item,
-              ...commonParams
-            })
-          } else {
-            laborUnionFundsData.value.push({
-              ...item
-            })
-          }
+          laborUnionFundsData.value.push({
+            ...item,
+            ...commonParams
+          })
         } else if (item.type === '5') {
-          if (dataType === 1) {
-            accumulationFundData.value.push({
-              ...item,
-              ...commonParams
-            })
-          } else {
-            accumulationFundData.value.push({
-              ...item
-            })
-          }
+          accumulationFundData.value.push({
+            ...item,
+            ...commonParams
+          })
         } else if (item.type === '6') {
-          if (dataType === 1) {
-            leaveExpensesData.value.push({
-              ...item,
-              ...commonParams
-            })
-          } else {
-            leaveExpensesData.value.push({
-              ...item
-            })
-          }
+          leaveExpensesData.value.push({
+            ...item,
+            ...commonParams
+          })
         } else if (item.type === '7') {
-          if (dataType === 1) {
-            taxPaidData.value.push({
-              ...item,
-              ...commonParams
-            })
-          } else {
-            taxPaidData.value.push({
-              ...item
-            })
-          }
+          taxPaidData.value.push({
+            ...item,
+            ...commonParams
+          })
         } else if (item.type === '8') {
-          if (dataType === 1) {
-            entProfitData.value.push({
-              ...item,
-              ...commonParams
-            })
-          } else {
-            entProfitData.value.push({
-              ...item
-            })
-          }
+          entProfitData.value.push({
+            ...item,
+            ...commonParams
+          })
         } else if (item.type === '9') {
-          if (dataType === 1) {
-            currentAssetLoans.value.push({
-              ...item,
-              ...commonParams
-            })
-          } else {
-            currentAssetLoans.value.push({
-              ...item
-            })
-          }
+          currentAssetLoans.value.push({
+            ...item,
+            ...commonParams
+          })
         } else if (item.type === '10') {
-          if (dataType === 1) {
-            mngFeePaidData.value.push({
-              ...item,
-              ...commonParams
-            })
-          } else {
-            mngFeePaidData.value.push({
-              ...item
-            })
-          }
+          mngFeePaidData.value.push({
+            ...item,
+            ...commonParams
+          })
         } else if (item.type === '11') {
-          if (dataType === 1) {
-            otherExpenseData.value.push({
-              ...item,
-              ...commonParams
-            })
-          } else {
-            otherExpenseData.value.push({
-              ...item
-            })
-          }
+          otherExpenseData.value.push({
+            ...item,
+            ...commonParams
+          })
         } else {
-          if (dataType === 1) {
-            otherData.value.push({
-              ...item,
-              ...commonParams
-            })
-          } else {
-            otherData.value.push({
-              ...item
-            })
-          }
+          otherData.value.push({
+            ...item,
+            ...commonParams
+          })
         }
+      }
+    })
+  }
+}
+
+/**
+ * 回显时生成新的数组
+ * @param {Object} arr 数组
+ */
+const genNewArr = (arr?: any[]) => {
+  if (arr && arr.length > 0) {
+    arr.map((item: any) => {
+      if (item.type === '1') {
+        pevenueData.value.push({
+          ...item
+        })
+      } else if (item.type === '2') {
+        salaryData.value.push({
+          ...item
+        })
+      } else if (item.type === '3') {
+        welfareFundData.value.push({
+          ...item
+        })
+      } else if (item.type === '4') {
+        laborUnionFundsData.value.push({
+          ...item
+        })
+      } else if (item.type === '5') {
+        accumulationFundData.value.push({
+          ...item
+        })
+      } else if (item.type === '6') {
+        leaveExpensesData.value.push({
+          ...item
+        })
+      } else if (item.type === '7') {
+        taxPaidData.value.push({
+          ...item
+        })
+      } else if (item.type === '8') {
+        entProfitData.value.push({
+          ...item
+        })
+      } else if (item.type === '9') {
+        currentAssetLoans.value.push({
+          ...item
+        })
+      } else if (item.type === '10') {
+        mngFeePaidData.value.push({
+          ...item
+        })
+      } else if (item.type === '11') {
+        otherExpenseData.value.push({
+          ...item
+        })
+      } else {
+        otherData.value.push({
+          ...item
+        })
       }
     })
   }
@@ -1070,7 +1058,7 @@ const genArr = (arr?: any[], dataType?: number) => {
 // 获取经营现状信息配置列表
 const getBusinessList = async () => {
   const result = await getFamilyIncomeListApi()
-  genArr(result, 1)
+  genArr(result)
 }
 
 // 表单提交
@@ -1094,7 +1082,7 @@ const submit = () => {
 
 onMounted(() => {
   if (props.dataList && props.dataList.length > 0) {
-    genArr(props.dataList, 2)
+    genNewArr(props.dataList)
   } else {
     getBusinessList()
   }
