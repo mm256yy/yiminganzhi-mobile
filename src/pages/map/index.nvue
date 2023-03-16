@@ -155,7 +155,7 @@ const mapTap = (e) => {
 // 获取当前位置 并标记
 const getCurrentLocation = () => {
   console.log('d')
-  nextTick(() => {
+  setTimeout(() => {
     uni.getLocation({
       type: 'gcj02',
       success: function (res) {
@@ -178,7 +178,7 @@ const getCurrentLocation = () => {
         }
       }
     })
-  })
+  }, 1000)
 }
 
 const onConfirm = () => {
