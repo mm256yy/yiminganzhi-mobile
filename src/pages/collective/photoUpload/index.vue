@@ -19,6 +19,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
+import { fmtPicUrl } from '@/utils'
 import UploadFile from '@/components/UploadFile/index.vue'
 
 const props = defineProps({
@@ -31,7 +32,7 @@ const props = defineProps({
 const emit = defineEmits(['submit'])
 const otherPic = ref<string>(
   props.dataInfo.immigrantFile && JSON.stringify(props.dataInfo.immigrantFile) !== '{}'
-    ? props.dataInfo.immigrantFile.otherPic
+    ? fmtPicUrl(props.dataInfo.immigrantFile.otherPic)
     : '[]'
 )
 
