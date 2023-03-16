@@ -53,7 +53,7 @@ class DataFill extends Landlord {
         const itemUid = guid()
         data.uid = itemUid
         data.isDelete = '0'
-        const landlordItem = await this.getLandlordByUid(uid)
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           if (!landlordItem.demographicList) {
             landlordItem.demographicList = []
@@ -88,7 +88,7 @@ class DataFill extends Landlord {
           console.log('业主uid缺失')
           return
         }
-        const landlordItem = await this.getLandlordByUid(uid)
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           landlordItem.demographicList = landlordItem.demographicList.map((item) => {
             if (item.uid === data.uid) {
@@ -125,7 +125,7 @@ class DataFill extends Landlord {
           console.log('uid缺失')
           return
         }
-        const landlordItem = await this.getLandlordByUid(uid)
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           landlordItem.demographicList = landlordItem.demographicList.map((item) => {
             if (item.uid === itemUid) {
@@ -162,7 +162,7 @@ class DataFill extends Landlord {
           console.log('附属物列表缺失')
           return
         }
-        const landlordItem = await this.getLandlordByUid(uid)
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           landlordItem.immigrantAppendantList = data.map((item) => {
             if (!item.uid) {
@@ -195,7 +195,7 @@ class DataFill extends Landlord {
           console.log('uid缺失')
           return
         }
-        const landlordItem = await this.getLandlordByUid(uid)
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           landlordItem.immigrantAppendantList = landlordItem.immigrantAppendantList.map((item) => {
             if (item.uid === itemUid) {
@@ -232,7 +232,7 @@ class DataFill extends Landlord {
           console.log('安置意愿信息缺失')
           return
         }
-        const landlordItem = await this.getLandlordByUid(uid)
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           if (!data.uid) {
             const itemUid = guid()
@@ -279,7 +279,7 @@ class DataFill extends Landlord {
           console.log('果木列表缺失')
           return
         }
-        const landlordItem = await this.getLandlordByUid(uid)
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           landlordItem.immigrantTreeList = data.map((item) => {
             if (!item.uid) {
@@ -312,7 +312,7 @@ class DataFill extends Landlord {
           console.log('uid缺失')
           return
         }
-        const landlordItem = await this.getLandlordByUid(uid)
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           landlordItem.immigrantTreeList = landlordItem.immigrantTreeList.map((item) => {
             if (item.uid === itemUid) {
@@ -347,7 +347,7 @@ class DataFill extends Landlord {
         const itemUid = guid()
         data.uid = itemUid
         data.isDelete = '0'
-        const landlordItem = await this.getLandlordByUid(uid)
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           if (!landlordItem.immigrantGraveList) {
             landlordItem.immigrantGraveList = []
@@ -376,7 +376,7 @@ class DataFill extends Landlord {
           console.log('业主uid缺失')
           return
         }
-        const landlordItem = await this.getLandlordByUid(uid)
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           landlordItem.immigrantGraveList = landlordItem.immigrantGraveList.map((item) => {
             if (item.uid === data.uid) {
@@ -407,7 +407,7 @@ class DataFill extends Landlord {
           console.log('uid缺失')
           return
         }
-        const landlordItem = await this.getLandlordByUid(uid)
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           landlordItem.immigrantGraveList = landlordItem.immigrantGraveList.map((item) => {
             if (item.uid === itemUid) {
@@ -442,7 +442,7 @@ class DataFill extends Landlord {
         const itemUid = guid()
         data.uid = itemUid
         data.isDelete = '0'
-        const landlordItem = await this.getLandlordByUid(uid)
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           if (!landlordItem.immigrantHouseList) {
             landlordItem.immigrantHouseList = []
@@ -471,7 +471,7 @@ class DataFill extends Landlord {
           console.log('业主uid缺失')
           return
         }
-        const landlordItem = await this.getLandlordByUid(uid)
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           landlordItem.immigrantHouseList = landlordItem.immigrantHouseList.map((item) => {
             if (item.uid === data.uid) {
@@ -502,7 +502,7 @@ class DataFill extends Landlord {
           console.log('uid缺失')
           return
         }
-        const landlordItem = await this.getLandlordByUid(uid)
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
         console.log(landlordItem?.immigrantHouseList, '删除前的')
         if (landlordItem) {
           landlordItem.immigrantHouseList = landlordItem.immigrantHouseList.map((item) => {
@@ -541,7 +541,7 @@ class DataFill extends Landlord {
           console.log('列表缺失')
           return
         }
-        const landlordItem = await this.getLandlordByUid(uid)
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           // 每次都是重置
           landlordItem.immigrantIncomeList = data.map((item) => {
@@ -576,7 +576,7 @@ class DataFill extends Landlord {
           console.log('业主uid缺失')
           return
         }
-        const landlordItem = await this.getLandlordByUid(uid)
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           if (!data.uid) {
             const itemUid = guid()
@@ -614,7 +614,7 @@ class DataFill extends Landlord {
           return
         }
 
-        let landlordItem = await this.getLandlordByUid(uid)
+        let landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           landlordItem = {
             ...landlordItem,
@@ -644,7 +644,7 @@ class DataFill extends Landlord {
           console.log('业主uid缺失')
           return
         }
-        const landlordItem = await this.getLandlordByUid(uid)
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           landlordItem.company.isDelete = '1'
         } else {
@@ -674,7 +674,7 @@ class DataFill extends Landlord {
         const itemUid = guid()
         data.uid = itemUid
         data.isDelete = '0'
-        const landlordItem = await this.getLandlordByUid(uid)
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           if (!landlordItem.immigrantEquipmentList) {
             landlordItem.immigrantEquipmentList = []
@@ -703,7 +703,7 @@ class DataFill extends Landlord {
           console.log('业主uid缺失')
           return
         }
-        const landlordItem = await this.getLandlordByUid(uid)
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           landlordItem.immigrantEquipmentList = landlordItem.immigrantEquipmentList.map((item) => {
             if (item.uid === data.uid) {
@@ -734,7 +734,7 @@ class DataFill extends Landlord {
           console.log('uid缺失')
           return
         }
-        const landlordItem = await this.getLandlordByUid(uid)
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           landlordItem.immigrantEquipmentList = landlordItem.immigrantEquipmentList.map((item) => {
             if (item.uid === itemUid) {
@@ -769,7 +769,7 @@ class DataFill extends Landlord {
         const itemUid = guid()
         data.uid = itemUid
         data.isDelete = '0'
-        const landlordItem = await this.getLandlordByUid(uid)
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           if (!landlordItem.immigrantManagementList) {
             landlordItem.immigrantManagementList = []
@@ -803,7 +803,7 @@ class DataFill extends Landlord {
           console.log('企业营收列表缺失')
           return
         }
-        const landlordItem = await this.getLandlordByUid(uid)
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           landlordItem.immigrantManagementList = data.map((item) => {
             if (!item.uid) {
@@ -836,7 +836,7 @@ class DataFill extends Landlord {
           console.log('uid缺失')
           return
         }
-        const landlordItem = await this.getLandlordByUid(uid)
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           landlordItem.immigrantManagementList = landlordItem.immigrantManagementList.map(
             (item) => {
@@ -873,7 +873,7 @@ class DataFill extends Landlord {
         const itemUid = guid()
         data.uid = itemUid
         data.isDelete = '0'
-        const landlordItem = await this.getLandlordByUid(uid)
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           if (!landlordItem.immigrantFacilitiesList) {
             landlordItem.immigrantFacilitiesList = []
@@ -902,7 +902,7 @@ class DataFill extends Landlord {
           console.log('业主uid缺失')
           return
         }
-        const landlordItem = await this.getLandlordByUid(uid)
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           landlordItem.immigrantFacilitiesList = landlordItem.immigrantFacilitiesList.map(
             (item) => {
@@ -935,7 +935,7 @@ class DataFill extends Landlord {
           console.log('uid缺失')
           return
         }
-        const landlordItem = await this.getLandlordByUid(uid)
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           landlordItem.immigrantFacilitiesList = landlordItem.immigrantFacilitiesList.map(
             (item) => {

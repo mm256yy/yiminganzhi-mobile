@@ -392,6 +392,40 @@ export class Landlord extends Common {
     })
   }
 
+  // 业主列表-uid查询单个数据
+  getLandlordByUidNoFilter(uid: string): Promise<LandlordType | null> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!uid) {
+          reject(null)
+          return
+        }
+        const result: LandlordDDLType[] = await this.db.selectTableData(
+          LandlordTableName,
+          'uid',
+          uid,
+          'isDelete',
+          '0'
+        )
+        const res: LandlordType = result && result[0] ? JSON.parse(result[0].content) : {}
+        console.log(res, '业主详情')
+        if (res && res.uid) {
+          const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
+          // 拿到上级行政区划
+          res.virutalVillageCodeText = districtMap[res.virutalVillageCode]
+          res.villageCodeText = districtMap[res.villageCode]
+          res.townCodeText = districtMap[res.townCode]
+          res.areaCodeText = districtMap[res.areaCode]
+          resolve(res)
+        }
+        reject(null)
+      } catch (error) {
+        console.log(error, 'getLandlordByUidNoFilter-error')
+        reject(null)
+      }
+    })
+  }
+
   // 业主列表-根据行政村 和 名称 查询列表
   getLandlordListBySearch(data?: LandlordSearchType): Promise<any> {
     return new Promise(async (resolve, reject) => {
