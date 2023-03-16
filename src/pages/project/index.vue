@@ -15,17 +15,17 @@
           <view class="grid">
             <view
               class="project-item"
-              v-for="(projectItem, dex) in item"
+              v-for="(project, dex) in item"
               :index="[index, dex]"
               :key="dex"
-              @click="onChangeProject(projectItem)"
+              @click="onChangeProject(project)"
             >
               <image class="img" src="@/static/images/project.png" alt=" " />
               <view class="bottom">
-                <text class="txt">{{ projectItem.name }}</text>
+                <text class="txt">{{ project.name }}</text>
               </view>
               <image
-                v-if="currentProjectId === projectItem.id"
+                v-if="currentProjectId === project.id"
                 class="tag"
                 src="@/static/images/current_tag.png"
                 mode="scaleToFill"

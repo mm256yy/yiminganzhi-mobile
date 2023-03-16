@@ -93,7 +93,6 @@ class PushData {
         }
       })
       const list: LandlordDDLType[] = await db.selectTableData(LandlordTableName, 'isDelete', '1')
-
       const { peasantHouseholdPushDtoList: landlordList } = this.state
       if (landlordList && landlordList.length) {
         landlordList.forEach((landlordItem) => {
@@ -205,10 +204,13 @@ class PushData {
         })
       }
       if (list && list.length) {
-        const realList = list.map((landlordItem) => JSON.parse(landlordItem.content))
+        const realList = list.map((landlordItem) => {
+          return JSON.parse(landlordItem.content)
+        })
+        console.log('realList:', realList)
         if (realList.length) {
           realList.forEach((item) => {
-            if (item.uid && item.isDelete === '1') {
+            if (item.uid) {
               deleteList.push({
                 type: 'peasantHouseholdPushDtoList',
                 deleteId: item.uid
