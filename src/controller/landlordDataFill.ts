@@ -503,6 +503,7 @@ class DataFill extends Landlord {
           return
         }
         const landlordItem = await this.getLandlordByUid(uid)
+        console.log(landlordItem?.immigrantHouseList, '删除前的')
         if (landlordItem) {
           landlordItem.immigrantHouseList = landlordItem.immigrantHouseList.map((item) => {
             if (item.uid === itemUid) {
@@ -510,6 +511,7 @@ class DataFill extends Landlord {
             }
             return item
           })
+          console.log(landlordItem.immigrantHouseList, '删除后的')
         } else {
           reject(false)
           console.log('业主信息查询失败')

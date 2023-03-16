@@ -63,9 +63,8 @@ const getTreeData = async () => {
  * @params (object) data 点击的当前节点返回的数据
  */
 const treeItemClick = (data: any) => {
-  dataInfo.value = { ...data }
-  expendCodes.value = [data.code]
   uid.value = data.uid
+  getLandlordDetail(data.uid)
 }
 
 /**

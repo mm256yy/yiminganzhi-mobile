@@ -335,51 +335,43 @@ export class Landlord extends Common {
         console.log(res, '业主详情')
         if (res && res.uid) {
           if (res.demographicList && res.demographicList.length) {
-            res.demographicList = res.demographicList.filter(
-              (item) => !item.isDelete || item.isDelete === '0'
-            )
+            res.demographicList = res.demographicList.filter((item) => item.isDelete !== '1')
           }
           if (res.immigrantAppendantList && res.immigrantAppendantList.length) {
             res.immigrantAppendantList = res.immigrantAppendantList.filter(
-              (item) => !item.isDelete || item.isDelete === '0'
+              (item) => item.isDelete !== '1'
             )
           }
           if (res.immigrantGraveList && res.immigrantGraveList.length) {
-            res.immigrantGraveList = res.immigrantGraveList.filter(
-              (item) => !item.isDelete || item.isDelete === '0'
-            )
+            res.immigrantGraveList = res.immigrantGraveList.filter((item) => item.isDelete !== '1')
           }
           if (res.immigrantHouseList && res.immigrantHouseList.length) {
-            res.immigrantHouseList = res.immigrantHouseList.filter(
-              (item) => !item.isDelete || item.isDelete === '0'
-            )
+            res.immigrantHouseList = res.immigrantHouseList.filter((item) => item.isDelete !== '1')
           }
           if (res.immigrantIncomeList && res.immigrantIncomeList.length) {
             res.immigrantIncomeList = res.immigrantIncomeList.filter(
-              (item) => !item.isDelete || item.isDelete === '0'
+              (item) => item.isDelete !== '1'
             )
           }
           if (res.immigrantTreeList && res.immigrantTreeList.length) {
-            res.immigrantTreeList = res.immigrantTreeList.filter(
-              (item) => !item.isDelete || item.isDelete === '0'
-            )
+            res.immigrantTreeList = res.immigrantTreeList.filter((item) => item.isDelete !== '1')
           }
 
           if (res.immigrantManagementList && res.immigrantManagementList.length) {
             res.immigrantManagementList = res.immigrantManagementList.filter(
-              (item) => !item.isDelete || item.isDelete === '0'
+              (item) => item.isDelete !== '1'
             )
           }
 
           if (res.immigrantEquipmentList && res.immigrantEquipmentList.length) {
             res.immigrantEquipmentList = res.immigrantEquipmentList.filter(
-              (item) => !item.isDelete || item.isDelete === '0'
+              (item) => item.isDelete !== '1'
             )
           }
 
           if (res.immigrantFacilitiesList && res.immigrantFacilitiesList.length) {
             res.immigrantFacilitiesList = res.immigrantFacilitiesList.filter(
-              (item) => !item.isDelete || item.isDelete === '0'
+              (item) => item.isDelete !== '1'
             )
           }
 
