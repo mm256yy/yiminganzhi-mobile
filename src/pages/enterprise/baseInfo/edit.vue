@@ -1072,10 +1072,14 @@ const submit = () => {
   } else if (!formData.value.villageCode) {
     showToast('请选择所属区域')
     return
-  } else if (!formData.value.suffixNo) {
+  } else if (!formData.value.doorNo && !formData.value.suffixNo) {
     showToast('请输入企业编码后四位')
     return
-  } else if (formData.value.suffixNo && formData.value.suffixNo.length !== 4) {
+  } else if (
+    !formData.value.doorNo &&
+    formData.value.suffixNo &&
+    formData.value.suffixNo.length !== 4
+  ) {
     showToast('企业编码不全，请输入四位数字')
     return
   } else if (!formData.value.legalPersonName) {

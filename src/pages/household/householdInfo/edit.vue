@@ -283,10 +283,14 @@ const submit = () => {
   } else if (!formData.value.virutalVillageCode) {
     showToast('请选择自然村/村民小组')
     return
-  } else if (!formData.value.suffixNo) {
+  } else if (!formData.value.doorNo && !formData.value.suffixNo) {
     showToast('请输入户号后四位')
     return
-  } else if (formData.value.suffixNo && formData.value.suffixNo.length !== 4) {
+  } else if (
+    !formData.value.doorNo &&
+    formData.value.suffixNo &&
+    formData.value.suffixNo.length !== 4
+  ) {
     showToast('户号不全，请输入四位数字')
     return
   } else if (!formData.value.householdNumber) {

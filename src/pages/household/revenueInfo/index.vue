@@ -184,47 +184,53 @@ const inputBlur = () => {
 const emit = defineEmits(['submit'])
 
 /**
- * 生成新的数组
+ * 初始化 - 生成新的数组
  * @param {Object} arr 数组
  */
-const genArr = (arr?: any[], dataType?: number) => {
+const genArr = (arr?: any[]) => {
   if (arr && arr.length > 0) {
     arr.map((item: any) => {
       if (item.configType === MainType.PeasantHousehold) {
         if (item.type === '1') {
-          if (dataType === 1) {
-            firstData.value.push({
-              ...item,
-              ...commonParams
-            })
-          } else if (dataType === 2) {
-            firstData.value.push({
-              ...item
-            })
-          }
+          firstData.value.push({
+            ...item,
+            ...commonParams
+          })
         } else if (item.type === '2') {
-          if (dataType === 1) {
-            secondData.value.push({
-              ...item,
-              ...commonParams
-            })
-          } else if (dataType === 2) {
-            secondData.value.push({
-              ...item
-            })
-          }
+          secondData.value.push({
+            ...item,
+            ...commonParams
+          })
         } else {
-          if (dataType === 1) {
-            otherData.value.push({
-              ...item,
-              ...commonParams
-            })
-          } else if (dataType === 2) {
-            otherData.value.push({
-              ...item
-            })
-          }
+          otherData.value.push({
+            ...item,
+            ...commonParams
+          })
         }
+      }
+    })
+  }
+}
+
+/**
+ * 回显 -- 生成新的数组
+ * @param {Object} arr 数组
+ */
+const genNewArr = (arr?: any[]) => {
+  if (arr && arr.length > 0) {
+    arr.map((item: any) => {
+      if (item.type === '1') {
+        firstData.value.push({
+          ...item
+        })
+      } else if (item.type === '2') {
+        secondData.value.push({
+          ...item
+        })
+      } else {
+        otherData.value.push({
+          ...item
+        })
       }
     })
   }
@@ -233,7 +239,7 @@ const genArr = (arr?: any[], dataType?: number) => {
 // 获取家庭收入信息配置列表
 const getRevenueList = async () => {
   const result = await getFamilyIncomeListApi()
-  genArr(result, 1)
+  genArr(result)
 }
 
 // 第一产业收入 / 第二、三产业 小计
@@ -273,7 +279,7 @@ const submit = () => {
 
 onMounted(() => {
   if (props.dataList && props.dataList.length > 0) {
-    genArr(props.dataList, 2)
+    genNewArr(props.dataList)
   } else {
     getRevenueList()
   }

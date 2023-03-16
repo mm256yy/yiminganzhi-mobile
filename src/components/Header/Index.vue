@@ -250,6 +250,7 @@ const confirm = (type: string) => {
 
 // 打印 PDF 文件
 const printPdf = (templateIds: any[], peasantHouseholdIds: any[]) => {
+  showLoading()
   printLandlordApi(templateIds, peasantHouseholdIds).then((res) => {
     if (res) {
       uni.downloadFile({
@@ -257,11 +258,15 @@ const printPdf = (templateIds: any[], peasantHouseholdIds: any[]) => {
         success(res) {
           const path = plus.io.convertLocalFileSystemURL(res.tempFilePath)
           YanYuprintPdf.managerPrint(path)
+          hideLoading()
         },
         fail(err) {
+          hideLoading()
           console.log('save err:', err)
         }
       })
+    } else {
+      hideLoading()
     }
   })
 }
@@ -287,6 +292,10 @@ const prviewImage = (item: any) => {
               console.log('打开文档成功')
             }
           })
+        },
+        fail(err) {
+          console.log('err:', err)
+          hideLoading()
         }
       })
     }

@@ -7,7 +7,7 @@
           <uni-col :span="12">
             <uni-forms-item
               required
-              label="登记人姓名"
+              label="登记人"
               :label-width="150"
               label-align="right"
               name="formData.registrantName"
@@ -35,6 +35,7 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="与登记人关系"
               :label-width="150"
               label-align="right"
@@ -217,37 +218,48 @@ const inputBlur = () => {
 // 表单提交
 const submit = () => {
   const { type } = commonParams.value
-  if (type === 'add') {
-    const { uid, doorNo } = commonParams.value
-    let params = {
-      doorNo,
-      ...formData.value
+  if (!formData.value.registrantName) {
+    showToast('请选择登记人')
+    return
+  } else if (!form.value.relation) {
+    showToast('请选择与登记人关系')
+    return
+  } else if (!form.value.gravePosition) {
+    showToast('请选择所处位置')
+    return
+  } else {
+    if (type === 'add') {
+      const { uid, doorNo } = commonParams.value
+      let params = {
+        doorNo,
+        ...formData.value
+      }
+      addLandlordGraveApi(uid, params)
+        .then((res) => {
+          if (res) {
+            showToast(SUCCESS_MSG)
+            routerBack()
+          }
+        })
+        .catch(() => {
+          showToast(ERROR_MSG)
+        })
+    } else if (type === 'edit') {
+      const { uid } = commonParams.value
+      let params = {
+        ...formData.value
+      }
+      updateLandlordGraveApi(uid, params)
+        .then((res) => {
+          if (res) {
+            showToast(SUCCESS_MSG)
+            routerBack()
+          }
+        })
+        .catch(() => {
+          showToast(ERROR_MSG)
+        })
     }
-    addLandlordGraveApi(uid, params)
-      .then((res) => {
-        if (res) {
-          showToast(SUCCESS_MSG)
-          routerBack()
-        }
-      })
-      .catch(() => {
-        showToast(ERROR_MSG)
-      })
-  } else if (type === 'edit') {
-    const { uid } = commonParams.value
-    let params = {
-      ...formData.value
-    }
-    updateLandlordGraveApi(uid, params)
-      .then((res) => {
-        if (res) {
-          showToast(SUCCESS_MSG)
-          routerBack()
-        }
-      })
-      .catch(() => {
-        showToast(ERROR_MSG)
-      })
   }
 }
 </script>
