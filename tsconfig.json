@@ -26,7 +26,7 @@
     "typeRoots": ["./node_modules/@types", "./src/types"],
     "paths": {
       "@/*": ["src/*"]
-    },
+    }
   },
   "vueCompilerOptions": {
     "experimentalRuntimeMode": "runtime-uni-app",
@@ -35,7 +35,8 @@
   "exclude": [
     "node_modules",
     "unpackage",
-    "src/**/*.nvue"
+    "src/**/*.nvue",
+		"src/static"
   ],
   "include": ["src/**/*", "types/**/*.d.ts", "mock/**/*.ts"]
 }

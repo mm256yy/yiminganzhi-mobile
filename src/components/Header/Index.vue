@@ -66,7 +66,7 @@
                 class="icon"
                 src="@/static/images/icon_view_file.png"
                 mode="scaleToFill"
-                @click.stop="prviewImage(item, index)"
+                @click.stop="prviewImage(item)"
               />
             </view>
           </view>
@@ -77,13 +77,18 @@
         </view>
       </view>
     </uni-popup>
+
+    <!-- 打印表格 -->
+    <uni-popup ref="webViewPopup" :is-mask-click="true">
+      <web-view :src="pdfUrl" />
+    </uni-popup>
   </view>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 import { reportDataApi } from '@/service'
-import { networkCheck } from '@/utils'
+import { networkCheck, routerForward } from '@/utils'
 import { getPrintTemplateListApi, printLandlordApi } from '@/api'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { showLoading, hideLoading } from '@/config'
@@ -123,7 +128,7 @@ const selectedTemplateIds = ref<any>([])
 const tipsList = ref<any>([])
 const fileList = ref<PrintListType[]>([])
 const netWork = ref<boolean>(true)
-const showPreview = ref<boolean>(false)
+const webViewPopup = ref<any>(null)
 const pdfUrl = ref<string>('')
 const YanYuprintPdf = uni.requireNativePlugin('YanYu-PrintPDF')
 
@@ -266,9 +271,26 @@ const printPdf = (templateIds: any[], peasantHouseholdIds: any[]) => {
  * @param{Object} item
  * @param{Object} index
  */
-const prviewImage = (item: any, index: number) => {
-  pdfUrl.value = item.url
-  showPreview.value = true
+const prviewImage = (item: any) => {
+  printLandlordApi([item.uid], [props.dataInfo.id]).then((res: any) => {
+    if (res) {
+      uni.downloadFile({
+        url: res,
+        success: function (res) {
+          var filePath = res.tempFilePath
+          showLoading()
+          uni.openDocument({
+            filePath: filePath,
+            showMenu: true,
+            success: function (res) {
+              hideLoading()
+              console.log('打开文档成功')
+            }
+          })
+        }
+      })
+    }
+  })
 }
 
 // 关闭弹窗

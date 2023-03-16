@@ -18,14 +18,19 @@
 
             <view class="tabs-content">
               <!-- tab 切换 -->
-              <Tabs :dataList="tabsList" :expand="showExpand" @select-tabs="selectTabs" />
+              <Tabs
+                :dataList="tabsList"
+                :expand="showExpand"
+                :current-index="tabVal"
+                @select-tabs="selectTabs"
+              />
 
               <!-- 村集体基本情况 -->
-              <base-info v-if="tabVal === 1" :dataInfo="dataInfo" @update-tree="updateTree" />
+              <base-info v-if="tabVal === 0" :dataInfo="dataInfo" @update-tree="updateTree" />
 
               <!-- 房屋信息 -->
               <house-info
-                v-if="tabVal === 2"
+                v-if="tabVal === 1"
                 :dataList="dataInfo.immigrantHouseList"
                 :dataInfo="dataInfo"
                 @delete-house="deleteHouse"
@@ -33,7 +38,7 @@
 
               <!-- 零星（林）果木信息 -->
               <tree-info
-                v-if="tabVal === 3"
+                v-if="tabVal === 2"
                 :dataList="dataInfo.immigrantTreeList"
                 :dataInfo="dataInfo"
                 @delete-tree="deleteTree"
@@ -42,7 +47,7 @@
 
               <!-- 附属物信息 -->
               <accessory-info
-                v-if="tabVal === 4"
+                v-if="tabVal === 3"
                 :dataInfo="dataInfo"
                 :dataList="dataInfo.immigrantAppendantList"
                 @submit="updateAccessoryInfo"
@@ -50,7 +55,7 @@
 
               <!-- 坟墓信息 -->
               <grave-info
-                v-if="tabVal === 5"
+                v-if="tabVal === 4"
                 :dataList="dataInfo.immigrantGraveList"
                 :dataInfo="dataInfo"
                 @delete-grave-info="deleteGraveInfo"
@@ -58,14 +63,14 @@
 
               <!-- 农村专项及设施 -->
               <equipment-info
-                v-if="tabVal === 6"
+                v-if="tabVal === 5"
                 :dataList="dataInfo.immigrantFacilitiesList"
                 :dataInfo="dataInfo"
                 @delete-equipment="deleteEquipment"
               />
 
               <!-- 照片上传 -->
-              <photo-upload v-if="tabVal === 7" :dataInfo="dataInfo" @submit="updateAttachment" />
+              <photo-upload v-if="tabVal === 6" :dataInfo="dataInfo" @submit="updateAttachment" />
             </view>
           </view>
 
@@ -156,21 +161,22 @@ const props = defineProps({
 })
 
 const tabsList = ref([
-  { label: '村集体基本情况', value: 1, defIcon: iconBaseDef, selIcon: iconBaseSel },
-  { label: '房屋信息', value: 2, defIcon: iconHouseDef, selIcon: iconHouseSel },
-  { label: '零星 (林) 果木', value: 3, defIcon: iconTreeDef, selIcon: iconTreeSel },
-  { label: '附属物信息', value: 4, defIcon: iconAppurtenanceDef, selIcon: iconAppurtenanceSel },
-  { label: '坟墓信息', value: 5, defIcon: iconGraveDef, selIcon: iconGraveSel },
-  { label: '农村专项及设施', value: 6, defIcon: iconEquipmentDef, selIcon: iconEquipmentSel },
-  { label: '照片上传', value: 7, defIcon: iconPhotoDef, selIcon: iconPhotoSel }
+  { label: '村集体基本情况', value: 0, defIcon: iconBaseDef, selIcon: iconBaseSel },
+  { label: '房屋信息', value: 1, defIcon: iconHouseDef, selIcon: iconHouseSel },
+  { label: '零星 (林) 果木', value: 2, defIcon: iconTreeDef, selIcon: iconTreeSel },
+  { label: '附属物信息', value: 3, defIcon: iconAppurtenanceDef, selIcon: iconAppurtenanceSel },
+  { label: '坟墓信息', value: 4, defIcon: iconGraveDef, selIcon: iconGraveSel },
+  { label: '农村专项及设施', value: 5, defIcon: iconEquipmentDef, selIcon: iconEquipmentSel },
+  { label: '照片上传', value: 6, defIcon: iconPhotoDef, selIcon: iconPhotoSel }
 ])
 
 const showExpand = ref<boolean>(false)
-const tabVal = ref<number>(1)
+const tabVal = ref<number>(0)
 const emit = defineEmits(['treeItemClick', 'updateData', 'updateTree'])
 
 const treeItemClick = (data: any) => {
   console.log(data, 'data')
+  tabVal.value = 0
   emit('treeItemClick', data)
 }
 

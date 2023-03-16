@@ -87,7 +87,7 @@ export interface TreeType {
 
 // 坟墓类型定义
 export interface GraveType {
-  id: number
+  id?: number
   uid?: string
   doorNo: string
   householdId: number
@@ -97,6 +97,9 @@ export interface GraveType {
   graveYear: string
   gravePosition: string
   remark: string
+  registrantId: number
+  registrantDoorNo: string
+  relation: string
   [key: string]: any
 }
 

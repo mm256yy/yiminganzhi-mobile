@@ -121,7 +121,7 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              label="层面材料"
+              label="屋面材料"
               :label-width="150"
               label-align="right"
               name="formData.roofMaterialsType"
@@ -272,6 +272,16 @@
 
         <uni-row>
           <uni-col :span="12">
+            <uni-forms-item
+              label="淹没范围"
+              :label-width="150"
+              label-align="right"
+              name="formData.inundationRange"
+            >
+              <uni-data-select v-model="formData.inundationRange" :localdata="dict[346]" />
+            </uni-forms-item>
+          </uni-col>
+          <uni-col :span="12">
             <uni-forms-item label="中心经纬度" :label-width="150" label-align="right">
               <view class="lg-txt-wrapper">
                 <uni-data-checkbox v-model="check" :localdata="lgTagList" />
@@ -300,7 +310,10 @@
               </view>
             </uni-forms-item>
           </uni-col>
-          <uni-col :span="12">
+        </uni-row>
+
+        <uni-row>
+          <uni-col :span="24">
             <uni-forms-item
               label="备注"
               :label-width="150"

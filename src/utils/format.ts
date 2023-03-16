@@ -101,6 +101,8 @@ export const formatNum = (value: any, unit?: string) => {
 export const splitStr = (str: any, startIndex: number, endIndex: number) => {
   if (str) {
     if (startIndex && endIndex) {
+      console.log('str:', str)
+      console.log('sliceStr:', str.slice(startIndex, endIndex))
       return str.slice(startIndex, endIndex)
     } else {
       return str

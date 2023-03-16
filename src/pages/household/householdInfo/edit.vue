@@ -70,7 +70,7 @@
               label-align="right"
               name="formData.suffixNo"
             >
-              <view :class="['input-wrapper', isFocus ? 'focus' : '']">
+              <view v-if="!formData.doorNo" :class="['input-wrapper', isFocus ? 'focus' : '']">
                 <view class="pre-txt">{{ formData.villageCode }}</view>
                 <input
                   class="input-txt"
@@ -81,6 +81,9 @@
                   @focus="inputFocus"
                   @blur="inputBlur"
                 />
+              </view>
+              <view v-else class="input-wrapper">
+                <input class="input-txt disabled" v-model="formData.doorNo" disabled />
               </view>
             </uni-forms-item>
           </uni-col>
@@ -99,6 +102,17 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
+              required
+              label="户籍册编号"
+              :label-width="150"
+              label-align="right"
+              name="formData.householdNumber"
+            >
+              <uni-easyinput v-model="formData.householdNumber" type="text" placeholder="请输入" />
+            </uni-forms-item>
+          </uni-col>
+          <uni-col :span="12">
+            <uni-forms-item
               label="户籍所在地"
               :label-width="150"
               label-align="right"
@@ -107,6 +121,9 @@
               <uni-easyinput v-model="formData.address" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
+        </uni-row>
+
+        <uni-row>
           <uni-col :span="12">
             <uni-forms-item
               label="淹没范围"
@@ -117,9 +134,6 @@
               <uni-data-select v-model="formData.inundationRange" :localdata="dict[346]" />
             </uni-forms-item>
           </uni-col>
-        </uni-row>
-
-        <uni-row>
           <uni-col :span="12">
             <uni-forms-item
               label="高程"
@@ -130,7 +144,10 @@
               <uni-easyinput v-model="formData.altitude" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
-          <uni-col :span="12">
+        </uni-row>
+
+        <uni-row>
+          <uni-col :span="24">
             <uni-forms-item label="中心经纬度" :label-width="150" label-align="right">
               <view class="lg-txt-wrapper">
                 <uni-data-checkbox v-model="check" :localdata="lgTagList" />
@@ -175,7 +192,7 @@
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
 import { ref, onMounted } from 'vue'
-import { routerBack, getStorage, StorageKey, routerForward, networkCheck } from '@/utils'
+import { routerBack, getStorage, StorageKey, routerForward, networkCheck, splitStr } from '@/utils'
 import { addLandlordApi, updateLandlordApi } from '@/service'
 import { locationTypes, yesAndNoEnums } from '@/config/common'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
@@ -252,7 +269,9 @@ const gotoMap = () => {
 const submit = () => {
   let params = {
     ...formData.value,
-    doorNo: formData.value.villageCode
+    doorNo: formData.value.doorNo
+      ? formData.value.doorNo
+      : formData.value.villageCode
       ? String(formData.value.villageCode) + formData.value.suffixNo
       : '',
     type: MainType.PeasantHousehold
@@ -269,6 +288,9 @@ const submit = () => {
     return
   } else if (formData.value.suffixNo && formData.value.suffixNo.length !== 4) {
     showToast('户号不全，请输入四位数字')
+    return
+  } else if (!formData.value.householdNumber) {
+    showToast('请输入户籍册编号')
     return
   } else {
     if (type.value === 'add') {
@@ -374,6 +396,11 @@ onMounted(() => {
           font-size: 9rpx;
           line-height: 35px;
           color: #171718;
+
+          &.disabled {
+            width: 200rpx;
+            background-color: #f5f7fa;
+          }
         }
       }
 

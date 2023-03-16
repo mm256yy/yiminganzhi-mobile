@@ -22,12 +22,12 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              label="户号"
+              label="登记人户号"
               :label-width="150"
               label-align="right"
-              name="formData.doorNo"
+              name="formData.registrantDoorNo"
             >
-              <uni-easyinput v-model="formData.doorNo" disabled placeholde="请选择" />
+              <uni-easyinput v-model="formData.registrantDoorNo" disabled placeholde="请选择" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -96,11 +96,7 @@
               label-align="right"
               name="formData.graveYear"
             >
-              <uni-datetime-picker
-                type="date"
-                placeholder="请选择立墓年份"
-                v-model="formData.graveYear"
-              />
+              <uni-easyinput v-model="formData.graveYear" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -151,7 +147,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import dayjs from 'dayjs'
 import { routerBack, getStorage, StorageKey } from '@/utils'
 import { addLandlordGraveApi, updateLandlordGraveApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config'
@@ -203,8 +198,8 @@ const close = () => {
 const confirmSelect = (data: any) => {
   if (data) {
     formData.value.registrantName = data.label
-    formData.value.doorNo = data.value
-    formData.value.landlordUid = data.uid
+    formData.value.registrantDoorNo = data.value
+    formData.value.registrantId = data.id
   }
   close()
 }
@@ -226,10 +221,7 @@ const submit = () => {
     const { uid, doorNo } = commonParams.value
     let params = {
       doorNo,
-      ...formData.value,
-      graveYear: formData.value.graveYear
-        ? dayjs(formData.value.graveYear)
-        : formData.value.graveYear
+      ...formData.value
     }
     addLandlordGraveApi(uid, params)
       .then((res) => {
@@ -244,10 +236,7 @@ const submit = () => {
   } else if (type === 'edit') {
     const { uid } = commonParams.value
     let params = {
-      ...formData.value,
-      graveYear: formData.value.graveYear
-        ? dayjs(formData.value.graveYear)
-        : formData.value.graveYear
+      ...formData.value
     }
     updateLandlordGraveApi(uid, params)
       .then((res) => {

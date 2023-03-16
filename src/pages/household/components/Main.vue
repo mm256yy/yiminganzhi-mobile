@@ -18,14 +18,19 @@
 
             <view class="tabs-content">
               <!-- tab 切换 -->
-              <Tabs :dataList="tabsList" :expand="showExpand" @select-tabs="selectTabs" />
+              <Tabs
+                :dataList="tabsList"
+                :expand="showExpand"
+                :current-index="tabVal"
+                @select-tabs="selectTabs"
+              />
 
               <!-- 居民户信息 -->
-              <household-info v-if="tabVal === 1" :dataInfo="dataInfo" @update-tree="updateTree" />
+              <household-info v-if="tabVal === 0" :dataInfo="dataInfo" @update-tree="updateTree" />
 
               <!-- 人口信息 -->
               <demographic-info
-                v-if="tabVal === 2"
+                v-if="tabVal === 1"
                 :dataList="dataInfo.demographicList"
                 :dataInfo="dataInfo"
                 @delete-demographic="deleteDemographic"
@@ -33,7 +38,7 @@
 
               <!-- 房屋信息 -->
               <house-info
-                v-if="tabVal === 3"
+                v-if="tabVal === 2"
                 :dataList="dataInfo.immigrantHouseList"
                 :dataInfo="dataInfo"
                 @delete-house="deleteHouse"
@@ -41,7 +46,7 @@
 
               <!-- 附属物信息 -->
               <accessory-info
-                v-if="tabVal === 4"
+                v-if="tabVal === 3"
                 :dataInfo="dataInfo"
                 :dataList="dataInfo.immigrantAppendantList"
                 @submit="updateAccessoryInfo"
@@ -49,7 +54,7 @@
 
               <!-- 零星（林）果木信息 -->
               <tree-info
-                v-if="tabVal === 5"
+                v-if="tabVal === 4"
                 :dataList="dataInfo.immigrantTreeList"
                 :dataInfo="dataInfo"
                 @delete-tree="deleteTree"
@@ -57,11 +62,11 @@
               />
 
               <!-- 坟墓信息 -->
-              <grave-info v-if="tabVal === 6" :dataList="dataInfo.immigrantGraveList" />
+              <grave-info v-if="tabVal === 5" :dataList="dataInfo.immigrantGraveList" />
 
               <!-- 家庭收入信息 -->
               <revenue-info
-                v-if="tabVal === 7"
+                v-if="tabVal === 6"
                 :dataList="dataInfo.immigrantIncomeList"
                 :dataInfo="dataInfo"
                 @submit="updateRevenueInfo"
@@ -69,7 +74,7 @@
 
               <!-- 安置意愿信息 -->
               <willingness-info
-                v-if="tabVal === 8"
+                v-if="tabVal === 7"
                 :willData="dataInfo.immigrantWill"
                 :dataInfo="dataInfo"
                 @submit="updateWillingnessInfo"
@@ -77,7 +82,7 @@
 
               <!-- 附件上传 -->
               <attachment-upload
-                v-if="tabVal === 9"
+                v-if="tabVal === 8"
                 :dataInfo="dataInfo"
                 @submit="updateAttachment"
               />
@@ -178,23 +183,24 @@ const props = defineProps({
 })
 
 const tabsList = ref([
-  { label: '居民户信息', value: 1, defIcon: iconHouseholdDef, selIcon: iconHouseholdSel },
-  { label: '人口信息', value: 2, defIcon: iconDemographicDef, selIcon: iconDemographicSel },
-  { label: '房屋信息', value: 3, defIcon: iconHouseDef, selIcon: iconHouseSel },
-  { label: '附属物信息', value: 4, defIcon: iconAccessoryDef, selIcon: iconAccessorySel },
-  { label: '零星 (林) 果木', value: 5, defIcon: iconTreeDef, selIcon: iconTreeSel },
-  { label: '坟墓信息', value: 6, defIcon: iconGraveDef, selIcon: iconGraveSel },
-  { label: '家庭收入信息', value: 7, defIcon: iconRevenueDef, selIcon: iconRevenueSel },
-  { label: '安置意愿信息', value: 8, defIcon: iconWillingnessDef, selIcon: iconWillingnessSel },
-  { label: '附件上传', value: 9, defIcon: iconAttachmentDef, selIcon: iconAttachmentSel }
+  { label: '居民户信息', value: 0, defIcon: iconHouseholdDef, selIcon: iconHouseholdSel },
+  { label: '人口信息', value: 1, defIcon: iconDemographicDef, selIcon: iconDemographicSel },
+  { label: '房屋信息', value: 2, defIcon: iconHouseDef, selIcon: iconHouseSel },
+  { label: '附属物信息', value: 3, defIcon: iconAccessoryDef, selIcon: iconAccessorySel },
+  { label: '零星 (林) 果木', value: 4, defIcon: iconTreeDef, selIcon: iconTreeSel },
+  { label: '坟墓信息', value: 5, defIcon: iconGraveDef, selIcon: iconGraveSel },
+  { label: '家庭收入信息', value: 6, defIcon: iconRevenueDef, selIcon: iconRevenueSel },
+  { label: '安置意愿信息', value: 7, defIcon: iconWillingnessDef, selIcon: iconWillingnessSel },
+  { label: '附件上传', value: 8, defIcon: iconAttachmentDef, selIcon: iconAttachmentSel }
 ])
 
 const showExpand = ref<boolean>(false)
-const tabVal = ref<number>(1)
+const tabVal = ref<number>(0)
 const emit = defineEmits(['treeItemClick', 'updateData', 'updateTree'])
 
 const treeItemClick = (data: any) => {
   console.log(data, 'data')
+  tabVal.value = 0
   emit('treeItemClick', data)
 }
 

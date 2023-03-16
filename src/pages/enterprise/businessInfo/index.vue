@@ -280,9 +280,9 @@
       </uni-col>
     </uni-row>
 
-    <view class="title" v-if="accumulationFundData && accumulationFundData.length > 0"
-      >企业公积金</view
-    >
+    <view class="title" v-if="accumulationFundData && accumulationFundData.length > 0">
+      企业公积金
+    </view>
 
     <uni-row v-for="item in accumulationFundData" :key="item.id">
       <uni-col class="sub-title" :span="4" />
@@ -702,7 +702,7 @@
       </uni-col>
     </uni-row>
 
-    <view class="title" v-if="otherExpenseData && otherExpenseData.length > 0">其它财务费用</view>
+    <view class="title" v-if="otherExpenseData && otherExpenseData.length > 0">其他财务费用</view>
 
     <uni-row v-for="item in otherExpenseData" :key="item.id">
       <uni-col class="sub-title" :span="4" />
@@ -772,7 +772,7 @@
       </uni-col>
     </uni-row>
 
-    <view class="title" v-if="otherData && otherData.length > 0">其它</view>
+    <view class="title" v-if="otherData && otherData.length > 0">其他</view>
 
     <uni-row v-for="item in otherData" :key="item.id">
       <uni-col class="sub-title" :span="4" />

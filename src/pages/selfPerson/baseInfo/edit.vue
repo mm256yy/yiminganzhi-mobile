@@ -99,7 +99,10 @@
               label-align="right"
               name="formData.suffixNo"
             >
-              <view :class="['code-wrapper', focusIndex === 1 ? 'focus' : '']">
+              <view
+                v-if="!formData.doorNo"
+                :class="['code-wrapper', focusIndex === 1 ? 'focus' : '']"
+              >
                 <view class="pre-txt">
                   {{ formData.villageCode ? 'G' + formData.villageCode : '' }}
                 </view>
@@ -112,6 +115,9 @@
                   @focus="inputFocus(1)"
                   @blur="inputBlur"
                 />
+              </view>
+              <view v-else class="code-wrapper">
+                <input class="input-txt disabled" v-model="formData.doorNo" disabled />
               </view>
             </uni-forms-item>
           </uni-col>
@@ -740,7 +746,9 @@ const submit = () => {
   let baseInfo: any = {
     uid: uid.value,
     name: formData.value.name,
-    doorNo: formData.value.suffixNo
+    doorNo: formData.value.doorNo
+      ? formData.value.doorNo
+      : formData.value.suffixNo
       ? 'G' + formData.value.villageCode + formData.value.suffixNo
       : '',
     areaCode: formData.value.areaCode,
@@ -759,7 +767,9 @@ const submit = () => {
   }
 
   let company: any = {
-    doorNo: formData.value.suffixNo
+    doorNo: formData.value.doorNo
+      ? formData.value.doorNo
+      : formData.value.suffixNo
       ? 'G' + formData.value.villageCode + formData.value.suffixNo
       : '',
     householdId: formData.value.householdId,
@@ -998,6 +1008,11 @@ const submit = () => {
           font-size: 9rpx;
           line-height: 35px;
           color: #171718;
+
+          &.disabled {
+            width: 200rpx;
+            background-color: #f5f7fa;
+          }
         }
       }
 

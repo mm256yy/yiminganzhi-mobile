@@ -75,6 +75,7 @@ const getLandlordListBySearch = (name: string, type: any) => {
       let arr: any = []
       res.map((item: any) => {
         arr.push({
+          id: item.id,
           label: item.name,
           value: item.doorNo,
           checked: item.checked

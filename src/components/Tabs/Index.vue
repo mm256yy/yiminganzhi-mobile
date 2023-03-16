@@ -21,30 +21,46 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 
-interface PropsType {
-  dataList: any[]
-  expand: boolean
-}
-
-const props = defineProps<PropsType>()
+const props = defineProps({
+  dataList: {
+    type: Array as any,
+    default: () => []
+  },
+  expand: {
+    type: Boolean,
+    default: false
+  },
+  currentIndex: {
+    type: Number,
+    default: 0
+  }
+})
 
 const emit = defineEmits(['selectTabs'])
 
 const tabsList = ref<any>([])
-const currentIndex = ref<number>(0)
+const currentIndex = ref<number>(props.currentIndex)
+console.log('currentIndex:', currentIndex)
+
+const selectTabs = (data: any, index: number) => {
+  currentIndex.value = index
+  emit('selectTabs', data, index)
+}
+
+watch(
+  () => props.currentIndex,
+  (val) => {
+    currentIndex.value = val
+  }
+)
 
 onMounted(() => {
   if (props.dataList && props.dataList.length) {
     tabsList.value = JSON.parse(JSON.stringify(props.dataList))
   }
 })
-
-const selectTabs = (data: any, index: number) => {
-  currentIndex.value = index
-  emit('selectTabs', data, index)
-}
 </script>
 
 <style lang="scss" scoped>
