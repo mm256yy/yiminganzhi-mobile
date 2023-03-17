@@ -14,16 +14,16 @@
 
       <view class="row" v-for="(item, index) in formData" :key="item.id">
         <view class="col">{{ index + 1 }}</view>
-        <view class="col w-63 p-l-2">
+        <view class="col w-63 p-lr-2">
           <input class="remark" v-model="item.name" placeholder="请输入" />
         </view>
-        <view class="col w-63 p-l-2">
+        <view class="col w-63 p-lr-2">
           <uni-data-select v-model="item.usageType" :localdata="dict[325]" />
         </view>
-        <view class="col w-64 p-l-2">
+        <view class="col w-64 p-lr-2">
           <uni-data-select v-model="item.size" :localdata="dict[269]" />
         </view>
-        <view class="col w-64 p-l-2">
+        <view class="col w-64 p-lr-2">
           <uni-data-select v-model="item.unit" :localdata="dict[264]" />
         </view>
         <view class="col w-94">
@@ -154,6 +154,7 @@ const submit = () => {
 
   .tree-container {
     display: table;
+    width: 100%;
     border-collapse: collapse;
 
     .row {
@@ -202,8 +203,8 @@ const submit = () => {
           width: 130rpx;
         }
 
-        &.p-l-2 {
-          padding-left: 2rpx;
+        &.p-lr-2 {
+          padding: 0 2rpx;
         }
 
         &.p-l-7 {
@@ -271,7 +272,6 @@ const submit = () => {
 
         ::v-deep.uni-stat__select {
           flex: 0 auto !important;
-          width: 60rpx !important;
         }
 
         ::v-deep.uni-select__input-placeholder {

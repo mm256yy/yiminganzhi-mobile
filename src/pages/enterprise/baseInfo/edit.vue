@@ -1025,12 +1025,16 @@ const submit = () => {
     periodValidity: formData.value.periodValidity,
     licenceNo: formData.value.licenceNo,
     issuingCompany: formData.value.issuingCompany,
-    taxPeriodValidity: formData.value.taxPeriodValidity,
+    taxPeriodValidity: formData.value.taxPeriodValidity
+      ? dayjs(formData.value.taxPeriodValidity)
+      : formData.value.taxPeriodValidity,
     taxLicenceNo: formData.value.taxLicenceNo,
     taxLicenceCompany: formData.value.taxLicenceCompany,
     ohterLicence: formData.value.ohterLicence,
     registerType: formData.value.registerType,
-    establishDate: formData.value.establishDate,
+    establishDate: formData.value.establishDate
+      ? dayjs(formData.value.establishDate)
+      : formData.value.establishDate,
     natureBusiness: formData.value.natureBusiness,
     industryType: formData.value.industryType,
     economicNature: formData.value.economicNature,

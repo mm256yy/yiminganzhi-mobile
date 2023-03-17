@@ -95,6 +95,7 @@ onMounted(() => {
 
   .accessory-container {
     display: table;
+    width: 100%;
     border-collapse: collapse;
 
     .row {

@@ -43,6 +43,7 @@ import uploadFile from './upload-files.vue'
 import { batchUploadImg } from '@/service'
 import { networkCheck } from '@/utils'
 import defaultImg from '@/static/images/icon_null_data.png'
+import { hideLoading } from '@/config'
 
 interface PropsType {
   showType: 'grid' | 'list'
@@ -186,7 +187,15 @@ const prviewImage = (item: any, index: number) => {
   })
   uni.previewImage({
     urls,
-    current: index
+    current: index,
+    success: function (data) {
+      hideLoading()
+      console.log('data:', data)
+    },
+    fail: function (err) {
+      hideLoading()
+      console.log(err)
+    }
   })
 }
 </script>

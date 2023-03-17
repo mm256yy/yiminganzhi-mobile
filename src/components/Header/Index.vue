@@ -279,11 +279,11 @@ const printPdf = (templateIds: any[], peasantHouseholdIds: any[]) => {
 const prviewImage = (item: any) => {
   printLandlordApi([item.uid], [props.dataInfo.id]).then((res: any) => {
     if (res) {
+      showLoading()
       uni.downloadFile({
         url: res,
         success: function (res) {
           var filePath = res.tempFilePath
-          showLoading()
           uni.openDocument({
             filePath: filePath,
             showMenu: true,
@@ -298,6 +298,8 @@ const prviewImage = (item: any) => {
           hideLoading()
         }
       })
+    } else {
+      hideLoading()
     }
   })
 }

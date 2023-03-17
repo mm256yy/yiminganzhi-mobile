@@ -141,7 +141,7 @@
               label-align="right"
               name="formData.altitude"
             >
-              <uni-easyinput v-model="formData.altitude" type="text" placeholder="请输入" />
+              <uni-easyinput v-model="formData.altitude" type="number" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
