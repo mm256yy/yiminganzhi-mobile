@@ -621,6 +621,9 @@ class DataFill extends Landlord {
             ...data,
             company: { ...landlordItem.company, ...data.company }
           }
+          if (landlordItem && !landlordItem.company.uid) {
+            landlordItem.company.uid = guid()
+          }
         } else {
           reject(false)
           console.log('业主信息查询失败')
