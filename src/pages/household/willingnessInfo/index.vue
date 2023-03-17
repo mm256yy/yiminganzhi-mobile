@@ -45,7 +45,7 @@
         </view>
       </view>
     </view>
-    <view class="sub-title">生产安置</view>
+    <view :class="['sub-title', productModeData.length === 0 ? 'm-b-10' : '']"> 生产安置 </view>
     <view class="row-4">
       <view class="col" v-for="(item, index) in productModeData" :key="item.name">
         <view class="label">{{ item.name }}：</view>
@@ -64,7 +64,10 @@
     </view>
     <view class="sub-title">搬迁安置方式</view>
     <view class="row-3 b-b-1">
-      <radio-group @change="homesteadChange">
+      <radio-group
+        v-if="homesteadData.length > 0 || apartmentData.length > 0"
+        @change="homesteadChange"
+      >
         <view class="label m-t-5">宅基地安置：</view>
         <label v-for="item in homesteadData" :key="item.value">
           <radio :value="item.value" :checked="item.checked">{{ item.name }}</radio>
@@ -72,6 +75,12 @@
         <view class="line" />
         <view class="label m-t-5">公寓房安置：</view>
         <label v-for="item in apartmentData" :key="item.value">
+          <radio :value="item.value" :checked="item.checked">{{ item.name }}</radio>
+        </label>
+      </radio-group>
+      <radio-group v-else @change="homesteadChange">
+        <view class="label m-t-5">默认：</view>
+        <label v-for="item in defaultData" :key="item.value">
           <radio :value="item.value" :checked="item.checked">{{ item.name }}</radio>
         </label>
       </radio-group>
@@ -127,6 +136,14 @@ const homesteadData = ref<any>([])
 // 搬迁安置方式 —— 公寓房安置数据选项
 const apartmentData = ref<any>([])
 
+// 当搬迁安置方式后台未配置时，显示默认的数据
+const defaultData = [
+  { name: '市内县外', value: '市内县外', checked: false },
+  { name: '县内安置（有土）', value: '县内安置（有土）', checked: false },
+  { name: '县内安置（无土）', value: '县内安置（无土）', checked: false },
+  { name: '自谋出路', value: '自谋出路', checked: false }
+]
+
 // 获得焦点的输入框下标
 const focusIndex = ref<number>(-1)
 
@@ -143,59 +160,41 @@ const inputBlur = () => {
 }
 
 // 获取生产安置、搬迁安置方式数据
-const getWillList = async (dataType?: number) => {
+const getWillList = async () => {
   const result = await getWillListApi()
-  genArr(result, dataType)
+  genArr(result)
 }
 
 // 组合生产安置、搬迁安置方式配置信息
-const genArr = (arr: any[], dataType?: number) => {
+const genArr = (arr: any[]) => {
   arr.map((item: any) => {
     if (item.type === '生产安置') {
-      if (dataType === 1) {
-        productModeData.value.push({
-          type: item.type,
-          name: item.area,
-          value: item.area,
-          number: '',
-          ...commonParams
-        })
-      } else if (dataType === 2) {
-        productModeData.value.push({
-          ...item
-        })
-      }
+      productModeData.value.push({
+        type: item.type,
+        name: item.area,
+        value: item.area,
+        number: '',
+        ...commonParams
+      })
     } else if (item.type === '搬迁安置') {
       if (item.way === '宅基地安置') {
-        if (dataType === 1) {
-          homesteadData.value.push({
-            name: item.area,
-            value: item.area,
-            checked: false,
-            type: item.type,
-            way: item.way,
-            ...commonParams
-          })
-        } else if (dataType === 2) {
-          homesteadData.value.push({
-            ...item
-          })
-        }
+        homesteadData.value.push({
+          name: item.area,
+          value: item.area,
+          checked: false,
+          type: item.type,
+          way: item.way,
+          ...commonParams
+        })
       } else if (item.way === '公寓安置') {
-        if (dataType === 1) {
-          apartmentData.value.push({
-            name: item.area,
-            value: item.area,
-            type: item.type,
-            way: item.way,
-            checked: false,
-            ...commonParams
-          })
-        } else if (dataType === 2) {
-          apartmentData.value.push({
-            ...item
-          })
-        }
+        apartmentData.value.push({
+          name: item.area,
+          value: item.area,
+          type: item.type,
+          way: item.way,
+          checked: false,
+          ...commonParams
+        })
       }
     }
   })
@@ -228,13 +227,13 @@ const initData = () => {
     if (props.willData.immigrantWillProductionList) {
       genNewArr(props.willData.immigrantWillProductionList)
     } else {
-      getWillList(1)
+      getWillList()
     }
     formData.value = {
       ...props.willData
     }
   } else {
-    getWillList(1)
+    getWillList()
     formData.value = {
       familyNum: '', // 家庭总人数
       countryNum: '', // 农村移民人数

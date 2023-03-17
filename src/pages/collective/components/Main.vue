@@ -70,7 +70,11 @@
               />
 
               <!-- 照片上传 -->
-              <photo-upload v-if="tabVal === 6" :dataInfo="dataInfo" @submit="updateAttachment" />
+              <attachment-upload
+                v-if="tabVal === 6"
+                :dataInfo="dataInfo"
+                @submit="updateAttachment"
+              />
             </view>
           </view>
 
@@ -112,7 +116,7 @@ import treeInfo from '../../common/treeInfo/index.vue' // 引入零星（林）�
 import accessoryInfo from '../../common/accessoryInfo/index.vue' // 引入附属物信息组件
 import graveInfo from '../graveInfo/index.vue' // 引入坟墓信息组件
 import equipmentInfo from '../equipmentInfo/index.vue' // 引入农村专项及设施组件
-import photoUpload from '../photoUpload/index.vue' // 引入照片上传组件
+import attachmentUpload from '../../common/attachmentUpload/index.vue' // 引入照片上传组件
 
 import {
   deleteLandlordHouseApi,

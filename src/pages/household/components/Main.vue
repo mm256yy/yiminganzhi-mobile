@@ -129,7 +129,7 @@ import treeInfo from '../../common/treeInfo/index.vue' // 引入零星（林）�
 import graveInfo from '../graveInfo/index.vue' // 引入坟墓信息组件
 import revenueInfo from '../revenueInfo/index.vue' // 引入安置意愿信息组件
 import willingnessInfo from '../willingnessInfo/index.vue' // 引入安置意愿信息组件
-import attachmentUpload from '../attachmentUpload/index.vue' // 引入附件上传组件
+import attachmentUpload from '../../common/attachmentUpload/index.vue' // 引入附件上传组件
 
 import {
   deleteLandlordPeopleApi,
