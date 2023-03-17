@@ -174,6 +174,7 @@ const reportData = () => {
       close('report')
     })
     .catch((e) => {
+      // console.log('上报报错：', e)
       hideLoading()
       showToast(ERROR_MSG)
       close('report')

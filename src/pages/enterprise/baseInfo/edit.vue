@@ -75,12 +75,7 @@
               label-align="right"
               name="formData.phone"
             >
-              <uni-easyinput
-                v-model="formData.phone"
-                type="number"
-                :maxlength="11"
-                placeholder="请输入"
-              />
+              <uni-easyinput v-model="formData.phone" type="number" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -136,7 +131,11 @@
               label-align="right"
               name="formData.legalPersonPhone"
             >
-              <uni-easyinput v-model="formData.legalPersonPhone" type="text" placeholder="请输入" />
+              <uni-easyinput
+                v-model="formData.legalPersonPhone"
+                type="number"
+                placeholder="请输入"
+              />
             </uni-forms-item>
           </uni-col>
         </uni-row>

@@ -157,7 +157,6 @@ import SearchList from '@/components/SearchList/Index.vue'
 
 // 表单数据
 const formData = ref<any>({})
-const form = ref<any>(null)
 
 // 获得焦点的输入框下标
 const focusIndex = ref<number>(-1)
@@ -221,10 +220,10 @@ const submit = () => {
   if (!formData.value.registrantName) {
     showToast('请选择登记人')
     return
-  } else if (!form.value.relation) {
+  } else if (!formData.value.relation) {
     showToast('请选择与登记人关系')
     return
-  } else if (!form.value.gravePosition) {
+  } else if (!formData.value.gravePosition) {
     showToast('请选择所处位置')
     return
   } else {

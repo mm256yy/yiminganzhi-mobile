@@ -38,7 +38,7 @@
             <uni-col :span="8">
               <view class="col">
                 <view class="label">数量：</view>
-                <view class="content">{{ formatStr(item.number, '（坐）') }}</view>
+                <view class="content">{{ formatStr(item.number, '（座）') }}</view>
               </view>
             </uni-col>
             <uni-col :span="8">

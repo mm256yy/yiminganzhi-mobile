@@ -241,7 +241,7 @@ const delFile = (index: number) => {
   position: absolute;
   top: 0px;
   bottom: 0;
-  z-index: 2;
+  // z-index: 2;
   display: flex;
   width: 26rpx;
   height: 26rpx;

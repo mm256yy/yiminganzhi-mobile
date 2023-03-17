@@ -28,13 +28,15 @@
             <uni-col :span="8">
               <view class="col">
                 <view class="label">数量：</view>
-                <view class="content">{{ formatStr(item.number, '（条）') }}</view>
+                <view class="content">{{ formatStr(item.number) }}</view>
               </view>
             </uni-col>
             <uni-col :span="8">
               <view class="col">
                 <view class="label">建成年月：</view>
-                <view class="content">{{ item.completedTime }}</view>
+                <view class="content">
+                  {{ item.completedTime ? dayjs(item.completedTime).format('YYYY年MM月') : '-' }}
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -98,6 +100,7 @@
 import { ref } from 'vue'
 import { formatStr, formatDict, dictOption, routerForward } from '@/utils'
 import { locationTypes } from '@/config/common'
+import dayjs from 'dayjs'
 
 const props = defineProps({
   dataList: {
@@ -140,8 +143,12 @@ const toLink = (type: string, data?: any) => {
   const { uid, doorNo, householdId } = props.dataInfo
   const commonParams: any = { type, uid, doorNo, householdId }
   if (type === 'edit') {
+    let params = {
+      ...data,
+      completedTime: data.completedTime ? dayjs(data.completedTime).format('YYYY-MM-DD') : null
+    }
     routerForward('collectiveEquipmentInfoEdit', {
-      params: JSON.stringify(data),
+      params: JSON.stringify(params),
       commonParams: JSON.stringify(commonParams)
     })
   } else {
