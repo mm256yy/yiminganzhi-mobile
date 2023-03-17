@@ -137,11 +137,11 @@ const homesteadData = ref<any>([])
 const apartmentData = ref<any>([])
 
 // 当搬迁安置方式后台未配置时，显示默认的数据
-const defaultData = [
-  { name: '市内县外', value: '市内县外', checked: false },
-  { name: '县内安置（有土）', value: '县内安置（有土）', checked: false },
-  { name: '县内安置（无土）', value: '县内安置（无土）', checked: false },
-  { name: '自谋出路', value: '自谋出路', checked: false }
+let defaultData = [
+  { name: '市内县外', value: '市内县外', type: '搬迁安置', checked: false },
+  { name: '县内安置（有土）', value: '县内安置（有土）', type: '搬迁安置', checked: false },
+  { name: '县内安置（无土）', value: '县内安置（无土）', type: '搬迁安置', checked: false },
+  { name: '自谋出路', value: '自谋出路', type: '搬迁安置', checked: false }
 ]
 
 // 获得焦点的输入框下标
@@ -170,10 +170,10 @@ const genArr = (arr: any[]) => {
   arr.map((item: any) => {
     if (item.type === '生产安置') {
       productModeData.value.push({
-        type: item.type,
-        name: item.area,
-        value: item.area,
+        name: item.way,
+        value: item.way,
         number: '',
+        ...item,
         ...commonParams
       })
     } else if (item.type === '搬迁安置') {
@@ -182,17 +182,15 @@ const genArr = (arr: any[]) => {
           name: item.area,
           value: item.area,
           checked: false,
-          type: item.type,
-          way: item.way,
+          ...item,
           ...commonParams
         })
       } else if (item.way === '公寓安置') {
         apartmentData.value.push({
           name: item.area,
           value: item.area,
-          type: item.type,
-          way: item.way,
           checked: false,
+          ...item,
           ...commonParams
         })
       }
@@ -216,6 +214,10 @@ const genNewArr = (arr: any[]) => {
         apartmentData.value.push({
           ...item
         })
+      } else {
+        let newArr = []
+        newArr.push({ ...item })
+        defaultData = [...newArr]
       }
     }
   })
@@ -245,14 +247,19 @@ const initData = () => {
   }
 }
 
-// 搬迁安置方式 —— 宅基地安置选择
+// 搬迁安置方式选择
 const homesteadChange = (e: any) => {
   formData.value.removalType = e.detail.value
 }
 
 // 表单提交
 const submit = () => {
-  let arr: any = [...productModeData.value, ...homesteadData.value, ...apartmentData.value]
+  let arr: any = []
+  if (homesteadData.value.length > 0 || apartmentData.value.length > 0) {
+    arr = [...productModeData.value, ...homesteadData.value, ...apartmentData.value]
+  } else {
+    arr = [...defaultData, ...homesteadData.value, ...apartmentData.value]
+  }
 
   arr.map((item: any, index: number) => {
     if (item.value === formData.value.removalType) {
