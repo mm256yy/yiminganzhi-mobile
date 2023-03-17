@@ -104,7 +104,7 @@
               <view class="col">
                 <view class="label">许可证有效期：</view>
                 <view class="content">
-                  {{ formatStr(props.baseInfo.periodValidity) }}
+                  {{ formatStr(props.dataInfo.periodValidity) }}
                 </view>
               </view>
             </uni-col>
@@ -128,8 +128,8 @@
                 <view class="label">税务许可证有效期：</view>
                 <view class="content">
                   {{
-                    props.baseInfo.taxPeriodValidity
-                      ? dayjs(props.baseInfo.taxPeriodValidity).format('YYYY-MM-DD')
+                    props.dataInfo.taxPeriodValidity
+                      ? dayjs(props.dataInfo.taxPeriodValidity).format('YYYY-MM-DD')
                       : '-'
                   }}
                 </view>
@@ -166,8 +166,8 @@
                 <view class="label">成立日期：</view>
                 <view class="content">
                   {{
-                    props.baseInfo.establishDate
-                      ? dayjs(props.baseInfo.establishDate).format('YYYY-MM-DD')
+                    props.dataInfo.establishDate
+                      ? dayjs(props.dataInfo.establishDate).format('YYYY-MM-DD')
                       : '-'
                   }}
                 </view>
@@ -441,19 +441,9 @@ const props = defineProps({
 })
 
 const toLink = (type: string) => {
-  const {
-    uid,
-    name,
-    doorNo,
-    areaCode,
-    townCode,
-    villageCode,
-    locationType,
-    phone,
-    periodValidity,
-    establishDate,
-    taxPeriodValidity
-  } = props.baseInfo
+  const { uid, name, doorNo, areaCode, townCode, villageCode, locationType, phone } = props.baseInfo
+
+  const { establishDate, taxPeriodValidity } = props.dataInfo
 
   const params = {
     ...props.dataInfo,
@@ -463,7 +453,6 @@ const toLink = (type: string) => {
     townCode,
     villageCode,
     phone,
-    periodValidity,
     locationType: locationType ? locationType : null,
     suffixNo: splitStr(doorNo, 13, 17),
     establishDate: establishDate ? dayjs(establishDate).format('YYYY-MM-DD') : null,
