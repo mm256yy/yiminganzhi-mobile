@@ -51,9 +51,9 @@ onLoad((option) => {
 
 // 获取左侧树列表
 const getTreeData = async () => {
-  showLoading()
+  // showLoading()
   const result = await getLandlordTreeApi(MainType.Village)
-  hideLoading()
+  // hideLoading()
   treeData.value = [...result]
   console.log('村集体更新数据：', result)
 }

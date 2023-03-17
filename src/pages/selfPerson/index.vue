@@ -50,11 +50,11 @@ onLoad((option) => {
 
 // 获取左侧树列表
 const getTreeData = async () => {
-  uni.showLoading({
-    title: ''
-  })
+  // uni.showLoading({
+  //   title: ''
+  // })
   const result = await getLandlordTreeApi(MainType.IndividualHousehold)
-  uni.hideLoading()
+  // uni.hideLoading()
   treeData.value = [...result]
 }
 
