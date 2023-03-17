@@ -215,7 +215,7 @@ const formData = ref<any>({
   hasPropertyAccount: 'true', // 是否财产户, 默认是
   address: '', // 户籍所在地
   inundationRange: '', // 淹没范围
-  altitude: '', // 高程
+  altitude: null, // 高程
   longitude: '', // 经度
   latitude: '' // 纬度
 })
