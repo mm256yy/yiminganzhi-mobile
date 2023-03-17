@@ -412,7 +412,7 @@ class PullData {
         })
         resolve(true)
       } else {
-        resolve(false)
+        resolve(true)
       }
     })
   }
@@ -469,7 +469,7 @@ class PullData {
         })
         resolve(true)
       } else {
-        resolve(false)
+        resolve(true)
       }
     })
   }
@@ -495,7 +495,7 @@ class PullData {
         })
         resolve(true)
       } else {
-        resolve(false)
+        resolve(true)
       }
     })
   }
@@ -521,7 +521,7 @@ class PullData {
         })
         resolve(true)
       } else {
-        resolve(false)
+        resolve(true)
       }
     })
   }
