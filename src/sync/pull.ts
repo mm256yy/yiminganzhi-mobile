@@ -341,11 +341,13 @@ class PullData {
       if (this.isArrayAndNotNull(list)) {
         list.forEach((item) => {
           const fields =
-            "'uid','name','type','reportStatus','reportDate','reportUser','status','content','villageCode', 'updatedDate','isDelete'"
+            "'uid','name','type','reportStatus','reportDate','reportUser','status','content','areaCode','townCode','villageCode','virutalVillageCode', 'updatedDate','isDelete'"
           const values = `'${item.uid}','${item.name}','${item.type}','${item.reportStatus}','${
             item.reportDate ? dayjs(item.reportDate).format('YYYY-MM-DD HH:mm:ss') : ''
-          }','${item.reportUser}','default','${JSON.stringify(item)}','${
-            item.villageCode
+          }','${item.reportUser}','default','${JSON.stringify(item)}','${item.areaCode}','${
+            item.townCode
+          }','${item.villageCode}','${
+            item.virutalVillageCode || ''
           }','${getCurrentTimeStamp()}','0'`
           db.insertOrReplaceData(LandlordTableName, values, fields)
         })

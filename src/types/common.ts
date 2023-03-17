@@ -150,7 +150,10 @@ export interface LandlordQuery {
 export interface LandlordSearchType {
   name: string
   type: MainType
+  areaCode?: string
+  townCode?: string
   villageCode?: string
+  virutalVillageCode?: string
   page?: number
   pageSize?: number
 }

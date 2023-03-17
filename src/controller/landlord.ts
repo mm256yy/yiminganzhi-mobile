@@ -21,7 +21,10 @@ import dayjs from 'dayjs'
 // type: MainType
 // reportDate: string
 // reportUser: string
+// areaCode: string
+// townCode: string
 // villageCode: string
+// virutalVillageCode: string
 // status: 'modify' | 'default'
 // isDelete: '0' | '1'
 // updatedDate: string
@@ -192,12 +195,12 @@ export class Landlord extends Common {
             card: '',
             relation: '1',
             doorNo: data.doorNo,
-            townCode: data.townCode,
-            villageCode: data.villageCode,
-            virutalVillageCode: data.virutalVillageCode,
+            townCode: data.townCode || '',
+            villageCode: data.villageCode || '',
+            virutalVillageCode: data.virutalVillageCode || '',
             address: data.address || '',
             cityCode: '',
-            areaCode: data.areaCode,
+            areaCode: data.areaCode || '',
             phone: data.phone,
             uid: demographicUid
           })
@@ -214,10 +217,12 @@ export class Landlord extends Common {
         data.immigrantEquipmentList = data.immigrantEquipmentList || []
         data.immigrantFacilitiesList = data.immigrantFacilitiesList || []
 
-        const fields = `'uid','status','type','name','reportStatus','reportDate','reportUser','villageCode','content','updatedDate','isDelete'`
+        const fields = `'uid','status','type','name','reportStatus','reportDate','reportUser','areaCode','townCode','villageCode','virutalVillageCode','content','updatedDate','isDelete'`
         const values = `'${uid}','modify','${data.type}','${data.name}','${
           ReportStatusEnum.UnReport
-        }','','','${data.villageCode}','${JSON.stringify(data)}','${getCurrentTimeStamp()}','0'`
+        }','','','${data.areaCode}','${data.townCode}','${data.villageCode}','${
+          data.virutalVillageCode || ''
+        }','${JSON.stringify(data)}','${getCurrentTimeStamp()}','0'`
         const res = await this.db.insertTableData(LandlordTableName, values, fields)
 
         if (res && res.code) {
@@ -246,8 +251,10 @@ export class Landlord extends Common {
           newData.name
         }',reportStatus = '${newData.reportStatus}',reportDate = '${
           newData.reportDate
-        }',reportUser = '${newData.reportUser}',villageCode = '${
-          newData.villageCode
+        }',reportUser = '${newData.reportUser}',areaCode = '${newData.areaCode}',townCode = '${
+          newData.townCode
+        }',villageCode = '${newData.villageCode}',virutalVillageCode = '${
+          newData.virutalVillageCode || ''
         }',content = '${JSON.stringify(newData)}',updatedDate = '${getCurrentTimeStamp()}'`
         const sql = `update ${LandlordTableName} set ${values} where uid = '${newData.uid}' and isDelete = '0'`
         const res = await this.db.execteSql([sql])
@@ -277,7 +284,9 @@ export class Landlord extends Common {
           data.name
         }',reportStatus = '${data.reportStatus}',reportDate = '${data.reportDate}',reportUser = '${
           data.reportUser
-        }',villageCode = '${data.villageCode}',content = '${JSON.stringify(
+        }',areaCode = '${data.areaCode}',townCode = '${data.townCode}',villageCode = '${
+          data.villageCode
+        }',virutalVillageCode = '${data.virutalVillageCode || ''}',content = '${JSON.stringify(
           data
         )}',updatedDate = '${getCurrentTimeStamp()}'`
         const sql = `update ${LandlordTableName} set ${values} where uid = '${data.uid}' and isDelete = '0'`
@@ -435,7 +444,16 @@ export class Landlord extends Common {
   getLandlordListBySearch(data?: LandlordSearchType): Promise<any> {
     return new Promise(async (resolve, reject) => {
       try {
-        const { name, villageCode, type, pageSize = 10, page = 1 } = data || {}
+        const {
+          name,
+          areaCode,
+          townCode,
+          villageCode,
+          virutalVillageCode,
+          type,
+          pageSize = 10,
+          page = 1
+        } = data || {}
         const array: LandlordType[] = []
         let sql = `select * from ${LandlordTableName} where isDelete = '0'`
         if (type) {
@@ -444,11 +462,20 @@ export class Landlord extends Common {
         if (name) {
           sql += ` and name like '%${name}%'`
         }
+        if (areaCode) {
+          sql += ` and areaCode = '${areaCode}'`
+        }
+        if (townCode) {
+          sql += ` and townCode = '${townCode}'`
+        }
         if (villageCode) {
           sql += ` and villageCode = '${villageCode}'`
         }
+        if (virutalVillageCode) {
+          sql += ` and virutalVillageCode = '${virutalVillageCode}'`
+        }
         sql += ` order by updatedDate desc limit ${pageSize} offset ${(page - 1) * pageSize}`
-
+        console.log('sql', sql)
         const list: LandlordDDLType[] = await this.db.selectSql(sql)
         if (list && Array.isArray(list)) {
           list.forEach((item) => {

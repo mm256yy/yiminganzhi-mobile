@@ -12,7 +12,10 @@ export interface LandlordDDLType {
   reportStatus: ReportStatusEnum
   reportDate: string
   reportUser: string
+  areaCode: string
+  townCode: string
   villageCode: string
+  virutalVillageCode: string
   status: 'modify' | 'default'
   isDelete: '0' | '1'
   updatedDate: string
@@ -29,7 +32,10 @@ create table if not exists ${LandlordTableName} (
   'reportDate' text,
   'reportUser' text,
   'content' text,
+  'areaCode' text,
+  'townCode' text,
   'villageCode' text,
+  'virutalVillageCode' text,
   'status' text,
   'isDelete' text,
   'updatedDate' text DEFAULT NULL

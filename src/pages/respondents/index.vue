@@ -2,7 +2,9 @@
   <Container>
     <template #title>
       <view class="title" @click="onToggleVillage">
-        <text class="tit">{{ title.length ? title.join('/') : '选择行政村' }}</text>
+        <text class="tit">{{
+          title.length ? title.filter((item) => !!item).join('/') : '选择行政村'
+        }}</text>
         <image
           class="icon"
           :style="{ transform: showVillageSelect ? 'rotate(180deg)' : 'rotate(0deg)' }"
@@ -94,6 +96,7 @@
         :treeData="treeData"
         :value="villageCode"
         :title="title"
+        :select-any="true"
         @on-close="showVillageSelect = false"
         @on-confirm="villageConfirm"
       />
@@ -195,9 +198,18 @@ const getList = () => {
     const params: LandlordSearchType = {
       name: unref(keyWords),
       type: unref(tabType),
-      villageCode: unref(villageCode)[2] || '',
       page: page.value,
       pageSize: pageSize.value
+    }
+    const realList = villageCode.value.filter((item) => !!item)
+    if (realList.length) {
+      if (realList.length === 1) {
+        params.areaCode = unref(villageCode)[0] || ''
+      } else if (realList.length === 2) {
+        params.townCode = unref(villageCode)[1] || ''
+      } else if (realList.length === 3) {
+        params.villageCode = unref(villageCode)[2] || ''
+      }
     }
     const res = await getLandlordListBySearchApi(params).catch(() => {
       isLoading.value = false
