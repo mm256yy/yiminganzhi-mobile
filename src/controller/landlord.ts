@@ -332,7 +332,7 @@ export class Landlord extends Common {
           '0'
         )
         const res: LandlordType = result && result[0] ? JSON.parse(result[0].content) : {}
-        console.log(res, '业主详情')
+
         if (res && res.uid) {
           if (res.demographicList && res.demographicList.length) {
             res.demographicList = res.demographicList.filter((item) => item.isDelete !== '1')
@@ -381,9 +381,11 @@ export class Landlord extends Common {
           res.villageCodeText = districtMap[res.villageCode]
           res.townCodeText = districtMap[res.townCode]
           res.areaCodeText = districtMap[res.areaCode]
-
+          console.log(res, '业主详情')
           resolve(res)
+          return
         }
+
         reject(null)
       } catch (error) {
         console.log(error, 'getLandlordByUid-error')
@@ -408,7 +410,7 @@ export class Landlord extends Common {
           '0'
         )
         const res: LandlordType = result && result[0] ? JSON.parse(result[0].content) : {}
-        console.log(res, '业主详情')
+
         if (res && res.uid) {
           const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
           // 拿到上级行政区划
@@ -416,8 +418,11 @@ export class Landlord extends Common {
           res.villageCodeText = districtMap[res.villageCode]
           res.townCodeText = districtMap[res.townCode]
           res.areaCodeText = districtMap[res.areaCode]
+          console.log(res, '业主详情')
           resolve(res)
+          return
         }
+
         reject(null)
       } catch (error) {
         console.log(error, 'getLandlordByUidNoFilter-error')

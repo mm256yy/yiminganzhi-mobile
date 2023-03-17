@@ -40,7 +40,6 @@ class PushData {
         .then((res: LandlordDDLType[]) => {
           const list: LandlordType[] = res.map((item) => JSON.parse(item.content))
           this.state.peasantHouseholdPushDtoList = list
-          console.log('修改过的业主列表:', list)
           this.getDeleteRecordList().finally(() => {
             resolve(list)
           })
@@ -231,17 +230,13 @@ class PushData {
     return false
   }
 
-  public uploadImages() {
+  public uploadImages(): Promise<any> {
     // 上传本地图片-更新数据库
     return new Promise(async (resolve, reject) => {
       try {
         const imageList: ImageDDLType[] = await db.selectTableData(ImageTableName, 'status', '0')
         if (imageList && imageList.length) {
-          // id
-          // 'path' text,
-          // 'url' text,
-          // 'status' text,
-          // 'updatedDate' text
+          let count = 0
           imageList.forEach((item) => {
             uni.uploadFile({
               url: `${env.apiBaseUrl}${env.apiBasePath}/files`,
@@ -253,6 +248,7 @@ class PushData {
               },
               success: (res) => {
                 console.log('推送数据-图片上传:', res.data)
+                count++
                 if (res && res.data) {
                   const responseData = JSON.parse(res.data)
                   if (responseData && responseData.data && responseData.data[0]) {
@@ -265,12 +261,25 @@ class PushData {
                 }
               },
               fail: () => {
+                count++
                 console.log('图片上传失败:', item.path)
+              },
+              complete: () => {
+                if (count === imageList.length) {
+                  console.log('图片：全部完成')
+                  resolve(true)
+                  count = 0
+                  return
+                }
               }
             })
           })
+        } else {
+          console.log('图片：暂无上传')
+          resolve(true)
         }
       } catch (err) {
+        reject()
         console.log('uploadImages-error', err)
       }
     })
@@ -297,7 +306,15 @@ class PushData {
           })
             .then((res) => {
               console.log('推送: 接口suc:', res)
-              resolve(res)
+              // 跑图片上传 不需要关注失败或者成功
+              this.uploadImages()
+                .catch(() => {
+                  console.log('部分图片推送失败，请再次同步')
+                  // uni.showToast('部分图片推送失败，请再次同步')
+                })
+                .finally(() => {
+                  resolve(res)
+                })
             })
             .catch((err) => {
               console.error('推送: 接口err', err)
@@ -308,9 +325,6 @@ class PushData {
           console.error('推送: 操作数据库err', err)
           reject(false)
         })
-
-      // 跑图片上传 不需要关注失败或者成功
-      this.uploadImages()
     })
   }
 }

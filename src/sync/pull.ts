@@ -211,6 +211,7 @@ class PullData {
     })
     this.pullVillageList().then((res) => {
       res && this.count++
+      setStorage(StorageKey.DISTRICTMAP, this.districtMap)
       console.log('拉取: 自然村', res)
     })
     this.deleteDb().then((res) => {
