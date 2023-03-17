@@ -236,39 +236,57 @@ class PullData {
 
   public createTable() {
     // 创建表
-    db.createTableWithDDL(ProjectDDL)
-    db.createTableWithDDL(DictionariesDDL)
-    db.createTableWithDDL(LandlordDDL)
-    db.createTableWithDDL(ResettlementDDL)
-    db.createTableWithDDL(FamilyIncomeDDL)
-    db.createTableWithDDL(CollectDDL)
-    db.createTableWithDDL(OtherDDL)
-    db.createTableWithDDL(DistrictDDL)
-    db.createTableWithDDL(VillageDDL)
-    db.createTableWithDDL(AppendantDDL)
-    db.createTableWithDDL(ImageDDL)
+    return new Promise((resolve, reject) => {
+      Promise.all([
+        db.createTableWithDDL(ProjectDDL),
+        db.createTableWithDDL(DictionariesDDL),
+        db.createTableWithDDL(LandlordDDL),
+        db.createTableWithDDL(ResettlementDDL),
+        db.createTableWithDDL(FamilyIncomeDDL),
+        db.createTableWithDDL(CollectDDL),
+        db.createTableWithDDL(OtherDDL),
+        db.createTableWithDDL(DistrictDDL),
+        db.createTableWithDDL(VillageDDL),
+        db.createTableWithDDL(AppendantDDL),
+        db.createTableWithDDL(ImageDDL)
+      ])
+        .then((res) => {
+          console.log('create表: 成功', res)
+          resolve(true)
+        })
+        .catch((err) => {
+          console.error('create表: 失败', err)
+          reject()
+        })
+    })
   }
 
   public resetTable(): Promise<any> {
     return new Promise((resolve, reject) => {
       Promise.all([
-        db.deleteTableData(ProjectTableName),
-        db.deleteTableData(DictionariesTableName),
-        db.deleteTableData(LandlordTableName),
-        db.deleteTableData(ResettlementTableName),
-        db.deleteTableData(FamilyIncomeTableName),
-        db.deleteTableData(CollectTableName),
-        db.deleteTableData(OtherTableName),
-        db.deleteTableData(DistrictTableName),
-        db.deleteTableData(VillageTableName),
-        db.deleteTableData(AppendantTableName)
+        db.dropTable(ProjectTableName),
+        db.dropTable(DictionariesTableName),
+        db.dropTable(LandlordTableName),
+        db.dropTable(ResettlementTableName),
+        db.dropTable(FamilyIncomeTableName),
+        db.dropTable(CollectTableName),
+        db.dropTable(OtherTableName),
+        db.dropTable(DistrictTableName),
+        db.dropTable(VillageTableName),
+        db.dropTable(AppendantTableName)
       ])
         .then((res) => {
-          console.log('reset表: 成功', res)
-          resolve(true)
+          console.log('drop表: 成功', res)
+          this.createTable()
+            .then(() => {
+              resolve(true)
+            })
+            .catch(() => {
+              reject()
+            })
         })
         .catch((err) => {
-          console.error('reset表: 失败', err)
+          console.error('drop表: 失败', err)
           reject()
         })
     })
@@ -341,15 +359,15 @@ class PullData {
       if (this.isArrayAndNotNull(list)) {
         list.forEach((item) => {
           const fields =
-            "'uid','name','type','reportStatus','reportDate','reportUser','status','content','areaCode','townCode','villageCode','virutalVillageCode', 'updatedDate','isDelete'"
+            "'uid','name','type','reportStatus','reportDate','reportUser','status','content','areaCode','townCode','villageCode','virutalVillageCode','updatedDate','isDelete'"
           const values = `'${item.uid}','${item.name}','${item.type}','${item.reportStatus}','${
             item.reportDate ? dayjs(item.reportDate).format('YYYY-MM-DD HH:mm:ss') : ''
           }','${item.reportUser}','default','${JSON.stringify(item)}','${item.areaCode}','${
             item.townCode
-          }','${item.villageCode}','${
-            item.virutalVillageCode || ''
-          }','${getCurrentTimeStamp()}','0'`
-          db.insertOrReplaceData(LandlordTableName, values, fields)
+          }','${item.villageCode}','${item.virutalVillageCode}','${getCurrentTimeStamp()}','0'`
+          db.insertOrReplaceData(LandlordTableName, values, fields).catch((err) => {
+            console.log(err, '插入业主')
+          })
         })
         await db.transaction('commit').catch(() => {
           resolve(false)

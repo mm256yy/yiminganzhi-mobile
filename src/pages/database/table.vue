@@ -44,7 +44,11 @@ const getJsonData = async () => {
       console.log(err, 'err')
     })
     console.log(res.length, `${tableName.value} 表数据条数`)
-    if (tableName.value === 'other' || tableName.value === 'image') {
+    if (
+      tableName.value === 'landlord' ||
+      tableName.value === 'other' ||
+      tableName.value === 'image'
+    ) {
       jsonData.value = res
     } else {
       jsonData.value = (res || []).map((item: any) => {
