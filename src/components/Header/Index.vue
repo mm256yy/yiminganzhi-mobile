@@ -87,12 +87,10 @@
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
-import { onShow } from '@dcloudio/uni-app'
 import { reportDataApi } from '@/service'
 import { networkCheck, routerForward } from '@/utils'
 import { getPrintTemplateListApi, printLandlordApi } from '@/api'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
-import { showLoading, hideLoading } from '@/config'
 import { MainType, ReportStatusEnum } from '@/types/common'
 
 const props = defineProps({
@@ -163,7 +161,6 @@ const reportData = () => {
     isCheck: false,
     type: props.type as MainType
   }
-  showLoading()
   reportDataApi(query)
     .then((res: any) => {
       if (res) {
@@ -171,12 +168,10 @@ const reportData = () => {
         emit('updateTree')
         emit('updateData')
       }
-      hideLoading()
       close('report')
     })
     .catch((e) => {
       // console.log('上报报错：', e)
-      hideLoading()
       showToast(ERROR_MSG)
       close('report')
     })
@@ -252,7 +247,6 @@ const confirm = (type: string) => {
 
 // 打印 PDF 文件
 const printPdf = (templateIds: any[], peasantHouseholdIds: any[]) => {
-  showLoading()
   printLandlordApi(templateIds, peasantHouseholdIds).then((res) => {
     if (res) {
       uni.downloadFile({
@@ -260,15 +254,11 @@ const printPdf = (templateIds: any[], peasantHouseholdIds: any[]) => {
         success(res) {
           const path = plus.io.convertLocalFileSystemURL(res.tempFilePath)
           YanYuprintPdf.managerPrint(path)
-          hideLoading()
         },
         fail(err) {
-          hideLoading()
           console.log('save err:', err)
         }
       })
-    } else {
-      hideLoading()
     }
   })
 }
@@ -281,7 +271,6 @@ const printPdf = (templateIds: any[], peasantHouseholdIds: any[]) => {
 const prviewImage = (item: any) => {
   printLandlordApi([item.uid], [props.dataInfo.id]).then((res: any) => {
     if (res) {
-      showLoading()
       uni.downloadFile({
         url: res,
         success: function (res) {
@@ -290,18 +279,14 @@ const prviewImage = (item: any) => {
             filePath: filePath,
             showMenu: true,
             success: function (res) {
-              hideLoading()
               console.log('打开文档成功')
             }
           })
         },
         fail(err) {
           console.log('err:', err)
-          hideLoading()
         }
       })
-    } else {
-      hideLoading()
     }
   })
 }
@@ -319,10 +304,6 @@ onMounted(() => {
   networkCheck().then((res) => {
     netWork.value = res
   })
-})
-
-onShow(() => {
-  hideLoading()
 })
 </script>
 
