@@ -171,6 +171,7 @@ const genArr = (arr: any[]) => {
     if (item.type === '生产安置') {
       productModeData.value.push({
         name: item.way,
+        productionType: item.way,
         value: item.way,
         number: '',
         ...item,
