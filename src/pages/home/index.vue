@@ -151,14 +151,14 @@
         </view> -->
         <view class="other-item" @click="toLink('village')">
           <view class="inner">
-            <image class="other-icon" src="@/static/images/sync_enter.png" mode="scaleToFill" />
+            <image class="other-icon" src="@/static/images/yimin_enter.png" mode="scaleToFill" />
             <text class="other-tit">自然村清单</text>
           </view>
           <image class="arrow-icon" src="@/static/images/home_arrow.png" mode="scaleToFill" />
         </view>
       </view>
 
-      <view class="other-enter">
+      <view class="other-enter self">
         <view class="other-item" @click="toLink('database')">
           <view class="inner">
             <image class="other-icon" src="@/static/images/sync_enter.png" mode="scaleToFill" />
