@@ -1109,11 +1109,6 @@ const submit = () => {
           showToast(ERROR_MSG)
         })
     } else if (type.value === 'edit') {
-      company = {
-        id: formData.value.id,
-        uid: formData.value.uid,
-        ...company
-      }
       let params = {
         ...baseInfo,
         company

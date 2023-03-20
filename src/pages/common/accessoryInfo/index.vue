@@ -57,9 +57,8 @@ const commonParams = {
 }
 
 // 获取附属物初始化列表信息
-const getList = async () => {
-  showLoading()
-  await getAppendantListApi().then((res) => {
+const getList = () => {
+  getAppendantListApi().then((res) => {
     res.map((item: any) => {
       formData.value.push({
         surveyId: item.id,
@@ -69,7 +68,6 @@ const getList = async () => {
         ...commonParams
       })
     })
-    hideLoading()
   })
 }
 

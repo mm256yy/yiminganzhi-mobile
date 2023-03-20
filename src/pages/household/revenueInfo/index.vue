@@ -9,7 +9,8 @@
             <input
               class="input-txt"
               placeholder="请输入"
-              type="number"
+              type="digit"
+              @input="amountChange($event, item)"
               v-model="item.amount"
               @focus="inputFocus(index)"
               @blur="inputBlur"
@@ -53,8 +54,9 @@
             <input
               class="input-txt"
               placeholder="请输入"
-              type="number"
+              type="digit"
               v-model="item.amount"
+              @input="amountChange($event, item)"
               @focus="inputFocus(index)"
               @blur="inputBlur"
             />
@@ -97,8 +99,9 @@
             <input
               class="input-txt"
               placeholder="请输入金额"
-              type="number"
+              type="digit"
               v-model="item.amount"
+              @input="amountChange($event, item)"
               @focus="inputFocus(index)"
               @blur="inputBlur"
             />
@@ -179,6 +182,17 @@ const inputFocus = (index: number) => {
 // 输入框失去焦点事件
 const inputBlur = () => {
   focusIndex.value = -1
+}
+
+const amountChange = (e: any, item: any) => {
+  const val = e.detail.value
+  if (val) {
+    let value = val
+    if (val.indexOf('.') > 0) {
+      value = value.slice(0, value.indexOf('.') + 3)
+    }
+    item.amount = value
+  }
 }
 
 const emit = defineEmits(['submit'])
