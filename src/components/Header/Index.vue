@@ -87,6 +87,7 @@
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
+import { onShow } from '@dcloudio/uni-app'
 import { reportDataApi } from '@/service'
 import { networkCheck, routerForward } from '@/utils'
 import { getPrintTemplateListApi, printLandlordApi } from '@/api'
@@ -318,6 +319,10 @@ onMounted(() => {
   networkCheck().then((res) => {
     netWork.value = res
   })
+})
+
+onShow(() => {
+  hideLoading()
 })
 </script>
 

@@ -9,6 +9,7 @@
             class="input-txt"
             placeholder="请输入"
             type="number"
+            disabled
             v-model="formData.familyNum"
             @focus="inputFocus(1)"
             @blur="inputBlur"
@@ -47,8 +48,8 @@
     </view>
     <view :class="['sub-title', productModeData.length === 0 ? 'm-b-10' : '']"> 生产安置 </view>
     <view class="row-4">
-      <view class="col" v-for="(item, index) in productModeData" :key="item.name">
-        <view class="label">{{ item.name }}：</view>
+      <view class="col" v-for="(item, index) in productModeData" :key="item.productionType">
+        <view class="label">{{ item.productionType }}：</view>
         <view :class="['input-wrapper', focusIndex === (index + 1) * 10 ? 'focus' : '']">
           <input
             class="input-txt w-200"
@@ -64,24 +65,27 @@
     </view>
     <view class="sub-title">搬迁安置方式</view>
     <view class="row-3 b-b-1">
-      <radio-group
-        v-if="homesteadData.length > 0 || apartmentData.length > 0"
-        @change="homesteadChange"
-      >
+      <radio-group v-if="configLength > 0" @change="homesteadChange">
         <view class="label m-t-5">宅基地安置：</view>
         <label v-for="item in homesteadData" :key="item.value">
-          <radio :value="item.value" :checked="item.checked">{{ item.name }}</radio>
+          <radio :value="item.value" :checked="item.value === formData.removalType">{{
+            item.name
+          }}</radio>
         </label>
         <view class="line" />
         <view class="label m-t-5">公寓房安置：</view>
         <label v-for="item in apartmentData" :key="item.value">
-          <radio :value="item.value" :checked="item.checked">{{ item.name }}</radio>
+          <radio :value="item.value" :checked="item.value === formData.removalType">{{
+            item.name
+          }}</radio>
         </label>
       </radio-group>
       <radio-group v-else @change="homesteadChange">
         <view class="label m-t-5">默认：</view>
         <label v-for="item in defaultData" :key="item.value">
-          <radio :value="item.value" :checked="item.checked">{{ item.name }}</radio>
+          <radio :value="item.value" :checked="item.value === formData.removalType">{{
+            item.name
+          }}</radio>
         </label>
       </radio-group>
     </view>
@@ -136,12 +140,14 @@ const homesteadData = ref<any>([])
 // 搬迁安置方式 —— 公寓房安置数据选项
 const apartmentData = ref<any>([])
 
+const configLength = ref<number>(0)
+
 // 当搬迁安置方式后台未配置时，显示默认的数据
 let defaultData = [
-  { name: '市内县外', value: '市内县外', type: '搬迁安置', checked: false },
-  { name: '县内安置（有土）', value: '县内安置（有土）', type: '搬迁安置', checked: false },
-  { name: '县内安置（无土）', value: '县内安置（无土）', type: '搬迁安置', checked: false },
-  { name: '自谋出路', value: '自谋出路', type: '搬迁安置', checked: false }
+  { name: '市内县外', value: '市内县外', type: '搬迁安置' },
+  { name: '县内安置（有土）', value: '县内安置（有土）', type: '搬迁安置' },
+  { name: '县内安置（无土）', value: '县内安置（无土）', type: '搬迁安置' },
+  { name: '自谋出路', value: '自谋出路', type: '搬迁安置' }
 ]
 
 // 获得焦点的输入框下标
@@ -162,15 +168,17 @@ const inputBlur = () => {
 // 获取生产安置、搬迁安置方式数据
 const getWillList = async () => {
   const result = await getWillListApi()
-  genArr(result)
+  configLength.value = result.length
+  if (result && result.length) {
+    genArr(result)
+  }
 }
 
 // 组合生产安置、搬迁安置方式配置信息
 const genArr = (arr: any[]) => {
-  arr.map((item: any) => {
+  arr.forEach((item: any) => {
     if (item.type === '生产安置') {
       productModeData.value.push({
-        name: item.way,
         productionType: item.way,
         value: item.way,
         number: '',
@@ -182,7 +190,6 @@ const genArr = (arr: any[]) => {
         homesteadData.value.push({
           name: item.area,
           value: item.area,
-          checked: false,
           ...item,
           ...commonParams
         })
@@ -190,7 +197,6 @@ const genArr = (arr: any[]) => {
         apartmentData.value.push({
           name: item.area,
           value: item.area,
-          checked: false,
           ...item,
           ...commonParams
         })
@@ -199,46 +205,20 @@ const genArr = (arr: any[]) => {
   })
 }
 
-// 回显时组合生产安置、搬迁安置方式配置信息
-const genNewArr = (arr: any[]) => {
-  arr.map((item: any) => {
-    if (item.type === '生产安置') {
-      productModeData.value.push({
-        ...item
-      })
-    } else if (item.type === '搬迁安置') {
-      if (item.way === '宅基地安置') {
-        homesteadData.value.push({
-          ...item
-        })
-      } else if (item.way === '公寓安置') {
-        apartmentData.value.push({
-          ...item
-        })
-      } else {
-        let newArr = []
-        newArr.push({ ...item })
-        defaultData = [...newArr]
-      }
-    }
-  })
-}
-
 // 页面数据初始化
 const initData = () => {
-  if (JSON.stringify(props.willData) !== '{}') {
-    if (props.willData.immigrantWillProductionList) {
-      genNewArr(props.willData.immigrantWillProductionList)
-    } else {
-      getWillList()
-    }
+  if (props.willData && props.willData.uid) {
+    // 已经有配置了
     formData.value = {
-      ...props.willData
+      ...props.willData,
+      familyNum: props.dataInfo.demographicList.length
     }
+    // 生产安置方式 有配置数据时 重新赋值
+    productModeData.value = props.willData.immigrantWillProductionList
   } else {
-    getWillList()
+    // 没有任何配置
     formData.value = {
-      familyNum: '', // 家庭总人数
+      familyNum: props.dataInfo.demographicList.length, // 家庭总人数
       countryNum: '', // 农村移民人数
       unCountryNum: '', // 非农移民人数
       immigrantWillProductionList: [], // 生产安置
@@ -255,35 +235,22 @@ const homesteadChange = (e: any) => {
 
 // 表单提交
 const submit = () => {
-  let arr: any = []
-  if (homesteadData.value.length > 0 || apartmentData.value.length > 0) {
-    arr = [...productModeData.value, ...homesteadData.value, ...apartmentData.value]
-  } else {
-    arr = [...defaultData, ...homesteadData.value, ...apartmentData.value]
-  }
-
-  arr.map((item: any, index: number) => {
-    if (item.value === formData.value.removalType) {
-      arr[index].checked = true
-    } else {
-      arr[index].checked = false
-    }
-  })
-
   const params = {
     ...formData.value,
-    immigrantWillProductionList: [...arr]
+    immigrantWillProductionList: [...productModeData.value]
   }
-
-  if (!formData.value.removalType) {
+  if (+params.familyNum !== +params.countryNum + +params.unCountryNum) {
+    return showToast('家庭人数数据有误')
+  }
+  if (!params.removalType) {
     showToast('请选择搬迁安置方式')
     return
-  } else {
-    emit('submit', params)
   }
+  emit('submit', params)
 }
 
-onShow(() => {
+onShow(async () => {
+  await getWillList()
   initData()
 })
 </script>
