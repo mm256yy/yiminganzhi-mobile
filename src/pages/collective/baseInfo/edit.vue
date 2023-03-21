@@ -150,6 +150,8 @@ onLoad((option: any) => {
         formData.value.townCode = option.townCode
         formData.value.villageCode = option.villageCode
         formData.value.virutalVillageCode = option.virutalVillageCode
+          ? option.virutalVillageCode
+          : ''
       }
     }
   }

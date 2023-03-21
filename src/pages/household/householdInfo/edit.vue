@@ -249,7 +249,7 @@ onLoad((option: any) => {
       formData.value.areaCode = option.areaCode
       formData.value.townCode = option.townCode
       formData.value.villageCode = option.villageCode
-      formData.value.virutalVillageCode = option.virutalVillageCode
+      formData.value.virutalVillageCode = option.virutalVillageCode ? option.virutalVillageCode : ''
     }
   }
 })
