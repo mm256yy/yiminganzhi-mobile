@@ -185,10 +185,10 @@ const emit = defineEmits(['treeItemClick', 'updateData', 'updateTree'])
 const treeItemClick = (data: any) => {
   console.log('click-tree-data:', data)
   tabVal.value = 0
-	areaCode.value = data.areaCode
-	townCode.value = data.townCode
-	villageCode.value = data.villageCode
-	virutalVillageCode.value = data.virutalVillageCode
+  areaCode.value = data.areaCode
+  townCode.value = data.townCode
+  villageCode.value = data.villageCode
+  virutalVillageCode.value = data.virutalVillageCode
   emit('treeItemClick', data)
 }
 

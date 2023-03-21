@@ -176,9 +176,9 @@ const emit = defineEmits(['treeItemClick', 'updateData', 'updateTree'])
 const treeItemClick = (data: any) => {
   console.log(data, 'data')
   tabVal.value = 0
-	areaCode.value = data.areaCode
-	townCode.value = data.townCode
-	villageCode.value = data.villageCode
+  areaCode.value = data.areaCode
+  townCode.value = data.townCode
+  villageCode.value = data.villageCode
   emit('treeItemClick', data)
 }
 

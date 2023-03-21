@@ -245,12 +245,12 @@ onLoad((option: any) => {
     title.value = '居民户信息编辑'
   } else if (option.type === 'add') {
     title.value = '添加居民户信息'
-		if (option.areaCode && option.townCode && option.villageCode) {
-			formData.value.areaCode = option.areaCode
-			formData.value.townCode = option.townCode
-			formData.value.villageCode = option.villageCode
-			formData.value.virutalVillageCode = option.virutalVillageCode
-		}
+    if (option.areaCode && option.townCode && option.villageCode) {
+      formData.value.areaCode = option.areaCode
+      formData.value.townCode = option.townCode
+      formData.value.villageCode = option.villageCode
+      formData.value.virutalVillageCode = option.virutalVillageCode
+    }
   }
 })
 
