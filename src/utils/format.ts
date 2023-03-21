@@ -7,17 +7,19 @@ import { getStorage, StorageKey } from '@/utils'
  */
 export const dictOption = (arr: any, val: any) => {
   let str = '-'
-  arr.map((item: any) => {
-    if (item.value === 'true') {
-      if (item.value === val.toString()) {
-        str = item.text
+  if (val !== null) {
+    arr.map((item: any) => {
+      if (item.value === 'true') {
+        if (item.value === val.toString()) {
+          str = item.text
+        }
+      } else {
+        if (item.value === val) {
+          str = item.text
+        }
       }
-    } else {
-      if (item.value === val) {
-        str = item.text
-      }
-    }
-  })
+    })
+  }
   return str
 }
 

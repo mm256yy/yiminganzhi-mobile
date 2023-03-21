@@ -102,16 +102,25 @@
       />
     </template>
 
-    <uni-popup ref="alertDialog" type="dialog">
-      <uni-popup-dialog
-        type="warn"
-        cancelText="取消"
-        confirmText="确认"
-        title="确认删除？"
-        content=""
-        @confirm="dialogConfirm"
-        @close="dialogClose"
-      />
+    <uni-popup ref="alertDialog" type="dialog" :is-mask-click="false">
+      <view class="tips-wrapper">
+        <view class="tips-title">删除提示</view>
+        <view class="tips-content">
+          <view class="tips-list">
+            <view class="tips-item" v-for="(item, index) in tipsList" :key="index">
+              {{ item }}
+            </view>
+          </view>
+          <view class="tips">
+            <uni-icons type="info-filled" color="#FF4242" />
+            {{ confirmMsg }}
+          </view>
+        </view>
+        <view class="btn-wrapper">
+          <view class="btn cancel" @click="dialogClose">取消</view>
+          <view class="btn confirm" @click="dialogConfirm">确认</view>
+        </view>
+      </view>
     </uni-popup>
   </Container>
 </template>
@@ -126,7 +135,8 @@ import TreeSelect from '@/components/VillageTreeSelect/index.vue'
 import {
   getLandlordListBySearchApi,
   getVillageTreeWithoutNullApi,
-  deleteLandlordApi
+  deleteLandlordApi,
+  getLandlordItemApi
 } from '@/service'
 import { LandlordType } from '@/types/sync'
 import { LandlordSearchType, MainType } from '@/types/common'
@@ -141,6 +151,8 @@ const treeData = ref<any>([])
 const title = ref<string[]>([])
 const currentItem = ref<LandlordType | null>(null)
 const alertDialog = ref<any>(null)
+const tipsList = ref<any>([])
+const confirmMsg = ref<string>('')
 
 const isLoading = ref<boolean>(false)
 const isEnd = ref<boolean>(false)
@@ -152,6 +164,8 @@ const init = () => {
   page.value = 1
   isEnd.value = false
   isLoading.value = false
+  tipsList.value = []
+  confirmMsg.value = ''
   getList()
 }
 
@@ -284,7 +298,50 @@ const editLandlord = (item: LandlordType) => {
 
 const deleteLandlord = (item: LandlordType) => {
   currentItem.value = item
+  getLandlordDetail(currentItem.value.uid, currentItem.value.type)
   alertDialog.value?.open()
+}
+
+/**
+ * 获取业主详情
+ * @param(object) uid
+ */
+const getLandlordDetail = (uid: string, type: string) => {
+  getLandlordItemApi(uid).then((res: any) => {
+    const appendantLength = res.immigrantAppendantList.filter((item: any) => item.number > 0).length
+    if (type === MainType.PeasantHousehold) {
+      tipsList.value = [
+        `人口信息：${res.demographicList.length} 条人口信息`,
+        `房屋信息: ${res.immigrantHouseList.length} 条房屋信息`,
+        `附属物信息: ${appendantLength} 条附属物信息`,
+        `零星(林)果木信息: ${res.immigrantTreeList.length} 条零星（林）果木信息`,
+        `坟墓信息: ${res.immigrantGraveList.length} 条坟墓信息`
+      ]
+      confirmMsg.value = '是否删除该居民户信息？'
+    } else if (type === MainType.Company) {
+      tipsList.value = [
+        `房屋信息: ${res.immigrantHouseList.length} 条房屋信息`,
+        `附属物信息: ${appendantLength} 条附属物信息`,
+        `零星(林)果木信息: ${res.immigrantTreeList.length} 条零星（林）果木信息`
+      ]
+      confirmMsg.value = '是否删除该企业信息？'
+    } else if (type === MainType.IndividualHousehold) {
+      tipsList.value = [
+        `房屋信息: ${res.immigrantHouseList.length} 条房屋信息`,
+        `附属物信息: ${appendantLength} 条附属物信息`,
+        `零星(林)果木信息: ${res.immigrantTreeList.length} 条零星（林）果木信息`
+      ]
+      confirmMsg.value = '是否删除该个体工商户信息 ？'
+    } else if (type === MainType.Village) {
+      tipsList.value = [
+        `房屋信息: ${res.immigrantHouseList.length} 条房屋信息`,
+        `附属物信息: ${appendantLength} 条附属物信息`,
+        `零星(林)果木信息: ${res.immigrantTreeList.length} 条零星（林）果木信息`,
+        `坟墓信息: ${res.immigrantGraveList.length} 条坟墓信息`
+      ]
+      confirmMsg.value = '是否删除该村集体信息 ？'
+    }
+  })
 }
 
 const dialogConfirm = () => {
@@ -302,6 +359,8 @@ const dialogConfirm = () => {
 }
 
 const dialogClose = () => {
+  tipsList.value = []
+  confirmMsg.value = ''
   alertDialog.value.close()
 }
 
@@ -477,5 +536,91 @@ onShow(() => {
     0rpx 2rpx 4rpx -2rpx rgba(0, 0, 0, 0.12);
   align-items: center;
   justify-content: center;
+}
+
+.tips-wrapper {
+  width: 344rpx;
+  height: 221rpx;
+  margin: 0 auto;
+  vertical-align: middle;
+  background-color: #f6f7f9;
+  border-radius: 5rpx;
+
+  .tips-title {
+    width: 344rpx;
+    height: 33rpx;
+    font-size: 11rpx;
+    font-weight: 600;
+    line-height: 33rpx;
+    color: #000;
+    text-align: center;
+    background: #ffffff;
+    border-radius: 5rpx 5rpx 0 0;
+  }
+
+  .tips-content {
+    width: 344rpx;
+    height: 156rpx;
+    padding: 14rpx 40rpx;
+    background: #f6f7f9;
+    box-sizing: border-box;
+
+    .tips-list {
+      width: 264rpx;
+      height: 88rpx;
+      padding: 16rpx 19rpx;
+      overflow-y: scroll;
+      background-color: #fff;
+      box-sizing: border-box;
+
+      .tips-item {
+        display: flex;
+        font-size: 9rpx;
+        line-height: 1.5;
+        color: #131313;
+        align-items: center;
+        flex-direction: column;
+      }
+    }
+
+    .tips {
+      margin-top: 14rpx;
+      font-size: 9rpx;
+      color: #131313;
+    }
+  }
+
+  .btn-wrapper {
+    display: flex;
+    width: 344rpx;
+    height: 33rpx;
+    padding: 0 9rpx;
+    background: #fff;
+    border-radius: 0 0 5rpx 5rpx;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: flex-end;
+
+    .btn {
+      width: 52rpx;
+      height: 21rpx;
+      font-size: 9rpx;
+      line-height: 21rpx;
+      text-align: center;
+      border-radius: 3rpx;
+
+      &.cancel {
+        color: rgba(0, 0, 0, 0.85);
+        background: #fff;
+        border: 1rpx solid #d9d9d9;
+      }
+
+      &.confirm {
+        margin-left: 6rpx;
+        color: #fff;
+        background: #3e73ec;
+      }
+    }
+  }
 }
 </style>

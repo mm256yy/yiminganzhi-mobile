@@ -88,7 +88,7 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 import { reportDataApi } from '@/service'
-import { networkCheck, routerForward } from '@/utils'
+import { networkCheck } from '@/utils'
 import { getPrintTemplateListApi, printLandlordApi } from '@/api'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { MainType, ReportStatusEnum } from '@/types/common'

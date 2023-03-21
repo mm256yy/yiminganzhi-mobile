@@ -15,7 +15,7 @@
       :class="['code-wrapper', focusIndex === props.index ? 'focus' : '']"
     >
       <view class="pre-txt">
-        {{ props.villageCode ? 'Q' + props.villageCode : '' }}
+        {{ props.villageCode ? props.pre + props.villageCode : '' }}
       </view>
       <input
         class="input-txt"

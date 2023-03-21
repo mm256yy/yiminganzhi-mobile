@@ -22,7 +22,6 @@ import { onLoad, onShow } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 import { getLandlordTreeApi, getLandlordItemApi } from '@/service'
 import { MainType } from '@/types/common'
-import { showLoading, hideLoading } from '@/config'
 import Main from './components/Main.vue'
 
 const sysInfo = uni.getSystemInfoSync()
