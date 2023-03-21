@@ -470,6 +470,10 @@ onLoad((option: any) => {
       title.value = '房屋信息编辑'
     } else if (commonParams.value.type === 'add') {
       title.value = '新增房屋'
+			if (commonParams.value.longitude && commonParams.value.latitude) {
+				formData.value.longitude = commonParams.value.longitude
+				formData.value.latitude = commonParams.value.latitude
+			}
     }
   }
 })

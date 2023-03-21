@@ -145,6 +145,12 @@ onLoad((option: any) => {
       title.value = '村集体基本情况编辑'
     } else if (type.value === 'add') {
       title.value = '添加村集体'
+			if (option.areaCode && option.townCode && option.villageCode) {
+				formData.value.areaCode = option.areaCode
+				formData.value.townCode = option.townCode
+				formData.value.villageCode = option.villageCode
+				formData.value.virutalVillageCode = option.virutalVillageCode
+			}
     }
   }
 })

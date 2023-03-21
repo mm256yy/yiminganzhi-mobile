@@ -143,8 +143,8 @@ const alertDialog = ref<any>(null)
 const currentItem = ref<any>({})
 
 const toLink = (type: string, data?: any) => {
-  const { uid, doorNo, householdId } = props.dataInfo
-  const commonParams = { type, uid, doorNo, householdId }
+  const { uid, doorNo, householdId, longitude, latitude } = props.dataInfo
+  let commonParams = { type, uid, doorNo, householdId, longitude, latitude }
   if (type === 'edit') {
     let params = {
       ...data,

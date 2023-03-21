@@ -287,7 +287,7 @@
                   @focus="inputFocus(2)"
                   @blur="inputBlur"
                 />
-                <view class="unit">m</view>
+                <view class="unit">万元</view>
               </view>
             </uni-forms-item>
           </uni-col>
@@ -727,6 +727,11 @@ onLoad((option: any) => {
       uid.value = option.uid
     } else if (type.value === 'add') {
       title.value = '添加个体工商户'
+			if (option.areaCode && option.townCode && option.villageCode) {
+				formData.value.areaCode = option.areaCode
+				formData.value.townCode = option.townCode
+				formData.value.villageCode = option.villageCode
+			}
     }
   }
 })
@@ -756,13 +761,6 @@ const submit = () => {
     villageCode: formData.value.villageCode,
     locationType: formData.value.locationType,
     phone: formData.value.phone,
-    periodValidity: formData.value.periodValidity,
-    establishDate: formData.value.establishDate
-      ? dayjs(formData.value.establishDate)
-      : formData.value.establishDate,
-    taxPeriodValidity: formData.value.taxPeriodValidity
-      ? dayjs(formData.value.taxPeriodValidity)
-      : formData.value.taxPeriodValidity,
     type: MainType.IndividualHousehold
   }
 
@@ -787,6 +785,13 @@ const submit = () => {
     natureBusiness: formData.value.natureBusiness,
     industryType: formData.value.industryType,
     economicNature: formData.value.economicNature,
+		periodValidity: formData.value.periodValidity,
+		establishDate: formData.value.establishDate
+		  ? dayjs(formData.value.establishDate)
+		  : formData.value.establishDate,
+		taxPeriodValidity: formData.value.taxPeriodValidity
+		  ? dayjs(formData.value.taxPeriodValidity)
+		  : formData.value.taxPeriodValidity,
     registeredAmount: formData.value.registeredAmount,
     fixedAssetsOriginalValue: formData.value.fixedAssetsOriginalValue,
     fixedAssetsNetValue: formData.value.fixedAssetsNetValue,
@@ -797,6 +802,7 @@ const submit = () => {
     averageAnnualProfit: formData.value.averageAnnualProfit,
     averageAnnualTaxPaid: formData.value.averageAnnualTaxPaid,
     productCategory: formData.value.productCategory,
+		issuingCompany: formData.value.issuingCompany,
     managementStatus: formData.value.managementStatus,
     informationInvolved: formData.value.informationInvolved,
     treatmentScheme: formData.value.treatmentScheme,

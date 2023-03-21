@@ -21,7 +21,6 @@
 import { ref } from 'vue'
 import { getLandlordTreeApi, getLandlordItemApi } from '@/service'
 import { MainType } from '@/types/common'
-import { showLoading, hideLoading } from '@/config'
 import Main from './components/Main.vue'
 import { onLoad, onShow } from '@dcloudio/uni-app'
 

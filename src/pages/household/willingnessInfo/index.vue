@@ -68,24 +68,24 @@
       <radio-group v-if="configLength > 0" @change="homesteadChange">
         <view class="label m-t-5">宅基地安置：</view>
         <label v-for="item in homesteadData" :key="item.value">
-          <radio :value="item.value" :checked="item.value === formData.removalType">{{
-            item.name
-          }}</radio>
+          <radio :value="item.value" :checked="item.value === formData.removalType">
+						{{ item.name }}
+					</radio>
         </label>
         <view class="line" />
         <view class="label m-t-5">公寓房安置：</view>
         <label v-for="item in apartmentData" :key="item.value">
-          <radio :value="item.value" :checked="item.value === formData.removalType">{{
-            item.name
-          }}</radio>
+          <radio :value="item.value" :checked="item.value === formData.removalType">
+						{{ item.name }}
+					</radio>
         </label>
       </radio-group>
       <radio-group v-else @change="homesteadChange">
         <view class="label m-t-5">默认：</view>
         <label v-for="item in defaultData" :key="item.value">
-          <radio :value="item.value" :checked="item.value === formData.removalType">{{
-            item.name
-          }}</radio>
+          <radio :value="item.value" :checked="item.value === formData.removalType">
+						{{ item.name }}
+					</radio>
         </label>
       </radio-group>
     </view>
@@ -168,6 +168,7 @@ const inputBlur = () => {
 // 获取生产安置、搬迁安置方式数据
 const getWillList = async () => {
   const result = await getWillListApi()
+	console.log('result:', result)
   configLength.value = result.length
   if (result && result.length) {
     genArr(result)

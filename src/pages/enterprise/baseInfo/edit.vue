@@ -970,6 +970,11 @@ onLoad((option: any) => {
       uid.value = option.uid
     } else if (type.value === 'add') {
       title.value = '添加企业'
+			if (option.areaCode && option.townCode && option.villageCode) {
+				formData.value.areaCode = option.areaCode
+				formData.value.townCode = option.townCode
+				formData.value.villageCode = option.villageCode
+			}
     }
   }
 })

@@ -176,11 +176,19 @@ const tabsList = ref([
 
 const showExpand = ref<boolean>(false)
 const tabVal = ref<number>(0)
+const areaCode = ref<string>('')
+const townCode = ref<string>('')
+const villageCode = ref<string>('')
+const virutalVillageCode = ref<string>('')
 const emit = defineEmits(['treeItemClick', 'updateData', 'updateTree'])
 
 const treeItemClick = (data: any) => {
-  console.log(data, 'data')
+  console.log('click-tree-data:', data)
   tabVal.value = 0
+	areaCode.value = data.areaCode
+	townCode.value = data.townCode
+	villageCode.value = data.villageCode
+	virutalVillageCode.value = data.virutalVillageCode
   emit('treeItemClick', data)
 }
 
