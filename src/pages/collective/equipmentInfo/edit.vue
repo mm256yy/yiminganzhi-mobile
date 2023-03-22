@@ -98,9 +98,9 @@
               label="具体位置"
               :label-width="150"
               label-align="right"
-              name="formData.address"
+              name="formData.specificLocation"
             >
-              <uni-easyinput v-model="formData.address" placeholder="请输入" />
+              <uni-easyinput v-model="formData.specificLocation" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
         </uni-row>

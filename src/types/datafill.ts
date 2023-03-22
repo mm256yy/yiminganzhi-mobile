@@ -259,7 +259,9 @@ export interface FacilitiesType {
   householdId?: number
   facilitiesName: string
   facilitiesType: string
+  competentUnit: string
   locationType: string
+  specificLocation: string
   facilitiesCode: string
   number: number
   unit: string

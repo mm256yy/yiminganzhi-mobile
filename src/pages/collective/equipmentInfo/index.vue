@@ -156,6 +156,8 @@ const toLink = (type: string, data?: any) => {
       facilitiesName: '',
       facilitiesType: '',
       locationType: null,
+      specificLocation: '',
+      competentUnit: '',
       facilitiesCode: '',
       number: null,
       unit: '',
