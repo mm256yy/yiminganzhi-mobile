@@ -325,7 +325,7 @@ export class Landlord extends Common {
     })
   }
 
-  // 业主列表-uid查询单个数据
+  // 业主列表-uid查询单个数据-页面使用
   getLandlordByUid(uid: string): Promise<LandlordType | null> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -403,7 +403,7 @@ export class Landlord extends Common {
     })
   }
 
-  // 业主列表-uid查询单个数据
+  // 业主列表-uid查询单个数据-逻辑处理使用
   getLandlordByUidNoFilter(uid: string): Promise<LandlordType | null> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -435,6 +435,86 @@ export class Landlord extends Common {
         reject(null)
       } catch (error) {
         console.log(error, 'getLandlordByUidNoFilter-error')
+        reject(null)
+      }
+    })
+  }
+
+  // 业主列表-uid查询单个数据-打印使用
+  getLandlordByUidWithPrint(uid: string): Promise<LandlordType | null> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!uid) {
+          reject(null)
+          return
+        }
+        const result: LandlordDDLType[] = await this.db.selectTableData(
+          LandlordTableName,
+          'uid',
+          uid,
+          'isDelete',
+          '0'
+        )
+        const res: LandlordType = result && result[0] ? JSON.parse(result[0].content) : {}
+
+        if (res && res.uid) {
+          if (res.demographicList && res.demographicList.length) {
+            res.demographicList = res.demographicList.filter((item) => item.isDelete !== '1')
+          }
+          if (res.immigrantAppendantList && res.immigrantAppendantList.length) {
+            res.immigrantAppendantList = res.immigrantAppendantList.filter(
+              (item) => item.isDelete !== '1'
+            )
+          }
+          if (res.immigrantGraveList && res.immigrantGraveList.length) {
+            res.immigrantGraveList = res.immigrantGraveList.filter((item) => item.isDelete !== '1')
+          }
+          if (res.immigrantHouseList && res.immigrantHouseList.length) {
+            res.immigrantHouseList = res.immigrantHouseList.filter((item) => item.isDelete !== '1')
+          }
+          if (res.immigrantIncomeList && res.immigrantIncomeList.length) {
+            res.immigrantIncomeList = res.immigrantIncomeList.filter(
+              (item) => item.isDelete !== '1'
+            )
+          }
+          if (res.immigrantTreeList && res.immigrantTreeList.length) {
+            res.immigrantTreeList = res.immigrantTreeList.filter((item) => item.isDelete !== '1')
+          }
+
+          if (res.immigrantManagementList && res.immigrantManagementList.length) {
+            res.immigrantManagementList = res.immigrantManagementList.filter(
+              (item) => item.isDelete !== '1'
+            )
+          }
+
+          if (res.immigrantEquipmentList && res.immigrantEquipmentList.length) {
+            res.immigrantEquipmentList = res.immigrantEquipmentList.filter(
+              (item) => item.isDelete !== '1'
+            )
+          }
+
+          if (res.immigrantFacilitiesList && res.immigrantFacilitiesList.length) {
+            res.immigrantFacilitiesList = res.immigrantFacilitiesList.filter(
+              (item) => item.isDelete !== '1'
+            )
+          }
+
+          const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
+          // 拿到上级行政区划
+          res.virutalVillageCodeText = districtMap[res.virutalVillageCode]
+          res.villageCodeText = districtMap[res.villageCode]
+          res.townCodeText = districtMap[res.townCode]
+          res.areaCodeText = districtMap[res.areaCode]
+
+          // todo 字典相关 图片转化
+          console.log(res, '业主详情')
+          resolve(res)
+          return
+        }
+
+        reject(null)
+      } catch (error) {
+        console.log(error, 'getLandlordByUid-error')
         reject(null)
       }
     })
