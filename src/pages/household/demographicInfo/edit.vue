@@ -47,14 +47,14 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              label="出生年月"
+              label="出生日期"
               :label-width="150"
               label-align="right"
               name="formData.birthday"
             >
               <uni-datetime-picker
                 type="date"
-                placeholder="选择出生年月"
+                placeholder="选择出生日期"
                 v-model="formData.birthday"
               />
             </uni-forms-item>
@@ -178,12 +178,16 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              label="户籍地址"
+              label="户籍所在地"
               :label-width="150"
               label-align="right"
-              name="formData.address"
+              name="formData.censusRegister"
             >
-              <uni-easyinput v-model="formData.address" type="textarea" placeholder="请输入" />
+              <uni-easyinput
+                v-model="formData.censusRegister"
+                type="textarea"
+                placeholder="请输入"
+              />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -287,7 +291,7 @@ const formData = ref<any>({
   populationSort: '',
   censusType: '',
   householdNumber: '',
-  address: '',
+  censusRegister: '',
   remark: '',
   cardPic: '[]',
   householdPic: '[]',

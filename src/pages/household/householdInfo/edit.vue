@@ -275,11 +275,12 @@ const gotoMap = () => {
 const submit = () => {
   let params = {
     ...formData.value,
-    doorNo: formData.value.doorNo
-      ? formData.value.doorNo
-      : formData.value.villageCode
-      ? String(formData.value.villageCode) + formData.value.suffixNo
-      : '',
+    doorNo:
+      formData.value.id && formData.value.doorNo
+        ? formData.value.doorNo
+        : formData.value.villageCode
+        ? String(formData.value.villageCode) + formData.value.suffixNo
+        : '',
     type: MainType.PeasantHousehold
   }
 

@@ -46,14 +46,14 @@
               <view class="col">
                 <view class="label">所在位置：</view>
                 <view class="content">
-                  {{ dictOption(locationTypes, props.dataInfo.locationType) }}
+                  {{ formatDict(item.locationType, 326) }}
                 </view>
               </view>
             </uni-col>
             <uni-col :span="16">
               <view class="col">
                 <view class="label">具体位置：</view>
-                <view class="content">{{ formatStr(item.address) }}</view>
+                <view class="content">{{ formatStr(item.specificLocation) }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -98,9 +98,8 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { formatStr, formatDict, dictOption, routerForward } from '@/utils'
-import { locationTypes } from '@/config/common'
 import dayjs from 'dayjs'
+import { formatStr, formatDict, routerForward } from '@/utils'
 
 const props = defineProps({
   dataList: {

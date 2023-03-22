@@ -90,7 +90,7 @@
               label-align="right"
               name="formData.locationType"
             >
-              <uni-data-select v-model="formData.locationType" :localdata="locationTypes" />
+              <uni-data-select v-model="formData.locationType" :localdata="dict[326]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -261,7 +261,7 @@ import { onLoad } from '@dcloudio/uni-app'
 import dayjs from 'dayjs'
 import { addLandlordFacilitiesApi, updateLandlordFacilitiesApi } from '@/service'
 import { routerBack, getStorage, StorageKey } from '@/utils'
-import { locationTypes, ERROR_MSG, SUCCESS_MSG, showToast } from '@/config'
+import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config'
 import Back from '@/components/Back/Index.vue'
 
 // 表单数据

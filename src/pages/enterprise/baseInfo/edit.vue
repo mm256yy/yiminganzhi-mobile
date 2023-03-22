@@ -990,32 +990,27 @@ const inputBlur = () => {
 const submit = () => {
   let baseInfo: any = {
     name: formData.value.name,
-    doorNo: formData.value.doorNo
-      ? formData.value.doorNo
-      : formData.value.villageCode
-      ? 'Q' + formData.value.villageCode + formData.value.suffixNo
-      : '',
+    doorNo:
+      formData.value.id && formData.value.doorNo
+        ? formData.value.doorNo
+        : formData.value.villageCode
+        ? 'Q' + formData.value.villageCode + formData.value.suffixNo
+        : '',
     areaCode: formData.value.areaCode,
     townCode: formData.value.townCode,
     villageCode: formData.value.villageCode,
     locationType: formData.value.locationType,
     phone: formData.value.phone,
-    periodValidity: formData.value.periodValidity,
-    establishDate: formData.value.establishDate
-      ? dayjs(formData.value.establishDate)
-      : formData.value.establishDate,
-    taxPeriodValidity: formData.value.taxPeriodValidity
-      ? dayjs(formData.value.taxPeriodValidity)
-      : formData.value.taxPeriodValidity,
     type: MainType.Company
   }
 
   let company: any = {
-    doorNo: formData.value.doorNo
-      ? formData.value.doorNo
-      : formData.value.villageCode
-      ? 'Q' + formData.value.villageCode + formData.value.suffixNo
-      : '',
+    doorNo:
+      formData.value.id && formData.value.doorNo
+        ? formData.value.doorNo
+        : formData.value.villageCode
+        ? 'Q' + formData.value.villageCode + formData.value.suffixNo
+        : '',
     householdId: formData.value.householdId,
     legalPersonName: formData.value.legalPersonName,
     legalPersonCard: formData.value.legalPersonCard,

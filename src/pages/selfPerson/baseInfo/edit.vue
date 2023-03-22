@@ -747,11 +747,12 @@ const submit = () => {
   let baseInfo: any = {
     uid: uid.value,
     name: formData.value.name,
-    doorNo: formData.value.doorNo
-      ? formData.value.doorNo
-      : formData.value.suffixNo
-      ? 'G' + formData.value.villageCode + formData.value.suffixNo
-      : '',
+    doorNo:
+      formData.value.id && formData.value.doorNo
+        ? formData.value.doorNo
+        : formData.value.suffixNo
+        ? 'G' + formData.value.villageCode + formData.value.suffixNo
+        : '',
     areaCode: formData.value.areaCode,
     townCode: formData.value.townCode,
     villageCode: formData.value.villageCode,
@@ -761,11 +762,12 @@ const submit = () => {
   }
 
   let company: any = {
-    doorNo: formData.value.doorNo
-      ? formData.value.doorNo
-      : formData.value.suffixNo
-      ? 'G' + formData.value.villageCode + formData.value.suffixNo
-      : '',
+    doorNo:
+      formData.value.id && formData.value.doorNo
+        ? formData.value.doorNo
+        : formData.value.suffixNo
+        ? 'G' + formData.value.villageCode + formData.value.suffixNo
+        : '',
     householdId: formData.value.householdId,
     legalPersonName: formData.value.legalPersonName,
     legalPersonCard: formData.value.legalPersonCard,

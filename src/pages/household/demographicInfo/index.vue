@@ -82,7 +82,7 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">户籍所在地：</view>
-                <view class="content">{{ formatStr(item.address) }}</view>
+                <view class="content">{{ formatStr(item.censusRegister) }}</view>
               </view>
             </uni-col>
           </uni-row>

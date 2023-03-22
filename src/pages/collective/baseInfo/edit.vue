@@ -168,11 +168,12 @@ const inputBlur = () => {
 const submit = () => {
   let params = {
     ...formData.value,
-    doorNo: formData.value.doorNo
-      ? formData.value.doorNo
-      : formData.value.suffixNo
-      ? 'JT' + formData.value.villageCode + formData.value.suffixNo
-      : '',
+    doorNo:
+      formData.value.id && formData.value.doorNo
+        ? formData.value.doorNo
+        : formData.value.suffixNo
+        ? 'JT' + formData.value.villageCode + formData.value.suffixNo
+        : '',
     type: MainType.Village
   }
 
