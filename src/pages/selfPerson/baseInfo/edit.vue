@@ -590,9 +590,9 @@
               label="备注"
               :label-width="170"
               label-align="right"
-              name="formData.otherRemark"
+              name="formData.remark"
             >
-              <uni-easyinput v-model="formData.otherRemark" type="textarea" placeholder="请输入" />
+              <uni-easyinput v-model="formData.remark" type="textarea" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -722,7 +722,6 @@ onLoad((option: any) => {
     if (type.value === 'edit') {
       let params = JSON.parse(option.params)
       formData.value = { ...params }
-      console.log('formData:', formData.value)
       title.value = '个体工商户基本概况编辑'
       uid.value = option.uid
     } else if (type.value === 'add') {
@@ -806,7 +805,7 @@ const submit = () => {
     managementStatus: formData.value.managementStatus,
     informationInvolved: formData.value.informationInvolved,
     treatmentScheme: formData.value.treatmentScheme,
-    otherRemark: formData.value.otherRemark,
+    remark: formData.value.remark,
     licensePic: fmtPicUrl(formData.value.licensePic),
     otherPic: fmtPicUrl(formData.value.otherPic)
   }

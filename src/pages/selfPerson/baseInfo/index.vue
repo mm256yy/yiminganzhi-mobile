@@ -363,7 +363,7 @@
             <uni-col :span="24">
               <view class="col">
                 <view class="label">备注：</view>
-                <view class="content">{{ formatStr(props.dataInfo.otherRemark) }}</view>
+                <view class="content">{{ formatStr(props.dataInfo.remark) }}</view>
               </view>
             </uni-col>
           </uni-row>
