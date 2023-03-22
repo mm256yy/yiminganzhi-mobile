@@ -99,10 +99,7 @@
               label-align="right"
               name="formData.suffixNo"
             >
-              <view
-                v-if="!formData.doorNo"
-                :class="['code-wrapper', focusIndex === 1 ? 'focus' : '']"
-              >
+              <view v-if="!formData.id" :class="['code-wrapper', focusIndex === 1 ? 'focus' : '']">
                 <view class="pre-txt">
                   {{ formData.villageCode ? 'G' + formData.villageCode : '' }}
                 </view>

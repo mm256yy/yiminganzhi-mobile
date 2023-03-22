@@ -70,7 +70,7 @@
               label-align="right"
               name="formData.suffixNo"
             >
-              <view v-if="!formData.doorNo" :class="['input-wrapper', isFocus ? 'focus' : '']">
+              <view v-if="!formData.id" :class="['input-wrapper', isFocus ? 'focus' : '']">
                 <view class="pre-txt">{{ formData.villageCode }}</view>
                 <input
                   class="input-txt"
