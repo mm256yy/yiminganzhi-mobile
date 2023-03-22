@@ -28,7 +28,7 @@
               <view class="col">
                 <view class="label">所在位置：</view>
                 <view class="content">
-                  {{ dictOption(locationTypes, props.baseInfo.locationType) }}
+                  {{ formatDict(props.baseInfo.locationType, 326) }}
                 </view>
               </view>
             </uni-col>
@@ -547,8 +547,7 @@
 
 <script lang="ts" setup>
 import dayjs from 'dayjs'
-import { dictOption, formatStr, formatDict, splitStr, routerForward, fmtPicUrl } from '@/utils'
-import { locationTypes } from '@/config/common'
+import { formatStr, formatDict, splitStr, routerForward, fmtPicUrl } from '@/utils'
 import UploadFile from '@/components/UploadFile/index.vue'
 
 const props = defineProps({

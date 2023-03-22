@@ -313,7 +313,7 @@
         </uni-row>
 
         <uni-row>
-          <uni-col :span="24">
+          <uni-col :span="12">
             <uni-forms-item
               label="备注"
               :label-width="150"
@@ -321,6 +321,16 @@
               name="formData.remark"
             >
               <uni-easyinput v-model="formData.remark" type="textarea" placeholder="请输入" />
+            </uni-forms-item>
+          </uni-col>
+          <uni-col :span="12">
+            <uni-forms-item
+              label="所在位置"
+              :label-width="150"
+              label-align="right"
+              name="formData.locationType"
+            >
+              <uni-data-select v-model="formData.locationType" :localdata="dict[326]" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -438,6 +448,7 @@ const formData = ref<any>({
   formula: '',
   longitude: '',
   latitude: '',
+  locationType: '',
   remark: '',
   housePic: '[]',
   landPic: '[]',

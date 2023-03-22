@@ -5,10 +5,11 @@
         <view class="col">序号</view>
         <view class="col w-63">品种名称</view>
         <view class="col w-63">用途</view>
+        <view class="col w-63">淹没范围</view>
         <view class="col w-64">规格</view>
         <view class="col w-64">单位</view>
         <view class="col w-64">数量</view>
-        <view class="col w-130">备注</view>
+        <view class="col w-67">备注</view>
         <view class="col w-29">操作</view>
       </view>
 
@@ -20,16 +21,19 @@
         <view class="col w-63 p-lr-2">
           <uni-data-select v-model="item.usageType" :localdata="dict[325]" />
         </view>
+        <view class="col w-63 p-lr-2">
+          <uni-data-select v-model="item.inundationRange" :localdata="dict[346]" />
+        </view>
         <view class="col w-64 p-lr-2">
           <uni-data-select v-model="item.size" :localdata="dict[269]" />
         </view>
         <view class="col w-64 p-lr-2">
           <uni-data-select v-model="item.unit" :localdata="dict[264]" />
         </view>
-        <view class="col w-94">
+        <view class="col w-64">
           <input class="remark" type="number" v-model="item.number" placeholder="请输入" />
         </view>
-        <view class="col w-100">
+        <view class="col w-67">
           <input class="remark" v-model="item.remark" placeholder="请输入内容" />
         </view>
         <view class="col w-29 p-l-7">
@@ -95,6 +99,7 @@ const defaultRow = {
   doorNo: props.dataInfo.doorNo,
   name: '',
   usageType: '1', // 默认果树
+  inundationRange: '',
   size: '2', // 默认中树
   unit: '1', // 默认株
   number: '',
@@ -199,8 +204,8 @@ const submit = () => {
           width: 64rpx;
         }
 
-        &.w-130 {
-          width: 130rpx;
+        &.w-67 {
+          width: 67rpx;
         }
 
         &.p-lr-2 {
