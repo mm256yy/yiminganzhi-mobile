@@ -320,7 +320,12 @@
               label-align="right"
               name="formData.remark"
             >
-              <uni-easyinput v-model="formData.remark" type="textarea" placeholder="请输入" />
+              <uni-easyinput
+                v-model="formData.remark"
+                type="textarea"
+                :maxlength="100"
+                placeholder="请输入(100字以内)"
+              />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">

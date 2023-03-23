@@ -110,7 +110,13 @@
               label-align="right"
               name="formData.insuranceType"
             >
-              <uni-data-select v-model="formData.insuranceType" :localdata="dict[306]" />
+              <muti-select
+                v-model="formData.insuranceType"
+                :value="formData.insuranceType"
+                :list="dict[306]"
+                label-key="text"
+                value-key="value"
+              />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -272,6 +278,7 @@ import { routerBack, getStorage, StorageKey } from '@/utils'
 import { addLandlordPeopleApi, updateLandlordPeopleApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
+import MutiSelect from '@/components/MutiSelect/Index.vue'
 import UploadFile from '@/components/UploadFile/index.vue'
 
 // 表单数据
@@ -325,6 +332,7 @@ const submit = () => {
     ...formData.value,
     birthday: formData.value.birthday ? dayjs(formData.value.birthday) : formData.value.birthday
   }
+  console.log('params:', params)
   if (!formData.value.name) {
     showToast('请输入姓名')
     return

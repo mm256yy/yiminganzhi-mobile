@@ -19,7 +19,12 @@
           <input class="remark" type="number" v-model="item.number" placeholder="请输入" />
         </view>
         <view class="col w-183">
-          <input class="remark" v-model="item.remark" placeholder="请输入内容" />
+          <input
+            class="remark"
+            v-model="item.remark"
+            :maxlength="100"
+            placeholder="请输入(100字以内)"
+          />
         </view>
       </view>
     </view>
@@ -36,7 +41,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { getAppendantListApi } from '@/service'
-import { showLoading, hideLoading } from '@/config/loading'
 
 const props = defineProps({
   dataInfo: {

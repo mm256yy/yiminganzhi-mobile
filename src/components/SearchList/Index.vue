@@ -61,7 +61,6 @@ const selectedData = ref<any>({})
  * @param{Object} type 居民户类型
  */
 const getLandlordListBySearch = (name: string, type: any) => {
-  // console.log('villageCode:', props.villageCode)
   let params = {
     name,
     type,
@@ -70,7 +69,6 @@ const getLandlordListBySearch = (name: string, type: any) => {
     pageSize: 50
   }
   getLandlordListBySearchApi(params).then((res) => {
-    console.log('res:', res)
     if (res && res.length > 0) {
       let arr: any = []
       res.map((item: any) => {
@@ -91,7 +89,6 @@ const getLandlordListBySearch = (name: string, type: any) => {
  * @param{Object} e
  */
 const confirm = (e: any) => {
-  console.log('data:', e.detail.value)
   name.value = e.detail.value
   getLandlordListBySearch(name.value, props.type)
 }
@@ -99,7 +96,6 @@ const confirm = (e: any) => {
 // 选择
 const select = (data: any, index: any) => {
   selectedData.value = { ...data }
-  // dataList.value[index].checked = !dataList.value[index].checked
   dataList.value.map((item: any, idx: any) => {
     if (index === idx) {
       dataList.value[index].checked = true
