@@ -1,4 +1,4 @@
-export const selfemployedHouseDefinition = {
+export const peopleHouseDefinition = {
   content: [
     {
       alignment: 'left',
@@ -22,7 +22,7 @@ export const selfemployedHouseDefinition = {
         body: [
           [
             {
-              rowSpan: 3,
+              rowSpan: 4,
               colSpan: 2,
               border: [true, true, false, false],
               stack: [
@@ -41,16 +41,17 @@ export const selfemployedHouseDefinition = {
               ]
             },
             '',
-            { text: '联系方式', colSpan: 2, alignment: 'center' },
+            { text: '基本信息', colSpan: 2, alignment: 'center' },
             ''
           ],
-          ['', '', '地理位置', '地理位置'],
-          ['', '', '权属人姓名', '权属人姓名'],
+          ['', '', '地理位置', ''],
+          ['', '', '户主姓名', ''],
+          ['', '', '联系方式', ''],
           [
             { text: '所属区域：', border: [true, false, false, true], alignment: 'left' },
             { text: '调查时间：', border: [false, false, false, true], alignment: 'left' },
-            '联系方式',
-            '联系方式'
+            '户籍册编号',
+            ''
           ]
         ]
       }
@@ -58,22 +59,16 @@ export const selfemployedHouseDefinition = {
     {
       table: {
         widths: ['*'],
-        heights: function (row: any) {
+        heights: function (row: number) {
           return row === 0 ? 22 : 106
         },
-        headerRows: 1,
+        headerRows: 2,
         body: [
           [{ text: '房屋示意图', bold: true }],
           [''],
           [''],
           [''],
-          [{ text: '', pageBreak: 'after' }],
-          [''],
-          [''],
-          [''],
-          [''],
-          [''],
-          ['']
+          [{ text: '', pageBreak: 'after' }]
         ]
       }
     }

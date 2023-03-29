@@ -1,6 +1,9 @@
 const pdfMake = require('@/static/js/pdfmake.min.js')
 const pdfFonts = require('@/static/js/vfs_fonts.js')
+
+pdfMake.vfs = pdfFonts.pdfMake.vfs
 import { LandlordType } from '@/types/sync'
+import { logo } from './config'
 ;(pdfMake as any).vfs = pdfFonts.pdfMake.vfs
 ;(pdfMake as any).fonts = {
   Roboto: {
@@ -9,7 +12,7 @@ import { LandlordType } from '@/types/sync'
     italics: 'Roboto-Regular.ttf',
     bolditalics: 'Roboto-Regular.ttf'
   },
-  fangzhen: {
+  fz: {
     normal: 'fzhei-jt.TTF',
     bold: 'fzhei-jt.TTF',
     italics: 'fzhei-jt.TTF',
@@ -29,9 +32,19 @@ class PrintCore {
       pageSize: 'A4',
       pageOrientation: 'portrait',
       defaultStyle: {
-        font: 'fangzhen',
-        fontSize: 14
-      }
+        font: 'fz',
+        fontSize: 8,
+        color: 'black'
+      },
+      pageMargins: [20, 50, 20, 80],
+      header: [
+        {
+          image: logo,
+          width: 160,
+          margin: [0, 10, 10, 0],
+          alignment: 'right'
+        }
+      ]
     }
   }
 

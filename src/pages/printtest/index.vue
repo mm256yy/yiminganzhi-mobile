@@ -1,6 +1,7 @@
 <template>
   <view id="print" class="print">
     <button hover-class="button-hover"> 打印 </button>
+    <!-- @click="print.makeClick" -->
   </view>
 </template>
 
@@ -14,7 +15,7 @@ export default {
       const base64 = base64Str.slice(index + 1, base64Str.length)
       //Base64可通过Canvas、html2canvas、jspdf等生成的字符串，不包含文件类型前缀
       //1.根据Base64生成文件：第二个参数是文件名称，如果不传入路径，则默认保存在Download文件夹,返回文件的绝对路径
-      const filePath = printpdfModule.saveBase64File(base64, 'test.pdf')
+      const filePath = printpdfModule.saveBase64File(base64, `${new Date().getTime()}.pdf`)
       //2.打印pdf
       //可传绝对路径，如果只传文件名则默认在下载目录下查找
       // printpdfModule.printPdf('test.pdf')
@@ -37,6 +38,7 @@ export default {
 
 <script module="print" lang="renderjs">
 import { printPdf } from '@/print'
+import { companyBaseDefinition } from '@/print/templates'
 
 export default {
   methods: {
@@ -44,27 +46,7 @@ export default {
       const pdfMakeRes = printPdf.pdfMake
       .createPdf({
         ...printPdf.baseConfig,
-        content: [
-          {
-            style: 'tableExample',
-            table: {
-              headerRows: 2,
-              body: [
-                ['Column 1', 'Column 2', 'Column 3'],
-                ['测试中文', 'Another one here', 'OK?']
-              ]
-            }
-          }
-        ],
-        footer: function(currentPage, pageCount) {
-          return currentPage.toString() + ' of ' + pageCount
-        },
-        header: function(currentPage, pageCount, pageSize) {
-          return [
-            { text: 'simple text', alignment: (currentPage % 2) ? 'left' : 'right' },
-            { canvas: [ { type: 'rect', x: 170, y: 32, w: pageSize.width - 170, h: 40 } ] }
-          ]
-        }
+        ...companyBaseDefinition
       })
       pdfMakeRes.getBase64((dataUrl) => {
         ownerInstance.callMethod('printPdfHandle', dataUrl)
