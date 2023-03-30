@@ -8,6 +8,13 @@
 			}
 		},
 		{
+			"name": "print",
+			"path": "pages/printtest/index",
+			"style": {
+				"navigationBarTitleText": "打印"
+			}
+		},
+		{
 			"name": "map",
 			"path": "pages/map/index",
 			"style": {
@@ -188,7 +195,7 @@
 		}
 	},
   "condition" : {
-    "current": 2,
+    "current": 1,
     "list": [
 			{
         "name": "地图页面",
@@ -196,8 +203,8 @@
         "query": ""
       },
       {
-        "name": "登录页面",
-        "path": "pages/login/index",
+        "name": "打印页面",
+        "path": "pages/printtest/index",
         "query": ""
       },
 			{
