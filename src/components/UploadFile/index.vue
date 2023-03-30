@@ -44,6 +44,7 @@ import { batchUploadImg } from '@/service'
 import { networkCheck } from '@/utils'
 import defaultImg from '@/static/images/icon_null_data.png'
 import { hideLoading } from '@/config'
+import { ossDomain } from '@/config'
 
 interface PropsType {
   showType: 'grid' | 'list'
@@ -148,7 +149,7 @@ const chooseFiles = () => {
               editName: name,
               isEdit: false,
               name,
-              url: `https://zdwp.oss-cn-hangzhou.aliyuncs.com/migrate/files/image/${name}`
+              url: `${ossDomain}migrate/files/image/${name}`
             }
           })
 
