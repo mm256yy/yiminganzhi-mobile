@@ -19,18 +19,29 @@ export const selfemployedEquipmentDefinition = {
         widths: [26, 82, 42, 26, 26, 82, 58, 58, 42, '*'],
         body: [
           [
-            '序号',
-            '名称',
-            '规格型号',
-            '单位',
-            '数量',
-            '用途',
-            '建造/购置年份',
-            '原价（万元）',
-            '搬迁方式',
-            '备注'
+            { text: '序号', style: 'td' },
+            { text: '名称', style: 'td' },
+            { text: '规格型号', style: 'td' },
+            { text: '单位', style: 'td' },
+            { text: '数量', style: 'td' },
+            { text: '用途', style: 'td' },
+            { text: '建造/购置年份', style: 'td' },
+            { text: '原价（万元）', style: 'td' },
+            { text: '搬迁方式', style: 'td' },
+            { text: '备注', style: 'td' }
           ],
-          ['', '', '', '', '', '', '', '', '', ''],
+          [
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' }
+          ],
           ['', '', '', '', '', '', '', '', '', '']
         ]
       }
@@ -41,6 +52,23 @@ export const selfemployedEquipmentDefinition = {
       columns: ['分类目录：', '所属阶段：', '']
     }
   ],
+  styles: {
+    // td垂直居中
+    td: {
+      margin: [0, 7, 0, 0]
+    },
+    td_2: {
+      margin: [0, 21, 0, 0]
+    },
+    td_3: {
+      margin: [0, 28, 0, 0]
+    },
+
+    // table样式
+    table: {
+      heights: 22
+    }
+  },
   footer: function (currentPage: number, pageSize: any) {
     return [
       {

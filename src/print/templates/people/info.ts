@@ -20,6 +20,7 @@ export const peopleInfoDefinition = {
       table: {
         widths: [135, 135, 100, '*'],
         heights: 22,
+        alignment: 'center',
         body: [
           [
             {
@@ -28,31 +29,41 @@ export const peopleInfoDefinition = {
               border: [true, true, false, false],
               stack: [
                 {
-                  text: '柏行水库 工程建设 征地移民实物调查表',
+                  text: '3 工程建设 征地移民实物调查表',
                   alignment: 'center',
                   fontSize: 16,
                   bold: true,
                   margin: [66, 9, 66, 2]
                 },
                 {
-                  text: '（个体户 XXX 232356228881 号）',
+                  text: '（个体户 3 3 号）',
                   alignment: 'center',
                   margin: [66, 0, 66, 0]
                 }
               ]
             },
             '',
-            { text: '基本信息', colSpan: 2, alignment: 'center' },
+            { text: '基本信息', colSpan: 2, alignment: 'center', style: 'td' },
             ''
           ],
-          ['', '', '地理位置', ''],
-          ['', '', '户主姓名', ''],
-          ['', '', '联系方式', ''],
+          ['', '', { text: '地理位置', style: 'td' }, { text: '3', style: 'td' }],
+          ['', '', { text: '户主姓名', style: 'td' }, { text: '3', style: 'td' }],
+          ['', '', { text: '联系方式', style: 'td' }, { text: '3', style: 'td' }],
           [
-            { text: '所属区域：', border: [true, false, false, true], alignment: 'left' },
-            { text: '调查时间：', border: [false, false, false, true], alignment: 'left' },
-            '户籍册编号',
-            ''
+            {
+              text: '所属区域：3',
+              border: [true, false, false, true],
+              alignment: 'left',
+              style: 'td'
+            },
+            {
+              text: '调查时间：3',
+              border: [false, false, false, true],
+              alignment: 'left',
+              style: 'td'
+            },
+            { text: '户籍册编号', style: 'td' },
+            { text: '3', style: 'td' }
           ]
         ]
       }
@@ -63,22 +74,31 @@ export const peopleInfoDefinition = {
         heights: 22,
         headerRows: 2,
         body: [
-          [{ text: '人口信息', bold: true, colSpan: 8 }, '', '', '', '', '', '', ''],
+          [{ text: '人口信息', bold: true, colSpan: 8, style: 'td' }, '', '', '', '', '', '', ''],
           [
-            '姓名',
-            '与户主关系',
-            '性别',
-            '民族',
-            '婚姻状况',
-            '户籍所在地',
-            '身份证号码',
-            '人口类型'
+            { text: '姓名', style: 'td' },
+            { text: '与户主关系', style: 'td' },
+            { text: '性别', style: 'td' },
+            { text: '民族', style: 'td' },
+            { text: '婚姻状况', style: 'td' },
+            { text: '户籍所在地', style: 'td' },
+            { text: '身份证号码', style: 'td' },
+            { text: '人口类型', style: 'td' }
+          ],
+          [
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' }
           ],
           ['', '', '', '', '', '', '', ''],
           ['', '', '', '', '', '', '', ''],
           ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          [{ text: 'fdsafds', colSpan: 8 }, '', '', '', '', '', '', '']
+          [{ text: 'fdsafds', colSpan: 8, style: 'td' }, '', '', '', '', '', '', '']
         ]
       }
     },
@@ -89,24 +109,46 @@ export const peopleInfoDefinition = {
         heights: 22,
         headerRows: 2,
         body: [
-          [{ text: '房屋信息', bold: true, colSpan: 10 }, '', '', '', '', '', '', '', '', ''],
           [
-            '幢号',
-            '类别',
-            '房屋高程',
-            '层数',
-            '建筑面积',
-            '结构类型',
-            '竣工年月',
-            '房屋所有权证',
-            '土地所有权证',
-            '备注'
+            { text: '房屋信息', bold: true, colSpan: 10, style: 'td' },
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            ''
+          ],
+          [
+            { text: '幢号', style: 'td' },
+            { text: '类别', style: 'td' },
+            { text: '房屋高程', style: 'td' },
+            { text: '层数', style: 'td' },
+            { text: '建筑面积', style: 'td' },
+            { text: '结构类型', style: 'td' },
+            { text: '竣工年月', style: 'td' },
+            { text: '房屋所有权证', style: 'td' },
+            { text: '土地所有权证', style: 'td' },
+            { text: '备注', style: 'td' }
+          ],
+          [
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' }
           ],
           ['', '', '', '', '', '', '', '', '', ''],
           ['', '', '', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', '', '', ''],
-          [{ text: 'fdsafds', colSpan: 10 }, '', '', '', '', '', '', '', '', '']
+
+          [{ text: 'fdsafds', colSpan: 10, style: 'td' }, '', '', '', '', '', '', '', '', '']
         ]
       }
     },
@@ -116,9 +158,23 @@ export const peopleInfoDefinition = {
         heights: 22,
         widths: [26, 156, 66, 66, 66, '*'],
         body: [
-          [{ text: '附属物信息', colSpan: 6 }, '', '', '', '', ''],
-          ['序号', '项目', '规格', '单位', '数量', '备注'],
-          ['', '', '', '', '', ''],
+          [{ text: '附属物信息', colSpan: 6, style: 'td' }, '', '', '', '', ''],
+          [
+            { text: '序号', style: 'td' },
+            { text: '项目', style: 'td' },
+            { text: '规格', style: 'td' },
+            { text: '单位', style: 'td' },
+            { text: '数量', style: 'td' },
+            { text: '备注', style: 'td' }
+          ],
+          [
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' }
+          ],
           ['', '', '', '', '', '']
         ]
       }
@@ -128,9 +184,23 @@ export const peopleInfoDefinition = {
         heights: 22,
         widths: [26, 126, 126, 66, 66, '*'],
         body: [
-          [{ text: '零星林（果）木信息', colSpan: 6 }, '', '', '', '', ''],
-          ['序号', '品种', '用途', '规格', '数量', '备注'],
-          ['', '', '', '', '', ''],
+          [{ text: '零星林（果）木信息', colSpan: 6, style: 'td' }, '', '', '', '', ''],
+          [
+            { text: '序号', style: 'td' },
+            { text: '品种', style: 'td' },
+            { text: '用途', style: 'td' },
+            { text: '规格', style: 'td' },
+            { text: '数量', style: 'td' },
+            { text: '备注', style: 'td' }
+          ],
+          [
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' }
+          ],
           ['', '', '', '', '', '']
         ]
       }
@@ -142,9 +212,23 @@ export const peopleInfoDefinition = {
         heights: 22,
         headerRows: 2,
         body: [
-          [{ text: '坟墓信息22222', bold: true, colSpan: 6 }, '', '', '', '', ''],
-          ['幢号', '类别', '房屋高程', '层数', '建筑面积', '备注'],
-          ['', '', '', '', '', ''],
+          [{ text: '坟墓信息22222', bold: true, colSpan: 6, style: 'td' }, '', '', '', '', ''],
+          [
+            { text: '幢号', style: 'td' },
+            { text: '类别', style: 'td' },
+            { text: '房屋高程', style: 'td' },
+            { text: '层数', style: 'td' },
+            { text: '建筑面积', style: 'td' },
+            { text: '备注', style: 'td' }
+          ],
+          [
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' }
+          ],
           ['', '', '', '', '', ''],
           ['', '', '', '', '', ''],
           ['', '', '', '', '', '']
@@ -152,6 +236,23 @@ export const peopleInfoDefinition = {
       }
     }
   ],
+  styles: {
+    // td垂直居中
+    td: {
+      margin: [0, 7, 0, 0]
+    },
+    td_2: {
+      margin: [0, 21, 0, 0]
+    },
+    td_3: {
+      margin: [0, 28, 0, 0]
+    },
+
+    // table样式
+    table: {
+      heights: 22
+    }
+  },
   footer: function (currentPage: number, pageSize: number) {
     return [
       {

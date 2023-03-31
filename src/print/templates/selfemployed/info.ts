@@ -27,7 +27,7 @@ export const selfemployedInfoDefinition = {
               border: [true, true, false, false],
               stack: [
                 {
-                  text: '清溪水库 工程建设 征地企业实物调查表',
+                  text: '3 工程建设 征地企业实物调查表',
                   alignment: 'center',
                   fontSize: 16,
                   bold: true,
@@ -36,17 +36,27 @@ export const selfemployedInfoDefinition = {
               ]
             },
             '',
-            { text: '基本信息', colSpan: 2, alignment: 'center' },
+            { text: '基本信息', colSpan: 2, alignment: 'center', style: 'td' },
             ''
           ],
-          ['', '', '地理位置', ''],
-          ['', '', '企业名称', ''],
-          ['', '', '企业编码', ''],
+          ['', '', { text: '地理位置', style: 'td' }, { text: '3', style: 'td' }],
+          ['', '', { text: '企业名称', style: 'td' }, { text: '3', style: 'td' }],
+          ['', '', { text: '企业编码', style: 'td' }, { text: '3', style: 'td' }],
           [
-            { text: '所属区域：', border: [true, false, false, true], alignment: 'left' },
-            { text: '调查时间：', border: [false, false, false, true], alignment: 'left' },
-            '联系方式',
-            ''
+            {
+              text: '所属区域：3',
+              border: [true, false, false, true],
+              alignment: 'left',
+              style: 'td'
+            },
+            {
+              text: '调查时间：3',
+              border: [false, false, false, true],
+              alignment: 'left',
+              style: 'td'
+            },
+            { text: '联系方式', style: 'td' },
+            { text: '3', style: 'td' }
           ]
         ]
       }
@@ -57,20 +67,31 @@ export const selfemployedInfoDefinition = {
         heights: 22,
         widths: [26, 82, 42, 26, 26, 82, 58, 58, 42, '*'],
         body: [
-          [{ text: '房屋信息', colSpan: 10 }, '', '', '', '', '', '', '', '', ''],
+          [{ text: '房屋信息', colSpan: 10, style: 'td' }, '', '', '', '', '', '', '', '', ''],
           [
-            '序号',
-            '名称',
-            '规格型号',
-            '单位',
-            '数量',
-            '用途',
-            '建造/购置年份',
-            '原价（万元）',
-            '搬迁方式',
-            '备注'
+            { text: '序号', style: 'td' },
+            { text: '名称', style: 'td' },
+            { text: '规格型号', style: 'td' },
+            { text: '单位', style: 'td' },
+            { text: '数量', style: 'td' },
+            { text: '用途', style: 'td' },
+            { text: '建造/购置年份', style: 'td' },
+            { text: '原价（万元）', style: 'td' },
+            { text: '搬迁方式', style: 'td' },
+            { text: '备注', style: 'td' }
           ],
-          ['', '', '', '', '', '', '', '', '', ''],
+          [
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' }
+          ],
           ['', '', '', '', '', '', '', '', '', '']
         ]
       }
@@ -81,9 +102,23 @@ export const selfemployedInfoDefinition = {
         heights: 22,
         widths: [26, 156, 66, 66, 66, '*'],
         body: [
-          [{ text: '附属物信息', colSpan: 6 }, '', '', '', '', ''],
-          ['序号', '项目', '规格', '单位', '数量', '备注'],
-          ['', '', '', '', '', ''],
+          [{ text: '附属物信息', colSpan: 6, style: 'td' }, '', '', '', '', ''],
+          [
+            { text: '序号', style: 'td' },
+            { text: '项目', style: 'td' },
+            { text: '规格', style: 'td' },
+            { text: '单位', style: 'td' },
+            { text: '数量', style: 'td' },
+            { text: '备注', style: 'td' }
+          ],
+          [
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' }
+          ],
           ['', '', '', '', '', '']
         ]
       }
@@ -93,14 +128,45 @@ export const selfemployedInfoDefinition = {
         heights: 22,
         widths: [26, 126, 126, 66, 66, '*'],
         body: [
-          [{ text: '零星林（果）木信息', colSpan: 6 }, '', '', '', '', ''],
-          ['序号', '品种', '用途', '规格', '数量', '备注'],
-          ['', '', '', '', '', ''],
+          [{ text: '零星林（果）木信息', colSpan: 6, style: 'td' }, '', '', '', '', ''],
+          [
+            { text: '序号', style: 'td' },
+            { text: '品种', style: 'td' },
+            { text: '用途', style: 'td' },
+            { text: '规格', style: 'td' },
+            { text: '数量', style: 'td' },
+            { text: '备注', style: 'td' }
+          ],
+          [
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '3', style: 'td' }
+          ],
           ['', '', '', '', '', '']
         ]
       }
     }
   ],
+  styles: {
+    // td垂直居中
+    td: {
+      margin: [0, 7, 0, 0]
+    },
+    td_2: {
+      margin: [0, 21, 0, 0]
+    },
+    td_3: {
+      margin: [0, 28, 0, 0]
+    },
+
+    // table样式
+    table: {
+      heights: 22
+    }
+  },
   footer: function (currentPage: number, pageSize: any) {
     return [
       {

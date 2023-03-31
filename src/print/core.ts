@@ -34,7 +34,8 @@ class PrintCore {
       defaultStyle: {
         font: 'fz',
         fontSize: 8,
-        color: 'black'
+        color: 'black',
+        alignment: 'center'
       },
       pageMargins: [20, 50, 20, 80],
       header: [

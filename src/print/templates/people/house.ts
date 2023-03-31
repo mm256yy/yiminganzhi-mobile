@@ -18,7 +18,6 @@ export const peopleHouseDefinition = {
       table: {
         widths: [135, 135, 100, '*'],
         heights: 22,
-
         body: [
           [
             {
@@ -27,31 +26,41 @@ export const peopleHouseDefinition = {
               border: [true, true, false, false],
               stack: [
                 {
-                  text: '柏行水库 工程建设 征地移民实物调查表',
+                  text: '3 工程建设 征地移民实物调查表',
                   alignment: 'center',
                   fontSize: 16,
                   bold: true,
                   margin: [66, 9, 66, 2]
                 },
                 {
-                  text: '（个体户 XXX 232356228881 号）',
+                  text: '（个体户 3 3 号）',
                   alignment: 'center',
                   margin: [66, 0, 66, 0]
                 }
               ]
             },
             '',
-            { text: '基本信息', colSpan: 2, alignment: 'center' },
+            { text: '基本信息', colSpan: 2, alignment: 'center', style: 'td' },
             ''
           ],
-          ['', '', '地理位置', ''],
-          ['', '', '户主姓名', ''],
-          ['', '', '联系方式', ''],
+          ['', '', { text: '地理位置', style: 'td' }, { text: '3', style: 'td' }],
+          ['', '', { text: '户主姓名', style: 'td' }, { text: '3', style: 'td' }],
+          ['', '', { text: '联系方式', style: 'td' }, { text: '3', style: 'td' }],
           [
-            { text: '所属区域：', border: [true, false, false, true], alignment: 'left' },
-            { text: '调查时间：', border: [false, false, false, true], alignment: 'left' },
-            '户籍册编号',
-            ''
+            {
+              text: '所属区域：3',
+              border: [true, false, false, true],
+              alignment: 'left',
+              style: 'td'
+            },
+            {
+              text: '调查时间：3',
+              border: [false, false, false, true],
+              alignment: 'left',
+              style: 'td'
+            },
+            { text: '户籍册编号', style: 'td' },
+            { text: '3', style: 'td' }
           ]
         ]
       }
@@ -64,8 +73,8 @@ export const peopleHouseDefinition = {
         },
         headerRows: 2,
         body: [
-          [{ text: '房屋示意图', bold: true }],
-          [''],
+          [{ text: '房屋示意图', bold: true, style: 'td' }],
+          [{ text: '3' }],
           [''],
           [''],
           [{ text: '', pageBreak: 'after' }]
@@ -73,6 +82,18 @@ export const peopleHouseDefinition = {
       }
     }
   ],
+  styles: {
+    // td垂直居中
+    td: {
+      margin: [0, 7, 0, 0]
+    },
+    td_2: {
+      margin: [0, 21, 0, 0]
+    },
+    td_3: {
+      margin: [0, 28, 0, 0]
+    }
+  },
   footer: function (currentPage: number, pageSize: number) {
     return [
       {

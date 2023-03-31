@@ -27,30 +27,40 @@ export const selfemployedHouseDefinition = {
               border: [true, true, false, false],
               stack: [
                 {
-                  text: '柏行水库 工程建设 征地移民实物调查表',
+                  text: '3 工程建设 征地移民实物调查表',
                   alignment: 'center',
                   fontSize: 16,
                   bold: true,
                   margin: [66, 9, 66, 2]
                 },
                 {
-                  text: '（个体户 XXX 232356228881 号）',
+                  text: '（个体户 3 3 号）',
                   alignment: 'center',
                   margin: [66, 0, 66, 0]
                 }
               ]
             },
             '',
-            { text: '联系方式', colSpan: 2, alignment: 'center' },
+            { text: '联系方式', colSpan: 2, alignment: 'center', style: 'td' },
             ''
           ],
-          ['', '', '地理位置', '地理位置'],
-          ['', '', '权属人姓名', '权属人姓名'],
+          ['', '', { text: '地理位置', style: 'td' }, { text: '3', style: 'td' }],
+          ['', '', { text: '权属人姓名', style: 'td' }, { text: '3', style: 'td' }],
           [
-            { text: '所属区域：', border: [true, false, false, true], alignment: 'left' },
-            { text: '调查时间：', border: [false, false, false, true], alignment: 'left' },
-            '联系方式',
-            '联系方式'
+            {
+              text: '所属区域：3',
+              border: [true, false, false, true],
+              alignment: 'left',
+              style: 'td'
+            },
+            {
+              text: '调查时间：3',
+              border: [false, false, false, true],
+              alignment: 'left',
+              style: 'td'
+            },
+            { text: '联系方式', style: 'td' },
+            { text: '3', style: 'td' }
           ]
         ]
       }
@@ -58,12 +68,12 @@ export const selfemployedHouseDefinition = {
     {
       table: {
         widths: ['*'],
-        heights: function (row: any) {
+        heights: function (row: number) {
           return row === 0 ? 22 : 106
         },
         headerRows: 1,
         body: [
-          [{ text: '房屋示意图', bold: true }],
+          [{ text: '房屋示意图', bold: true, style: 'td' }],
           [''],
           [''],
           [''],
@@ -78,6 +88,23 @@ export const selfemployedHouseDefinition = {
       }
     }
   ],
+  styles: {
+    // td垂直居中
+    td: {
+      margin: [0, 7, 0, 0]
+    },
+    td_2: {
+      margin: [0, 21, 0, 0]
+    },
+    td_3: {
+      margin: [0, 28, 0, 0]
+    },
+
+    // table样式
+    table: {
+      heights: 22
+    }
+  },
   footer: function (currentPage: number, pageSize: number) {
     return [
       {

@@ -28,7 +28,7 @@ export const companyBaseDefinition = {
               border: [true, true, false, false],
               stack: [
                 {
-                  text: '清溪水库 工程建设 征地企业实物调查表',
+                  text: '3 工程建设 征地企业实物调查表',
                   alignment: 'center',
                   fontSize: 16,
                   bold: true,
@@ -37,17 +37,17 @@ export const companyBaseDefinition = {
               ]
             },
             '',
-            { text: '基本信息', colSpan: 2, alignment: 'center', margin: [0, 7, 0, 0] },
+            { text: '基本信息', colSpan: 2, alignment: 'center', style: 'td' },
             ''
           ],
-          ['', '', '地理位置', ''],
-          ['', '', '企业名称', ''],
-          ['', '', '企业编码', ''],
+          ['', '', { text: '地理位置', style: 'td' }, { text: '3', style: 'td' }],
+          ['', '', { text: '企业名称', style: 'td' }, { text: '3', style: 'td' }],
+          ['', '', { text: '企业编码', style: 'td' }, { text: '3', style: 'td' }],
           [
-            { text: '所属区域：', border: [true, false, false, true], alignment: 'left' },
-            { text: '调查时间：', border: [false, false, false, true], alignment: 'left' },
-            '联系方式',
-            ''
+            { text: '所属区域：3', border: [true, false, false, true], alignment: 'left' },
+            { text: '调查时间：3', border: [false, false, false, true], alignment: 'left' },
+            { text: '联系方式', style: 'td' },
+            { text: '3', style: 'td' }
           ]
         ]
       }
@@ -58,10 +58,31 @@ export const companyBaseDefinition = {
         heights: 22,
         widths: [86, 91, 86, 91, 86, '*'],
         body: [
-          [{ text: '工商、税务登记信息', colSpan: 6 }, '', '', '', '', ''],
-          ['营业执照编号', '', '注册资金', '', '成立日期', ''],
-          ['税务登记编号', '', '登记注册类型', '', '住所', ''],
-          [{ text: '营业范围', rowSpan: 5 }, { text: '', colSpan: 5, rowSpan: 5 }, '', '', '', ''],
+          [{ text: '工商、税务登记信息', colSpan: 6, style: 'td' }, '', '', '', '', ''],
+          [
+            { text: '营业执照编号', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '注册资金', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '成立日期', style: 'td' },
+            { text: '3', style: 'td' }
+          ],
+          [
+            { text: '税务登记编号', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '登记注册类型', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '住所', style: 'td' },
+            { text: '3', style: 'td' }
+          ],
+          [
+            { text: '营业范围', rowSpan: 5, margin: [0, 46, 0, 0] },
+            { text: '3', colSpan: 5, rowSpan: 5, style: 'td' },
+            '',
+            '',
+            '',
+            ''
+          ],
 
           ['', '', '', '', '', ''],
           ['', '', '', '', '', ''],
@@ -76,32 +97,64 @@ export const companyBaseDefinition = {
         heights: 22,
         widths: [86, 91, 86, 91, 86, '*'],
         body: [
-          [{ text: ' 财务、经营状况及初步处理意向', colSpan: 6 }, '', '', '', '', ''],
-          ['固定资产原值', '', '年工资总额', '', '正式工', ''],
-          ['临时工', '', '近3年平均产值', '', '近3年平均利润', ''],
-          ['近3年平均缴税额', '', '涉及情况', '', '初步处理方案', '']
+          [{ text: ' 财务、经营状况及初步处理意向', colSpan: 6, style: 'td' }, '', '', '', '', ''],
+          [
+            { text: '固定资产原值', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '年工资总额', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '正式工', style: 'td' },
+            { text: '3', style: 'td' }
+          ],
+          [
+            { text: '临时工', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '近3年平均产值', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '近3年平均利润', style: 'td' },
+            { text: '3', style: 'td' }
+          ],
+          [
+            { text: '近3年平均缴税额', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '涉及情况', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '初步处理方案', style: 'td' },
+            { text: '3', style: 'td' }
+          ]
         ]
       }
     },
 
     {
+      pageBreak: 'before',
       table: {
         heights: 22,
         widths: [40, 42, 90, 40, 42, 90, 40, 42, '*'],
         body: [
-          [{ text: '土地使用情况', colSpan: 9 }, '', '', '', '', '', '', '', ''],
+          [{ text: '土地使用情况', colSpan: 9, style: 'td' }, '', '', '', '', '', '', '', ''],
           [
-            { text: '序号', rowSpan: 2 },
-            '权属面积',
-            '',
-            { text: '划拨', rowSpan: 2 },
-            '权属面积',
-            '',
-            { text: '租用', rowSpan: 2 },
-            '权属面积',
-            ''
+            { text: '序号', rowSpan: 2, style: 'td_2' },
+            { text: '权属面积', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '划拨', rowSpan: 2, style: 'td_2' },
+            { text: '权属面积', style: 'td' },
+            { text: '3', style: 'td' },
+            { text: '租用', rowSpan: 2, style: 'td_2' },
+            { text: '权属面积', style: 'td' },
+            { text: '3', style: 'td' }
           ],
-          ['', '占用面积', '', '', '占用面积', '', '', '占用面积', '']
+          [
+            '',
+            { text: '占用面积', style: 'td' },
+            { text: '3', style: 'td' },
+            '',
+            { text: '占用面积', style: 'td' },
+            { text: '3', style: 'td' },
+            '',
+            { text: '占用面积', style: 'td' },
+            { text: '3', style: 'td' }
+          ]
         ]
       }
     },
@@ -109,7 +162,12 @@ export const companyBaseDefinition = {
       table: {
         heights: 22,
         widths: [545],
-        body: [[{ text: '备注' }], [{ text: '', rowSpan: 3 }], [''], ['']]
+        body: [
+          [{ text: '备注', style: 'td' }],
+          [{ text: '3', rowSpan: 3, style: 'td' }],
+          [''],
+          ['']
+        ]
       }
     }
   ],
@@ -159,5 +217,22 @@ export const companyBaseDefinition = {
         text: `${currentPage}/${pageSize}`
       }
     ]
+  },
+  styles: {
+    // td垂直居中
+    td: {
+      margin: [0, 7, 0, 0]
+    },
+    td_2: {
+      margin: [0, 21, 0, 0]
+    },
+    td_3: {
+      margin: [0, 28, 0, 0]
+    },
+
+    // table样式
+    table: {
+      heights: 22
+    }
   }
 }

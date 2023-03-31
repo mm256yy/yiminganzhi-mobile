@@ -38,7 +38,7 @@ export default {
 
 <script module="print" lang="renderjs">
 import { printPdf } from '@/print'
-import { companyBaseDefinition } from '@/print/templates'
+import { selfemployedInfoDefinition } from '@/print/templates'
 
 export default {
   methods: {
@@ -46,7 +46,7 @@ export default {
       const pdfMakeRes = printPdf.pdfMake
       .createPdf({
         ...printPdf.baseConfig,
-        ...companyBaseDefinition
+        ...selfemployedInfoDefinition
       })
       pdfMakeRes.getBase64((dataUrl) => {
         ownerInstance.callMethod('printPdfHandle', dataUrl)
