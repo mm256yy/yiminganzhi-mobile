@@ -1,0 +1,118 @@
+<template>
+	<view class="map-wrap">
+		<map
+		  class="map"
+		  :enable-satellite="true"
+		  :enable-overlooking="true"
+		  :latitude="centerLocation.latitude"
+		  :longitude="centerLocation.longitude"
+			:polygons="polygons"
+		  :scale="8"
+		  @tap="mapTap"
+		></map>
+	</view>
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+import polygonCoordinate from './polygonCoordinate'
+
+interface LocationType {
+  longitude: number
+  latitude: number
+}
+
+// 初始地图坐标
+const centerLocation = ref<LocationType>({
+  latitude: 30.131735, // 纬度
+  longitude: 107.943579 // 经度
+	// latitude: 30.235643678475068,
+	// longitude: 120.17327222279103
+})
+
+const polygons = [{
+	points: polygonCoordinate,
+	strokeNumber: 10,
+	strokeColor: '#F1F234',
+	fillColor: '#19f1f234'
+}]
+
+const mapTap = (e: any) => {
+	console.log('e:', e)
+}
+</script>
+
+<style lang="scss" scoped>
+.map-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 750rpx;
+
+  .bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 750rpx;
+    height: 100%;
+  }
+
+  .common-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 33rpx;
+    padding: 0 10rpx 0 6rpx;
+
+    .back-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 26rpx;
+      height: 26rpx;
+    }
+
+    .tit {
+      font-size: 15rpx;
+      font-weight: 600;
+      color: #ffffff;
+    }
+    .right-btn {
+      font-size: 12rpx;
+      color: #ffffff;
+    }
+  }
+
+  .map-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 750rpx;
+  }
+  // 默认撑满
+  .map {
+    flex: 1;
+    width: 750rpx;
+
+    /* #ifdef H5 */
+    ::v-deep.amap-logo {
+      display: none !important;
+    }
+
+    ::v-deep.amap-copyright {
+      display: none !important;
+    }
+    /* #endif */
+  }
+
+  .map-info {
+    position: absolute;
+    z-index: 1;
+    top: 100rpx;
+    left: 300rpx;
+  }
+}
+</style>
