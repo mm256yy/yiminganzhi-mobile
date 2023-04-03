@@ -51,7 +51,7 @@
               />
 
               <!-- 附属物信息 -->
-              <accessory-info
+              <appendant-info
                 v-if="tabVal === 3"
                 :dataList="dataInfo.immigrantAppendantList"
                 :dataInfo="dataInfo"
@@ -114,7 +114,7 @@ import Tabs from '@/components/Tabs/Index.vue'
 import baseInfo from '../baseInfo/index.vue' // 引入企业基本概况组件
 import houseInfo from '../../common/houseInfo/index.vue' // 引入房屋信息组件
 import treeInfo from '../../common/treeInfo/index.vue' // 引入零星（林）果木信息组件
-import accessoryInfo from '../../common/accessoryInfo/index.vue' // 引入附属物信息组件
+import appendantInfo from '../../common/appendantInfo/index.vue' // 引入附属物信息组件
 import equipmentInfo from '../../common/equipmentInfo/index.vue' // 引入设施设备信息组件
 import businessInfo from '../businessInfo/index.vue' // 引入经营现状信息组件
 import attachmentUpload from '../../common/attachmentUpload/index.vue' // 引入照片上传组件

@@ -1,6 +1,6 @@
 <template>
-  <view class="accessory-info-wrapper">
-    <view class="accessory-container">
+  <view class="appendant-info-wrapper">
+    <view class="appendant-container">
       <view class="row">
         <view class="col">序号</view>
         <view class="col w-117">项目</view>
@@ -91,11 +91,11 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.accessory-info-wrapper {
+.appendant-info-wrapper {
   width: 100%;
   overflow-y: scroll;
 
-  .accessory-container {
+  .appendant-container {
     display: table;
     width: 100%;
     border-collapse: collapse;
