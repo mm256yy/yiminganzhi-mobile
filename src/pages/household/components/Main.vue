@@ -33,6 +33,7 @@
                 v-if="tabVal === 1"
                 :dataList="dataInfo.demographicList"
                 :dataInfo="dataInfo"
+                :occupationOptions="occupationOptions"
                 @delete-demographic="deleteDemographic"
               />
 
@@ -179,6 +180,10 @@ const props = defineProps({
   uid: {
     type: String,
     default: ''
+  },
+  occupationOptions: {
+    type: Array as any,
+    default: () => []
   }
 })
 

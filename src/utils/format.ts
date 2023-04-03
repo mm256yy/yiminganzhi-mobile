@@ -183,3 +183,43 @@ export const fmtPicUrl = (url: any) => {
     return '[]'
   }
 }
+
+/**
+ * 通过选项及选择的选项获取职业的label
+ * @param{Object} arr 职业选项数组
+ * @param{Object} val 已选择的职业选项
+ */
+export const fmtOccupation = (arr: any[], val: string) => {
+  const arr_1: any = []
+  if (arr && arr.length > 0 && val) {
+    const selectedVal = JSON.parse(val)
+    arr.map((item: any) => {
+      if (item.value === selectedVal[0]) {
+        arr_1.push(item.label)
+        item.children.map((data: any) => {
+          if (data.value === selectedVal[1]) {
+            arr_1.push(data.label)
+            return
+          }
+        })
+      }
+    })
+    return arr_1
+  } else {
+    return arr_1
+  }
+}
+
+/**
+ * 通过选项及选择的选项获取职业的label
+ * @param{Object} arr 职业选项数组
+ * @param{Object} val 已选择的职业选项
+ */
+export const fmtOccupationStr = (arr: any[], val: string) => {
+  const newArr = fmtOccupation(arr, val)
+  let str = '-'
+  if (newArr && newArr.length > 0) {
+    str = newArr.toString()
+  }
+  return str
+}

@@ -8,6 +8,7 @@
           :expend-codes="expendCodes"
           :treeData="treeData"
           :dataInfo="dataInfo"
+          :occupationOptions="occupationOptions"
           @tree-item-click="treeItemClick"
           @update-tree="getTreeData"
           @update-data="getLandlordDetail"
@@ -20,6 +21,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { getLandlordTreeApi, getLandlordItemApi } from '@/service'
+import { getOccpationDict } from '@/api'
 import { MainType } from '@/types/common'
 import Main from './components/Main.vue'
 import { onLoad, onShow } from '@dcloudio/uni-app'
@@ -33,11 +35,14 @@ const dataInfo = ref<any>({})
 // 默认选择的业主
 const expendCodes = ref<string[]>([])
 const uid = ref<string>('')
+// 职业选项
+const occupationOptions = ref<any>([])
 
 onShow(() => {
   if (dataInfo.value.uid) {
     getLandlordDetail(dataInfo.value.uid)
   }
+  initOccpationData()
   getTreeData()
 })
 
@@ -45,7 +50,6 @@ onLoad((option) => {
   if (option && option.uid) {
     uid.value = option.uid
   }
-
   if (option && option.expendCodes) {
     expendCodes.value = option.expendCodes.split(',')
   }
@@ -82,6 +86,15 @@ const getLandlordDetail = (uid: string) => {
       dataInfo.value.villageCode,
       dataInfo.value.virutalVillageCode
     ]
+  })
+}
+
+// 初始化职业选择框数据
+const initOccpationData = () => {
+  getOccpationDict('职业').then((res: any) => {
+    if (res && res.length > 0) {
+      occupationOptions.value = res
+    }
   })
 }
 </script>

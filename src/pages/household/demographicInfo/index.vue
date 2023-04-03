@@ -75,7 +75,7 @@
               <view class="col">
                 <view class="label">职业：</view>
                 <view class="content">
-                  {{ formatDict(item.occupation, 305) }}
+                  {{ fmtOccupationStr(props.occupationOptions, item.occupation) }}
                 </view>
               </view>
             </uni-col>
@@ -118,8 +118,8 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { formatDict, formatStr, routerForward, fmtPicUrl } from '@/utils'
 import dayjs from 'dayjs'
+import { formatDict, formatStr, fmtOccupationStr, routerForward, fmtPicUrl } from '@/utils'
 
 const props = defineProps({
   dataList: {
@@ -129,6 +129,10 @@ const props = defineProps({
   dataInfo: {
     type: Object as any,
     default: () => {}
+  },
+  occupationOptions: {
+    type: Array as any,
+    default: () => []
   }
 })
 
@@ -139,7 +143,11 @@ const currentItem = ref<any>({})
 const toLink = (type: string, data?: any) => {
   const { uid } = props.dataInfo
   if (type === 'add') {
-    routerForward('demographicInfoEdit', { type, uid })
+    routerForward('demographicInfoEdit', {
+      type,
+      uid,
+      occupationOptions: JSON.stringify(props.occupationOptions)
+    })
   } else if (type === 'edit') {
     let params = {
       ...data,
@@ -150,6 +158,7 @@ const toLink = (type: string, data?: any) => {
     }
     routerForward('demographicInfoEdit', {
       params: JSON.stringify(params),
+      occupationOptions: JSON.stringify(props.occupationOptions),
       type,
       uid
     })

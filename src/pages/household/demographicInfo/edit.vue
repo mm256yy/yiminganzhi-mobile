@@ -136,7 +136,13 @@
               label-align="right"
               name="formData.occupation"
             >
-              <uni-data-select v-model="formData.occupation" :localdata="dict[305]" />
+              <view
+                :class="['name-wrapper', selectedData ? 'isSelected' : '']"
+                @click="selectOccupation"
+              >
+                {{ selectedData ? selectedData : '请选择' }}
+              </view>
+              <!-- <uni-data-select v-model="formData.occupation" :localdata="dict[305]" /> -->
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -267,6 +273,16 @@
         @click="submit"
       />
     </view>
+
+    <cascade-select
+      v-if="showSelect"
+      :data-list="occupationOptions"
+      :value="selectValue"
+      :label="selectLabel"
+      :select-any="true"
+      @on-close="showSelect = false"
+      @on-confirm="confirmSelect"
+    />
   </view>
 </template>
 
@@ -274,12 +290,13 @@
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 import dayjs from 'dayjs'
-import { routerBack, getStorage, StorageKey } from '@/utils'
+import { routerBack, getStorage, StorageKey, fmtOccupation, fmtOccupationStr } from '@/utils'
 import { addLandlordPeopleApi, updateLandlordPeopleApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
 import MutiSelect from '@/components/MutiSelect/Index.vue'
 import UploadFile from '@/components/UploadFile/index.vue'
+import CascadeSelect from '@/components/CascadeSelect/index.vue'
 
 // 表单数据
 const formData = ref<any>({
@@ -294,6 +311,7 @@ const formData = ref<any>({
   insuranceType: '',
   company: '',
   occupation: '',
+  occupationText: '',
   populationType: '',
   populationSort: '',
   censusType: '',
@@ -309,6 +327,11 @@ const formData = ref<any>({
 const type = ref<string>('')
 const title = ref<string>('')
 const uid = ref<string>('')
+const showSelect = ref<boolean>(false)
+const occupationOptions = ref<any>([])
+const selectValue = ref<any>([])
+const selectLabel = ref<any>([])
+const selectedData = ref<string>('')
 
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
@@ -317,14 +340,40 @@ onLoad((option: any) => {
   if (option) {
     type.value = option.type
     uid.value = option.uid
+    occupationOptions.value = JSON.parse(option.occupationOptions)
     if (option.type === 'edit') {
       formData.value = JSON.parse(option.params)
+      selectValue.value = formData.value.occupation ? JSON.parse(formData.value.occupation) : []
+      selectLabel.value = formData.value.occupation
+        ? fmtOccupation(occupationOptions.value, formData.value.occupation)
+        : ''
+      selectedData.value = formData.value.occupation
+        ? fmtOccupationStr(occupationOptions.value, formData.value.occupation)
+        : ''
       title.value = '个人信息编辑'
     } else if (option.type === 'add') {
       title.value = '新增个人信息'
     }
   }
 })
+
+// 选择职业（弹出职业选择框）
+const selectOccupation = () => {
+  showSelect.value = true
+}
+
+// 确认选择职业
+const confirmSelect = (currentSelect: any[], label: any[]) => {
+  if (currentSelect && currentSelect.length > 0) {
+    selectValue.value = currentSelect
+    formData.value.occupation = JSON.stringify(currentSelect)
+  }
+  if (label && label.length > 0) {
+    selectLabel.value = label
+    selectedData.value = label.toString()
+  }
+  showSelect.value = false
+}
 
 // 表单提交
 const submit = () => {
@@ -423,6 +472,24 @@ const submit = () => {
       ::v-deep.uni-input-input,
       ::v-deep.uni-input-placeholder {
         font-size: 9rpx !important;
+      }
+
+      .name-wrapper {
+        width: 200rpx;
+        height: 23rpx;
+        padding-left: 7rpx;
+        overflow: hidden;
+        font-size: 9rpx;
+        line-height: 23rpx;
+        color: #999;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+
+        &.isSelected {
+          color: #171718;
+        }
       }
     }
 
