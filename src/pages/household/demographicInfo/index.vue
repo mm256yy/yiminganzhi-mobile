@@ -75,7 +75,7 @@
               <view class="col">
                 <view class="label">职业：</view>
                 <view class="content">
-                  {{ fmtOccupationStr(props.occupationOptions, item.occupation) }}
+                  {{ fmtOccupationStr(props.occupationOptions, item.occupation, 2) }}
                 </view>
               </view>
             </uni-col>

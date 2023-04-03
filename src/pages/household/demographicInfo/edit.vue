@@ -296,7 +296,7 @@ import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
 import MutiSelect from '@/components/MutiSelect/Index.vue'
 import UploadFile from '@/components/UploadFile/index.vue'
-import CascadeSelect from '@/components/CascadeSelect/index.vue'
+import CascadeSelect from '@/components/CascadeSelect/Index.vue'
 
 // 表单数据
 const formData = ref<any>({
@@ -311,7 +311,6 @@ const formData = ref<any>({
   insuranceType: '',
   company: '',
   occupation: '',
-  occupationText: '',
   populationType: '',
   populationSort: '',
   censusType: '',
@@ -348,7 +347,7 @@ onLoad((option: any) => {
         ? fmtOccupation(occupationOptions.value, formData.value.occupation)
         : ''
       selectedData.value = formData.value.occupation
-        ? fmtOccupationStr(occupationOptions.value, formData.value.occupation)
+        ? fmtOccupationStr(occupationOptions.value, formData.value.occupation, 1)
         : ''
       title.value = '个人信息编辑'
     } else if (option.type === 'add') {

@@ -215,11 +215,17 @@ export const fmtOccupation = (arr: any[], val: string) => {
  * @param{Object} arr 职业选项数组
  * @param{Object} val 已选择的职业选项
  */
-export const fmtOccupationStr = (arr: any[], val: string) => {
+export const fmtOccupationStr = (arr: any[], val: string, type: number) => {
   const newArr = fmtOccupation(arr, val)
   let str = '-'
   if (newArr && newArr.length > 0) {
-    str = newArr.toString()
+    if (type === 1) {
+      str = newArr[0] + '/' + newArr[1]
+    } else if (type === 2) {
+      str = newArr[1]
+    } else {
+      str = newArr[0] + '/' + newArr[1]
+    }
   }
   return str
 }
