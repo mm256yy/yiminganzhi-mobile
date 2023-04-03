@@ -214,6 +214,7 @@ export const fmtOccupation = (arr: any[], val: string) => {
  * 通过选项及选择的选项获取职业的label
  * @param{Object} arr 职业选项数组
  * @param{Object} val 已选择的职业选项
+ * @param{Object} type 回显数据格式，1、 aaa/bbb  2、 bbb
  */
 export const fmtOccupationStr = (arr: any[], val: string, type: number) => {
   const newArr = fmtOccupation(arr, val)
