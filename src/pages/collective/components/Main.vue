@@ -50,7 +50,7 @@
                 v-if="tabVal === 3"
                 :dataInfo="dataInfo"
                 :dataList="dataInfo.immigrantAppendantList"
-                @submit="updateAccessoryInfo"
+                @submit="updateAppendantInfo"
               />
 
               <!-- 坟墓信息 -->
@@ -270,7 +270,7 @@ const updateFruitTreeInfo = (data: any) => {
  * 更新附属物信息
  * @param(Array) data
  */
-const updateAccessoryInfo = (data: any) => {
+const updateAppendantInfo = (data: any) => {
   const params = [...data]
   updateLandlordAppendantApi(props.dataInfo.uid, params)
     .then((res) => {
