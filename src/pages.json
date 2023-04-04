@@ -18,6 +18,13 @@
 			"name": "map",
 			"path": "pages/map/index",
 			"style": {
+				"navigationBarTitleText": "地图坐标选择"
+			}
+		},
+		{
+			"name": "mapList",
+			"path": "pages/mapList/index",
+			"style": {
 				"navigationBarTitleText": "地图"
 			}
 		},
@@ -202,15 +209,15 @@
 		}
 	},
   "condition" : {
-    "current": 3,
+    "current": 0,
     "list": [
 			{
-				"name": "测试页面",
-				"path": "pages/test/index",
+				"name": "地图列表",
+				"path": "pages/mapList/index",
 				"query": ""
 			},
 			{
-        "name": "地图页面",
+        "name": "地图坐标选择页面",
         "path": "pages/map/index",
         "query": ""
       },

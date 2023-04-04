@@ -1,24 +1,41 @@
 <template>
-	<view class="map-wrap">
-		<map
-		  class="map"
-		  :enable-satellite="true"
-		  :enable-overlooking="true"
-		  :latitude="centerLocation.latitude"
-		  :longitude="centerLocation.longitude"
-			:polygons="polygons"
-			:markers="markers"
-		  :scale="14"
-		  @markertap="markerTap"
-		></map>
+	<view class="map-wrap" :style="{ paddingTop: `${statusBarHeight}px` }">
+		<image class="bg" src="@/static/images/common_bg.png" mode="widthFix" />
+		<view class="common-header">
+		  <view class="back-box" @click="onBack">
+		    <uni-icons type="back" color="#ffffff" size="14rpx" />
+		  </view>
+		  <text class="tit">地图查看</text>
+		  <text class="right-btn"/>
+		</view>
+		<view class="map-content">
+			<map
+				class="map"
+				:enable-satellite="true"
+				:enable-overlooking="true"
+				:latitude="centerLocation.latitude"
+				:longitude="centerLocation.longitude"
+				:polygons="polygons"
+				:markers="markers"
+				:scale="14"
+				@markertap="markerTap"
+			></map>
+		</view>
+		<map-info v-if="show" :data-info="mapData" @close="close" />
 	</view>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
-// import polygonCoordinate from './polygonCoordinate'
+import MapInfo from './components/MapInfo'
+import { routerBack } from '@/utils'
 import shuangxi from './shuangxi'
 import iconPath from './iconPath'
+
+const sysInfo = uni.getSystemInfoSync()
+const statusBarHeight = sysInfo.statusBarHeight || 0
+const mapData = ref<any>({})
+const show = ref<boolean>(false)
 
 interface LocationType {
   longitude: number
@@ -35,6 +52,7 @@ const polygons = ref<any>([])
 
 const markers = ref<any[]>([
   {
+		id: 1,
     iconPath: iconPath,
     width: 50,
     height: 50,
@@ -86,6 +104,16 @@ const genArr = (arr: any) => {
 
 const markerTap = (e: any) => {
 	console.log('e:', e)
+	show.value = true
+}
+
+// 关闭居民户简介/自然村简介弹窗
+const close = () => {
+	show.value = false
+}
+
+const onBack = () => {
+  routerBack()
 }
 
 onMounted(() => {

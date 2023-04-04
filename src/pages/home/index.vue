@@ -142,13 +142,13 @@
           <image class="arrow-icon" src="@/static/images/home_arrow.png" mode="scaleToFill" />
         </view>
 
-        <!-- <view class="other-item" @click="toLink('map')">
+        <view class="other-item" @click="toLink('mapList')">
           <view class="inner">
             <image class="other-icon" src="@/static/images/map_enter.png" mode="scaleToFill" />
             <text class="other-tit">查看地图</text>
           </view>
           <image class="arrow-icon" src="@/static/images/home_arrow.png" mode="scaleToFill" />
-        </view> -->
+        </view>
         <view class="other-item" @click="toLink('village')">
           <view class="inner">
             <image class="other-icon" src="@/static/images/yimin_enter.png" mode="scaleToFill" />
