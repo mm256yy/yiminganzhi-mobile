@@ -1,15 +1,50 @@
 <template>
   <view class="map-info-wrap">
     <view class="title-box">
-      <text class="title">居民户简介</text>
-      <uni-icons type="closeempty" :size="14" @click="close" />
+      <text class="title">
+        {{ props.dataInfo.type === MainType.Village ? props.dataInfo.name : '居民户简介' }}
+      </text>
+      <uni-icons type="closeempty" :size="20" @click="close" />
     </view>
 
-    <view class="info-box">
+    <view class="info-box" v-if="props.dataInfo.type === MainType.Village">
+      <view class="info-item">
+        <view class="icon-dot">
+          <view class="dot" />
+        </view>
+        <text class="name">区县：</text>
+        <text class="text">{{ props.dataInfo.areaCodeText }}</text>
+      </view>
+
+      <view class="info-item">
+        <view class="icon-dot">
+          <view class="dot" />
+        </view>
+        <text class="name">街道：</text>
+        <text class="text">{{ props.dataInfo.townCodeText }}</text>
+      </view>
+
+      <view class="info-item">
+        <view class="icon-dot">
+          <view class="dot" />
+        </view>
+        <text class="name">行政村：</text>
+        <text class="text">{{ props.dataInfo.villageCodeText }}</text>
+      </view>
+    </view>
+
+    <view class="info-box" v-if="props.dataInfo.type === MainType.PeasantHousehold">
       <view class="info-item">
         <image class="user-icon" src="@/static/images/icon_header.png" mode="scaleToFill" />
-        <text class="name user-name">张江</text>
-        <text class="text primary">1040092345321464</text>
+        <text class="name user-name">{{ props.dataInfo.name }}</text>
+      </view>
+
+      <view class="info-item">
+        <view class="icon-dot">
+          <view class="dot" />
+        </view>
+        <text class="name">户号：</text>
+        <text class="text primary">{{ props.dataInfo.doorNo }}</text>
       </view>
 
       <view class="info-item">
@@ -17,7 +52,7 @@
           <view class="dot" />
         </view>
         <text class="name">身份证号：</text>
-        <text class="text">360429199001023565</text>
+        <text class="text">{{ props.dataInfo.card }}</text>
       </view>
 
       <view class="info-item">
@@ -25,7 +60,7 @@
           <view class="dot" />
         </view>
         <text class="name">户籍所在地：</text>
-        <text class="text">浙江省杭州市</text>
+        <text class="text w-146">{{ props.dataInfo.address }}</text>
       </view>
 
       <view class="info-item">
@@ -33,7 +68,7 @@
           <view class="dot" />
         </view>
         <text class="name">家庭总人数：</text>
-        <text class="text primary">100</text>
+        <text class="text primary">{{ props.dataInfo.demographicNum }}</text>
         <text class="text"> 人</text>
       </view>
 
@@ -42,20 +77,25 @@
           <view class="dot" />
         </view>
         <text class="name">房屋总数：</text>
-        <text class="text primary">200</text>
+        <text class="text primary">{{ props.dataInfo.houseNum }}</text>
         <text class="text"> 幢</text>
       </view>
     </view>
 
     <view class="fill-box">
-      <view class="btn-box">
-        <text class="btn">数据填报</text>
+      <view class="btn-box" @click="toLink">
+        <text class="btn">
+          {{ props.dataInfo.type === MainType.Village ? '编辑自然村' : '数据填报' }}
+        </text>
       </view>
     </view>
   </view>
 </template>
 
 <script lang="ts" setup>
+import { MainType } from '@/types/common'
+import { routerForward } from '@/utils'
+
 const props = defineProps({
   dataInfo: {
     type: Object,
@@ -67,6 +107,27 @@ const emit = defineEmits(['close'])
 
 const close = () => {
   emit('close')
+}
+
+const toLink = () => {
+  close()
+  if (props.dataInfo.type === MainType.Village) {
+    routerForward('villageEdit', {
+      type: 'edit',
+      uid: props.dataInfo.uid
+    })
+  } else if (props.dataInfo.type === MainType.PeasantHousehold) {
+    routerForward('household', {
+      uid: props.dataInfo.uid,
+      expendCodes: [
+        props.dataInfo.areaCode,
+        props.dataInfo.townCode,
+        props.dataInfo.villageCode,
+        props.dataInfo.virutalVillageCode,
+        props.dataInfo.code
+      ]
+    })
+  }
 }
 </script>
 
@@ -108,7 +169,7 @@ const close = () => {
   display: flex;
   align-items: center;
   flex-direction: row;
-  height: 21rpx;
+  line-height: 21rpx;
 }
 
 .user-icon {
@@ -123,12 +184,17 @@ const close = () => {
 }
 
 .user-name {
+  width: 190rpx;
   margin-right: 7rpx;
 }
 
 .text {
   font-size: 9rpx;
   color: #171718;
+}
+
+.w-146 {
+  width: 146rpx;
 }
 
 .icon-dot {

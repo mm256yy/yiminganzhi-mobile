@@ -22,15 +22,15 @@
           @click="reportDataCheck"
         >
           <image class="icon" src="@/static/images/icon_report.png" mode="scaleToFill" />
-          <text class="txt">数据上报</text>
+          <text class="txt">填报完成</text>
         </view>
       </view>
     </view>
 
-    <!-- 数据上报 -->
+    <!-- 填报完成 -->
     <uni-popup ref="reportDataPopup" :is-mask-click="false">
       <view class="tips-wrapper">
-        <view class="tips-title">数据上报</view>
+        <view class="tips-title">填报完成</view>
         <view class="tips-content">
           <view class="tips-list">
             <view class="tips-item" v-for="(item, index) in tipsList" :key="index">
@@ -135,7 +135,7 @@ const expandToggle = () => {
   emit('expandToggle')
 }
 
-// 数据上报校验
+// 填报完成校验
 const reportDataCheck = () => {
   let query = {
     uid: props.dataInfo.uid,
@@ -154,7 +154,7 @@ const reportDataCheck = () => {
     })
 }
 
-// 数据上报
+// 填报完成
 const reportData = () => {
   let query = {
     uid: props.dataInfo.uid,
@@ -230,7 +230,7 @@ const getSelectedTemplateIds = () => {
   return [...arr]
 }
 
-// 确认 数据上报/打印
+// 确认 填报完成/打印
 const confirm = (type: string) => {
   if (type === 'report') {
     reportData()

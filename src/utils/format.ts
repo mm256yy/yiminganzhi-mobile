@@ -112,6 +112,20 @@ export const splitStr = (str: any, startIndex: number, endIndex: number) => {
   }
 }
 
+/**
+ * 超出长度的字符串进行隐藏
+ * @param{Object} str 字符串
+ * @param{Object} num 截取字符串的位数
+ */
+export const hideStr = (str: string, num: number) => {
+  if (str) {
+    if (str.length > num) {
+      str = str.substring(0, num) + '...'
+    }
+  }
+  return str
+}
+
 // 格式化时间
 export const fmtTime = (date: any, fmt: any) => {
   const o: { [key: string]: any } = {

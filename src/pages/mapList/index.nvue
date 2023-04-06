@@ -10,6 +10,7 @@
 		</view>
 		<view class="map-content">
 			<map
+				id="map"
 				class="map"
 				:enable-satellite="true"
 				:enable-overlooking="true"
@@ -21,21 +22,31 @@
 				@markertap="markerTap"
 			></map>
 		</view>
-		<map-info v-if="show" :data-info="mapData" @close="close" />
+		<map-info v-if="show" :data-info="dataInfo" @close="close" />
 	</view>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
+import { onReady } from '@dcloudio/uni-app'
 import MapInfo from './components/MapInfo'
-import { routerBack } from '@/utils'
+import { routerBack, hideStr } from '@/utils'
+import { getVillageListWithPageApi, getLandlordListBySearchApi } from '@/service'
 import shuangxi from './shuangxi'
 import iconPath from './iconPath'
+import { MainType, LandlordSearchType } from '@/types/common'
 
 const sysInfo = uni.getSystemInfoSync()
 const statusBarHeight = sysInfo.statusBarHeight || 0
-const mapData = ref<any>({})
+const dataInfo = ref<any>({}) // marker 详细信息（居民户/自然村详情信息）
 const show = ref<boolean>(false)
+const page = ref<number>(1)
+const pageSize = ref<number>(99999)
+const keyWords = ref<string>('')
+const villageList = ref<any>([]) // 自然村列表
+const villageMarkersList = ref<any>([]) // 自然村标记列表
+const householdList = ref<any>([]) // 居民户列表
+const householdMarkersList = ref<any>([]) // 居民户标记列表
 
 interface LocationType {
   longitude: number
@@ -50,19 +61,126 @@ const centerLocation = ref<LocationType>({
 
 const polygons = ref<any>([])
 
-const markers = ref<any[]>([
-  {
-		id: 1,
-    iconPath: iconPath,
-    width: 50,
-    height: 50,
-    latitude: 29.43737204801587,
-    longitude: 119.766446455085699
-  }
-])
+const markers = ref<any[]>([])
+
+// 获取自然村列表
+const getVillageList = async () => {
+  const res = await getVillageListWithPageApi({
+    name: keyWords.value,
+    page: page.value,
+    pageSize: pageSize.value
+  })
+	
+	if (res && res.length) {
+		let villageArr: any = []
+		let markerArr: any = []
+		res.map((item: any) => {
+			if (item.latitude && item.longitude && item.areaCodeText) {
+				villageArr.push({
+					id: item.id,
+					uid: item.uid,
+					name: item.name,
+					areaCode: item.areaCode,
+					townCode: item.townCode,
+					villageCode: item.villageCode,
+					areaCodeText: item.areaCodeText,
+					townCodeText: item.townCodeText,
+					villageCodeText: item.villageCodeText,
+					type: MainType.Village
+				})
+				markerArr.push({
+					id: item.uid,
+					iconPath: iconPath.villageIconPath,
+					label: {
+						x: -(0.5 * (item.name.length * 12) / 2 ) - 12,
+						y: 5,
+						content: hideStr(item.name, 8),
+						color: '#FFFFFF',
+						fontSize: 12,
+						bgColor: '#17171890',
+						padding: 6,
+						borderRadius: 30
+					},
+					width: 40,
+					height: 40,
+					latitude: item.latitude,
+					longitude: item.longitude,
+					joinCluster: true
+				})
+			}
+		})
+		villageList.value = villageArr
+		villageMarkersList.value = markerArr
+	}
+}
+
+// 获取居民户列表
+const getPeasantHouseholdList = async () => {
+	const params: LandlordSearchType = {
+	  name: keyWords.value,
+	  page: page.value,
+	  pageSize: pageSize.value,
+	  type: MainType.PeasantHousehold
+	}
+	const res = await getLandlordListBySearchApi(params)
+	if (res && res.length) {
+		let householdArr: any = []
+		let markerArr: any = []
+		res.map((item: any) => {
+			if (item.latitude && item.longitude) {
+				householdArr.push({
+					id: item.id,
+					uid: item.uid,
+					name: item.name,
+					card: item.card,
+					address: item.address,
+					doorNo: item.doorNo,
+					houseNum: item.immigrantHouseList.length,
+					demographicNum: item.demographicList.length,
+					areaCode: item.areaCode,
+					townCode: item.townCode,
+					villageCode: item.villageCode,
+					virutalVillageCode: item.virutalVillageCode,
+					areaCodeText: item.areaCodeText,
+					townCodeText: item.townCodeText,
+					villageCodeText: item.villageCodeText,
+					virutalVillageCodeText: item.virutalVillageCodeText,
+					type: MainType.PeasantHousehold
+				})
+				markerArr.push({
+					id: item.uid,
+					iconPath: iconPath.userIconPath,
+					label: {
+						x: -(0.5 * ((item.name.length > 8 ? 9 : item.name.length) * 12) / 2 ) - 12,
+						y: 5,
+						content: hideStr(item.name, 8),
+						color: '#FFFFFF',
+						fontSize: 12,
+						bgColor: '#17171890',
+						padding: 6,
+						borderRadius: 30
+					},
+					width: 40,
+					height: 40,
+					latitude: item.latitude,
+					longitude: item.longitude,
+					joinCluster: true
+				})
+			}
+		})
+		householdList.value = householdArr
+		householdMarkersList.value = markerArr
+	}
+}
+
+const initMarker = async () => {
+	await getVillageList()
+	await getPeasantHouseholdList()
+	markers.value = [...villageMarkersList.value, ...householdMarkersList.value]
+}
 
 /**
- * 初始化处理区域坐标数据为指定格式
+ * 初始化处理区域坐标数据
  * @param{Object} obj 坐标数据
  */ 
 const initCoordinateData = (obj: any) => {
@@ -73,8 +191,8 @@ const initCoordinateData = (obj: any) => {
 			item.geometry.coordinates[0].map((coord: any) => {
 				polygonsArr.push({
 					points: genArr(coord),
-					strokeNumber: 10,
-					strokeColor: '#E71919',
+					strokeWidth: 2,
+					strokeColor: '#FF0000',
 					fillColor: 'transparent'
 				})
 			})
@@ -103,8 +221,46 @@ const genArr = (arr: any) => {
 }
 
 const markerTap = (e: any) => {
-	console.log('e:', e)
+	getDataInfo(e.detail.markerId)
 	show.value = true
+}
+
+// 获取单个居民户/自然村 信息
+const getDataInfo = (uid: string) => {
+	if (uid) {
+		let arr: any = [...villageList.value, ...householdList.value]
+		arr.map((item: any) => {
+			if (item.uid === uid) {
+				if (item.type === MainType.Village) {
+					dataInfo.value = {
+						uid: item.uid,
+						name: item.name,
+						areaCodeText: item.areaCodeText,
+						townCodeText: item.townCodeText,
+						villageCodeText: item.villageCodeText,
+						type: item.type
+					}
+					return
+				} else if (item.type === MainType.PeasantHousehold) {
+					dataInfo.value = {
+						uid: item.uid,
+						name: item.name,
+						card: item.card,
+						doorNo: item.doorNo,
+						address: item.address,
+						houseNum: item.houseNum,
+						demographicNum: item.demographicNum,
+						areaCode: item.areaCode,
+						townCode: item.townCode,
+						villageCode: item.villageCode,
+						virutalVillageCode: item.virutalVillageCode,
+						type: item.type
+					}
+					return
+				}
+			}
+		})
+	}
 }
 
 // 关闭居民户简介/自然村简介弹窗
@@ -116,7 +272,28 @@ const onBack = () => {
   routerBack()
 }
 
+onReady(() => {
+	const _mapContext = uni.createMapContext("map")
+
+	// 点聚合：仅调用初始化，才会触发 on.("markerClusterCreate", (e) => {})
+	_mapContext.initMarkerCluster({
+		enableDefaultStyle: false,
+		zoomOnClick: true,
+		gridSize: 60,
+		complete (res: any) {
+			console.log('initMarkerCluster', res)
+		}
+	})
+
+	_mapContext.on("markerClusterCreate", (e: any) => {
+		console.log("markerClusterCreate", e)
+	})
+
+	initMarker()
+})
+
 onMounted(() => {
+	// initMarker()
 	initCoordinateData(shuangxi)
 })
 </script>
