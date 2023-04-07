@@ -1,12 +1,20 @@
 <template>
   <view class="input-txt-wrapper">
-    <view v-if="props.type === 1" class="input-wrapper">
+    <view
+      v-if="props.type === 1"
+      :class="['input-wrapper', focusIndex === props.index ? 'focus' : '']"
+    >
       <input
-        class="input-txt"
+        :class="[
+          'input-txt',
+          props.size === 'small' ? 'small' : props.size === 'mini' ? 'mini' : ''
+        ]"
         :placeholder="placeholder"
         type="number"
         readonly
         :value="modelValue"
+        @focus="inputFocus(props.index)"
+        @blur="inputBlur"
       />
       <view class="unit">{{ props.unit }}</view>
     </view>
@@ -23,7 +31,7 @@
         :placeholder="placeholder"
         :maxlength="max"
         :value="modelValue"
-        @focus="inputFocus"
+        @focus="inputFocus(props.index)"
         @blur="inputBlur"
       />
     </view>
@@ -31,8 +39,8 @@
 </template>
 
 <script lang="ts" setup>
-import { placeholder } from '@babel/types'
-import { ref } from 'vue'
+// import { placeholder } from '@babel/types'
+import { ref, watch } from 'vue'
 
 const props = defineProps({
   // 类型： 1 带单位的输入框，2 户号输入框
@@ -41,7 +49,7 @@ const props = defineProps({
     default: 1
   },
   // 输入框绑定的数据
-  modelValue: {
+  value: {
     type: String,
     default: ''
   },
@@ -74,21 +82,38 @@ const props = defineProps({
   unit: {
     type: String,
     default: ''
+  },
+  // input 框大小 normal、small、mini
+  size: {
+    type: String,
+    default: 'normal'
   }
 })
 
+const modelValue = ref<string>('')
+const emit = defineEmits(['update:modelValue'])
 // 获得焦点的输入框下标
 const focusIndex = ref<number>(-1)
 
 // 输入框获得焦点
-const inputFocus = () => {
-  focusIndex.value = props.index
+const inputFocus = (index: number) => {
+  focusIndex.value = index
 }
 
 // 输入框失去焦点
 const inputBlur = () => {
   focusIndex.value = -1
+  emit('update:modelValue', modelValue.value)
 }
+
+watch(
+  () => props.value,
+  (val) => {
+    if (val) {
+      modelValue.value = val
+    }
+  }
+)
 </script>
 
 <style lang="scss" scoped>
@@ -146,6 +171,14 @@ const inputBlur = () => {
       font-size: 9rpx;
       line-height: 35px;
       color: #171718;
+
+      &.small {
+        width: 120rpx;
+      }
+
+      &.mini {
+        width: 40rpx;
+      }
     }
 
     .unit {

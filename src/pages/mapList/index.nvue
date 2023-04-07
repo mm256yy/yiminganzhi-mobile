@@ -92,14 +92,18 @@ const getVillageList = async () => {
 					id: item.uid,
 					iconPath: iconPath.villageIconPath,
 					label: {
-						x: -(0.5 * (item.name.length * 12) / 2 ) - 12,
+						// x: 24,
+						// y: -36,
+						// padding: 10,
+						// borderRadius: 30,
+						x: -(0.5 * ((item.name.length > 8 ? 8 : item.name.length) * 12) / 2 ) - 12,
 						y: 5,
+						padding: 4,
 						content: hideStr(item.name, 8),
 						color: '#FFFFFF',
 						fontSize: 12,
 						bgColor: '#17171890',
-						padding: 6,
-						borderRadius: 30
+						borderRadius: 4
 					},
 					width: 40,
 					height: 40,
@@ -151,14 +155,18 @@ const getPeasantHouseholdList = async () => {
 					id: item.uid,
 					iconPath: iconPath.userIconPath,
 					label: {
-						x: -(0.5 * ((item.name.length > 8 ? 9 : item.name.length) * 12) / 2 ) - 12,
+						// x: 24,
+						// y: -36,
+						// padding: 10,
+						// borderRadius: 30,
+						x: -(0.5 * ((item.name.length > 8 ? 8 : item.name.length) * 12) / 2 ) - 12,
 						y: 5,
+						padding: 4,
 						content: hideStr(item.name, 8),
 						color: '#FFFFFF',
 						fontSize: 12,
 						bgColor: '#17171890',
-						padding: 6,
-						borderRadius: 30
+						borderRadius: 4
 					},
 					width: 40,
 					height: 40,
@@ -173,6 +181,7 @@ const getPeasantHouseholdList = async () => {
 	}
 }
 
+// 初始化标记点
 const initMarker = async () => {
 	await getVillageList()
 	await getPeasantHouseholdList()
@@ -220,6 +229,10 @@ const genArr = (arr: any) => {
 	}
 }
 
+/**
+ * 点击标记点
+ * @param{Object} e
+ */
 const markerTap = (e: any) => {
 	getDataInfo(e.detail.markerId)
 	show.value = true
@@ -293,7 +306,6 @@ onReady(() => {
 })
 
 onMounted(() => {
-	// initMarker()
 	initCoordinateData(shuangxi)
 })
 </script>
@@ -362,13 +374,6 @@ onMounted(() => {
       display: none !important;
     }
     /* #endif */
-  }
-
-  .map-info {
-    position: absolute;
-    z-index: 1;
-    top: 100rpx;
-    left: 300rpx;
   }
 }
 </style>
