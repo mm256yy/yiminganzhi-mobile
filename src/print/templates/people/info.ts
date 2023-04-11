@@ -1,5 +1,17 @@
-import { ewm } from '../../config'
+import { LandlordType } from '@/types/sync'
+import { ProjectType } from '@/types/common'
+import { ewm, layout } from '../../config'
+import {
+  getHead,
+  getPeopleTableHead,
+  getPopulation,
+  getHouseInfo,
+  getFushuwu,
+  getTree,
+  getGrave
+} from '../../common'
 
+// 居民户基本信息 模版
 export const peopleInfoDefinition = {
   content: [
     {
@@ -7,7 +19,7 @@ export const peopleInfoDefinition = {
       margin: [0, 8],
       columns: [
         {
-          text: '分类目录：',
+          text: '分类目录：移民',
           width: 170
         },
         {
@@ -17,9 +29,9 @@ export const peopleInfoDefinition = {
       ]
     },
     {
+      layout,
       table: {
         widths: [135, 135, 100, '*'],
-        heights: 22,
         alignment: 'center',
         body: [
           [
@@ -33,12 +45,12 @@ export const peopleInfoDefinition = {
                   alignment: 'center',
                   fontSize: 16,
                   bold: true,
-                  margin: [66, 9, 66, 2]
+                  margin: [60, 9, 60, 2]
                 },
                 {
                   text: '（个体户 3 3 号）',
                   alignment: 'center',
-                  margin: [66, 0, 66, 0]
+                  margin: [60, 0, 60, 0]
                 }
               ]
             },
@@ -69,9 +81,9 @@ export const peopleInfoDefinition = {
       }
     },
     {
+      layout,
       table: {
         widths: [58, 58, 40, 58, 58, 58, 110, '*'],
-        heights: 22,
         headerRows: 2,
         body: [
           [{ text: '人口信息', bold: true, colSpan: 8, style: 'td' }, '', '', '', '', '', '', ''],
@@ -104,9 +116,9 @@ export const peopleInfoDefinition = {
     },
 
     {
+      layout,
       table: {
         widths: [26, 46, 46, 26, 46, 50, 50, 66, 66, '*'],
-        heights: 22,
         headerRows: 2,
         body: [
           [
@@ -148,15 +160,15 @@ export const peopleInfoDefinition = {
           ['', '', '', '', '', '', '', '', '', ''],
           ['', '', '', '', '', '', '', '', '', ''],
 
-          [{ text: 'fdsafds', colSpan: 10, style: 'td' }, '', '', '', '', '', '', '', '', '']
+          [{ text: '3', colSpan: 10, style: 'td' }, '', '', '', '', '', '', '', '', '']
         ]
       }
     },
 
     {
+      layout,
       table: {
-        heights: 22,
-        widths: [26, 156, 66, 66, 66, '*'],
+        widths: [26, 156, 60, 60, 60, '*'],
         body: [
           [{ text: '附属物信息', colSpan: 6, style: 'td' }, '', '', '', '', ''],
           [
@@ -180,9 +192,9 @@ export const peopleInfoDefinition = {
       }
     },
     {
+      layout,
       table: {
-        heights: 22,
-        widths: [26, 126, 126, 66, 66, '*'],
+        widths: [26, 126, 126, 60, 60, '*'],
         body: [
           [{ text: '零星林（果）木信息', colSpan: 6, style: 'td' }, '', '', '', '', ''],
           [
@@ -207,18 +219,18 @@ export const peopleInfoDefinition = {
     },
 
     {
+      layout,
       table: {
         widths: [26, 100, 100, 100, 100, '*'],
-        heights: 22,
         headerRows: 2,
         body: [
-          [{ text: '坟墓信息22222', bold: true, colSpan: 6, style: 'td' }, '', '', '', '', ''],
+          [{ text: '坟墓信息', bold: true, colSpan: 6, style: 'td' }, '', '', '', '', ''],
           [
-            { text: '幢号', style: 'td' },
-            { text: '类别', style: 'td' },
-            { text: '房屋高程', style: 'td' },
-            { text: '层数', style: 'td' },
-            { text: '建筑面积', style: 'td' },
+            { text: '序号', style: 'td' },
+            { text: '穴位', style: 'td' },
+            { text: '材料', style: 'td' },
+            { text: '立墓年份', style: 'td' },
+            { text: '数量（座）', style: 'td' },
             { text: '备注', style: 'td' }
           ],
           [
@@ -236,23 +248,6 @@ export const peopleInfoDefinition = {
       }
     }
   ],
-  styles: {
-    // td垂直居中
-    td: {
-      margin: [0, 7, 0, 0]
-    },
-    td_2: {
-      margin: [0, 21, 0, 0]
-    },
-    td_3: {
-      margin: [0, 28, 0, 0]
-    },
-
-    // table样式
-    table: {
-      heights: 22
-    }
-  },
   footer: function (currentPage: number, pageSize: number) {
     return [
       {
@@ -262,9 +257,7 @@ export const peopleInfoDefinition = {
           {
             text: '权属人签字（盖章）：',
             width: 100,
-            alignment: 'left',
-            decoration: 'underline',
-            decorationStyle: 'dashed'
+            alignment: 'left'
           },
           {
             text: '请签字xxxxxx',
@@ -273,6 +266,11 @@ export const peopleInfoDefinition = {
             alignment: 'left',
             decoration: 'underline',
             decorationColor: '#000000'
+          },
+          {
+            text: '调查员签字：',
+            width: 100,
+            alignment: 'left'
           },
           {
             text: '请签字xxxxxx',
@@ -291,5 +289,51 @@ export const peopleInfoDefinition = {
         text: `${currentPage}/${pageSize}`
       }
     ]
+  }
+}
+
+const getFooter = () => {
+  return [
+    {
+      fontSize: 10,
+      margin: [20, 10, 20, 0],
+      alignment: 'justify',
+      columns: [
+        {
+          text: '权属人签字（盖章）：',
+          alignment: 'left',
+          margin: [0, 35, 0, 0]
+        },
+        {
+          text: '调查员签字：',
+          alignment: 'left',
+          margin: [0, 35, 0, 0]
+        },
+        {
+          alignment: 'right',
+          image: ewm,
+          width: 55
+        }
+      ]
+    }
+  ]
+}
+
+// 获取 居民户基本信息 配置
+export const getPeopleInfoDefinition = (landlord: LandlordType, projectInfo: ProjectType) => {
+  if (!landlord) {
+    return peopleInfoDefinition
+  }
+  return {
+    content: [
+      getHead(landlord, projectInfo),
+      getPeopleTableHead(landlord, projectInfo),
+      getPopulation(landlord),
+      getHouseInfo(landlord),
+      getFushuwu(landlord),
+      getTree(landlord),
+      getGrave(landlord)
+    ],
+    footer: getFooter
   }
 }

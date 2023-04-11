@@ -1,5 +1,5 @@
 import { hideLoading, showLoading, getHeaderCommonParams, env } from '@/config'
-import { isAndroid, isIos } from './platform'
+import { isAPP } from './platform'
 import { routerForward } from './router'
 
 enum MethodType {
@@ -28,8 +28,7 @@ function rejectHandle(err: Http.Result, reject: any) {
   }
 }
 
-export const apiBaseUrl =
-  isAndroid || isIos ? `${env.apiBaseUrl}${env.apiBasePath}` : env.apiBasePath
+export const apiBaseUrl = isAPP ? `${env.apiBaseUrl}${env.apiBasePath}` : env.apiBasePath
 // 'application/x-www-form-urlencoded'
 
 function baseRequest(method: MethodType, option: UniApp.RequestOptions) {

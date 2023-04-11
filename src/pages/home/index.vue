@@ -274,7 +274,7 @@ onShow(() => {
   userInfo.value = user
   projectInfo.value = project
 
-  console.log(user, 'user')
+  console.log(projectInfo, 'projectInfo')
   networkCheck().then((res) => {
     netWork.value = res
   })

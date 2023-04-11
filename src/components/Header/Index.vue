@@ -6,18 +6,18 @@
 
     <view class="list-header-rt">
       <view class="list-header-left">
-        <view class="name">{{ props.dataInfo.name }}</view>
-        <view class="account-no">{{ props.dataInfo.doorNo }}</view>
+        <view class="name">{{ dataInfo.name }}</view>
+        <view class="account-no">{{ dataInfo.doorNo }}</view>
       </view>
 
       <view class="list-header-right">
-        <view class="btn-wrapper print" v-if="props.showPrint && netWork" @click="printFile">
+        <view class="btn-wrapper print" v-if="showPrint && netWork" @click="printFile">
           <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
           <text class="txt">打印表格</text>
         </view>
 
         <view
-          v-if="!dataInfo.reportStatus || dataInfo.reportStatus === ReportStatusEnum.UnReport"
+          v-if="!dataInfo.reportStatus || dataInfo.reportStatus === 'UnReport'"
           class="btn-wrapper report"
           @click="reportDataCheck"
         >
@@ -54,257 +54,354 @@
       <view class="tips-wrapper">
         <view class="tips-title">打印表格</view>
         <view class="tips-content">
-          <view class="file-list">
-            <view
-              v-for="(item, index) in fileList"
-              :key="index"
-              :class="['file-item', item.selected ? 'active' : '']"
-              @click="selectFile(item, index)"
-            >
+          <view class="file-list" :prop="options" :change:prop="print.getPdf">
+            <view v-for="(item, index) in fileList" :key="item.uid" class="file-item">
               <view class="name">{{ item.name }}</view>
-              <image
-                class="icon"
-                src="@/static/images/icon_view_file.png"
-                mode="scaleToFill"
-                @click.stop="prviewImage(item)"
-              />
+              <view class="btns">
+                <image
+                  class="icon"
+                  src="@/static/images/icon_view_file.png"
+                  mode="scaleToFill"
+                  @click.stop="prviewImage(item)"
+                />
+                <image
+                  class="icon"
+                  src="@/static/images/print.png"
+                  mode="scaleToFill"
+                  @click.stop="printImage(item)"
+                />
+              </view>
             </view>
           </view>
         </view>
         <view class="btn-wrapper">
           <view class="btn cancel" @click="close('print')">取消</view>
-          <view class="btn confirm" @click="confirm('print')">确认</view>
         </view>
       </view>
-    </uni-popup>
-
-    <!-- 打印表格 -->
-    <uni-popup ref="webViewPopup" :is-mask-click="true">
-      <web-view :src="pdfUrl" />
     </uni-popup>
   </view>
 </template>
 
-<script lang="ts" setup>
-import { ref, onMounted } from 'vue'
-import { reportDataApi } from '@/service'
-import { networkCheck } from '@/utils'
-import { getPrintTemplateListApi, printLandlordApi } from '@/api'
+<script lang="ts">
+import { reportDataApi, getPrintTemplatesApi, getPrintLandlordApi } from '@/service'
+import { networkCheck, StorageKey, getStorage, formatDict } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
-import { MainType, ReportStatusEnum } from '@/types/common'
-
-const props = defineProps({
-  dataInfo: {
-    type: Object,
-    default: () => {}
-  },
-  showPrint: {
-    type: Boolean,
-    default: true
-  },
-  type: {
-    type: String,
-    default: ''
-  },
-  templateType: {
-    // 打印模板的类别
-    type: String,
-    default: ''
-  }
-})
+import { MainType, PrintType } from '@/types/common'
+const printpdfModule = uni.requireNativePlugin('da-printpdf')
+// const YanYuprintPdf = uni.requireNativePlugin('YanYu-PrintPDF')
 
 interface PrintListType {
   name: string
-  selected: boolean
   url: string
   uid: number
 }
 
-const emit = defineEmits(['expandToggle', 'updateTree', 'updateData'])
-const reportDataPopup = ref<any>(null)
-const printPopup = ref<any>(null)
-const selectedTemplateIds = ref<any>([])
-const tipsList = ref<any>([])
-const fileList = ref<PrintListType[]>([])
-const netWork = ref<boolean>(true)
-const webViewPopup = ref<any>(null)
-const pdfUrl = ref<string>('')
-const YanYuprintPdf = uni.requireNativePlugin('YanYu-PrintPDF')
-
-const expandToggle = () => {
-  emit('expandToggle')
+interface DataType {
+  selectedTemplateIds: string[]
+  tipsList: string[]
+  fileList: PrintListType[]
+  netWork: boolean
+  options: any
+  pdfFileCache: any
+  actionType: 'preview' | 'print'
+  currentPdfItem: PrintListType | null
+  [key: string]: any
 }
-
-// 数据上报校验
-const reportDataCheck = () => {
-  let query = {
-    uid: props.dataInfo.uid,
-    isCheck: true,
-    type: props.type as MainType
-  }
-  reportDataApi(query)
-    .then((res: any) => {
-      if (res) {
-        tipsList.value = [...res]
-        reportDataPopup.value?.open()
+export default {
+  data() {
+    return {
+      selectedTemplateIds: [],
+      tipsList: [],
+      fileList: [],
+      netWork: true,
+      options: {}, // 打印配置
+      pdfFileCache: {}, // 生成的pdf缓存
+      actionType: 'preview', // 操作类型 预览/打印
+      currentPdfItem: null
+    } as DataType
+  },
+  props: {
+    dataInfo: {
+      type: Object,
+      default: () => {}
+    },
+    showPrint: {
+      type: Boolean,
+      default: true
+    },
+    type: {
+      type: String,
+      default: ''
+    },
+    templateType: {
+      // 打印模板的类别
+      type: String,
+      default: ''
+    }
+  },
+  mounted() {
+    networkCheck().then((res) => {
+      this.netWork = res
+    })
+  },
+  watch: {
+    dataInfo: function (val, old) {
+      // 切换业主时 清理缓存
+      if (JSON.stringify(val) === JSON.stringify(old)) {
+        return
       }
-    })
-    .catch((e) => {
-      showToast(ERROR_MSG)
-    })
-}
+      this.pdfFileCache = {}
+      this.options = {}
+      this.currentPdfItem = null
+    }
+  },
+  methods: {
+    expandToggle() {
+      this.$emit('expandToggle')
+    },
 
-// 数据上报
-const reportData = () => {
-  let query = {
-    uid: props.dataInfo.uid,
-    isCheck: false,
-    type: props.type as MainType
-  }
-  reportDataApi(query)
-    .then((res: any) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        emit('updateTree')
-        emit('updateData')
+    // 数据上报校验
+    reportDataCheck() {
+      let query = {
+        uid: this.dataInfo.uid,
+        isCheck: true,
+        type: this.type as MainType
       }
-      close('report')
-    })
-    .catch((e) => {
-      // console.log('上报报错：', e)
-      showToast(ERROR_MSG)
-      close('report')
-    })
-}
-
-/**
- * 获取打印模板列表
- * @params{Object} templateType 打印的模板类别
- */
-const getPrintList = async (templateType: string) => {
-  const res = await getPrintTemplateListApi({ templateType: templateType })
-  if (res && res.content) {
-    const arr: PrintListType[] = []
-    res.content.map((item: any) => {
-      if (item.templateModule === '实物采集') {
-        arr.push({
-          name: item.templateName,
-          url: item.previewUrl,
-          selected: false,
-          uid: item.id
+      reportDataApi(query)
+        .then((res: any) => {
+          if (res) {
+            this.tipsList = res
+            ;(this.$refs.reportDataPopup as any)?.open()
+          }
         })
+        .catch((e) => {
+          showToast(ERROR_MSG)
+        })
+    },
+
+    // 数据上报
+    reportData() {
+      let query = {
+        uid: this.dataInfo.uid,
+        isCheck: false,
+        type: this.type as MainType
       }
-    })
-    fileList.value = [...arr]
-  }
-}
+      reportDataApi(query)
+        .then((res: any) => {
+          if (res) {
+            showToast(SUCCESS_MSG)
+            this.$emit('updateTree')
+            this.$emit('updateData')
+          }
+          this.close('report')
+        })
+        .catch((e) => {
+          // console.log('上报报错：', e)
+          showToast(ERROR_MSG)
+          this.close('report')
+        })
+    },
 
-// 打印文件/图片
-const printFile = () => {
-  getPrintList(props.templateType)
-  printPopup.value?.open()
-}
+    /**
+     * 获取打印模板列表
+     * @params{Object} templateType 打印的模板类别
+     */
+    async getPrintList(templateType: PrintType) {
+      const res = await getPrintTemplatesApi(templateType)
+      if (res && res.length) {
+        const arr: PrintListType[] = []
+        res.map((item: any) => {
+          if (item.templateModule === '实物采集') {
+            arr.push({
+              name: item.templateName,
+              url: '',
+              uid: item.uid
+            })
+          }
+        })
+        this.fileList = arr
+      }
+    },
 
-/**
- * 选择打印的文件
- * @param(Object) item 当前行文件相关信息
- * @param(Object) index 文件下标
- */
-const selectFile = (item: any, index: number) => {
-  fileList.value[index].selected = !item.selected
-  if (fileList.value[index].selected) {
-    selectedTemplateIds.value.push(fileList.value[index].uid)
-  } else {
-    selectedTemplateIds.value.splice(index, 1)
-  }
-}
+    // 打印文件/图片
+    printFile() {
+      this.getPrintList(this.templateType as PrintType)
+      ;(this.$refs.printPopup as any)?.open()
+    },
 
-// 获取已选择的模板 ID 数组集合
-const getSelectedTemplateIds = () => {
-  let arr: any = []
-  fileList.value.map((item) => {
-    if (item.selected) {
-      arr.push(item.uid)
-    }
-  })
-  return [...arr]
-}
+    // 确认 数据上报/打印
+    confirm(type: string) {
+      if (type === 'report') {
+        this.reportData()
+      }
+    },
 
-// 确认 数据上报/打印
-const confirm = (type: string) => {
-  if (type === 'report') {
-    reportData()
-  } else if (type === 'print') {
-    if (selectedTemplateIds.value.length > 0) {
-      printPdf(getSelectedTemplateIds(), [props.dataInfo.id])
-      // 关闭弹框
-      printPopup.value?.close()
-    } else {
-      showToast('请选择要打印的文件')
-    }
-  }
-}
+    prviewImage(item: any) {
+      // 预览
+      this.actionType = 'preview'
+      this.currentPdfItem = item
+      const filePath = this.pdfFileCache[item.uid]
+      if (filePath) {
+        this.actionPdf(filePath)
+        return
+      }
+      this.getData([this.dataInfo.uid], [item.uid])
+    },
 
-// 打印 PDF 文件
-const printPdf = (templateIds: any[], peasantHouseholdIds: any[]) => {
-  printLandlordApi(templateIds, peasantHouseholdIds).then((res) => {
-    if (res) {
-      uni.downloadFile({
-        url: res,
-        success(res) {
-          const path = plus.io.convertLocalFileSystemURL(res.tempFilePath)
-          YanYuprintPdf.managerPrint(path)
-        },
-        fail(err) {
-          console.log('save err:', err)
-        }
+    printImage(item: any) {
+      // 打印
+      this.actionType = 'print'
+      this.currentPdfItem = item
+      const filePath = this.pdfFileCache[item.uid]
+      if (filePath) {
+        this.actionPdf(filePath)
+        return
+      }
+      this.getData([this.dataInfo.uid], [item.uid])
+    },
+
+    /**
+     * 打印pdf
+     */
+    async getData(peasantHouseholdIds: string[], templateIds: string[]) {
+      const landlordArray = await getPrintLandlordApi(peasantHouseholdIds).catch((err) => {
+        console.log(err, 'juming')
       })
-    }
-  })
-}
+      if (!landlordArray || !landlordArray.length) {
+        return
+      }
+      console.log(landlordArray, 'landlordArray')
+      uni.hideLoading()
+      uni.showLoading({
+        title: '生成中...',
+        mask: true
+      })
+      const projectInfo = getStorage(StorageKey.PROJECTINFO) || {}
+      this.options = {
+        landlords: landlordArray,
+        projectInfo,
+        templateIds,
+        type: this.templateType
+      }
+    },
 
-/**
- * 预览PDF
- * @param{Object} item
- * @param{Object} index
- */
-const prviewImage = (item: any) => {
-  printLandlordApi([item.uid], [props.dataInfo.id]).then((res: any) => {
-    if (res) {
-      uni.downloadFile({
-        url: res,
-        success: function (res) {
-          var filePath = res.tempFilePath
-          uni.openDocument({
-            filePath: filePath,
-            showMenu: true,
-            success: function (res) {
-              console.log('打开文档成功')
-            }
+    actionPdf(filePath: string) {
+      if (this.actionType === 'preview') {
+        // 预览
+        uni.openDocument({
+          filePath: filePath,
+          showMenu: true,
+          success: function (res) {
+            console.log('打开文档成功')
+          }
+        })
+      } else {
+        // 打印pdf
+        printpdfModule.printPdf(filePath)
+      }
+    },
+    getPrintErrorResult(err: any) {
+      uni.hideLoading()
+      uni.showToast({
+        title: '生成pdf失败',
+        icon: 'error'
+      })
+    },
+    getPrintResult(result: any[]) {
+      // 拿到打印结果
+      const base64Str = result[0][0]
+      if (!base64Str) {
+        uni.hideLoading()
+        showToast('生成pdf失败')
+        return
+      }
+      const index = base64Str.indexOf(',')
+      const base64 = base64Str.slice(index + 1, base64Str.length)
+      //Base64可通过Canvas、html2canvas、jspdf等生成的字符串，不包含文件类型前缀
+      //1.根据Base64生成文件：第二个参数是文件名称，如果不传入路径，则默认保存在Download文件夹,返回文件的绝对路径
+      const fileName = `${
+        this.templateType === PrintType.print
+          ? '居民户'
+          : this.templateType === PrintType.printCompany
+          ? '企业'
+          : '个体户'
+      }_${this.dataInfo.name}_${new Date().getTime()}`
+      const filePath = printpdfModule.saveBase64File(base64, `${fileName}.pdf`)
+      if (this.currentPdfItem) {
+        this.pdfFileCache[this.currentPdfItem.uid] = filePath
+      }
+      //2.打印pdf
+      //可传绝对路径，如果只传文件名则默认在下载目录下查找
+      console.log(filePath, 'filePath')
+      // printpdfModule.deleteFile("test.pdf");
+      uni.hideLoading()
+      this.actionPdf(filePath)
+    },
+
+    // 关闭弹窗
+    close(type: string) {
+      if (type === 'report') {
+        ;(this.$refs.reportDataPopup as any)?.close()
+      } else if (type === 'print') {
+        ;(this.$refs.printPopup as any)?.close()
+      }
+    }
+  }
+}
+</script>
+
+<script module="print" lang="renderjs">
+import { printPdf } from '@/print'
+
+export default {
+  methods: {
+    getPdf(newValue, oldValue, ownerInstance, instance) {
+      console.log('触发了属性变更')
+      try {
+        // 拿到业主详情
+        // 根据模版id生成对应的pdf 拿到base64
+        const {
+          landlords,
+          projectInfo,
+          templateIds,
+          type
+        } = newValue
+        if (!landlords || !landlords.length) {
+          console.log('landlords数据为空')
+          return
+        }
+        if (!templateIds || !templateIds.length) {
+          console.log('templateIds数据为空')
+          return
+        }
+
+        const promiseArray = []
+        landlords.forEach((landlord) => {
+          if (type === 'print') {
+            promiseArray.push(printPdf.createPeople(templateIds, landlord, projectInfo))
+          } else if (type === 'printIndividualHousehold') {
+            promiseArray.push(printPdf.createSelfemployed(templateIds, landlord, projectInfo))
+          } else if (type === 'printCompany') {
+            promiseArray.push(printPdf.createCompany(templateIds, landlord, projectInfo))
+          }
+        })
+        // 并行生成
+        Promise.all(promiseArray)
+          .then((result) => {
+            // [['',''], ['', '']] 两个业主返回的数据结构
+            // [['']] 单个业主 单个模版的数据结构
+            ownerInstance.callMethod('getPrintResult', result)
           })
-        },
-        fail(err) {
-          console.log('err:', err)
-        }
-      })
+          .catch((err) => {
+            console.error(err, '-errr')
+            ownerInstance.callMethod('getPrintErrorResult', err)
+          })
+      } catch (error) {
+        console.error(error)
+      }
     }
-  })
-}
-
-// 关闭弹窗
-const close = (type: string) => {
-  if (type === 'report') {
-    reportDataPopup.value?.close()
-  } else if (type === 'print') {
-    printPopup.value?.close()
   }
 }
-
-onMounted(() => {
-  networkCheck().then((res) => {
-    netWork.value = res
-  })
-})
 </script>
 
 <style lang="scss" scoped>
@@ -475,9 +572,16 @@ onMounted(() => {
           color: #131313;
         }
 
-        .icon {
-          width: 10rpx;
-          height: 10rpx;
+        .btns {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 30rpx;
+
+          .icon {
+            width: 10rpx;
+            height: 10rpx;
+          }
         }
       }
     }

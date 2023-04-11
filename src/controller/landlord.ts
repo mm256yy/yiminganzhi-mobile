@@ -5,7 +5,7 @@
 import { LandlordTableName, LandlordDDLType } from '@/database'
 import { Common } from './common'
 import { LandlordType } from '@/types/sync'
-import { guid, getCurrentTimeStamp, getStorage, StorageKey } from '@/utils'
+import { guid, getCurrentTimeStamp, getStorage, StorageKey, formatDict } from '@/utils'
 import {
   LandlordQuery,
   MainType,
@@ -441,78 +441,129 @@ export class Landlord extends Common {
   }
 
   // 业主列表-uid查询单个数据-打印使用
-  getLandlordByUidWithPrint(uid: string): Promise<LandlordType | null> {
+  getLandlordByUidWithPrint(uids: string[]): Promise<LandlordType[] | null> {
     return new Promise(async (resolve, reject) => {
       try {
-        if (!uid) {
+        if (!uids || !uids.length) {
           reject(null)
           return
         }
-        const result: LandlordDDLType[] = await this.db.selectTableData(
-          LandlordTableName,
-          'uid',
-          uid,
-          'isDelete',
-          '0'
-        )
-        const res: LandlordType = result && result[0] ? JSON.parse(result[0].content) : {}
+        let uidsString = `'${uids[0]}'`
+        uids.forEach((uid, index) => {
+          if (index > 0) {
+            uidsString += `,'${uid}'`
+          }
+        })
+        const sql = `select * from ${LandlordTableName} where uid in (${uidsString})`
 
-        if (res && res.uid) {
-          if (res.demographicList && res.demographicList.length) {
-            res.demographicList = res.demographicList.filter((item) => item.isDelete !== '1')
-          }
-          if (res.immigrantAppendantList && res.immigrantAppendantList.length) {
-            res.immigrantAppendantList = res.immigrantAppendantList.filter(
-              (item) => item.isDelete !== '1'
-            )
-          }
-          if (res.immigrantGraveList && res.immigrantGraveList.length) {
-            res.immigrantGraveList = res.immigrantGraveList.filter((item) => item.isDelete !== '1')
-          }
-          if (res.immigrantHouseList && res.immigrantHouseList.length) {
-            res.immigrantHouseList = res.immigrantHouseList.filter((item) => item.isDelete !== '1')
-          }
-          if (res.immigrantIncomeList && res.immigrantIncomeList.length) {
-            res.immigrantIncomeList = res.immigrantIncomeList.filter(
-              (item) => item.isDelete !== '1'
-            )
-          }
-          if (res.immigrantTreeList && res.immigrantTreeList.length) {
-            res.immigrantTreeList = res.immigrantTreeList.filter((item) => item.isDelete !== '1')
-          }
+        const result: LandlordDDLType[] = await this.db.selectSql(sql)
+        const landlordArray: LandlordType[] = result.map((item) => JSON.parse(item.content))
+        const realLandlordArr: LandlordType[] = []
+        landlordArray.forEach((res) => {
+          if (res && res.uid) {
+            if (res.company && res.company.uid) {
+              res.company.industryTypeText = formatDict(res.company.industryType, 215)
+              res.company.registerTypeText = formatDict(res.company.registerType, 219)
+              res.company.licenceTypeText = formatDict(res.company.licenceType, 217)
+              res.company.treatmentSchemeText = formatDict(res.company.treatmentScheme, 210)
+              res.company.informationInvolvedText = formatDict(res.company.informationInvolved, 209)
+              res.company.managementStatusText = formatDict(res.company.managementStatus, 213)
+              res.company.establishDateText = res.company.establishDate
+                ? dayjs(res.company.establishDate).format('YYYY-MM-DD')
+                : ''
+              res.company.companyTypeText = formatDict(res.company.companyType, 216)
+              res.company.taxPeriodValidity
+                ? dayjs(res.company.taxPeriodValidity)
+                : res.company.taxPeriodValidity
+            }
+            if (res.demographicList && res.demographicList.length) {
+              res.demographicList.forEach((item) => {
+                item.relationText = formatDict(item.relation, 307)
+                item.sexText = formatDict(item.sex, 292)
+                item.nationText = formatDict(item.nation, 278)
+                item.maritalText = formatDict(item.marital, 260)
+                item.populationTypeText = formatDict(item.populationType, 244)
+              })
+              res.demographicList = res.demographicList.filter((item) => item.isDelete !== '1')
+            }
+            if (res.immigrantAppendantList && res.immigrantAppendantList.length) {
+              res.immigrantAppendantList = res.immigrantAppendantList.filter(
+                (item) => item.isDelete !== '1'
+              )
+            }
+            if (res.immigrantGraveList && res.immigrantGraveList.length) {
+              res.immigrantGraveList.forEach((item) => {
+                item.graveTypeText = formatDict(item.graveType, 345)
+                item.materialsText = formatDict(item.materials, 295)
+              })
+              res.immigrantGraveList = res.immigrantGraveList.filter(
+                (item) => item.isDelete !== '1'
+              )
+            }
+            if (res.immigrantHouseList && res.immigrantHouseList.length) {
+              res.immigrantHouseList.forEach((item) => {
+                item.houseTypeText = formatDict(item.houseType, 266)
+                item.usageTypeText = formatDict(item.usageType, 265)
+                item.constructionTypeText = formatDict(item.constructionType, 252)
+                item.completedTimeText = item.completedTime
+                  ? dayjs(item.completedTime).format('YYYY-MM')
+                  : ''
+              })
+              res.immigrantHouseList = res.immigrantHouseList.filter(
+                (item) => item.isDelete !== '1'
+              )
+            }
+            if (res.immigrantIncomeList && res.immigrantIncomeList.length) {
+              res.immigrantIncomeList = res.immigrantIncomeList.filter(
+                (item) => item.isDelete !== '1'
+              )
+            }
+            if (res.immigrantTreeList && res.immigrantTreeList.length) {
+              res.immigrantTreeList.forEach((item) => {
+                item.usageTypeText = formatDict(item.usageType, 325)
+                item.sizeText = formatDict(item.size, 269)
+                item.unitText = formatDict(item.unit, 264)
+              })
+              res.immigrantTreeList = res.immigrantTreeList.filter((item) => item.isDelete !== '1')
+            }
 
-          if (res.immigrantManagementList && res.immigrantManagementList.length) {
-            res.immigrantManagementList = res.immigrantManagementList.filter(
-              (item) => item.isDelete !== '1'
-            )
+            if (res.immigrantManagementList && res.immigrantManagementList.length) {
+              res.immigrantManagementList = res.immigrantManagementList.filter(
+                (item) => item.isDelete !== '1'
+              )
+            }
+
+            if (res.immigrantEquipmentList && res.immigrantEquipmentList.length) {
+              res.immigrantEquipmentList.forEach((item) => {
+                item.yearText = item.year ? dayjs(item.year).format('YYYY年') : ''
+                item.moveTypeText = formatDict(item.moveType, 221)
+              })
+              res.immigrantEquipmentList = res.immigrantEquipmentList.filter(
+                (item) => item.isDelete !== '1'
+              )
+            }
+
+            if (res.immigrantFacilitiesList && res.immigrantFacilitiesList.length) {
+              res.immigrantFacilitiesList = res.immigrantFacilitiesList.filter(
+                (item) => item.isDelete !== '1'
+              )
+            }
+
+            const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
+            // 拿到上级行政区划
+            res.virutalVillageCodeText = districtMap[res.virutalVillageCode]
+            res.villageCodeText = districtMap[res.villageCode]
+            res.townCodeText = districtMap[res.townCode]
+            res.areaCodeText = districtMap[res.areaCode]
+            res.locationTypeText = formatDict(res.locationType, 326)
+            // 调查时间
+            res.reportDateText = res.reportDate ? dayjs(res.reportDate).format('YYYY-MM-DD') : ''
+
+            realLandlordArr.push(res)
           }
+        })
 
-          if (res.immigrantEquipmentList && res.immigrantEquipmentList.length) {
-            res.immigrantEquipmentList = res.immigrantEquipmentList.filter(
-              (item) => item.isDelete !== '1'
-            )
-          }
-
-          if (res.immigrantFacilitiesList && res.immigrantFacilitiesList.length) {
-            res.immigrantFacilitiesList = res.immigrantFacilitiesList.filter(
-              (item) => item.isDelete !== '1'
-            )
-          }
-
-          const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
-          // 拿到上级行政区划
-          res.virutalVillageCodeText = districtMap[res.virutalVillageCode]
-          res.villageCodeText = districtMap[res.villageCode]
-          res.townCodeText = districtMap[res.townCode]
-          res.areaCodeText = districtMap[res.areaCode]
-
-          // todo 字典相关 图片转化
-          console.log(res, '业主详情')
-          resolve(res)
-          return
-        }
-
-        reject(null)
+        resolve(realLandlordArr)
       } catch (error) {
         console.log(error, 'getLandlordByUid-error')
         reject(null)

@@ -76,6 +76,8 @@ function ifDefPlatform(): EPlatform {
 /**平台类型*/
 export const platform: EPlatform = ifDefPlatform()
 
+/** APP */
+export const isAPP = platform === EPlatform.AppPlus || EPlatform.AppPlusNvue
 /**H5*/
 export const isH5 = platform === EPlatform.H5
 /**微信小程序*/
@@ -98,14 +100,3 @@ export const isQuickappWebview = platform === EPlatform.QuickappWebview
 export const isQuickappWebviewUnion = platform === EPlatform.QuickappWebviewUnion
 /**快应用华为*/
 export const isQuickappWebviewHuawei = platform === EPlatform.QuickappWebviewHuawei
-/**是否开发环境*/
-export const isDevelopment = import.meta.env.MODE === 'development'
-/**是否线上环境*/
-export const isProduction = import.meta.env.MODE === 'production'
-
-const systemInfo = uni.getSystemInfoSync()
-/** 是否IOS */
-export const isIos = systemInfo.platform === 'ios'
-
-/** 是否android */
-export const isAndroid = systemInfo.platform === 'android'

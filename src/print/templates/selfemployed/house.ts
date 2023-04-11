@@ -1,3 +1,9 @@
+import { LandlordType } from '@/types/sync'
+import { getHead, getCompanyTableHead, getHousePic } from '../../common'
+import { imgHeight, layout } from '../../config'
+import { ProjectType } from '@/types/common'
+
+// 企业/个体户 房屋配置模版
 export const selfemployedHouseDefinition = {
   content: [
     {
@@ -5,7 +11,7 @@ export const selfemployedHouseDefinition = {
       margin: [0, 8],
       columns: [
         {
-          text: '分类目录：',
+          text: '分类目录：企业',
           width: 170
         },
         {
@@ -15,10 +21,9 @@ export const selfemployedHouseDefinition = {
       ]
     },
     {
+      layout,
       table: {
         widths: [135, 135, 100, '*'],
-        heights: 22,
-
         body: [
           [
             {
@@ -31,12 +36,12 @@ export const selfemployedHouseDefinition = {
                   alignment: 'center',
                   fontSize: 16,
                   bold: true,
-                  margin: [66, 9, 66, 2]
+                  margin: [60, 9, 60, 2]
                 },
                 {
                   text: '（个体户 3 3 号）',
                   alignment: 'center',
-                  margin: [66, 0, 66, 0]
+                  margin: [60, 0, 60, 0]
                 }
               ]
             },
@@ -69,9 +74,9 @@ export const selfemployedHouseDefinition = {
       table: {
         widths: ['*'],
         heights: function (row: number) {
-          return row === 0 ? 22 : 106
+          return row > 0 ? imgHeight : 18
         },
-        headerRows: 1,
+        headerRows: 2,
         body: [
           [{ text: '房屋示意图', bold: true, style: 'td' }],
           [''],
@@ -88,65 +93,73 @@ export const selfemployedHouseDefinition = {
       }
     }
   ],
-  styles: {
-    // td垂直居中
-    td: {
-      margin: [0, 7, 0, 0]
-    },
-    td_2: {
-      margin: [0, 21, 0, 0]
-    },
-    td_3: {
-      margin: [0, 28, 0, 0]
-    },
-
-    // table样式
-    table: {
-      heights: 22
-    }
-  },
-  footer: function (currentPage: number, pageSize: number) {
+  footer: function () {
     return [
       {
         fontSize: 10,
-        margin: [20, 0, 20, 50],
+        margin: [20, 0, 20, 0],
+        alignment: 'justify',
         columns: [
           {
             text: '权属人签字（盖章）：',
-            width: 100,
-            alignment: 'left',
-            decoration: 'underline',
-            decorationStyle: 'dashed'
+            margin: [0, 35, 0, 0],
+            alignment: 'left'
+          },
+
+          {
+            text: '调查员签字：',
+            margin: [0, 35, 0, 0],
+            alignment: 'left'
           },
           {
-            text: '请签字xxxxxx',
-            width: 80,
-            color: '#ffffff',
-            alignment: 'left',
-            decoration: 'underline',
-            decorationColor: '#000000'
-          },
-          {
-            text: '权属人签字（盖章）：',
-            width: 158,
-            margin: [58, 0, 0, 0],
-            alignment: 'left',
-            decoration: 'underline',
-            decorationStyle: 'dashed'
-          },
-          {
-            text: '请签字xxxxxx',
-            width: 80,
-            color: '#ffffff',
-            alignment: 'left',
-            decoration: 'underline',
-            decorationColor: '#000000'
+            text: ''
           }
         ]
-      },
-      {
-        text: `${currentPage}/${pageSize}`
       }
     ]
+  }
+}
+
+const getFooter = () => {
+  return [
+    {
+      fontSize: 10,
+      margin: [20, 0, 20, 0],
+      alignment: 'justify',
+      columns: [
+        {
+          text: '权属人签字（盖章）：',
+          margin: [0, 35, 0, 0],
+          alignment: 'left'
+        },
+
+        {
+          text: '调查员签字：',
+          margin: [0, 35, 0, 0],
+          alignment: 'left'
+        },
+        {
+          text: ''
+        }
+      ]
+    }
+  ]
+}
+
+// 获取 企业/个体户 房屋配置
+export const getSelfemployedHouseDefinition = (
+  landlord: LandlordType,
+  projectInfo: ProjectType
+) => {
+  if (!landlord) {
+    return selfemployedHouseDefinition
+  }
+  return {
+    content: [
+      getHead(landlord, projectInfo),
+      getCompanyTableHead(landlord, projectInfo),
+      getHousePic(landlord)
+    ],
+    footer: getFooter
   }
 }

@@ -1,3 +1,9 @@
+import { LandlordType } from '@/types/sync'
+import { getHead, getCompanyBaseTableHead, getHouseInfo, getFushuwu, getTree } from '../../common'
+import { layout, ewm } from '../../config'
+import { ProjectType } from '@/types/common'
+
+// 企业/个体户 基本信息配置模版
 export const selfemployedInfoDefinition = {
   content: [
     {
@@ -5,7 +11,7 @@ export const selfemployedInfoDefinition = {
       margin: [0, 8],
       columns: [
         {
-          text: '分类目录：',
+          text: '分类目录：企业',
           width: 170
         },
         {
@@ -15,10 +21,9 @@ export const selfemployedInfoDefinition = {
       ]
     },
     {
+      layout,
       table: {
         widths: [135, 135, 100, '*'],
-        heights: 22,
-
         body: [
           [
             {
@@ -31,7 +36,7 @@ export const selfemployedInfoDefinition = {
                   alignment: 'center',
                   fontSize: 16,
                   bold: true,
-                  margin: [66, 27, 66, 2]
+                  margin: [60, 27, 60, 2]
                 }
               ]
             },
@@ -63,8 +68,8 @@ export const selfemployedInfoDefinition = {
     },
 
     {
+      layout,
       table: {
-        heights: 22,
         widths: [26, 82, 42, 26, 26, 82, 58, 58, 42, '*'],
         body: [
           [{ text: '房屋信息', colSpan: 10, style: 'td' }, '', '', '', '', '', '', '', '', ''],
@@ -98,8 +103,8 @@ export const selfemployedInfoDefinition = {
     },
 
     {
+      layout,
       table: {
-        heights: 22,
         widths: [26, 156, 66, 66, 66, '*'],
         body: [
           [{ text: '附属物信息', colSpan: 6, style: 'td' }, '', '', '', '', ''],
@@ -124,8 +129,8 @@ export const selfemployedInfoDefinition = {
       }
     },
     {
+      layout,
       table: {
-        heights: 22,
         widths: [26, 126, 126, 66, 66, '*'],
         body: [
           [{ text: '零星林（果）木信息', colSpan: 6, style: 'td' }, '', '', '', '', ''],
@@ -150,74 +155,74 @@ export const selfemployedInfoDefinition = {
       }
     }
   ],
-  styles: {
-    // td垂直居中
-    td: {
-      margin: [0, 7, 0, 0]
-    },
-    td_2: {
-      margin: [0, 21, 0, 0]
-    },
-    td_3: {
-      margin: [0, 28, 0, 0]
-    },
-
-    // table样式
-    table: {
-      heights: 22
-    }
-  },
-  footer: function (currentPage: number, pageSize: any) {
+  footer: function () {
     return [
       {
-        margin: [20, 0, 20, 50],
-        alignment: 'left',
+        fontSize: 10,
+        margin: [20, 10, 20, 0],
+        alignment: 'justify',
         columns: [
-          { text: '法人代表签字（公章）：', decoration: 'underline', decorationStyle: 'dashed' },
           {
-            text: '请签字xxxxxx',
-            width: 80,
-            color: '#ffffff',
+            text: '法人代表签字（公章）：',
             alignment: 'left',
-            decoration: 'underline',
-            decorationColor: '#000000'
+            margin: [0, 35, 0, 0]
           },
           {
             text: '调查员签字：',
-            margin: [58, 0, 0, 0],
             alignment: 'left',
-            decoration: 'underline',
-            decorationStyle: 'dashed'
+            margin: [0, 35, 0, 0]
           },
           {
-            text: '请签字xxxxxx',
-            width: 80,
-            color: '#ffffff',
-            alignment: 'left',
-            decoration: 'underline',
-            decorationColor: '#000000'
-          },
-          {
-            text: '调查时间：',
-            margin: [58, 0, 0, 0],
-            alignment: 'left',
-            decoration: 'underline',
-            decorationStyle: 'dashed'
-          },
-          {
-            text: '请签字xxxxxx',
-            width: 80,
-            color: '#ffffff',
-            alignment: 'left',
-            decoration: 'underline',
-            decorationColor: '#000000'
+            alignment: 'right',
+            image: ewm,
+            width: 55
           }
         ]
-      },
-
-      {
-        text: `${currentPage}/${pageSize}`
       }
     ]
+  }
+}
+
+const getFooter = () => {
+  return [
+    {
+      fontSize: 10,
+      margin: [20, 10, 20, 0],
+      alignment: 'justify',
+      columns: [
+        {
+          text: '法人代表签字（公章）：',
+          alignment: 'left',
+          margin: [0, 35, 0, 0]
+        },
+        {
+          text: '调查员签字：',
+          alignment: 'left',
+          margin: [0, 35, 0, 0]
+        },
+        {
+          alignment: 'right',
+          image: ewm,
+          width: 55
+        }
+      ]
+    }
+  ]
+}
+
+// 获取 企业/个体户 基本信息配置
+export const getSelfemployedInfoDefinition = (landlord: LandlordType, projectInfo: ProjectType) => {
+  if (!landlord) {
+    return selfemployedInfoDefinition
+  }
+  return {
+    content: [
+      getHead(landlord, projectInfo),
+      getCompanyBaseTableHead(landlord, projectInfo),
+      getHouseInfo(landlord),
+      getFushuwu(landlord),
+      getTree(landlord)
+    ],
+    footer: getFooter
   }
 }

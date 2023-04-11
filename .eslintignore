@@ -6,3 +6,4 @@
 /node_modules/*
 /dist*
 src/static
+src/components/Header/Index.vue

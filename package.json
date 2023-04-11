@@ -59,7 +59,8 @@
     "@dcloudio/uni-ui": "^1.4.26",
     "dayjs": "^1.11.7",
     "vue": "^3.2.45",
-    "vue-i18n": "^9.1.9"
+    "vue-i18n": "^9.1.9",
+    "vue-pdf-embed": "^1.1.5"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.3.0",

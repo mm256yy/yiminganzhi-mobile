@@ -1,7 +1,13 @@
+import { LandlordType } from '@/types/sync'
+import { getEquipment, getBottom } from '../../common'
+import { layout } from '../../config'
+import { ProjectType } from '@/types/common'
+
+// 个体户/企业 设施设备模版
 export const selfemployedEquipmentDefinition = {
   content: [
     {
-      text: '基本情况调查表',
+      text: '设施设备调查表',
       fontSize: 16,
       bold: true,
       margin: [0, 0, 0, 29]
@@ -14,8 +20,8 @@ export const selfemployedEquipmentDefinition = {
     },
 
     {
+      layout,
       table: {
-        heights: 22,
         widths: [26, 82, 42, 26, 26, 82, 58, 58, 42, '*'],
         body: [
           [
@@ -49,76 +55,101 @@ export const selfemployedEquipmentDefinition = {
     {
       alignment: 'left',
       margin: [0, 10, 0, 0],
-      columns: ['分类目录：', '所属阶段：', '']
+      columns: ['分类目录：企业', '所属阶段：', '']
     }
   ],
-  styles: {
-    // td垂直居中
-    td: {
-      margin: [0, 7, 0, 0]
-    },
-    td_2: {
-      margin: [0, 21, 0, 0]
-    },
-    td_3: {
-      margin: [0, 28, 0, 0]
-    },
-
-    // table样式
-    table: {
-      heights: 22
-    }
-  },
-  footer: function (currentPage: number, pageSize: any) {
+  footer: function () {
     return [
       {
-        margin: [20, 0, 20, 50],
-        alignment: 'left',
+        margin: [20, 10, 20, 0],
+        alignment: 'justify',
         columns: [
           {
-            text: '法人代表签字：',
-            decoration: 'underline',
-            decorationStyle: 'dashed'
-          },
-          {
-            text: '请签字xxxxxx',
-            width: 80,
-            color: '#ffffff',
-            decoration: 'underline',
-            decorationColor: '#000000'
+            text: '法人代表签字(公章)：',
+            alignment: 'left',
+            margin: [0, 35, 0, 0]
           },
           {
             text: '调查员签字：',
-            margin: [58, 0, 0, 0],
-            decoration: 'underline',
-            decorationStyle: 'dashed'
-          },
-          {
-            text: '请签字xxxxxx',
-            width: 80,
-            color: '#ffffff',
-            decoration: 'underline',
-            decorationColor: '#000000'
+            alignment: 'left',
+            margin: [0, 35, 0, 0]
           },
           {
             text: '调查时间：',
-            margin: [58, 0, 0, 0],
-            decoration: 'underline',
-            decorationStyle: 'dashed'
-          },
-          {
-            text: '请签字xxxxxx',
-            width: 80,
-            color: '#ffffff',
-            decoration: 'underline',
-            decorationColor: '#000000'
+            alignment: 'left',
+            margin: [0, 35, 0, 0]
           }
         ]
-      },
-
-      {
-        text: `${currentPage}/${pageSize}`
       }
     ]
+  }
+}
+
+// 头部信息 order 1
+const getTitle = () => {
+  return {
+    text: '基本情况调查表',
+    fontSize: 16,
+    bold: true,
+    margin: [0, 0, 0, 29]
+  }
+}
+
+// 基本信息 order 2
+const getInfo = (landlord: LandlordType) => {
+  return {
+    alignment: 'left',
+    fontSize: 9,
+    margin: [0, 0, 0, 8],
+    columns: [
+      [{ text: `个体工商户名称：${landlord.name}` }],
+      [{ text: `所在位置：${landlord.locationTypeText}` }],
+      [{ text: `联系方式：${landlord.phone}` }]
+    ]
+  }
+}
+
+const getFooter = () => {
+  return [
+    {
+      margin: [20, 10, 20, 0],
+      alignment: 'justify',
+      columns: [
+        {
+          text: '法人代表签字(公章)：',
+          alignment: 'left',
+          margin: [0, 35, 0, 0]
+        },
+        {
+          text: '调查员签字：',
+          alignment: 'left',
+          margin: [0, 35, 0, 0]
+        },
+        {
+          text: '调查时间：',
+          alignment: 'left',
+          margin: [0, 35, 0, 0]
+        }
+      ]
+    }
+  ]
+}
+
+// 获取 个体户设施设备配置
+export const getSelfemployedEquipmentDefinition = (
+  landlord: LandlordType,
+  projectInfo: ProjectType
+) => {
+  if (!landlord) {
+    return selfemployedEquipmentDefinition
+  }
+  return {
+    content: [
+      getTitle(),
+      getInfo(landlord),
+      getEquipment(landlord),
+      getBottom(landlord, projectInfo)
+    ],
+    footer: getFooter
   }
 }

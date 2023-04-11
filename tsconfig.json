@@ -36,7 +36,7 @@
     "node_modules",
     "unpackage",
     "src/**/*.nvue",
-		"src/static"
+		"src/static",
   ],
   "include": ["src/**/*", "types/**/*.d.ts", "mock/**/*.ts"]
 }

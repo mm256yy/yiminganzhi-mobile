@@ -9,11 +9,12 @@ import {
   AppendantController,
   FamilyIncomeController,
   DictionariesController,
-  ResettlementController
+  ResettlementController,
+  PrintController
 } from '@/controller'
 import { ImageController } from '@/controller/image'
 import { OtherDataType, ImageDDLType } from '@/database'
-import { MainType } from '@/types/common'
+import { MainType, PrintType } from '@/types/common'
 
 // 获取项目列表
 export const getProjectListApi = () => {
@@ -73,4 +74,9 @@ export const getImgList = () => {
 // 批量图片上传
 export const batchUploadImg = (data: string[]) => {
   return ImageController.batchAddImg(data)
+}
+
+// 获取打印模版
+export const getPrintTemplatesApi = (type: PrintType) => {
+  return PrintController.getTemplateList(type)
 }

@@ -10,7 +10,11 @@ export type ProjectType = {
   townCode: string
   reservoirName: string
   districtTree: string[]
+  status: 'survey' | 'review'
 }
+
+// SURVEY("实物调查","survey"),
+// REVIEW("实物复核","review"),
 
 // 家庭收入配置类型定义
 export type FamilyIncomeConfigType = {
