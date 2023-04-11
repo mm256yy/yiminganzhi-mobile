@@ -661,7 +661,7 @@ export class Landlord extends Common {
     return !arr || (Array.isArray(arr) && !arr.length)
   }
 
-  // 数据上报
+  // 填报完成
   reportData(query: ReportParamsType): Promise<boolean | string[]> {
     return new Promise(async (resolve, reject) => {
       try {

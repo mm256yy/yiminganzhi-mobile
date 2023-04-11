@@ -174,13 +174,6 @@
 			"style": {
 				"navigationBarTitleText": "数据库详情数据"
 			}
-		},
-		{
-			"name": "test",
-			"path": "pages/test/index",
-			"style": {
-				"navigationBarTitleText": "测试"
-			}
 		}
   ],
 	"globalStyle": {
@@ -202,7 +195,7 @@
 		}
 	},
   "condition" : {
-    "current": 2,
+    "current": 3,
     "list": [
 			{
 				"name": "地图列表",

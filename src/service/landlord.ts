@@ -55,7 +55,7 @@ export const getHomeCollectionApi = () => {
   return LandlordController.getHomeCollection()
 }
 
-// 数据上报
+// 填报完成
 export const reportDataApi = (query: ReportParamsType) => {
   return LandlordController.reportData(query)
 }
