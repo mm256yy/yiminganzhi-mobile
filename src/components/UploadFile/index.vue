@@ -40,11 +40,11 @@
 import { ref, watch, onMounted } from 'vue'
 import uploadImage from './upload-image.vue'
 import uploadFile from './upload-files.vue'
-import { batchUploadImg } from '@/service'
+import { batchUploadImgApi } from '@/service'
 import { networkCheck } from '@/utils'
 import defaultImg from '@/static/images/icon_null_data.png'
 import { hideLoading } from '@/config'
-import { ossDomain } from '@/config'
+import { ossDomain, imageUrlAndBase64Map } from '@/config'
 
 interface PropsType {
   showType: 'grid' | 'list'
@@ -59,7 +59,8 @@ interface PropsType {
 interface FileItemType {
   url: string
   name: string
-  padPath: string
+  base64?: string
+  path?: string
   editName?: string
   isEdit?: boolean
 }
@@ -74,11 +75,14 @@ watch(
   (val) => {
     if (val) {
       const fileList = JSON.parse(val)
+      console.log(imageUrlAndBase64Map, 'imageUrlAndBase64Map')
       if (fileList && fileList.length) {
+        // 拿到图片map
         const list = fileList.map((item: any) => {
           item.editName = item.name || ''
           item.isEdit = false
           item.name = item.name || ''
+          item.path = imageUrlAndBase64Map[item.url].path || ''
           return item
         })
         filesList.value = list
@@ -97,10 +101,12 @@ watch(
     if (val) {
       const fileList = JSON.parse(val)
       if (fileList && fileList.length) {
+        // 拿到图片map
         const list = fileList.map((item: any) => {
           item.editName = item.name || ''
           item.isEdit = false
           item.name = item.name || ''
+          item.path = imageUrlAndBase64Map[item.url].path || ''
           return item
         })
         filesList.value = list
@@ -139,22 +145,30 @@ const chooseFiles = () => {
     extension: props.accepts || [],
     success(res) {
       const paths = Array.isArray(res.tempFilePaths) ? res.tempFilePaths : [res.tempFilePaths]
-      batchUploadImg(paths).then((res) => {
+      batchUploadImgApi(paths).then((res) => {
         console.log(res, '图片上传结果')
         if (res && res.length) {
           const files = res.map((item) => {
-            const name = item.split('/').pop() || ''
+            const name = item.path?.split('/').pop() || ''
             return {
-              padPath: item,
+              base64: item.base64 || '',
+              path: item.path || '',
               editName: name,
               isEdit: false,
               name,
               url: `${ossDomain}migrate/files/image/${name}`
             }
           })
-
+          // 新上传的图片存入map
+          files.forEach((item) => {
+            imageUrlAndBase64Map[item.url] = {
+              base64: item.base64,
+              path: item.path
+            }
+          })
           // 新增的图片
           filesList.value = [...filesList.value, ...files]
+
           updateFilesList()
         }
       })
@@ -174,7 +188,7 @@ const childUpdateFilesList = (list: any) => {
 
 const updateFilesList = () => {
   const result = filesList.value.map((item) => {
-    const { isEdit, editName, ...ret } = item
+    const { isEdit, editName, base64, ...ret } = item
     return ret
   })
   const str = JSON.stringify(result)
@@ -184,7 +198,7 @@ const updateFilesList = () => {
 
 const prviewImage = (item: any, index: number) => {
   const urls = filesList.value.map((fileItem) => {
-    return fileItem.padPath ? fileItem.padPath : netWork.value ? fileItem.url : defaultImg
+    return fileItem.path ? fileItem.path : netWork.value ? fileItem.url : defaultImg
   })
   uni.previewImage({
     urls,

@@ -13,7 +13,7 @@
           <view class="files__image is-text-image">
             <image
               class="header-image"
-              :src="item.padPath ? item.padPath : netWork ? item.url : defaultImg"
+              :src="item.path ? item.path : netWork ? item.url : defaultImg"
               mode="aspectFit"
               @click.stop="prviewImage(item, index)"
             />

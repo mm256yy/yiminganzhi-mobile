@@ -58,9 +58,9 @@
     "@dcloudio/uni-quickapp-webview": "3.0.0-3070320230222002",
     "@dcloudio/uni-ui": "^1.4.26",
     "dayjs": "^1.11.7",
+    "image-tools": "^1.4.0",
     "vue": "^3.2.45",
-    "vue-i18n": "^9.1.9",
-    "vue-pdf-embed": "^1.1.5"
+    "vue-i18n": "^9.1.9"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.3.0",

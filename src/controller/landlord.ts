@@ -14,6 +14,7 @@ import {
   ReportStatusEnum
 } from '@/types/common'
 import dayjs from 'dayjs'
+import { imageUrlAndBase64Map } from '@/config'
 
 // uid: string
 // content: string
@@ -459,6 +460,7 @@ export class Landlord extends Common {
         const result: LandlordDDLType[] = await this.db.selectSql(sql)
         const landlordArray: LandlordType[] = result.map((item) => JSON.parse(item.content))
         const realLandlordArr: LandlordType[] = []
+
         landlordArray.forEach((res) => {
           if (res && res.uid) {
             if (res.company && res.company.uid) {
@@ -508,6 +510,17 @@ export class Landlord extends Common {
                 item.completedTimeText = item.completedTime
                   ? dayjs(item.completedTime).format('YYYY-MM')
                   : ''
+
+                if (item.housePic) {
+                  // 处理房屋图片相关
+                  const houseImgs = JSON.parse(item.housePic)
+                  if (houseImgs && houseImgs.length) {
+                    item.housePicArray = houseImgs.map((imgItem: any) => {
+                      imgItem.base64 = imageUrlAndBase64Map[imgItem.url].base64
+                      return imgItem
+                    })
+                  }
+                }
               })
               res.immigrantHouseList = res.immigrantHouseList.filter(
                 (item) => item.isDelete !== '1'

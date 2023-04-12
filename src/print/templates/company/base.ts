@@ -187,7 +187,8 @@ export const companyBaseDefinition = {
           },
           {
             alignment: 'right',
-            image: ewm,
+            // image: ewm,
+            text: '',
             width: 55
           }
         ]
@@ -221,7 +222,7 @@ const getCompanyInfo1 = (landlord: LandlordType) => {
           { text: company.companyAddress || '', style: 'td' }
         ],
         [
-          { text: '营业范围', rowSpan: 5, style: 'td_5' },
+          { text: '营业范围', rowSpan: 5, style: 'td_3' },
           { text: company.natureBusiness || '', colSpan: 5, rowSpan: 5, style: 'td' },
           '',
           '',
@@ -346,7 +347,8 @@ const getFooter = () => {
         },
         {
           alignment: 'right',
-          image: ewm,
+          // image: ewm,
+          text: '',
           width: 55
         }
       ]

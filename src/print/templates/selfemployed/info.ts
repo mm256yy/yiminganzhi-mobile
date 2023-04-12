@@ -174,7 +174,8 @@ export const selfemployedInfoDefinition = {
           },
           {
             alignment: 'right',
-            image: ewm,
+            // image: ewm,
+            text: '',
             width: 55
           }
         ]
@@ -202,7 +203,8 @@ const getFooter = () => {
         },
         {
           alignment: 'right',
-          image: ewm,
+          // image: ewm,
+          text: '',
           width: 55
         }
       ]

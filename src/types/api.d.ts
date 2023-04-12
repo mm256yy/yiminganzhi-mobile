@@ -7,3 +7,5 @@ declare namespace Http {
   }
   type Response = Promise<Result>
 }
+
+declare module 'image-tools'

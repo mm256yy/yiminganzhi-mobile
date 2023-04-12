@@ -248,45 +248,30 @@ export const peopleInfoDefinition = {
       }
     }
   ],
-  footer: function (currentPage: number, pageSize: number) {
+  footer: function () {
     return [
       {
         fontSize: 10,
-        margin: [20, 0, 20, 50],
+        margin: [20, 10, 20, 0],
+        alignment: 'justify',
         columns: [
           {
             text: '权属人签字（盖章）：',
-            width: 100,
-            alignment: 'left'
-          },
-          {
-            text: '请签字xxxxxx',
-            width: 80,
-            color: '#ffffff',
             alignment: 'left',
-            decoration: 'underline',
-            decorationColor: '#000000'
+            margin: [0, 35, 0, 0]
           },
           {
             text: '调查员签字：',
-            width: 100,
-            alignment: 'left'
+            alignment: 'left',
+            margin: [0, 35, 0, 0]
           },
           {
-            text: '请签字xxxxxx',
-            width: 80,
-            color: '#ffffff',
-            decoration: 'underline',
-            decorationColor: '#000000'
-          },
-          {
-            image: ewm,
+            alignment: 'right',
+            // image: ewm,
+            text: '',
             width: 55
           }
         ]
-      },
-      {
-        text: `${currentPage}/${pageSize}`
       }
     ]
   }
@@ -311,7 +296,8 @@ const getFooter = () => {
         },
         {
           alignment: 'right',
-          image: ewm,
+          // image: ewm,
+          text: '',
           width: 55
         }
       ]

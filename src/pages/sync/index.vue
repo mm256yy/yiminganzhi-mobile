@@ -286,12 +286,13 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
-import { getCollectListApi, getOtherItemApi } from '@/service'
+import { getCollectListApi, getOtherItemApi, getDictObjApi, getImgListApi } from '@/service'
 import { pullInstance, pushInstance } from '@/sync/index'
-import { routerBack, routerForward, networkCheck } from '@/utils'
+import { routerBack, routerForward, networkCheck, setStorage, StorageKey } from '@/utils'
 import { CollectType, MainType } from '@/types/common'
 import { OtherDataType } from '@/database'
 import dayjs from 'dayjs'
+import { imageUrlAndBase64Map } from '@/config'
 
 const peopleList = ref<CollectType[]>([])
 const individualHouseholdList = ref<CollectType[]>([])
@@ -301,8 +302,7 @@ const pullTime = ref<string>('')
 
 const intervalId = ref<any>(0)
 const count = ref(0)
-// 拉取次数 一秒检测一次 总共 maxcCount 秒
-const maxCount = ref(180)
+
 const popup = ref<any>(null)
 const networkPup = ref<any>(null)
 // 同步状态
@@ -335,10 +335,51 @@ const onBack = () => {
   routerBack()
 }
 
+// 获取所有的字典表，存储为缓存变量 dict
+const getDictObj = async () => {
+  const result = await getDictObjApi()
+  setStorage(StorageKey.DICT, result)
+}
+
+// 获取图片 url:base64 map 存储起来
+const getImageObj = async () => {
+  const result = await getImgListApi()
+  if (result && result.length) {
+    result.forEach((item) => {
+      imageUrlAndBase64Map[item.url] = {
+        base64: item.base64,
+        path: item.path
+      }
+    })
+  }
+}
+
+const pollingSuccess = () => {
+  uni.hideLoading()
+  clearInterval(intervalId.value)
+
+  const { peasantHouseholdNum, companyNum, individualNum, villageNum, virutalVillageNum } =
+    pullInstance.state
+  pullData.value = {
+    peasantHouseholdNum,
+    companyNum,
+    individualNum,
+    villageNum,
+    virutalVillageNum
+  }
+  syncStatus.value = true
+
+  // 同步成功后 处理字典
+  getDictObj()
+  // 同步成功后 处理图片
+  getImageObj()
+  openPup()
+}
+
 const polling = () => {
   intervalId.value = setInterval(() => {
     console.log('轮询拉取状态')
-    if (count.value === maxCount.value) {
+    if (count.value === pullInstance.maxCount) {
       uni.hideLoading()
       clearInterval(intervalId.value)
       syncStatus.value = false
@@ -347,20 +388,7 @@ const polling = () => {
     }
     count.value++
     if (pullInstance.getPullStatus()) {
-      uni.hideLoading()
-      clearInterval(intervalId.value)
-      pageInit()
-      const { peasantHouseholdNum, companyNum, individualNum, villageNum, virutalVillageNum } =
-        pullInstance.state
-      pullData.value = {
-        peasantHouseholdNum,
-        companyNum,
-        individualNum,
-        villageNum,
-        virutalVillageNum
-      }
-      syncStatus.value = true
-      openPup()
+      pollingSuccess()
     }
   }, 1000)
 }

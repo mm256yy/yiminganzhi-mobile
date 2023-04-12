@@ -51,3 +51,6 @@ export const yesAndNoEnums = [
 ]
 
 export const ossDomain = 'https://oss.zdwp.tech/'
+
+// 缓存图片 url: { path : xxx, base64: xxxx }
+export const imageUrlAndBase64Map: { [key: string]: any } = {}

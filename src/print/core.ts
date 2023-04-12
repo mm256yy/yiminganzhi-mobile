@@ -1,4 +1,4 @@
-const pdfMake = require('@/static/js/pdfmake3.min.js')
+const pdfMake = require('@/static/js/pdfmake.min.js')
 const pdfFonts = require('@/static/js/vfs_fonts.js')
 import { LandlordType } from '@/types/sync'
 import { logo } from './config'
@@ -20,11 +20,11 @@ import { ProjectType } from '@/types/common'
     italics: 'Roboto-Regular.ttf',
     bolditalics: 'Roboto-Regular.ttf'
   },
-  fz: {
-    normal: 'fzhei-jt.TTF',
-    bold: 'fzhei-jt.TTF',
-    italics: 'fzhei-jt.TTF',
-    bolditalics: 'fzhei-jt.TTF'
+  PingFang: {
+    normal: 'PingFang.ttf',
+    bold: 'PingFang.ttf',
+    italics: 'PingFang.ttf',
+    bolditalics: 'PingFang.ttf'
   }
 }
 
@@ -38,7 +38,7 @@ class PrintCore {
       pageSize: 'A4',
       pageOrientation: 'portrait',
       defaultStyle: {
-        font: 'fz',
+        font: 'PingFang',
         fontSize: 8,
         color: 'black',
         alignment: 'center'

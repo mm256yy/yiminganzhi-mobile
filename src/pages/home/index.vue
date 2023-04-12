@@ -158,7 +158,7 @@
         </view>
       </view>
 
-      <view class="other-enter self">
+      <view class="other-enter">
         <view class="other-item" @click="toLink('database')">
           <view class="inner">
             <image class="other-icon" src="@/static/images/sync_enter.png" mode="scaleToFill" />
@@ -191,12 +191,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import { getStorage, routerForward, setStorage, StorageKey, networkCheck } from '@/utils'
 import { loginOutApi } from './api'
-import { getDictObjApi, getHomeCollectionApi } from '@/service'
+import { getHomeCollectionApi, getImgListApi } from '@/service'
 import { pullInstance } from '@/sync'
+import { imageUrlAndBase64Map } from '@/config'
 
 interface CollectionType {
   hasReport: number
@@ -212,12 +213,6 @@ const alertDialog = ref<any>(null)
 
 const toLink = (name: string) => {
   routerForward(name)
-}
-
-// 获取所有的字典表，存储为缓存变量 dict
-const getDictObj = async () => {
-  const result = await getDictObjApi()
-  setStorage(StorageKey.DICT, result)
 }
 
 const loginIn = () => {
@@ -266,9 +261,24 @@ const loginOut = () => {
     })
 }
 
-onShow(() => {
-  getDictObj()
+// 获取图片 url:base64 map 存储起来
+const getImageObj = async () => {
+  const result = await getImgListApi()
+  if (result && result.length) {
+    result.forEach((item) => {
+      imageUrlAndBase64Map[item.url] = {
+        base64: item.base64,
+        path: item.path
+      }
+    })
+  }
+}
 
+onMounted(() => {
+  getImageObj()
+})
+
+onShow(() => {
   const user = getStorage(StorageKey.USERINFO)
   const project = getStorage(StorageKey.PROJECTINFO)
   userInfo.value = user

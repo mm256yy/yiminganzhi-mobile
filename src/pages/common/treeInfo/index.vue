@@ -34,7 +34,12 @@
           <input class="remark" type="number" v-model="item.number" placeholder="请输入" />
         </view>
         <view class="col w-67">
-          <input class="remark" v-model="item.remark" :maxlength="100" placeholder="请输入内容" />
+          <input
+            class="remark"
+            v-model="item.remark"
+            :maxlength="16"
+            placeholder="请输入(16字以内)"
+          />
         </view>
         <view class="col w-29 p-l-7">
           <label class="icon-wrapper" @click="deleteTree(item, index)">

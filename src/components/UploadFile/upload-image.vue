@@ -4,7 +4,7 @@
       <view class="file-picker__box-content">
         <image
           class="file-image"
-          :src="item.padPath ? item.padPath : netWork ? item.url : defaultImg"
+          :src="item.path ? item.path : netWork ? item.url : defaultImg"
           mode="aspectFill"
           @click.stop="prviewImage(item, index)"
         />

@@ -21,28 +21,38 @@ import {
   VillageTableName,
   AppendantTableName,
   OtherDataType,
-  ImageDDL
+  ImageDDL,
+  ImageTableName
 } from '@/database/index'
 import { getProjectDataApi, getBaseDataApi, getConfigDataApi, getCollectApi } from './api'
-import { StateType } from '@/types/sync'
+import { StateType, ImgItemType } from '@/types/sync'
 import { getCurrentTimeStamp, setStorage, StorageKey } from '@/utils'
 import dayjs from 'dayjs'
+import { pathToBase64 } from 'image-tools'
 
 class PullData {
   // 接口返回数据存储
   public state: StateType
   // db实例
   public db: any
+
+  // 拉取的时间限制
+  public maxCount: number
   // 缓存拉取的数量
   public count: number
   // 需要拉取的数量
   public needPullCount: number
   // 行政区划 code-name 的map数据
   private districtMap: { [key: string]: string }
+  // 图片压缩的质量
+  private quality: number
 
   constructor() {
     this.count = 0
-    this.needPullCount = 11
+    // 需要拉取的数据的数量
+    this.needPullCount = 12
+    this.quality = 70
+    this.maxCount = 180
 
     this.state = {
       pullTime: '',
@@ -218,6 +228,10 @@ class PullData {
       res && this.count++
       console.log('删除: 数据', res)
     })
+    this.pullLandlordHouseImgs().then((res) => {
+      res && this.count++
+      console.log('下载: 图片', res)
+    })
   }
 
   public async getCollect() {
@@ -273,7 +287,8 @@ class PullData {
         db.dropTable(OtherTableName),
         db.dropTable(DistrictTableName),
         db.dropTable(VillageTableName),
-        db.dropTable(AppendantTableName)
+        db.dropTable(AppendantTableName),
+        db.dropTable(ImageTableName)
       ])
         .then((res) => {
           console.log('drop表: 成功', res)
@@ -345,6 +360,39 @@ class PullData {
       } else {
         resolve(false)
       }
+    })
+  }
+
+  /** 房屋示意图下载 */
+  private pullLandlordHouseImgs(): Promise<boolean> {
+    return new Promise(async (resolve) => {
+      const { peasantHouseholdPushDtoList: list } = this.state
+      const imgUrls: string[] = []
+      if (this.isArrayAndNotNull(list)) {
+        list.forEach((item) => {
+          const { immigrantHouseList } = item
+          // 拿到所有的房屋图片
+          if (immigrantHouseList && immigrantHouseList.length) {
+            immigrantHouseList.forEach((houseItem) => {
+              if (houseItem && houseItem.housePic) {
+                try {
+                  const imgArr = JSON.parse(houseItem.housePic)
+                  imgArr.forEach((imgItem: any) => {
+                    imgUrls.push(imgItem.url)
+                  })
+                } catch (err) {}
+              }
+            })
+          }
+        })
+      }
+      console.log(imgUrls, 'imgUrls')
+      const pathImgs = await this.downLoadImgs(imgUrls)
+      console.log(pathImgs, 'pathImgs')
+      const base64Imgs = await this.imgPathTobase64Batch(pathImgs)
+      console.log('base64Imgs')
+      const result = await this.saveImgs(base64Imgs)
+      resolve(result)
     })
   }
 
@@ -631,6 +679,104 @@ class PullData {
         resolve(false)
       })
       resolve(true)
+    })
+  }
+
+  /** 图片更新到数据库 */
+  private saveImgs(imgArray: ImgItemType[]): Promise<boolean> {
+    return new Promise(async (resolve) => {
+      if (!imgArray || !imgArray.length) {
+        resolve(false)
+        return
+      }
+      await this.db.transaction('begin').catch(() => {
+        resolve(false)
+      })
+      imgArray.forEach((item) => {
+        // status状态为1 不需要上传
+        const fields = `'status','base64','path','url','updatedDate'`
+        const values = `'1','${item.base64}','${item.path}','${item.url}','${dayjs().valueOf()}'`
+        this.db.insertTableData(ImageTableName, values, fields).catch((err: any) => {
+          console.log(err, '更新img err')
+        })
+      })
+      await this.db.transaction('commit').catch(() => {
+        resolve(false)
+      })
+      resolve(true)
+    })
+  }
+
+  /** 图片转出base64 */
+  private imgPathTobase64Batch(imgPathAndUrls: ImgItemType[]): Promise<ImgItemType[]> {
+    return new Promise((resolve, reject) => {
+      if (!imgPathAndUrls || !imgPathAndUrls.length) {
+        reject([])
+        return
+      }
+      Promise.all(imgPathAndUrls.map((item) => pathToBase64(item.path)))
+        .then((res) => {
+          // [base64, base64...]
+          // 按照顺序组成需要的数据
+          if (res && res.length) {
+            const result = imgPathAndUrls.map((item, index) => {
+              item.base64 = res[index]
+              return item
+            })
+            resolve(result)
+          } else {
+            reject([])
+          }
+        })
+        .catch((error) => {
+          console.error('图片转出base64:', error)
+          reject([])
+        })
+    })
+  }
+
+  /** 图片下载 */
+  private downLoadImgs(imgUrls: string[]): Promise<ImgItemType[]> {
+    return new Promise((resolve) => {
+      // 对房屋图片进行下载 绝对压缩到70%
+      // 压缩参数 ?x-oss-process=image/quality,Q_70
+      if (!imgUrls || !imgUrls.length) {
+        resolve([])
+        return
+      }
+      // const imgUrls = [
+      //   'https://oss.zdwp.tech/migrate/files/image/33761135-b49f-462f-9078-85da5b55a9f5.jpeg?x-oss-process=image/quality,Q_80'
+      // ]
+
+      // 下载图片 拿到本地路经
+      const tempFilePathArray: ImgItemType[] = []
+      let imgCount = 0
+      imgUrls.forEach((img) => {
+        const url = img.split('?')[0]
+        const zipUrl = `${url}?x-oss-process=image/quality,Q_70`
+        uni.downloadFile({
+          url: zipUrl,
+          success: (res) => {
+            imgCount++
+            const { tempFilePath, statusCode } = res
+            if (statusCode === 200) {
+              tempFilePathArray.push({
+                url: img,
+                path: tempFilePath
+              })
+            }
+          },
+          fail: () => {
+            imgCount++
+          },
+          complete() {
+            if (imgCount === imgUrls.length) {
+              // 处理完成
+              resolve(tempFilePathArray)
+            }
+          }
+        })
+      })
     })
   }
 }

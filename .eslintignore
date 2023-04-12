@@ -5,5 +5,5 @@
 /test/unit/coverage/
 /node_modules/*
 /dist*
-src/static
+src/static/js
 src/components/Header/Index.vue

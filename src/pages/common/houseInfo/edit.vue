@@ -323,8 +323,8 @@
               <uni-easyinput
                 v-model="formData.remark"
                 type="textarea"
-                :maxlength="100"
-                placeholder="请输入(100字以内)"
+                :maxlength="30"
+                placeholder="请输入(30字以内)"
               />
             </uni-forms-item>
           </uni-col>

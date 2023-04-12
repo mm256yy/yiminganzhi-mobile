@@ -132,3 +132,9 @@ export interface PushStateType {
   deleteRecordList: DeleteRecordType[]
   villageList: VillageType[]
 }
+
+export interface ImgItemType {
+  url?: string
+  base64?: string
+  path?: string
+}

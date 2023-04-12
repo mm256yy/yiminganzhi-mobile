@@ -343,6 +343,8 @@ export default {
       if (type === 'report') {
         ;(this.$refs.reportDataPopup as any)?.close()
       } else if (type === 'print') {
+        // 关闭打印弹窗 清理掉缓存的业主信息
+        this.options.landlords = []
         ;(this.$refs.printPopup as any)?.close()
       }
     }

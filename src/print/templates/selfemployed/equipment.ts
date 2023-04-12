@@ -1,7 +1,7 @@
 import { LandlordType } from '@/types/sync'
 import { getEquipment, getBottom } from '../../common'
 import { layout } from '../../config'
-import { ProjectType } from '@/types/common'
+import { MainType, ProjectType } from '@/types/common'
 
 // 个体户/企业 设施设备模版
 export const selfemployedEquipmentDefinition = {
@@ -88,7 +88,7 @@ export const selfemployedEquipmentDefinition = {
 // 头部信息 order 1
 const getTitle = () => {
   return {
-    text: '基本情况调查表',
+    text: '设施设备调查表',
     fontSize: 16,
     bold: true,
     margin: [0, 0, 0, 29]
@@ -102,7 +102,13 @@ const getInfo = (landlord: LandlordType) => {
     fontSize: 9,
     margin: [0, 0, 0, 8],
     columns: [
-      [{ text: `个体工商户名称：${landlord.name}` }],
+      [
+        {
+          text: `${landlord.type === MainType.Company ? '企业' : '个体工商户'}名称：${
+            landlord.name
+          }`
+        }
+      ],
       [{ text: `所在位置：${landlord.locationTypeText}` }],
       [{ text: `联系方式：${landlord.phone}` }]
     ]

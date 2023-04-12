@@ -67,12 +67,12 @@ export const getOtherItemApi = (type: OtherDataType) => {
 }
 
 // 获取图片列表 [{url: xxxx, base64: ''}]
-export const getImgList = () => {
+export const getImgListApi = () => {
   return ImageController.getList()
 }
 
 // 批量图片上传
-export const batchUploadImg = (data: string[]) => {
+export const batchUploadImgApi = (data: string[]) => {
   return ImageController.batchAddImg(data)
 }
 

@@ -6,6 +6,9 @@ import { imgHeight, layout } from './config'
  * 公共模块
  */
 
+// 顶部项目名称栏边距
+const headMargin = 40
+
 // 顶部两栏信息
 export const getHead = (landlord: LandlordType, projectInfo: ProjectType) => {
   return {
@@ -59,14 +62,14 @@ export const getCompanyTableHead = (landlord: LandlordType, projectInfo: Project
                 alignment: 'center',
                 fontSize: 16,
                 bold: true,
-                margin: [60, 9, 60, 2]
+                margin: [headMargin, 0, headMargin, 2]
               },
               {
                 text: `（${landlord.type === MainType.Company ? '企业' : '个体户'} ${
                   landlord.name
                 } ${landlord.doorNo} 号）`,
                 alignment: 'center',
-                margin: [60, 0, 60, 0]
+                margin: [headMargin, 0, headMargin, 0]
               }
             ]
           },
@@ -120,7 +123,7 @@ export const getCompanyBaseTableHead = (landlord: LandlordType, projectInfo: Pro
                 alignment: 'center',
                 fontSize: 16,
                 bold: true,
-                margin: [60, 27, 60, 2]
+                margin: [headMargin, 27, headMargin, 2]
               }
             ]
           },
@@ -170,12 +173,12 @@ export const getPeopleTableHead = (landlord: LandlordType, projectInfo: ProjectT
                 alignment: 'center',
                 fontSize: 16,
                 bold: true,
-                margin: [60, 9, 60, 2]
+                margin: [headMargin, 0, headMargin, 2]
               },
               {
                 text: `（居民户 ${landlord.name || ''} ${landlord.doorNo || ''} 号）`,
                 alignment: 'center',
-                margin: [60, 0, 60, 0]
+                margin: [headMargin, 0, headMargin, 0]
               }
             ]
           },
@@ -379,7 +382,7 @@ export const getHouseInfo = (landlord: LandlordType) => {
   ])
   return {
     table: {
-      widths: [26, 46, 46, 26, 46, 50, 50, 60, 60, '*'],
+      widths: [26, 40, 40, 26, 40, 50, 50, 60, 60, '*'],
       headerRows: 2,
       body
     },
@@ -402,10 +405,10 @@ export const getFushuwu = (landlord: LandlordType) => {
   ]
   const { immigrantAppendantList } = landlord
   if (immigrantAppendantList && immigrantAppendantList.length) {
-    immigrantAppendantList.forEach((item) => {
+    immigrantAppendantList.forEach((item, index) => {
       if (item.number || item.remark) {
         body.push([
-          { text: item.id || '', style: 'td' },
+          { text: index + 1, style: 'td' },
           { text: item.name || '', style: 'td' },
           { text: item.size || '', style: 'td' },
           { text: item.unit || '', style: 'td' },
@@ -450,9 +453,9 @@ export const getTree = (landlord: LandlordType) => {
   ]
   const { immigrantTreeList } = landlord
   if (immigrantTreeList && immigrantTreeList.length) {
-    immigrantTreeList.forEach((item) => {
+    immigrantTreeList.forEach((item, index) => {
       body.push([
-        { text: item.id || '', style: 'td' },
+        { text: index + 1, style: 'td' },
         { text: item.name || '', style: 'td' },
         { text: item.usageTypeText || '', style: 'td' },
         { text: item.sizeText || '', style: 'td' },
@@ -495,9 +498,9 @@ export const getGrave = (landlord: LandlordType) => {
   ]
   const { immigrantGraveList } = landlord
   if (immigrantGraveList && immigrantGraveList.length) {
-    immigrantGraveList.forEach((item) => {
+    immigrantGraveList.forEach((item, index) => {
       body.push([
-        { text: item.id || '', style: 'td' },
+        { text: index + 1, style: 'td' },
         { text: item.graveTypeText || '', style: 'td' },
         { text: item.materialsText || '', style: 'td' },
         { text: item.graveYear || '', style: 'td' },
@@ -528,27 +531,37 @@ export const getGrave = (landlord: LandlordType) => {
 // 房屋示意图
 export const getHousePic = (landlord: LandlordType) => {
   const { immigrantHouseList } = landlord
-  let imgs: any[] = []
+  const imgs: any[] = []
   const body: any[] = [[{ text: '房屋示意图', bold: true, style: 'td' }]]
   if (immigrantHouseList && immigrantHouseList.length) {
     immigrantHouseList.forEach((item) => {
-      const houseImgs = JSON.parse(item.housePic)
-      imgs = imgs.concat(houseImgs)
+      // 处理过的房屋图片数组
+      if (item.housePicArray && item.housePicArray.length) {
+        item.housePicArray.forEach((houseItem: any) => {
+          imgs.push(houseItem.base64)
+        })
+      }
     })
-    imgs = imgs.map((item) => {
-      return item.url
-    })
-    imgs.forEach((img) => {
+    if (imgs.length) {
+      imgs.forEach((img) => {
+        body.push([
+          {
+            image: img,
+            fit: [550, imgHeight]
+          }
+        ])
+      })
+    } else {
       body.push([
         {
-          image: img
+          text: '无'
         }
       ])
-    })
+    }
   } else {
     body.push([
       {
-        text: ''
+        text: '无'
       }
     ])
   }
@@ -556,10 +569,7 @@ export const getHousePic = (landlord: LandlordType) => {
   return {
     table: {
       widths: ['*'],
-      heights: function (row: number) {
-        return row > 0 ? imgHeight : 0
-      },
-      headerRows: 2,
+      headerRows: 1,
       body
     },
     layout
@@ -584,9 +594,9 @@ export const getEquipment = (landlord: LandlordType) => {
   ]
   const { immigrantEquipmentList } = landlord
   if (immigrantEquipmentList && immigrantEquipmentList.length) {
-    immigrantEquipmentList.forEach((item) => {
+    immigrantEquipmentList.forEach((item, index) => {
       body.push([
-        { text: item.id || '', style: 'td' },
+        { text: index + 1, style: 'td' },
         { text: item.name || '', style: 'td' },
         { text: item.size || '', style: 'td' },
         { text: item.unit || '', style: 'td' },
@@ -614,7 +624,7 @@ export const getEquipment = (landlord: LandlordType) => {
   }
   return {
     table: {
-      widths: [26, 82, 42, 26, 26, 82, 58, 58, 42, '*'],
+      widths: [20, 72, 42, 26, 26, 72, 40, 58, 42, '*'],
       headerRows: 1,
       body
     },

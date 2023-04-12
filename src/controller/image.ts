@@ -5,6 +5,8 @@
 import { ImageTableName, ImageDDLType } from '@/database'
 import dayjs from 'dayjs'
 import { Common } from './common'
+import { pathToBase64 } from 'image-tools'
+import { ImgItemType } from '@/types/sync'
 
 class Image extends Common {
   constructor() {
@@ -14,7 +16,7 @@ class Image extends Common {
   getList(): Promise<ImageDDLType[]> {
     return new Promise(async (resolve, reject) => {
       try {
-        const sql = `select * from ${ImageTableName}`
+        const sql = `select * from ${ImageTableName} where status = '1'`
         const list: ImageDDLType[] = await this.db.selectSql(sql)
         resolve(list)
       } catch (error) {
@@ -24,7 +26,35 @@ class Image extends Common {
     })
   }
 
-  private doneSave(localPaths: string[]) {
+  /** 图片转出base64 */
+  private imgPathTobase64Batch(imgPathAndUrls: ImgItemType[]): Promise<ImgItemType[]> {
+    return new Promise((resolve, reject) => {
+      if (!imgPathAndUrls || !imgPathAndUrls.length) {
+        reject([])
+        return
+      }
+      Promise.all(imgPathAndUrls.map((item) => pathToBase64(item.path)))
+        .then((res) => {
+          // [base64, base64...]
+          // 按照顺序组成需要的数据
+          if (res && res.length) {
+            const result = imgPathAndUrls.map((item, index) => {
+              item.base64 = res[index]
+              return item
+            })
+            resolve(result)
+          } else {
+            reject([])
+          }
+        })
+        .catch((error) => {
+          console.error('图片转出base64:', error)
+          reject([])
+        })
+    })
+  }
+
+  private doneSave(localPaths: ImgItemType[]): Promise<boolean> {
     console.log('localPaths:', localPaths)
     return new Promise(async (resolve) => {
       if (!localPaths || !localPaths.length) {
@@ -35,8 +65,8 @@ class Image extends Common {
         resolve(false)
       })
       localPaths.forEach((item) => {
-        const fields = `'status','path','url','updatedDate'`
-        const values = `'0','${item}','','${dayjs().valueOf()}'`
+        const fields = `'status','path','url','base64','updatedDate'`
+        const values = `'0','${item.path}','${item.url}','${item.base64}','${dayjs().valueOf()}'`
         this.db.insertTableData(ImageTableName, values, fields).catch((err) => {
           console.log(err, '上传err')
         })
@@ -48,7 +78,7 @@ class Image extends Common {
     })
   }
 
-  batchAddImg(files: string[]): Promise<string[]> {
+  batchAddImg(files: string[]): Promise<ImgItemType[]> {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const _that = this
     return new Promise(async (resolve, reject) => {
@@ -73,13 +103,23 @@ class Image extends Common {
             complete: function () {
               if (localPaths.length === files.length) {
                 // 此时已经全部转了
+                const imgPathAndUrls = localPaths
+                  .filter((item) => !!item)
+                  .map((item) => {
+                    return {
+                      url: '',
+                      base64: '',
+                      path: item
+                    }
+                  })
                 _that
-                  .doneSave(localPaths)
+                  .imgPathTobase64Batch(imgPathAndUrls)
+                  .then((res) => _that.doneSave(res))
                   .then((res) => {
                     if (res) {
                       // 存入数据库成功
                       console.log('图片：存入数据库成功')
-                      resolve(localPaths)
+                      resolve(imgPathAndUrls)
                     } else {
                       reject()
                     }
