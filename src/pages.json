@@ -195,7 +195,7 @@
 		}
 	},
   "condition" : {
-    "current": 3,
+    "current": 2,
     "list": [
 			{
 				"name": "地图列表",
