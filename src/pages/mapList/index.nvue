@@ -1,29 +1,29 @@
 <template>
-	<view class="map-wrap" :style="{ paddingTop: `${statusBarHeight}px` }">
-		<image class="bg" src="@/static/images/common_bg.png" mode="widthFix" />
-		<view class="common-header">
-		  <view class="back-box" @click="onBack">
-		    <uni-icons type="back" color="#ffffff" size="14rpx" />
-		  </view>
-		  <text class="tit">地图查看</text>
-		  <text class="right-btn"/>
-		</view>
-		<view class="map-content">
-			<map
-				id="map"
-				class="map"
-				:enable-satellite="true"
-				:enable-overlooking="true"
-				:latitude="centerLocation.latitude"
-				:longitude="centerLocation.longitude"
-				:polygons="polygons"
-				:markers="markers"
-				:scale="14"
-				@markertap="markerTap"
-			></map>
-		</view>
-		<map-info v-if="show" :data-info="dataInfo" @close="close" />
-	</view>
+  <view class="map-wrap" :style="{ paddingTop: `${statusBarHeight}px` }">
+    <image class="bg" src="@/static/images/common_bg.png" mode="widthFix" />
+    <view class="common-header">
+      <view class="back-box" @click="onBack">
+        <uni-icons type="back" color="#ffffff" size="14rpx" />
+      </view>
+      <text class="tit">地图查看</text>
+      <text class="right-btn" />
+    </view>
+    <view class="map-content">
+      <map
+        id="map"
+        class="map"
+        :enable-satellite="true"
+        :enable-overlooking="true"
+        :latitude="centerLocation.latitude"
+        :longitude="centerLocation.longitude"
+        :polygons="polygons"
+        :markers="markers"
+        :scale="14"
+        @markertap="markerTap"
+      ></map>
+    </view>
+    <map-info v-if="show" :data-info="dataInfo" @close="close" />
+  </view>
 </template>
 
 <script lang="ts" setup>
@@ -44,9 +44,9 @@ const page = ref<number>(1)
 const pageSize = ref<number>(99999)
 const keyWords = ref<string>('')
 const villageList = ref<any>([]) // 自然村列表
-const villageMarkersList = ref<any>([]) // 自然村标记列表
+const villageMarkersList = ref<any>([]) // 自然村标记点列表
 const householdList = ref<any>([]) // 居民户列表
-const householdMarkersList = ref<any>([]) // 居民户标记列表
+const householdMarkersList = ref<any>([]) // 居民户标记点列表
 
 interface LocationType {
   longitude: number
@@ -55,8 +55,8 @@ interface LocationType {
 
 // 初始地图坐标
 const centerLocation = ref<LocationType>({
-	latitude: 29.43737204801587, // 纬度
-	longitude: 119.766446455085699 // 经度
+  latitude: 29.43737204801587, // 纬度
+  longitude: 119.766446455085699 // 经度
 })
 
 const polygons = ref<any>([])
@@ -70,144 +70,145 @@ const getVillageList = async () => {
     page: page.value,
     pageSize: pageSize.value
   })
-	
-	if (res && res.length) {
-		let villageArr: any = []
-		let markerArr: any = []
-		res.map((item: any) => {
-			if (item.latitude && item.longitude && item.areaCodeText) {
-				villageArr.push({
-					id: item.id,
-					uid: item.uid,
-					name: item.name,
-					areaCode: item.areaCode,
-					townCode: item.townCode,
-					villageCode: item.villageCode,
-					areaCodeText: item.areaCodeText,
-					townCodeText: item.townCodeText,
-					villageCodeText: item.villageCodeText,
-					type: MainType.Village
-				})
-				markerArr.push({
-					id: item.uid,
-					iconPath: iconPath.villageIconPath,
-					label: {
-						// x: 24,
-						// y: -36,
-						// padding: 10,
-						// borderRadius: 30,
-						x: -(0.5 * ((item.name.length > 8 ? 8 : item.name.length) * 12) / 2 ) - 12,
-						y: 5,
-						padding: 4,
-						content: hideStr(item.name, 8),
-						color: '#FFFFFF',
-						fontSize: 12,
-						bgColor: '#17171890',
-						borderRadius: 4
-					},
-					width: 40,
-					height: 40,
-					latitude: item.latitude,
-					longitude: item.longitude,
-					joinCluster: true
-				})
-			}
-		})
-		villageList.value = villageArr
-		villageMarkersList.value = markerArr
-	}
+
+  if (res && res.length) {
+    let villageArr: any = []
+    let markerArr: any = []
+    res.map((item: any) => {
+      if (item.latitude && item.longitude && item.areaCodeText) {
+        villageArr.push({
+          id: item.id,
+          uid: item.uid,
+          name: item.name,
+          areaCode: item.areaCode,
+          townCode: item.townCode,
+          villageCode: item.villageCode,
+          areaCodeText: item.areaCodeText,
+          townCodeText: item.townCodeText,
+          villageCodeText: item.villageCodeText,
+          type: MainType.Village
+        })
+        markerArr.push({
+          id: item.uid,
+          iconPath: iconPath.villageIconPath,
+          label: {
+            // x: 24,
+            // y: -36,
+            // padding: 10,
+            // borderRadius: 30,
+            x: -((0.5 * ((item.name.length > 8 ? 8 : item.name.length) * 12)) / 2) - 12,
+            y: 5,
+            padding: 4,
+            content: hideStr(item.name, 8),
+            color: '#FFFFFF',
+            fontSize: 12,
+            bgColor: '#17171890',
+            borderRadius: 4
+          },
+          width: 40,
+          height: 40,
+          latitude: item.latitude,
+          longitude: item.longitude,
+          joinCluster: true
+        })
+      }
+    })
+    villageList.value = villageArr
+    villageMarkersList.value = markerArr
+  }
 }
 
 // 获取居民户列表
 const getPeasantHouseholdList = async () => {
-	const params: LandlordSearchType = {
-	  name: keyWords.value,
-	  page: page.value,
-	  pageSize: pageSize.value,
-	  type: MainType.PeasantHousehold
-	}
-	const res = await getLandlordListBySearchApi(params)
-	if (res && res.length) {
-		let householdArr: any = []
-		let markerArr: any = []
-		res.map((item: any) => {
-			if (item.latitude && item.longitude) {
-				householdArr.push({
-					id: item.id,
-					uid: item.uid,
-					name: item.name,
-					card: item.card,
-					address: item.address,
-					doorNo: item.doorNo,
-					houseNum: item.immigrantHouseList.length,
-					demographicNum: item.demographicList.length,
-					areaCode: item.areaCode,
-					townCode: item.townCode,
-					villageCode: item.villageCode,
-					virutalVillageCode: item.virutalVillageCode,
-					areaCodeText: item.areaCodeText,
-					townCodeText: item.townCodeText,
-					villageCodeText: item.villageCodeText,
-					virutalVillageCodeText: item.virutalVillageCodeText,
-					type: MainType.PeasantHousehold
-				})
-				markerArr.push({
-					id: item.uid,
-					iconPath: iconPath.userIconPath,
-					label: {
-						// x: 24,
-						// y: -36,
-						// padding: 10,
-						// borderRadius: 30,
-						x: -(0.5 * ((item.name.length > 8 ? 8 : item.name.length) * 12) / 2 ) - 12,
-						y: 5,
-						padding: 4,
-						content: hideStr(item.name, 8),
-						color: '#FFFFFF',
-						fontSize: 12,
-						bgColor: '#17171890',
-						borderRadius: 4
-					},
-					width: 40,
-					height: 40,
-					latitude: item.latitude,
-					longitude: item.longitude,
-					joinCluster: true
-				})
-			}
-		})
-		householdList.value = householdArr
-		householdMarkersList.value = markerArr
-	}
+  const params: LandlordSearchType = {
+    name: keyWords.value,
+    page: page.value,
+    pageSize: pageSize.value,
+    type: MainType.PeasantHousehold
+  }
+  const res = await getLandlordListBySearchApi(params)
+  if (res && res.length) {
+    let householdArr: any = []
+    let markerArr: any = []
+    res.map((item: any) => {
+      if (item.latitude && item.longitude) {
+        householdArr.push({
+          id: item.id,
+          uid: item.uid,
+          name: item.name,
+          card: item.card,
+          address: item.address,
+          doorNo: item.doorNo,
+          houseNum: item.immigrantHouseList.length,
+          demographicNum: item.demographicList.length,
+          areaCode: item.areaCode,
+          townCode: item.townCode,
+          villageCode: item.villageCode,
+          virutalVillageCode: item.virutalVillageCode,
+          areaCodeText: item.areaCodeText,
+          townCodeText: item.townCodeText,
+          villageCodeText: item.villageCodeText,
+          virutalVillageCodeText: item.virutalVillageCodeText,
+          type: MainType.PeasantHousehold
+        })
+        markerArr.push({
+          id: item.uid,
+          iconPath: iconPath.userIconPath,
+          label: {
+            // x: 24,
+            // y: -36,
+            // padding: 10,
+            // borderRadius: 30,
+            x: -((0.5 * ((item.name.length > 8 ? 8 : item.name.length) * 12)) / 2) - 12,
+            y: 5,
+            padding: 4,
+            content: hideStr(item.name, 8),
+            color: '#FFFFFF',
+            fontSize: 12,
+            bgColor: '#17171890',
+            borderRadius: 4
+          },
+          width: 40,
+          height: 40,
+          latitude: item.latitude,
+          longitude: item.longitude,
+          joinCluster: true
+        })
+      }
+    })
+    householdList.value = householdArr
+    householdMarkersList.value = markerArr
+  }
 }
 
 // 初始化标记点
 const initMarker = async () => {
-	await getVillageList()
-	await getPeasantHouseholdList()
-	markers.value = [...villageMarkersList.value, ...householdMarkersList.value]
+  await getVillageList()
+  await getPeasantHouseholdList()
+  markers.value = [...villageMarkersList.value, ...householdMarkersList.value]
 }
 
 /**
  * 初始化处理区域坐标数据
  * @param{Object} obj 坐标数据
- */ 
+ */
 const initCoordinateData = (obj: any) => {
-	let polygonsArr: any = []
-	if (obj && JSON.stringify(obj) !== '{}') {
-		const features = obj.features ? obj.features : []
-		features && features.map((item: any) => {
-			item.geometry.coordinates[0].map((coord: any) => {
-				polygonsArr.push({
-					points: genArr(coord),
-					strokeWidth: 2,
-					strokeColor: '#FF0000',
-					fillColor: 'transparent'
-				})
-			})
-		})
-		polygons.value = polygonsArr
-	}
+  let polygonsArr: any = []
+  if (obj && JSON.stringify(obj) !== '{}') {
+    const features = obj.features ? obj.features : []
+    features &&
+      features.map((item: any) => {
+        item.geometry.coordinates[0].map((coord: any) => {
+          polygonsArr.push({
+            points: genArr(coord),
+            strokeWidth: 2,
+            strokeColor: '#FF0000',
+            fillColor: 'transparent'
+          })
+        })
+      })
+    polygons.value = polygonsArr
+  }
 }
 
 /**
@@ -215,18 +216,18 @@ const initCoordinateData = (obj: any) => {
  * @param{Array} arr 原数组
  */
 const genArr = (arr: any) => {
-	let newArr: any = []
-	if (arr && arr.length > 0) {
-		arr.map((item: any) => {
-			newArr.push({
-				longitude: item[0],
-				latitude: item[1]
-			})
-		})
-		return newArr
-	} else {
-		return newArr
-	}
+  let newArr: any = []
+  if (arr && arr.length > 0) {
+    arr.map((item: any) => {
+      newArr.push({
+        longitude: item[0],
+        latitude: item[1]
+      })
+    })
+    return newArr
+  } else {
+    return newArr
+  }
 }
 
 /**
@@ -234,51 +235,51 @@ const genArr = (arr: any) => {
  * @param{Object} e
  */
 const markerTap = (e: any) => {
-	getDataInfo(e.detail.markerId)
-	show.value = true
+  getDataInfo(e.detail.markerId)
+  show.value = true
 }
 
 // 获取单个居民户/自然村 信息
 const getDataInfo = (uid: string) => {
-	if (uid) {
-		let arr: any = [...villageList.value, ...householdList.value]
-		arr.map((item: any) => {
-			if (item.uid === uid) {
-				if (item.type === MainType.Village) {
-					dataInfo.value = {
-						uid: item.uid,
-						name: item.name,
-						areaCodeText: item.areaCodeText,
-						townCodeText: item.townCodeText,
-						villageCodeText: item.villageCodeText,
-						type: item.type
-					}
-					return
-				} else if (item.type === MainType.PeasantHousehold) {
-					dataInfo.value = {
-						uid: item.uid,
-						name: item.name,
-						card: item.card,
-						doorNo: item.doorNo,
-						address: item.address,
-						houseNum: item.houseNum,
-						demographicNum: item.demographicNum,
-						areaCode: item.areaCode,
-						townCode: item.townCode,
-						villageCode: item.villageCode,
-						virutalVillageCode: item.virutalVillageCode,
-						type: item.type
-					}
-					return
-				}
-			}
-		})
-	}
+  if (uid) {
+    let arr: any = [...villageList.value, ...householdList.value]
+    arr.map((item: any) => {
+      if (item.uid === uid) {
+        if (item.type === MainType.Village) {
+          dataInfo.value = {
+            uid: item.uid,
+            name: item.name,
+            areaCodeText: item.areaCodeText,
+            townCodeText: item.townCodeText,
+            villageCodeText: item.villageCodeText,
+            type: item.type
+          }
+          return
+        } else if (item.type === MainType.PeasantHousehold) {
+          dataInfo.value = {
+            uid: item.uid,
+            name: item.name,
+            card: item.card,
+            doorNo: item.doorNo,
+            address: item.address,
+            houseNum: item.houseNum,
+            demographicNum: item.demographicNum,
+            areaCode: item.areaCode,
+            townCode: item.townCode,
+            villageCode: item.villageCode,
+            virutalVillageCode: item.virutalVillageCode,
+            type: item.type
+          }
+          return
+        }
+      }
+    })
+  }
 }
 
 // 关闭居民户简介/自然村简介弹窗
 const close = () => {
-	show.value = false
+  show.value = false
 }
 
 const onBack = () => {
@@ -286,27 +287,27 @@ const onBack = () => {
 }
 
 onReady(() => {
-	const _mapContext = uni.createMapContext("map")
+  const _mapContext = uni.createMapContext('map')
 
-	// 点聚合：仅调用初始化，才会触发 on.("markerClusterCreate", (e) => {})
-	_mapContext.initMarkerCluster({
-		enableDefaultStyle: false,
-		zoomOnClick: true,
-		gridSize: 60,
-		complete (res: any) {
-			console.log('initMarkerCluster', res)
-		}
-	})
+  // 点聚合：仅调用初始化，才会触发 on.("markerClusterCreate", (e) => {})
+  _mapContext.initMarkerCluster({
+    enableDefaultStyle: false,
+    zoomOnClick: true,
+    gridSize: 60,
+    complete(res: any) {
+      console.log('initMarkerCluster', res)
+    }
+  })
 
-	_mapContext.on("markerClusterCreate", (e: any) => {
-		console.log("markerClusterCreate", e)
-	})
+  _mapContext.on('markerClusterCreate', (e: any) => {
+    console.log('markerClusterCreate', e)
+  })
 
-	initMarker()
+  initMarker()
 })
 
 onMounted(() => {
-	initCoordinateData(shuangxi)
+  initCoordinateData(shuangxi)
 })
 </script>
 
