@@ -547,6 +547,7 @@ const getMainInfo = (landlord: LandlordType) => {
 const getFooter = () => {
   return [
     {
+      fontSize: 10,
       margin: [20, 10, 20, 0],
       alignment: 'justify',
       columns: [
