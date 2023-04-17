@@ -322,7 +322,7 @@ const getMainInfo = (landlord: LandlordType) => {
   return {
     layout,
     table: {
-      widths: [40, 40, '*', 40, 40, '*', 40, 40, '*'],
+      widths: [35, 36, 86, 35, 36, 86, 35, 36, 88],
       body: [
         [
           { text: '法人代表姓名', colSpan: 2, style: 'td' },
