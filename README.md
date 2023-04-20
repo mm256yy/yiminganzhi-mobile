@@ -89,8 +89,8 @@
 
 ### 版本问题
 
-- HBuilderX 3.6.18
-- uniapp 编译器 3.6.18
+- HBuilderX 3.7.3
+- uniapp 编译器 3.7.3
 
 这两个版本号必须一致，否则打包出来的 APP 会有问题
 
@@ -101,3 +101,27 @@
 收费 10 元 供测试用 da-printpdf: https://ext.dcloud.net.cn/plugin?id=7780
 
 说明：如果免费插件不可用，可购买收费插件，功能相同
+
+### 打 APK 包
+
+- 打开 HBuilderX 确保版本和编译器版本一致 项目目前使用的是 3.7.3 (会不定期更新版本)
+- 打开项目 migrate-mobile
+- 顶部工具栏-发行 选择：原生 APP-云打包
+  > 由于使用了打印原生插件，需使用云打包
+- 弹窗中输入内容
+
+  - 选择安卓包
+  - 包名：io.dcloud.migrate
+  - 证书：使用自有证书
+  - 证书别名：migrate
+  - 证书密码：migrate@zdwp2023
+  - 证书文件：选择项目根目录下的 migrate.keystore
+  - 渠道包：不选择
+  - 正式/调试包：根据需要选择
+  - 广告：一个不选
+  - 打包方式：传统打包和快速安全打包都可以选，推荐 快速安全打包
+  - 弹窗点击确认 即可进入排队
+
+- 等待打包完成 打包完成后自动保存到项目的"unpackage/release/apk/"目录
+
+如下所示： ![image](https://oss.zdwp.tech/migrate/files/image/9f719efe-730c-40ec-8d77-c3c98fe55220.png)
