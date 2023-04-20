@@ -39,7 +39,6 @@
 </template>
 
 <script lang="ts" setup>
-// import { placeholder } from '@babel/types'
 import { ref, watch } from 'vue'
 
 const props = defineProps({
