@@ -1,6 +1,6 @@
 <template>
   <view class="modify-record-wrapper">
-    <uni-drawer ref="drawerModal" mode="right" :mask-click="false">
+    <uni-drawer ref="drawerModal" mode="right" :width="500" :mask-click="false">
       <view class="scroll-view">
         <view class="title-wrapper">
           <view class="title">修改日志</view>
@@ -15,19 +15,16 @@
           <view class="list-col">
             <view class="col-line-container">
               <view class="col-line-item">
-                <view class="line before" />
                 <image class="line icon" src="@/static/images/icon_ok.png" mode="scaleToFill" />
                 <view class="line after" />
               </view>
               <view class="col-line-item">
-                <view class="line before" />
                 <image class="line icon" src="@/static/images/icon_ok.png" mode="scaleToFill" />
                 <view class="line after" />
               </view>
               <view class="col-line-item">
-                <view class="line before" />
                 <image class="line icon" src="@/static/images/icon_ok.png" mode="scaleToFill" />
-                <view class="line after" />
+                <view class="line after-line" />
               </view>
             </view>
             <view class="col-text-container">
@@ -92,7 +89,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 .modify-record-wrapper {
   width: 100%;
-  height: 100%;
+  height: 100vh;
 
   .scroll-view {
     position: relative;
@@ -106,10 +103,11 @@ onMounted(() => {
       align-items: center;
       justify-content: space-between;
       height: 58rpx;
+      padding: 0 12rpx;
       border-bottom: 1rpx solid #ebebeb;
 
       .title {
-        font-size: 20px;
+        font-size: 20rpx;
         color: #131313;
       }
 
@@ -122,17 +120,20 @@ onMounted(() => {
     .list {
       display: flex;
       flex: 1;
+      height: calc(100vh - 58rpx - 1rpx);
+      overflow-y: scroll;
 
       .list-col {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         width: 100%;
-        padding: 20rpx 24rpx;
+        height: max-content;
+        padding: 20rpx 24rpx 20rpx 10rpx;
 
         .col-line-container {
           display: inline-flex;
           flex-direction: column;
-          width: 30rpx;
+          width: 50rpx;
 
           .col-line-item {
             display: flex;
@@ -145,19 +146,29 @@ onMounted(() => {
               width: 1rpx;
               background-color: #b7bdc6;
 
-              &.before {
+              &.before-line {
+                width: 0;
                 height: 6rpx;
-                transform: translateY(-13rpx);
+                transform: translateY(-20rpx);
               }
 
               &.icon {
                 width: 40rpx;
                 height: 40rpx;
+                background-color: transparent;
               }
 
               &.after {
-                flex: 1;
+                margin: 10rpx 0;
                 transform: translateY(1rpx);
+                flex: 1;
+              }
+
+              &.after-line {
+                width: 0;
+                margin: 10rpx 0;
+                transform: translateY(1rpx);
+                flex: 1;
               }
             }
           }
