@@ -3,10 +3,13 @@ import { getStorage, StorageKey } from '@/utils'
 export const getHeaderCommonParams = () => {
   const token = getStorage(StorageKey.TOKEN)
   const projectId = getStorage(StorageKey.PROJECTID) || 2
+  const systemInfo = uni.getSystemInfoSync()
   return {
     Authorization: token,
     'Project-id': projectId,
-    DeviceType: 'pad'
+    DeviceType: 'pad',
+    AppId: systemInfo.appId,
+    AppVersion: systemInfo.appWgtVersion
   }
 }
 
