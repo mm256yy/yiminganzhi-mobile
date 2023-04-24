@@ -1,9 +1,9 @@
 {
     "prompt": "template",
-    "buttonAccept" : "同意并接受",
+    "buttonAccept" : "同意",
     "disagreeMode": {
       "support": true,
-      "loadNativePlugins": false,
+      "loadNativePlugins": true,
       "visitorEntry": true,
       "showAlways": false 
     }
