@@ -48,11 +48,12 @@ class PullData {
   private quality: number
 
   constructor() {
+    // 拉取的计数
     this.count = 0
+    this.maxCount = 180
     // 需要拉取的数据的数量
     this.needPullCount = 12
     this.quality = 70
-    this.maxCount = 180
 
     this.state = {
       pullTime: '',
@@ -68,6 +69,8 @@ class PullData {
       districtList: [],
       villageList: [],
       collectList: [],
+      professionalTree: [],
+      upgradation: null,
 
       peasantHouseholdNum: 0,
       companyNum: 0,
@@ -105,6 +108,7 @@ class PullData {
   public pullAll() {
     return new Promise(async (resolve, reject) => {
       this.count = 0
+      this.maxCount = 180
       const res = await this.pullProjectData()
       if (res) {
         this.pull()
@@ -121,7 +125,9 @@ class PullData {
 
   public pullProjectData() {
     return new Promise(async (resolve) => {
-      const result = await getProjectDataApi()
+      const result = await getProjectDataApi().catch(() => {
+        resolve(false)
+      })
       console.log('接口: 项目数据', result)
       if (!result) {
         console.error('项目列表获取失败')
@@ -137,7 +143,9 @@ class PullData {
   }
 
   public async getConfigData() {
-    const result = await getConfigDataApi()
+    const result = await getConfigDataApi().catch(() => {
+      this.maxCount = -1
+    })
     console.log('接口: 配置数据', result)
     if (!result) {
       console.error('配置数据获取失败')
@@ -149,7 +157,8 @@ class PullData {
       immigrantAppendantOptionList,
       dictValList,
       districtTree,
-      districtList
+      districtList,
+      professionalTree
     } = result
 
     this.state.immigrantIncomeConfigList = immigrantIncomeConfigList
@@ -157,6 +166,7 @@ class PullData {
     this.state.dictValList = dictValList
     this.state.districtTree = districtTree
     this.state.districtList = districtList
+    this.state.professionalTree = professionalTree
 
     this.state.immigrantAppendantConfigList = immigrantAppendantOptionList
     this.pullDict().then((res: boolean) => {
@@ -187,7 +197,9 @@ class PullData {
   }
 
   public async getBaseData() {
-    const result = await getBaseDataApi()
+    const result = await getBaseDataApi().catch(() => {
+      this.maxCount = -1
+    })
     console.log('接口: 基础数据', result)
     if (!result) {
       console.error('基础数据获取失败')
@@ -202,7 +214,8 @@ class PullData {
       companyNum,
       individualNum,
       villageNum,
-      virutalVillageNum
+      virutalVillageNum,
+      upgradation
     } = result
     this.state.peasantHouseholdPushDtoList = peasantHouseholdPushDtoList
     this.state.deleteRecordList = deleteRecordList
@@ -213,6 +226,7 @@ class PullData {
     this.state.individualNum = individualNum
     this.state.villageNum = villageNum
     this.state.virutalVillageNum = virutalVillageNum
+    this.state.upgradation = upgradation
 
     // 数据 新增 修改 删除一起进行
     this.pullLandlord().then((res) => {
@@ -235,7 +249,9 @@ class PullData {
   }
 
   public async getCollect() {
-    const result = await getCollectApi()
+    const result = await getCollectApi().catch(() => {
+      this.maxCount = -1
+    })
     console.log('接口: 统计数据', result)
     if (!result) {
       console.error('统计数据获取失败')
@@ -657,7 +673,7 @@ class PullData {
   /** 其他 */
   private pullOther(): Promise<boolean> {
     return new Promise(async (resolve) => {
-      const { districtTree, pullTime } = this.state
+      const { districtTree, pullTime, professionalTree } = this.state
       await db.transaction('begin').catch(() => {
         resolve(false)
       })
@@ -675,6 +691,15 @@ class PullData {
         setStorage(StorageKey.PULLTIME, pullTime)
         const fields = "'type','content','updatedDate'"
         const values = `'${OtherDataType.PullTime}','${pullTime}','${getCurrentTimeStamp()}'`
+        db.insertOrReplaceData(OtherTableName, values, fields)
+      }
+
+      if (professionalTree && professionalTree.length) {
+        // 专业树
+        const fields = "'type','content','updatedDate'"
+        const values = `'${OtherDataType.ProfessionalTree}','${JSON.stringify(
+          professionalTree
+        )}','${getCurrentTimeStamp()}'`
         db.insertOrReplaceData(OtherTableName, values, fields)
       }
       await db.transaction('commit').catch(() => {
@@ -755,7 +780,7 @@ class PullData {
       let imgCount = 0
       imgUrls.forEach((img) => {
         const url = img.split('?')[0]
-        const zipUrl = `${url}?x-oss-process=image/quality,Q_70`
+        const zipUrl = `${url}?x-oss-process=image/quality,Q_${this.quality}`
         uni.downloadFile({
           url: zipUrl,
           success: (res) => {

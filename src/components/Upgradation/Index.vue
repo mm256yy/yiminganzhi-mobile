@@ -2,7 +2,7 @@
   <view class="mask flex-center">
     <view class="content botton-radius">
       <view class="content-top">
-        <text class="content-top-text">{{ title }}</text>
+        <text class="content-top-text">{{ headTitle }}</text>
         <image
           class="content-top"
           style="top: 0"
@@ -14,7 +14,7 @@
       <view class="content-header" />
       <view class="content-body">
         <view class="title">
-          <text>{{ subTitle }}</text>
+          <text>{{ title }}</text>
           <!-- <text style="padding-left:20rpx;font-size: 0.5em;color: #666;">v.{{version}}</text> -->
         </view>
         <view class="body">
@@ -31,13 +31,11 @@
                 class="progress"
                 border-radius="35"
                 :percent="downLoadPercent"
-                activeColor="#3DA7FF"
+                activeColor="#295ee6"
                 show-info
                 :stroke-width="10"
               ></progress>
-              <view
-                style=" display: flex;width: 100%; font-size: 28rpx; justify-content: space-around"
-              >
+              <view class="download-text">
                 <text>{{ downLoadingText }}</text>
                 <text>({{ downloadedSize }}/{{ packageFileSize }}M)</text>
               </view>
@@ -46,7 +44,7 @@
             <button
               v-else
               class="content-button"
-              style=" color: #fff;border: none"
+              style="color: #fff; border: none"
               plain
               @click="updateApp"
             >
@@ -56,7 +54,7 @@
           <button
             v-else-if="downloadSuccess && !installed"
             class="content-button"
-            style=" color: #fff;border: none"
+            style="color: #fff; border: none"
             plain
             :loading="installing"
             :disabled="installing"
@@ -77,10 +75,14 @@
 </template>
 
 <script lang="ts">
-import { compareVersion } from '@/utils'
 let downloadTask: any = null
 
 export default {
+  props: {
+    upgradation: {
+      type: Object
+    }
+  },
   data() {
     return {
       // 从之前下载安装
@@ -102,32 +104,24 @@ export default {
 
       // 默认安装包信息
       title: '更新日志',
-      contents: '',
+      contents: '1.fdsafdsaf\n2.福建省给了时间了附近的撒\n3.范德萨垃圾了附近的撒',
       is_mandatory: true, // 强制安装 默认是 否没做任何处理
 
-      version: '0', // 当前app的版本
       url: '', // apk下载链接
 
       // 可自定义属性
-      subTitle: '发现新版本',
-      downLoadBtnTextiOS: '立即跳转更新',
+      headTitle: '发现新版本',
       downLoadBtnText: '立即下载更新',
       downLoadingText: '安装包下载中，请稍后'
     }
   },
-  onLoad() {
-    // 检查版本
-  },
-  onBackPress() {
-    // 强制更新不允许返回
-    if (this.is_mandatory) {
-      return true
+  mounted() {
+    if (this.upgradation) {
+      this.title = this.upgradation.title
+      this.contents = this.upgradation.content
+      this.url = this.upgradation.apkUrl
     }
-
-    downloadTask && downloadTask.abort()
   },
-  onHide() {},
-  computed: {},
   methods: {
     async closeUpdate() {
       if (this.downloading) {
@@ -145,19 +139,37 @@ export default {
           success: (res) => {
             if (res.confirm) {
               downloadTask && downloadTask.abort()
-              uni.navigateBack()
+              // 关闭当前窗口
+              this.$emit('close')
             }
           }
         })
         return
       }
-      // todo 关闭
+      uni.showToast({
+        title: '请点击下载',
+        icon: 'none'
+      })
+      // uni.showModal({
+      //   title: '是否跳过版本更新？',
+      //   cancelText: '否',
+      //   confirmText: '是',
+      //   success: (res) => {
+      //     if (res.confirm) {
+      //       // 关闭当前窗口
+      //       this.$emit('close')
+      //     }
+      //   }
+      // })
     },
     updateApp() {
       this.downloadPackage()
     },
 
     downloadPackage() {
+      if (!this.url) {
+        return
+      }
       this.downloading = true
 
       //下载包
@@ -231,13 +243,14 @@ export default {
     },
     restart() {
       this.installed = false
+      this.deleteSavedFile()
       //更新完重启app
       plus.runtime.restart()
     },
 
-    deleteSavedFile(filePath: string) {
+    deleteSavedFile() {
       return uni.removeSavedFile({
-        filePath
+        filePath: this.tempFilePath
       })
     }
   }
@@ -257,76 +270,77 @@ export default {
   right: 0;
   bottom: 0;
   left: 0;
+  z-index: 1000;
   background-color: rgba(0, 0, 0, 0.65);
 }
 
 .botton-radius {
-  border-bottom-right-radius: 30rpx;
-  border-bottom-left-radius: 30rpx;
+  border-bottom-right-radius: 15rpx;
+  border-bottom-left-radius: 15rpx;
 }
 
 .content {
   position: relative;
   top: 0;
-  width: 600rpx;
-  padding: 0 50rpx;
+  width: 300rpx;
+  padding: 0 25rpx;
   background-color: #fff;
   box-sizing: border-box;
 }
 
 .text {
   display: block;
-  line-height: 200px;
+  line-height: 20rpx;
   color: #ffffff;
   text-align: center;
 }
 
 .content-top {
   position: absolute;
-  top: -195rpx;
+  top: -97rpx;
   left: 0;
-  width: 600rpx;
-  height: 270rpx;
+  z-index: 1001;
+  width: 300rpx;
+  height: 135rpx;
 }
 
 .content-top-text {
   position: absolute;
-  top: 120rpx;
-  left: 50rpx;
-  z-index: 1;
-  font-size: 45rpx;
+  top: 60rpx;
+  left: 25rpx;
+  z-index: 1002;
+  font-size: 15rpx;
   font-weight: bold;
   color: #f8f8fa;
 }
 
 .content-header {
-  height: 70rpx;
+  height: 35rpx;
 }
 
 .title {
-  font-size: 33rpx;
+  font-size: 13rpx;
   font-weight: bold;
-  line-height: 38px;
-  color: #3da7ff;
+  line-height: 20rpx;
+  color: #295ee6;
 }
 
 .footer {
   display: flex;
-  height: 150rpx;
+  height: 75rpx;
   align-items: center;
   justify-content: space-around;
 }
 
 .box-des-scroll {
-  height: 200rpx;
-  padding: 0 40rpx;
+  height: 120rpx;
+  padding: 0 20rpx;
   text-align: left;
   box-sizing: border-box;
 }
 
 .box-des {
-  font-size: 26rpx;
-  line-height: 50rpx;
+  font-size: 11rpx;
   color: #000000;
 }
 
@@ -336,31 +350,40 @@ export default {
 
 .progress {
   width: 90%;
-  height: 40rpx;
-  border-radius: 35px;
+  height: 20rpx;
+  border-radius: 10rpx;
+}
+
+.download-text {
+  display: flex;
+  width: 100%;
+  font-size: 10rpx;
+  align-items: center;
+  justify-content: space-around;
 }
 
 .close-img {
   position: absolute;
-  bottom: -120rpx;
-  left: calc(50% - 70rpx / 2);
+  bottom: -60rpx;
+  left: calc(50% - 35rpx / 2);
   z-index: 1000;
-  width: 70rpx;
-  height: 70rpx;
+  width: 35rpx;
+  height: 35rpx;
 }
 
 .content-button {
-
-  height: 80rpx;
-  margin: 0 18rpx;
-  font-size: 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40rpx;
+  margin: 0 9rpx;
+  font-size: 13rpx;
   font-weight: 400;
-  line-height: 80rpx;
   color: #ffffff;
   text-align: center;
 
-  background: linear-gradient(to right, #1785ff, #3da7ff);
-  border-radius: 40rpx;
+  background: linear-gradient(to right, #295ee6, #3da7ff);
+  border-radius: 20rpx;
   flex: 1;
 }
 
