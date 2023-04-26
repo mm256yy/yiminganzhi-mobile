@@ -42,6 +42,8 @@
                 v-if="tabVal === 2"
                 :dataList="dataInfo.immigrantHouseList"
                 :dataInfo="dataInfo"
+                :reviewCategory="ReviewCategory.immigrantHouseList"
+                :mainType="MainType.PeasantHousehold"
                 @delete-house="deleteHouse"
               />
 
@@ -50,6 +52,8 @@
                 v-if="tabVal === 3"
                 :dataInfo="dataInfo"
                 :dataList="dataInfo.immigrantAppendantList"
+                :reviewCategory="ReviewCategory.immigrantAppendantList"
+                :mainType="MainType.PeasantHousehold"
                 @submit="updateAppendantInfo"
               />
 
@@ -58,12 +62,19 @@
                 v-if="tabVal === 4"
                 :dataList="dataInfo.immigrantTreeList"
                 :dataInfo="dataInfo"
+                :reviewCategory="ReviewCategory.immigrantTreeList"
+                :mainType="MainType.PeasantHousehold"
                 @delete-tree="deleteTree"
                 @update-fruit-tree-info="updateFruitTreeInfo"
               />
 
               <!-- 坟墓信息 -->
-              <grave-info v-if="tabVal === 5" :dataList="dataInfo.immigrantGraveList" />
+              <grave-info
+                v-if="tabVal === 5"
+                :dataInfo="dataInfo"
+                :dataList="dataInfo.immigrantGraveList"
+                @delete-grave-info="deleteGraveInfo"
+              />
 
               <!-- 家庭收入信息 -->
               <revenue-info
@@ -85,6 +96,8 @@
               <attachment-upload
                 v-if="tabVal === 8"
                 :dataInfo="dataInfo"
+                :reviewCategory="ReviewCategory.immigrantFile"
+                :mainType="MainType.PeasantHousehold"
                 @submit="updateAttachment"
               />
             </view>
@@ -117,7 +130,7 @@
 import { ref } from 'vue'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { routerForward } from '@/utils'
-import { MainType, PrintType } from '@/types/common'
+import { MainType, PrintType, ReviewCategory } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
 import Header from '@/components/Header/Index.vue'
 import Tree from '@/components/Tree/Index.vue'
@@ -136,6 +149,7 @@ import {
   deleteLandlordPeopleApi,
   deleteLandlordHouseApi,
   deleteLandlordTreeApi,
+  deleteLandlordGraveApi,
   updateLandlordTreeApi,
   updateLandlordAppendantApi,
   updateLandlordFamilyIncomeApi,
@@ -287,6 +301,23 @@ const deleteTree = (data: any) => {
       }
     })
     .catch(() => {
+      showToast(ERROR_MSG)
+    })
+}
+
+/**
+ * 删除坟墓信息
+ * @param data
+ */
+const deleteGraveInfo = (data: any) => {
+  deleteLandlordGraveApi(props.dataInfo.uid, data.uid)
+    .then((res) => {
+      if (res) {
+        showToast(SUCCESS_MSG)
+        updateData()
+      }
+    })
+    .catch((e) => {
       showToast(ERROR_MSG)
     })
 }

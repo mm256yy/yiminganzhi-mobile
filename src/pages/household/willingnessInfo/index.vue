@@ -100,10 +100,26 @@
     </view>
 
     <image
-      class="submit-btn"
+      v-if="stage === MainStage.review"
+      class="btn record"
+      src="@/static/images/icon_record.png"
+      mode="scaleToFill"
+      @click="showModifyRecord"
+    />
+
+    <image
+      class="btn submit"
       src="@/static/images/icon_submit.png"
       mode="scaleToFill"
       @click="submit"
+    />
+
+    <!-- 复核修改记录 -->
+    <modify-records
+      v-if="showRecord"
+      :doorNo="dataInfo.doorNo"
+      :reviewCategory="ReviewCategory.immigrantWill"
+      @close="closeModifyRecords"
     />
   </view>
 </template>
@@ -113,6 +129,9 @@ import { ref } from 'vue'
 import { getWillListApi } from '@/service'
 import { onShow } from '@dcloudio/uni-app'
 import { showToast } from '@/config'
+import { MainStage, ReviewCategory } from '@/types/common'
+import { getStorage, StorageKey } from '@/utils'
+import modifyRecords from '../../common/modifyRecords/index.vue' // 引入修改记录组件
 
 const props = defineProps({
   willData: {
@@ -124,6 +143,11 @@ const props = defineProps({
     default: () => {}
   }
 })
+
+const projectInfo = getStorage(StorageKey.PROJECTINFO)
+// 阶段，如 survey 调查填报阶段， review 复核阶段
+const stage = projectInfo?.status ? projectInfo.status : MainStage.survey
+const showRecord = ref<boolean>(false)
 
 const commonParams = {
   doorNo: props.dataInfo.doorNo
@@ -154,6 +178,16 @@ let defaultData = [
 const focusIndex = ref<number>(-1)
 
 const emit = defineEmits(['submit'])
+
+// 展示修改记录
+const showModifyRecord = () => {
+  showRecord.value = true
+}
+
+// 关闭修改记录弹窗
+const closeModifyRecords = () => {
+  showRecord.value = false
+}
 
 // 输入框获得焦点事件
 const inputFocus = (index: number) => {
@@ -459,13 +493,20 @@ onShow(async () => {
     }
   }
 
-  .submit-btn {
+  .btn {
     position: fixed;
-    right: 6rpx;
-    bottom: 6rpx;
-    width: 66rpx;
-    height: 66rpx;
+    right: 25rpx;
+    width: 28rpx;
+    height: 28rpx;
     border-radius: 50%;
+
+    &.submit {
+      bottom: 16rpx;
+    }
+
+    &.record {
+      bottom: 54rpx;
+    }
   }
 }
 </style>

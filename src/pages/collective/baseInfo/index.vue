@@ -175,10 +175,11 @@ const toLink = (type: string) => {
 
   .edit-btn {
     position: fixed;
-    right: 0;
-    bottom: 0;
-    width: 66rpx;
-    height: 66rpx;
+    right: 25rpx;
+    bottom: 16rpx;
+    width: 28rpx;
+    height: 28rpx;
+    border-radius: 50%;
   }
 }
 </style>

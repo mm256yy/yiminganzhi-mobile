@@ -34,6 +34,7 @@ export interface PopulationType {
   villageText: string
   virutalVillageText: string
   insured: boolean
+  reason?: string
   [key: string]: any
 }
 
@@ -67,6 +68,7 @@ export interface HouseType {
   latitude: string
   housePic: string
   remark: string
+  reason?: string
   [key: string]: any
 }
 

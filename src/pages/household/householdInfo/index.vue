@@ -99,28 +99,46 @@
         </view>
       </view>
     </view>
-    <!-- <image
-		  class="btn record"
-		  src="@/static/images/icon_record.png"
-		  mode="scaleToFill"
-		  @click="showModifyRecord"
-		/> -->
+
+    <image
+      v-if="stage === MainStage.review"
+      class="btn record"
+      src="@/static/images/icon_record.png"
+      mode="scaleToFill"
+      @click="showModifyRecord"
+    />
+
     <image
       class="btn edit"
       src="@/static/images/icon_edit.png"
       mode="scaleToFill"
       @click="toLink('edit')"
     />
-    <!-- 修改记录 -->
-    <!-- <modify-records v-if="showRecord" @close="closeModifyRecords" /> -->
+
+    <!-- 复核修改记录 -->
+    <modify-records
+      v-if="showRecord"
+      :doorNo="dataInfo.doorNo"
+      :reviewCategory="ReviewCategory.peasantHouseholdPushDtoList"
+      @close="closeModifyRecords"
+    />
   </view>
 </template>
 
 <script lang="ts" setup>
-// import { ref } from 'vue'
-import { formatStr, formatDict, dictOption, splitStr, routerForward } from '@/utils'
+import { ref } from 'vue'
+import {
+  formatStr,
+  formatDict,
+  dictOption,
+  splitStr,
+  routerForward,
+  getStorage,
+  StorageKey
+} from '@/utils'
 import { locationTypes, yesAndNoEnums } from '@/config/common'
-// import modifyRecords from '../../common/modifyRecords/index.vue' // 引入修改记录组件
+import { MainStage, ReviewCategory } from '@/types/common'
+import modifyRecords from '../../common/modifyRecords/index.vue' // 引入修改记录组件
 
 const props = defineProps({
   dataInfo: {
@@ -129,17 +147,20 @@ const props = defineProps({
   }
 })
 
-// const showRecord = ref<boolean>(false)
+const projectInfo = getStorage(StorageKey.PROJECTINFO)
+// 阶段，如 survey 调查填报阶段， review 复核阶段
+const stage = projectInfo?.status ? projectInfo.status : MainStage.survey
+const showRecord = ref<boolean>(false)
 
 // 展示修改记录
-// const showModifyRecord = () => {
-// 	showRecord.value = true
-// }
+const showModifyRecord = () => {
+  showRecord.value = true
+}
 
 // 关闭修改记录弹窗
-// const closeModifyRecords = () => {
-// 	showRecord.value = false
-// }
+const closeModifyRecords = () => {
+  showRecord.value = false
+}
 
 const toLink = (type: string) => {
   const params = {
@@ -237,19 +258,17 @@ const toLink = (type: string) => {
 
   .btn {
     position: fixed;
-
-    width: 66rpx;
-    height: 66rpx;
+    right: 25rpx;
+    width: 28rpx;
+    height: 28rpx;
     border-radius: 50%;
 
     &.edit {
-      right: 6rpx;
-      bottom: 6rpx;
+      bottom: 16rpx;
     }
 
     &.record {
-      right: 6rpx;
-      bottom: 72rpx;
+      bottom: 54rpx;
     }
   }
 }

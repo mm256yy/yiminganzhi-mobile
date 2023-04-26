@@ -1224,10 +1224,10 @@ onMounted(() => {
 
   .btn {
     position: fixed;
-    right: 6rpx;
-    bottom: 6rpx;
-    width: 66rpx;
-    height: 66rpx;
+    right: 25rpx;
+    bottom: 16rpx;
+    width: 28rpx;
+    height: 28rpx;
     border-radius: 50%;
   }
 }

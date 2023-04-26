@@ -40,3 +40,11 @@ export const getOccpationDict = (name: string): Promise<any> => {
     }
   })
 }
+
+// 获取复核修改记录
+export const getUpdateLogApi = (data: Partial<any>): Promise<any> => {
+  return request.get({
+    url: `/updateLog`,
+    data
+  })
+}

@@ -30,10 +30,26 @@
     </view>
 
     <image
-      class="submit-btn"
+      v-if="stage === MainStage.review && mainType === MainType.PeasantHousehold"
+      class="btn record"
+      src="@/static/images/icon_record.png"
+      mode="scaleToFill"
+      @click="showModifyRecord"
+    />
+
+    <image
+      class="btn submit"
       src="@/static/images/icon_submit.png"
       mode="scaleToFill"
       @click="submit"
+    />
+
+    <!-- 复核修改记录 -->
+    <modify-records
+      v-if="showRecord"
+      :doorNo="dataInfo.doorNo"
+      :reviewCategory="reviewCategory"
+      @close="closeModifyRecords"
     />
   </view>
 </template>
@@ -41,6 +57,9 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { getAppendantListApi } from '@/service'
+import { MainStage, MainType } from '@/types/common'
+import { getStorage, StorageKey } from '@/utils'
+import modifyRecords from '../modifyRecords/index.vue' // 引入修改记录组件
 
 const props = defineProps({
   dataInfo: {
@@ -50,8 +69,23 @@ const props = defineProps({
   dataList: {
     type: Array as any,
     default: () => []
+  },
+  // 主体类型，如居民户、企业、个体户、村集体
+  mainType: {
+    type: String,
+    default: ''
+  },
+  // 复核类目，如 人口信息、房屋信息...
+  reviewCategory: {
+    type: String,
+    default: ''
   }
 })
+
+const projectInfo = getStorage(StorageKey.PROJECTINFO)
+// 阶段，如 survey 调查填报阶段， review 复核阶段
+const stage = projectInfo?.status ? projectInfo.status : MainStage.survey
+const showRecord = ref<boolean>(false)
 
 const formData = ref<any>([])
 const emit = defineEmits(['submit'])
@@ -79,6 +113,16 @@ const getList = () => {
 const submit = () => {
   const params = [...formData.value]
   emit('submit', params)
+}
+
+// 展示修改记录
+const showModifyRecord = () => {
+  showRecord.value = true
+}
+
+// 关闭修改记录弹窗
+const closeModifyRecords = () => {
+  showRecord.value = false
 }
 
 onMounted(() => {
@@ -194,13 +238,20 @@ onMounted(() => {
     }
   }
 
-  .submit-btn {
+  .btn {
     position: fixed;
-    right: 6rpx;
-    bottom: 6rpx;
-    width: 66rpx;
-    height: 66rpx;
+    right: 25rpx;
+    width: 28rpx;
+    height: 28rpx;
     border-radius: 50%;
+
+    &.submit {
+      bottom: 16rpx;
+    }
+
+    &.record {
+      bottom: 54rpx;
+    }
   }
 }
 </style>

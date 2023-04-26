@@ -466,10 +466,10 @@ onMounted(() => {
 
     .submit-btn {
       position: fixed;
-      right: 6rpx;
-      bottom: 6rpx;
-      width: 66rpx;
-      height: 66rpx;
+      right: 25rpx;
+      bottom: 20rpx;
+      width: 28rpx;
+      height: 28rpx;
       border-radius: 50%;
     }
   }

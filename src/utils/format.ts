@@ -36,19 +36,19 @@ export const formatDict = (value: any, id: number) => {
   const dict = getStorage(StorageKey.DICT)
   if (value) {
     const arr: any = dict[id]
-    const arrItem = arr.find((item: any) => String(item.value) === String(value))
-    str = arrItem ? arrItem.text : ''
-    // arr.map((item: any) => {
-    //   if (typeof item.value === typeof value && item.value === value) {
-    //     str = item.text
-    //     return str
-    //   } else {
-    //     if (String(item.value) === String(value)) {
-    //       str = item.text
-    //       return str
-    //     }
-    //   }
-    // })
+    // const arrItem = arr.find((item: any) => String(item.value) === String(value))
+    // str = arrItem ? arrItem.text : ''
+    arr.map((item: any) => {
+      if (typeof item.value === typeof value && item.value === value) {
+        str = item.text
+        return str
+      } else {
+        if (String(item.value) === String(value)) {
+          str = item.text
+          return str
+        }
+      }
+    })
     return str
   } else {
     return '-'

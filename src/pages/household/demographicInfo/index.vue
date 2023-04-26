@@ -96,12 +96,21 @@
     </view>
 
     <image
-      class="add-btn"
+      v-if="stage === MainStage.review"
+      class="btn record"
+      src="@/static/images/icon_record.png"
+      mode="scaleToFill"
+      @click="showModifyRecord"
+    />
+
+    <image
+      class="btn add"
       src="@/static/images/icon_add.png"
       mode="scaleToFill"
       @click="toLink('add')"
     />
 
+    <!-- 删除确认弹框 -->
     <uni-popup ref="alertDialog" type="dialog">
       <uni-popup-dialog
         type="warn"
@@ -113,13 +122,31 @@
         @close="dialogClose"
       />
     </uni-popup>
+
+    <!-- 复核修改记录 -->
+    <modify-records
+      v-if="showRecord"
+      :doorNo="dataInfo.doorNo"
+      :reviewCategory="ReviewCategory.demographicList"
+      @close="closeModifyRecords"
+    />
   </view>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
 import dayjs from 'dayjs'
-import { formatDict, formatStr, fmtOccupationStr, routerForward, fmtPicUrl } from '@/utils'
+import {
+  formatDict,
+  formatStr,
+  fmtOccupationStr,
+  routerForward,
+  fmtPicUrl,
+  getStorage,
+  StorageKey
+} from '@/utils'
+import { MainStage, ReviewCategory } from '@/types/common'
+import modifyRecords from '../../common/modifyRecords/index.vue' // 引入修改记录组件
 
 const props = defineProps({
   dataList: {
@@ -139,6 +166,11 @@ const props = defineProps({
 const emit = defineEmits(['deleteDemographic'])
 const alertDialog = ref<any>(null)
 const currentItem = ref<any>({})
+
+const projectInfo = getStorage(StorageKey.PROJECTINFO)
+// 阶段，如 survey 调查填报阶段， review 复核阶段
+const stage = projectInfo?.status ? projectInfo.status : MainStage.survey
+const showRecord = ref<boolean>(false)
 
 const toLink = (type: string, data?: any) => {
   const { uid } = props.dataInfo
@@ -180,6 +212,16 @@ const dialogConfirm = () => {
 
 const dialogClose = () => {
   alertDialog.value.close()
+}
+
+// 展示修改记录
+const showModifyRecord = () => {
+  showRecord.value = true
+}
+
+// 关闭修改记录弹窗
+const closeModifyRecords = () => {
+  showRecord.value = false
 }
 </script>
 
@@ -288,13 +330,20 @@ const dialogClose = () => {
     }
   }
 
-  .add-btn {
+  .btn {
     position: fixed;
-    right: 6rpx;
-    bottom: 6rpx;
-    width: 66rpx;
-    height: 66rpx;
+    right: 25rpx;
+    width: 28rpx;
+    height: 28rpx;
     border-radius: 50%;
+
+    &.add {
+      bottom: 16rpx;
+    }
+
+    &.record {
+      bottom: 54rpx;
+    }
   }
 }
 </style>

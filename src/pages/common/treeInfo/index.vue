@@ -54,16 +54,25 @@
       <view class="tips">请先添加零星（林）果木信息</view>
     </view>
 
+    <image
+      v-if="stage === MainStage.review && mainType === MainType.PeasantHousehold"
+      class="btn record"
+      src="@/static/images/icon_record.png"
+      mode="scaleToFill"
+      @click="showModifyRecord"
+    />
+
     <image class="btn add" src="@/static/images/icon_add.png" mode="scaleToFill" @click="addTree" />
 
     <image
       v-show="formData.length > 0"
-      class="btn"
+      class="btn submit"
       src="@/static/images/icon_submit.png"
       mode="scaleToFill"
       @click="submit"
     />
 
+    <!-- 删除确认弹框 -->
     <uni-popup ref="alertDialog" type="dialog">
       <uni-popup-dialog
         type="warn"
@@ -75,12 +84,22 @@
         @close="dialogClose"
       />
     </uni-popup>
+
+    <!-- 复核修改记录 -->
+    <modify-records
+      v-if="showRecord"
+      :doorNo="dataInfo.doorNo"
+      :reviewCategory="reviewCategory"
+      @close="closeModifyRecords"
+    />
   </view>
 </template>
 
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
 import { getStorage, StorageKey } from '@/utils'
+import { MainStage, MainType } from '@/types/common'
+import modifyRecords from '../modifyRecords/index.vue' // 引入修改记录组件
 
 const props = defineProps({
   dataList: {
@@ -90,6 +109,16 @@ const props = defineProps({
   dataInfo: {
     type: Object as any,
     default: () => {}
+  },
+  // 主体类型，如居民户、企业、个体户、村集体
+  mainType: {
+    type: String,
+    default: ''
+  },
+  // 复核类目，如 人口信息、房屋信息...
+  reviewCategory: {
+    type: String,
+    default: ''
   }
 })
 
@@ -99,6 +128,11 @@ const formData = ref<any>([])
 const emit = defineEmits(['deleteTree', 'updateFruitTreeInfo'])
 const alertDialog = ref<any>(null)
 const currentItem = ref<any>({})
+
+const projectInfo = getStorage(StorageKey.PROJECTINFO)
+// 阶段，如 survey 调查填报阶段， review 复核阶段
+const stage = projectInfo?.status ? projectInfo.status : MainStage.survey
+const showRecord = ref<boolean>(false)
 
 const defaultRow = {
   doorNo: props.dataInfo.doorNo,
@@ -153,6 +187,16 @@ const addTree = () => {
 const submit = () => {
   const params = [...formData.value]
   emit('updateFruitTreeInfo', params)
+}
+
+// 展示修改记录
+const showModifyRecord = () => {
+  showRecord.value = true
+}
+
+// 关闭修改记录弹窗
+const closeModifyRecords = () => {
+  showRecord.value = false
 }
 </script>
 
@@ -323,14 +367,21 @@ const submit = () => {
 
   .btn {
     position: fixed;
-    right: 6rpx;
-    bottom: 6rpx;
-    width: 66rpx;
-    height: 66rpx;
+    right: 25rpx;
+    width: 28rpx;
+    height: 28rpx;
     border-radius: 50%;
 
+    &.record {
+      bottom: 92rpx;
+    }
+
     &.add {
-      bottom: 40rpx;
+      bottom: 54rpx;
+    }
+
+    &.submit {
+      bottom: 16rpx;
     }
   }
 }

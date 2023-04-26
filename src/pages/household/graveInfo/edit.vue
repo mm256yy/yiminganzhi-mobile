@@ -7,35 +7,6 @@
           <uni-col :span="12">
             <uni-forms-item
               required
-              label="登记人"
-              :label-width="150"
-              label-align="right"
-              name="formData.registrantName"
-            >
-              <view
-                :class="['name-wrapper', formData.registrantName ? 'isSelected' : '']"
-                @click="selectName"
-              >
-                {{ formData.registrantName ? formData.registrantName : '请选择' }}
-              </view>
-            </uni-forms-item>
-          </uni-col>
-          <uni-col :span="12">
-            <uni-forms-item
-              label="登记人户号"
-              :label-width="150"
-              label-align="right"
-              name="formData.registrantDoorNo"
-            >
-              <uni-easyinput v-model="formData.registrantDoorNo" disabled placeholde="请选择" />
-            </uni-forms-item>
-          </uni-col>
-        </uni-row>
-
-        <uni-row>
-          <uni-col :span="12">
-            <uni-forms-item
-              required
               label="与登记人关系"
               :label-width="150"
               label-align="right"
@@ -116,6 +87,16 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
+              label="所属村集体"
+              :label-width="150"
+              label-align="right"
+              name="formData.householdId"
+            >
+              <uni-data-select v-model="formData.householdId" :localdata="collectiveList" />
+            </uni-forms-item>
+          </uni-col>
+          <uni-col :span="12">
+            <uni-forms-item
               label="备注"
               :label-width="150"
               label-align="right"
@@ -134,14 +115,6 @@
         @click="submit"
       />
     </view>
-    <!-- 搜索选择户号 -->
-    <search-list
-      v-show="showSearch"
-      :type="MainType.PeasantHousehold"
-      :villageCode="commonParams.villageCode"
-      @close="close"
-      @confirm-select="confirmSelect"
-    />
   </view>
 </template>
 
@@ -151,9 +124,7 @@ import { onLoad } from '@dcloudio/uni-app'
 import { routerBack, getStorage, StorageKey } from '@/utils'
 import { addLandlordGraveApi, updateLandlordGraveApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config'
-import { MainType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
-import SearchList from '@/components/SearchList/Index.vue'
 
 // 表单数据
 const formData = ref<any>({})
@@ -162,7 +133,7 @@ const formData = ref<any>({})
 const focusIndex = ref<number>(-1)
 const title = ref<string>('')
 const commonParams = ref<any>({})
-const showSearch = ref<Boolean>(false)
+const collectiveList = ref<any>([])
 
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
@@ -173,6 +144,7 @@ onLoad((option: any) => {
     commonParams.value = JSON.parse(option.commonParams)
     let params = JSON.parse(option.params)
     formData.value = { ...params }
+    collectiveList.value = commonParams.value.collectiveList
     if (commonParams.value.type === 'edit') {
       title.value = '坟墓信息编辑'
     } else if (commonParams.value.type === 'add') {
@@ -180,29 +152,6 @@ onLoad((option: any) => {
     }
   }
 })
-
-// 选择户主姓名/户号
-const selectName = () => {
-  showSearch.value = true
-}
-
-// 关闭搜索组件
-const close = () => {
-  showSearch.value = false
-}
-
-/**
- * 确认搜索户主姓名/户号
- * @param{Object} data
- */
-const confirmSelect = (data: any) => {
-  if (data) {
-    formData.value.registrantName = data.label
-    formData.value.registrantDoorNo = data.value
-    formData.value.registrantId = data.id
-  }
-  close()
-}
 
 // 输入框获得焦点事件
 const inputFocus = (index: number) => {
@@ -217,10 +166,7 @@ const inputBlur = () => {
 // 表单提交
 const submit = () => {
   const { type } = commonParams.value
-  if (!formData.value.registrantName) {
-    showToast('请选择登记人')
-    return
-  } else if (!formData.value.relation) {
+  if (!formData.value.relation) {
     showToast('请选择与登记人关系')
     return
   } else if (!formData.value.gravePosition) {
@@ -228,10 +174,11 @@ const submit = () => {
     return
   } else {
     if (type === 'add') {
-      const { uid, doorNo } = commonParams.value
+      const { uid, doorNo, householdId } = commonParams.value
       let params = {
         doorNo,
-        ...formData.value
+        ...formData.value,
+        registrantId: householdId
       }
       addLandlordGraveApi(uid, params)
         .then((res) => {

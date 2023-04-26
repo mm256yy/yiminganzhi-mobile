@@ -102,13 +102,40 @@
     </view>
 
     <image
-      class="add-btn"
+      v-if="stage === MainStage.review && mainType === MainType.PeasantHousehold"
+      class="btn record"
+      src="@/static/images/icon_record.png"
+      mode="scaleToFill"
+      @click="showModifyRecord"
+    />
+
+    <image
+      class="btn add"
       src="@/static/images/icon_add.png"
       mode="scaleToFill"
       @click="toLink('add')"
     />
 
-    <uni-popup ref="alertDialog" type="dialog">
+    <!-- 删除确认框 -->
+    <uni-popup
+      v-if="stage === MainStage.review && mainType === MainType.PeasantHousehold"
+      ref="alertDialog"
+      type="dialog"
+    >
+      <uni-popup-dialog
+        type="warn"
+        mode="input"
+        cancelText="取消"
+        confirmText="确认"
+        title="确认删除？"
+        :value="reason"
+        placeholder="请输入删除原因"
+        @confirm="dialogConfirm"
+        @close="dialogClose"
+      />
+    </uni-popup>
+
+    <uni-popup v-else ref="alertDialog" type="dialog">
       <uni-popup-dialog
         type="warn"
         cancelText="取消"
@@ -119,13 +146,23 @@
         @close="dialogClose"
       />
     </uni-popup>
+
+    <!-- 复核修改记录 -->
+    <modify-records
+      v-if="showRecord"
+      :doorNo="dataInfo.doorNo"
+      :reviewCategory="reviewCategory"
+      @close="closeModifyRecords"
+    />
   </view>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
 import dayjs from 'dayjs'
-import { formatDict, formatStr, formatNum, routerForward } from '@/utils'
+import { formatDict, formatStr, formatNum, routerForward, getStorage, StorageKey } from '@/utils'
+import { MainStage, MainType } from '@/types/common'
+import modifyRecords from '../modifyRecords/index.vue' // 引入修改记录组件
 
 const props = defineProps({
   dataList: {
@@ -135,16 +172,33 @@ const props = defineProps({
   dataInfo: {
     type: Object as any,
     default: () => {}
+  },
+  // 主体类型，如居民户、企业、个体户、村集体
+  mainType: {
+    type: String,
+    default: ''
+  },
+  // 复核类目，如 人口信息、房屋信息...
+  reviewCategory: {
+    type: String,
+    default: ''
   }
 })
 
 const emit = defineEmits(['deleteHouse'])
 const alertDialog = ref<any>(null)
 const currentItem = ref<any>({})
+const reason = ref<string>('') // 删除原因
+
+const projectInfo = getStorage(StorageKey.PROJECTINFO)
+// 阶段，如 survey 调查填报阶段， review 复核阶段
+const stage = projectInfo?.status ? projectInfo.status : MainStage.survey
+const showRecord = ref<boolean>(false)
 
 const toLink = (type: string, data?: any) => {
-  const { uid, doorNo, householdId, longitude, latitude } = props.dataInfo
-  let commonParams = { type, uid, doorNo, householdId, longitude, latitude }
+  const { dataInfo, mainType } = props
+  const { uid, doorNo, householdId, longitude, latitude } = dataInfo
+  let commonParams = { type, uid, doorNo, householdId, longitude, latitude, mainType }
   if (type === 'edit') {
     let params = {
       ...data,
@@ -176,6 +230,16 @@ const dialogConfirm = () => {
 
 const dialogClose = () => {
   alertDialog.value.close()
+}
+
+// 展示修改记录
+const showModifyRecord = () => {
+  showRecord.value = true
+}
+
+// 关闭修改记录弹窗
+const closeModifyRecords = () => {
+  showRecord.value = false
 }
 </script>
 
@@ -267,13 +331,20 @@ const dialogClose = () => {
     }
   }
 
-  .add-btn {
+  .btn {
     position: fixed;
-    right: 6rpx;
-    bottom: 6rpx;
-    width: 66rpx;
-    height: 66rpx;
+    right: 25rpx;
+    width: 28rpx;
+    height: 28rpx;
     border-radius: 50%;
+
+    &.add {
+      bottom: 16rpx;
+    }
+
+    &.record {
+      bottom: 54rpx;
+    }
   }
 }
 </style>

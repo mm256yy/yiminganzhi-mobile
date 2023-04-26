@@ -212,6 +212,17 @@
               <uni-easyinput v-model="formData.remark" type="textarea" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
+          <uni-col :span="24" v-if="stage === MainStage.review && type === 'add'">
+            <uni-forms-item
+              required
+              label="新增原因"
+              :label-width="150"
+              label-align="right"
+              name="formData.reason"
+            >
+              <uni-easyinput v-model="formData.reason" type="textarea" placeholder="请输入" />
+            </uni-forms-item>
+          </uni-col>
         </uni-row>
 
         <uni-row>
@@ -293,6 +304,7 @@ import dayjs from 'dayjs'
 import { routerBack, getStorage, StorageKey, fmtOccupation, fmtOccupationStr } from '@/utils'
 import { addLandlordPeopleApi, updateLandlordPeopleApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
+import { MainStage } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
 import MutiSelect from '@/components/MutiSelect/Index.vue'
 import UploadFile from '@/components/UploadFile/index.vue'
@@ -317,10 +329,15 @@ const formData = ref<any>({
   householdNumber: '',
   censusRegister: '',
   remark: '',
+  reason: '',
   cardPic: '[]',
   householdPic: '[]',
   otherPic: '[]'
 })
+
+const projectInfo = getStorage(StorageKey.PROJECTINFO)
+// 阶段，如 survey 调查填报阶段， review 复核阶段
+const stage = projectInfo?.status ? projectInfo.status : MainStage.survey
 
 // 表单类型，add 新增表单，edit 编辑表单
 const type = ref<string>('')
@@ -386,6 +403,9 @@ const submit = () => {
     return
   } else if (!formData.value.relation) {
     showToast('请选择与户主关系')
+    return
+  } else if (!formData.value.reason && type.value === 'add' && stage === MainStage.review) {
+    showToast('请输入新增原因')
     return
   } else {
     if (type.value === 'add') {
@@ -494,10 +514,10 @@ const submit = () => {
 
     .submit-btn {
       position: fixed;
-      right: 6rpx;
-      bottom: 6rpx;
-      width: 66rpx;
-      height: 66rpx;
+      right: 25rpx;
+      bottom: 20rpx;
+      width: 28rpx;
+      height: 28rpx;
       border-radius: 50%;
     }
   }

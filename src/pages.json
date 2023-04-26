@@ -43,6 +43,13 @@
 			}
 		},
 		{
+			"name": "householdGraveInfoEdit",
+			"path": "pages/household/graveInfo/edit",
+			"style": {
+				"navigationBarTitleText": "居民户填报-坟墓信息编辑"
+			}
+		},
+		{
 			"name": "houseInfoEdit",
 			"path": "pages/common/houseInfo/edit",
 			"style": {

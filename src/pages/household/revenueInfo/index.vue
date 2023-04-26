@@ -136,14 +136,37 @@
       </uni-col>
     </uni-row>
 
-    <image class="btn" src="@/static/images/icon_submit.png" mode="scaleToFill" @click="submit" />
+    <image
+      v-if="stage === MainStage.review"
+      class="btn record"
+      src="@/static/images/icon_record.png"
+      mode="scaleToFill"
+      @click="showModifyRecord"
+    />
+
+    <image
+      class="btn submit"
+      src="@/static/images/icon_submit.png"
+      mode="scaleToFill"
+      @click="submit"
+    />
+
+    <!-- 复核修改记录 -->
+    <modify-records
+      v-if="showRecord"
+      :doorNo="dataInfo.doorNo"
+      :reviewCategory="ReviewCategory.immigrantIncomeList"
+      @close="closeModifyRecords"
+    />
   </view>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 import { getFamilyIncomeListApi } from '@/service'
-import { MainType } from '@/types/common'
+import { MainType, MainStage, ReviewCategory } from '@/types/common'
+import { getStorage, StorageKey } from '@/utils'
+import modifyRecords from '../../common/modifyRecords/index.vue' // 引入修改记录组件
 
 const props = defineProps({
   dataList: {
@@ -156,6 +179,10 @@ const props = defineProps({
   }
 })
 
+const projectInfo = getStorage(StorageKey.PROJECTINFO)
+// 阶段，如 survey 调查填报阶段， review 复核阶段
+const stage = projectInfo?.status ? projectInfo.status : MainStage.survey
+const showRecord = ref<boolean>(false)
 const focusIndex = ref<number>(-1)
 
 // 公共的参数
@@ -173,6 +200,16 @@ const secondData = ref<any>([])
 
 // 其他
 const otherData = ref<any>([])
+
+// 展示修改记录
+const showModifyRecord = () => {
+  showRecord.value = true
+}
+
+// 关闭修改记录弹窗
+const closeModifyRecords = () => {
+  showRecord.value = false
+}
 
 // 输入框获得焦点事件
 const inputFocus = (index: number) => {
@@ -424,11 +461,18 @@ onMounted(() => {
 
   .btn {
     position: fixed;
-    right: 6rpx;
-    bottom: 6rpx;
-    width: 66rpx;
-    height: 66rpx;
+    right: 25rpx;
+    width: 28rpx;
+    height: 28rpx;
     border-radius: 50%;
+
+    &.submit {
+      bottom: 16rpx;
+    }
+
+    &.record {
+      bottom: 54rpx;
+    }
   }
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <view class="modify-record-wrapper">
-    <uni-drawer ref="drawerModal" mode="right" :width="500" :mask-click="false">
+    <uni-drawer ref="drawerModal" mode="right" :width="600" :mask-click="false">
       <view class="scroll-view">
         <view class="title-wrapper">
           <view class="title">修改日志</view>
@@ -12,52 +12,49 @@
           />
         </view>
         <view class="list">
-          <view class="list-col">
+          <view class="list-col" v-if="dataList && dataList.length">
             <view class="col-line-container">
-              <view class="col-line-item">
-                <image class="line icon" src="@/static/images/icon_ok.png" mode="scaleToFill" />
-                <view class="line after" />
-              </view>
-              <view class="col-line-item">
-                <image class="line icon" src="@/static/images/icon_ok.png" mode="scaleToFill" />
-                <view class="line after" />
-              </view>
-              <view class="col-line-item">
-                <image class="line icon" src="@/static/images/icon_ok.png" mode="scaleToFill" />
-                <view class="line after-line" />
+              <view class="col-line-item" v-for="(item, index) in dataList" :key="index">
+                <template v-if="dataList.length === 1">
+                  <image class="line icon" src="@/static/images/icon_ok.png" mode="scaleToFill" />
+                </template>
+                <template v-if="dataList.length > 1">
+                  <image class="line icon" src="@/static/images/icon_ok.png" mode="scaleToFill" />
+                  <view :class="['line', index === dataList.length ? 'after-line' : 'after']" />
+                </template>
               </view>
             </view>
             <view class="col-text-container">
-              <view class="col-text-item">
-                <view class="time">2023-04-07 12:00:05</view>
-                <view class="content-box">
-                  <view class="text"> 操作人员姓名：张三 </view>
-                  <view class="text"> 修改居民户姓名：杨汉中 </view>
-                  <view class="text"> 修改出生年月：1960年1月 修改为 1964年1月 </view>
-                  <view class="text"> 修改婚姻状况：未婚 修改为 已婚 </view>
-                  <view class="text"> 修改参保情况：其他 修改为 养老保险 </view>
+              <view class="col-text-item" v-for="(item, index) in dataList" :key="index">
+                <view class="time">{{ item.createdDate }}</view>
+                <view class="content-box" v-if="item.operationType === '修改'">
+                  <view class="text">操作人员姓名：{{ item.createdName }}</view>
+                  <view v-for="(info, idx) in JSON.parse(item.updateJson)" :key="idx" class="text">
+                    {{ info.propertyName }}：{{ info.oldValue }} 修改为 {{ info.newValue }}
+                  </view>
+                </view>
+                <view class="content-box" v-else-if="item.operationType === '新增'">
+                  <view class="text">操作人员姓名：{{ item.createdName }}</view>
+                  <view class="text" v-if="item.remark">
+                    {{ item.operationType }}[{{ item.name }}]{{ item.type }}：{{ item.remark }}
+                  </view>
+                  <view class="text" v-else>
+                    {{ item.operationType }}[{{ item.name }}]{{ item.type }}
+                  </view>
+                </view>
+                <view class="content-box" v-else-if="item.operationType === '删除'">
+                  <view class="text">操作人员姓名：{{ item.createdName }}</view>
+                  <view class="text">
+                    {{ item.operationType }}[{{ item.name }}]{{ item.type }}：{{ item.remark }}
+                  </view>
                 </view>
               </view>
-              <view class="col-text-item">
-                <view class="time">2023-04-07 12:00:05</view>
-                <view class="content-box">
-                  <view class="text"> 操作人员姓名：张三 </view>
-                  <view class="text"> 修改居民户姓名：杨汉中 </view>
-                  <view class="text"> 修改出生年月：1960年1月 修改为 1964年1月 </view>
-                  <view class="text"> 修改婚姻状况：未婚 修改为 已婚 </view>
-                  <view class="text"> 修改参保情况：其他 修改为 养老保险 </view>
-                </view>
-              </view>
-              <view class="col-text-item">
-                <view class="time">2023-04-07 12:00:05</view>
-                <view class="content-box">
-                  <view class="text"> 操作人员姓名：张三 </view>
-                  <view class="text"> 修改居民户姓名：杨汉中 </view>
-                  <view class="text"> 修改出生年月：1960年1月 修改为 1964年1月 </view>
-                  <view class="text"> 修改婚姻状况：未婚 修改为 已婚 </view>
-                  <view class="text"> 修改参保情况：其他 修改为 养老保险 </view>
-                </view>
-              </view>
+            </view>
+          </view>
+          <view class="list-col" v-else>
+            <view class="null-wrapper">
+              <image class="icon" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
+              <view class="tips">暂无信息</view>
             </view>
           </view>
         </view>
@@ -68,8 +65,22 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
+import { getUpdateLogApi } from '@/api/index'
+
+const props = defineProps({
+  doorNo: {
+    type: String,
+    default: ''
+  },
+  // 复核类目，如 人口信息、房屋信息...
+  reviewCategory: {
+    type: String,
+    default: ''
+  }
+})
 
 const drawerModal = ref<any>(null)
+const dataList = ref<any>([])
 const emit = defineEmits(['close'])
 
 const showDrawer = () => {
@@ -81,7 +92,19 @@ const close = () => {
   emit('close')
 }
 
+const initData = () => {
+  getUpdateLogApi({
+    size: 999,
+    type: props.reviewCategory,
+    doorNo: props.doorNo
+  }).then((res: any) => {
+    console.log('res:', res)
+    dataList.value = res.content
+  })
+}
+
 onMounted(() => {
+  initData()
   showDrawer()
 })
 </script>
@@ -102,18 +125,18 @@ onMounted(() => {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 58rpx;
-      padding: 0 12rpx;
+      height: 34rpx;
+      padding: 0 14rpx;
       border-bottom: 1rpx solid #ebebeb;
 
       .title {
-        font-size: 20rpx;
+        font-size: 12rpx;
         color: #131313;
       }
 
       .icon-close {
-        width: 16rpx;
-        height: 16rpx;
+        width: 9rpx;
+        height: 9rpx;
       }
     }
 
@@ -128,12 +151,12 @@ onMounted(() => {
         flex-direction: row;
         width: 100%;
         height: max-content;
-        padding: 20rpx 24rpx 20rpx 10rpx;
+        padding: 14rpx 28rpx 20rpx 14rpx;
 
         .col-line-container {
           display: inline-flex;
           flex-direction: column;
-          width: 50rpx;
+          width: 38rpx;
 
           .col-line-item {
             display: flex;
@@ -149,24 +172,24 @@ onMounted(() => {
               &.before-line {
                 width: 0;
                 height: 6rpx;
-                transform: translateY(-20rpx);
+                transform: translateY(-12rpx);
               }
 
               &.icon {
-                width: 40rpx;
-                height: 40rpx;
+                width: 24rpx;
+                height: 24rpx;
                 background-color: transparent;
               }
 
               &.after {
-                margin: 10rpx 0;
+                margin: 5rpx 0;
                 transform: translateY(1rpx);
                 flex: 1;
               }
 
               &.after-line {
                 width: 0;
-                margin: 10rpx 0;
+                margin: 5rpx 0;
                 transform: translateY(1rpx);
                 flex: 1;
               }
@@ -182,7 +205,7 @@ onMounted(() => {
           .col-text-item {
             .time {
               padding: 6rpx 0;
-              font-size: 20rpx;
+              font-size: 12rpx;
               font-weight: bold;
               color: #171718;
             }
@@ -190,16 +213,38 @@ onMounted(() => {
             .content-box {
               display: flex;
               flex-direction: column;
-              padding: 30rpx;
+              padding: 15rpx;
               background-color: #f6f6f6;
 
               .text {
-                height: 22rpx;
-                font-size: 16rpx;
-                line-height: 22rpx;
+                height: 13rpx;
+                font-size: 9rpx;
+                line-height: 13rpx;
                 color: #131313;
               }
             }
+          }
+        }
+
+        .null-wrapper {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          width: 100%;
+          height: calc(100vh - 33rpx - 12rpx - 33rpx - 24rpx - 60rpx - var(--status-bar-height));
+          background-color: #fff;
+
+          .icon {
+            width: 152rpx;
+            height: 92rpx;
+          }
+
+          .tips {
+            margin-top: 17rpx;
+            font-size: 9rpx;
+            line-height: 1;
+            color: #171718;
           }
         }
       }

@@ -340,6 +340,28 @@
           </uni-col>
         </uni-row>
 
+        <uni-row
+          v-if="
+            stage === MainStage.review && type === 'add' && mainType === MainType.PeasantHousehold
+          "
+        >
+          <uni-col :span="24">
+            <uni-forms-item
+              label="新增原因"
+              :label-width="150"
+              label-align="right"
+              name="formData.reason"
+            >
+              <uni-easyinput
+                v-model="formData.reason"
+                type="textarea"
+                :maxlength="300"
+                placeholder="请输入(300字以内)"
+              />
+            </uni-forms-item>
+          </uni-col>
+        </uni-row>
+
         <uni-row>
           <uni-col :span="24">
             <uni-forms-item
@@ -427,6 +449,7 @@ import { addLandlordHouseApi, updateLandlordHouseApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
 import UploadFile from '@/components/UploadFile/index.vue'
+import { MainStage, MainType } from '@/types/common'
 
 // 表单数据
 const formData = ref<any>({
@@ -455,6 +478,7 @@ const formData = ref<any>({
   latitude: '',
   locationType: '',
   remark: '',
+  reason: '',
   housePic: '[]',
   landPic: '[]',
   otherPic: '[]',
@@ -463,9 +487,14 @@ const formData = ref<any>({
 
 const title = ref<string>('')
 const commonParams = ref<any>({})
+const type = ref<string>('')
 
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
+const projectInfo = getStorage(StorageKey.PROJECTINFO)
+// 阶段，如 survey 调查填报阶段， review 复核阶段
+const stage = projectInfo?.status ? projectInfo.status : MainStage.survey
+const mainType = ref<string>('')
 
 // 获得焦点的输入框下标
 const focusIndex = ref<number>(-1)
@@ -480,11 +509,13 @@ const lgTagList = ref<any>([
 onLoad((option: any) => {
   if (option) {
     commonParams.value = JSON.parse(option.commonParams)
-    if (commonParams.value.type === 'edit') {
+    type.value = commonParams.value?.type ? commonParams.value.type : ''
+    mainType.value = commonParams.value?.mainType ? commonParams.value.mainType : ''
+    if (type.value === 'edit') {
       let params = JSON.parse(option.params)
       formData.value = { ...params }
       title.value = '房屋信息编辑'
-    } else if (commonParams.value.type === 'add') {
+    } else if (type.value === 'add') {
       title.value = '新增房屋'
       if (commonParams.value.longitude && commonParams.value.latitude) {
         formData.value.longitude = commonParams.value.longitude
@@ -513,7 +544,7 @@ const gotoMap = () => {
 
 // 表单提交
 const submit = () => {
-  const { type, uid, doorNo } = commonParams.value
+  const { uid, doorNo } = commonParams.value
   const params = {
     doorNo,
     ...formData.value,
@@ -530,8 +561,16 @@ const submit = () => {
   } else if (!formData.value.houseType) {
     showToast('请选择房屋类别')
     return
+  } else if (
+    !formData.value.reason &&
+    stage === MainStage.review &&
+    type.value === 'add' &&
+    mainType.value === MainType.PeasantHousehold
+  ) {
+    showToast('请输入新增原因')
+    return
   } else {
-    if (type === 'add') {
+    if (type.value === 'add') {
       addLandlordHouseApi(uid, params)
         .then((res) => {
           if (res) {
@@ -542,7 +581,7 @@ const submit = () => {
         .catch(() => {
           showToast(ERROR_MSG)
         })
-    } else if (type === 'edit') {
+    } else if (type.value === 'edit') {
       updateLandlordHouseApi(uid, params)
         .then((res) => {
           if (res) {
@@ -694,10 +733,10 @@ onMounted(() => {
 
     .submit-btn {
       position: fixed;
-      right: 6rpx;
-      bottom: 6rpx;
-      width: 66rpx;
-      height: 66rpx;
+      right: 25rpx;
+      bottom: 20rpx;
+      width: 28rpx;
+      height: 28rpx;
       border-radius: 50%;
     }
   }
