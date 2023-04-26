@@ -7,7 +7,9 @@
           <image class="logo" src="@/static/images/logo.png" />
           <view class="project">移民安置综合管理服务平台</view>
           <view class="project" v-if="projectInfo">&nbsp;-&nbsp;{{ `${projectInfo.name}` }}</view>
-          <view class="status">（实物采集）</view>
+          <view class="status">{{
+            projectInfo.status && projectInfo.status === 'review' ? '（实物复核）' : '（实物采集）'
+          }}</view>
         </view>
 
         <view class="header-rt">
