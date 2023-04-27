@@ -91,9 +91,7 @@ const getLandlordDetail = (uid: string) => {
 
 // 初始化职业选择框数据
 const initOccpationData = async () => {
-  // console.log('执行了')
   const res = await getOtherItemApi(OtherDataType.ProfessionalTree)
-  // console.log('occupationOptions:', res)
   if (res && res.length > 0) {
     occupationOptions.value = res
   }
