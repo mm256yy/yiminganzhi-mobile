@@ -20,9 +20,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { getLandlordTreeApi, getLandlordItemApi } from '@/service'
-import { getOccpationDict } from '@/api'
+import { getLandlordTreeApi, getLandlordItemApi, getOtherItemApi } from '@/service'
 import { MainType } from '@/types/common'
+import { OtherDataType } from '@/database'
 import Main from './components/Main.vue'
 import { onLoad, onShow } from '@dcloudio/uni-app'
 
@@ -78,7 +78,7 @@ const treeItemClick = (data: any) => {
  */
 const getLandlordDetail = (uid: string) => {
   getLandlordItemApi(uid).then((res: any) => {
-    console.log('res:', res)
+    // console.log('res:', res)
     dataInfo.value = { ...res }
     expendCodes.value = [
       dataInfo.value.areaCode,
@@ -90,12 +90,13 @@ const getLandlordDetail = (uid: string) => {
 }
 
 // 初始化职业选择框数据
-const initOccpationData = () => {
-  getOccpationDict('职业').then((res: any) => {
-    if (res && res.length > 0) {
-      occupationOptions.value = res
-    }
-  })
+const initOccpationData = async () => {
+  // console.log('执行了')
+  const res = await getOtherItemApi(OtherDataType.ProfessionalTree)
+  // console.log('occupationOptions:', res)
+  if (res && res.length > 0) {
+    occupationOptions.value = res
+  }
 }
 </script>
 

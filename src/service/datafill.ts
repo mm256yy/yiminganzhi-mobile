@@ -43,8 +43,8 @@ export const updateLandlordPeopleApi = (uid: string, data: PopulationType) => {
  * @param itemId 人口uid
  * @returns
  */
-export const deleteLandlordPeopleApi = (uid: string, itemId: string) => {
-  return DataFillController.deleteLandlordPeople(uid, itemId)
+export const deleteLandlordPeopleApi = (uid: string, itemId: string, reason?: string) => {
+  return DataFillController.deleteLandlordPeople(uid, itemId, reason)
 }
 
 // --------------
@@ -72,10 +72,11 @@ export const updateLandlordHouseApi = (uid: string, data: HouseType) => {
  * 删除房屋
  * @param uid 业主uid
  * @param itemId 房屋uid
+ * @param reason 删除原因（填报阶段没有此参数，复核阶段有此参数）
  * @returns
  */
-export const deleteLandlordHouseApi = (uid: string, itemId: string) => {
-  return DataFillController.deleteLandlordHouse(uid, itemId)
+export const deleteLandlordHouseApi = (uid: string, itemId: string, reason?: string) => {
+  return DataFillController.deleteLandlordHouse(uid, itemId, reason)
 }
 // ---------------
 

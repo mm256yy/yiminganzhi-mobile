@@ -163,6 +163,7 @@ import dayjs from 'dayjs'
 import { formatDict, formatStr, formatNum, routerForward, getStorage, StorageKey } from '@/utils'
 import { MainStage, MainType } from '@/types/common'
 import modifyRecords from '../modifyRecords/index.vue' // 引入修改记录组件
+import { showToast } from '@/config'
 
 const props = defineProps({
   dataList: {
@@ -225,7 +226,15 @@ const deleteHouse = (data: any) => {
 }
 
 const dialogConfirm = () => {
-  emit('deleteHouse', currentItem.value)
+  if (stage === MainStage.review) {
+    if (!reason.value) {
+      showToast('请输入删除原因')
+      return
+    }
+    emit('deleteHouse', currentItem.value, reason.value)
+  } else {
+    emit('deleteHouse', currentItem.value, reason.value)
+  }
 }
 
 const dialogClose = () => {

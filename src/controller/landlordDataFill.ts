@@ -117,7 +117,7 @@ class DataFill extends Landlord {
     })
   }
   // 业主-人口删除操作
-  deleteLandlordPeople(uid: string, itemUid: string): Promise<boolean> {
+  deleteLandlordPeople(uid: string, itemUid: string, reason?: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!uid || !itemUid) {
@@ -494,7 +494,7 @@ class DataFill extends Landlord {
     })
   }
   // 业主-房屋删除操作
-  deleteLandlordHouse(uid: string, itemUid: string): Promise<boolean> {
+  deleteLandlordHouse(uid: string, itemUid: string, reason?: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!uid || !itemUid) {

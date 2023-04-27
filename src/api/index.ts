@@ -31,16 +31,6 @@ export const printLandlordApi = (
   })
 }
 
-// 获取职业字典表数据
-export const getOccpationDict = (name: string): Promise<any> => {
-  return request.get({
-    url: `/dict/tree`,
-    data: {
-      name
-    }
-  })
-}
-
 // 获取复核修改记录
 export const getUpdateLogApi = (data: Partial<any>): Promise<any> => {
   return request.get({

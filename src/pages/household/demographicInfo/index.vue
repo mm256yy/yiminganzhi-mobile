@@ -111,7 +111,21 @@
     />
 
     <!-- 删除确认弹框 -->
-    <uni-popup ref="alertDialog" type="dialog">
+    <uni-popup v-if="stage === MainStage.review" ref="alertDialog" type="dialog">
+      <uni-popup-dialog
+        type="warn"
+        mode="input"
+        cancelText="取消"
+        confirmText="确认"
+        title="确认删除？"
+        :value="reason"
+        placeholder="请输入删除原因"
+        @confirm="dialogConfirm"
+        @close="dialogClose"
+      />
+    </uni-popup>
+
+    <uni-popup v-else ref="alertDialog" type="dialog">
       <uni-popup-dialog
         type="warn"
         cancelText="取消"
@@ -145,6 +159,7 @@ import {
   getStorage,
   StorageKey
 } from '@/utils'
+import { showToast } from '@/config'
 import { MainStage, ReviewCategory } from '@/types/common'
 import modifyRecords from '../../common/modifyRecords/index.vue' // 引入修改记录组件
 
@@ -166,6 +181,7 @@ const props = defineProps({
 const emit = defineEmits(['deleteDemographic'])
 const alertDialog = ref<any>(null)
 const currentItem = ref<any>({})
+const reason = ref<string>('') // 删除原因
 
 const projectInfo = getStorage(StorageKey.PROJECTINFO)
 // 阶段，如 survey 调查填报阶段， review 复核阶段
@@ -207,7 +223,15 @@ const deleteDemographic = (data: any) => {
 }
 
 const dialogConfirm = () => {
-  emit('deleteDemographic', currentItem.value)
+  if (stage === MainStage.review) {
+    if (!reason.value) {
+      showToast('请输入删除原因')
+      return
+    }
+    emit('deleteDemographic', currentItem.value, reason.value)
+  } else {
+    emit('deleteDemographic', currentItem.value, reason.value)
+  }
 }
 
 const dialogClose = () => {

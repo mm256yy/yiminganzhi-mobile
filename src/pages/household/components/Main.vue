@@ -222,7 +222,7 @@ const virutalVillageCode = ref<string>('')
 const emit = defineEmits(['treeItemClick', 'updateData', 'updateTree'])
 
 const treeItemClick = (data: any) => {
-  console.log('click-tree-data:', data)
+  // console.log('click-tree-data:', data)
   tabVal.value = 0
   areaCode.value = data.areaCode
   townCode.value = data.townCode
@@ -256,10 +256,11 @@ const addClick = (type: string) => {
 
 /**
  * 人口信息 - 删除
- * @param(Object) data 被删除的行信息
+ * @param{Object} data 被删除的行信息
+ * @param{Object} reason 删除原因（填报阶段没有此参数，复核阶段有此参数）
  */
-const deleteDemographic = (data: any) => {
-  deleteLandlordPeopleApi(props.dataInfo.uid, data.uid)
+const deleteDemographic = (data: any, reason?: string) => {
+  deleteLandlordPeopleApi(props.dataInfo.uid, data.uid, reason)
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
@@ -273,10 +274,11 @@ const deleteDemographic = (data: any) => {
 
 /**
  * 房屋信息 - 删除
- * @param(Object) data 被删除的行信息
+ * @param{Object} data 被删除的行信息
+ * @param{Object} reason 删除原因（填报阶段没有此参数，复核阶段有此参数）
  */
-const deleteHouse = (data: any) => {
-  deleteLandlordHouseApi(props.dataInfo.uid, data.uid)
+const deleteHouse = (data: any, reason?: string) => {
+  deleteLandlordHouseApi(props.dataInfo.uid, data.uid, reason)
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
