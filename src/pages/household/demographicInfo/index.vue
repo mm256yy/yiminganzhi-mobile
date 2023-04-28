@@ -221,15 +221,15 @@ const deleteDemographic = (data: any) => {
   currentItem.value = { ...data }
 }
 
-const dialogConfirm = () => {
+const dialogConfirm = (e: any) => {
   if (stage === MainStage.review) {
-    if (!reason.value) {
+    if (!e) {
       showToast('请输入删除原因')
       return
     }
-    emit('deleteDemographic', currentItem.value, reason.value)
+    emit('deleteDemographic', currentItem.value, e)
   } else {
-    emit('deleteDemographic', currentItem.value, reason.value)
+    emit('deleteDemographic', currentItem.value)
   }
 }
 
