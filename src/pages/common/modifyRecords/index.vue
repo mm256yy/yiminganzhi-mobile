@@ -65,22 +65,15 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
-import { getUpdateLogApi } from '@/api/index'
 
 const props = defineProps({
-  doorNo: {
-    type: String,
-    default: ''
-  },
-  // 复核类目，如 人口信息、房屋信息...
-  reviewCategory: {
-    type: String,
-    default: ''
+  dataList: {
+    type: Array as any,
+    default: () => []
   }
 })
 
 const drawerModal = ref<any>(null)
-const dataList = ref<any>([])
 const emit = defineEmits(['close'])
 
 const showDrawer = () => {
@@ -92,19 +85,7 @@ const close = () => {
   emit('close')
 }
 
-const initData = () => {
-  getUpdateLogApi({
-    size: 999,
-    type: props.reviewCategory,
-    doorNo: props.doorNo
-  }).then((res: any) => {
-    console.log('res:', res)
-    dataList.value = res.content
-  })
-}
-
 onMounted(() => {
-  initData()
   showDrawer()
 })
 </script>

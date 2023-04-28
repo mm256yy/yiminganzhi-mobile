@@ -113,12 +113,7 @@
     </uni-popup>
 
     <!-- 复核修改记录 -->
-    <modify-records
-      v-if="showRecord"
-      :doorNo="dataInfo.doorNo"
-      :reviewCategory="ReviewCategory.immigrantGraveList"
-      @close="closeModifyRecords"
-    />
+    <modify-records v-if="showRecord" :dataList="updateLogList" @close="closeModifyRecords" />
   </view>
 </template>
 
@@ -126,7 +121,7 @@
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { formatStr, formatDict, dictOption, getStorage, StorageKey, routerForward } from '@/utils'
-import { MainStage, ReviewCategory, MainType } from '@/types/common'
+import { MainStage, MainType } from '@/types/common'
 import { getLandlordListBySearchApi } from '@/service'
 import modifyRecords from '../../common/modifyRecords/index.vue' // 引入修改记录组件
 
@@ -136,6 +131,10 @@ const props = defineProps({
     default: () => {}
   },
   dataList: {
+    type: Array as any,
+    default: () => []
+  },
+  updateLogList: {
     type: Array as any,
     default: () => []
   }
@@ -159,9 +158,6 @@ const getCollectiveList = (data: any) => {
   const params = {
     name: '',
     type: MainType.Village,
-    areaCode: data.areaCode,
-    townCode: data.townCode,
-    villageCode: data.villageCode,
     pageSize: 99999
   }
   getLandlordListBySearchApi(params).then((res: any) => {
@@ -180,7 +176,7 @@ const initCollectiveData = (data: any) => {
     data.map((item: any) => {
       newArr.push({
         text: item.name,
-        value: item.uid
+        value: item.id
       })
     })
     return newArr
@@ -222,6 +218,7 @@ const toLink = (type: string, data?: any) => {
     })
   } else {
     const params = {
+      registrantId: householdId,
       graveType: '',
       number: null,
       materials: '',

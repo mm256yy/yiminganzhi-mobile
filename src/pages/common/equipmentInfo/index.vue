@@ -1,6 +1,6 @@
 <template>
   <view class="equipment-info-wrapper">
-    <!-- 个人信息 -->
+    <!-- 设施设备信息 -->
     <view class="list" v-if="props.dataList && props.dataList.length > 0">
       <view class="list-item" v-for="item in props.dataList" :key="item.id">
         <view class="list-1">

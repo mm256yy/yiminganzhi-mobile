@@ -86,9 +86,7 @@ export enum MainStage {
 
 /**
  * 复核修改记录公共传参
- * peasantHouseholdPushDtoList 居民户基本信息
  * company 企业/个体户 基本概况
- * viilage 村集体基本情况
  * immigrantManagementList 企业营收
  * immigrantEquipmentList 企业设备
  * immigrantFacilitiesList 农村小型专项及农副业设施信息
@@ -100,12 +98,9 @@ export enum MainStage {
  * immigrantHouseList 房屋信息
  * immigrantWill 安置意愿信息
  * immigrantIncomeList 家庭收入信息
- * immigrantFile 附件信息
  */
 export enum ReviewCategory {
-  peasantHouseholdPushDtoList = 'peasantHouseholdPushDtoList',
   company = 'company',
-  village = 'village',
   immigrantManagementList = 'immigrantManagementList',
   immigrantEquipmentList = 'immigrantEquipmentList',
   immigrantFacilitiesList = 'immigrantFacilitiesList',
@@ -115,8 +110,7 @@ export enum ReviewCategory {
   immigrantGraveList = 'immigrantGraveList',
   immigrantHouseList = 'immigrantHouseList',
   immigrantWill = 'immigrantWill',
-  immigrantIncomeList = 'immigrantIncomeList',
-  immigrantFile = 'immigrantFile'
+  immigrantIncomeList = 'immigrantIncomeList'
 }
 
 export interface ReportParamsType {

@@ -138,12 +138,7 @@
     </uni-popup>
 
     <!-- 复核修改记录 -->
-    <modify-records
-      v-if="showRecord"
-      :doorNo="dataInfo.doorNo"
-      :reviewCategory="ReviewCategory.demographicList"
-      @close="closeModifyRecords"
-    />
+    <modify-records v-if="showRecord" :dataList="updateLogList" @close="closeModifyRecords" />
   </view>
 </template>
 
@@ -160,7 +155,7 @@ import {
   StorageKey
 } from '@/utils'
 import { showToast } from '@/config'
-import { MainStage, ReviewCategory } from '@/types/common'
+import { MainStage } from '@/types/common'
 import modifyRecords from '../../common/modifyRecords/index.vue' // 引入修改记录组件
 
 const props = defineProps({
@@ -173,6 +168,10 @@ const props = defineProps({
     default: () => {}
   },
   occupationOptions: {
+    type: Array as any,
+    default: () => []
+  },
+  updateLogList: {
     type: Array as any,
     default: () => []
   }

@@ -86,12 +86,7 @@
     </uni-popup>
 
     <!-- 复核修改记录 -->
-    <modify-records
-      v-if="showRecord"
-      :doorNo="dataInfo.doorNo"
-      :reviewCategory="reviewCategory"
-      @close="closeModifyRecords"
-    />
+    <modify-records v-if="showRecord" :dataList="updateLog" @close="closeModifyRecords" />
   </view>
 </template>
 
@@ -115,10 +110,10 @@ const props = defineProps({
     type: String,
     default: ''
   },
-  // 复核类目，如 人口信息、房屋信息...
-  reviewCategory: {
-    type: String,
-    default: ''
+  // 复核记录
+  updateLog: {
+    type: Object as any,
+    default: () => {}
   }
 })
 

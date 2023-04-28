@@ -152,19 +152,14 @@
     />
 
     <!-- 复核修改记录 -->
-    <modify-records
-      v-if="showRecord"
-      :doorNo="dataInfo.doorNo"
-      :reviewCategory="ReviewCategory.immigrantIncomeList"
-      @close="closeModifyRecords"
-    />
+    <modify-records v-if="showRecord" :dataList="updateLogList" @close="closeModifyRecords" />
   </view>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 import { getFamilyIncomeListApi } from '@/service'
-import { MainType, MainStage, ReviewCategory } from '@/types/common'
+import { MainType, MainStage } from '@/types/common'
 import { getStorage, StorageKey } from '@/utils'
 import modifyRecords from '../../common/modifyRecords/index.vue' // 引入修改记录组件
 
@@ -176,6 +171,10 @@ const props = defineProps({
   dataInfo: {
     type: Object as any,
     default: () => {}
+  },
+  updateLogList: {
+    type: Array as any,
+    default: () => []
   }
 })
 

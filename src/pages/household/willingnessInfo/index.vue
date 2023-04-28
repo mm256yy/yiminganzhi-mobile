@@ -115,12 +115,7 @@
     />
 
     <!-- 复核修改记录 -->
-    <modify-records
-      v-if="showRecord"
-      :doorNo="dataInfo.doorNo"
-      :reviewCategory="ReviewCategory.immigrantWill"
-      @close="closeModifyRecords"
-    />
+    <modify-records v-if="showRecord" :dataList="updateLogList" @close="closeModifyRecords" />
   </view>
 </template>
 
@@ -139,6 +134,10 @@ const props = defineProps({
     default: () => {}
   },
   dataInfo: {
+    type: Object as any,
+    default: () => {}
+  },
+  updateLogList: {
     type: Object as any,
     default: () => {}
   }

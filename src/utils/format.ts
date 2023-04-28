@@ -246,3 +246,18 @@ export const fmtOccupationStr = (arr: any[], val: string, type: number) => {
   }
   return str
 }
+
+/**
+ * 获取复核修改记录
+ * @param {Array} arr 原数组
+ * @param {Object} type 类型：
+ * 人口信息、房屋信息、附属物信息、果树信息
+ * 坟墓信息、收入信息、安置意愿信息
+ */
+export const fmtUpdateLog = (arr: any, type: string) => {
+  let newArr: any = []
+  if (arr && arr.length) {
+    newArr = arr.filter((item: any) => item.type === type)
+  }
+  return newArr
+}

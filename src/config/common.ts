@@ -3,10 +3,12 @@ import { getStorage, StorageKey } from '@/utils'
 export const getHeaderCommonParams = () => {
   const token = getStorage(StorageKey.TOKEN)
   const projectId = getStorage(StorageKey.PROJECTID) || 2
+  const stage = getStorage(StorageKey.PROJECTINFO).status || 'survey' // 阶段， 如 survey 填报、review 复核
   const systemInfo = uni.getSystemInfoSync()
   return {
     Authorization: token,
     'Project-id': projectId,
+    'Project-Status': stage,
     DeviceType: 'pad',
     AppId: systemInfo.appId,
     AppVersion: systemInfo.appWgtVersion

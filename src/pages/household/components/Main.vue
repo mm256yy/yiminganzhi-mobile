@@ -34,6 +34,7 @@
                 :dataList="dataInfo.demographicList"
                 :dataInfo="dataInfo"
                 :occupationOptions="occupationOptions"
+                :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '人口信息')"
                 @delete-demographic="deleteDemographic"
               />
 
@@ -42,7 +43,7 @@
                 v-if="tabVal === 2"
                 :dataList="dataInfo.immigrantHouseList"
                 :dataInfo="dataInfo"
-                :reviewCategory="ReviewCategory.immigrantHouseList"
+                :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '房屋信息')"
                 :mainType="MainType.PeasantHousehold"
                 @delete-house="deleteHouse"
               />
@@ -52,7 +53,7 @@
                 v-if="tabVal === 3"
                 :dataInfo="dataInfo"
                 :dataList="dataInfo.immigrantAppendantList"
-                :reviewCategory="ReviewCategory.immigrantAppendantList"
+                :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '附属物信息')"
                 :mainType="MainType.PeasantHousehold"
                 @submit="updateAppendantInfo"
               />
@@ -62,7 +63,7 @@
                 v-if="tabVal === 4"
                 :dataList="dataInfo.immigrantTreeList"
                 :dataInfo="dataInfo"
-                :reviewCategory="ReviewCategory.immigrantTreeList"
+                :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '果木信息')"
                 :mainType="MainType.PeasantHousehold"
                 @delete-tree="deleteTree"
                 @update-fruit-tree-info="updateFruitTreeInfo"
@@ -73,6 +74,7 @@
                 v-if="tabVal === 5"
                 :dataInfo="dataInfo"
                 :dataList="dataInfo.immigrantGraveList"
+                :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '坟墓信息')"
                 @delete-grave-info="deleteGraveInfo"
               />
 
@@ -81,6 +83,7 @@
                 v-if="tabVal === 6"
                 :dataList="dataInfo.immigrantIncomeList"
                 :dataInfo="dataInfo"
+                :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '收入信息')"
                 @submit="updateRevenueInfo"
               />
 
@@ -89,6 +92,7 @@
                 v-if="tabVal === 7"
                 :willData="dataInfo.immigrantWill"
                 :dataInfo="dataInfo"
+                :updateLog="fmtUpdateLog(dataInfo.updateLogList, '安置意愿信息')"
                 @submit="updateWillingnessInfo"
               />
 
@@ -96,8 +100,6 @@
               <attachment-upload
                 v-if="tabVal === 8"
                 :dataInfo="dataInfo"
-                :reviewCategory="ReviewCategory.immigrantFile"
-                :mainType="MainType.PeasantHousehold"
                 @submit="updateAttachment"
               />
             </view>
@@ -129,8 +131,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
-import { routerForward } from '@/utils'
-import { MainType, PrintType, ReviewCategory } from '@/types/common'
+import { routerForward, fmtUpdateLog } from '@/utils'
+import { MainType, PrintType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
 import Header from '@/components/Header/Index.vue'
 import Tree from '@/components/Tree/Index.vue'
