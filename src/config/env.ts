@@ -3,7 +3,7 @@
  */
 
 // 默认 dev 环境
-const apiEnv: ApiEnv = 'dev'
+const apiEnv: ApiEnv = 'prod'
 
 const envMap = {
   local: {
@@ -19,7 +19,7 @@ const envMap = {
     apiBasePath: '/api'
   },
   prod: {
-    apiBaseUrl: 'https://r7r-ai.zdwp.net',
+    apiBaseUrl: 'https://ym.zhym.net.cn',
     apiBasePath: '/api'
   }
 }
