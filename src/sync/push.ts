@@ -113,7 +113,8 @@ class PushData {
                 if (item.uid && item.isDelete === '1') {
                   deleteList.push({
                     type: 'demographicList',
-                    deleteId: item.uid
+                    deleteId: item.uid,
+                    reason: item.reason
                   })
                 }
               })
@@ -143,7 +144,8 @@ class PushData {
                 if (item.uid && item.isDelete === '1') {
                   deleteList.push({
                     type: 'immigrantHouseList',
-                    deleteId: item.uid
+                    deleteId: item.uid,
+                    reason: item.reason
                   })
                 }
               })

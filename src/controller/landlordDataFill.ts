@@ -129,6 +129,7 @@ class DataFill extends Landlord {
         if (landlordItem) {
           landlordItem.demographicList = landlordItem.demographicList.map((item) => {
             if (item.uid === itemUid) {
+              item.reason = reason || ''
               item.isDelete = '1'
             }
             return item
@@ -507,6 +508,7 @@ class DataFill extends Landlord {
         if (landlordItem) {
           landlordItem.immigrantHouseList = landlordItem.immigrantHouseList.map((item) => {
             if (item.uid === itemUid) {
+              item.reason = reason || ''
               item.isDelete = '1'
             }
             return item

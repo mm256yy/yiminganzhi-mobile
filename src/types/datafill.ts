@@ -34,7 +34,8 @@ export interface PopulationType {
   villageText: string
   virutalVillageText: string
   insured: boolean
-  reason?: string
+  addReason?: string // 添加原因
+  reason?: string // 删除原因
   [key: string]: any
 }
 
@@ -68,7 +69,8 @@ export interface HouseType {
   latitude: string
   housePic: string
   remark: string
-  reason?: string
+  addReason?: string // 添加原因
+  reason?: string // 删除原因
   [key: string]: any
 }
 
