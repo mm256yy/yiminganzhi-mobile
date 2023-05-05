@@ -125,3 +125,82 @@
 - 等待打包完成 打包完成后自动保存到项目的"unpackage/release/apk/"目录
 
 如下所示： ![image](https://oss.zdwp.tech/migrate/files/image/9f719efe-730c-40ec-8d77-c3c98fe55220.png)
+
+### 目前证书相关信息
+
+- 别名：`migrate`
+
+- Enter keystore password: //输入证书文件密码，输入完成回车
+
+`migrate@zdwp2023`
+
+- Re-enter new password: //再次输入证书文件密码，输入完成回车
+
+`migrate@zdwp2023`
+
+- What is your first and last name?  
+  // 输入名字和姓氏，输入完成回车
+
+`移民调查`
+
+- What is the name of your organizational unit? //输入组织单位名称，输入完成回车
+
+`浙江省水利水电勘测设计院`
+
+- What is the name of your organization?  
+  //输入组织名称，输入完成回车
+
+`浙江省水利水电勘测设计院`
+
+- What is the name of your City or Locality?  
+  //输入城市或区域名称，输入完成回车
+
+`杭州市`
+
+- What is the name of your State or Province?  
+  //输入省/市/自治区名称，输入完成回车
+
+`浙江省杭州市上城区`
+
+- What is the two-letter country code for this unit?  
+  //输入国家/地区代号（两个字母），中国为 CN，输入完成回车
+
+`CN/HZ`
+
+- Is CN=XX, OU=XX, O=XX, L=XX, ST=XX, C=XX correct?  
+  // 确认上面输入的内容是否正确，输入 y，回车
+
+### SHA1 码生成
+
+在项目根目录下运行
+
+```
+keytool -v -list -keystore ./migrate.keystore
+```
+
+输入口令：
+
+```
+migrate@zdwp2023
+```
+
+### 包相关信息
+
+- 包名: `io.dcloud.migrate`
+
+### 问题记录
+
+- 由于使用了 vue3，uniapp 渲染模式，渲染端 webview 最低兼容 64.0.3282.116，有部分 pad 是很老的设备，webview 版本为 43.x ，为了兼容这部分 pad，增加了腾讯 x5 webview 模块，安装 APK 时会自动弹出下载，有一定的失败率。
+
+> 为什么不使用原生渲染？
+
+原生开发 css 有诸多限制，不利于快速开发，为了解决 x5 下载失败的问题，尝试过全部改成.nvue 的原生渲染模式，但是 uniapp 规定必须要有一个.vue 的页面，也就是说跳不过 webview 的圈，也避免不了要增加 x5 模块的问题
+
+- 除去房屋图片外的图片下载，暂时没有下载到本地数据库，房屋图片涉及打印，必须下载，其他图片如果下载问题点有
+
+  - 同步时-同步处理下载 时间长
+  - 同步时-异步处理下载 会卡页面，跳转不流畅
+
+> 算一个居民户有 10M 的图，1000 个用户有接近 10G，所以不论是第一次同步时还是放本地存储都不合理
+
+- 打包只能采用云打包，使用了安卓原生的打印插件，只能云打包

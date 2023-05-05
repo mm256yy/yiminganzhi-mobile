@@ -1,3 +1,9 @@
+### 发布前
+
+- 改版本号 manifest.json versionName
+- 走 HBuildX 的云打包
+- 后台管理上传 apk
+
 ### 苹果端前期准备
 
 - [开发者中心](https://developer.apple.com/cn/)
