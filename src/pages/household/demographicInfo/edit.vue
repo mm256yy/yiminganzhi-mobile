@@ -218,9 +218,9 @@
               label="新增原因"
               :label-width="150"
               label-align="right"
-              name="formData.reason"
+              name="formData.addReason"
             >
-              <uni-easyinput v-model="formData.reason" type="textarea" placeholder="请输入" />
+              <uni-easyinput v-model="formData.addReason" type="textarea" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -329,7 +329,7 @@ const formData = ref<any>({
   householdNumber: '',
   censusRegister: '',
   remark: '',
-  reason: '',
+  addReason: '',
   cardPic: '[]',
   householdPic: '[]',
   otherPic: '[]'
@@ -404,7 +404,7 @@ const submit = () => {
   } else if (!formData.value.relation) {
     showToast('请选择与户主关系')
     return
-  } else if (!formData.value.reason && type.value === 'add' && stage === MainStage.review) {
+  } else if (!formData.value.addReason && type.value === 'add' && stage === MainStage.review) {
     showToast('请输入新增原因')
     return
   } else {

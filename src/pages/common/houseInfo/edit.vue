@@ -350,10 +350,10 @@
               label="新增原因"
               :label-width="150"
               label-align="right"
-              name="formData.reason"
+              name="formData.addReason"
             >
               <uni-easyinput
-                v-model="formData.reason"
+                v-model="formData.addReason"
                 type="textarea"
                 :maxlength="300"
                 placeholder="请输入(300字以内)"
@@ -478,7 +478,7 @@ const formData = ref<any>({
   latitude: '',
   locationType: '',
   remark: '',
-  reason: '',
+  addReason: '',
   housePic: '[]',
   landPic: '[]',
   otherPic: '[]',
@@ -562,7 +562,7 @@ const submit = () => {
     showToast('请选择房屋类别')
     return
   } else if (
-    !formData.value.reason &&
+    !formData.value.addReason &&
     stage === MainStage.review &&
     type.value === 'add' &&
     mainType.value === MainType.PeasantHousehold
