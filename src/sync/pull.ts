@@ -22,7 +22,10 @@ import {
   AppendantTableName,
   OtherDataType,
   ImageDDL,
-  ImageTableName
+  ImageTableName,
+  GraveDDL,
+  GraveTableName,
+  GraveDDLType
 } from '@/database/index'
 import { getProjectDataApi, getBaseDataApi, getConfigDataApi, getCollectApi } from './api'
 import { StateType, ImgItemType } from '@/types/sync'
@@ -52,7 +55,7 @@ class PullData {
     this.count = 0
     this.maxCount = 180
     // 需要拉取的数据的数量
-    this.needPullCount = 12
+    this.needPullCount = 13
     this.quality = 70
 
     this.state = {
@@ -71,6 +74,7 @@ class PullData {
       collectList: [],
       professionalTree: [],
       upgradation: null,
+      immigrantGraveList: [],
 
       peasantHouseholdNum: 0,
       companyNum: 0,
@@ -212,7 +216,8 @@ class PullData {
       individualNum,
       villageNum,
       virutalVillageNum,
-      appVersion
+      appVersion,
+      immigrantGraveList
     } = result
     this.state.peasantHouseholdPushDtoList = peasantHouseholdPushDtoList
     this.state.deleteRecordList = deleteRecordList
@@ -224,6 +229,7 @@ class PullData {
     this.state.villageNum = villageNum
     this.state.virutalVillageNum = virutalVillageNum
     this.state.upgradation = appVersion
+    this.state.immigrantGraveList = immigrantGraveList
 
     // 数据 新增 修改 删除一起进行
     this.pullLandlord().then((res) => {
@@ -242,6 +248,10 @@ class PullData {
     this.pullLandlordHouseImgs().then((res) => {
       res && this.count++
       console.log('拉取: 图片', res)
+    })
+    this.pullGrave().then((res) => {
+      res && this.count++
+      console.log('拉取: 坟墓', res)
     })
     this.pullOther().then((res) => {
       res && this.count++
@@ -279,7 +289,8 @@ class PullData {
         db.createTableWithDDL(DistrictDDL),
         db.createTableWithDDL(VillageDDL),
         db.createTableWithDDL(AppendantDDL),
-        db.createTableWithDDL(ImageDDL)
+        db.createTableWithDDL(ImageDDL),
+        db.createTableWithDDL(GraveDDL)
       ])
         .then((res) => {
           console.log('create表: 成功', res)
@@ -305,7 +316,8 @@ class PullData {
         db.dropTable(DistrictTableName),
         db.dropTable(VillageTableName),
         db.dropTable(AppendantTableName),
-        db.dropTable(ImageTableName)
+        db.dropTable(ImageTableName),
+        db.dropTable(GraveTableName)
       ])
         .then((res) => {
           console.log('drop表: 成功', res)
@@ -380,6 +392,46 @@ class PullData {
     })
   }
 
+  private pullGrave(): Promise<boolean> {
+    return new Promise(async (resolve) => {
+      const { immigrantGraveList: list } = this.state
+      // 开启事务
+      await db.transaction('begin').catch(() => {
+        resolve(false)
+      })
+      if (this.isArrayAndNotNull(list)) {
+        list.forEach((item) => {
+          // uid: string
+
+          // registrantId: number // 居民户id
+          // registrantDoorNo: string // 居民户户号
+
+          // householdId: number // 村集体id
+          // doorNo: string // 村集体户号
+
+          // content: string
+          // updatedDate: string
+          // isDelete: '0' | '1'
+          const fields =
+            "'uid','registrantId','registrantDoorNo','householdId','doorNo','content','updatedDate','isDelete','status'"
+          const values = `'${item.uid}','${item.registrantId}','${item.registrantDoorNo}','${
+            item.householdId
+          }','${item.doorNo}','${JSON.stringify(item)}','${getCurrentTimeStamp()}','0','default'`
+          db.insertOrReplaceData(GraveTableName, values, fields).catch((err) => {
+            console.log(err, '插入坟墓')
+          })
+        })
+        await db.transaction('commit').catch(() => {
+          resolve(false)
+        })
+        resolve(true)
+      } else {
+        // 数据为空 不需要拉取
+        resolve(true)
+      }
+    })
+  }
+
   /** 房屋示意图下载 */
   private pullLandlordHouseImgs(): Promise<boolean> {
     return new Promise(async (resolve) => {
@@ -432,12 +484,14 @@ class PullData {
       if (this.isArrayAndNotNull(list)) {
         list.forEach((item) => {
           const fields =
-            "'uid','name','type','reportStatus','reportDate','reportUser','status','content','areaCode','townCode','villageCode','virutalVillageCode','updatedDate','isDelete'"
-          const values = `'${item.uid}','${item.name}','${item.type}','${item.reportStatus}','${
-            item.reportDate ? dayjs(item.reportDate).format('YYYY-MM-DD HH:mm:ss') : ''
-          }','${item.reportUser}','default','${JSON.stringify(item)}','${item.areaCode}','${
-            item.townCode
-          }','${item.villageCode}','${item.virutalVillageCode}','${getCurrentTimeStamp()}','0'`
+            "'uid','name','doorNo','type','reportStatus','reportDate','reportUser','status','content','areaCode','townCode','villageCode','virutalVillageCode','updatedDate','isDelete'"
+          const values = `'${item.uid}','${item.name}','${item.doorNo}','${item.type}','${
+            item.reportStatus
+          }','${item.reportDate ? dayjs(item.reportDate).format('YYYY-MM-DD HH:mm:ss') : ''}','${
+            item.reportUser
+          }','default','${JSON.stringify(item)}','${item.areaCode}','${item.townCode}','${
+            item.villageCode
+          }','${item.virutalVillageCode}','${getCurrentTimeStamp()}','0'`
           db.insertOrReplaceData(LandlordTableName, values, fields).catch((err) => {
             console.log(err, '插入业主')
           })

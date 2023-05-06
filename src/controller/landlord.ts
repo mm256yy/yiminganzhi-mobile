@@ -15,6 +15,7 @@ import {
 } from '@/types/common'
 import dayjs from 'dayjs'
 import { imageUrlAndBase64Map } from '@/config'
+import { GraveController } from './grave'
 
 // uid: string
 // content: string
@@ -218,8 +219,8 @@ export class Landlord extends Common {
         data.immigrantEquipmentList = data.immigrantEquipmentList || []
         data.immigrantFacilitiesList = data.immigrantFacilitiesList || []
 
-        const fields = `'uid','status','type','name','reportStatus','reportDate','reportUser','areaCode','townCode','villageCode','virutalVillageCode','content','updatedDate','isDelete'`
-        const values = `'${uid}','modify','${data.type}','${data.name}','${
+        const fields = `'uid','status','doorNo','type','name','reportStatus','reportDate','reportUser','areaCode','townCode','villageCode','virutalVillageCode','content','updatedDate','isDelete'`
+        const values = `'${uid}','modify','${data.doorNo}','${data.type}','${data.name}','${
           ReportStatusEnum.UnReport
         }','','','${data.areaCode}','${data.townCode}','${data.villageCode}','${
           data.virutalVillageCode || ''
@@ -250,7 +251,7 @@ export class Landlord extends Common {
         const newData = { ...landlord, ...data }
         const values = `status = 'modify',type = '${newData.type}',name = '${
           newData.name
-        }',reportStatus = '${newData.reportStatus}',reportDate = '${
+        }',doorNo = '${newData.doorNo}',reportStatus = '${newData.reportStatus}',reportDate = '${
           newData.reportDate
         }',reportUser = '${newData.reportUser}',areaCode = '${newData.areaCode}',townCode = '${
           newData.townCode
@@ -281,8 +282,8 @@ export class Landlord extends Common {
           return
         }
 
-        const values = `status = 'modify',type = '${data.type}',name = '${
-          data.name
+        const values = `status = 'modify',type = '${data.type}',name = '${data.name}',doorNo = '${
+          data.doorNo
         }',reportStatus = '${data.reportStatus}',reportDate = '${data.reportDate}',reportUser = '${
           data.reportUser
         }',areaCode = '${data.areaCode}',townCode = '${data.townCode}',villageCode = '${
@@ -343,7 +344,16 @@ export class Landlord extends Common {
         )
         const res: LandlordType = result && result[0] ? JSON.parse(result[0].content) : {}
 
+        // 获取坟墓信息
+        const graveList = await GraveController.getListWithLandlord(res.type, res.doorNo)
         if (res && res.uid) {
+          // if (res.immigrantGraveList && res.immigrantGraveList.length) {
+          //   res.immigrantGraveList = res.immigrantGraveList.filter((item) => item.isDelete !== '1')
+          // }
+
+          // 赋值坟墓信息
+          res.immigrantGraveList = graveList
+
           if (res.demographicList && res.demographicList.length) {
             res.demographicList = res.demographicList.filter((item) => item.isDelete !== '1')
           }
@@ -352,9 +362,7 @@ export class Landlord extends Common {
               (item) => item.isDelete !== '1'
             )
           }
-          if (res.immigrantGraveList && res.immigrantGraveList.length) {
-            res.immigrantGraveList = res.immigrantGraveList.filter((item) => item.isDelete !== '1')
-          }
+
           if (res.immigrantHouseList && res.immigrantHouseList.length) {
             res.immigrantHouseList = res.immigrantHouseList.filter((item) => item.isDelete !== '1')
           }
@@ -461,8 +469,14 @@ export class Landlord extends Common {
         const landlordArray: LandlordType[] = result.map((item) => JSON.parse(item.content))
         const realLandlordArr: LandlordType[] = []
 
-        landlordArray.forEach((res) => {
+        for (let i = 0; i < landlordArray.length; i++) {
+          const res = landlordArray[i]
+          // 获取坟墓信息
+          const graveList = await GraveController.getListWithLandlord(res.type, res.doorNo)
           if (res && res.uid) {
+            // 坟墓赋值
+            res.immigrantGraveList = graveList
+
             if (res.company && res.company.uid) {
               res.company.industryTypeText = formatDict(res.company.industryType, 215)
               res.company.registerTypeText = formatDict(res.company.registerType, 219)
@@ -574,7 +588,7 @@ export class Landlord extends Common {
 
             realLandlordArr.push(res)
           }
-        })
+        }
 
         resolve(realLandlordArr)
       } catch (error) {

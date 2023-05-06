@@ -1,7 +1,7 @@
 /**
  * 填报相关接口
  */
-import { DataFillController } from '@/controller'
+import { DataFillController, GraveController } from '@/controller'
 import {
   PopulationType,
   HouseType,
@@ -138,7 +138,7 @@ export const deleteLandlordTreeApi = (uid: string, itemId: string) => {
  * @returns
  */
 export const addLandlordGraveApi = (uid: string, data: GraveType) => {
-  return DataFillController.addLandlordGrave(uid, data)
+  return GraveController.addGrave(data)
 }
 
 /**
@@ -148,7 +148,7 @@ export const addLandlordGraveApi = (uid: string, data: GraveType) => {
  * @returns
  */
 export const updateLandlordGraveApi = (uid: string, data: GraveType) => {
-  return DataFillController.updateLandlordGrave(uid, data)
+  return GraveController.updateGrave(data)
 }
 
 /**
@@ -158,7 +158,7 @@ export const updateLandlordGraveApi = (uid: string, data: GraveType) => {
  * @returns
  */
 export const deleteLandlordGraveApi = (uid: string, itemId: string) => {
-  return DataFillController.deleteLandlordGrave(uid, itemId)
+  return GraveController.deleteGrave(itemId)
 }
 // ---------------
 

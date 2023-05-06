@@ -10,10 +10,10 @@ import {
   FamilyIncomeController,
   DictionariesController,
   ResettlementController,
-  PrintController
+  PrintController,
+  ImageController
 } from '@/controller'
-import { ImageController } from '@/controller/image'
-import { OtherDataType, ImageDDLType } from '@/database'
+import { OtherDataType } from '@/database'
 import { MainType, PrintType } from '@/types/common'
 
 // 获取项目列表

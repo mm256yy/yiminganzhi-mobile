@@ -139,6 +139,7 @@ export interface StateType {
   collectList: CollectType[]
   professionalTree: LabelValueChildrenType[]
   upgradation: AppVersionDtoType | null
+  immigrantGraveList: GraveType[]
 
   peasantHouseholdNum: number
   companyNum: number
@@ -152,6 +153,7 @@ export interface PushStateType {
   peasantHouseholdPushDtoList: LandlordType[]
   deleteRecordList: DeleteRecordType[]
   villageList: VillageType[]
+  immigrantGraveList: GraveType[]
 }
 
 export interface ImgItemType {

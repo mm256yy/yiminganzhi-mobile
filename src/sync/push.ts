@@ -5,9 +5,13 @@ import {
   OtherDataType,
   OtherTableName,
   VillageDDLType,
-  VillageTableName
+  VillageTableName,
+  ImageDDLType,
+  ImageTableName,
+  GraveTableName,
+  GraveDDLType
 } from '@/database/index'
-import { ImageDDLType, ImageTableName } from '@/database/tables/image'
+
 import { VillageType } from '@/types/common'
 import { PushStateType, DeleteRecordType, LandlordType } from '@/types/sync'
 import dayjs from 'dayjs'
@@ -30,7 +34,8 @@ class PushData {
       peasantHouseholdPushDtoList: [],
       deleteRecordList: [],
       pullTime: '',
-      villageList: []
+      villageList: [],
+      immigrantGraveList: []
     }
   }
 
@@ -65,6 +70,20 @@ class PushData {
     })
   }
 
+  getModifyGraveList() {
+    return new Promise((resolve, reject) => {
+      db.selectTableData(GraveTableName, 'status', 'modify', 'isDelete', '0')
+        .then((res: VillageDDLType[]) => {
+          const result = res.map((item) => JSON.parse(item.content))
+          this.state.immigrantGraveList = result
+          resolve(result)
+        })
+        .catch(() => {
+          reject(null)
+        })
+    })
+  }
+
   getPullTime() {
     return new Promise((resolve, reject) => {
       db.selectTableData(OtherTableName, 'type', OtherDataType.PullTime)
@@ -91,6 +110,29 @@ class PushData {
           })
         }
       })
+
+      // 删除的坟墓
+      const immigrantGraveList: GraveDDLType[] = await db.selectTableData(
+        GraveTableName,
+        'isDelete',
+        '1'
+      )
+      if (immigrantGraveList && immigrantGraveList.length) {
+        const realList = immigrantGraveList.map((item) => {
+          return JSON.parse(item.content)
+        })
+        if (realList.length) {
+          realList.forEach((item) => {
+            if (item.uid && item.id) {
+              deleteList.push({
+                type: 'immigrantGraveList',
+                deleteId: item.uid
+              })
+            }
+          })
+        }
+      }
+
       const list: LandlordDDLType[] = await db.selectTableData(LandlordTableName, 'isDelete', '1')
       const { peasantHouseholdPushDtoList: landlordList } = this.state
       if (landlordList && landlordList.length) {
@@ -100,7 +142,6 @@ class PushData {
             const {
               demographicList,
               immigrantAppendantList,
-              immigrantGraveList,
               immigrantHouseList,
               immigrantIncomeList,
               immigrantTreeList,
@@ -129,16 +170,16 @@ class PushData {
                 }
               })
             }
-            if (immigrantGraveList && immigrantGraveList.length) {
-              immigrantGraveList.forEach((item) => {
-                if (item.uid && item.isDelete === '1') {
-                  deleteList.push({
-                    type: 'immigrantGraveList',
-                    deleteId: item.uid
-                  })
-                }
-              })
-            }
+            // if (immigrantGraveList && immigrantGraveList.length) {
+            //   immigrantGraveList.forEach((item) => {
+            //     if (item.uid && item.isDelete === '1') {
+            //       deleteList.push({
+            //         type: 'immigrantGraveList',
+            //         deleteId: item.uid
+            //       })
+            //     }
+            //   })
+            // }
             if (immigrantHouseList && immigrantHouseList.length) {
               immigrantHouseList.forEach((item) => {
                 if (item.uid && item.isDelete === '1') {
@@ -211,7 +252,7 @@ class PushData {
         console.log('realList:', realList)
         if (realList.length) {
           realList.forEach((item) => {
-            if (item.uid) {
+            if (item.uid && item.id) {
               deleteList.push({
                 type: 'peasantHouseholdPushDtoList',
                 deleteId: item.uid
@@ -291,11 +332,21 @@ class PushData {
   public push(): Promise<any> {
     return new Promise((resolve, reject) => {
       // 一起执行
-      Promise.all([this.getModifyLandlordList(), this.getModifyVillageList(), this.getPullTime()])
+      Promise.all([
+        this.getModifyLandlordList(),
+        this.getModifyVillageList(),
+        this.getPullTime(),
+        this.getModifyGraveList()
+      ])
         .then(() => {
           // 拿到结果了
-          const { peasantHouseholdPushDtoList, deleteRecordList, pullTime, villageList } =
-            this.state
+          const {
+            peasantHouseholdPushDtoList,
+            deleteRecordList,
+            pullTime,
+            villageList,
+            immigrantGraveList
+          } = this.state
           console.info('推送数据-业主列表:', peasantHouseholdPushDtoList)
           console.info('推送数据-自然村列表:', villageList)
           console.info('推送数据-删除列表:', deleteRecordList)
@@ -304,7 +355,8 @@ class PushData {
             peasantHouseholdPushDtoList,
             deleteRecordList,
             pullTime,
-            villageList
+            villageList,
+            immigrantGraveList
           })
             .then((res) => {
               console.log('推送: 接口suc:', res)

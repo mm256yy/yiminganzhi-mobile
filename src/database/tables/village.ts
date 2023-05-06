@@ -9,7 +9,7 @@ export interface VillageDDLType {
   content: string
   updatedDate: string
   isDelete: '0' | '1'
-  status: string
+  status: 'modify' | 'default'
 }
 
 export const VillageTableName = 'village'

@@ -8,6 +8,7 @@ export interface LandlordDDLType {
   uid: string
   content: string
   name: string
+  doorNo: string
   type: MainType
   reportStatus: ReportStatusEnum
   reportDate: string
@@ -27,6 +28,7 @@ export const LandlordDDL = `
 create table if not exists ${LandlordTableName} (
   'uid' text PRIMARY KEY,
   'name' text,
+  'doorNo' text,
   'type' text,
   'reportStatus' text,
   'reportDate' text,

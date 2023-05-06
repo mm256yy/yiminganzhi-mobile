@@ -337,99 +337,99 @@ class DataFill extends Landlord {
   }
 
   // 业主- 坟墓新增操作
-  addLandlordGrave(uid: string, data: GraveType): Promise<boolean> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        if (!uid) {
-          reject(false)
-          console.log('业主uid缺失')
-          return
-        }
-        const itemUid = guid()
-        data.uid = itemUid
-        data.isDelete = '0'
-        const landlordItem = await this.getLandlordByUidNoFilter(uid)
-        if (landlordItem) {
-          if (!landlordItem.immigrantGraveList) {
-            landlordItem.immigrantGraveList = []
-          }
-          landlordItem.immigrantGraveList.push(data)
-        } else {
-          reject(false)
-          console.log('业主信息查询失败')
-          return
-        }
-        // 更新数据
-        const updateRes = await this.updateLandlord(landlordItem as LandlordType)
-        updateRes ? resolve(true) : reject(false)
-      } catch (error) {
-        console.log(error, 'addLandlordGrave-error')
-        reject(false)
-      }
-    })
-  }
+  // addLandlordGrave(uid: string, data: GraveType): Promise<boolean> {
+  //   return new Promise(async (resolve, reject) => {
+  //     try {
+  //       if (!uid) {
+  //         reject(false)
+  //         console.log('业主uid缺失')
+  //         return
+  //       }
+  //       const itemUid = guid()
+  //       data.uid = itemUid
+  //       data.isDelete = '0'
+  //       const landlordItem = await this.getLandlordByUidNoFilter(uid)
+  //       if (landlordItem) {
+  //         if (!landlordItem.immigrantGraveList) {
+  //           landlordItem.immigrantGraveList = []
+  //         }
+  //         landlordItem.immigrantGraveList.push(data)
+  //       } else {
+  //         reject(false)
+  //         console.log('业主信息查询失败')
+  //         return
+  //       }
+  //       // 更新数据
+  //       const updateRes = await this.updateLandlord(landlordItem as LandlordType)
+  //       updateRes ? resolve(true) : reject(false)
+  //     } catch (error) {
+  //       console.log(error, 'addLandlordGrave-error')
+  //       reject(false)
+  //     }
+  //   })
+  // }
   // 业主-坟墓修改操作
-  updateLandlordGrave(uid: string, data: GraveType): Promise<boolean> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        if (!uid) {
-          reject(false)
-          console.log('业主uid缺失')
-          return
-        }
-        const landlordItem = await this.getLandlordByUidNoFilter(uid)
-        if (landlordItem) {
-          landlordItem.immigrantGraveList = landlordItem.immigrantGraveList.map((item) => {
-            if (item.uid === data.uid) {
-              item = { ...item, ...data }
-            }
-            return item
-          })
-        } else {
-          reject(false)
-          console.log('业主信息查询失败')
-          return
-        }
-        // 更新数据
-        const updateRes = await this.updateLandlord(landlordItem as LandlordType)
-        updateRes ? resolve(true) : reject(false)
-      } catch (error) {
-        console.log(error, 'updateLandlordGrave-error')
-        reject(false)
-      }
-    })
-  }
+  // updateLandlordGrave(uid: string, data: GraveType): Promise<boolean> {
+  //   return new Promise(async (resolve, reject) => {
+  //     try {
+  //       if (!uid) {
+  //         reject(false)
+  //         console.log('业主uid缺失')
+  //         return
+  //       }
+  //       const landlordItem = await this.getLandlordByUidNoFilter(uid)
+  //       if (landlordItem) {
+  //         landlordItem.immigrantGraveList = landlordItem.immigrantGraveList.map((item) => {
+  //           if (item.uid === data.uid) {
+  //             item = { ...item, ...data }
+  //           }
+  //           return item
+  //         })
+  //       } else {
+  //         reject(false)
+  //         console.log('业主信息查询失败')
+  //         return
+  //       }
+  //       // 更新数据
+  //       const updateRes = await this.updateLandlord(landlordItem as LandlordType)
+  //       updateRes ? resolve(true) : reject(false)
+  //     } catch (error) {
+  //       console.log(error, 'updateLandlordGrave-error')
+  //       reject(false)
+  //     }
+  //   })
+  // }
   // 业主-坟墓删除操作
-  deleteLandlordGrave(uid: string, itemUid: string): Promise<boolean> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        if (!uid || !itemUid) {
-          reject(false)
-          console.log('uid缺失')
-          return
-        }
-        const landlordItem = await this.getLandlordByUidNoFilter(uid)
-        if (landlordItem) {
-          landlordItem.immigrantGraveList = landlordItem.immigrantGraveList.map((item) => {
-            if (item.uid === itemUid) {
-              item.isDelete = '1'
-            }
-            return item
-          })
-        } else {
-          reject(false)
-          console.log('业主信息查询失败')
-          return
-        }
-        // 更新数据
-        const updateRes = await this.updateLandlord(landlordItem as LandlordType)
-        updateRes ? resolve(true) : reject(false)
-      } catch (error) {
-        console.log(error, 'deleteLandlordGrave-error')
-        reject(false)
-      }
-    })
-  }
+  // deleteLandlordGrave(uid: string, itemUid: string): Promise<boolean> {
+  //   return new Promise(async (resolve, reject) => {
+  //     try {
+  //       if (!uid || !itemUid) {
+  //         reject(false)
+  //         console.log('uid缺失')
+  //         return
+  //       }
+  //       const landlordItem = await this.getLandlordByUidNoFilter(uid)
+  //       if (landlordItem) {
+  //         landlordItem.immigrantGraveList = landlordItem.immigrantGraveList.map((item) => {
+  //           if (item.uid === itemUid) {
+  //             item.isDelete = '1'
+  //           }
+  //           return item
+  //         })
+  //       } else {
+  //         reject(false)
+  //         console.log('业主信息查询失败')
+  //         return
+  //       }
+  //       // 更新数据
+  //       const updateRes = await this.updateLandlord(landlordItem as LandlordType)
+  //       updateRes ? resolve(true) : reject(false)
+  //     } catch (error) {
+  //       console.log(error, 'deleteLandlordGrave-error')
+  //       reject(false)
+  //     }
+  //   })
+  // }
 
   // 业主- 房屋新增操作
   addLandlordHouse(uid: string, data: HouseType): Promise<boolean> {
