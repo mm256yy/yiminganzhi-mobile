@@ -248,6 +248,7 @@ const loginOut = () => {
       setStorage(StorageKey.LOGINTIME, '')
       setStorage(StorageKey.PROJECTID, '')
       setStorage(StorageKey.PROJECTINFO, null)
+      setStorage(StorageKey.PULLTIME, '')
       pullInstance
         .resetTable()
         .then(() => {
