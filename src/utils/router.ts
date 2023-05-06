@@ -6,7 +6,7 @@ interface QueryType {
   [key: string]: any
 }
 
-export function routerForward(name: string, query: QueryType = {}): void {
+export function routerForward(name: string, query: QueryType = {}): any {
   if (needAuthPath.includes(name)) return routerForward('login')
   const targetPage = pagesMap.find((i) => i.name === name)
   if (!targetPage) return
