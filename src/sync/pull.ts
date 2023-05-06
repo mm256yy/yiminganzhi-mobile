@@ -244,7 +244,7 @@ class PullData {
     })
     this.pullLandlordHouseImgs().then((res) => {
       res && this.count++
-      console.log('下载: 图片', res)
+      console.log('拉取: 图片', res)
     })
   }
 
@@ -403,14 +403,20 @@ class PullData {
             })
           }
         })
+        if (!imgUrls.length) {
+          resolve(true)
+          return
+        }
+        console.log(imgUrls, 'imgUrls')
+        const pathImgs = await this.downLoadImgs(imgUrls)
+        console.log(pathImgs, 'pathImgs')
+        const base64Imgs = await this.imgPathTobase64Batch(pathImgs)
+        console.log('base64Imgs')
+        const result = await this.saveImgs(base64Imgs)
+        resolve(result)
+      } else {
+        resolve(true)
       }
-      console.log(imgUrls, 'imgUrls')
-      const pathImgs = await this.downLoadImgs(imgUrls)
-      console.log(pathImgs, 'pathImgs')
-      const base64Imgs = await this.imgPathTobase64Batch(pathImgs)
-      console.log('base64Imgs')
-      const result = await this.saveImgs(base64Imgs)
-      resolve(result)
     })
   }
 
@@ -736,9 +742,9 @@ class PullData {
 
   /** 图片转出base64 */
   private imgPathTobase64Batch(imgPathAndUrls: ImgItemType[]): Promise<ImgItemType[]> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       if (!imgPathAndUrls || !imgPathAndUrls.length) {
-        reject([])
+        resolve([])
         return
       }
       Promise.all(imgPathAndUrls.map((item) => pathToBase64(item.path)))
@@ -752,12 +758,12 @@ class PullData {
             })
             resolve(result)
           } else {
-            reject([])
+            resolve([])
           }
         })
         .catch((error) => {
           console.error('图片转出base64:', error)
-          reject([])
+          resolve([])
         })
     })
   }
