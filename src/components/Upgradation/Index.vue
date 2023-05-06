@@ -75,9 +75,10 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue'
 let downloadTask: any = null
 
-export default {
+export default defineComponent({
   props: {
     upgradation: {
       type: Object
@@ -254,7 +255,7 @@ export default {
       })
     }
   }
-}
+})
 </script>
 
 <style>
