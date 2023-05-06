@@ -70,7 +70,7 @@ class PushData {
       db.selectTableData(OtherTableName, 'type', OtherDataType.PullTime)
         .then((res: any) => {
           this.state.pullTime = res.content
-          resolve(res.content)
+          resolve(Number(res.content) || '')
         })
         .catch(() => {
           reject('')

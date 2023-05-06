@@ -252,7 +252,8 @@ const onBack = () => {
 
 const getPullTime = async () => {
   const time: string = await getOtherItemApi(OtherDataType.PullTime)
-  pullTime.value = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
+  pullTime.value = time ? dayjs(Number(time)).format('YYYY-MM-DD HH:mm:ss') : ''
+  console.log(pullTime.value)
 }
 
 const getData = async () => {

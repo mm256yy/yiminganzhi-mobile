@@ -96,11 +96,12 @@ class PullData {
     }
   }
 
-  public pull() {
+  public async pull() {
+    // 拉取配置数据
+    await this.getConfigData()
     // 获取农户数据
     this.getBaseData()
-    // 拉取配置数据
-    this.getConfigData()
+
     // 统计数据
     this.getCollect()
   }
@@ -190,10 +191,6 @@ class PullData {
       res && this.count++
       console.log('拉取: 附属物', res)
     })
-    this.pullOther().then((res) => {
-      res && this.count++
-      console.log('拉取: 其他', res)
-    })
   }
 
   public async getBaseData() {
@@ -215,7 +212,7 @@ class PullData {
       individualNum,
       villageNum,
       virutalVillageNum,
-      upgradation
+      appVersion
     } = result
     this.state.peasantHouseholdPushDtoList = peasantHouseholdPushDtoList
     this.state.deleteRecordList = deleteRecordList
@@ -226,7 +223,7 @@ class PullData {
     this.state.individualNum = individualNum
     this.state.villageNum = villageNum
     this.state.virutalVillageNum = virutalVillageNum
-    this.state.upgradation = upgradation
+    this.state.upgradation = appVersion
 
     // 数据 新增 修改 删除一起进行
     this.pullLandlord().then((res) => {
@@ -245,6 +242,10 @@ class PullData {
     this.pullLandlordHouseImgs().then((res) => {
       res && this.count++
       console.log('拉取: 图片', res)
+    })
+    this.pullOther().then((res) => {
+      res && this.count++
+      console.log('拉取: 其他', res)
     })
   }
 
