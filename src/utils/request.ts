@@ -43,7 +43,7 @@ function baseRequest(method: MethodType, option: UniApp.RequestOptions) {
     uni.request({
       url: apiBaseUrl + url,
       method,
-      timeout: 20000,
+      timeout: 300000,
       header: {
         ...getHeaderCommonParams(),
         'content-type': 'application/json; charset=utf-8',
