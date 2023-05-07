@@ -101,6 +101,7 @@ export interface GraveType {
   graveYear: string
   gravePosition: string
   remark: string
+  registrantName: string
   registrantId: number
   registrantDoorNo: string
   relation: string
