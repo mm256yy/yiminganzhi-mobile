@@ -78,6 +78,7 @@ const back = () => {
   color: #fff;
   text-align: center;
   background-color: #007aff;
+  border-radius: 5rpx;
 
   &:active {
     opacity: 0.5;
