@@ -175,9 +175,11 @@ const initCollectiveData = (data: any) => {
   if (data && data.length) {
     data.map((item: any) => {
       newArr.push({
+        id: item.id || '',
+        doorNo: item.doorNo,
         text: item.name,
-        value: item.id,
-        doorNo: item.doorNo
+        value: item.uid,
+        disable: false
       })
     })
     return newArr
@@ -208,6 +210,13 @@ const toLink = (type: string, data?: any) => {
   const { uid, householdId, doorNo } = props.dataInfo
   let commonParams = { type, uid, collectiveList: collectiveList.value }
   if (type === 'edit') {
+    const currentVillage = collectiveList.value.find(
+      (colItem: any) => colItem.doorNo === data.villageDoorNo
+    )
+    data.villageId = currentVillage ? currentVillage.value : ''
+    console.log(currentVillage, 'pppp1')
+    console.log(data, 'pppp')
+
     routerForward('householdGraveInfoEdit', {
       params: JSON.stringify(data),
       commonParams: JSON.stringify(commonParams)
@@ -223,7 +232,6 @@ const toLink = (type: string, data?: any) => {
       materials: '',
       graveYear: '',
       gravePosition: '',
-      householdId: '', // 村集体ID
       remark: ''
     }
     routerForward('householdGraveInfoEdit', {
