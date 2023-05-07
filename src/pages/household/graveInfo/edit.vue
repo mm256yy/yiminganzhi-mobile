@@ -92,7 +92,11 @@
               label-align="right"
               name="formData.villageId"
             >
-              <uni-data-select v-model="formData.villageId" :localdata="collectiveList" />
+              <uni-data-select
+                v-model="formData.villageId"
+                :localdata="collectiveList"
+                @change="change"
+              />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -163,6 +167,18 @@ const inputBlur = () => {
   focusIndex.value = -1
 }
 
+/**
+ * 选择村集体
+ * @param{Object} e 当前选中的值
+ */
+const change = (e: any) => {
+  if (e) {
+    let itemData = collectiveList.value?.find((item: any) => item.value === e)
+    formData.value.villageDoorNo = itemData.doorNo
+    formData.value.villageId = itemData.id || ''
+  }
+}
+
 // 表单提交
 const submit = () => {
   const { type } = commonParams.value
@@ -177,11 +193,6 @@ const submit = () => {
     let params = {
       ...formData.value
     }
-    let itemData = collectiveList.value?.find(
-      (item: any) => formData.value.villageId === item.value
-    )
-    params.villageDoorNo = itemData.doorNo
-    params.villageId = itemData.id || ''
     console.log(params, 'params')
     if (type === 'add') {
       addLandlordGraveApi(uid, params)
