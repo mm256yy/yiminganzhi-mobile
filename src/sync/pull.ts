@@ -33,6 +33,8 @@ import { getCurrentTimeStamp, setStorage, StorageKey } from '@/utils'
 import dayjs from 'dayjs'
 import { pathToBase64 } from 'image-tools'
 
+// 最大拉取时间 10 分钟
+const baseMaxCount = 600
 class PullData {
   // 接口返回数据存储
   public state: StateType
@@ -53,7 +55,7 @@ class PullData {
   constructor() {
     // 拉取的计数
     this.count = 0
-    this.maxCount = 180
+    this.maxCount = baseMaxCount
     // 需要拉取的数据的数量
     this.needPullCount = 13
     this.quality = 70
@@ -113,7 +115,7 @@ class PullData {
   public pullAll() {
     return new Promise(async (resolve, reject) => {
       this.count = 0
-      this.maxCount = 180
+      this.maxCount = baseMaxCount
       const res = await this.pullProjectData()
       if (res) {
         this.pull()
@@ -154,6 +156,7 @@ class PullData {
     console.log('接口: 配置数据', result)
     if (!result) {
       console.error('配置数据获取失败')
+      this.maxCount = -1
       return
     }
     const {
@@ -204,6 +207,7 @@ class PullData {
     console.log('接口: 基础数据', result)
     if (!result) {
       console.error('基础数据获取失败')
+      this.maxCount = -1
       return
     }
     const {
@@ -266,6 +270,7 @@ class PullData {
     console.log('接口: 统计数据', result)
     if (!result) {
       console.error('统计数据获取失败')
+      this.maxCount = -1
       return
     }
     this.state.collectList = result
