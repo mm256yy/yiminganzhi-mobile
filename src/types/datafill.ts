@@ -93,8 +93,8 @@ export interface TreeType {
 export interface GraveType {
   id?: number
   uid?: string
-  doorNo: string
-  householdId: number
+  villageDoorNo: string
+  villageId: number
   graveType: string
   number: number
   materials: string

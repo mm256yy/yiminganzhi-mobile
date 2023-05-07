@@ -39,7 +39,7 @@ class Grave extends Common {
         if (type === MainType.PeasantHousehold) {
           sql += ` and registrantDoorNo = '${doorNo}' order by updatedDate desc`
         } else if (type === MainType.Village) {
-          sql += ` and doorNo = '${doorNo}' order by updatedDate desc`
+          sql += ` and villageDoorNo = '${doorNo}' order by updatedDate desc`
         }
 
         const list: GraveDDLType[] = await this.db.selectSql(sql)
@@ -59,18 +59,20 @@ class Grave extends Common {
   addGrave(item: GraveType): Promise<string> {
     return new Promise(async (resolve, reject) => {
       try {
-        if (!item.doorNo && !item.registrantDoorNo) {
-          console.log('doorNo或者registrantDoorNo缺失')
+        if (!item.villageDoorNo && !item.registrantDoorNo) {
+          console.log('villageDoorNo或者registrantDoorNo缺失')
           reject('')
           return
         }
         const uid = guid()
         item.uid = uid
         const fields =
-          "'uid','registrantId','registrantDoorNo','householdId','doorNo','content','updatedDate','isDelete','status'"
+          "'uid','registrantId','registrantDoorNo','villageId','villageDoorNo','content','updatedDate','isDelete','status'"
         const values = `'${uid}','${item.registrantId}','${item.registrantDoorNo}','${
-          item.householdId
-        }','${item.doorNo}','${JSON.stringify(item)}','${getCurrentTimeStamp()}','0','modify'`
+          item.villageId
+        }','${item.villageDoorNo}','${JSON.stringify(
+          item
+        )}','${getCurrentTimeStamp()}','0','modify'`
 
         const res = await this.db.insertTableData(GraveTableName, values, fields)
 
@@ -95,8 +97,8 @@ class Grave extends Common {
           return
         }
 
-        const values = `status = 'modify',doorNo = '${item.doorNo}',householdId = '${
-          item.householdId
+        const values = `status = 'modify',villageDoorNo = '${item.villageDoorNo}',villageId = '${
+          item.villageId
         }',registrantId = '${item.registrantId}',registrantDoorNo = '${
           item.registrantDoorNo
         }',content = '${JSON.stringify(item)}',updatedDate = '${getCurrentTimeStamp()}'`

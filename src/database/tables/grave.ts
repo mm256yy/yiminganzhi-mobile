@@ -8,8 +8,8 @@ export interface GraveDDLType {
   registrantId: number // 居民户id
   registrantDoorNo: string // 居民户户号
 
-  householdId: number // 村集体id
-  doorNo: string // 村集体户号
+  villageId: number // 村集体id
+  villageDoorNo: string // 村集体户号
 
   content: string
   updatedDate: string
@@ -23,8 +23,8 @@ export const GraveDDL = `
 create table if not exists ${GraveTableName} (
   'registrantId' INTEGER,
   'registrantDoorNo' text,
-  'householdId' INTEGER,
-  'doorNo' text,
+  'villageId' INTEGER,
+  'villageDoorNo' text,
   'uid' text,
   'content' text,
   'isDelete' text,

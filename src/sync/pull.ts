@@ -406,17 +406,19 @@ class PullData {
           // registrantId: number // 居民户id
           // registrantDoorNo: string // 居民户户号
 
-          // householdId: number // 村集体id
+          // villageId: number // 村集体id
           // doorNo: string // 村集体户号
 
           // content: string
           // updatedDate: string
           // isDelete: '0' | '1'
           const fields =
-            "'uid','registrantId','registrantDoorNo','householdId','doorNo','content','updatedDate','isDelete','status'"
+            "'uid','registrantId','registrantDoorNo','villageId','villageDoorNo','content','updatedDate','isDelete','status'"
           const values = `'${item.uid}','${item.registrantId}','${item.registrantDoorNo}','${
-            item.householdId
-          }','${item.doorNo}','${JSON.stringify(item)}','${getCurrentTimeStamp()}','0','default'`
+            item.villageId
+          }','${item.villageDoorNo}','${JSON.stringify(
+            item
+          )}','${getCurrentTimeStamp()}','0','default'`
           db.insertOrReplaceData(GraveTableName, values, fields).catch((err) => {
             console.log(err, '插入坟墓')
           })
