@@ -163,17 +163,6 @@ const inputBlur = () => {
   focusIndex.value = -1
 }
 
-/**
- * 选择村集体
- * @param {object} e
- */
-const change = (e: any) => {
-  console.log('e:', e)
-  setTimeout(() => {
-    console.log('e:', e)
-  }, 1000)
-}
-
 // 表单提交
 const submit = () => {
   const { type } = commonParams.value
