@@ -176,7 +176,8 @@ const initCollectiveData = (data: any) => {
     data.map((item: any) => {
       newArr.push({
         text: item.name,
-        value: item.id
+        value: item.id,
+        doorNo: item.doorNo
       })
     })
     return newArr
@@ -204,27 +205,25 @@ const closeModifyRecords = () => {
  * @param data type 为 edit 时，当前行数据
  */
 const toLink = (type: string, data?: any) => {
-  const { uid, householdId, villageCode } = props.dataInfo
-  let commonParams = { type, uid, householdId, villageCode, collectiveList: collectiveList.value }
+  const { uid, householdId, doorNo } = props.dataInfo
+  let commonParams = { type, uid, collectiveList: collectiveList.value }
   if (type === 'edit') {
-    let newCommonParams = {
-      ...commonParams,
-      doorNo: data.doorNo
-    }
-
     routerForward('householdGraveInfoEdit', {
       params: JSON.stringify(data),
-      commonParams: JSON.stringify(newCommonParams)
+      commonParams: JSON.stringify(commonParams)
     })
   } else {
     const params = {
-      registrantId: householdId,
+      registrantId: householdId, // 居民户 ID
+      registrantDoorNo: doorNo, // 居民户户号
+      villageId: '', // 村集体 ID
+      villageDoorNo: '', // 村集体户号
       graveType: '',
       number: null,
       materials: '',
       graveYear: '',
       gravePosition: '',
-      householdId: '',
+      householdId: '', // 村集体ID
       remark: ''
     }
     routerForward('householdGraveInfoEdit', {

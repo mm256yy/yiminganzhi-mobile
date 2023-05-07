@@ -228,9 +228,8 @@ const submit = () => {
     return
   } else {
     if (type === 'add') {
-      const { uid, doorNo } = commonParams.value
+      const { uid } = commonParams.value
       let params = {
-        doorNo,
         ...formData.value
       }
       addLandlordGraveApi(uid, params)

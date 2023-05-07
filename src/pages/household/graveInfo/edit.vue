@@ -90,9 +90,13 @@
               label="所属村集体"
               :label-width="150"
               label-align="right"
-              name="formData.householdId"
+              name="formData.villageId"
             >
-              <uni-data-select v-model="formData.householdId" :localdata="collectiveList" />
+              <uni-data-select
+                v-model="formData.villageId"
+                :localdata="collectiveList"
+                @change="changeCollective"
+              />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -163,6 +167,16 @@ const inputBlur = () => {
   focusIndex.value = -1
 }
 
+/**
+ * 选择村集体
+ * @param {object} e
+ */
+const changeCollective = (e: any) => {
+  console.log('e:', e)
+  // let itemData = collectiveList.value?.find((item: any) => item.value === e)
+  formData.value.villageDoorNo = e.doorNo
+}
+
 // 表单提交
 const submit = () => {
   const { type } = commonParams.value
@@ -173,13 +187,11 @@ const submit = () => {
     showToast('请选择所处位置')
     return
   } else {
+    const { uid } = commonParams.value
+    let params = {
+      ...formData.value
+    }
     if (type === 'add') {
-      const { uid, doorNo, householdId } = commonParams.value
-      let params = {
-        doorNo,
-        ...formData.value,
-        registrantId: householdId
-      }
       addLandlordGraveApi(uid, params)
         .then((res) => {
           if (res) {
@@ -191,10 +203,6 @@ const submit = () => {
           showToast(ERROR_MSG)
         })
     } else if (type === 'edit') {
-      const { uid } = commonParams.value
-      let params = {
-        ...formData.value
-      }
       updateLandlordGraveApi(uid, params)
         .then((res) => {
           if (res) {

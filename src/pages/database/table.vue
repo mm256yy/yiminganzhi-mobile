@@ -1,7 +1,7 @@
 <template>
   <view class="table-wrap" :style="{ height: `${pageHeight}px` }">
     <view :style="{ height: `${statusBarHeight}px` }" />
-    <view><button type="primary" @click="back">返回列表</button></view>
+    <view class="back-btn" @click="back">返回列表</view>
     <scroll-view scroll-y class="json-view">
       <json-viewer :modelValue="jsonData" />
     </scroll-view>
@@ -12,7 +12,7 @@
 import { db } from '@/database'
 import { routerBack } from '@/utils'
 import { onLoad } from '@dcloudio/uni-app'
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import JsonViewer from './components/jsonView.vue'
 
 const tableName = ref<string>('project')
@@ -69,6 +69,21 @@ const back = () => {
 </script>
 
 <style lang="scss">
+.back-btn {
+  width: 80rpx;
+  height: 30rpx;
+  margin: 0 auto;
+  font-size: 9rpx;
+  line-height: 30rpx;
+  color: #fff;
+  text-align: center;
+  background-color: #007aff;
+
+  &:active {
+    opacity: 0.5;
+  }
+}
+
 .json-view {
   flex: 1;
 }
