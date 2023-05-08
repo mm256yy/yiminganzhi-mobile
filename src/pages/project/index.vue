@@ -50,7 +50,7 @@
 import { ref, onMounted } from 'vue'
 import { getProjectListApi } from '@/service'
 import SyncCompont from '@/components/Sync/Index.vue'
-import { routerBack, StorageKey, getStorage } from '@/utils'
+import { routerBack, StorageKey, getStorage, debounce } from '@/utils'
 import { ProjectType } from '@/types/common'
 
 const list = ref<any[]>([])
@@ -86,7 +86,7 @@ onMounted(() => {
 })
 
 // 项目切换
-const onChangeProject = (item: ProjectType) => {
+const onChangeProject = debounce((item: ProjectType) => {
   if (currentProjectId.value === item.id) {
     return
   }
@@ -94,7 +94,7 @@ const onChangeProject = (item: ProjectType) => {
   projectItem.value = item
   // 项目切换需要做数据同步
   syncCmt.value?.onSync()
-}
+})
 
 const changeProject = () => {
   currentProjectId.value = projectId.value

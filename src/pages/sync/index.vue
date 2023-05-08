@@ -217,7 +217,7 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 import { getCollectListApi, getOtherItemApi } from '@/service'
-import { routerBack, routerForward } from '@/utils'
+import { routerBack, routerForward, debounce } from '@/utils'
 import { CollectType, MainType } from '@/types/common'
 import { OtherDataType } from '@/database'
 import dayjs from 'dayjs'
@@ -238,9 +238,9 @@ const routerMap: any = {
   [MainType.Village]: 'collective'
 }
 
-const onSyncHandle = () => {
+const onSyncHandle = debounce(() => {
   syncCmt.value?.onSync()
-}
+})
 
 const jump = (type: MainType) => {
   routerForward(routerMap[type])

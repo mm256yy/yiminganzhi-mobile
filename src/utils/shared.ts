@@ -10,6 +10,20 @@ export function isFastClick(num = 1000) {
   return true
 }
 
+export function debounce(fn: (t?: any) => any, delay = 300) {
+  let timer: any = null
+  return function (...args: any) {
+    if (timer != null) {
+      clearTimeout(timer)
+      timer = null
+    }
+    timer = setTimeout(() => {
+      // @ts-ignore
+      fn.call(this, ...args)
+    }, delay)
+  }
+}
+
 // 解析 path
 export function parseUrl(fullPath: string) {
   const [path, queryStr] = fullPath.split('?')
