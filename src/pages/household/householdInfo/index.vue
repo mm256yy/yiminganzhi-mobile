@@ -134,7 +134,7 @@ const toLink = (type: string) => {
     householdNumber: props.dataInfo.householdNumber, // 户籍册编号
     suffixNo: splitStr(props.dataInfo.doorNo, 12, 16), // 户号后四位
     doorNo: props.dataInfo.doorNo, // 户号
-    hasPropertyAccount: props.dataInfo.hasPropertyAccount, // 是否财产户
+    hasPropertyAccount: String(props.dataInfo.hasPropertyAccount), // 是否财产户
     address: props.dataInfo.address, // 户籍所在地
     inundationRange: props.dataInfo.inundationRange, // 淹没范围
     altitude: props.dataInfo.altitude, // 高程
