@@ -18,8 +18,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { fmtPicUrl } from '@/utils'
+import { computed, ref } from 'vue'
 import UploadFile from '@/components/UploadFile/index.vue'
 
 const props = defineProps({
@@ -30,11 +29,10 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['submit'])
-const otherPic = ref<string>(
-  props.dataInfo.immigrantFile && JSON.stringify(props.dataInfo.immigrantFile) !== '{}'
-    ? fmtPicUrl(props.dataInfo.immigrantFile.otherPic)
-    : '[]'
-)
+
+const otherPic = computed(() => {
+  return props.dataInfo.immigrantFile.otherPic
+})
 
 // 表单提交
 const submit = () => {

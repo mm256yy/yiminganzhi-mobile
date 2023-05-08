@@ -189,7 +189,7 @@ export const fmtPicUrl = (url: any) => {
   if (url) {
     console.log(typeof url)
     if (typeof url === 'string') {
-      return url
+      return JSON.parse(url)
     } else if (typeof url === 'object') {
       return JSON.stringify(url)
     } else {

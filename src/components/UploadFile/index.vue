@@ -82,7 +82,7 @@ watch(
           item.editName = item.name || ''
           item.isEdit = false
           item.name = item.name || ''
-          item.path = imageUrlAndBase64Map[item.url].path || ''
+          item.path = imageUrlAndBase64Map[item.url]?.path || ''
           return item
         })
         filesList.value = list
@@ -106,7 +106,7 @@ watch(
           item.editName = item.name || ''
           item.isEdit = false
           item.name = item.name || ''
-          item.path = imageUrlAndBase64Map[item.url].path || ''
+          item.path = imageUrlAndBase64Map[item.url]?.path || ''
           return item
         })
         filesList.value = list
