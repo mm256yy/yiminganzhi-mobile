@@ -9,7 +9,7 @@ export const dictOption = (arr: any, val: any) => {
   let str = '-'
   if (val !== null) {
     arr.map((item: any) => {
-      if (item.value === 'true') {
+      if (typeof item.value === 'string') {
         if (item.value === val.toString()) {
           str = item.text
         }
