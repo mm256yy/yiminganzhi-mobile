@@ -124,7 +124,7 @@ import { ref } from 'vue'
 import { getWillListApi } from '@/service'
 import { onShow } from '@dcloudio/uni-app'
 import { showToast } from '@/config'
-import { MainStage, ReviewCategory } from '@/types/common'
+import { MainStage } from '@/types/common'
 import { getStorage, StorageKey } from '@/utils'
 import modifyRecords from '../../common/modifyRecords/index.vue' // 引入修改记录组件
 

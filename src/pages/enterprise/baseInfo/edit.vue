@@ -780,39 +780,17 @@
 
         <uni-row>
           <uni-col :span="12">
-            <uni-forms-item
-              label="合计权属面积"
-              :label-width="170"
-              label-align="right"
-              name="formData.totalOwnershipArea"
-            >
+            <uni-forms-item label="合计权属面积" :label-width="170" label-align="right" name="">
               <view class="input-wrapper">
-                <input
-                  class="input-txt"
-                  placeholder="合计"
-                  type="number"
-                  readonly
-                  v-model="formData.totalOwnershipArea"
-                />
+                <view class="txt">{{ computedTotalOwnershipArea() }}</view>
                 <view class="unit">亩</view>
               </view>
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
-            <uni-forms-item
-              label="合计占用面积"
-              :label-width="170"
-              label-align="right"
-              name="formData.totalOccupiedArea"
-            >
+            <uni-forms-item label="合计占用面积" :label-width="170" label-align="right" name="">
               <view class="input-wrapper">
-                <input
-                  class="input-txt"
-                  placeholder="合计"
-                  type="number"
-                  readonly
-                  v-model="formData.totalOccupiedArea"
-                />
+                <view class="txt">{{ computedTotalOccupiedArea() }}</view>
                 <view class="unit">亩</view>
               </view>
             </uni-forms-item>
@@ -976,6 +954,30 @@ onLoad((option: any) => {
   }
 })
 
+// 计算合计权属面积
+const computedTotalOwnershipArea = () => {
+  let sum = 0
+  let { sellOwnershipArea, transferOwnershipArea, rentOwnershipArea, otherOwnershipArea } = formData
+  sum =
+    Number(sellOwnershipArea) +
+    Number(transferOwnershipArea) +
+    Number(rentOwnershipArea) +
+    Number(otherOwnershipArea)
+  return sum
+}
+
+// 计算合计占用面积
+const computedTotalOccupiedArea = () => {
+  let sum = 0
+  let { sellOccupiedArea, transferOccupiedArea, rentOccupiedArea, otherOccupiedArea } = formData
+  sum =
+    Number(sellOccupiedArea) +
+    Number(transferOccupiedArea) +
+    Number(rentOccupiedArea) +
+    Number(otherOccupiedArea)
+  return sum
+}
+
 // 输入框获得焦点
 const inputFocus = (index: number) => {
   focusIndex.value = index
@@ -988,6 +990,9 @@ const inputBlur = () => {
 
 // 表单提交
 const submit = () => {
+  formData.value.totalOwnershipArea = computedTotalOwnershipArea()
+  formData.value.totalOccupiedArea = computedTotalOccupiedArea()
+
   let baseInfo: any = {
     name: formData.value.name,
     doorNo:
@@ -1219,6 +1224,15 @@ const submit = () => {
 
         .input-txt {
           width: 168rpx;
+          height: 35px;
+          padding-left: 7rpx;
+          font-size: 9rpx;
+          line-height: 35px;
+          color: #171718;
+        }
+
+        .txt {
+          width: 177rpx;
           height: 35px;
           padding-left: 7rpx;
           font-size: 9rpx;
