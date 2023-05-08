@@ -182,6 +182,7 @@ const submit = () => {
     )
     params.villageDoorNo = itemData.doorNo || ''
     params.villageId = itemData.id || ''
+    params.villageName = itemData.text || ''
     console.log(params, 'params')
     if (type === 'add') {
       addLandlordGraveApi(uid, params)

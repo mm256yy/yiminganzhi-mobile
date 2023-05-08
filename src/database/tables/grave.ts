@@ -25,7 +25,7 @@ create table if not exists ${GraveTableName} (
   'registrantDoorNo' text,
   'villageId' INTEGER,
   'villageDoorNo' text,
-  'uid' text,
+  'uid' text PRIMARY KEY,
   'content' text,
   'isDelete' text,
   'status' text,

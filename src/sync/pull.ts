@@ -103,10 +103,10 @@ class PullData {
   }
 
   public async pull() {
-    // 拉取配置数据
-    await this.getConfigData()
     // 获取农户数据
-    this.getBaseData()
+    await this.getBaseData()
+    // 拉取配置数据
+    this.getConfigData()
 
     // 统计数据
     this.getCollect()

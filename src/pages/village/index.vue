@@ -91,6 +91,7 @@ const getList = async () => {
   })
 
   isLoading.value = false
+  console.log(res, '自然村清单')
   if (res && res.length) {
     if (page.value === 1) {
       list.value = res || []

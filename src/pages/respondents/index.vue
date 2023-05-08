@@ -228,6 +228,7 @@ const getList = () => {
     const res = await getLandlordListBySearchApi(params).catch(() => {
       isLoading.value = false
     })
+    console.log(res, 'res-----')
     isLoading.value = false
     if (res && res.length) {
       if (page.value === 1) {

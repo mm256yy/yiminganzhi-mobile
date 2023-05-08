@@ -353,7 +353,7 @@ export class Landlord extends Common {
 
           // 赋值坟墓信息
           res.immigrantGraveList = graveList
-
+          console.log(graveList, 'graveList')
           if (res.demographicList && res.demographicList.length) {
             res.demographicList = res.demographicList.filter((item) => item.isDelete !== '1')
           }
@@ -648,6 +648,9 @@ export class Landlord extends Common {
             // virutalVillageCode: string
             // areaCode: string
             // 331102001201 行政村
+            console.log(districtMap, 'map')
+            console.log(item.virutalVillageCode, 'map')
+            console.log(districtMap[item.virutalVillageCode], 'map')
             item.virutalVillageCodeText = districtMap[item.virutalVillageCode]
             item.villageCodeText = districtMap[item.villageCode]
             item.townCodeText = districtMap[item.townCode]
