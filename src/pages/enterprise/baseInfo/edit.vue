@@ -957,24 +957,22 @@ onLoad((option: any) => {
 // 计算合计权属面积
 const computedTotalOwnershipArea = () => {
   let sum = 0
-  let { sellOwnershipArea, transferOwnershipArea, rentOwnershipArea, otherOwnershipArea } = formData
   sum =
-    Number(sellOwnershipArea) +
-    Number(transferOwnershipArea) +
-    Number(rentOwnershipArea) +
-    Number(otherOwnershipArea)
+    Number(formData.value.sellOwnershipArea ? formData.value.sellOwnershipArea : 0) +
+    Number(formData.value.transferOwnershipArea ? formData.value.transferOwnershipArea : 0) +
+    Number(formData.value.rentOwnershipArea ? formData.value.rentOwnershipArea : 0) +
+    Number(formData.value.otherOwnershipArea ? formData.value.otherOwnershipArea : 0)
   return sum
 }
 
 // 计算合计占用面积
 const computedTotalOccupiedArea = () => {
   let sum = 0
-  let { sellOccupiedArea, transferOccupiedArea, rentOccupiedArea, otherOccupiedArea } = formData
   sum =
-    Number(sellOccupiedArea) +
-    Number(transferOccupiedArea) +
-    Number(rentOccupiedArea) +
-    Number(otherOccupiedArea)
+    Number(formData.value.sellOccupiedArea ? formData.value.sellOccupiedArea : 0) +
+    Number(formData.value.transferOccupiedArea ? formData.value.transferOccupiedArea : 0) +
+    Number(formData.value.rentOccupiedArea ? formData.value.rentOccupiedArea : 0) +
+    Number(formData.value.otherOccupiedArea ? formData.value.otherOccupiedArea : 0)
   return sum
 }
 
