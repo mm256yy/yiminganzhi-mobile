@@ -31,15 +31,19 @@
     <uni-popup ref="reportDataPopup" :is-mask-click="false">
       <view class="tips-wrapper">
         <view class="tips-title">填报完成</view>
-        <view class="tips-content">
-          <view class="tips-list">
+        <view :class="['tips-content', tipsList.length === 0 ? 'completed-report' : '']">
+          <view class="tips-list" v-if="tipsList && tipsList.length">
             <view class="tips-item" v-for="(item, index) in tipsList" :key="index">
               {{ item }}
             </view>
           </view>
-          <view class="tips">
+          <view class="tips" v-if="tipsList && tipsList.length">
             <uni-icons type="info-filled" color="#FF4242" />
             以上信息还未填写，是否继续上报数据？
+          </view>
+          <view class="tips" v-else>
+            <uni-icons type="info-filled" color="#333" />
+            所有数据均已填写，是否继续上报数据？
           </view>
         </view>
         <view class="btn-wrapper">
@@ -84,7 +88,7 @@
 
 <script lang="ts">
 import { reportDataApi, getPrintTemplatesApi, getPrintLandlordApi } from '@/service'
-import { networkCheck, StorageKey, getStorage, formatDict } from '@/utils'
+import { networkCheck, StorageKey, getStorage } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { MainType, PrintType } from '@/types/common'
 const printpdfModule = uni.requireNativePlugin('da-printpdf')
@@ -523,6 +527,11 @@ export default {
     padding: 14rpx 40rpx;
     background: #f6f7f9;
     box-sizing: border-box;
+
+    &.completed-report {
+      height: 68rpx;
+      padding: 30rpx 59rpx;
+    }
 
     .tips-list {
       width: 264rpx;
