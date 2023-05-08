@@ -61,7 +61,7 @@
               <view class="col">
                 <view class="label">所属村集体：</view>
                 <view class="content">
-                  {{ dictOption(collectiveList, item.householdId) }}
+                  {{ dictOption(collectiveList, item.villageId) }}
                 </view>
               </view>
             </uni-col>
