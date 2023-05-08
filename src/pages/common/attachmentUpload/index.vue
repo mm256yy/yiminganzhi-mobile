@@ -1,7 +1,7 @@
 <template>
   <view class="attachment-upload-wrapper">
     <upload-file
-      v-model="otherPic"
+      v-model="pic"
       :file-list="otherPic"
       :limit="20"
       show-type="list"
@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import UploadFile from '@/components/UploadFile/index.vue'
 
 const props = defineProps({
@@ -31,14 +31,23 @@ const props = defineProps({
 const emit = defineEmits(['submit'])
 
 const otherPic = computed(() => {
-  return props.dataInfo.immigrantFile.otherPic
+  return props.dataInfo.immigrantFile.otherPic || '[]'
 })
+const pic = ref<string>('[]')
+
+watch(
+  () => props.dataInfo.immigrantFile.otherPic,
+  (val) => {
+    pic.value = val || '[]'
+  }
+)
 
 // 表单提交
 const submit = () => {
   const params = {
+    ...props.dataInfo.immigrantFile,
     doorNo: props.dataInfo.doorNo,
-    otherPic: otherPic.value
+    otherPic: pic.value
   }
   emit('submit', params)
 }

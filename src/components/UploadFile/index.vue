@@ -193,6 +193,7 @@ const updateFilesList = () => {
   })
   const str = JSON.stringify(result)
   emit('updateFileList', str)
+  console.log(str, '更改后的')
   emit('update:modelValue', str)
 }
 
