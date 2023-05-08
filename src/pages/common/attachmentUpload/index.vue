@@ -47,6 +47,7 @@ const submit = () => {
   const params = {
     ...props.dataInfo.immigrantFile,
     doorNo: props.dataInfo.doorNo,
+    householdId: props.dataInfo.householdId,
     otherPic: pic.value
   }
   emit('submit', params)
