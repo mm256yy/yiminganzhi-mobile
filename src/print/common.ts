@@ -234,7 +234,7 @@ export const getPopulation = (landlord: LandlordType) => {
         { text: item.relationText || '', style: 'td' },
         { text: item.sexText || '', style: 'td' },
         { text: item.nationText || '', style: 'td' },
-        { text: item.marital || '', style: 'td' },
+        { text: item.maritalText || '', style: 'td' },
         { text: item.censusRegister || '', style: 'td' },
         { text: item.card || '', style: 'td' },
         { text: item.populationTypeText || '', style: 'td' }
