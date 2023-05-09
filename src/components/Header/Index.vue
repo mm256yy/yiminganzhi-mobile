@@ -11,7 +11,7 @@
       </view>
 
       <view class="list-header-right">
-        <view class="btn-wrapper print" v-if="showPrint && netWork" @click="printFile">
+        <view class="btn-wrapper print" v-if="showPrint" @click="printFile">
           <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
           <text class="txt">打印表格</text>
         </view>
@@ -88,7 +88,7 @@
 
 <script lang="ts">
 import { reportDataApi, getPrintTemplatesApi, getPrintLandlordApi } from '@/service'
-import { networkCheck, StorageKey, getStorage } from '@/utils'
+import { StorageKey, getStorage } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { MainType, PrintType } from '@/types/common'
 const printpdfModule = uni.requireNativePlugin('da-printpdf')
@@ -104,7 +104,6 @@ interface DataType {
   selectedTemplateIds: string[]
   tipsList: string[]
   fileList: PrintListType[]
-  netWork: boolean
   options: any
   pdfFileCache: any
   actionType: 'preview' | 'print'
@@ -117,7 +116,6 @@ export default {
       selectedTemplateIds: [],
       tipsList: [],
       fileList: [],
-      netWork: true,
       options: {}, // 打印配置
       pdfFileCache: {}, // 生成的pdf缓存
       actionType: 'preview', // 操作类型 预览/打印
@@ -142,11 +140,6 @@ export default {
       type: String,
       default: ''
     }
-  },
-  mounted() {
-    networkCheck().then((res) => {
-      this.netWork = res
-    })
   },
   watch: {
     dataInfo: function (val, old) {
