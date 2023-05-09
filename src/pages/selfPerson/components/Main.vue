@@ -137,25 +137,39 @@ import iconEquipmentSel from '@/static/images/icon_equipment_select.png' // 引�
 import iconPhotoDef from '@/static/images/icon_photo_default.png' // 引入照片上传默认 icon
 import iconPhotoSel from '@/static/images/icon_photo_select.png' // 引入照片上传默认 icon
 
-const props = defineProps({
-  dataInfo: {
-    type: Object,
-    default: () => {}
-  },
-  treeData: {
-    // 左侧树列表
-    type: Array,
-    default: () => []
-  },
-  expendCodes: {
-    type: Array<string>,
-    default: () => []
-  },
-  uid: {
-    type: String,
-    default: ''
-  }
+interface PropsType {
+  dataInfo: any
+  treeData: Array<any>
+  expendCodes: string[]
+  uid: string
+}
+
+const props = withDefaults(defineProps<PropsType>(), {
+  dataInfo: {},
+  treeData: () => [],
+  expendCodes: () => [],
+  uid: ''
 })
+
+// const props = defineProps({
+//   dataInfo: {
+//     type: Object,
+//     default: () => {}
+//   },
+//   treeData: {
+//     // 左侧树列表
+//     type: Array,
+//     default: () => []
+//   },
+//   expendCodes: {
+//     type: Array<string>,
+//     default: () => []
+//   },
+//   uid: {
+//     type: String,
+//     default: ''
+//   }
+// })
 
 const tabsList = ref([
   { label: '个体户基本概况', value: 0, defIcon: iconBaseDef, selIcon: iconBaseSel },
