@@ -92,7 +92,14 @@ onLoad((option: any) => {
     // 编辑经纬度
     const longitude = option.longitude
     const latitude = option.latitude
-    if (!longitude || !latitude || longitude === '0' || latitude === '0') {
+    if (
+      !longitude ||
+      !latitude ||
+      longitude === '0' ||
+      latitude === '0' ||
+      longitude === 'null' ||
+      latitude === 'null'
+    ) {
       getCurrentLocation()
       return
     }

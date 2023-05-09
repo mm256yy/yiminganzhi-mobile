@@ -60,7 +60,7 @@ export interface LandlordType {
   reportUser: number
   fillingUpdateDate: string
   inundationRange: string
-  altitude: number
+  altitude?: number
   type: MainType
   totalNum?: number
   reportNum?: number

@@ -198,6 +198,10 @@ class PullData {
       res && this.count++
       console.log('拉取: 附属物', res)
     })
+    this.pullOther().then((res) => {
+      res && this.count++
+      console.log('拉取: 其他', res)
+    })
   }
 
   public async getBaseData() {
@@ -257,10 +261,14 @@ class PullData {
       res && this.count++
       console.log('拉取: 坟墓', res)
     })
-    this.pullOther().then((res) => {
-      res && this.count++
-      console.log('拉取: 其他', res)
-    })
+
+    if (pullTime) {
+      // 同步时间 存入other库
+      setStorage(StorageKey.PULLTIME, pullTime)
+      const fields = "'type','content','updatedDate'"
+      const values = `'${OtherDataType.PullTime}','${pullTime}','${getCurrentTimeStamp()}'`
+      this.db.insertOrReplaceData(OtherTableName, values, fields)
+    }
   }
 
   public async getCollect() {
@@ -741,7 +749,7 @@ class PullData {
   /** 其他 */
   private pullOther(): Promise<boolean> {
     return new Promise(async (resolve) => {
-      const { districtTree, pullTime, professionalTree } = this.state
+      const { districtTree, professionalTree } = this.state
       await db.transaction('begin').catch(() => {
         resolve(false)
       })
@@ -751,14 +759,6 @@ class PullData {
         const values = `'${OtherDataType.DistrictTree}','${JSON.stringify(
           districtTree
         )}','${getCurrentTimeStamp()}'`
-        db.insertOrReplaceData(OtherTableName, values, fields)
-      }
-
-      if (pullTime) {
-        // 同步时间
-        setStorage(StorageKey.PULLTIME, pullTime)
-        const fields = "'type','content','updatedDate'"
-        const values = `'${OtherDataType.PullTime}','${pullTime}','${getCurrentTimeStamp()}'`
         db.insertOrReplaceData(OtherTableName, values, fields)
       }
 
