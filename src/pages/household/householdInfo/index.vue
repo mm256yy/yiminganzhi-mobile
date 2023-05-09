@@ -126,7 +126,7 @@ const toLink = (type: string) => {
     hasPropertyAccount: String(props.dataInfo.hasPropertyAccount), // 是否财产户
     address: props.dataInfo.address, // 户籍所在地
     inundationRange: props.dataInfo.inundationRange, // 淹没范围
-    altitude: props.dataInfo.altitude, // 高程
+    // altitude: props.dataInfo.altitude, // 高程
     longitude: props.dataInfo.longitude, // 经度
     latitude: props.dataInfo.latitude // 纬度
   }
