@@ -78,17 +78,6 @@
             </uni-col>
             <uni-col :span="12">
               <view class="col">
-                <view class="label">高程：</view>
-                <view class="content">
-                  {{ formatStr(props.dataInfo.altitude, 'm') }}
-                </view>
-              </view>
-            </uni-col>
-          </uni-row>
-
-          <uni-row>
-            <uni-col :span="24">
-              <view class="col">
                 <view class="label">经纬度：</view>
                 <view class="content">
                   {{ props.dataInfo.longitude }} {{ props.dataInfo.latitude }}
