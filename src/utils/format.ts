@@ -7,18 +7,10 @@ import { getStorage, StorageKey } from '@/utils'
  */
 export const dictOption = (arr: any, val: any) => {
   let str = '-'
-  if (val !== null) {
-    arr.map((item: any) => {
-      if (typeof item.value === 'string') {
-        if (item.value === val.toString()) {
-          str = item.text
-        }
-      } else {
-        if (item.value === val) {
-          str = item.text
-        }
-      }
-    })
+  if (val) {
+    const arrItem = arr && arr.length && arr.find((item: any) => String(item.value) === String(val))
+    str = arrItem ? arrItem.text : '-'
+    return str
   }
   return str
 }
@@ -31,13 +23,17 @@ export const dictOption = (arr: any, val: any) => {
  * @param(Object) id 对应字典的 id
  */
 export const formatDict = (value: any, id: number) => {
-  let str = ''
+  let str = '-'
   // 获取数据字典
   const dict = getStorage(StorageKey.DICT)
   if (value) {
     const arr: any = dict[id]
-    // const arrItem = arr.find((item: any) => String(item.value) === String(value))
-    // str = arrItem ? arrItem.text : ''
+
+    // 方法一
+    // const arrItem = arr && arr.length && arr.find((item: any) => String(item.value) === String(value))
+    // str = arrItem ? arrItem.text : '-'
+
+    // 方法二
     arr.map((item: any) => {
       if (typeof item.value === typeof value && item.value === value) {
         str = item.text
@@ -50,9 +46,8 @@ export const formatDict = (value: any, id: number) => {
       }
     })
     return str
-  } else {
-    return '-'
   }
+  return str
 }
 
 /**
