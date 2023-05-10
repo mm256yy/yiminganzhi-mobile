@@ -3,7 +3,13 @@
     <view class="search-box">
       <view class="search-wrap">
         <image class="icon" src="@/static/images/icon_search.png" mode="scaleToFill" />
-        <input class="txt" placeholder="搜索" @confirm="iptConfirm" :value="keyWords" />
+        <input
+          class="txt"
+          placeholder="搜索"
+          confirm-type="search"
+          @confirm="iptConfirm"
+          :value="keyWords"
+        />
         <uni-icons v-if="keyWords" @click="clear" type="clear" color="#999999" size="14rpx" />
       </view>
       <label class="add-wrap" @click="addClick">

@@ -472,10 +472,14 @@ export class Landlord extends Common {
         for (let i = 0; i < landlordArray.length; i++) {
           const res = landlordArray[i]
           // 获取坟墓信息
-          const graveList = await GraveController.getListWithLandlord(res.type, res.doorNo)
+          const graveList = await GraveController.getListWithLandlord(res.type, res.doorNo).catch(
+            (err) => {
+              console.log(err, '获取坟墓失败')
+            }
+          )
           if (res && res.uid) {
             // 坟墓赋值
-            res.immigrantGraveList = graveList
+            res.immigrantGraveList = graveList || []
 
             if (res.company && res.company.uid) {
               res.company.industryTypeText = formatDict(res.company.industryType, 215)
@@ -529,10 +533,18 @@ export class Landlord extends Common {
                   // 处理房屋图片相关
                   const houseImgs = JSON.parse(item.housePic)
                   if (houseImgs && houseImgs.length) {
-                    item.housePicArray = houseImgs.map((imgItem: any) => {
-                      imgItem.base64 = imageUrlAndBase64Map[imgItem.url].base64
-                      return imgItem
+                    const imgs: any = []
+                    houseImgs.forEach((imgItem: any) => {
+                      if (/\.(jpg|jpeg|png|JPG|PNG)/.test(imgItem.url)) {
+                        imgs.push({
+                          url: imgItem.url,
+                          base64: imageUrlAndBase64Map[imgItem.url]
+                            ? imageUrlAndBase64Map[imgItem.url].base64
+                            : ''
+                        })
+                      }
                     })
+                    item.housePicArray = imgs
                   }
                 }
               })

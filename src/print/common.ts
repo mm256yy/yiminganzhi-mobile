@@ -74,7 +74,15 @@ export const getCompanyTableHead = (landlord: LandlordType, projectInfo: Project
             border: [true, true, false, false],
             stack: [
               {
-                text: `${projectInfo.name} 工程建设 征地移民实物调查表`,
+                text: `${projectInfo.name} 工程建设 征地${
+                  landlord.type === MainType.PeasantHousehold
+                    ? '移民'
+                    : landlord.type === MainType.Company
+                    ? '企业'
+                    : landlord.type === MainType.IndividualHousehold
+                    ? '个体工商户'
+                    : ''
+                }实物调查表`,
                 alignment: 'center',
                 fontSize: 16,
                 bold: true,
@@ -600,7 +608,7 @@ export const getHousePic = (landlord: LandlordType) => {
       // 处理过的房屋图片数组
       if (item.housePicArray && item.housePicArray.length) {
         item.housePicArray.forEach((houseItem: any) => {
-          imgs.push(houseItem.base64)
+          houseItem.base64 && imgs.push(houseItem.base64)
         })
       }
     })
