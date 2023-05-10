@@ -1,4 +1,4 @@
-export const imgHeight = 270
+export const imgHeight = 540
 
 // 表格 单元格的padding 注意：最好不要设置高度，分页的时候会出现多余的空行
 export const layout = {

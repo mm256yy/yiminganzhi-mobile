@@ -55,7 +55,7 @@ export const selfemployedEquipmentDefinition = {
     {
       alignment: 'left',
       margin: [0, 10, 0, 0],
-      columns: ['分类目录：企业', '所属阶段：', '']
+      columns: ['分类目录：个体工商户', '所属阶段：', '']
     }
   ],
   footer: function () {
@@ -110,7 +110,7 @@ const getInfo = (landlord: LandlordType) => {
         }
       ],
       [{ text: `所在位置：${landlord.locationTypeText}` }],
-      [{ text: `联系方式：${landlord.phone}` }]
+      [{ text: `联系方式：${landlord.phone || ''}` }]
     ]
   }
 }

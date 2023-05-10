@@ -251,7 +251,7 @@ export const selfemployedBaseDefinition = {
     {
       alignment: 'left',
       margin: [0, 10, 0, 0],
-      columns: ['分类目录：企业', '所属阶段：', '']
+      columns: ['分类目录：个体工商户', '所属阶段：', '']
     }
   ],
   footer: function () {
@@ -293,7 +293,6 @@ const getTop = () => {
 
 // 信息栏
 const getInfo = (landlord: LandlordType) => {
-  const { company } = landlord
   return {
     alignment: 'left',
     fontSize: 9,
@@ -309,9 +308,9 @@ const getInfo = (landlord: LandlordType) => {
       ],
       [
         { text: `村编码：${landlord.villageCode}` },
-        { text: `联系方式：${landlord.phone}`, style: 'td' }
+        { text: `联系方式：${landlord.phone || ''}`, style: 'td' }
       ],
-      [{ text: `表号：QY_02_02_01` }, { text: `企业编码：${company.doorNo}`, style: 'td' }]
+      [{ text: `个体工商户编码：${landlord.doorNo}` }, { text: ``, style: 'td' }]
     ]
   }
 }
@@ -448,9 +447,9 @@ const getMainInfo = (landlord: LandlordType) => {
           { text: '职工人数', rowSpan: 2, style: 'td_2' },
           { text: '正式工（人）', style: 'td' },
           { text: company.regularWorkerNum || '', style: 'td' },
-          { text: '注册资金', rowSpan: 2, colSpan: 2, style: 'td_2' },
+          { text: '年工资总额', rowSpan: 2, colSpan: 2, style: 'td_2' },
           '',
-          { text: company.registeredAmount || '', rowSpan: 2, style: 'td_2' }
+          { text: company.annualPayroll || '', rowSpan: 2, style: 'td_2' }
         ],
         [
           '',

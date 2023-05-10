@@ -11,7 +11,7 @@ export const selfemployedHouseDefinition = {
       margin: [0, 8],
       columns: [
         {
-          text: '分类目录：企业',
+          text: '分类目录：个体工商户',
           width: 170
         },
         {
