@@ -91,6 +91,7 @@ import { reportDataApi, getPrintTemplatesApi, getPrintLandlordApi } from '@/serv
 import { StorageKey, getStorage } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { MainType, PrintType } from '@/types/common'
+import { base64ToPath } from 'image-tools'
 const printpdfModule = uni.requireNativePlugin('da-printpdf')
 // const YanYuprintPdf = uni.requireNativePlugin('YanYu-PrintPDF')
 
@@ -290,14 +291,20 @@ export default {
           showMenu: true,
           success: function (res) {
             console.log('打开文档成功')
+          },
+          fail: () => {
+            this.getPrintErrorResult()
           }
         })
       } else {
-        // 打印pdf
-        printpdfModule.printPdf(filePath)
+        // 打印pdf 将临时路径转化成绝对路径
+        const path = plus.io.convertLocalFileSystemURL(filePath)
+        // YanYuprintPdf.managerPrint(path)
+        console.log('print path:', path)
+        printpdfModule.printPdf(path)
       }
     },
-    getPrintErrorResult(err: any) {
+    getPrintErrorResult(err?: any) {
       uni.hideLoading()
       uni.showToast({
         title: '生成pdf失败',
@@ -316,23 +323,34 @@ export default {
       const base64 = base64Str.slice(index + 1, base64Str.length)
       //Base64可通过Canvas、html2canvas、jspdf等生成的字符串，不包含文件类型前缀
       //1.根据Base64生成文件：第二个参数是文件名称，如果不传入路径，则默认保存在Download文件夹,返回文件的绝对路径
-      const fileName = `${
-        this.templateType === PrintType.print
-          ? '居民户'
-          : this.templateType === PrintType.printCompany
-          ? '企业'
-          : '个体户'
-      }_${this.dataInfo.name}_${new Date().getTime()}`
-      const filePath = printpdfModule.saveBase64File(base64, `${fileName}.pdf`)
-      if (this.currentPdfItem) {
-        this.pdfFileCache[this.currentPdfItem.uid] = filePath
-      }
-      //2.打印pdf
-      //可传绝对路径，如果只传文件名则默认在下载目录下查找
-      console.log(filePath, 'filePath')
-      // printpdfModule.deleteFile("test.pdf");
-      uni.hideLoading()
-      this.actionPdf(filePath)
+      // const fileName = `${
+      //   this.templateType === PrintType.print
+      //     ? '居民户'
+      //     : this.templateType === PrintType.printCompany
+      //     ? '企业'
+      //     : '个体户'
+      // }_${this.dataInfo.name}_${new Date().getTime()}`
+
+      // const filePath = printpdfModule.saveBase64File(base64, `${fileName}.pdf`)
+
+      base64ToPath(base64Str)
+        .then((filePath: string) => {
+          console.log(filePath, 'base64ToPath-path')
+
+          if (this.currentPdfItem) {
+            this.pdfFileCache[this.currentPdfItem.uid] = filePath
+          }
+          //2.打印pdf
+          //可传绝对路径，如果只传文件名则默认在下载目录下查找
+          console.log(filePath, 'filePath')
+          // printpdfModule.deleteFile("test.pdf");
+          uni.hideLoading()
+          this.actionPdf(filePath)
+        })
+        .catch((err: any) => {
+          this.getPrintErrorResult()
+          console.log(err, 'base64ToPath-err')
+        })
     },
 
     // 关闭弹窗
