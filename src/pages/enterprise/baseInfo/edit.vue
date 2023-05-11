@@ -855,7 +855,7 @@
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 import dayjs from 'dayjs'
-import { routerBack, getStorage, StorageKey } from '@/utils'
+import { routerBack, getStorage, StorageKey, cardReg } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { addLandlordApi, updateLandlordCompanyApi } from '@/service'
 import Back from '@/components/Back/Index.vue'
@@ -1091,6 +1091,9 @@ const submit = () => {
   } else if (!formData.value.legalPersonCard) {
     showToast('请输入法人身份证号')
     return
+  } else if (!cardReg.test(formData.value.legalPersonCard)) {
+    showToast('请输入正确的法人身份证号')
+    return
   } else {
     if (type.value === 'add') {
       let params = {
@@ -1298,8 +1301,8 @@ const submit = () => {
       position: fixed;
       right: 25rpx;
       bottom: 20rpx;
-      width: 28rpx;
-      height: 28rpx;
+      width: 36rpx;
+      height: 36rpx;
       border-radius: 50%;
     }
   }
