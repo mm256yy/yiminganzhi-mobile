@@ -102,7 +102,6 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              required
               label="户籍册编号"
               :label-width="150"
               label-align="right"
@@ -299,9 +298,6 @@ const submit = () => {
     formData.value.suffixNo.length !== 4
   ) {
     showToast('户号不全，请输入四位数字')
-    return
-  } else if (!formData.value.householdNumber) {
-    showToast('请输入户籍册编号')
     return
   } else {
     if (type.value === 'add') {

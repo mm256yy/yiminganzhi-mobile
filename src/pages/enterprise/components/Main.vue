@@ -147,7 +147,7 @@ import iconPhotoSel from '@/static/images/icon_photo_select.png' // 引入照片
 
 const props = defineProps({
   dataInfo: {
-    type: Object as any,
+    type: Object,
     default: () => {}
   },
   treeData: {
@@ -156,7 +156,7 @@ const props = defineProps({
     default: () => []
   },
   expendCodes: {
-    type: Array<string>,
+    type: Array as any,
     default: () => []
   },
   uid: {

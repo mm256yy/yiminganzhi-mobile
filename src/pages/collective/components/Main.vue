@@ -151,11 +151,11 @@ const props = defineProps({
   },
   treeData: {
     // 左侧树列表
-    type: Array,
+    type: Array as any,
     default: () => []
   },
   expendCodes: {
-    type: Array<string>,
+    type: Array as any,
     default: () => []
   },
   uid: {

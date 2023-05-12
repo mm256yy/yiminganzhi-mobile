@@ -381,7 +381,7 @@
           </uni-col>
           <uni-col :span="24">
             <uni-forms-item
-              label="土地证照片"
+              label="土地证/房屋产权证照片"
               :label-width="150"
               label-align="right"
               name="formData.landPic"
