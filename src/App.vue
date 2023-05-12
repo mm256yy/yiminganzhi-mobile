@@ -35,10 +35,6 @@ onLaunch(() => {
       }
     }
   })
-
-  plus.geolocation.getCurrentPosition((res) => {
-    console.log(res, '当前位置')
-  })
 })
 onShow(() => {
   console.log('App Show')

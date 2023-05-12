@@ -12,3 +12,4 @@ yarn.lock
 */unpackage/cache
 */unpackage/debug
 */unpackage/dist
+*/unpackage/release
