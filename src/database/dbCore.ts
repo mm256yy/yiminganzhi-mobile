@@ -16,9 +16,10 @@ export class DB {
       }
       console.log('open DB')
       plus.sqlite.openDatabase({
-        ...sqliteOptions,
+        name: sqliteOptions.name,
+        path: sqliteOptions.path,
         success: function (e) {
-          console.log('openDatabase success!', e)
+          console.log('openDatabase success!', JSON.stringify(e))
           resolve(true)
         },
         fail: function (e) {

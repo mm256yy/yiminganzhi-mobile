@@ -7,15 +7,12 @@ import { pullInstance } from './sync'
 
 onLaunch(() => {
   console.log('onLaunch')
-  /* #ifdef APP-PLUS */
+
   // 创建数据库
   pullInstance.init()
-  /* #endif */
 
-  // #ifdef APP
   // 隐藏设备顶部 WiFi、电池、日期状态栏
   plus.navigator.setFullscreen(true)
-  // #endif
 
   // 启动时 需要校验token是否过期
   uni.getNetworkType({
@@ -37,6 +34,10 @@ onLaunch(() => {
         }
       }
     }
+  })
+
+  plus.geolocation.getCurrentPosition((res) => {
+    console.log(res, '当前位置')
   })
 })
 onShow(() => {

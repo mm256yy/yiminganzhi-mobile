@@ -408,11 +408,11 @@ class PullData {
   private pullGrave(): Promise<boolean> {
     return new Promise(async (resolve) => {
       const { immigrantGraveList: list } = this.state
-      // 开启事务
-      await db.transaction('begin').catch(() => {
-        resolve(false)
-      })
       if (this.isArrayAndNotNull(list)) {
+        // 开启事务
+        await db.transaction('begin').catch(() => {
+          resolve(false)
+        })
         list.forEach((item) => {
           // uid: string
 
@@ -492,11 +492,12 @@ class PullData {
   private pullLandlord(): Promise<boolean> {
     return new Promise(async (resolve) => {
       const { peasantHouseholdPushDtoList: list } = this.state
-      // 开启事务
-      await db.transaction('begin').catch(() => {
-        resolve(false)
-      })
+
       if (this.isArrayAndNotNull(list)) {
+        // 开启事务
+        await db.transaction('begin').catch(() => {
+          resolve(false)
+        })
         list.forEach((item) => {
           const fields =
             "'uid','name','doorNo','type','reportStatus','reportDate','reportUser','status','content','areaCode','townCode','villageCode','virutalVillageCode','updatedDate','isDelete'"

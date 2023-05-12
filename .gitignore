@@ -9,3 +9,6 @@ pnpm-debug
 .hbuilderx
 yarn.lock
 .idea
+*/unpackage/cache
+*/unpackage/debug
+*/unpackage/dist
