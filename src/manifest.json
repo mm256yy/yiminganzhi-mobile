@@ -75,6 +75,9 @@
                     "amap" : {
                         "__platform__" : [ "android" ],
                         "appkey_android" : "b5037d342fe4818fb295cd92614d6646"
+                    },
+                    "system" : {
+                        "__platform__" : [ "android" ]
                     }
                 }
             },
