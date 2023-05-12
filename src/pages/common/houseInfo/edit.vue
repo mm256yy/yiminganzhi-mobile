@@ -116,7 +116,7 @@
               label-align="right"
               name="formData.roofType"
             >
-              <uni-data-select v-model="formData.roofType" :localdata="dict[309]" />
+              <uni-data-select v-model="formData.roofType" :localdata="dict[246]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
