@@ -213,6 +213,9 @@ const getLatlngOffline = (): Promise<LocationType> => {
           icon: 'none'
         })
         reject()
+      },
+      {
+        provider: 'amap'
       }
     )
   })
