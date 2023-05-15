@@ -2,7 +2,9 @@
   <view class="mask flex-center">
     <view class="content botton-radius">
       <view class="content-top">
-        <text class="content-top-text">{{ headTitle }}</text>
+        <text class="content-top-text"
+          >{{ headTitle }}{{ newVersion ? `V${newVersion}` : '' }}</text
+        >
         <image
           class="content-top"
           style="top: 0"
@@ -114,6 +116,11 @@ export default defineComponent({
       headTitle: '发现新版本',
       downLoadBtnText: '立即下载更新',
       downLoadingText: '安装包下载中，请稍后'
+    }
+  },
+  computed: {
+    newVersion: (vm: any) => {
+      return vm.upgradation.version
     }
   },
   mounted() {
