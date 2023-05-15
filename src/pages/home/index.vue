@@ -5,7 +5,7 @@
       <view class="home-header">
         <view class="header-lt">
           <image class="logo" src="@/static/images/logo.png" />
-          <view class="project">移民安置综合管理服务平台</view>
+          <view class="project">移民安置综合管理服务平台V{{ appVersion }}</view>
           <view class="project" v-if="projectInfo">&nbsp;-&nbsp;{{ `${projectInfo.name}` }}</view>
           <view class="status" v-if="projectInfo">{{
             projectInfo.status && projectInfo.status === 'review' ? '（实物复核）' : '（实物采集）'
@@ -212,6 +212,7 @@ const projectInfo = ref<any>(null)
 const netWork = ref<boolean>(true)
 const collection = ref<CollectionType | null>(null)
 const alertDialog = ref<any>(null)
+const appVersion = ref<string>('')
 
 const toLink = (name: string) => {
   routerForward(name)
@@ -279,6 +280,8 @@ const getImageObj = async () => {
 
 onMounted(() => {
   getImageObj()
+  const systemInfo = uni.getSystemInfoSync()
+  appVersion.value = systemInfo.appWgtVersion || '1.0.0'
 })
 
 onShow(() => {

@@ -105,7 +105,7 @@ export default defineComponent({
 
       // 默认安装包信息
       title: '更新日志',
-      contents: '1.fdsafdsaf\n2.福建省给了时间了附近的撒\n3.范德萨垃圾了附近的撒',
+      contents: '体验优化',
       is_mandatory: true, // 强制安装 默认是 否没做任何处理
 
       url: '', // apk下载链接
@@ -148,7 +148,7 @@ export default defineComponent({
         return
       }
       uni.showToast({
-        title: '请点击下载',
+        title: '请点击下载或安装',
         icon: 'none'
       })
       // uni.showModal({
@@ -181,10 +181,10 @@ export default defineComponent({
             this.downloadSuccess = true
             this.tempFilePath = res.tempFilePath
 
-            // 强制更新，直接安装
-            if (this.is_mandatory) {
-              this.installPackage()
-            }
+            // 强制更新，直接安装 --- 先手动点击安装吧
+            // if (this.is_mandatory) {
+            // this.installPackage()
+            // }
           }
         },
         complete: () => {
@@ -220,13 +220,13 @@ export default defineComponent({
           if (this.is_mandatory) {
             uni.showLoading({
               mask: true,
-              title: '安装成功，正在重启……'
+              title: '正在启动安装'
             })
 
             setTimeout(() => {
               uni.hideLoading()
               this.restart()
-            }, 1000)
+            }, 2000)
           }
         },
         async (err) => {
@@ -235,7 +235,7 @@ export default defineComponent({
           this.installed = false
 
           uni.showModal({
-            title: '更新失败，请重新下载',
+            title: '安装失败',
             content: err.message,
             showCancel: false
           })
