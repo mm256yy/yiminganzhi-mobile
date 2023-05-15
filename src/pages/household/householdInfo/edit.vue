@@ -190,8 +190,8 @@
 
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
-import { ref, onMounted } from 'vue'
-import { routerBack, getStorage, StorageKey, routerForward, networkCheck, splitStr } from '@/utils'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { routerBack, getStorage, StorageKey, routerForward } from '@/utils'
 import { addLandlordApi, updateLandlordApi } from '@/service'
 import { locationTypes, yesAndNoEnums } from '@/config/common'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
@@ -337,16 +337,20 @@ const mapChooseCallBack = (data: any) => {
 }
 
 onMounted(() => {
-  networkCheck().then((res) => {
-    if (!res) {
-      lgTagList.value = [
-        { text: '获取定位', value: 1, disable: true },
-        { text: '输入经纬度', value: 2, disable: false }
-      ]
-      check.value = 2
-    }
-  })
+  // networkCheck().then((res) => {
+  //   if (!res) {
+  //     lgTagList.value = [
+  //       { text: '获取定位', value: 1, disable: true },
+  //       { text: '输入经纬度', value: 2, disable: false }
+  //     ]
+  //     check.value = 2
+  //   }
+  // })
   uni.$on('chooseMap', mapChooseCallBack)
+})
+
+onBeforeUnmount(() => {
+  uni.$off('chooseMap', mapChooseCallBack)
 })
 </script>
 

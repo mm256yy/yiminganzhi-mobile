@@ -86,8 +86,15 @@ import Upgradation from '@/components/Upgradation/Index.vue'
 import { ProjectType, MainType } from '@/types/common'
 import { pullInstance, pushInstance } from '@/sync'
 import { imageUrlAndBase64Map } from '@/config'
-import { getDictObjApi, getImgListApi } from '@/service'
-import { routerForward, networkCheck, setStorage, StorageKey, compareVersion } from '@/utils'
+import { getDictObjApi, getImgListApi, getProjectListApi } from '@/service'
+import {
+  routerForward,
+  networkCheck,
+  setStorage,
+  getStorage,
+  StorageKey,
+  compareVersion
+} from '@/utils'
 
 interface PropsType {
   from: 'sync' | 'project'
@@ -140,10 +147,7 @@ const getImageObj = async () => {
 }
 
 // 同步成功回调
-const pollingSuccess = () => {
-  uni.hideLoading()
-  clearInterval(intervalId.value)
-
+const pollingSuccess = async () => {
   const { peasantHouseholdNum, companyNum, individualNum, villageNum, virutalVillageNum } =
     pullInstance.state
   pullData.value = {
@@ -154,11 +158,18 @@ const pollingSuccess = () => {
     virutalVillageNum
   }
   syncStatus.value = true
-
+  console.log('同步成功!!!')
   // 同步成功后 处理字典
-  getDictObj()
+  await getDictObj()
   // 同步成功后 处理图片
-  getImageObj()
+  await getImageObj()
+  // 普通同步后 更新当前项目信息
+  if (props.from === 'sync') {
+    await defaultSyncHandle()
+  }
+  console.log('同步后逻辑')
+  uni.hideLoading()
+  clearInterval(intervalId.value)
   openPup()
 }
 
@@ -197,6 +208,19 @@ const projectSyncHandle = async () => {
   emit('changeProject')
   setStorage(StorageKey.PROJECTID, props.projectId)
   setStorage(StorageKey.PROJECTINFO, props.projectItem)
+}
+
+// 普通同步 需要处理的逻辑
+const defaultSyncHandle = async () => {
+  // 更新项目信息
+  const projectList = await getProjectListApi()
+  if (projectList && projectList.length) {
+    const currentProjectId = getStorage(StorageKey.PROJECTID)
+    const currentProjectItem = projectList.find((item) => item.id === currentProjectId)
+    if (currentProjectItem) {
+      setStorage(StorageKey.PROJECTINFO, currentProjectItem)
+    }
+  }
 }
 
 // 同步

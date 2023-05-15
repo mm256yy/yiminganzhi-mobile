@@ -441,10 +441,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import dayjs from 'dayjs'
-import { routerBack, getStorage, StorageKey, routerForward, networkCheck } from '@/utils'
+import { routerBack, getStorage, StorageKey, routerForward } from '@/utils'
 import { addLandlordHouseApi, updateLandlordHouseApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
@@ -604,16 +604,20 @@ const mapChooseCallBack = (data: any) => {
 }
 
 onMounted(() => {
-  networkCheck().then((res) => {
-    if (!res) {
-      lgTagList.value = [
-        { text: '获取定位', value: 1, disable: true },
-        { text: '输入经纬度', value: 2, disable: false }
-      ]
-      check.value = 2
-    }
-  })
+  // networkCheck().then((res) => {
+  //   if (!res) {
+  //     lgTagList.value = [
+  //       { text: '获取定位', value: 1, disable: true },
+  //       { text: '输入经纬度', value: 2, disable: false }
+  //     ]
+  //     check.value = 2
+  //   }
+  // })
   uni.$on('chooseMap', mapChooseCallBack)
+})
+
+onBeforeUnmount(() => {
+  uni.$off('chooseMap', mapChooseCallBack)
 })
 </script>
 

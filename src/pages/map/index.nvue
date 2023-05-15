@@ -38,7 +38,7 @@
 <script setup lang="ts">
 import { onLoad } from '@dcloudio/uni-app'
 import { nextTick, ref, getCurrentInstance } from 'vue'
-import { routerBack } from '../../utils'
+import { routerBack, networkCheck } from '../../utils'
 // import MapInfo from './components/MapInfo.vue'
 
 const sysInfo = uni.getSystemInfoSync()
@@ -163,38 +163,97 @@ const mapTap = (e) => {
         latitude
       }
     ])
+  } else {
+    uni.showToast({
+      title: '获取定位失败',
+      icon: 'none'
+    })
+  }
+}
+
+// 在线获取定位
+const getLatlngOnline = (): Promise<LocationType> => {
+  return new Promise((resolve, reject) => {
+    uni.getLocation({
+      type: 'gcj02',
+      success: (res) => {
+        resolve({
+          latitude: res.latitude || 0,
+          longitude: res.longitude || 0
+        })
+      },
+      fail: () => {
+        uni.hideLoading()
+        uni.showToast({
+          title: '当前位置获取失败,请检查是否打开GPS',
+          duration: 3000,
+          icon: 'none'
+        })
+        reject()
+      }
+    })
+  })
+}
+
+// 离线获取定位
+const getLatlngOffline = (): Promise<LocationType> => {
+  return new Promise((resolve, reject) => {
+    plus.geolocation.getCurrentPosition(
+      (res) => {
+        resolve({
+          latitude: res.coords?.latitude || 0,
+          longitude: res.coords?.longitude || 0
+        })
+      },
+      (error) => {
+        uni.hideLoading()
+        uni.showToast({
+          title: error.message,
+          duration: 3000,
+          icon: 'none'
+        })
+        reject()
+      }
+    )
+  })
+}
+
+const positionSuccess = (longitude, latitude) => {
+  if (longitude && latitude) {
+    centerLocation.value = {
+      longitude,
+      latitude
+    }
+    currentLocation.value = {
+      longitude,
+      latitude
+    }
+    // 移动到视图中心
+    ;(uni.createMapContext('map') as any).moveToLocation({
+      longitude,
+      latitude
+    })
+    updateMaker([
+      {
+        longitude,
+        latitude
+      }
+    ])
   }
 }
 
 // 获取当前位置 并标记
 const getCurrentLocation = () => {
-  console.log('d')
   setTimeout(() => {
-    uni.getLocation({
-      type: 'gcj02',
-      success: function (res) {
-        const { longitude, latitude } = res
-        if (longitude && latitude) {
-          centerLocation.value = {
-            longitude,
-            latitude
-          }
-          currentLocation.value = {
-            longitude,
-            latitude
-          }
-          // 移动到视图中心
-          ;(uni.createMapContext('map') as any).moveToLocation({
-            longitude,
-            latitude
-          })
-          updateMaker([
-            {
-              longitude,
-              latitude
-            }
-          ])
-        }
+    networkCheck().then(async (res) => {
+      uni.showLoading({
+        title: '获取当前定位中',
+        mask: true
+      })
+      const result = res ? await getLatlngOnline() : await getLatlngOffline()
+      uni.hideLoading()
+      if (result) {
+        positionSuccess(result.longitude, result.latitude)
       }
     })
   }, 1000)
