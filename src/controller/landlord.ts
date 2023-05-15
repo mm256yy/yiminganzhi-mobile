@@ -127,7 +127,7 @@ export class Landlord extends Common {
         if (userId) {
           sql += ` and reportUser = '${userId}' order by updatedDate desc`
         }
-        console.log(sql, 'sql 语句')
+        // console.log(sql, 'sql 语句')
         const list: LandlordDDLType[] = await this.db.selectSql(sql)
         if (list && Array.isArray(list)) {
           list.forEach((item) => {
@@ -353,7 +353,7 @@ export class Landlord extends Common {
 
           // 赋值坟墓信息
           res.immigrantGraveList = graveList
-          console.log(graveList, 'graveList')
+          // console.log(graveList, 'graveList')
           if (res.demographicList && res.demographicList.length) {
             res.demographicList = res.demographicList.filter((item) => item.isDelete !== '1')
           }
@@ -399,7 +399,7 @@ export class Landlord extends Common {
           res.villageCodeText = districtMap[res.villageCode]
           res.townCodeText = districtMap[res.townCode]
           res.areaCodeText = districtMap[res.areaCode]
-          console.log(res, '业主详情')
+          // console.log(res, '业主详情')
           resolve(res)
           return
         }
@@ -436,7 +436,7 @@ export class Landlord extends Common {
           res.villageCodeText = districtMap[res.villageCode]
           res.townCodeText = districtMap[res.townCode]
           res.areaCodeText = districtMap[res.areaCode]
-          console.log(res, '业主详情')
+          // console.log(res, '业主详情')
           resolve(res)
           return
         }
@@ -645,7 +645,7 @@ export class Landlord extends Common {
           sql += ` and virutalVillageCode = '${virutalVillageCode}'`
         }
         sql += ` order by updatedDate desc limit ${pageSize} offset ${(page - 1) * pageSize}`
-        console.log('sql', sql)
+        // console.log('sql', sql)
         const list: LandlordDDLType[] = await this.db.selectSql(sql)
         if (list && Array.isArray(list)) {
           list.forEach((item) => {

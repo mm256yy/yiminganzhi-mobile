@@ -61,7 +61,7 @@ class Village extends Common {
         if (page && pageSize) {
           sql += ` order by updatedDate desc limit ${pageSize} offset ${(page - 1) * pageSize}`
         }
-        console.log(sql, 'sql')
+        // console.log(sql, 'sql')
         const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
         const list: VillageDDLType[] = await this.db.selectSql(sql)
         if (this.isArrayAndNotNull(list)) {

@@ -217,7 +217,7 @@ class DistrictTree extends Common {
       const totalArray = [...newDistrictList, ...villageList]
       if (this.isArrayAndNotNull(totalArray)) {
         const res = arrayToTree(totalArray)
-        console.log(res, '自然村树')
+        // console.log(res, '自然村树')
         resolve(res)
       } else {
         resolve([])
