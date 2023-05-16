@@ -109,6 +109,10 @@ const close = () => {
   })
 }
 
+defineExpose({
+  getTreeData
+})
+
 onMounted(() => {
   getTreeData()
 })
@@ -116,12 +120,12 @@ onMounted(() => {
 <style lang="scss" scoped>
 .select-box {
   display: flex;
-  width: 211rpx;
+  width: 200rpx;
   height: 23rpx;
   padding: 0 4rpx;
   background: #ffffff;
-  border: 1rpx solid #e6e6e6;
-  border-radius: 1rpx;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
   align-items: center;
   justify-content: space-between;
 

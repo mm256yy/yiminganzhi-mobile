@@ -498,8 +498,8 @@ export default {
         }
 
         .icon {
-          width: 12rpx;
-          height: 12rpx;
+          width: 7rpx;
+          height: 7rpx;
           margin-right: 3rpx;
         }
 
@@ -598,11 +598,12 @@ export default {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          width: 30rpx;
+          width: 44rpx;
 
           .icon {
-            width: 10rpx;
-            height: 10rpx;
+            width: 14rpx;
+            height: 14rpx;
+            margin-left: 8rpx;
           }
         }
       }

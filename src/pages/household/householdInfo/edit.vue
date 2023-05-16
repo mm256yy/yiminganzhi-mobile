@@ -23,12 +23,16 @@
               label-align="right"
               name="formData.virutalVillageCode"
             >
-              <natural-village-select-form-item
-                v-model:areaCode="formData.areaCode"
-                v-model:townCode="formData.townCode"
-                v-model:villageCode="formData.villageCode"
-                v-model:virutalVillageCode="formData.virutalVillageCode"
-              />
+              <view class="village-select-wrapper">
+                <natural-village-select-form-item
+                  ref="naturalVillage"
+                  v-model:areaCode="formData.areaCode"
+                  v-model:townCode="formData.townCode"
+                  v-model:villageCode="formData.villageCode"
+                  v-model:virutalVillageCode="formData.virutalVillageCode"
+                />
+                <view class="add-btn" @click="addNaturalVillage">添加自然村</view>
+              </view>
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -189,7 +193,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onLoad } from '@dcloudio/uni-app'
+import { onLoad, onShow } from '@dcloudio/uni-app'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { routerBack, getStorage, StorageKey, routerForward } from '@/utils'
 import { addLandlordApi, updateLandlordApi } from '@/service'
@@ -224,6 +228,7 @@ const isFocus = ref<boolean>(false)
 const title = ref<string>('')
 const type = ref<string>('')
 const check = ref<number>(1)
+const naturalVillage = ref<any>(null)
 
 // 中心经纬度输入选项
 const lgTagList = ref<any>([
@@ -253,6 +258,10 @@ onLoad((option: any) => {
   }
 })
 
+onShow(() => {
+  naturalVillage.value?.getTreeData()
+})
+
 // 输入框获得焦点
 const inputFocus = () => {
   isFocus.value = true
@@ -267,6 +276,13 @@ const gotoMap = () => {
   routerForward('map', {
     longitude: formData.value.longitude,
     latitude: formData.value.latitude
+  })
+}
+
+// 添加自然村
+const addNaturalVillage = () => {
+  routerForward('villageEdit', {
+    type: 'add'
   })
 }
 
@@ -435,6 +451,17 @@ onBeforeUnmount(() => {
             font-size: 9rpx;
             color: #171718;
           }
+        }
+      }
+
+      .village-select-wrapper {
+        display: flex;
+        align-items: center;
+
+        .add-btn {
+          margin-left: 3rpx;
+          font-size: 9rpx;
+          color: #3e73ec;
         }
       }
 

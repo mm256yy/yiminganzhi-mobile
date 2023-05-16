@@ -364,10 +364,11 @@ onBeforeUnmount(() => {
 
   .submit-btn {
     position: fixed;
-    right: 0;
-    bottom: 0;
-    width: 80rpx;
-    height: 80rpx;
+    right: 25rpx;
+    bottom: 20rpx;
+    width: 28rpx;
+    height: 28rpx;
+    border-radius: 50%;
   }
 }
 </style>
