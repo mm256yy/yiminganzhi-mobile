@@ -7,7 +7,7 @@ import { getStorage, StorageKey } from '@/utils'
  */
 export const dictOption = (arr: any, val: any) => {
   let str = '-'
-  if (val) {
+  if (String(val)) {
     const arrItem = arr && arr.length && arr.find((item: any) => String(item.value) === String(val))
     str = arrItem ? arrItem.text : '-'
     return str
@@ -17,29 +17,29 @@ export const dictOption = (arr: any, val: any) => {
 
 /**
  * 字典回显处理
- * 1、字典的 value 不为空或存在时，取字典表中对应的 text
- * 2、字典的 value 值为控或不存在时，显示 '-'
- * @param(Object) value 字典 value
+ * 1、字典的 val 不为空或存在时，取字典表中对应的 text
+ * 2、字典的 val 值为控或不存在时，显示 '-'
+ * @param(Object) val 对应字典的 value
  * @param(Object) id 对应字典的 id
  */
-export const formatDict = (value: any, id: number) => {
+export const formatDict = (val: any, id: number) => {
   let str = '-'
   // 获取数据字典
   const dict = getStorage(StorageKey.DICT)
-  if (value) {
+  if (String(val)) {
     const arr: any = dict[id]
 
     // 方法一
-    // const arrItem = arr && arr.length && arr.find((item: any) => String(item.value) === String(value))
+    // const arrItem = arr && arr.length && arr.find((item: any) => String(item.value) === String(val))
     // str = arrItem ? arrItem.text : '-'
 
     // 方法二
     arr.map((item: any) => {
-      if (typeof item.value === typeof value && item.value === value) {
+      if (typeof item.value === typeof val && item.value === val) {
         str = item.text
         return str
       } else {
-        if (String(item.value) === String(value)) {
+        if (String(item.value) === String(val)) {
           str = item.text
           return str
         }
@@ -182,7 +182,6 @@ export const fmtDate = (time: any, fmt = 1) => {
  */
 export const fmtPicUrl = (url: any) => {
   if (url) {
-    console.log(typeof url)
     if (typeof url === 'string') {
       return url
     } else if (typeof url === 'object') {
@@ -201,23 +200,23 @@ export const fmtPicUrl = (url: any) => {
  * @param{Object} val 已选择的职业选项
  */
 export const fmtOccupation = (arr: any[], val: string) => {
-  const arr_1: any = []
+  const newArr: any = []
   if (arr && arr.length > 0 && val) {
     const selectedVal = JSON.parse(val)
     arr.map((item: any) => {
       if (item.value === selectedVal[0]) {
-        arr_1.push(item.label)
+        newArr.push(item.label)
         item.children.map((data: any) => {
           if (data.value === selectedVal[1]) {
-            arr_1.push(data.label)
+            newArr.push(data.label)
             return
           }
         })
       }
     })
-    return arr_1
+    return newArr
   } else {
-    return arr_1
+    return newArr
   }
 }
 

@@ -194,7 +194,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onLoad, onShow } from '@dcloudio/uni-app'
+import { onLoad } from '@dcloudio/uni-app'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { routerBack, getStorage, StorageKey, routerForward } from '@/utils'
 import { addLandlordApi, updateLandlordApi } from '@/service'

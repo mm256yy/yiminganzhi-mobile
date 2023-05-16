@@ -27,9 +27,9 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">所在位置：</view>
-                <view class="content">{{
-                  dictOption(locationTypes, props.dataInfo.locationType)
-                }}</view>
+                <view class="content">
+                  {{ dictOption(locationTypes, props.dataInfo.locationType) }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="12">

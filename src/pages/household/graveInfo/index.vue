@@ -120,7 +120,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { formatStr, formatDict, dictOption, getStorage, StorageKey, routerForward } from '@/utils'
+import { formatStr, formatDict, getStorage, StorageKey, routerForward } from '@/utils'
 import { MainStage, MainType } from '@/types/common'
 import { getLandlordListBySearchApi } from '@/service'
 import modifyRecords from '../../common/modifyRecords/index.vue' // 引入修改记录组件
