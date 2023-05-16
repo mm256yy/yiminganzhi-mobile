@@ -498,8 +498,8 @@ export default {
         }
 
         .icon {
-          width: 7rpx;
-          height: 7rpx;
+          width: 12rpx;
+          height: 12rpx;
           margin-right: 3rpx;
         }
 
