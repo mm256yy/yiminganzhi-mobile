@@ -39,7 +39,8 @@ const emit = defineEmits([
   'update:areaCode',
   'update:townCode',
   'update:villageCode',
-  'update:virutalVillageCode'
+  'update:virutalVillageCode',
+  'open'
 ])
 
 const treeData = ref<any>([])
@@ -101,6 +102,7 @@ const villageConfirm = (code: string[], tit: string[]) => {
 
 const open = () => {
   showVillageSelect.value = true
+  emit('open')
 }
 
 const close = () => {

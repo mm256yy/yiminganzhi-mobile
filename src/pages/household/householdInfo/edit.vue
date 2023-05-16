@@ -30,6 +30,7 @@
                   v-model:townCode="formData.townCode"
                   v-model:villageCode="formData.villageCode"
                   v-model:virutalVillageCode="formData.virutalVillageCode"
+                  @open="initNaturalVillageData"
                 />
                 <view class="add-btn" @click="addNaturalVillage">添加自然村</view>
               </view>
@@ -258,9 +259,10 @@ onLoad((option: any) => {
   }
 })
 
-onShow(() => {
+// 初始化自然村/村民小组组件数据
+const initNaturalVillageData = () => {
   naturalVillage.value?.getTreeData()
-})
+}
 
 // 输入框获得焦点
 const inputFocus = () => {
