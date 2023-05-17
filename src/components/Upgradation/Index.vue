@@ -154,21 +154,25 @@ export default defineComponent({
         })
         return
       }
-      uni.showToast({
-        title: '请点击下载或安装',
-        icon: 'none'
-      })
-      // uni.showModal({
-      //   title: '是否跳过版本更新？',
-      //   cancelText: '否',
-      //   confirmText: '是',
-      //   success: (res) => {
-      //     if (res.confirm) {
-      //       // 关闭当前窗口
-      //       this.$emit('close')
-      //     }
-      //   }
-      // })
+
+      if (this.is_mandatory) {
+        uni.showToast({
+          title: '当前为强制安装更新',
+          icon: 'none'
+        })
+      } else {
+        uni.showModal({
+          title: '是否跳过版本更新？',
+          cancelText: '否',
+          confirmText: '是',
+          success: (res) => {
+            if (res.confirm) {
+              // 关闭当前窗口
+              this.$emit('close')
+            }
+          }
+        })
+      }
     },
     updateApp() {
       this.downloadPackage()
