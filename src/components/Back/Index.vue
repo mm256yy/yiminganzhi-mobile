@@ -1,6 +1,6 @@
 <template>
   <view class="back-wrapper">
-    <view class="status"></view>
+    <view class="status" />
     <view class="back">
       <image class="icon-back" src="@/static/images/back.png" mode="scaleToFill" @click="back" />
       <view class="title">{{ props.title }}</view>
@@ -11,27 +11,75 @@
         @click="toHome"
       />
     </view>
+    <uni-popup ref="alertDialog" type="dialog">
+      <uni-popup-dialog
+        type="warn"
+        cancelText="取消"
+        confirmText="确认"
+        title="数据未保存是否退出？"
+        @confirm="dialogConfirm"
+        @close="dialogClose"
+      />
+    </uni-popup>
   </view>
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue'
 import { routerForward } from '@/utils'
 
-const props = defineProps({
-  title: {
-    type: String,
-    default: ''
-  }
-})
+interface PropsType {
+  title: string
+  needConfirm?: boolean
+}
 
-const back = () => {
+const alertDialog = ref<any>(null)
+const routerType = ref<'back' | 'home'>('back')
+
+const props = defineProps<PropsType>()
+
+const goBack = () => {
   uni.navigateBack({
     delta: 1
   })
 }
 
-const toHome = () => {
+const goHome = () => {
   routerForward('home')
+}
+
+const back = () => {
+  if (props.needConfirm) {
+    routerType.value = 'back'
+    loginOutPre()
+  } else {
+    goBack()
+  }
+}
+
+const toHome = () => {
+  if (props.needConfirm) {
+    routerType.value = 'home'
+    loginOutPre()
+  } else {
+    goHome()
+  }
+}
+
+const loginOutPre = () => {
+  alertDialog.value?.open()
+}
+
+const dialogConfirm = () => {
+  if (routerType.value === 'back') {
+    goBack()
+  } else if (routerType.value === 'home') {
+    goHome()
+  }
+}
+
+const dialogClose = () => {
+  alertDialog.value?.close()
 }
 </script>
 
@@ -47,13 +95,8 @@ const toHome = () => {
     display: flex;
     height: 33rpx;
     padding: 0 9rpx;
-
-    /* #ifdef H5 */
-    cursor: pointer;
-    box-sizing: border-box;
     flex-direction: row;
     align-items: center;
-    /* #endif */
 
     .icon-back {
       width: 14rpx;

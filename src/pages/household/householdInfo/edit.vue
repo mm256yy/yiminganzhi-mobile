@@ -523,8 +523,8 @@ onBeforeUnmount(() => {
       position: fixed;
       right: 25rpx;
       bottom: 20rpx;
-      width: 28rpx;
-      height: 28rpx;
+      width: 36rpx;
+      height: 36rpx;
       border-radius: 50%;
     }
   }

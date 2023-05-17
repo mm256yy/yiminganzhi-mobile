@@ -1,6 +1,6 @@
 <template>
   <view class="form-wrapper">
-    <Back :title="title" />
+    <Back :title="title" needConfirm />
     <view class="main">
       <uni-forms class="form" ref="form" :modelValue="formData">
         <uni-row>
@@ -302,7 +302,14 @@
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 import dayjs from 'dayjs'
-import { routerBack, getStorage, StorageKey, fmtOccupation, fmtOccupationStr } from '@/utils'
+import {
+  routerBack,
+  getStorage,
+  StorageKey,
+  fmtOccupation,
+  fmtOccupationStr,
+  cardReg
+} from '@/utils'
 import { addLandlordPeopleApi, updateLandlordPeopleApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { MainStage } from '@/types/common'
@@ -407,6 +414,9 @@ const submit = () => {
     return
   } else if (!formData.value.addReason && type.value === 'add' && stage === MainStage.review) {
     showToast('请输入新增原因')
+    return
+  } else if (formData.value.card && !cardReg.test(formData.value.card)) {
+    showToast('请输入正确的身份证号')
     return
   } else {
     if (type.value === 'add') {
@@ -517,8 +527,8 @@ const submit = () => {
       position: fixed;
       right: 25rpx;
       bottom: 20rpx;
-      width: 28rpx;
-      height: 28rpx;
+      width: 36rpx;
+      height: 36rpx;
       border-radius: 50%;
     }
   }
