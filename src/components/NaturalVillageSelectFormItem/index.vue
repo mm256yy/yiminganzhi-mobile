@@ -40,7 +40,8 @@ const emit = defineEmits([
   'update:townCode',
   'update:villageCode',
   'update:virutalVillageCode',
-  'open'
+  'open',
+  'confirm'
 ])
 
 const treeData = ref<any>([])
@@ -87,10 +88,11 @@ const getTitle = () => {
 const getTreeData = async () => {
   const res = await getVirutalVillageTreeApi()
   treeData.value = res || []
+  console.log('res:', res)
   getTitle()
 }
 
-const villageConfirm = (code: string[], tit: string[]) => {
+const villageConfirm = (code: string[], tit: string[], otherCode: string) => {
   codes.value = code
   villageTitle.value = tit
   close()
@@ -98,6 +100,7 @@ const villageConfirm = (code: string[], tit: string[]) => {
   emit('update:townCode', code[1] || '')
   emit('update:villageCode', code[2] || '')
   emit('update:virutalVillageCode', code[3] || '')
+  emit('confirm', otherCode || '')
 }
 
 const open = () => {

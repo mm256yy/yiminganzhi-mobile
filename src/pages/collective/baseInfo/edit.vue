@@ -47,6 +47,17 @@
               name="formData.collectiveCode"
             >
               <view v-if="!formData.id" :class="['code-wrapper', focusIndex === 1 ? 'focus' : '']">
+                <input
+                  class="input-txt"
+                  v-model="formData.doorNo"
+                  @focus="inputFocus(1)"
+                  @blur="inputBlur"
+                />
+              </view>
+              <view v-else class="code-wrapper">
+                <input class="input-txt disabled" v-model="formData.doorNo" disabled />
+              </view>
+              <!-- <view v-if="!formData.id" :class="['code-wrapper', focusIndex === 1 ? 'focus' : '']">
                 <view class="pre-txt">
                   {{ formData.villageCode ? 'JT' + formData.villageCode : '' }}
                 </view>
@@ -62,7 +73,7 @@
               </view>
               <view v-else class="code-wrapper">
                 <input class="input-txt disabled" v-model="formData.doorNo" disabled />
-              </view>
+              </view> -->
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -117,7 +128,7 @@ const formData = ref<any>({
   areaCode: '',
   townCode: '',
   villageCode: '',
-  suffixNo: '',
+  // suffixNo: '',
   collectiveCode: '',
   phone: '',
   locationType: null
@@ -167,12 +178,13 @@ const inputBlur = () => {
 const submit = () => {
   let params = {
     ...formData.value,
-    doorNo:
-      formData.value.id && formData.value.doorNo
-        ? formData.value.doorNo
-        : formData.value.suffixNo
-        ? 'JT' + formData.value.villageCode + formData.value.suffixNo
-        : '',
+    doorNo: formData.value.doorNo,
+    // doorNo:
+    //   formData.value.id && formData.value.doorNo
+    //     ? formData.value.doorNo
+    //     : formData.value.suffixNo
+    //     ? 'JT' + formData.value.villageCode + formData.value.suffixNo
+    //     : '',
     type: MainType.Village
   }
 
@@ -182,16 +194,19 @@ const submit = () => {
   } else if (!formData.value.villageCode) {
     showToast('请选择所属区域')
     return
-  } else if (!formData.value.doorNo && !formData.value.suffixNo) {
-    showToast('请输入村集体编码后四位')
+  } else if (!formData.value.doorNo) {
+    showToast('请输入村集体编码')
     return
-  } else if (
-    !formData.value.doorNo &&
-    formData.value.suffixNo &&
-    formData.value.suffixNo.length !== 4
-  ) {
-    showToast('村集体编码不全，请输入四位数字')
-    return
+    // } else if (!formData.value.doorNo && !formData.value.suffixNo) {
+    //   showToast('请输入村集体编码后四位')
+    //   return
+    // } else if (
+    //   !formData.value.doorNo &&
+    //   formData.value.suffixNo &&
+    //   formData.value.suffixNo.length !== 4
+    // ) {
+    //   showToast('村集体编码不全，请输入四位数字')
+    //   return
   } else {
     if (type.value === 'add') {
       addLandlordApi(params)

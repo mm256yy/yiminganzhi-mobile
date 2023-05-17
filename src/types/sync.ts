@@ -45,6 +45,7 @@ export interface LandlordType {
   virutalVillageCode: string
   virutalVillageCodeText?: string
   parentCode?: string
+  otherCode?: string
   address: string
   projectId: number
   longitude: string

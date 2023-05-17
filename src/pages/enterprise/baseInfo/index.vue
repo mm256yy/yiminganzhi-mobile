@@ -574,7 +574,7 @@ const toLink = (type: string) => {
     townCode,
     villageCode,
     phone,
-    suffixNo: splitStr(doorNo, 13, 17),
+    // suffixNo: splitStr(doorNo, 13, 17),
     locationType: locationType ? locationType : null,
     establishDate: establishDate ? dayjs(establishDate).format('YYYY-MM-DD') : null,
     taxPeriodValidity: taxPeriodValidity ? dayjs(taxPeriodValidity).format('YYYY-MM-DD') : null,

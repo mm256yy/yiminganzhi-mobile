@@ -100,7 +100,7 @@
 
 <script lang="ts" setup>
 import { formatStr, formatDict, dictOption, splitStr, routerForward } from '@/utils'
-import { locationTypes, yesAndNoEnums } from '@/config/common'
+import { locationTypes, yesAndNoEnums, compatibleOldSystems } from '@/config/common'
 
 const props = defineProps({
   dataInfo: {
@@ -118,10 +118,13 @@ const toLink = (type: string) => {
     townCode: props.dataInfo.townCode, // 镇/街道
     villageCode: props.dataInfo.villageCode, // 行政村
     virutalVillageCode: props.dataInfo.virutalVillageCode, // 自然村/村民小组
+    otherCode: props.dataInfo.otherCode ? props.dataInfo.otherCode : '', // 兼容老系统，由1位乡/镇编号 + 2位行政村编号组成
     phone: props.dataInfo.phone, // 联系方式
     locationType: props.dataInfo.locationType ? props.dataInfo.locationType : null, // 所在位置
     householdNumber: props.dataInfo.householdNumber, // 户籍册编号
-    suffixNo: splitStr(props.dataInfo.doorNo, 12, 16), // 户号后四位
+    suffixNo: compatibleOldSystems
+      ? splitStr(props.dataInfo.doorNo, 3, 7)
+      : splitStr(props.dataInfo.doorNo, 12, 16), // 户号后四位
     doorNo: props.dataInfo.doorNo, // 户号
     hasPropertyAccount: String(props.dataInfo.hasPropertyAccount), // 是否财产户
     address: props.dataInfo.address, // 户籍所在地

@@ -100,6 +100,17 @@
               name="formData.suffixNo"
             >
               <view v-if="!formData.id" :class="['code-wrapper', focusIndex === 1 ? 'focus' : '']">
+                <input
+                  class="input-txt"
+                  v-model="formData.doorNo"
+                  @focus="inputFocus(1)"
+                  @blur="inputBlur"
+                />
+              </view>
+              <view v-else class="code-wrapper">
+                <input class="input-txt disabled" v-model="formData.doorNo" disabled />
+              </view>
+              <!-- <view v-if="!formData.id" :class="['code-wrapper', focusIndex === 1 ? 'focus' : '']">
                 <view class="pre-txt">
                   {{ formData.villageCode ? 'G' + formData.villageCode : '' }}
                 </view>
@@ -115,7 +126,7 @@
               </view>
               <view v-else class="code-wrapper">
                 <input class="input-txt disabled" v-model="formData.doorNo" disabled />
-              </view>
+              </view> -->
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -746,12 +757,13 @@ const submit = () => {
   let baseInfo: any = {
     uid: uid.value,
     name: formData.value.name,
-    doorNo:
-      formData.value.id && formData.value.doorNo
-        ? formData.value.doorNo
-        : formData.value.suffixNo
-        ? 'G' + formData.value.villageCode + formData.value.suffixNo
-        : '',
+    // doorNo:
+    //   formData.value.id && formData.value.doorNo
+    //     ? formData.value.doorNo
+    //     : formData.value.suffixNo
+    //     ? 'G' + formData.value.villageCode + formData.value.suffixNo
+    //     : '',
+    doorNo: formData.value.doorNo,
     areaCode: formData.value.areaCode,
     townCode: formData.value.townCode,
     villageCode: formData.value.villageCode,
@@ -761,12 +773,13 @@ const submit = () => {
   }
 
   let company: any = {
-    doorNo:
-      formData.value.id && formData.value.doorNo
-        ? formData.value.doorNo
-        : formData.value.suffixNo
-        ? 'G' + formData.value.villageCode + formData.value.suffixNo
-        : '',
+    // doorNo:
+    //   formData.value.id && formData.value.doorNo
+    //     ? formData.value.doorNo
+    //     : formData.value.suffixNo
+    //     ? 'G' + formData.value.villageCode + formData.value.suffixNo
+    //     : '',
+    doorNo: formData.value.doorNo,
     householdId: formData.value.householdId,
     legalPersonName: formData.value.legalPersonName,
     legalPersonCard: formData.value.legalPersonCard,
@@ -820,16 +833,19 @@ const submit = () => {
   } else if (!formData.value.villageCode) {
     showToast('请选择所属区域')
     return
-  } else if (!formData.value.doorNo && !formData.value.suffixNo) {
-    showToast('请输入个体工商户编码后四位')
+  } else if (!formData.value.doorNo) {
+    showToast('请输入个体工商户编码')
     return
-  } else if (
-    !formData.value.doorNo &&
-    formData.value.suffixNo &&
-    formData.value.suffixNo.length !== 4
-  ) {
-    showToast('个体工商户编码不全，请输入四位数字')
-    return
+    // } else if (!formData.value.doorNo && !formData.value.suffixNo) {
+    //   showToast('请输入个体工商户编码后四位')
+    //   return
+    // } else if (
+    //   !formData.value.doorNo &&
+    //   formData.value.suffixNo &&
+    //   formData.value.suffixNo.length !== 4
+    // ) {
+    //   showToast('个体工商户编码不全，请输入四位数字')
+    //   return
   } else {
     if (type.value === 'add') {
       let params = {

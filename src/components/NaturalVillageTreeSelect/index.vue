@@ -21,8 +21,9 @@
               :key="item.code"
               @click.stop="areaClick(item)"
               :class="[currentSelect[0] && currentSelect[0] === item.code ? 'active' : '']"
-              >{{ item.name }}</view
             >
+              {{ item.name }}
+            </view>
           </view>
         </view>
         <view class="select-item" v-if="currentTown && currentTown.length">
@@ -34,8 +35,9 @@
               v-for="item in currentTown"
               :key="item.code"
               @click.stop="townClick(item)"
-              >{{ item.name }}</view
             >
+              {{ item.name }}
+            </view>
           </view>
         </view>
 
@@ -48,8 +50,9 @@
               v-for="item in currentVillage"
               :key="item.code"
               @click.stop="villageClick(item)"
-              >{{ item.name }}</view
             >
+              {{ item.name }}
+            </view>
           </view>
         </view>
 
@@ -63,8 +66,9 @@
               v-for="item in currentNatural"
               :key="item.code"
               @click.stop="naturalClick(item)"
-              >{{ item.name }}</view
             >
+              {{ item.name }}
+            </view>
           </view>
         </view>
       </view>
@@ -89,6 +93,7 @@ const currentTown = ref<any>([])
 const currentVillage = ref<any>([])
 const currentNatural = ref<any[]>([])
 const currentSelect = ref<string[]>([])
+const otherCode = ref<string>('')
 const title = ref<string[]>([])
 
 watch(
@@ -148,6 +153,7 @@ const villageClick = (item: any) => {
   const condition = currentSelect.value[2] && currentSelect.value[2] === item.code
   currentSelect.value[2] = condition ? '' : item.code
   title.value[2] = condition ? '' : item.name
+  otherCode.value = item.otherCode || ''
 
   currentNatural.value = condition ? [] : item.children
   currentSelect.value[3] = ''
@@ -173,13 +179,14 @@ const confirm = () => {
     })
     return
   }
-  emit('onConfirm', currentSelect.value, title.value)
+  emit('onConfirm', currentSelect.value, title.value, otherCode.value)
 }
 
 const reset = () => {
   title.value = []
   currentSelect.value = []
-  emit('onConfirm', currentSelect.value, title.value)
+  otherCode.value = ''
+  emit('onConfirm', currentSelect.value, title.value, otherCode.value)
 }
 </script>
 <style lang="scss" scoped>

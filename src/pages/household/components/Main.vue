@@ -56,7 +56,7 @@
                 v-if="tabVal === 4"
                 :dataList="dataInfo.immigrantTreeList"
                 :dataInfo="dataInfo"
-                :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '果木信息')"
+                :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '果树信息')"
                 :mainType="MainType.PeasantHousehold"
                 @delete-tree="deleteTree"
                 @update-fruit-tree-info="updateFruitTreeInfo"

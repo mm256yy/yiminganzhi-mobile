@@ -56,6 +56,7 @@
                 type="date"
                 placeholder="选择出生日期"
                 v-model="formData.birthday"
+                fields="month"
               />
             </uni-forms-item>
           </uni-col>

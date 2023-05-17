@@ -56,6 +56,9 @@ export const yesAndNoEnums = [
   { text: '否', value: 'false', disable: false }
 ]
 
+// 是否兼容老系统，主要用于户号的区别，居民户老系统户号7位，新系统户号16位
+export const compatibleOldSystems = true
+
 export const ossDomain = 'https://oss.zdwp.tech/'
 
 // 缓存图片 url: { path : xxx, base64: xxxx }

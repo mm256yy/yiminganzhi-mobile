@@ -31,6 +31,7 @@
                   v-model:villageCode="formData.villageCode"
                   v-model:virutalVillageCode="formData.virutalVillageCode"
                   @open="initNaturalVillageData"
+                  @confirm="confirmSelectNaturalVillage"
                 />
                 <view class="add-btn" @click="addNaturalVillage">添加自然村</view>
               </view>
@@ -76,7 +77,9 @@
               name="formData.suffixNo"
             >
               <view v-if="!formData.id" :class="['input-wrapper', isFocus ? 'focus' : '']">
-                <view class="pre-txt">{{ formData.villageCode }}</view>
+                <view class="pre-txt">
+                  {{ compatibleOldSystems ? formData.otherCode : formData.villageCode }}
+                </view>
                 <input
                   class="input-txt"
                   placeholder="请输入"
@@ -198,7 +201,7 @@ import { onLoad } from '@dcloudio/uni-app'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { routerBack, getStorage, StorageKey, routerForward } from '@/utils'
 import { addLandlordApi, updateLandlordApi } from '@/service'
-import { locationTypes, yesAndNoEnums } from '@/config/common'
+import { locationTypes, yesAndNoEnums, compatibleOldSystems } from '@/config/common'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { MainType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
@@ -255,6 +258,9 @@ onLoad((option: any) => {
       formData.value.villageCode = option.villageCode
       formData.value.virutalVillageCode = option.virutalVillageCode ? option.virutalVillageCode : ''
     }
+    if (compatibleOldSystems && option.otherCode) {
+      formData.value.otherCode = option.otherCode
+    }
   }
 })
 
@@ -273,6 +279,14 @@ const inputBlur = () => {
   isFocus.value = false
 }
 
+/**
+ * 自然村/村民小组选择确认
+ * @param{Object} otherCode 用于兼容老系统，该code值由 1位乡/镇code + 2位行政村code组成
+ */
+const confirmSelectNaturalVillage = (otherCode: string) => {
+  formData.value.otherCode = otherCode || ''
+}
+
 const gotoMap = () => {
   routerForward('map', {
     longitude: formData.value.longitude,
@@ -289,14 +303,29 @@ const addNaturalVillage = () => {
 
 // 表单提交
 const submit = () => {
+  let doorNo = ''
+  if (formData.value.id && formData.value.doorNo) {
+    doorNo = formData.value.doorNo
+  } else {
+    if (compatibleOldSystems) {
+      doorNo = String(formData.value.otherCode) + formData.value.suffixNo
+    } else {
+      if (formData.value.villageCode) {
+        doorNo = String(formData.value.villageCode) + formData.value.suffixNo
+      } else {
+        doorNo = ''
+      }
+    }
+  }
   let params = {
     ...formData.value,
-    doorNo:
-      formData.value.id && formData.value.doorNo
-        ? formData.value.doorNo
-        : formData.value.villageCode
-        ? String(formData.value.villageCode) + formData.value.suffixNo
-        : '',
+    doorNo: doorNo,
+    // doorNo:
+    //   formData.value.id && formData.value.doorNo
+    //     ? formData.value.doorNo
+    //     : formData.value.villageCode
+    //     ? String(formData.value.villageCode) + formData.value.suffixNo
+    //     : '',
     type: MainType.PeasantHousehold
   }
 
