@@ -302,14 +302,7 @@ const gotoEdit = (data: any) => {
     }
     routerForward(routerMap[data.data.type], {
       uid: data.data.uid,
-      type: 'edit',
-      expendCodes: [
-        data.data.areaCode,
-        data.data.townCode,
-        data.data.villageCode,
-        data.data.virutalVillageCode,
-        data.data.code
-      ]
+      type: 'edit'
     })
   }
 }

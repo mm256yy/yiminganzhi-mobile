@@ -239,7 +239,6 @@ const lgTagList = ref<any>([
 
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
-const emit = defineEmits(['updateTree'])
 
 // 获取上个页面传递的参数，给表单赋值
 onLoad((option: any) => {
@@ -323,7 +322,6 @@ const submit = () => {
         .then((res) => {
           if (res) {
             showToast(SUCCESS_MSG)
-            emit('updateTree')
             routerBack()
           }
         })
@@ -335,7 +333,6 @@ const submit = () => {
         .then((res) => {
           if (res) {
             showToast(SUCCESS_MSG)
-            emit('updateTree')
             routerBack()
           }
         })

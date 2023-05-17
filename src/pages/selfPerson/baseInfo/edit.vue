@@ -704,7 +704,6 @@ const formData = ref<any>({
 
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
-const emit = defineEmits(['updateTree'])
 
 // 获得焦点的输入框下标
 const focusIndex = ref<number>(-1)
@@ -841,7 +840,6 @@ const submit = () => {
         .then((res) => {
           if (res) {
             showToast(SUCCESS_MSG)
-            emit('updateTree')
             routerBack()
           }
         })
@@ -862,7 +860,6 @@ const submit = () => {
         .then((res) => {
           if (res) {
             showToast(SUCCESS_MSG)
-            emit('updateTree')
             routerBack()
           }
         })

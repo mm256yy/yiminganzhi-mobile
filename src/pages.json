@@ -134,10 +134,31 @@
 			}
 		},
 		{
-			"name": "respondents",
-			"path": "pages/respondents/index",
+			"name": "householdList",
+			"path": "pages/respondents/householdList",
 			"style": {
-				"navigationBarTitleText": "移民管理"
+				"navigationBarTitleText": "居民户列表"
+			}
+		},
+		{
+			"name": "enterpriseList",
+			"path": "pages/respondents/enterpriseList",
+			"style": {
+				"navigationBarTitleText": "企业列表"
+			}
+		},
+		{
+			"name": "selfPersonList",
+			"path": "pages/respondents/selfPersonList",
+			"style": {
+				"navigationBarTitleText": "个体户列表"
+			}
+		},
+		{
+			"name": "collectiveList",
+			"path": "pages/respondents/collectiveList",
+			"style": {
+				"navigationBarTitleText": "村集体列表"
 			}
 		},
 		{

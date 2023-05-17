@@ -1,6 +1,6 @@
 <template>
   <view class="tabs-wrapper">
-    <view :class="['tabs-list', props.expand ? 'expand' : '']">
+    <view :class="['tabs-list', 'expand']">
       <view
         v-for="(item, index) in tabsList"
         :key="item.value"
@@ -27,10 +27,6 @@ const props = defineProps({
   dataList: {
     type: Array as any,
     default: () => []
-  },
-  expand: {
-    type: Boolean,
-    default: false
   },
   currentIndex: {
     type: Number,

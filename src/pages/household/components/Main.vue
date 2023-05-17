@@ -4,29 +4,22 @@
 
     <view class="main-cont">
       <view class="list-content">
-        <view :class="['list-box', showExpand ? '' : 'list-expand']">
+        <view class="list-box">
           <view class="box" v-if="JSON.stringify(props.dataInfo) !== '{}'">
             <!-- 头部 -->
             <Header
               :dataInfo="dataInfo"
               :type="MainType.PeasantHousehold"
               :templateType="PrintType.print"
-              @update-tree="updateTree"
               @update-data="updateData"
-              @expand-toggle="expandToggle"
             />
 
             <view class="tabs-content">
               <!-- tab 切换 -->
-              <Tabs
-                :dataList="tabsList"
-                :expand="showExpand"
-                :current-index="tabVal"
-                @select-tabs="selectTabs"
-              />
+              <Tabs :dataList="tabsList" :current-index="tabVal" @select-tabs="selectTabs" />
 
               <!-- 居民户信息 -->
-              <household-info v-if="tabVal === 0" :dataInfo="dataInfo" @update-tree="updateTree" />
+              <household-info v-if="tabVal === 0" :dataInfo="dataInfo" />
 
               <!-- 人口信息 -->
               <demographic-info
@@ -113,17 +106,6 @@
           </view>
         </view>
       </view>
-
-      <view :class="['tree-wrapper', showExpand ? 'w-0' : 'expand']">
-        <Tree
-          :treeData="props.treeData"
-          :expend-codes="props.expendCodes"
-          :uid="props.uid"
-          :iconSrc="iconSrc"
-          @tree-item-click="treeItemClick"
-          @add-click="addClick('add')"
-        />
-      </view>
     </view>
   </view>
 </template>
@@ -131,11 +113,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
-import { routerForward, fmtUpdateLog } from '@/utils'
+import { fmtUpdateLog } from '@/utils'
 import { MainType, PrintType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
 import Header from '@/components/Header/Index.vue'
-import Tree from '@/components/Tree/Index.vue'
 import Tabs from '@/components/Tabs/Index.vue'
 import householdInfo from '../householdInfo/index.vue' // 引入居民户信息组件
 import demographicInfo from '../demographicInfo/index.vue' // 引入人口信息组件
@@ -159,7 +140,6 @@ import {
   updateLandlordImmigrantFileApi
 } from '@/service'
 
-import iconSrc from '@/static/images/icon_add_household.png' // 侧边栏，添加 icon
 import iconHouseholdDef from '@/static/images/icon_household_default.png' // 引入居民户信息默认 icon
 import iconHouseholdSel from '@/static/images/icon_household_select.png' // 引入居民户信息选中 icon
 import iconDemographicDef from '@/static/images/icon_demographic_default.png' // 引入人口信息默认 icon
@@ -184,19 +164,6 @@ const props = defineProps({
     type: Object,
     default: () => {}
   },
-  treeData: {
-    // 左侧树列表
-    type: Array as any,
-    default: () => []
-  },
-  expendCodes: {
-    type: Array as any,
-    default: () => []
-  },
-  uid: {
-    type: String,
-    default: ''
-  },
   occupationOptions: {
     type: Array as any,
     default: () => []
@@ -215,45 +182,12 @@ const tabsList = ref([
   { label: '附件上传', value: 8, defIcon: iconAttachmentDef, selIcon: iconAttachmentSel }
 ])
 
-const showExpand = ref<boolean>(false)
 const tabVal = ref<number>(0)
-const areaCode = ref<string>('')
-const townCode = ref<string>('')
-const villageCode = ref<string>('')
-const virutalVillageCode = ref<string>('')
-const emit = defineEmits(['treeItemClick', 'updateData', 'updateTree'])
-
-const treeItemClick = (data: any) => {
-  // console.log('click-tree-data:', data)
-  tabVal.value = 0
-  areaCode.value = data.areaCode
-  townCode.value = data.townCode
-  villageCode.value = data.villageCode
-  virutalVillageCode.value = data.virutalVillageCode
-  emit('treeItemClick', data)
-}
-
-const expandToggle = () => {
-  showExpand.value = !showExpand.value
-}
+const emit = defineEmits(['updateData'])
 
 // tab 切换
 const selectTabs = (data: any) => {
   tabVal.value = data.value
-}
-
-/**
- * 新增居民户
- * @param(type) 类型，edit 编辑， add 新增
- */
-const addClick = (type: string) => {
-  routerForward('householdInfoEdit', {
-    type,
-    areaCode: areaCode.value,
-    townCode: townCode.value,
-    villageCode: villageCode.value,
-    virutalVillageCode: virutalVillageCode.value
-  })
 }
 
 /**
@@ -391,7 +325,6 @@ const updateWillingnessInfo = (data: any) => {
       if (res) {
         showToast(SUCCESS_MSG)
         updateData()
-        updateTree()
       }
     })
     .catch(() => {
@@ -416,12 +349,6 @@ const updateAttachment = (params: any) => {
 // 更新整体数据
 const updateData = () => {
   emit('updateData', props.dataInfo.uid)
-}
-
-// 更新左侧树列表
-const updateTree = () => {
-  emit('updateTree')
-  console.log('开始更新')
 }
 </script>
 
@@ -464,10 +391,6 @@ const updateTree = () => {
   background-color: #fff;
 }
 
-.expand {
-  width: 200rpx;
-}
-
 .scroll {
   flex: 1;
 }
@@ -488,10 +411,6 @@ const updateTree = () => {
 .list-box {
   flex: 1;
   width: 750rpx;
-}
-
-.list-expand {
-  padding-left: 206rpx;
 }
 
 .box {
@@ -528,31 +447,6 @@ const updateTree = () => {
     font-size: 9rpx;
     line-height: 1;
     color: #171718;
-  }
-}
-
-.tree-wrapper {
-  position: absolute;
-  top: 6rpx;
-  left: 6rpx;
-  z-index: 3;
-  display: flex;
-  height: calc(100vh - 33rpx - 12rpx - var(--status-bar-height));
-  overflow: hidden;
-  background-color: #fff;
-  border-radius: 5px;
-  flex-direction: column;
-
-  &.w-0 {
-    width: 0;
-  }
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  &::-moz-scrollbar {
-    display: none;
   }
 }
 </style>

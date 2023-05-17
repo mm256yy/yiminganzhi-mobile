@@ -39,6 +39,16 @@ class PushData {
     }
   }
 
+  private initAndReset() {
+    this.state = {
+      peasantHouseholdPushDtoList: [],
+      deleteRecordList: [],
+      pullTime: '',
+      villageList: [],
+      immigrantGraveList: []
+    }
+  }
+
   getModifyLandlordList() {
     return new Promise((resolve, reject) => {
       db.selectTableData(LandlordTableName, 'status', 'modify', 'isDelete', '0')
@@ -351,6 +361,8 @@ class PushData {
           console.info('推送数据-自然村列表:', villageList)
           console.info('推送数据-删除列表:', deleteRecordList)
           console.info('推送数据-拉取时间:', pullTime)
+          console.info('推送数据-坟墓列表:', immigrantGraveList)
+
           pushDataApi({
             peasantHouseholdPushDtoList,
             deleteRecordList,
@@ -373,6 +385,10 @@ class PushData {
             .catch((err) => {
               console.error('推送: 接口err', err)
               reject(err)
+            })
+            .finally(() => {
+              // 初始化 重置
+              this.initAndReset()
             })
         })
         .catch((err) => {

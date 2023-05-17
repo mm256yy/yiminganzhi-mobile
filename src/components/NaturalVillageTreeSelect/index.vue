@@ -79,6 +79,7 @@ interface PropsType {
   treeData: any
   title?: string[]
   value?: string[]
+  selectAny?: boolean // 是否选择任意一项
 }
 
 const props = defineProps<PropsType>()
@@ -165,7 +166,7 @@ const cancle = () => {
 
 const confirm = () => {
   const realArray = currentSelect.value.filter((item) => !!item)
-  if (realArray.length < 4) {
+  if (!props.selectAny && realArray.length < 4) {
     uni.showToast({
       title: '未完成选择',
       icon: 'none'

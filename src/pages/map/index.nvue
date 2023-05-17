@@ -38,7 +38,7 @@
 <script setup lang="ts">
 import { onLoad } from '@dcloudio/uni-app'
 import { nextTick, ref, getCurrentInstance } from 'vue'
-import { routerBack, networkCheck } from '../../utils'
+import { routerBack, networkCheck, gcj_encrypt } from '../../utils'
 // import MapInfo from './components/MapInfo.vue'
 
 const sysInfo = uni.getSystemInfoSync()
@@ -200,6 +200,19 @@ const getLatlngOffline = (): Promise<LocationType> => {
   return new Promise((resolve, reject) => {
     plus.geolocation.getCurrentPosition(
       (res) => {
+        // 坐标转换
+        if (res && res.coordsType === 'wgs84') {
+          const { lat: latitude, lon: longitude } = gcj_encrypt(
+            res.coords?.latitude || 0,
+            res.coords?.longitude || 0
+          )
+          resolve({
+            latitude,
+            longitude
+          })
+          return
+        }
+
         resolve({
           latitude: res.coords?.latitude || 0,
           longitude: res.coords?.longitude || 0
@@ -215,7 +228,9 @@ const getLatlngOffline = (): Promise<LocationType> => {
         reject()
       },
       {
-        provider: 'amap'
+        provider: 'amap',
+        timeout: 10000,
+        geocode: false
       }
     )
   })
@@ -249,6 +264,7 @@ const positionSuccess = (longitude, latitude) => {
 const getCurrentLocation = () => {
   setTimeout(() => {
     networkCheck().then(async (res) => {
+      uni.hideLoading()
       uni.showLoading({
         title: '获取当前定位中',
         mask: true
@@ -349,7 +365,7 @@ const onConfirm = () => {
     right: 23rpx;
     width: 33rpx;
     height: 33rpx;
-    box-shadow: 0px 16rpx 73rpx 21rpx rgba(0, 0, 0, 0.08);
+    // box-shadow: 0px 16rpx 73rpx 21rpx rgba(0, 0, 0, 0.08);
   }
 
   .map-info {

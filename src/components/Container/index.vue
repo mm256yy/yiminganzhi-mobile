@@ -2,16 +2,23 @@
   <view class="container-wrap">
     <image class="bg" src="@/static/images/common_bg.png" mode="widthFix" />
     <view class="common-header">
-      <view class="back-box" @click="onBack">
-        <uni-icons type="back" color="#ffffff" size="14rpx" />
+      <view class="header-left">
+        <view class="back-box" @click="onBack">
+          <uni-icons type="back" color="#ffffff" size="14rpx" />
+        </view>
       </view>
 
-      <slot name="title">
-        <text class="tit">{{ props.title || '标题' }}</text>
-      </slot>
-      <slot name="right">
-        <text />
-      </slot>
+      <view class="header-center">
+        <slot name="title">
+          <text class="tit">{{ props.title || '' }}</text>
+        </slot>
+      </view>
+
+      <view class="header-right">
+        <slot name="right">
+          <text />
+        </slot>
+      </view>
     </view>
     <view class="content">
       <slot></slot>
@@ -55,9 +62,32 @@ const onBack = () => {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
   height: 33rpx;
   padding: 0 6rpx;
+
+  .header-left {
+    display: flex;
+    width: 33%;
+    flex: none;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .header-center {
+    display: flex;
+    width: 33%;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .header-right {
+    display: flex;
+    width: 33%;
+    flex: none;
+    align-items: center;
+    justify-content: flex-end;
+  }
 
   .back-box {
     display: flex;

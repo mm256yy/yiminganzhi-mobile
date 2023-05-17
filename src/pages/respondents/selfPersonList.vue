@@ -1,9 +1,9 @@
 <template>
-  <Container>
-    <template #title>
+  <Container title="个体户列表">
+    <template #right>
       <view class="title" @click="onToggleVillage">
         <text class="tit">{{
-          title.length ? title.filter((item) => !!item).join('/') : '选择行政村'
+          title.length ? title.filter((item) => !!item).join('/') : '选择行政区划'
         }}</text>
         <image
           class="icon"
@@ -15,41 +15,6 @@
     </template>
 
     <view class="respondents-wrap">
-      <view class="tabs">
-        <view
-          class="tab-item one"
-          :class="[tabType === MainType.PeasantHousehold ? 'active' : '']"
-          @click="onTabChange(MainType.PeasantHousehold)"
-        >
-          <image class="icon" src="@/static/images/people_icon.png" mode="scaleToFill" />
-          <text class="tit">居民户</text>
-        </view>
-        <view
-          class="tab-item two other"
-          :class="[tabType === MainType.Company ? 'active' : '']"
-          @click="onTabChange(MainType.Company)"
-        >
-          <image class="icon" src="@/static/images/respondents_company.png" mode="scaleToFill" />
-          <text class="tit">企业</text>
-        </view>
-        <view
-          class="tab-item thr other"
-          :class="[tabType === MainType.IndividualHousehold ? 'active' : '']"
-          @click="onTabChange(MainType.IndividualHousehold)"
-        >
-          <image class="icon" src="@/static/images/respondents_single.png" mode="scaleToFill" />
-          <text class="tit">个体户</text>
-        </view>
-        <view
-          class="tab-item for other"
-          :class="[tabType === MainType.Village ? 'active' : '']"
-          @click="onTabChange(MainType.Village)"
-        >
-          <image class="icon" src="@/static/images/respondents_jt.png" mode="scaleToFill" />
-          <text class="tit">村集体</text>
-        </view>
-      </view>
-
       <view class="search-box">
         <uni-icons class="icon" type="search" color="#272636" size="9rpx" />
         <input
@@ -71,7 +36,7 @@
           @scrolltolower="loadMore"
         >
           <view class="scroll">
-            <CompanyItem
+            <ListItem
               v-for="item in list"
               :data="item"
               :key="item.uid"
@@ -130,11 +95,11 @@ import { ref, onMounted, nextTick, unref, computed } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import Container from '@/components/Container/index.vue'
 import NoData from '@/components/NoData/index.vue'
-import CompanyItem from './company.vue'
+import ListItem from './listItem.vue'
 import TreeSelect from '@/components/VillageTreeSelect/index.vue'
 import {
   getLandlordListBySearchApi,
-  getVillageTreeWithoutNullApi,
+  getVillageTreeApi,
   deleteLandlordApi,
   getLandlordItemApi
 } from '@/service'
@@ -142,7 +107,7 @@ import { LandlordType } from '@/types/sync'
 import { LandlordSearchType, MainType } from '@/types/common'
 import { routerForward } from '@/utils'
 
-const tabType = ref<MainType>(MainType.PeasantHousehold)
+const tabType = ref<MainType>(MainType.IndividualHousehold)
 const showVillageSelect = ref<boolean>(false)
 const list = ref<LandlordType[]>([])
 const keyWords = ref<string>('')
@@ -174,12 +139,6 @@ const clear = () => {
   init()
 }
 
-const onTabChange = (type: MainType) => {
-  tabType.value = type
-  init()
-  getTreeData()
-}
-
 const onToggleVillage = () => {
   showVillageSelect.value = !showVillageSelect.value
 }
@@ -197,7 +156,7 @@ const villageConfirm = (code: string[], tit: string[]) => {
 }
 
 const getTreeData = async () => {
-  const res = await getVillageTreeWithoutNullApi()
+  const res = await getVillageTreeApi()
   treeData.value = res || []
 }
 
@@ -228,7 +187,7 @@ const getList = () => {
     const res = await getLandlordListBySearchApi(params).catch(() => {
       isLoading.value = false
     })
-    console.log(res, 'res-----')
+
     isLoading.value = false
     if (res && res.length) {
       if (page.value === 1) {
@@ -393,81 +352,6 @@ onShow(() => {
   flex-direction: column;
 }
 
-.tabs {
-  flex: none;
-  display: flex;
-  align-items: center;
-
-  .tab-item {
-    position: relative;
-    display: flex;
-    width: 105rpx;
-    height: 38rpx;
-    padding: 5rpx 0;
-    background-position: center bottom;
-    background-repeat: no-repeat;
-    background-size: 105rpx 33rpx;
-    align-items: center;
-    justify-content: center;
-
-    .icon {
-      display: none;
-      width: 15rpx;
-      height: 15rpx;
-      margin-right: 6rpx;
-    }
-
-    .tit {
-      font-size: 12rpx;
-      font-weight: 500;
-      color: #ffffff;
-    }
-
-    &.one {
-      z-index: 4;
-      background-image: url('@/static/images/nav_default_first.png');
-    }
-
-    &.two {
-      z-index: 3;
-    }
-
-    &.thr {
-      z-index: 2;
-    }
-
-    &.for {
-      z-index: 1;
-    }
-
-    &.other {
-      margin-left: -13rpx;
-      background-image: url('@/static/images/nav_default.png');
-    }
-
-    &.active {
-      z-index: 5;
-      background-size: 105rpx 38rpx;
-
-      .icon {
-        display: block;
-      }
-
-      .tit {
-        color: #0a54ff;
-      }
-
-      &.one {
-        background-image: url('@/static/images/nav_active_first.png');
-      }
-
-      &.other {
-        background-image: url('@/static/images/nav_active.png');
-      }
-    }
-  }
-}
-
 .search-box {
   flex: none;
   position: relative;
@@ -476,9 +360,8 @@ onShow(() => {
   width: 100%;
   height: 23rpx;
   padding: 0 18rpx;
-  margin-top: -5rpx;
   background: linear-gradient(180deg, #ffffff 0%, #ffffff 100%);
-  border-radius: 0 7rpx 7rpx 7rpx;
+  border-radius: 7rpx;
   align-items: center;
 
   .icon {
@@ -502,7 +385,7 @@ onShow(() => {
 
 .scroll-view {
   width: 100%;
-  height: calc(100vh - var(--status-bar-height) - 33rpx - 38rpx - 18rpx - 6rpx - 10rpx);
+  height: calc(100vh - var(--status-bar-height) - 33rpx - 18rpx - 6rpx - 10rpx);
 }
 
 .scroll {

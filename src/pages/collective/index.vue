@@ -3,15 +3,7 @@
     <image src="@/static/images/head_bg.png" class="head-bg" />
     <view class="home-wrap" :style="{ height: `${pageHeight}px` }">
       <view class="home-body">
-        <Main
-          :uid="uid"
-          :expend-codes="expendCodes"
-          :treeData="treeData"
-          :dataInfo="dataInfo"
-          @tree-item-click="treeItemClick"
-          @update-tree="getTreeData"
-          @update-data="getLandlordDetail"
-        />
+        <Main :dataInfo="dataInfo" @update-data="getLandlordDetail" />
       </view>
     </view>
   </view>
@@ -20,52 +12,26 @@
 <script setup lang="ts">
 import { onLoad, onShow } from '@dcloudio/uni-app'
 import { ref } from 'vue'
-import { getLandlordTreeApi, getLandlordItemApi } from '@/service'
-import { MainType } from '@/types/common'
-import { showLoading, hideLoading } from '@/config'
+import { getLandlordItemApi } from '@/service'
 import Main from './components/Main.vue'
 
 const sysInfo = uni.getSystemInfoSync()
 const statusBarHeight = sysInfo.statusBarHeight || 0
 const screenHeight = sysInfo.screenHeight
 const pageHeight = screenHeight - statusBarHeight
-const treeData = ref<any>([])
 const dataInfo = ref<any>({})
-// 默认选择的业主
-const expendCodes = ref<string[]>([])
-const uid = ref<string>('')
 
 onShow(() => {
   if (dataInfo.value.uid) {
     getLandlordDetail(dataInfo.value.uid)
   }
-  getTreeData()
 })
 
 onLoad((option) => {
   if (option && option.uid) {
-    expendCodes.value = option.expendCodes.split(',')
-    uid.value = option.uid
+    getLandlordDetail(option.uid)
   }
 })
-
-// 获取左侧树列表
-const getTreeData = async () => {
-  // showLoading()
-  const result = await getLandlordTreeApi(MainType.Village)
-  // hideLoading()
-  treeData.value = [...result]
-  console.log('村集体更新数据：', result)
-}
-
-/**
- * 点击左侧列表
- * @params (object) data 点击的当前节点返回的数据
- */
-const treeItemClick = (data: any) => {
-  uid.value = data.uid
-  getLandlordDetail(data.uid)
-}
 
 /**
  * 获取企业详情
@@ -74,12 +40,6 @@ const treeItemClick = (data: any) => {
 const getLandlordDetail = (uid: string) => {
   getLandlordItemApi(uid).then((res: any) => {
     dataInfo.value = { ...res }
-    expendCodes.value = [
-      dataInfo.value.areaCode,
-      dataInfo.value.townCode,
-      dataInfo.value.villageCode,
-      dataInfo.value.virutalVillageCode
-    ]
   })
 }
 </script>

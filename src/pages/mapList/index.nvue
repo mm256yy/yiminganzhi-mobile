@@ -29,11 +29,11 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { onReady } from '@dcloudio/uni-app'
-import MapInfo from './components/MapInfo'
-import { routerBack, hideStr, getStorage, StorageKey } from '@/utils'
-import { getVillageListWithPageApi, getLandlordListBySearchApi } from '@/service'
+import MapInfo from './components/MapInfo.vue'
+import { routerBack, hideStr, getStorage, StorageKey } from '../../utils'
+import { getVillageListWithPageApi, getLandlordListBySearchApi } from '../../service'
 import iconPath from './iconPath'
-import { MainType, LandlordSearchType } from '@/types/common'
+import { MainType, LandlordSearchType } from '../../types/common'
 
 const sysInfo = uni.getSystemInfoSync()
 const statusBarHeight = sysInfo.statusBarHeight || 0

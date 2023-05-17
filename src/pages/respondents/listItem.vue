@@ -41,12 +41,12 @@
         <view class="label">所属区域:</view>
         <view class="value">{{ props.data.areaCodeText }}/{{ props.data.townCodeText }}</view>
       </view>
-      <view class="cont-item" v-if="props.data.type !== MainType.PeasantHousehold">
+      <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">行政村名称:</view>
         <view class="value">{{ props.data.villageCodeText }}</view>
       </view>
-      <view class="cont-item" v-else>
+      <view class="cont-item" v-if="props.data.type === MainType.PeasantHousehold">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">自然村名称:</view>
         <view class="value">{{ props.data.virutalVillageCodeText || '' }}</view>

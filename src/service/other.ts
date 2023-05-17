@@ -31,7 +31,7 @@ export const getVillageTreeApi = () => {
   return OtherController.getOtherWithType(OtherDataType.DistrictTree)
 }
 
-// 获取行政村 下拉树 过滤了空数据
+// 获取行政村/自然村 下拉树
 export const getVillageTreeWithoutNullApi = (type?: MainType) => {
   return DistrictTreeController.getVillageTree(type)
 }

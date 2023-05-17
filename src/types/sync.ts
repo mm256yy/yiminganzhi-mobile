@@ -161,3 +161,10 @@ export interface ImgItemType {
   base64?: string
   path?: string
 }
+
+// 调查对象接口数据定义
+export interface LandlordWithPageType {
+  pullTime: string
+  peasantHouseholdPushDtoList: LandlordType[]
+  lastId: number | null
+}

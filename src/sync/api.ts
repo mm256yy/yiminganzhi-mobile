@@ -15,11 +15,23 @@ export const getConfigDataApi = () => {
   })
 }
 
-// 农户相关信息
+// 获取调查对象列表
+export const getLandlordListApi = (id?: number | null) => {
+  const time = getStorage(StorageKey.PULLTIME)
+  return request.get({
+    url: '/pad/pullBody',
+    data: {
+      lastPullTime: time || '',
+      lastId: id
+    }
+  })
+}
+
+// 自然村相关信息
 export const getBaseDataApi = () => {
   const time = getStorage(StorageKey.PULLTIME)
   return request.get({
-    url: '/pad/pull',
+    url: '/pad/pullHead',
     data: {
       lastPullTime: time || ''
     }

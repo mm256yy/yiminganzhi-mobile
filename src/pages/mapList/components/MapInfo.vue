@@ -118,14 +118,7 @@ const toLink = () => {
     })
   } else if (props.dataInfo.type === MainType.PeasantHousehold) {
     routerForward('household', {
-      uid: props.dataInfo.uid,
-      expendCodes: [
-        props.dataInfo.areaCode,
-        props.dataInfo.townCode,
-        props.dataInfo.villageCode,
-        props.dataInfo.virutalVillageCode,
-        props.dataInfo.code
-      ]
+      uid: props.dataInfo.uid
     })
   }
 }

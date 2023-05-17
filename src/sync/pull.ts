@@ -24,11 +24,16 @@ import {
   ImageDDL,
   ImageTableName,
   GraveDDL,
-  GraveTableName,
-  GraveDDLType
+  GraveTableName
 } from '@/database/index'
-import { getProjectDataApi, getBaseDataApi, getConfigDataApi, getCollectApi } from './api'
-import { StateType, ImgItemType } from '@/types/sync'
+import {
+  getProjectDataApi,
+  getBaseDataApi,
+  getConfigDataApi,
+  getCollectApi,
+  getLandlordListApi
+} from './api'
+import { StateType, ImgItemType, LandlordWithPageType } from '@/types/sync'
 import { getCurrentTimeStamp, setStorage, StorageKey } from '@/utils'
 import dayjs from 'dayjs'
 import { pathToBase64 } from 'image-tools'
@@ -103,8 +108,12 @@ class PullData {
   }
 
   public async pull() {
-    // 获取农户数据
+    // 获取基础数据
     await this.getBaseData()
+
+    // 获取调查对象数据
+    this.getLandlordData(true)
+
     // 拉取配置数据
     this.getConfigData()
 
@@ -144,11 +153,14 @@ class PullData {
       this.state.project = result
       const pullRes = await this.pullProject()
       pullRes && this.count++
+      // 重置 释放缓存
+      this.state.project = []
       console.log('拉取: 项目', pullRes)
       resolve(pullRes)
     })
   }
 
+  // 获取配置信息
   public async getConfigData() {
     const result = await getConfigDataApi().catch(() => {
       this.maxCount = -1
@@ -168,42 +180,137 @@ class PullData {
       districtList,
       professionalTree
     } = result
-
+    // 需要reset
     this.state.immigrantIncomeConfigList = immigrantIncomeConfigList
     this.state.immigrantWillConfigList = immigrantWillConfigList
     this.state.dictValList = dictValList
     this.state.districtTree = districtTree
     this.state.districtList = districtList
     this.state.professionalTree = professionalTree
-
     this.state.immigrantAppendantConfigList = immigrantAppendantOptionList
+
     this.pullDict().then((res: boolean) => {
       res && this.count++
+      // 重置 释放缓存
+      this.state.dictValList = []
       console.log('拉取: 字典', res)
     })
     this.pullFamilyIncome().then((res) => {
       res && this.count++
+      // 重置 释放缓存
+      this.state.immigrantIncomeConfigList = []
       console.log('拉取: 家庭收入', res)
     })
     this.pullResettlement().then((res) => {
       res && this.count++
+      // 重置 释放缓存
+      this.state.immigrantWillConfigList = []
+
       console.log('拉取: 安置意愿', res)
     })
     this.pullDistrict().then((res) => {
       res && this.count++
       setStorage(StorageKey.DISTRICTMAP, this.districtMap)
+      // 重置 释放缓存
+      this.state.districtList = []
+
       console.log('拉取: 区划', res)
     })
     this.pullAppendant().then((res) => {
       res && this.count++
+      // 重置 释放缓存
+      this.state.immigrantAppendantConfigList = []
+
       console.log('拉取: 附属物', res)
     })
     this.pullOther().then((res) => {
       res && this.count++
+      // 重置 释放缓存
+      this.state.districtTree = []
+      this.state.professionalTree = []
       console.log('拉取: 其他', res)
     })
   }
 
+  // 获取调查对象列表
+  public getLandlordData(first: boolean, lastId?: number | null) {
+    /**
+     * 分批拉取数据，一次存储sqllite
+     *
+     * 说明: 1.当数据量过大时，一次性拉取调查对象数据会导致pad上内存溢出，参考7000条数据40M的返回体
+     * 2.递归的条件：lastId 为null 时表示请求数据完毕
+     * 3.目前数据的阀值由后端控制 一次限定2000条
+     */
+    if (first) {
+      // 需要重置一次
+      this.state.peasantHouseholdPushDtoList = []
+    }
+    getLandlordListApi(lastId)
+      .then((res: LandlordWithPageType) => {
+        if (res) {
+          const { peasantHouseholdPushDtoList, lastId, pullTime } = res
+          if (peasantHouseholdPushDtoList && peasantHouseholdPushDtoList.length) {
+            // 需要合并数据
+            this.state.peasantHouseholdPushDtoList = [
+              ...this.state.peasantHouseholdPushDtoList,
+              ...peasantHouseholdPushDtoList
+            ]
+          }
+          console.log('递归:', lastId)
+          // 存储拉取时间
+          this.state.pullTime = pullTime
+          if (lastId) {
+            // id存在 表明还有数据，需要继续递归请求
+            this.getLandlordData(false, lastId)
+          } else {
+            // id不存在 表明数据已经获取完毕，不再需继续请求
+            console.log('接口: 调查对象数据length', this.state.peasantHouseholdPushDtoList.length)
+            this.getLandlordDataSuccess()
+          }
+        } else {
+          // 接口返回有误
+          this.maxCount = -1
+        }
+      })
+      .catch(() => {
+        this.maxCount = -1
+      })
+  }
+
+  // 获取调查对象成功处理函数
+  private getLandlordDataSuccess() {
+    const { pullTime } = this.state
+    if (pullTime) {
+      // 同步时间 存入other库
+      setStorage(StorageKey.PULLTIME, pullTime)
+      const fields = "'type','content','updatedDate'"
+      const values = `'${OtherDataType.PullTime}','${pullTime}','${getCurrentTimeStamp()}'`
+      this.db.insertOrReplaceData(OtherTableName, values, fields)
+    }
+    let pullSuccessCount = 0 // 记录调查对象的信息存储
+    // 存储调查对象数据
+    this.pullLandlord().then((res) => {
+      res && this.count++
+      pullSuccessCount++
+      if (pullSuccessCount === 2) {
+        // 数据过大 需要及时清理掉缓存
+        this.state.peasantHouseholdPushDtoList = []
+      }
+      console.log('拉取: 业主', res)
+    })
+    // 处理图片
+    this.pullLandlordHouseImgs().then((res) => {
+      res && this.count++
+      pullSuccessCount++
+      if (pullSuccessCount === 2) {
+        // 数据过大 需要及时清理掉缓存
+        this.state.peasantHouseholdPushDtoList = []
+      }
+      console.log('拉取: 图片', res)
+    })
+  }
+
+  // 获取基础信息
   public async getBaseData() {
     const result = await getBaseDataApi().catch(() => {
       this.maxCount = -1
@@ -215,62 +322,53 @@ class PullData {
       return
     }
     const {
-      peasantHouseholdPushDtoList,
-      pullTime,
       deleteRecordList,
       villageList,
+      immigrantGraveList,
+
       peasantHouseholdNum,
       companyNum,
       individualNum,
       villageNum,
       virutalVillageNum,
-      appVersion,
-      immigrantGraveList
+      appVersion
     } = result
-    this.state.peasantHouseholdPushDtoList = peasantHouseholdPushDtoList
+    // 需要reset
     this.state.deleteRecordList = deleteRecordList
-    this.state.pullTime = pullTime
     this.state.villageList = villageList
+    this.state.immigrantGraveList = immigrantGraveList
+    // 不能reset
     this.state.peasantHouseholdNum = peasantHouseholdNum
     this.state.companyNum = companyNum
     this.state.individualNum = individualNum
     this.state.villageNum = villageNum
     this.state.virutalVillageNum = virutalVillageNum
     this.state.upgradation = appVersion
-    this.state.immigrantGraveList = immigrantGraveList
 
     // 数据 新增 修改 删除一起进行
-    this.pullLandlord().then((res) => {
-      res && this.count++
-      console.log('拉取: 业主', res)
-    })
     this.pullVillageList().then((res) => {
       res && this.count++
       setStorage(StorageKey.DISTRICTMAP, this.districtMap)
+      // 重置 释放缓存
+      this.state.villageList = []
       console.log('拉取: 自然村', res)
     })
     this.deleteDb().then((res) => {
       res && this.count++
+      // 重置 释放缓存
+      this.state.deleteRecordList = []
       console.log('删除: 数据', res)
-    })
-    this.pullLandlordHouseImgs().then((res) => {
-      res && this.count++
-      console.log('拉取: 图片', res)
     })
     this.pullGrave().then((res) => {
       res && this.count++
+      // 重置 释放缓存
+      this.state.immigrantGraveList = []
+
       console.log('拉取: 坟墓', res)
     })
-
-    if (pullTime) {
-      // 同步时间 存入other库
-      setStorage(StorageKey.PULLTIME, pullTime)
-      const fields = "'type','content','updatedDate'"
-      const values = `'${OtherDataType.PullTime}','${pullTime}','${getCurrentTimeStamp()}'`
-      this.db.insertOrReplaceData(OtherTableName, values, fields)
-    }
   }
 
+  // 获取统计数据
   public async getCollect() {
     const result = await getCollectApi().catch(() => {
       this.maxCount = -1
@@ -284,6 +382,9 @@ class PullData {
     this.state.collectList = result
     this.pullCollect().then((res) => {
       res && this.count++
+      // 重置 释放缓存
+      this.state.collectList = []
+
       console.log('拉取: 统计数据', res)
     })
   }
@@ -347,14 +448,6 @@ class PullData {
           reject()
         })
     })
-  }
-
-  public execute() {
-    /** 是否 串行 */
-    let chain = Promise.resolve<any>(null)
-    chain = chain.then(() => this.getBaseData())
-    // 增加
-    return chain
   }
 
   public getTables(): Promise<any[]> {
@@ -536,7 +629,6 @@ class PullData {
             // 删除居民户数据
             db.deleteTableData(LandlordTableName, 'uid', item.deleteId)
           }
-          // todo
           if (item.type === 'village') {
             // 删除自然村数据
             db.deleteTableData(VillageTableName, 'uid', item.deleteId)
@@ -754,7 +846,7 @@ class PullData {
       await db.transaction('begin').catch(() => {
         resolve(false)
       })
-      if (districtTree) {
+      if (districtTree && districtTree.length) {
         // 街道树
         const fields = "'type','content','updatedDate'"
         const values = `'${OtherDataType.DistrictTree}','${JSON.stringify(

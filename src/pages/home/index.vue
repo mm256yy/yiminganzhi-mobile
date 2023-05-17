@@ -58,7 +58,7 @@
       </view>
 
       <view class="main-enter">
-        <view class="enter-item" @click="toLink('household')">
+        <view class="enter-item" @click="toLink('householdList')">
           <view class="inner">
             <view class="top">
               <image class="enter-icon" src="@/static/images/peple_enter.png" mode="scaleToFill" />
@@ -72,7 +72,7 @@
           </view>
         </view>
 
-        <view class="enter-item" @click="toLink('enterprise')">
+        <view class="enter-item" @click="toLink('enterpriseList')">
           <view class="inner">
             <view class="top">
               <image
@@ -90,7 +90,7 @@
           </view>
         </view>
 
-        <view class="enter-item" @click="toLink('selfPerson')">
+        <view class="enter-item" @click="toLink('selfPersonList')">
           <view class="inner">
             <view class="top">
               <image class="enter-icon" src="@/static/images/single_enter.png" mode="scaleToFill" />
@@ -104,7 +104,7 @@
           </view>
         </view>
 
-        <view class="enter-item" @click="toLink('collective')">
+        <view class="enter-item" @click="toLink('collectiveList')">
           <view class="inner">
             <view class="top">
               <image class="enter-icon" src="@/static/images/jt_enter.png" mode="scaleToFill" />
@@ -124,14 +124,6 @@
           <view class="inner">
             <image class="other-icon" src="@/static/images/sync_enter.png" mode="scaleToFill" />
             <text class="other-tit">数据同步</text>
-          </view>
-          <image class="arrow-icon" src="@/static/images/home_arrow.png" mode="scaleToFill" />
-        </view>
-
-        <view class="other-item" @click="toLink('respondents')">
-          <view class="inner">
-            <image class="other-icon" src="@/static/images/yimin_enter.png" mode="scaleToFill" />
-            <text class="other-tit">调查对象管理</text>
           </view>
           <image class="arrow-icon" src="@/static/images/home_arrow.png" mode="scaleToFill" />
         </view>

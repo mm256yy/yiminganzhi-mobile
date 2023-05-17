@@ -1,9 +1,5 @@
 <template>
   <view class="list-header">
-    <view class="list-header-lt" @click="expandToggle">
-      <image class="expand-img" src="@/static/images/expand.png" mode="scaleToFill" />
-    </view>
-
     <view class="list-header-rt">
       <view class="list-header-left">
         <view class="name">{{ dataInfo.name }}</view>
@@ -154,10 +150,6 @@ export default {
     }
   },
   methods: {
-    expandToggle() {
-      this.$emit('expandToggle')
-    },
-
     // 数据上报校验
     reportDataCheck() {
       let query = {
@@ -188,7 +180,6 @@ export default {
         .then((res: any) => {
           if (res) {
             showToast(SUCCESS_MSG)
-            this.$emit('updateTree')
             this.$emit('updateData')
           }
           this.close('report')
@@ -430,20 +421,6 @@ export default {
   box-sizing: border-box;
   flex-direction: row;
   align-items: center;
-
-  .list-header-lt {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 12rpx;
-    height: 33rpx;
-
-    .expand-img {
-      width: 12rpx;
-      height: 12rpx;
-      margin-right: 4rpx;
-    }
-  }
 
   .list-header-rt {
     display: flex;
