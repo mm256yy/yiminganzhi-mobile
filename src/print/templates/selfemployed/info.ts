@@ -1,6 +1,6 @@
 import { LandlordType } from '@/types/sync'
 import { getHead, getCompanyBaseTableHead, getHouseInfo, getFushuwu, getTree } from '../../common'
-import { layout, ewm } from '../../config'
+import { layout } from '../../config'
 import { ProjectType } from '@/types/common'
 
 // 企业/个体户 基本信息配置模版
@@ -174,7 +174,6 @@ export const selfemployedInfoDefinition = {
           },
           {
             alignment: 'right',
-            // image: ewm,
             text: '',
             width: 55
           }
@@ -194,16 +193,15 @@ const getFooter = () => {
         {
           text: '法人代表签字（公章）：',
           alignment: 'left',
-          margin: [0, 35, 0, 0]
+          margin: [0, 20, 0, 0]
         },
         {
           text: '调查员签字：',
           alignment: 'left',
-          margin: [0, 35, 0, 0]
+          margin: [0, 20, 0, 0]
         },
         {
           alignment: 'right',
-          // image: ewm,
           text: '',
           width: 55
         }

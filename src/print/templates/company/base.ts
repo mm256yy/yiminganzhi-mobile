@@ -1,4 +1,4 @@
-import { ewm, layout } from '../../config'
+import { layout } from '../../config'
 import { getHead, getCompanyBaseTableHead } from '../../common'
 import { LandlordType } from '@/types/sync'
 import { ProjectType } from '@/types/common'
@@ -187,7 +187,6 @@ export const companyBaseDefinition = {
           },
           {
             alignment: 'right',
-            // image: ewm,
             text: '',
             width: 55
           }
@@ -338,16 +337,15 @@ const getFooter = () => {
         {
           text: '权属人签字（盖章）：',
           alignment: 'left',
-          margin: [0, 35, 0, 0]
+          margin: [0, 20, 0, 0]
         },
         {
           text: '调查员签字：',
           alignment: 'left',
-          margin: [0, 35, 0, 0]
+          margin: [0, 20, 0, 0]
         },
         {
           alignment: 'right',
-          // image: ewm,
           text: '',
           width: 55
         }

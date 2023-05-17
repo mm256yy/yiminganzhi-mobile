@@ -124,12 +124,12 @@ const getFooter = () => {
       columns: [
         {
           text: '户主签字：',
-          margin: [0, 35, 0, 0],
+          margin: [0, 20, 0, 0],
           alignment: 'left'
         },
         {
           text: '调查员签字：',
-          margin: [0, 35, 0, 0],
+          margin: [0, 20, 0, 0],
           alignment: 'left'
         },
         {

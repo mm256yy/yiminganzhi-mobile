@@ -232,10 +232,10 @@ const pullTime = ref<string>('')
 const syncCmt = ref()
 
 const routerMap: any = {
-  [MainType.PeasantHousehold]: 'household',
-  [MainType.IndividualHousehold]: 'selfPerson',
-  [MainType.Company]: 'enterprise',
-  [MainType.Village]: 'collective'
+  [MainType.PeasantHousehold]: 'householdList',
+  [MainType.IndividualHousehold]: 'selfPersonList',
+  [MainType.Company]: 'enterpriseList',
+  [MainType.Village]: 'collectiveList'
 }
 
 const onSyncHandle = debounce(() => {
