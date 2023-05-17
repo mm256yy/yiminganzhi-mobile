@@ -1,6 +1,6 @@
 <template>
   <view class="page-wrap">
-    <image src="@/static/images/head_bg.png" class="head-bg" />
+    <image src="@/static/images/common_bg.png" class="head-bg" mode="widthFix" />
     <view class="home-wrap" :style="{ height: `${pageHeight}px` }">
       <view class="home-body">
         <Main :dataInfo="dataInfo" @update-data="getLandlordDetail" />
@@ -58,7 +58,7 @@ const getLandlordDetail = (uid: string) => {
     top: 0;
     left: 0;
     width: 750rpx;
-    height: 95rpx;
+    height: 100%;
   }
 
   .home-wrap {

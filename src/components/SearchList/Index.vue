@@ -9,7 +9,14 @@
       </view>
     </view>
     <view class="search-input">
-      <input class="input-txt" v-model="name" type="text" placeholder="请输入" @confirm="confirm" />
+      <input
+        class="input-txt"
+        v-model="name"
+        type="text"
+        :confirm-type="'search'"
+        placeholder="请输入"
+        @confirm="confirm"
+      />
     </view>
     <view class="search-list" v-if="dataList && dataList.length > 0">
       <view class="search-item" v-for="(item, index) in dataList" :key="index">
