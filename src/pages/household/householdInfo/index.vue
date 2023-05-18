@@ -100,7 +100,8 @@
 
 <script lang="ts" setup>
 import { formatStr, formatDict, dictOption, splitStr, routerForward } from '@/utils'
-import { locationTypes, yesAndNoEnums, compatibleOldSystems } from '@/config/common'
+import { locationTypes, yesAndNoEnums } from '@/config/common'
+import { compatibleOldSystems } from '@/pages/common/config'
 
 const props = defineProps({
   dataInfo: {
