@@ -52,12 +52,13 @@
               label-align="right"
               name="formData.birthday"
             >
-              <uni-datetime-picker
-                type="date"
-                placeholder="选择出生日期"
-                v-model="formData.birthday"
-                fields="month"
-              />
+              <view class="picker-wrapper">
+                <picker mode="date" :value="currentDate" :fields="'month'" @change="bindDateChange">
+                  <view :class="['uni-input', formData.birthday ? '' : 'select']">
+                    {{ formData.birthday ? formData.birthday : '选择出生日期' }}
+                  </view>
+                </picker>
+              </view>
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -360,6 +361,21 @@ const selectedData = ref<string>('')
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
 
+// 获取年月
+const getDate = () => {
+  if (formData.value.birthday) {
+    return formData.value.birthday
+  } else {
+    const date = new Date()
+    let year = date.getFullYear()
+    let month: any = date.getMonth() + 1
+    month = month > 9 ? month : '0' + month
+    return `${year}-${month}`
+  }
+}
+
+const currentDate = ref<any>('')
+
 onLoad((option: any) => {
   if (option) {
     type.value = option.type
@@ -375,11 +391,20 @@ onLoad((option: any) => {
         ? fmtOccupationStr(occupationOptions.value, formData.value.occupation, 1)
         : ''
       title.value = '个人信息编辑'
+      currentDate.value = getDate()
     } else if (option.type === 'add') {
       title.value = '新增个人信息'
+      currentDate.value = getDate()
     }
   }
 })
+
+/**
+ *日期选择
+ */
+const bindDateChange = (e: any) => {
+  formData.value.birthday = e.detail.value
+}
 
 // 选择职业（弹出职业选择框）
 const selectOccupation = () => {
@@ -403,9 +428,10 @@ const confirmSelect = (currentSelect: any[], label: any[]) => {
 const submit = () => {
   const params = {
     ...formData.value,
-    birthday: formData.value.birthday ? dayjs(formData.value.birthday) : formData.value.birthday
+    birthday: formData.value.birthday
+      ? dayjs(formData.value.birthday).format('YYYY-MM')
+      : formData.value.birthday
   }
-  console.log('params:', params)
   if (!formData.value.name) {
     showToast('请输入姓名')
     return
@@ -502,6 +528,29 @@ const submit = () => {
       ::v-deep.uni-input-input,
       ::v-deep.uni-input-placeholder {
         font-size: 9rpx !important;
+      }
+
+      .picker-wrapper {
+        display: flex;
+        width: 200rpx;
+        height: 23rpx;
+        padding-left: 7rpx;
+        overflow: hidden;
+        font-size: 9rpx;
+        line-height: 23rpx;
+        color: #171718;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+
+        .uni-input {
+          width: 180rpx;
+
+          &.select {
+            color: #999;
+          }
+        }
       }
 
       .name-wrapper {

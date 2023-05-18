@@ -201,7 +201,7 @@ const toLink = (type: string, data?: any) => {
       cardPic: fmtPicUrl(data.cardPic),
       householdPic: fmtPicUrl(data.householdPic),
       otherPic: fmtPicUrl(data.otherPic),
-      birthday: data.birthday ? dayjs(data.birthday).format('YYYY-MM-DD') : ''
+      birthday: data.birthday ? dayjs(data.birthday).format('YYYY-MM') : ''
     }
     routerForward('demographicInfoEdit', {
       params: JSON.stringify(params),
