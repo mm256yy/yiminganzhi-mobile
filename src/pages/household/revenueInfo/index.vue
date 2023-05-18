@@ -1,7 +1,7 @@
 <template>
   <view class="revenue-info-wrapper">
     <view class="sub-title">第一产业收入</view>
-    <uni-row v-for="(item, index) in firstData" :key="item.id">
+    <uni-row v-for="(item, index) in firstData" :key="index">
       <uni-col :span="12">
         <view class="col">
           <view class="label">{{ item.name }}：</view>
@@ -46,7 +46,7 @@
     </uni-row>
 
     <view class="sub-title">第二、三产业收入</view>
-    <uni-row v-for="(item, index) in secondData" :key="item.id">
+    <uni-row v-for="(item, index) in secondData" :key="index">
       <uni-col :span="12">
         <view class="col">
           <view class="label">{{ item.name }}：</view>
@@ -91,7 +91,7 @@
     </uni-row>
 
     <view class="sub-title">其他收入</view>
-    <uni-row v-for="(item, index) in otherData" :key="item.id">
+    <uni-row v-for="(item, index) in otherData" :key="index">
       <uni-col class="m-b-10" :span="12">
         <view class="col">
           <view class="label">{{ item.name }}：</view>
@@ -240,20 +240,22 @@ const emit = defineEmits(['submit'])
 const genArr = (arr?: any[]) => {
   if (arr && arr.length > 0) {
     arr.map((item: any) => {
+      // fix: 配置表的ID不需要
+      const { id, ...realItem } = item
       if (item.configType === MainType.PeasantHousehold) {
         if (item.type === '1') {
           firstData.value.push({
-            ...item,
+            ...realItem,
             ...commonParams
           })
         } else if (item.type === '2') {
           secondData.value.push({
-            ...item,
+            ...realItem,
             ...commonParams
           })
         } else {
           otherData.value.push({
-            ...item,
+            ...realItem,
             ...commonParams
           })
         }
