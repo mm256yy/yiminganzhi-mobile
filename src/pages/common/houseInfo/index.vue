@@ -62,7 +62,7 @@
               <view class="col">
                 <view class="label">竣工日期：</view>
                 <view class="content">
-                  {{ item.completedTime ? dayjs(item.completedTime).format('YYYY-MM-DD') : '-' }}
+                  {{ item.completedTime ? dayjs(item.completedTime).format('YYYY-MM') : '-' }}
                 </view>
               </view>
             </uni-col>
@@ -198,7 +198,9 @@ const toLink = (type: string, data?: any) => {
   if (type === 'edit') {
     let params = {
       ...data,
-      completedTime: data.completedTime ? dayjs(data.completedTime).format('YYYY-MM-DD') : null
+      completedTime: data.completedTime
+        ? dayjs(data.completedTime).format('YYYY-MM')
+        : data.completedTime
     }
     routerForward('houseInfoEdit', {
       params: JSON.stringify(params),

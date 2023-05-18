@@ -261,11 +261,13 @@
               label-align="right"
               name="formData.completedTime"
             >
-              <uni-datetime-picker
-                type="date"
-                placeholder="请选择竣工日期"
-                v-model="formData.completedTime"
-              />
+              <view class="picker-wrapper">
+                <picker mode="date" :value="currentDate" :fields="'month'" @change="bindDateChange">
+                  <view :class="['uni-input', formData.completedTime ? '' : 'select']">
+                    {{ formData.completedTime ? formData.completedTime : '选择竣工日期' }}
+                  </view>
+                </picker>
+              </view>
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -507,6 +509,21 @@ const lgTagList = ref<any>([
   { text: '输入经纬度', value: 2, disable: false }
 ])
 
+// 获取年月
+const getDate = () => {
+  if (formData.value.completedTime) {
+    return formData.value.completedTime
+  } else {
+    const date = new Date()
+    let year = date.getFullYear()
+    let month: any = date.getMonth() + 1
+    month = month > 9 ? month : '0' + month
+    return `${year}-${month}`
+  }
+}
+
+const currentDate = ref<any>('')
+
 onLoad((option: any) => {
   if (option) {
     commonParams.value = JSON.parse(option.commonParams)
@@ -516,8 +533,10 @@ onLoad((option: any) => {
       let params = JSON.parse(option.params)
       formData.value = { ...params }
       title.value = '房屋信息编辑'
+      currentDate.value = getDate()
     } else if (type.value === 'add') {
       title.value = '新增房屋'
+      currentDate.value = getDate()
       if (commonParams.value.longitude && commonParams.value.latitude) {
         formData.value.longitude = commonParams.value.longitude
         formData.value.latitude = commonParams.value.latitude
@@ -525,6 +544,13 @@ onLoad((option: any) => {
     }
   }
 })
+
+/**
+ *日期选择
+ */
+const bindDateChange = (e: any) => {
+  formData.value.completedTime = e.detail.value
+}
 
 // 输入框获得焦点事件
 const inputFocus = (index: number) => {
@@ -550,7 +576,7 @@ const submit = () => {
     doorNo,
     ...formData.value,
     completedTime: formData.value.completedTime
-      ? dayjs(formData.value.completedTime)
+      ? dayjs(formData.value.completedTime).format('YYYY-MM')
       : formData.value.completedTime
   }
 
@@ -732,6 +758,29 @@ onBeforeUnmount(() => {
           text-align: center;
           background-color: #f5f7fa;
           border-left: 1px solid #d9d9d9;
+        }
+      }
+
+      .picker-wrapper {
+        display: flex;
+        width: 200rpx;
+        height: 23rpx;
+        padding-left: 7rpx;
+        overflow: hidden;
+        font-size: 9rpx;
+        line-height: 23rpx;
+        color: #171718;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+
+        .uni-input {
+          width: 180rpx;
+
+          &.select {
+            color: #999;
+          }
         }
       }
     }
