@@ -207,8 +207,8 @@ const closeModifyRecords = () => {
  * @param data type 为 edit 时，当前行数据
  */
 const toLink = (type: string, data?: any) => {
-  const { uid, householdId, doorNo, name } = props.dataInfo
-  let commonParams = { type, uid, collectiveList: collectiveList.value }
+  const { uid, doorNo, name, id } = props.dataInfo
+  let commonParams = { type, uid, id, collectiveList: collectiveList.value }
   if (type === 'edit') {
     const currentVillage = collectiveList.value.find(
       (colItem: any) => colItem.doorNo === data.villageDoorNo
@@ -223,7 +223,7 @@ const toLink = (type: string, data?: any) => {
     })
   } else {
     const params = {
-      registrantId: householdId, // 居民户 ID
+      registrantId: id || '', // 居民户 ID
       registrantDoorNo: doorNo, // 居民户户号
       registrantName: name, // 居民户名称
       villageId: '', // 村集体 ID
