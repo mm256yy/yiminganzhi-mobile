@@ -2,7 +2,7 @@ import { getStorage, StorageKey } from '@/utils'
 
 export const getHeaderCommonParams = () => {
   const token = getStorage(StorageKey.TOKEN)
-  const projectId = getStorage(StorageKey.PROJECTID) || 2
+  const projectId = getStorage(StorageKey.PROJECTID) || 0
   const projectInfo = getStorage(StorageKey.PROJECTINFO) || {}
   const status = projectInfo.status || 'survey' // 阶段， 如 survey 填报、review 复核
   const systemInfo = uni.getSystemInfoSync()
