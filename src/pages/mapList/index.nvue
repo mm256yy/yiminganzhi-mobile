@@ -27,13 +27,18 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { onReady } from '@dcloudio/uni-app'
 import MapInfo from './components/MapInfo.vue'
 import { routerBack, hideStr, getStorage, StorageKey } from '../../utils'
 import { getVillageListApi, getLandlordListApi } from '../../service'
 import iconPath from './iconPath'
 import { MainType } from '../../types/common'
+
+interface LocationType {
+  longitude: number
+  latitude: number
+}
 
 const sysInfo = uni.getSystemInfoSync()
 const statusBarHeight = sysInfo.statusBarHeight || 0
@@ -109,17 +114,18 @@ const initCoordinateData = (obj: any) => {
   return arr
 }
 const mapJson = projectInfo?.mapJson ? JSON.parse(projectInfo.mapJson) : {}
-const polygons = initCoordinateData(mapJson) // 区域经纬度集合
-const centerPoints = initCenterPoints(mapJson) // 区域中心经纬度
+const polygons = ref<any>([])
 const markers = ref<any[]>([]) // 标记点集合
-
-interface LocationType {
-  longitude: number
-  latitude: number
-}
-
 // 初始地图坐标
-const centerLocation = ref<LocationType>(centerPoints)
+const centerLocation = ref<LocationType>({
+  latitude: 30.235643678475068,
+  longitude: 120.17327222279103
+})
+
+onMounted(() => {
+  polygons.value = initCoordinateData(mapJson) // 区域经纬度集合
+  centerLocation.value = initCenterPoints(mapJson) // 区域中心经纬度
+})
 
 // 获取自然村列表
 const getVillageList = async () => {
