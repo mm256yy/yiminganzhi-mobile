@@ -139,8 +139,8 @@ const dialogClose = () => {
  * @param data type 为 edit 时，当前行数据
  */
 const toLink = (type: string, data?: any) => {
-  const { uid, doorNo, householdId } = props.dataInfo
-  const commonParams: any = { type, uid, doorNo, householdId }
+  const { uid, doorNo } = props.dataInfo
+  const commonParams: any = { type, uid, doorNo }
   if (type === 'edit') {
     let params = {
       ...data,

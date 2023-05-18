@@ -1021,7 +1021,6 @@ const submit = () => {
     //     : formData.value.villageCode
     //     ? 'Q' + formData.value.villageCode + formData.value.suffixNo
     //     : '',
-    householdId: formData.value.householdId,
     legalPersonName: formData.value.legalPersonName,
     legalPersonCard: formData.value.legalPersonCard,
     legalPersonPhone: formData.value.legalPersonPhone,

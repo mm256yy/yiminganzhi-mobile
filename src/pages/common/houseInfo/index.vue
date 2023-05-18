@@ -193,8 +193,8 @@ const showRecord = ref<boolean>(false)
 
 const toLink = (type: string, data?: any) => {
   const { dataInfo, mainType } = props
-  const { uid, doorNo, householdId, longitude, latitude } = dataInfo
-  let commonParams = { type, uid, doorNo, householdId, longitude, latitude, mainType }
+  const { uid, doorNo, longitude, latitude } = dataInfo
+  let commonParams = { type, uid, doorNo, longitude, latitude, mainType }
   if (type === 'edit') {
     let params = {
       ...data,

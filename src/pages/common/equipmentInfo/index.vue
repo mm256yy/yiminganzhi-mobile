@@ -120,8 +120,8 @@ const currentItem = ref<any>({})
  * @param data type 为 edit 时，当前行数据
  */
 const toLink = (type: string, data?: any) => {
-  const { uid, householdId, doorNo } = props.dataInfo
-  const commonParams = { uid, type, householdId, doorNo }
+  const { uid, doorNo } = props.dataInfo
+  const commonParams = { uid, type, doorNo }
   if (type === 'edit') {
     const params = {
       ...data,
