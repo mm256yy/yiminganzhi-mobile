@@ -122,7 +122,7 @@ import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { formatStr, formatDict, getStorage, StorageKey, routerForward } from '@/utils'
 import { MainStage, MainType } from '@/types/common'
-import { getLandlordListBySearchApi } from '@/service'
+import { getLandlordListApi } from '@/service'
 import modifyRecords from '../../common/modifyRecords/index.vue' // 引入修改记录组件
 
 const props = defineProps({
@@ -155,12 +155,7 @@ const showRecord = ref<boolean>(false)
  * @param data
  */
 const getCollectiveList = (data: any) => {
-  const params = {
-    name: '',
-    type: MainType.Village,
-    pageSize: 99999
-  }
-  getLandlordListBySearchApi(params).then((res: any) => {
+  getLandlordListApi(MainType.Village).then((res: any) => {
     collectiveList.value = initCollectiveData(res)
   })
 }

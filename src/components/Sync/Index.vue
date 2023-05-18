@@ -214,6 +214,7 @@ const projectSyncHandle = async () => {
 const defaultSyncHandle = async () => {
   // 更新项目信息
   const projectList = await getProjectListApi()
+  console.log('更新项目信息')
   if (projectList && projectList.length) {
     const currentProjectId = getStorage(StorageKey.PROJECTID)
     const currentProjectItem = projectList.find((item) => item.id === currentProjectId)

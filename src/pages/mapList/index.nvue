@@ -31,18 +31,15 @@ import { ref } from 'vue'
 import { onReady } from '@dcloudio/uni-app'
 import MapInfo from './components/MapInfo.vue'
 import { routerBack, hideStr, getStorage, StorageKey } from '../../utils'
-import { getVillageListWithPageApi, getLandlordListBySearchApi } from '../../service'
+import { getVillageListApi, getLandlordListApi } from '../../service'
 import iconPath from './iconPath'
-import { MainType, LandlordSearchType } from '../../types/common'
+import { MainType } from '../../types/common'
 
 const sysInfo = uni.getSystemInfoSync()
 const statusBarHeight = sysInfo.statusBarHeight || 0
 const dataInfo = ref<any>({}) // marker 详细信息（居民户/自然村详情信息）
 const projectInfo = getStorage(StorageKey.PROJECTINFO)
 const show = ref<boolean>(false)
-const page = ref<number>(1)
-const pageSize = ref<number>(99999)
-const keyWords = ref<string>('')
 const villageList = ref<any>([]) // 自然村列表
 const villageMarkersList = ref<any>([]) // 自然村标记点列表
 const householdList = ref<any>([]) // 居民户列表
@@ -126,11 +123,7 @@ const centerLocation = ref<LocationType>(centerPoints)
 
 // 获取自然村列表
 const getVillageList = async () => {
-  const res = await getVillageListWithPageApi({
-    name: keyWords.value,
-    page: page.value,
-    pageSize: pageSize.value
-  })
+  const res = await getVillageListApi()
 
   if (res && res.length) {
     let villageArr: any = []
@@ -181,13 +174,7 @@ const getVillageList = async () => {
 
 // 获取居民户列表
 const getPeasantHouseholdList = async () => {
-  const params: LandlordSearchType = {
-    name: keyWords.value,
-    page: page.value,
-    pageSize: pageSize.value,
-    type: MainType.PeasantHousehold
-  }
-  const res = await getLandlordListBySearchApi(params)
+  const res = await getLandlordListApi(MainType.PeasantHousehold)
   if (res && res.length) {
     let householdArr: any = []
     let markerArr: any = []
