@@ -62,7 +62,7 @@
               <view class="col">
                 <view class="label">竣工日期：</view>
                 <view class="content">
-                  {{ item.completedTime ? dayjs(item.completedTime).format('YYYY-MM') : '-' }}
+                  {{ item.completedTime ? dayjs(item.completedTime).format('YYYY年MM月') : '-' }}
                 </view>
               </view>
             </uni-col>

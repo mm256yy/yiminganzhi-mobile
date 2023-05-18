@@ -576,7 +576,7 @@ const submit = () => {
     doorNo,
     ...formData.value,
     completedTime: formData.value.completedTime
-      ? dayjs(formData.value.completedTime).format('YYYY-MM')
+      ? dayjs(formData.value.completedTime)
       : formData.value.completedTime
   }
 

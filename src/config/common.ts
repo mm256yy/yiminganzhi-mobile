@@ -57,8 +57,9 @@ export const yesAndNoEnums = [
 ]
 
 // 是否兼容老系统，主要用于户号的区别，居民户老系统户号7位，新系统户号16位
-export const compatibleOldSystems =
-  (getStorage(StorageKey.PROJECTINFO) || {}).reservoirCode === 'fxsk'
+export const compatibleOldSystems = () => {
+  return (getStorage(StorageKey.PROJECTINFO) || {}).reservoirCode === 'fxsk'
+}
 
 export const ossDomain = 'https://oss.zdwp.tech/'
 
