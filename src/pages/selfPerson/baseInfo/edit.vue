@@ -210,10 +210,10 @@
               label-align="right"
               name="formData.taxPeriodValidity"
             >
-              <uni-datetime-picker
-                type="date"
-                placeholder="请选择"
+              <uni-easyinput
                 v-model="formData.taxPeriodValidity"
+                type="text"
+                placeholder="请输入"
               />
             </uni-forms-item>
           </uni-col>
@@ -798,9 +798,7 @@ const submit = () => {
     establishDate: formData.value.establishDate
       ? dayjs(formData.value.establishDate)
       : formData.value.establishDate,
-    taxPeriodValidity: formData.value.taxPeriodValidity
-      ? dayjs(formData.value.taxPeriodValidity)
-      : formData.value.taxPeriodValidity,
+    taxPeriodValidity: formData.value.taxPeriodValidity,
     registeredAmount: formData.value.registeredAmount,
     fixedAssetsOriginalValue: formData.value.fixedAssetsOriginalValue,
     fixedAssetsNetValue: formData.value.fixedAssetsNetValue,
