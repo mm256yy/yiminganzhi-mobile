@@ -352,10 +352,12 @@ export const getPopulation = (landlord: LandlordType) => {
         { text: item.populationTypeText || '', style: 'td' }
       ])
       try {
-        if (!map[item.populationTypeText]) {
-          map[item.populationTypeText] = 1
-        } else {
-          map[item.populationTypeText] += 1
+        if (item.populationType) {
+          if (!map[item.populationTypeText]) {
+            map[item.populationTypeText] = 1
+          } else {
+            map[item.populationTypeText] += 1
+          }
         }
       } catch (err) {
         console.log(err, '人口类型数据格式有误')
