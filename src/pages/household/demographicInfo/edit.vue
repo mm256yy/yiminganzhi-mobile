@@ -177,7 +177,7 @@
               label-align="right"
               name="formData.censusType"
             >
-              <uni-data-select v-model="formData.censusType" :localdata="dict[273]" />
+              <uni-data-select v-model="formData.censusType" :localdata="dict[249]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
