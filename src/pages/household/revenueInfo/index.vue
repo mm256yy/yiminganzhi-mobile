@@ -39,7 +39,7 @@
       <uni-col class="m-t-10" :span="24">
         <view class="txt-wrapper">
           <view class="label">小计：</view>
-          <view class="amount">{{ statistics('1') }}</view>
+          <view class="amount">{{ formatNum(statistics('1')) }}</view>
           <view class="unit">（万元）</view>
         </view>
       </uni-col>
@@ -84,7 +84,7 @@
       <uni-col class="m-t-10" :span="24">
         <view class="txt-wrapper">
           <view class="label">小计：</view>
-          <view class="amount">{{ statistics('2') }}</view>
+          <view class="amount">{{ formatNum(statistics('2')) }}</view>
           <view class="unit">（万元）</view>
         </view>
       </uni-col>
@@ -130,7 +130,7 @@
       <uni-col :span="24">
         <view class="txt-wrapper">
           <view class="label">合计：</view>
-          <view class="amount">{{ total() }}</view>
+          <view class="amount">{{ formatNum(total()) }}</view>
           <view class="unit">（万元）</view>
         </view>
       </uni-col>
@@ -160,7 +160,7 @@
 import { ref, onMounted } from 'vue'
 import { getFamilyIncomeListApi } from '@/service'
 import { MainType, MainStage } from '@/types/common'
-import { getStorage, StorageKey } from '@/utils'
+import { getStorage, StorageKey, formatNum } from '@/utils'
 import modifyRecords from '../../common/modifyRecords/index.vue' // 引入修改记录组件
 
 const props = defineProps({
