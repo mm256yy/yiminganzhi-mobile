@@ -10,9 +10,14 @@ export const getLandlordTreeApi = (type: MainType) => {
   return DistrictTreeController.getLandlordTree(type)
 }
 
-// 获取业主列表
+// 获取业主基础信息列表
 export const getLandlordListApi = (type: MainType) => {
   return LandlordController.getList(type)
+}
+
+// 获取业主基础信息列表
+export const getLandlordListWithMapApi = (type: MainType) => {
+  return LandlordController.getListWithMap(type)
 }
 
 // 分页获取业主列表

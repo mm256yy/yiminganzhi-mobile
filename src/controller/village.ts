@@ -178,7 +178,17 @@ class Village extends Common {
           '0'
         )
         if (res && res[0]) {
-          resolve(JSON.parse(res[0].content))
+          const item = JSON.parse(res[0].content)
+          const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
+          item.villageCode = item.parentCode
+          item.townCode = item.parentCode.slice(0, 9)
+          item.areaCode = item.parentCode.slice(0, 6)
+
+          item.villageCodeText = districtMap[item.parentCode]
+          item.townCodeText = districtMap[item.parentCode.slice(0, 9)]
+          item.areaCodeText = districtMap[item.parentCode.slice(0, 6)]
+          resolve(item)
+          return
         }
         reject(null)
       } catch (error) {

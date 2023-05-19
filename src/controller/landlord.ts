@@ -2,7 +2,13 @@
  * 提供业主相关的增删改查功能
  */
 
-import { LandlordTableName, LandlordDDLType } from '@/database'
+import {
+  LandlordTableName,
+  LandlordDDLType,
+  getLandlordSqlValues,
+  landlordFields,
+  getLandlordValues
+} from '@/database'
 import { Common } from './common'
 import { LandlordType } from '@/types/sync'
 import { guid, getCurrentTimeStamp, getStorage, StorageKey, formatDict } from '@/utils'
@@ -17,19 +23,6 @@ import dayjs from 'dayjs'
 import { imageUrlAndBase64Map } from '@/config'
 import { GraveController } from './grave'
 
-// uid: string
-// content: string
-// name: string
-// type: MainType
-// reportDate: string
-// reportUser: string
-// areaCode: string
-// townCode: string
-// villageCode: string
-// virutalVillageCode: string
-// status: 'modify' | 'default'
-// isDelete: '0' | '1'
-// updatedDate: string
 export class Landlord extends Common {
   public format: string
   constructor() {
@@ -37,29 +30,37 @@ export class Landlord extends Common {
     this.format = 'YYYY-MM-DD HH:mm:ss'
   }
 
-  // 获取业主列表
+  // 获取业主基础信息列表
   getList(type: MainType): Promise<LandlordType[]> {
     return new Promise(async (resolve, reject) => {
       try {
-        const array: LandlordType[] = []
-        const sql = `select * from ${LandlordTableName} where isDelete = '0' and type = '${type}' order by updatedDate desc`
+        // areaCode: string
+        // townCode: string
+        // villageCode: string
+        // virutalVillageCode: string
+        // longitude: number
+        // latitude: number
+        // name: string
+        // doorNo: string
+        // type: MainType
+        let array: LandlordType[] = []
+        const sql = `select uid, id, name, doorNo, type, longitude, latitude, areaCode, townCode, villageCode, virutalVillageCode from ${LandlordTableName} where isDelete = '0' and type = '${type}'`
         const list: LandlordDDLType[] = await this.db.selectSql(sql)
-        if (list && Array.isArray(list)) {
-          list.forEach((item) => {
-            array.push(JSON.parse(item.content))
-          })
+        if (this.isArrayAndNotNull(list)) {
           const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
           // 拿到上级行政区划
-          array.forEach((item) => {
+          array = list.map((item) => {
             // townCode: string
             // villageCode: string
             // virutalVillageCode: string
             // areaCode: string
             // 331102001201 行政村
-            item.virutalVillageCodeText = districtMap[item.virutalVillageCode]
-            item.villageCodeText = districtMap[item.villageCode]
-            item.townCodeText = districtMap[item.townCode]
-            item.areaCodeText = districtMap[item.areaCode]
+            const landlordItem: any = { ...item }
+            landlordItem.virutalVillageCodeText = districtMap[item.virutalVillageCode]
+            landlordItem.villageCodeText = districtMap[item.villageCode]
+            landlordItem.townCodeText = districtMap[item.townCode]
+            landlordItem.areaCodeText = districtMap[item.areaCode]
+            return landlordItem
           })
         }
         resolve(array)
@@ -70,7 +71,49 @@ export class Landlord extends Common {
     })
   }
 
-  // 获取业主列表
+  // 获取业主基础信息列表-地图使用
+  getListWithMap(type: MainType): Promise<LandlordType[]> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        // areaCode: string
+        // townCode: string
+        // villageCode: string
+        // virutalVillageCode: string
+        // longitude: number
+        // latitude: number
+        // name: string
+        // doorNo: string
+        // type: MainType
+        let array: LandlordType[] = []
+        const sql = `select uid, id, name, doorNo, type, longitude, latitude, areaCode, townCode, villageCode, virutalVillageCode from ${LandlordTableName} where isDelete = '0' and type = '${type}' and (longitude != '' and longitude is not null) and (latitude != '' and latitude is not null)`
+        const list: LandlordDDLType[] = await this.db.selectSql(sql)
+        console.log(list, '居民户地图列表')
+        if (this.isArrayAndNotNull(list)) {
+          const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
+          // 拿到上级行政区划
+          array = list.map((item) => {
+            // townCode: string
+            // villageCode: string
+            // virutalVillageCode: string
+            // areaCode: string
+            // 331102001201 行政村
+            const landlordItem: any = { ...item }
+            landlordItem.virutalVillageCodeText = districtMap[item.virutalVillageCode]
+            landlordItem.villageCodeText = districtMap[item.villageCode]
+            landlordItem.townCodeText = districtMap[item.townCode]
+            landlordItem.areaCodeText = districtMap[item.areaCode]
+            return landlordItem
+          })
+        }
+        resolve(array)
+      } catch (error) {
+        console.log(error, 'landlord-get-list-error')
+        reject([])
+      }
+    })
+  }
+
+  // 获取业主列表 分页
   getListWithPage(type: MainType, page: number, pageSize = 20): Promise<LandlordType[]> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -79,7 +122,7 @@ export class Landlord extends Common {
           (page - 1) * pageSize
         }`
         const list: LandlordDDLType[] = await this.db.selectSql(sql)
-        if (list && Array.isArray(list)) {
+        if (this.isArrayAndNotNull(list)) {
           list.forEach((item) => {
             const landlord = JSON.parse(item.content)
             array.push(landlord)
@@ -129,7 +172,7 @@ export class Landlord extends Common {
         }
         // console.log(sql, 'sql 语句')
         const list: LandlordDDLType[] = await this.db.selectSql(sql)
-        if (list && Array.isArray(list)) {
+        if (this.isArrayAndNotNull(list)) {
           list.forEach((item) => {
             const landlord = JSON.parse(item.content)
             array.push(landlord)
@@ -219,13 +262,10 @@ export class Landlord extends Common {
         data.immigrantEquipmentList = data.immigrantEquipmentList || []
         data.immigrantFacilitiesList = data.immigrantFacilitiesList || []
 
-        const fields = `'uid','status','doorNo','type','name','reportStatus','reportDate','reportUser','areaCode','townCode','villageCode','virutalVillageCode','content','updatedDate','isDelete'`
-        const values = `'${uid}','modify','${data.doorNo}','${data.type}','${data.name}','${
-          ReportStatusEnum.UnReport
-        }','','','${data.areaCode}','${data.townCode}','${data.villageCode}','${
-          data.virutalVillageCode || ''
-        }','${JSON.stringify(data)}','${getCurrentTimeStamp()}','0'`
-        const res = await this.db.insertTableData(LandlordTableName, values, fields)
+        // 数据状态
+        data.status = 'modify'
+        const values = getLandlordValues(data)
+        const res = await this.db.insertTableData(LandlordTableName, values, landlordFields)
 
         if (res && res.code) {
           reject('')
@@ -249,15 +289,7 @@ export class Landlord extends Common {
         }
         const landlord = await this.getLandlordByUid(data.uid)
         const newData = { ...landlord, ...data }
-        const values = `status = 'modify',type = '${newData.type}',name = '${
-          newData.name
-        }',doorNo = '${newData.doorNo}',reportStatus = '${newData.reportStatus}',reportDate = '${
-          newData.reportDate
-        }',reportUser = '${newData.reportUser}',areaCode = '${newData.areaCode}',townCode = '${
-          newData.townCode
-        }',villageCode = '${newData.villageCode}',virutalVillageCode = '${
-          newData.virutalVillageCode || ''
-        }',content = '${JSON.stringify(newData)}',updatedDate = '${getCurrentTimeStamp()}'`
+        const values = getLandlordSqlValues(newData)
         const sql = `update ${LandlordTableName} set ${values} where uid = '${newData.uid}' and isDelete = '0'`
         const res = await this.db.execteSql([sql])
         if (res && res.code) {
@@ -281,16 +313,8 @@ export class Landlord extends Common {
           console.log('核心字段缺失')
           return
         }
-
-        const values = `status = 'modify',type = '${data.type}',name = '${data.name}',doorNo = '${
-          data.doorNo
-        }',reportStatus = '${data.reportStatus}',reportDate = '${data.reportDate}',reportUser = '${
-          data.reportUser
-        }',areaCode = '${data.areaCode}',townCode = '${data.townCode}',villageCode = '${
-          data.villageCode
-        }',virutalVillageCode = '${data.virutalVillageCode || ''}',content = '${JSON.stringify(
-          data
-        )}',updatedDate = '${getCurrentTimeStamp()}'`
+        // 拿到更新的sql字符串
+        const values = getLandlordSqlValues(data)
         const sql = `update ${LandlordTableName} set ${values} where uid = '${data.uid}' and isDelete = '0'`
         const res = await this.db.execteSql([sql])
         if (res && res.code) {
@@ -647,7 +671,7 @@ export class Landlord extends Common {
         sql += ` order by updatedDate desc limit ${pageSize} offset ${(page - 1) * pageSize}`
         // console.log('sql', sql)
         const list: LandlordDDLType[] = await this.db.selectSql(sql)
-        if (list && Array.isArray(list)) {
+        if (this.isArrayAndNotNull(list)) {
           list.forEach((item) => {
             const landlord = JSON.parse(item.content)
             array.push(landlord)
@@ -816,18 +840,17 @@ export class Landlord extends Common {
     return new Promise(async (resolve, reject) => {
       try {
         const array: string[] = []
-        let sql = `select * from ${LandlordTableName} where isDelete = '0'`
+        let sql = `select areaCode, townCode, villageCode from ${LandlordTableName} where isDelete = '0'`
         if (type) {
           sql += ` and type = '${type}'`
         }
         const list: LandlordDDLType[] = await this.db.selectSql(sql)
 
-        if (list && Array.isArray(list)) {
+        if (this.isArrayAndNotNull(list)) {
           list.forEach((item) => {
-            const content = JSON.parse(item.content)
-            array.push(content.villageCode)
-            array.push(content.townCode)
-            array.push(content.areaCode)
+            array.push(item.villageCode)
+            array.push(item.townCode)
+            array.push(item.areaCode)
           })
         }
         resolve(array)

@@ -16,7 +16,7 @@ export const getConfigDataApi = () => {
 }
 
 // 获取调查对象列表
-export const getLandlordListApi = (id?: number | null) => {
+export const getPullLandlordListApi = (id?: number | null) => {
   const time = getStorage(StorageKey.PULLTIME)
   return request.get({
     url: '/pad/pullBody',
