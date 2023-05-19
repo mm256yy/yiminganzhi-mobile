@@ -123,7 +123,7 @@ const toLink = (type: string) => {
     phone: props.dataInfo.phone, // 联系方式
     locationType: props.dataInfo.locationType ? props.dataInfo.locationType : null, // 所在位置
     householdNumber: props.dataInfo.householdNumber, // 户籍册编号
-    suffixNo: compatibleOldSystems()
+    suffixNo: compatibleOldSystems
       ? splitStr(props.dataInfo.doorNo, 3, 7)
       : splitStr(props.dataInfo.doorNo, 12, 16), // 户号后四位
     doorNo: props.dataInfo.doorNo, // 户号
