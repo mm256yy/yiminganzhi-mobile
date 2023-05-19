@@ -23,6 +23,7 @@ export interface LandlordDDLType {
   virutalVillageCode: string
   longitude: string | number
   latitude: string | number
+  card: string
   status: 'modify' | 'default'
   isDelete: '0' | '1'
   updatedDate: string
@@ -47,6 +48,7 @@ create table if not exists ${LandlordTableName} (
   'virutalVillageCode' text,
   'longitude' text DEFAULT NULL,
   'latitude' text DEFAULT NULL,
+  'card' text,
   'status' text,
   'isDelete' text,
   'updatedDate' text DEFAULT NULL
@@ -54,7 +56,7 @@ create table if not exists ${LandlordTableName} (
 `
 
 // 需要更新的字段定义 和 字段赋值
-export const landlordFields = `'uid','id','status','doorNo','type','name','reportStatus','reportDate','reportUser','areaCode','townCode','villageCode','virutalVillageCode','content','longitude','latitude', 'updatedDate','isDelete'`
+export const landlordFields = `'uid','id','status','doorNo','type','name','reportStatus','reportDate','reportUser','areaCode','townCode','villageCode','virutalVillageCode','content','longitude','latitude','card','updatedDate','isDelete'`
 export const getLandlordValues = (item: LandlordType) =>
   `'${item.uid}','${item.id || null}','${item.status}','${item.doorNo}','${item.type}','${
     item.name
@@ -62,8 +64,8 @@ export const getLandlordValues = (item: LandlordType) =>
     item.reportDate ? dayjs(item.reportDate).format('YYYY-MM-DD HH:mm:ss') : ''
   }','${item.reportUser}','${item.areaCode}','${item.townCode}','${item.villageCode}','${
     item.virutalVillageCode
-  }','${JSON.stringify(item)}','${item.longitude || ''}','${
-    item.latitude || ''
+  }','${JSON.stringify(item)}','${item.longitude || ''}','${item.latitude || ''}','${
+    item.card
   }','${getCurrentTimeStamp()}','0'`
 
 // 获取 更新的sql值
@@ -76,6 +78,6 @@ export const getLandlordSqlValues = (data: LandlordType) =>
     data.villageCode
   }',virutalVillageCode = '${data.virutalVillageCode || ''}',content = '${JSON.stringify(
     data
-  )}',longitude = '${data.longitude || ''}',latitude = '${
-    data.latitude || ''
+  )}',longitude = '${data.longitude || ''}',latitude = '${data.latitude || ''}',card = '${
+    data.card
   }',updatedDate = '${getCurrentTimeStamp()}'`
