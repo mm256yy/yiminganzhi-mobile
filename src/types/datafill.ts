@@ -54,7 +54,7 @@ export interface HouseType {
   propertyNo: string
   landNo: string
   landType: string
-  landArea: number
+  landArea: number | string
   storeyHeight: number
   houseHeight: number
   outerWallType: string

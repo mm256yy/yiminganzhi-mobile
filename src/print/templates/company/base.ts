@@ -203,7 +203,14 @@ const getCompanyInfo1 = (landlord: LandlordType) => {
     table: {
       widths: [80, 87, 80, 87, 80, 86],
       body: [
-        [{ text: '工商、税务登记信息', colSpan: 6, style: 'td' }, '', '', '', '', ''],
+        [
+          { text: '工商、税务登记信息', bold: true, fontSize: 12, colSpan: 6, style: 'td' },
+          '',
+          '',
+          '',
+          '',
+          ''
+        ],
         [
           { text: '营业执照编号', style: 'td' },
           { text: company.licenceNo || '', style: 'td' },
@@ -245,7 +252,20 @@ const getCompanyInfo2 = (landlord: LandlordType) => {
     table: {
       widths: [80, 87, 80, 87, 80, 86],
       body: [
-        [{ text: '财务、经营状况及初步处理意向', colSpan: 6, style: 'td' }, '', '', '', '', ''],
+        [
+          {
+            text: '财务、经营状况及初步处理意向',
+            bold: true,
+            fontSize: 12,
+            colSpan: 6,
+            style: 'td'
+          },
+          '',
+          '',
+          '',
+          '',
+          ''
+        ],
         [
           { text: '固定资产原值', style: 'td' },
           { text: company.fixedAssetsOriginalValue || '', style: 'td' },
@@ -282,7 +302,17 @@ const getCompanyInfo3 = (landlord: LandlordType) => {
     table: {
       widths: [35, 36, 86, 35, 36, 86, 35, 36, 88],
       body: [
-        [{ text: '土地使用情况', colSpan: 9, style: 'td' }, '', '', '', '', '', '', '', ''],
+        [
+          { text: '土地使用情况', bold: true, fontSize: 12, colSpan: 9, style: 'td' },
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          ''
+        ],
         [
           { text: '出让', rowSpan: 2, style: 'td_2' },
           { text: '权属面积', style: 'td' },
@@ -318,7 +348,7 @@ const getCompanyInfo4 = (landlord: LandlordType) => {
       widths: [545],
       headerRows: 2,
       body: [
-        [{ text: '备注', style: 'td' }],
+        [{ text: '备注', bold: true, fontSize: 12, style: 'td' }],
         [{ text: company.remark || '', rowSpan: 3, style: 'td' }],
         [''],
         ['']
@@ -331,18 +361,16 @@ const getFooter = () => {
   return [
     {
       fontSize: 10,
-      margin: [20, 10, 20, 0],
+      margin: [20, 0, 20, 15],
       alignment: 'justify',
       columns: [
         {
           text: '权属人签字（盖章）：',
-          alignment: 'left',
-          margin: [0, 20, 0, 0]
+          alignment: 'left'
         },
         {
           text: '调查员签字：',
-          alignment: 'left',
-          margin: [0, 20, 0, 0]
+          alignment: 'left'
         },
         {
           alignment: 'right',

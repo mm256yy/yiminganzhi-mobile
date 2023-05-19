@@ -124,18 +124,16 @@ const getFooter = () => {
   return [
     {
       fontSize: 10,
-      margin: [20, 0, 20, 0],
+      margin: [20, 0, 20, 15],
       alignment: 'justify',
       columns: [
         {
           text: '权属人签字（盖章）：',
-          margin: [0, 20, 0, 0],
           alignment: 'left'
         },
 
         {
           text: '调查员签字：',
-          margin: [0, 20, 0, 0],
           alignment: 'left'
         },
         {

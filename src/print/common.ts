@@ -104,10 +104,22 @@ export const getCompanyTableHead = (landlord: LandlordType, projectInfo: Project
             ]
           },
           '',
-          { text: '基本信息', colSpan: 2, alignment: 'center', style: 'td' },
+          {
+            text: '基本信息',
+            bold: true,
+            fontSize: 12,
+            colSpan: 2,
+            alignment: 'center',
+            style: 'td'
+          },
           ''
         ],
-        ['', '', { text: '地理位置', style: 'td' }, { text: landlord.address || '', style: 'td' }],
+        [
+          '',
+          '',
+          { text: '地理位置', style: 'td' },
+          { text: company.companyAddress || landlord.address || '', style: 'td' }
+        ],
         [
           '',
           '',
@@ -138,6 +150,7 @@ export const getCompanyTableHead = (landlord: LandlordType, projectInfo: Project
 
 // 获取 企业/个体户 基本信息头部区块
 export const getCompanyBaseTableHead = (landlord: LandlordType, projectInfo: ProjectType) => {
+  const { company } = landlord
   return {
     table: {
       widths: [128, 128, 90, 172],
@@ -166,10 +179,22 @@ export const getCompanyBaseTableHead = (landlord: LandlordType, projectInfo: Pro
             ]
           },
           '',
-          { text: '基本信息', colSpan: 2, alignment: 'center', style: 'td' },
+          {
+            text: '基本信息',
+            bold: true,
+            fontSize: 12,
+            colSpan: 2,
+            alignment: 'center',
+            style: 'td'
+          },
           ''
         ],
-        ['', '', { text: '地理位置', style: 'td' }, { text: landlord.address || '', style: 'td' }],
+        [
+          '',
+          '',
+          { text: '地理位置', style: 'td' },
+          { text: company.companyAddress || landlord.address || '', style: 'td' }
+        ],
         [
           '',
           '',
@@ -253,7 +278,14 @@ export const getPeopleTableHead = (landlord: LandlordType, projectInfo: ProjectT
             ]
           },
           '',
-          { text: '基本信息', colSpan: 2, alignment: 'center', style: 'td' },
+          {
+            text: '基本信息',
+            bold: true,
+            fontSize: 12,
+            colSpan: 2,
+            alignment: 'center',
+            style: 'td'
+          },
           ''
         ],
         ['', '', { text: '地理位置', style: 'td' }, { text: landlord.address || '', style: 'td' }],
@@ -284,7 +316,16 @@ export const getPeopleTableHead = (landlord: LandlordType, projectInfo: ProjectT
 // 人口
 export const getPopulation = (landlord: LandlordType) => {
   const body: any[] = [
-    [{ text: '人口信息', bold: true, colSpan: 8, style: 'td' }, '', '', '', '', '', '', ''],
+    [
+      { text: '人口信息', bold: true, colSpan: 8, fontSize: 12, style: 'td' },
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      ''
+    ],
     [
       { text: '姓名', style: 'td' },
       { text: '与户主关系', style: 'td' },
@@ -296,6 +337,7 @@ export const getPopulation = (landlord: LandlordType) => {
       { text: '人口类型', style: 'td' }
     ]
   ]
+  const map: any = {}
   const { demographicList } = landlord
   if (demographicList && demographicList.length) {
     demographicList.forEach((item) => {
@@ -309,6 +351,15 @@ export const getPopulation = (landlord: LandlordType) => {
         { text: item.card || '', style: 'td' },
         { text: item.populationTypeText || '', style: 'td' }
       ])
+      try {
+        if (!map[item.populationTypeText]) {
+          map[item.populationTypeText] = 1
+        } else {
+          map[item.populationTypeText] += 1
+        }
+      } catch (err) {
+        console.log(err, '人口类型数据格式有误')
+      }
     })
   } else {
     body.push([
@@ -322,23 +373,15 @@ export const getPopulation = (landlord: LandlordType) => {
       { text: '', style: 'td' }
     ])
   }
-  let cene = 0
-  let cewai = 0
-  let other = 0
-  demographicList.forEach((item) => {
-    if (String(item.populationType) === '1') {
-      cene += 1
-    } else if (String(item.populationType) === '2') {
-      cewai += 1
-    } else if (String(item.populationType) === '3') {
-      other += 1
-    }
-  })
+
+  let str = `共${demographicList.length}人`
+  for (const key in map) {
+    str += `，${key}${map[key]}人`
+  }
+
   body.push([
     {
-      text: `共${demographicList.length}人，其中册内人口${cene}人，册外人口${cewai}人，其他人口${
-        demographicList.length - cene - cewai
-      }人`,
+      text: str,
       colSpan: 8,
       alignment: 'left',
       style: 'td'
@@ -366,7 +409,7 @@ export const getPopulation = (landlord: LandlordType) => {
 export const getHouseInfo = (landlord: LandlordType) => {
   const body: any[] = [
     [
-      { text: '房屋信息', bold: true, colSpan: 10, style: 'td' },
+      { text: '房屋信息', bold: true, fontSize: 12, colSpan: 10, style: 'td' },
       '',
       '',
       '',
@@ -391,6 +434,7 @@ export const getHouseInfo = (landlord: LandlordType) => {
     ]
   ]
   const { immigrantHouseList } = landlord
+  const map: any = {}
   if (immigrantHouseList && immigrantHouseList.length) {
     immigrantHouseList.forEach((item) => {
       body.push([
@@ -405,6 +449,18 @@ export const getHouseInfo = (landlord: LandlordType) => {
         { text: item.landNo || '', style: 'td' },
         { text: item.remark || '', style: 'td' }
       ])
+      try {
+        if (item.constructionType) {
+          if (!map[item.constructionTypeText]) {
+            map[item.constructionTypeText] = parseFloat(item.landArea as string) || 0
+          } else {
+            map[item.constructionTypeText] =
+              map[item.constructionTypeText] + parseFloat(item.landArea as string) || 0
+          }
+        }
+      } catch (err) {
+        console.log(err, '房屋面积数据格式有误')
+      }
     })
   } else {
     body.push([
@@ -420,22 +476,23 @@ export const getHouseInfo = (landlord: LandlordType) => {
       { text: '', style: 'td' }
     ])
   }
-  const allSumlandArea = immigrantHouseList.reduce((pre, cur) => {
-    return pre + cur.landArea
-  }, 0)
-  const zh = immigrantHouseList.filter((item) => String(item.constructionType) === '3')
-  const zhSumlandArea = zh.reduce((pre, cur) => {
-    return pre + cur.landArea
-  }, 0)
 
-  const tm = immigrantHouseList.filter((item) => String(item.constructionType) === '6')
-  const tmSumlandArea = tm.reduce((pre, cur) => {
-    return pre + cur.landArea
-  }, 0)
+  let allSumlandArea = 0
+  try {
+    allSumlandArea = immigrantHouseList.reduce((pre, cur) => {
+      return pre + (parseFloat(cur.landArea as string) || 0)
+    }, 0)
+  } catch (error) {}
+
+  let str = `房屋面积共${allSumlandArea}㎡`
+  for (const key in map) {
+    str += `，${key}结构面积${map[key]}㎡`
+  }
+
   body.push([
     {
       // ㎡
-      text: `房屋面积共${allSumlandArea}㎡，砖混结构面积${zhSumlandArea}㎡，土木结构面积${tmSumlandArea}㎡`,
+      text: str,
       colSpan: 10,
       alignment: 'left',
       style: 'td'
@@ -463,7 +520,7 @@ export const getHouseInfo = (landlord: LandlordType) => {
 // 附属物
 export const getFushuwu = (landlord: LandlordType) => {
   const body: any[] = [
-    [{ text: '附属物信息', colSpan: 6, style: 'td' }, '', '', '', '', ''],
+    [{ text: '附属物信息', bold: true, fontSize: 12, colSpan: 6, style: 'td' }, '', '', '', '', ''],
     [
       { text: '序号', style: 'td' },
       { text: '项目', style: 'td' },
@@ -511,7 +568,14 @@ export const getFushuwu = (landlord: LandlordType) => {
 // 果木
 export const getTree = (landlord: LandlordType) => {
   const body: any[] = [
-    [{ text: '零星林（果）木信息', colSpan: 6, style: 'td' }, '', '', '', '', ''],
+    [
+      { text: '零星林（果）木信息', bold: true, fontSize: 12, colSpan: 6, style: 'td' },
+      '',
+      '',
+      '',
+      '',
+      ''
+    ],
     [
       { text: '序号', style: 'td' },
       { text: '品种', style: 'td' },
@@ -556,7 +620,7 @@ export const getTree = (landlord: LandlordType) => {
 // 坟墓
 export const getGrave = (landlord: LandlordType) => {
   const body: any[] = [
-    [{ text: '坟墓信息', bold: true, colSpan: 6, style: 'td' }, '', '', '', '', ''],
+    [{ text: '坟墓信息', bold: true, colSpan: 6, fontSize: 12, style: 'td' }, '', '', '', '', ''],
     [
       { text: '序号', style: 'td' },
       { text: '穴位', style: 'td' },
@@ -602,7 +666,7 @@ export const getGrave = (landlord: LandlordType) => {
 export const getHousePic = (landlord: LandlordType) => {
   const { immigrantHouseList } = landlord
   const imgs: any[] = []
-  const body: any[] = [[{ text: '房屋示意图', bold: true, style: 'td' }]]
+  const body: any[] = [[{ text: '房屋示意图', bold: true, fontSize: 12, style: 'td' }]]
   if (immigrantHouseList && immigrantHouseList.length) {
     immigrantHouseList.forEach((item) => {
       // 处理过的房屋图片数组

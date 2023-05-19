@@ -58,7 +58,7 @@ class PrintCore {
           margin: [0, 25, 0, 0]
         }
       },
-      pageMargins: [20, 50, 20, 80],
+      pageMargins: [20, 60, 20, 50],
       header: function (currentPage: number, pageCount: number) {
         return [
           {
@@ -71,7 +71,7 @@ class PrintCore {
               },
               {
                 image: logo,
-                width: 160,
+                width: 240,
                 margin: [0, 10, 10, 0],
                 alignment: 'right'
               }
