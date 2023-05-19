@@ -212,10 +212,10 @@
               label-align="right"
               name="formData.taxPeriodValidity"
             >
-              <uni-datetime-picker
-                type="date"
-                placeholder="请选择"
+              <uni-easyinput
                 v-model="formData.taxPeriodValidity"
+                type="text"
+                placeholder="请输入"
               />
             </uni-forms-item>
           </uni-col>
@@ -1030,9 +1030,7 @@ const submit = () => {
     periodValidity: formData.value.periodValidity,
     licenceNo: formData.value.licenceNo,
     issuingCompany: formData.value.issuingCompany,
-    taxPeriodValidity: formData.value.taxPeriodValidity
-      ? dayjs(formData.value.taxPeriodValidity)
-      : formData.value.taxPeriodValidity,
+    taxPeriodValidity: formData.value.taxPeriodValidity,
     taxLicenceNo: formData.value.taxLicenceNo,
     taxLicenceCompany: formData.value.taxLicenceCompany,
     ohterLicence: formData.value.ohterLicence,

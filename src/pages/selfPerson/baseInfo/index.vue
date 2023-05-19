@@ -127,11 +127,7 @@
               <view class="col">
                 <view class="label">税务许可证有效期：</view>
                 <view class="content">
-                  {{
-                    props.dataInfo.taxPeriodValidity
-                      ? dayjs(props.dataInfo.taxPeriodValidity).format('YYYY-MM-DD')
-                      : '-'
-                  }}
+                  {{ formatStr(props.dataInfo.taxPeriodValidity) }}
                 </view>
               </view>
             </uni-col>
@@ -443,7 +439,7 @@ const props = defineProps({
 const toLink = (type: string) => {
   const { uid, name, doorNo, areaCode, townCode, villageCode, locationType, phone } = props.baseInfo
 
-  const { establishDate, taxPeriodValidity } = props.dataInfo
+  const { establishDate } = props.dataInfo
 
   const params = {
     ...props.dataInfo,
@@ -456,7 +452,6 @@ const toLink = (type: string) => {
     locationType: locationType ? locationType : null,
     // suffixNo: splitStr(doorNo, 13, 17),
     establishDate: establishDate ? dayjs(establishDate).format('YYYY-MM-DD') : null,
-    taxPeriodValidity: taxPeriodValidity ? dayjs(taxPeriodValidity).format('YYYY-MM-DD') : null,
     licensePic: fmtPicUrl(props.dataInfo.licensePic),
     otherPic: fmtPicUrl(props.dataInfo.otherPic)
   }
