@@ -594,9 +594,7 @@ class PullData {
           resolve(false)
         })
         list.forEach((item) => {
-          // 当前数据状态是否有变动
-          item.status = 'default'
-          const values = getLandlordValues(item)
+          const values = getLandlordValues(item, 'default')
           db.insertOrReplaceData(LandlordTableName, values, landlordFields).catch((err) => {
             console.log(err, '插入业主')
           })

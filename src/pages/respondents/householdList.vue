@@ -303,6 +303,7 @@ const dialogConfirm = () => {
   if (currentItem.value?.uid) {
     deleteLandlordApi(currentItem.value.uid).then((res) => {
       if (res) {
+        dialogClose()
         uni.showToast({
           title: '删除成功',
           icon: 'success'
