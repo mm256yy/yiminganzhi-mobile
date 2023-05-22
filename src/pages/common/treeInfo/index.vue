@@ -42,7 +42,7 @@
           />
         </view>
         <view class="col w-29 p-l-7">
-          <label class="icon-wrapper" @click="deleteTree(item)">
+          <label class="icon-wrapper" @click="deleteTree(item, index)">
             <image class="icon" src="@/static/images/icon_delete.png" />
           </label>
         </view>
@@ -156,9 +156,17 @@ watch(
  * 删除当前行数据
  * @param {Object} data 当前行数据
  */
-const deleteTree = (data: any) => {
-  alertDialog.value?.open()
-  currentItem.value = { ...data }
+const deleteTree = (data: any, index: number) => {
+  if (data && data.uid) {
+    alertDialog.value?.open()
+    currentItem.value = { ...data }
+  } else {
+    uni.showToast({
+      title: '未保存的数据可删除',
+      icon: 'none'
+    })
+    formData.value.splice(index, 1)
+  }
 }
 
 const dialogConfirm = () => {
@@ -171,7 +179,18 @@ const dialogClose = () => {
 
 // 新增零星（林）果木
 const addTree = () => {
-  formData.value.push({ ...defaultRow })
+  if (formData.value.length) {
+    if (formData.value[formData.value.length - 1].name) {
+      formData.value.push({ ...defaultRow })
+    } else {
+      uni.showToast({
+        title: '上一条数据未填写完成',
+        icon: 'none'
+      })
+    }
+  } else {
+    formData.value.push({ ...defaultRow })
+  }
 }
 
 // 表单提交

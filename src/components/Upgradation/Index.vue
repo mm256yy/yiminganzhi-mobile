@@ -78,6 +78,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { StorageKey, setStorage } from '@/utils'
+import { pullInstance } from '@/sync'
 let downloadTask: any = null
 
 export default defineComponent({
@@ -218,40 +220,52 @@ export default defineComponent({
       })
     },
     installPackage() {
-      plus.runtime.install(
-        this.tempFilePath,
-        {
-          force: false
-        },
-        async (res) => {
-          this.installing = false
-          this.installed = true
+      this.installing = true
+      // 重置登录时间 重启时需要重新登录
 
-          // 强制更新安装完成重启
-          if (this.is_mandatory) {
-            uni.showLoading({
-              mask: true,
-              title: '正在启动安装'
+      setStorage(StorageKey.TOKEN, '')
+      setStorage(StorageKey.USERINFO, null)
+      setStorage(StorageKey.LOGINTIME, '')
+      setStorage(StorageKey.PROJECTID, '')
+      setStorage(StorageKey.PROJECTINFO, null)
+      setStorage(StorageKey.PULLTIME, '')
+
+      pullInstance.resetTable().then(() => {
+        plus.runtime.install(
+          this.tempFilePath,
+          {
+            force: false
+          },
+          async (res) => {
+            this.installing = false
+            this.installed = true
+
+            // 强制更新安装完成重启
+            if (this.is_mandatory) {
+              uni.showLoading({
+                mask: true,
+                title: '正在启动安装'
+              })
+
+              setTimeout(() => {
+                uni.hideLoading()
+                this.restart()
+              }, 2000)
+            }
+          },
+          async (err) => {
+            // 安装失败需要重新下载安装包
+            this.installing = false
+            this.installed = false
+
+            uni.showModal({
+              title: '安装失败',
+              content: err.message,
+              showCancel: false
             })
-
-            setTimeout(() => {
-              uni.hideLoading()
-              this.restart()
-            }, 2000)
           }
-        },
-        async (err) => {
-          // 安装失败需要重新下载安装包
-          this.installing = false
-          this.installed = false
-
-          uni.showModal({
-            title: '安装失败',
-            content: err.message,
-            showCancel: false
-          })
-        }
-      )
+        )
+      })
     },
     restart() {
       this.installed = false

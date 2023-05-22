@@ -262,9 +262,7 @@ export class Landlord extends Common {
         data.immigrantEquipmentList = data.immigrantEquipmentList || []
         data.immigrantFacilitiesList = data.immigrantFacilitiesList || []
 
-        // 数据状态
-        data.status = 'modify'
-        const values = getLandlordValues(data)
+        const values = getLandlordValues(data, 'modify')
         const res = await this.db.insertTableData(LandlordTableName, values, landlordFields)
 
         if (res && res.code) {
