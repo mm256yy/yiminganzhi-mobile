@@ -180,9 +180,9 @@ const submit = () => {
     let itemData = collectiveList.value?.find(
       (item: any) => item.value === formData.value.villageId
     )
-    params.villageDoorNo = itemData.doorNo || ''
-    params.villageId = itemData.id || ''
-    params.villageName = itemData.text || ''
+    params.villageDoorNo = itemData ? itemData.doorNo : ''
+    params.villageId = itemData ? itemData.id : ''
+    params.villageName = itemData ? itemData.text : ''
     console.log(params, 'params')
     if (type === 'add') {
       addLandlordGraveApi(uid, params)

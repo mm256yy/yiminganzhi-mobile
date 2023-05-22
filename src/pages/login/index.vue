@@ -100,6 +100,15 @@ const loginIn = async () => {
         .then((res) => {
           if (res) {
             doRoute()
+          } else {
+            setStorage(StorageKey.TOKEN, '')
+            setStorage(StorageKey.LOGINTIME, '')
+            setStorage(StorageKey.USERINFO, null)
+            uni.showToast({
+              title: '获取项目信息失败，检查当前用户是否绑定项目',
+              duration: 3000,
+              icon: 'none'
+            })
           }
         })
         .finally(() => {

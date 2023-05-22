@@ -42,7 +42,7 @@
           />
         </view>
         <view class="col w-29 p-l-7">
-          <label class="icon-wrapper" @click="deleteTree(item, index)">
+          <label class="icon-wrapper" @click="deleteTree(item)">
             <image class="icon" src="@/static/images/icon_delete.png" />
           </label>
         </view>
@@ -156,13 +156,9 @@ watch(
  * 删除当前行数据
  * @param {Object} data 当前行数据
  */
-const deleteTree = (data: any, index: number) => {
-  if (data && data.id) {
-    alertDialog.value?.open()
-    currentItem.value = { ...data }
-  } else {
-    formData.value.splice(index, 1)
-  }
+const deleteTree = (data: any) => {
+  alertDialog.value?.open()
+  currentItem.value = { ...data }
 }
 
 const dialogConfirm = () => {
