@@ -43,11 +43,11 @@
         <view class="collect" v-if="collection">
           <view class="collect-item">
             <view class="num">{{ collection.todayReport || 0 }}</view>
-            <view class="tit">今日上报</view>
+            <view class="tit">今日填报</view>
           </view>
           <view class="collect-item">
             <view class="num">{{ collection.hasReport || 0 }}</view>
-            <view class="tit">历史上报</view>
+            <view class="tit">历史填报</view>
           </view>
           <view class="collect-item">
             <view class="num">{{ collection.noReport || 0 }}</view>
@@ -288,7 +288,8 @@ onShow(() => {
   })
 
   getHomeCollectionApi().then((res) => {
-    collection.value = res ? res[0] : null
+    console.log(res, '统计数据')
+    collection.value = res || null
   })
 })
 </script>

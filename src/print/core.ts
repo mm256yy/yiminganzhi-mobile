@@ -14,12 +14,12 @@ import {
 import { ProjectType } from '@/types/common'
 ;(pdfMake as any).vfs = pdfFonts.vfs
 ;(pdfMake as any).fonts = {
-  Roboto: {
-    normal: 'Roboto-Regular.ttf',
-    bold: 'Roboto-Regular.ttf',
-    italics: 'Roboto-Regular.ttf',
-    bolditalics: 'Roboto-Regular.ttf'
-  },
+  // Roboto: {
+  //   normal: 'Roboto-Regular.ttf',
+  //   bold: 'Roboto-Regular.ttf',
+  //   italics: 'Roboto-Regular.ttf',
+  //   bolditalics: 'Roboto-Regular.ttf'
+  // },
   PingFang: {
     normal: 'PingFang.ttf',
     bold: 'PingFang.ttf',
