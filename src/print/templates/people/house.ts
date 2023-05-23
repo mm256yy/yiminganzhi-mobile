@@ -119,21 +119,21 @@ const getFooter = () => {
   return [
     {
       fontSize: 10,
-      margin: [20, 10, 20, 0],
+      margin: [20, 0, 20, 15],
       alignment: 'justify',
       columns: [
         {
           text: '户主签字：',
-          margin: [0, 20, 0, 0],
           alignment: 'left'
         },
         {
           text: '调查员签字：',
-          margin: [0, 20, 0, 0],
           alignment: 'left'
         },
         {
-          text: ''
+          alignment: 'right',
+          text: '',
+          width: 55
         }
       ]
     }

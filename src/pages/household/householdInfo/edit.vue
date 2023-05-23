@@ -78,7 +78,7 @@
             >
               <view v-if="!formData.id" :class="['input-wrapper', isFocus ? 'focus' : '']">
                 <view class="pre-txt">
-                  {{ compatibleOldSystems ? formData.otherCode : formData.villageCode }}
+                  {{ compatibleOldSystems() ? formData.otherCode : formData.villageCode }}
                 </view>
                 <input
                   class="input-txt"
@@ -259,7 +259,7 @@ onLoad((option: any) => {
       formData.value.villageCode = option.villageCode
       formData.value.virutalVillageCode = option.virutalVillageCode ? option.virutalVillageCode : ''
     }
-    if (compatibleOldSystems && option.otherCode) {
+    if (compatibleOldSystems() && option.otherCode) {
       formData.value.otherCode = option.otherCode
     }
   }
@@ -308,7 +308,7 @@ const submit = () => {
   if (formData.value.id && formData.value.doorNo) {
     doorNo = formData.value.doorNo
   } else {
-    if (compatibleOldSystems) {
+    if (compatibleOldSystems()) {
       doorNo = String(formData.value.otherCode) + formData.value.suffixNo
     } else {
       if (formData.value.villageCode) {

@@ -24,14 +24,16 @@ import {
   ImageDDL,
   ImageTableName,
   GraveDDL,
-  GraveTableName
+  GraveTableName,
+  getLandlordValues,
+  landlordFields
 } from '@/database/index'
 import {
   getProjectDataApi,
   getBaseDataApi,
   getConfigDataApi,
   getCollectApi,
-  getLandlordListApi
+  getPullLandlordListApi
 } from './api'
 import { StateType, ImgItemType, LandlordWithPageType } from '@/types/sync'
 import { getCurrentTimeStamp, setStorage, StorageKey } from '@/utils'
@@ -245,7 +247,7 @@ class PullData {
       // 需要重置一次
       this.state.peasantHouseholdPushDtoList = []
     }
-    getLandlordListApi(lastId)
+    getPullLandlordListApi(lastId)
       .then((res: LandlordWithPageType) => {
         if (res) {
           const { peasantHouseholdPushDtoList, lastId, pullTime } = res
@@ -592,16 +594,8 @@ class PullData {
           resolve(false)
         })
         list.forEach((item) => {
-          const fields =
-            "'uid','name','doorNo','type','reportStatus','reportDate','reportUser','status','content','areaCode','townCode','villageCode','virutalVillageCode','updatedDate','isDelete'"
-          const values = `'${item.uid}','${item.name}','${item.doorNo}','${item.type}','${
-            item.reportStatus
-          }','${item.reportDate ? dayjs(item.reportDate).format('YYYY-MM-DD HH:mm:ss') : ''}','${
-            item.reportUser
-          }','default','${JSON.stringify(item)}','${item.areaCode}','${item.townCode}','${
-            item.villageCode
-          }','${item.virutalVillageCode}','${getCurrentTimeStamp()}','0'`
-          db.insertOrReplaceData(LandlordTableName, values, fields).catch((err) => {
+          const values = getLandlordValues(item, 'default')
+          db.insertOrReplaceData(LandlordTableName, values, landlordFields).catch((err) => {
             console.log(err, '插入业主')
           })
         })

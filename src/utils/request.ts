@@ -21,7 +21,8 @@ function rejectHandle(err: Http.Result, reject: any) {
     default:
       uni.showToast({
         title: err.message || '正在排队中，请稍后！',
-        icon: 'none'
+        icon: 'none',
+        duration: 3000
       })
       reject(err)
       break

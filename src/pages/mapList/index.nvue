@@ -27,23 +27,39 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { onReady } from '@dcloudio/uni-app'
 import MapInfo from './components/MapInfo.vue'
-import { routerBack, hideStr, getStorage, StorageKey } from '../../utils'
-import { getVillageListApi, getLandlordListApi } from '../../service'
+import { routerBack, hideStr, getStorage, StorageKey, transformFromWGSToGCJ } from '@/utils'
+import {
+  getVillageListApi,
+  getLandlordListWithMapApi,
+  getLandlordItemApi,
+  getVillageItemApi
+} from '@/service'
 import iconPath from './iconPath'
-import { MainType } from '../../types/common'
+import { MainType } from '@/types/common'
+
+interface LocationType {
+  longitude: number
+  latitude: number
+}
 
 const sysInfo = uni.getSystemInfoSync()
 const statusBarHeight = sysInfo.statusBarHeight || 0
 const dataInfo = ref<any>({}) // marker 详细信息（居民户/自然村详情信息）
 const projectInfo = getStorage(StorageKey.PROJECTINFO)
 const show = ref<boolean>(false)
-const villageList = ref<any>([]) // 自然村列表
 const villageMarkersList = ref<any>([]) // 自然村标记点列表
-const householdList = ref<any>([]) // 居民户列表
 const householdMarkersList = ref<any>([]) // 居民户标记点列表
+
+const mapJson = projectInfo?.mapJson ? JSON.parse(projectInfo.mapJson) : {}
+const polygons = ref<any>([])
+const markers = ref<any[]>([]) // 标记点集合
+// 初始地图坐标
+const centerLocation = ref<LocationType>(
+	transformFromWGSToGCJ(120.153576, 30.287459)
+)
 
 // 计算区域中心经纬度，若没有中心经纬度，默认为杭州经、纬度
 const initCenterPoints = (obj: any) => {
@@ -58,12 +74,12 @@ const initCenterPoints = (obj: any) => {
       let len = arr.length
       let longitude = arr[len / 2][0]
       let latitude = arr[len / 2][1]
-      return { longitude, latitude }
+      return transformFromWGSToGCJ(longitude, latitude)
     } else {
-      return { longitude: 120.153576, latitude: 30.287459 }
+      return transformFromWGSToGCJ(120.153576, 30.287459)
     }
   } else {
-    return { longitude: 120.153576, latitude: 30.287459 }
+    return transformFromWGSToGCJ(120.153576, 30.287459)
   }
 }
 
@@ -75,10 +91,12 @@ const genArr = (arr: any) => {
   let newArr: any = []
   if (arr && arr.length > 0) {
     arr.map((item: any) => {
-      newArr.push({
-        longitude: item[0],
-        latitude: item[1]
-      })
+			newArr.push(
+				transformFromWGSToGCJ(
+					Number(item[0]),
+					Number(item[1])
+				)
+			)
     })
     return newArr
   } else {
@@ -100,7 +118,7 @@ const initCoordinateData = (obj: any) => {
           arr.push({
             points: genArr(coord),
             strokeWidth: 2,
-            strokeColor: '#FF0000',
+            strokeColor: renderColor(item.properties),
             fillColor: 'transparent'
           })
         })
@@ -108,48 +126,48 @@ const initCoordinateData = (obj: any) => {
   }
   return arr
 }
-const mapJson = projectInfo?.mapJson ? JSON.parse(projectInfo.mapJson) : {}
-const polygons = initCoordinateData(mapJson) // 区域经纬度集合
-const centerPoints = initCenterPoints(mapJson) // 区域中心经纬度
-const markers = ref<any[]>([]) // 标记点集合
 
-interface LocationType {
-  longitude: number
-  latitude: number
+/**
+ * 生成对应的颜色
+ * @param {Object} obj
+ * 临时用地范围 BM(4) #0055ff
+ * 浸没影响处理范围 BM(3) #C24BC6
+ * 工程建设区征地处理范围 BM(2) #00aa00
+ * 水库淹没处理范围 BM(1) #FF0000
+ */
+const renderColor = (obj: any) => {
+	if (obj) {
+		if (obj.BM === '1') {
+			return '#FF0000'
+		} else if (obj.BM === '2') {
+			return '#00aa00'
+		} else if (obj.BM === '3') {
+			return '#C24BC6'
+		} else if (obj.BM === '4') {
+			return '#0055ff'
+		} else {
+			return '#FF0000'
+		}
+	}
+	return '#FF0000'
 }
 
-// 初始地图坐标
-const centerLocation = ref<LocationType>(centerPoints)
+onMounted(() => {
+  polygons.value = initCoordinateData(mapJson) // 区域经纬度集合
+  centerLocation.value = initCenterPoints(mapJson) // 区域中心经纬度
+})
 
 // 获取自然村列表
 const getVillageList = async () => {
   const res = await getVillageListApi()
-
   if (res && res.length) {
-    let villageArr: any = []
     let markerArr: any = []
     res.map((item: any) => {
       if (item.latitude && item.longitude && item.areaCodeText) {
-        villageArr.push({
-          id: item.id,
-          uid: item.uid,
-          name: item.name,
-          areaCode: item.areaCode,
-          townCode: item.townCode,
-          villageCode: item.villageCode,
-          areaCodeText: item.areaCodeText,
-          townCodeText: item.townCodeText,
-          villageCodeText: item.villageCodeText,
-          type: MainType.Village
-        })
         markerArr.push({
-          id: item.uid,
+          id: `${item.uid}@@${MainType.Village}`,
           iconPath: iconPath.villageIconPath,
           label: {
-            // x: 24,
-            // y: -36,
-            // padding: 10,
-            // borderRadius: 30,
             x: -((0.5 * ((item.name.length > 8 ? 8 : item.name.length) * 12)) / 2) - 12,
             y: 5,
             padding: 4,
@@ -167,46 +185,21 @@ const getVillageList = async () => {
         })
       }
     })
-    villageList.value = villageArr
     villageMarkersList.value = markerArr
   }
 }
 
 // 获取居民户列表
 const getPeasantHouseholdList = async () => {
-  const res = await getLandlordListApi(MainType.PeasantHousehold)
+  const res = await getLandlordListWithMapApi(MainType.PeasantHousehold)
   if (res && res.length) {
-    let householdArr: any = []
     let markerArr: any = []
     res.map((item: any) => {
       if (item.latitude && item.longitude) {
-        householdArr.push({
-          id: item.id,
-          uid: item.uid,
-          name: item.name,
-          card: item.card,
-          address: item.address,
-          doorNo: item.doorNo,
-          houseNum: item.immigrantHouseList.length,
-          demographicNum: item.demographicList.length,
-          areaCode: item.areaCode,
-          townCode: item.townCode,
-          villageCode: item.villageCode,
-          virutalVillageCode: item.virutalVillageCode,
-          areaCodeText: item.areaCodeText,
-          townCodeText: item.townCodeText,
-          villageCodeText: item.villageCodeText,
-          virutalVillageCodeText: item.virutalVillageCodeText,
-          type: MainType.PeasantHousehold
-        })
         markerArr.push({
-          id: item.uid,
+          id: `${item.uid}@@${MainType.PeasantHousehold}`,
           iconPath: iconPath.userIconPath,
           label: {
-            // x: 24,
-            // y: -36,
-            // padding: 10,
-            // borderRadius: 30,
             x: -((0.5 * ((item.name.length > 8 ? 8 : item.name.length) * 12)) / 2) - 12,
             y: 5,
             padding: 4,
@@ -224,7 +217,6 @@ const getPeasantHouseholdList = async () => {
         })
       }
     })
-    householdList.value = householdArr
     householdMarkersList.value = markerArr
   }
 }
@@ -242,44 +234,45 @@ const initMarker = async () => {
  */
 const markerTap = (e: any) => {
   getDataInfo(e.detail.markerId)
-  show.value = true
 }
 
 // 获取单个居民户/自然村 信息
-const getDataInfo = (uid: string) => {
-  if (uid) {
-    let arr: any = [...villageList.value, ...householdList.value]
-    arr.map((item: any) => {
-      if (item.uid === uid) {
-        if (item.type === MainType.Village) {
-          dataInfo.value = {
-            uid: item.uid,
-            name: item.name,
-            areaCodeText: item.areaCodeText,
-            townCodeText: item.townCodeText,
-            villageCodeText: item.villageCodeText,
-            type: item.type
-          }
-          return
-        } else if (item.type === MainType.PeasantHousehold) {
-          dataInfo.value = {
-            uid: item.uid,
-            name: item.name,
-            card: item.card,
-            doorNo: item.doorNo,
-            address: item.address,
-            houseNum: item.houseNum,
-            demographicNum: item.demographicNum,
-            areaCode: item.areaCode,
-            townCode: item.townCode,
-            villageCode: item.villageCode,
-            virutalVillageCode: item.virutalVillageCode,
-            type: item.type
-          }
-          return
+const getDataInfo = async (str: string) => {
+  if (str) {
+    const strArr = str.split('@@')
+    const uid = strArr[0]
+    const type = strArr[1]
+    if (type === MainType.PeasantHousehold) {
+      // 获取居民户详情
+      const data = await getLandlordItemApi(uid)
+      if (data) {
+        dataInfo.value = {
+          uid: data.uid,
+          name: data.name,
+          card: data.card,
+          doorNo: data.doorNo,
+          address: data.address,
+          houseNum: data.immigrantHouseList.length,
+          demographicNum: data.demographicList.length,
+          areaCode: data.areaCode,
+          townCode: data.townCode,
+          villageCode: data.villageCode,
+          virutalVillageCode: data.virutalVillageCode,
+          type: MainType.PeasantHousehold
         }
+        show.value = true
       }
-    })
+    } else {
+      // 获取自然村详情
+      const data = await getVillageItemApi(uid)
+      if (data) {
+        dataInfo.value = {
+          ...data,
+          type: MainType.Village
+        }
+        show.value = true
+      }
+    }
   }
 }
 

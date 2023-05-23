@@ -157,10 +157,14 @@ watch(
  * @param {Object} data 当前行数据
  */
 const deleteTree = (data: any, index: number) => {
-  if (data && data.id) {
+  if (data && data.uid) {
     alertDialog.value?.open()
     currentItem.value = { ...data }
   } else {
+    uni.showToast({
+      title: '未保存的数据可删除',
+      icon: 'none'
+    })
     formData.value.splice(index, 1)
   }
 }
@@ -175,7 +179,18 @@ const dialogClose = () => {
 
 // 新增零星（林）果木
 const addTree = () => {
-  formData.value.push({ ...defaultRow })
+  if (formData.value.length) {
+    if (formData.value[formData.value.length - 1].name) {
+      formData.value.push({ ...defaultRow })
+    } else {
+      uni.showToast({
+        title: '上一条数据未填写完成',
+        icon: 'none'
+      })
+    }
+  } else {
+    formData.value.push({ ...defaultRow })
+  }
 }
 
 // 表单提交
@@ -199,6 +214,7 @@ const closeModifyRecords = () => {
 .tree-info-wrapper {
   width: 100%;
   height: calc(100vh - 33rpx - 12rpx - 60rpx - var(--status-bar-height));
+  padding-bottom: 80rpx;
   overflow-y: scroll;
 
   .tree-container {

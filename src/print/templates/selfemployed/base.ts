@@ -547,23 +547,20 @@ const getFooter = () => {
   return [
     {
       fontSize: 10,
-      margin: [20, 10, 20, 0],
+      margin: [20, 0, 20, 15],
       alignment: 'justify',
       columns: [
         {
           text: '法人代表签字(公章)：',
-          alignment: 'left',
-          margin: [0, 20, 0, 0]
+          alignment: 'left'
         },
         {
           text: '调查员签字：',
-          alignment: 'left',
-          margin: [0, 20, 0, 0]
+          alignment: 'left'
         },
         {
           text: '调查时间：',
-          alignment: 'left',
-          margin: [0, 20, 0, 0]
+          alignment: 'left'
         }
       ]
     }
