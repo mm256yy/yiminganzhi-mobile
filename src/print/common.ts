@@ -399,7 +399,7 @@ export const getPopulation = (landlord: LandlordType) => {
 
   return {
     table: {
-      widths: [54, 54, 54, 54, 54, 54, 104, 54],
+      widths: [54, 54, 24, 24, 54, 114, 104, 54],
       headerRows: 2,
       body
     },
@@ -454,10 +454,10 @@ export const getHouseInfo = (landlord: LandlordType) => {
       try {
         if (item.constructionType) {
           if (!map[item.constructionTypeText]) {
-            map[item.constructionTypeText] = parseFloat(item.landArea as string) || 0
+            map[item.constructionTypeText] = (parseFloat(item.landArea as string) || 0) * 1000
           } else {
             map[item.constructionTypeText] =
-              map[item.constructionTypeText] + parseFloat(item.landArea as string) || 0
+              map[item.constructionTypeText] + (parseFloat(item.landArea as string) || 0) * 1000
           }
         }
       } catch (err) {
@@ -482,13 +482,13 @@ export const getHouseInfo = (landlord: LandlordType) => {
   let allSumlandArea = 0
   try {
     allSumlandArea = immigrantHouseList.reduce((pre, cur) => {
-      return pre + (parseFloat(cur.landArea as string) || 0)
+      return pre + (parseFloat(cur.landArea as string) || 0) * 1000
     }, 0)
   } catch (error) {}
 
-  let str = `房屋面积共${allSumlandArea}㎡`
+  let str = `房屋面积共${(allSumlandArea / 1000).toFixed(2)}㎡`
   for (const key in map) {
-    str += `，${key}结构面积${map[key]}㎡`
+    str += `，${key}结构面积${(map[key] / 1000).toFixed(2)}㎡`
   }
 
   body.push([

@@ -340,8 +340,10 @@ class PushData {
 
   // 推送数据
   public push(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      // 一起执行
+    return new Promise(async (resolve, reject) => {
+      // 5.23改动：上传图片优先
+      await this.uploadImages()
+      // 其他数据获取一起执行
       Promise.all([
         this.getModifyLandlordList(),
         this.getModifyVillageList(),
@@ -372,15 +374,7 @@ class PushData {
           })
             .then((res) => {
               console.log('推送: 接口suc:', res)
-              // 跑图片上传 不需要关注失败或者成功
-              this.uploadImages()
-                .catch(() => {
-                  console.log('部分图片推送失败，请再次同步')
-                  // uni.showToast('部分图片推送失败，请再次同步')
-                })
-                .finally(() => {
-                  resolve(res)
-                })
+              resolve(res)
             })
             .catch((err) => {
               console.error('推送: 接口err', err)

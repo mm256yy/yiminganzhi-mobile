@@ -700,17 +700,22 @@ export class Landlord extends Common {
   getHomeCollection(): Promise<any> {
     return new Promise(async (resolve, reject) => {
       try {
+        const userInfo = getStorage(StorageKey.USERINFO)
+        // 更新上报相关字段
+        const reportUser = userInfo.id
         const sql = `select count(reportStatus = 'ReportSucceed' or null) as hasReport,
-        count(reportStatus != 'ReportSucceed' or null) as noReport,
         count(reportStatus = 'ReportSucceed' and reportDate Between '${dayjs()
           .startOf('day')
           .format(this.format)}' and '${dayjs()
           .endOf('day')
           .format(this.format)}' or null) as todayReport
-      from ${LandlordTableName}`
+      from ${LandlordTableName} where reportUser = '${reportUser}'`
         const res: LandlordDDLType[] = await this.db.selectSql(sql)
-
-        resolve(res)
+        const sql2 = `select count(reportStatus != 'ReportSucceed' or null) as noReport from ${LandlordTableName}`
+        const res2: LandlordDDLType[] = await this.db.selectSql(sql2)
+        const obj = res ? res[0] : {}
+        const obj2 = res2 ? res2[0] : {}
+        resolve({ ...obj, ...obj2 })
       } catch (error) {
         console.log(error, 'getHomeCollection-error')
         reject(null)
