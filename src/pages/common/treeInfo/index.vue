@@ -2,17 +2,19 @@
   <view class="tree-info-wrapper">
     <view class="tree-container" v-if="formData && formData.length > 0">
       <view class="row">
-        <view class="col">序号</view>
-        <view class="col w-63">品种名称</view>
-        <view class="col w-63">用途</view>
-        <view class="col w-63">淹没范围</view>
-        <view class="col w-64">规格</view>
-        <view class="col w-64">单位</view>
-        <view class="col w-64">数量</view>
-        <view class="col w-67">备注</view>
-        <view class="col w-29">操作</view>
+        <view class="row-wrapper">
+          <view class="col">序号</view>
+          <view class="col w-63">品种名称</view>
+          <view class="col w-64">用途</view>
+          <view class="col w-63">淹没范围</view>
+          <view class="col w-64">规格</view>
+          <view class="col w-64">单位</view>
+          <view class="col w-64">数量</view>
+          <view class="col w-67">备注</view>
+          <view class="col w-29">操作</view>
+        </view>
       </view>
-
+      <view class="row"></view>
       <view class="row" v-for="(item, index) in formData" :key="item.id">
         <view class="col">{{ index + 1 }}</view>
         <view class="col w-63 p-lr-2">
@@ -227,17 +229,50 @@ const closeModifyRecords = () => {
       width: 100%;
       height: 28rpx;
 
-      &:nth-child(2n - 1) {
+      &:nth-child(2n) {
         background-color: #f8f8f8;
       }
 
       &:first-child {
+        position: fixed;
+        z-index: 1;
+        display: table;
+        width: 726rpx;
         font-size: 9rpx;
         color: #737374;
+        background-color: #f8f8f8;
 
-        .col {
-          padding: 0;
-          text-align: center;
+        .row-wrapper {
+          display: table-row;
+
+          .col {
+            display: table-cell;
+            width: 35rpx;
+            height: 28rpx;
+            padding: 0;
+            font-size: 9rpx;
+            line-height: 28rpx;
+            color: #171718;
+            text-align: center;
+            vertical-align: middle;
+            border: none;
+
+            &.w-29 {
+              width: 29rpx;
+            }
+
+            &.w-63 {
+              width: 63rpx;
+            }
+
+            &.w-64 {
+              width: 64rpx;
+            }
+
+            &.w-67 {
+              width: 67rpx;
+            }
+          }
         }
       }
 
