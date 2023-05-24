@@ -2,14 +2,16 @@
   <view class="appendant-info-wrapper">
     <view class="appendant-container">
       <view class="row">
-        <view class="col">序号</view>
-        <view class="col w-117">项目</view>
-        <view class="col w-57">规格</view>
-        <view class="col">单位</view>
-        <view class="col w-94">数量</view>
-        <view class="col w-183">备注</view>
+        <view class="row-wrapper">
+          <view class="col">序号</view>
+          <view class="col w-108">项目</view>
+          <view class="col w-104">规格</view>
+          <view class="col">单位</view>
+          <view class="col w-87">数量</view>
+          <view class="col w-168">备注</view>
+        </view>
       </view>
-
+      <view class="row"></view>
       <view class="row" v-for="(item, index) in formData" :key="item.id">
         <view class="col">{{ index + 1 }}</view>
         <view class="col w-117">{{ item.name }}</view>
@@ -144,17 +146,50 @@ onMounted(() => {
       width: 100%;
       height: 28rpx;
 
-      &:nth-child(2n - 1) {
+      &:nth-child(2n) {
         background-color: #f8f8f8;
       }
 
       &:first-child {
+        position: fixed;
+        z-index: 1;
+        display: table;
+        width: 726rpx;
         font-size: 9rpx;
         color: #737374;
+        background-color: #f8f8f8;
 
-        .col {
-          padding: 0;
-          text-align: center;
+        .row-wrapper {
+          display: table-row;
+
+          .col {
+            display: table-cell;
+            width: 32rpx;
+            height: 28rpx;
+            padding: 0;
+            font-size: 9rpx;
+            line-height: 28rpx;
+            color: #171718;
+            text-align: center;
+            vertical-align: middle;
+            border: none;
+
+            &.w-108 {
+              width: 108rpx;
+            }
+
+            &.w-104 {
+              width: 104rpx;
+            }
+
+            &.w-87 {
+              width: 87rpx;
+            }
+
+            &.w-168 {
+              width: 168rpx;
+            }
+          }
         }
       }
 
