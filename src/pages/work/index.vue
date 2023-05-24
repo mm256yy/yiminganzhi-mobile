@@ -64,18 +64,26 @@
           </view>
         </view>
 
-        <view class="tab-cont">
-          <uni-table ref="table" :loading="loading" border stripe emptyText="暂无更多数据">
+        <scroll-view scroll-y class="tab-cont">
+          <uni-table
+            class="table"
+            ref="table"
+            :loading="loading"
+            border
+            stripe
+            emptyText="暂无更多数据"
+          >
             <uni-tr>
               <uni-th>名称</uni-th>
-              <uni-th width="120rpx">户号</uni-th>
-              <uni-th width="66rpx">是否财产户</uni-th>
+              <uni-th width="100rpx">户号</uni-th>
+              <uni-th width="86rpx">是否财产户</uni-th>
               <uni-th width="92rpx">乡镇/街道</uni-th>
               <uni-th width="94rpx">行政村</uni-th>
               <uni-th width="92rpx">自然村</uni-th>
               <uni-th width="72rpx">所处位置</uni-th>
-              <uni-th width="100rpx">提交时间</uni-th>
+              <uni-th width="80rpx">提交时间</uni-th>
             </uni-tr>
+
             <uni-tr v-for="(item, index) in tableData" :key="index">
               <uni-td>{{ item.name }}</uni-td>
               <uni-td>{{ item.doorNo }}</uni-td>
@@ -87,7 +95,7 @@
               <uni-td>{{ dayjs(item.reportDate).format('YYYY-MM-DD') }}</uni-td>
             </uni-tr>
           </uni-table>
-        </view>
+        </scroll-view>
       </view>
     </view>
   </Container>
@@ -101,7 +109,7 @@ import Container from '@/components/Container/index.vue'
 import { getSubmitListApi } from '@/service'
 import { MainType } from '@/types/common'
 import { LandlordType } from '@/types/sync'
-import { hideLoading, showLoading, locationTypes } from '@/config'
+import { locationTypes } from '@/config'
 
 const viewFormat = 'YYYY-MM-DD'
 const searchFormat = 'YYYY-MM-DD HH:mm:ss'
@@ -142,10 +150,6 @@ const serach = () => {
     return
   }
   const userId = userInfo.id
-  showLoading({
-    title: '加载中...',
-    mask: true
-  })
 
   const timeArray = [
     dayjs(time.value[0]).startOf('day').format(searchFormat),
@@ -156,14 +160,10 @@ const serach = () => {
     userId,
     timeArray
   }
-  getSubmitListApi(params)
-    .then((res) => {
-      allTableData.value = res
-      tableData.value = res.filter((item) => item.type === tabType.value)
-    })
-    .finally(() => {
-      hideLoading()
-    })
+  getSubmitListApi(params).then((res) => {
+    allTableData.value = res
+    tableData.value = res.filter((item) => item.type === tabType.value)
+  })
 }
 
 const getLocationText = (key: string) => {
@@ -349,8 +349,13 @@ onMounted(() => {
   }
 
   .tab-cont {
+    width: 726rpx;
+    height: 290rpx;
     padding: 6rpx;
-    overflow-y: scroll;
+  }
+
+  .table {
+    width: 726rpx;
   }
 }
 

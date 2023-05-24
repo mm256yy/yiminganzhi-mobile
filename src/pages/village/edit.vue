@@ -34,8 +34,8 @@
           <uni-col :span="24">
             <uni-forms-item label="中心经纬度" :label-width="170" label-align="right">
               <view class="lg-txt-wrapper">
-                <uni-data-checkbox v-model="check" :localdata="lgTagList" />
-                <view class="position" v-if="check === 1" @click="gotoMap">
+                <!-- <uni-data-checkbox v-model="check" :localdata="lgTagList" /> -->
+                <view class="position" @click="gotoMap">
                   <uni-icons type="map" color="#5D8CF7" size="14rpx" />
                   <text class="txt">{{
                     formData.longitude && formData.latitude
@@ -43,7 +43,7 @@
                       : '获取定位'
                   }}</text>
                 </view>
-                <template v-else-if="check === 2">
+                <!-- <template v-else-if="check === 2">
                   <uni-easyinput
                     class="m-t-5"
                     type="digit"
@@ -56,7 +56,7 @@
                     v-model="formData.latitude"
                     placeholder="输入纬度"
                   />
-                </template>
+                </template> -->
               </view>
             </uni-forms-item>
           </uni-col>
@@ -90,15 +90,7 @@ import VillageSelectFormItem from '@/components/VillageSelectFormItem/index.vue'
 import { getOtherItemApi, addVillageApi, updateVillageApi, getVillageItemApi } from '@/service'
 import { OtherDataType } from '@/database'
 import { onLoad } from '@dcloudio/uni-app'
-import {
-  guidFour,
-  setStorage,
-  getStorage,
-  StorageKey,
-  routerBack,
-  routerForward,
-  networkCheck
-} from '@/utils'
+import { guidFour, setStorage, getStorage, StorageKey, routerBack, routerForward } from '@/utils'
 
 // 表单数据
 const formData = ref<any>({
@@ -112,8 +104,6 @@ const formData = ref<any>({
 // 表单校验规则
 const rules = ref<any>({})
 
-// 获得焦点的输入框下标
-const focusIndex = ref<number>(-1)
 const districtTree = ref<any[]>([])
 const codes = ref<string[]>([])
 const villageTitle = ref<string[]>([])
@@ -122,14 +112,7 @@ const uid = ref<string>('')
 const type = ref<'add' | 'edit'>('add')
 const detail = ref<any>(null)
 
-const check = ref<number>(1)
 const districtMap = getStorage(StorageKey.DISTRICTMAP)
-
-// 中心经纬度输入选项
-const lgTagList = ref<any>([
-  { text: '获取定位', value: 1, disable: false },
-  { text: '输入经纬度', value: 2, disable: false }
-])
 
 onLoad((option: any) => {
   if (option) {
@@ -233,15 +216,6 @@ const mapChooseCallBack = (data: any) => {
 }
 
 onMounted(() => {
-  // networkCheck().then((res) => {
-  //   if (!res) {
-  //     lgTagList.value = [
-  //       { text: '获取定位', value: 1, disable: true },
-  //       { text: '输入经纬度', value: 2, disable: false }
-  //     ]
-  //     check.value = 2
-  //   }
-  // })
   uni.$on('chooseMap', mapChooseCallBack)
 })
 

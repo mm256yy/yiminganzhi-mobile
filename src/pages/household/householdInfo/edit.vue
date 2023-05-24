@@ -157,28 +157,13 @@
           <uni-col :span="24">
             <uni-forms-item label="中心经纬度" :label-width="150" label-align="right">
               <view class="lg-txt-wrapper">
-                <uni-data-checkbox v-model="check" :localdata="lgTagList" />
-                <view class="position" v-if="check === 1" @click="gotoMap">
+                <view class="position" @click="gotoMap">
                   <uni-icons type="map" color="#5D8CF7" size="14rpx" />
                   <text class="txt">{{
                     formData.longitude && formData.latitude
                       ? `${formData.longitude},${formData.latitude}`
                       : '获取定位'
                   }}</text>
-                </view>
-                <view v-else-if="check === 2">
-                  <uni-easyinput
-                    class="m-t-5"
-                    type="digit"
-                    v-model="formData.longitude"
-                    placeholder="输入经度"
-                  />
-                  <uni-easyinput
-                    class="m-t-5"
-                    type="digit"
-                    v-model="formData.latitude"
-                    placeholder="输入纬度"
-                  />
                 </view>
               </view>
             </uni-forms-item>
@@ -232,14 +217,7 @@ const formData = ref<any>({
 const isFocus = ref<boolean>(false)
 const title = ref<string>('')
 const type = ref<string>('')
-const check = ref<number>(1)
 const naturalVillage = ref<any>(null)
-
-// 中心经纬度输入选项
-const lgTagList = ref<any>([
-  { text: '获取定位', value: 1, disable: false },
-  { text: '输入经纬度', value: 2, disable: false }
-])
 
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
@@ -382,15 +360,6 @@ const mapChooseCallBack = (data: any) => {
 }
 
 onMounted(() => {
-  // networkCheck().then((res) => {
-  //   if (!res) {
-  //     lgTagList.value = [
-  //       { text: '获取定位', value: 1, disable: true },
-  //       { text: '输入经纬度', value: 2, disable: false }
-  //     ]
-  //     check.value = 2
-  //   }
-  // })
   uni.$on('chooseMap', mapChooseCallBack)
 })
 

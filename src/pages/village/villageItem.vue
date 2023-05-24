@@ -55,7 +55,7 @@ const deleteItem = () => {
   position: relative;
   width: 228rpx;
   padding: 12rpx 15rpx;
-  margin: 7rpx 7rpx 0 0;
+  margin: 0 7rpx 7rpx 0;
   background-color: #ffffff;
   border-radius: 7rpx;
   box-shadow: 0rpx 0rpx 12rpx 0rpx rgba(0, 0, 0, 0.08);

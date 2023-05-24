@@ -107,6 +107,7 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="参保情况"
               :label-width="150"
               label-align="right"
@@ -437,6 +438,9 @@ const submit = () => {
     return
   } else if (!formData.value.relation) {
     showToast('请选择与户主关系')
+    return
+  } else if (!formData.value.insuranceType) {
+    showToast('请选择参保情况')
     return
   } else if (!formData.value.addReason && type.value === 'add' && stage === MainStage.review) {
     showToast('请输入新增原因')
