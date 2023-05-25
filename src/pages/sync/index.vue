@@ -215,7 +215,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { getCollectListApi, getOtherItemApi } from '@/service'
 import { routerBack, routerForward, debounce } from '@/utils'
 import { CollectType, MainType } from '@/types/common'
@@ -228,6 +228,7 @@ const individualHouseholdList = ref<CollectType[]>([])
 const companyList = ref<CollectType[]>([])
 const villageList = ref<CollectType[]>([])
 const pullTime = ref<string>('')
+const syncing = ref<boolean>(false)
 
 const syncCmt = ref()
 
@@ -239,8 +240,17 @@ const routerMap: any = {
 }
 
 const onSyncHandle = debounce(() => {
+  if (syncing.value) {
+    return
+  }
+  syncing.value = true
   syncCmt.value?.onSync()
 })
+
+// 同步结束
+const onSyncEnd = () => {
+  syncing.value = false
+}
 
 const jump = (type: MainType) => {
   routerForward(routerMap[type])
@@ -273,6 +283,11 @@ const pageInit = () => {
 
 onMounted(() => {
   pageInit()
+  uni.$on('SyncEnd', onSyncEnd)
+})
+
+onBeforeUnmount(() => {
+  uni.$off('SyncEnd', onSyncEnd)
 })
 </script>
 
