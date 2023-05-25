@@ -428,10 +428,9 @@ const confirmSelect = (currentSelect: any[], label: any[]) => {
 const submit = () => {
   const params = {
     ...formData.value,
-    birthday: formData.value.birthday
-      ? dayjs(formData.value.birthday).format('YYYY-MM')
-      : formData.value.birthday
+    birthday: formData.value.birthday ? dayjs(formData.value.birthday) : formData.value.birthday
   }
+  console.log('params:', params)
   if (!formData.value.name) {
     showToast('请输入姓名')
     return
