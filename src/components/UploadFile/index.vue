@@ -142,6 +142,7 @@ const chooseFiles = () => {
   // 选择图片文件
   uni.chooseImage({
     count: props.limit,
+    sizeType: ['original'],
     extension: props.accepts || [],
     success(res) {
       const paths = Array.isArray(res.tempFilePaths) ? res.tempFilePaths : [res.tempFilePaths]
