@@ -702,7 +702,11 @@ export class Landlord extends Common {
       try {
         const userInfo = getStorage(StorageKey.USERINFO)
         // 更新上报相关字段
-        const reportUser = userInfo.id
+        const reportUser = userInfo ? userInfo.id : ''
+        if (!reportUser) {
+          reject(null)
+          return
+        }
         const sql = `select count(reportStatus = 'ReportSucceed' or null) as hasReport,
         count(reportStatus = 'ReportSucceed' and reportDate Between '${dayjs()
           .startOf('day')
