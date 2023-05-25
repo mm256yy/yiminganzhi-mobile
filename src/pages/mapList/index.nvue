@@ -30,7 +30,7 @@
 import { ref, onMounted } from 'vue'
 import { onReady } from '@dcloudio/uni-app'
 import MapInfo from './components/MapInfo.vue'
-import { routerBack, hideStr, getStorage, StorageKey, transformFromWGSToGCJ } from '@/utils'
+import { routerBack, hideStr, getStorage, StorageKey } from '@/utils'
 import {
   getVillageListApi,
   getLandlordListWithMapApi,
@@ -57,9 +57,10 @@ const mapJson = projectInfo?.mapJson ? JSON.parse(projectInfo.mapJson) : {}
 const polygons = ref<any>([])
 const markers = ref<any[]>([]) // 标记点集合
 // 初始地图坐标
-const centerLocation = ref<LocationType>(
-	transformFromWGSToGCJ(120.153576, 30.287459)
-)
+const centerLocation = ref<LocationType>({
+	longitude:120.153576, 
+	latitude: 30.287459
+})
 
 // 计算区域中心经纬度，若没有中心经纬度，默认为杭州经、纬度
 const initCenterPoints = (obj: any) => {
@@ -74,12 +75,12 @@ const initCenterPoints = (obj: any) => {
       let len = arr.length
       let longitude = arr[len / 2][0]
       let latitude = arr[len / 2][1]
-      return transformFromWGSToGCJ(longitude, latitude)
+      return { longitude: longitude, latitude: latitude }
     } else {
-      return transformFromWGSToGCJ(120.153576, 30.287459)
+      return { longitude: 120.153576, latitude: 30.287459 }
     }
   } else {
-    return transformFromWGSToGCJ(120.153576, 30.287459)
+    return { longitude: 120.153576, latitude: 30.287459 }
   }
 }
 
@@ -91,12 +92,10 @@ const genArr = (arr: any) => {
   let newArr: any = []
   if (arr && arr.length > 0) {
     arr.map((item: any) => {
-			newArr.push(
-				transformFromWGSToGCJ(
-					Number(item[0]),
-					Number(item[1])
-				)
-			)
+			newArr.push({
+				longitude: Number(item[0]),
+				latitude: Number(item[1])
+			})
     })
     return newArr
   } else {
