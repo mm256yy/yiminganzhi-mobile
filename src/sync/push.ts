@@ -342,53 +342,54 @@ class PushData {
   public push(): Promise<any> {
     return new Promise(async (resolve, reject) => {
       // 5.23改动：上传图片优先
-      await this.uploadImages()
-      // 其他数据获取一起执行
-      Promise.all([
-        this.getModifyLandlordList(),
-        this.getModifyVillageList(),
-        this.getPullTime(),
-        this.getModifyGraveList()
-      ])
-        .then(() => {
-          // 拿到结果了
-          const {
-            peasantHouseholdPushDtoList,
-            deleteRecordList,
-            pullTime,
-            villageList,
-            immigrantGraveList
-          } = this.state
-          console.info('推送数据-业主列表:', peasantHouseholdPushDtoList)
-          console.info('推送数据-自然村列表:', villageList)
-          console.info('推送数据-删除列表:', deleteRecordList)
-          console.info('推送数据-拉取时间:', pullTime)
-          console.info('推送数据-坟墓列表:', immigrantGraveList)
+      this.uploadImages().finally(() => {
+        // 其他数据获取一起执行
+        Promise.all([
+          this.getModifyLandlordList(),
+          this.getModifyVillageList(),
+          this.getPullTime(),
+          this.getModifyGraveList()
+        ])
+          .then(() => {
+            // 拿到结果了
+            const {
+              peasantHouseholdPushDtoList,
+              deleteRecordList,
+              pullTime,
+              villageList,
+              immigrantGraveList
+            } = this.state
+            console.info('推送数据-业主列表:', peasantHouseholdPushDtoList)
+            console.info('推送数据-自然村列表:', villageList)
+            console.info('推送数据-删除列表:', deleteRecordList)
+            console.info('推送数据-拉取时间:', pullTime)
+            console.info('推送数据-坟墓列表:', immigrantGraveList)
 
-          pushDataApi({
-            peasantHouseholdPushDtoList,
-            deleteRecordList,
-            pullTime,
-            villageList,
-            immigrantGraveList
+            pushDataApi({
+              peasantHouseholdPushDtoList,
+              deleteRecordList,
+              pullTime,
+              villageList,
+              immigrantGraveList
+            })
+              .then((res) => {
+                console.log('推送: 接口suc:', res)
+                resolve(res)
+              })
+              .catch((err) => {
+                console.error('推送: 接口err', err)
+                reject(err)
+              })
+              .finally(() => {
+                // 初始化 重置
+                this.initAndReset()
+              })
           })
-            .then((res) => {
-              console.log('推送: 接口suc:', res)
-              resolve(res)
-            })
-            .catch((err) => {
-              console.error('推送: 接口err', err)
-              reject(err)
-            })
-            .finally(() => {
-              // 初始化 重置
-              this.initAndReset()
-            })
-        })
-        .catch((err) => {
-          console.error('推送: 操作数据库err', err)
-          reject(false)
-        })
+          .catch((err) => {
+            console.error('推送: 操作数据库err', err)
+            reject(false)
+          })
+      })
     })
   }
 }
