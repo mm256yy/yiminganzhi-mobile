@@ -147,7 +147,7 @@ const chooseFiles = () => {
     success(res) {
       const paths = Array.isArray(res.tempFilePaths) ? res.tempFilePaths : [res.tempFilePaths]
       batchUploadImgApi(paths).then((res) => {
-        console.log(res, '图片上传结果')
+        // console.log(res, '图片上传结果')
         if (res && res.length) {
           const files = res.map((item) => {
             const name = item.path?.split('/').pop() || ''
@@ -163,13 +163,13 @@ const chooseFiles = () => {
           // 新上传的图片存入map
           files.forEach((item) => {
             imageUrlAndBase64Map[item.url] = {
-              base64: item.base64,
+              base64: item.base64 || '',
               path: item.path
             }
           })
           // 新增的图片
           filesList.value = [...filesList.value, ...files]
-
+          // console.log(imageUrlAndBase64Map, 'imageUrlAndBase64Map')
           updateFilesList()
         }
       })

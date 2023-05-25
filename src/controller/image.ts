@@ -9,8 +9,10 @@ import { pathToBase64 } from 'image-tools'
 import { ImgItemType } from '@/types/sync'
 
 class Image extends Common {
+  public imgs: ImgItemType[]
   constructor() {
     super()
+    this.imgs = []
   }
 
   getList(): Promise<ImageDDLType[]> {
@@ -42,6 +44,8 @@ class Image extends Common {
               item.base64 = res[index]
               return item
             })
+            // 拿到base64后 第二次赋值
+            this.imgs = result
             resolve(result)
           } else {
             reject([])
@@ -65,8 +69,9 @@ class Image extends Common {
         resolve(false)
       })
       localPaths.forEach((item) => {
+        // 不存储base64
         const fields = `'status','path','url','base64','updatedDate'`
-        const values = `'0','${item.path}','${item.url}','${item.base64}','${dayjs().valueOf()}'`
+        const values = `'0','${item.path}','${item.url}','${''}','${dayjs().valueOf()}'`
         this.db.insertTableData(ImageTableName, values, fields).catch((err) => {
           console.log(err, '上传err')
         })
@@ -112,6 +117,8 @@ class Image extends Common {
                       path: item
                     }
                   })
+                // 第一次赋值
+                _that.imgs = imgPathAndUrls
                 _that
                   .imgPathTobase64Batch(imgPathAndUrls)
                   .then((res) => _that.doneSave(res))
@@ -119,7 +126,7 @@ class Image extends Common {
                     if (res) {
                       // 存入数据库成功
                       console.log('图片：存入数据库成功')
-                      resolve(imgPathAndUrls)
+                      resolve(_that.imgs)
                     } else {
                       reject()
                     }

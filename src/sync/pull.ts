@@ -64,7 +64,7 @@ class PullData {
     this.count = 0
     this.maxCount = baseMaxCount
     // 需要拉取的数据的数量
-    this.needPullCount = 13
+    this.needPullCount = 12
     this.quality = 100
 
     this.state = {
@@ -292,26 +292,11 @@ class PullData {
       const values = `'${OtherDataType.PullTime}','${pullTime}','${getCurrentTimeStamp()}'`
       this.db.insertOrReplaceData(OtherTableName, values, fields)
     }
-    let pullSuccessCount = 0 // 记录调查对象的信息存储
     // 存储调查对象数据
     this.pullLandlord().then((res) => {
       res && this.count++
-      pullSuccessCount++
-      if (pullSuccessCount === 2) {
-        // 数据过大 需要及时清理掉缓存
-        this.state.peasantHouseholdPushDtoList = []
-      }
+      this.state.peasantHouseholdPushDtoList = []
       console.log('拉取: 业主', res)
-    })
-    // 处理图片
-    this.pullLandlordHouseImgs().then((res) => {
-      res && this.count++
-      pullSuccessCount++
-      if (pullSuccessCount === 2) {
-        // 数据过大 需要及时清理掉缓存
-        this.state.peasantHouseholdPushDtoList = []
-      }
-      console.log('拉取: 图片', res)
     })
   }
 
@@ -575,9 +560,9 @@ class PullData {
         console.log(imgUrls, 'imgUrls')
         const pathImgs = await this.downLoadImgs(imgUrls)
         console.log(pathImgs, 'pathImgs')
-        const base64Imgs = await this.imgPathTobase64Batch(pathImgs)
-        console.log('base64Imgs')
-        const result = await this.saveImgs(base64Imgs)
+        // const base64Imgs = await this.imgPathTobase64Batch(pathImgs)
+        // console.log('base64Imgs')
+        const result = await this.saveImgs(pathImgs)
         resolve(result)
       } else {
         resolve(true)
@@ -879,7 +864,9 @@ class PullData {
       imgArray.forEach((item) => {
         // status状态为1 不需要上传
         const fields = `'status','base64','path','url','updatedDate'`
-        const values = `'1','${item.base64}','${item.path}','${item.url}','${dayjs().valueOf()}'`
+        const values = `'1','${item.base64 || ''}','${item.path}','${
+          item.url
+        }','${dayjs().valueOf()}'`
         this.db.insertTableData(ImageTableName, values, fields).catch((err: any) => {
           console.log(err, '更新img err')
         })

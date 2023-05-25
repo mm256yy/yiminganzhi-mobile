@@ -139,7 +139,7 @@ const getImageObj = async () => {
   if (result && result.length) {
     result.forEach((item) => {
       imageUrlAndBase64Map[item.url] = {
-        base64: item.base64,
+        base64: item.base64 || '',
         path: item.path
       }
     })
@@ -162,7 +162,7 @@ const pollingSuccess = async () => {
   // 同步成功后 处理字典
   await getDictObj()
   // 同步成功后 处理图片
-  await getImageObj()
+  // await getImageObj()
   // 普通同步后 更新当前项目信息
   if (props.from === 'sync') {
     await defaultSyncHandle()
@@ -170,6 +170,10 @@ const pollingSuccess = async () => {
   console.log('同步后逻辑')
   uni.hideLoading()
   clearInterval(intervalId.value)
+  // 清理缓存的base64图片
+  for (const k in imageUrlAndBase64Map) {
+    delete imageUrlAndBase64Map[k]
+  }
   openPup()
   uni.$emit('SyncEnd')
 }

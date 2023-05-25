@@ -271,7 +271,7 @@ const getImageObj = async () => {
 }
 
 onMounted(() => {
-  getImageObj()
+  // getImageObj() // 5.25内存爆了
   const systemInfo = uni.getSystemInfoSync()
   appVersion.value = systemInfo.appWgtVersion || '1.0.0'
 })
