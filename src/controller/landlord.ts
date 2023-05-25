@@ -285,7 +285,7 @@ export class Landlord extends Common {
           console.log('核心字段缺失')
           return
         }
-        const landlord = await this.getLandlordByUid(data.uid)
+        const landlord = await this.getLandlordByUidNoFilter(data.uid)
         const newData = { ...landlord, ...data }
         const values = getLandlordSqlValues(newData)
         const sql = `update ${LandlordTableName} set ${values} where uid = '${newData.uid}' and isDelete = '0'`

@@ -36,7 +36,7 @@ import {
   getPullLandlordListApi
 } from './api'
 import { StateType, ImgItemType, LandlordWithPageType } from '@/types/sync'
-import { getCurrentTimeStamp, setStorage, StorageKey } from '@/utils'
+import { getCurrentTimeStamp, getStorage, setStorage, StorageKey } from '@/utils'
 import dayjs from 'dayjs'
 import { pathToBase64 } from 'image-tools'
 
@@ -55,7 +55,7 @@ class PullData {
   // 需要拉取的数量
   public needPullCount: number
   // 行政区划 code-name 的map数据
-  private districtMap: { [key: string]: string }
+  public districtMap: { [key: string]: string }
   // 图片压缩的质量
   private quality: number
 
@@ -65,7 +65,7 @@ class PullData {
     this.maxCount = baseMaxCount
     // 需要拉取的数据的数量
     this.needPullCount = 13
-    this.quality = 70
+    this.quality = 100
 
     this.state = {
       pullTime: '',
@@ -92,7 +92,7 @@ class PullData {
       virutalVillageNum: 0
     }
 
-    this.districtMap = {}
+    this.districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
   }
 
   public init() {
@@ -138,7 +138,11 @@ class PullData {
   }
 
   public getPullStatus(): boolean {
-    return this.count === this.needPullCount
+    const status = this.count === this.needPullCount
+    if (status) {
+      setStorage(StorageKey.DISTRICTMAP, this.districtMap)
+    }
+    return status
   }
 
   public pullProjectData() {
@@ -212,7 +216,6 @@ class PullData {
     })
     this.pullDistrict().then((res) => {
       res && this.count++
-      setStorage(StorageKey.DISTRICTMAP, this.districtMap)
       // 重置 释放缓存
       this.state.districtList = []
 
@@ -350,7 +353,6 @@ class PullData {
     // 数据 新增 修改 删除一起进行
     this.pullVillageList().then((res) => {
       res && this.count++
-      setStorage(StorageKey.DISTRICTMAP, this.districtMap)
       // 重置 释放缓存
       this.state.villageList = []
       console.log('拉取: 自然村', res)

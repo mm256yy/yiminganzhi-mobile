@@ -47,7 +47,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { getProjectListApi } from '@/service'
 import SyncCompont from '@/components/Sync/Index.vue'
 import { routerBack, StorageKey, getStorage, debounce } from '@/utils'
@@ -58,6 +58,7 @@ const list = ref<any[]>([])
 const currentProjectId = ref(0)
 const projectId = ref()
 const projectItem = ref<ProjectType | null>(null)
+const syncing = ref<boolean>(false)
 
 const syncCmt = ref()
 
@@ -80,21 +81,25 @@ const getList = async () => {
   }
 }
 
-onMounted(() => {
-  currentProjectId.value = getStorage(StorageKey.PROJECTID)
-  getList()
-})
-
 // 项目切换
 const onChangeProject = debounce((item: ProjectType) => {
   if (currentProjectId.value === item.id) {
     return
   }
+  if (syncing.value) {
+    return
+  }
+  syncing.value = true
   projectId.value = item.id
   projectItem.value = item
   // 项目切换需要做数据同步
   syncCmt.value?.onSync()
 })
+
+// 同步结束
+const onSyncEnd = () => {
+  syncing.value = false
+}
 
 const changeProject = () => {
   currentProjectId.value = projectId.value
@@ -103,6 +108,16 @@ const changeProject = () => {
 const onBack = () => {
   routerBack()
 }
+
+onMounted(() => {
+  currentProjectId.value = getStorage(StorageKey.PROJECTID)
+  getList()
+  uni.$on('SyncEnd', onSyncEnd)
+})
+
+onBeforeUnmount(() => {
+  uni.$off('SyncEnd', onSyncEnd)
+})
 </script>
 
 <style lang="scss" scoped>

@@ -171,6 +171,7 @@ const pollingSuccess = async () => {
   uni.hideLoading()
   clearInterval(intervalId.value)
   openPup()
+  uni.$emit('SyncEnd')
 }
 
 // 轮询拉取状态
@@ -184,6 +185,7 @@ const polling = () => {
       clearInterval(intervalId.value)
       syncStatus.value = false
       openPup()
+      uni.$emit('SyncEnd')
       return
     }
     count.value++
@@ -226,15 +228,17 @@ const defaultSyncHandle = async () => {
 
 // 同步
 const onSync = async () => {
-  const res = await networkCheck()
-  if (!res) {
-    openNetworkPup()
-    return
-  }
   uni.showLoading({
     title: '正在同步中...',
     mask: true
   })
+  const res = await networkCheck()
+  if (!res) {
+    uni.hideLoading()
+    openNetworkPup()
+    uni.$emit('SyncEnd')
+    return
+  }
   count.value = 0
   pushInstance
     .push()
@@ -254,6 +258,7 @@ const onSync = async () => {
           })
           .catch(() => {
             uni.hideLoading()
+            uni.$emit('SyncEnd')
             uni.showToast({
               title: '登录失效',
               icon: 'none'
@@ -266,6 +271,7 @@ const onSync = async () => {
         uni.hideLoading()
         syncStatus.value = false
         openPup()
+        uni.$emit('SyncEnd')
       }
     })
     .catch((errData) => {
@@ -281,6 +287,7 @@ const onSync = async () => {
           icon: 'error'
         })
       }
+      uni.$emit('SyncEnd')
     })
 }
 
