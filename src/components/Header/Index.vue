@@ -234,6 +234,11 @@ export default {
         this.actionPdf(filePath)
         return
       }
+      uni.hideLoading()
+      uni.showLoading({
+        title: '生成中...',
+        mask: true
+      })
       this.getData([this.dataInfo.uid], [item.uid])
     },
 
@@ -246,25 +251,39 @@ export default {
         this.actionPdf(filePath)
         return
       }
+      uni.hideLoading()
+      uni.showLoading({
+        title: '生成中...',
+        mask: true
+      })
       this.getData([this.dataInfo.uid], [item.uid])
     },
 
     /**
      * 打印pdf
      */
-    async getData(peasantHouseholdIds: string[], templateIds: string[]) {
-      const landlordArray = await getPrintLandlordApi(peasantHouseholdIds).catch((err) => {
-        console.log(err, 'juming')
-      })
+    async getData(peasantHouseholdIds: string[], templateIds: number[]) {
+      const landlordArray = await getPrintLandlordApi(peasantHouseholdIds, templateIds).catch(
+        (err) => {
+          console.log(err, 'getDat-err')
+          uni.hideLoading()
+          uni.showToast({
+            title: '生成失败',
+            icon: 'none'
+          })
+          return
+        }
+      )
       if (!landlordArray || !landlordArray.length) {
+        uni.hideLoading()
+        uni.showToast({
+          title: '生成失败',
+          icon: 'none'
+        })
         return
       }
-      console.log(landlordArray, 'landlordArray')
-      uni.hideLoading()
-      uni.showLoading({
-        title: '生成中...',
-        mask: true
-      })
+      // console.log(landlordArray, 'landlordArray')
+
       const projectInfo = getStorage(StorageKey.PROJECTINFO) || {}
       this.options = {
         landlords: landlordArray,
@@ -310,8 +329,8 @@ export default {
         showToast('生成pdf失败')
         return
       }
-      const index = base64Str.indexOf(',')
-      const base64 = base64Str.slice(index + 1, base64Str.length)
+      // const index = base64Str.indexOf(',')
+      // const base64 = base64Str.slice(index + 1, base64Str.length)
       //Base64可通过Canvas、html2canvas、jspdf等生成的字符串，不包含文件类型前缀
       //1.根据Base64生成文件：第二个参数是文件名称，如果不传入路径，则默认保存在Download文件夹,返回文件的绝对路径
       // const fileName = `${

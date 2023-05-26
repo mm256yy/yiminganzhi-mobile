@@ -36,7 +36,7 @@ class Print extends Landlord {
         // 拿到业主详情
         // 根据模版id生成对应的pdf 拿到base64
 
-        const landlordArray = await this.getLandlordByUidWithPrint(peasantHouseholdIds)
+        const landlordArray = await this.getLandlordByUidWithPrint(peasantHouseholdIds, templateIds)
         if (!landlordArray || !landlordArray.length) {
           reject('业主信息为空')
           return

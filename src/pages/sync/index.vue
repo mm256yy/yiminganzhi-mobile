@@ -6,7 +6,7 @@
         <uni-icons type="back" color="#ffffff" size="14rpx" />
       </view>
 
-      <text class="tit">数据同步</text>
+      <text class="tit">数据同步V{{ appVersion }}</text>
       <text />
     </view>
 
@@ -223,6 +223,7 @@ import { OtherDataType } from '@/database'
 import dayjs from 'dayjs'
 import SyncCompont from '@/components/Sync/Index.vue'
 
+const appVersion = ref<string>('')
 const peopleList = ref<CollectType[]>([])
 const individualHouseholdList = ref<CollectType[]>([])
 const companyList = ref<CollectType[]>([])
@@ -283,6 +284,8 @@ const pageInit = () => {
 
 onMounted(() => {
   pageInit()
+  const systemInfo = uni.getSystemInfoSync()
+  appVersion.value = systemInfo.appWgtVersion || '1.0.0'
   uni.$on('SyncEnd', onSyncEnd)
 })
 

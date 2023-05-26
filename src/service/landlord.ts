@@ -66,6 +66,6 @@ export const reportDataApi = (query: ReportParamsType) => {
 }
 
 // 打印数据获取
-export const getPrintLandlordApi = (uids: string[]) => {
-  return LandlordController.getLandlordByUidWithPrint(uids)
+export const getPrintLandlordApi = (uids: string[], templateIds: number[]) => {
+  return LandlordController.getLandlordByUidWithPrint(uids, templateIds)
 }

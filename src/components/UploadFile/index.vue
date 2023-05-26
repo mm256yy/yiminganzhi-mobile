@@ -40,11 +40,10 @@
 import { ref, watch, onMounted } from 'vue'
 import uploadImage from './upload-image.vue'
 import uploadFile from './upload-files.vue'
-import { batchUploadImgApi } from '@/service'
+import { batchUploadImgApi, deleteImgApi } from '@/service'
 import { networkCheck } from '@/utils'
 import defaultImg from '@/static/images/icon_null_data.png'
-import { hideLoading } from '@/config'
-import { ossDomain, imageUrlAndBase64Map } from '@/config'
+import { imageUrlAndBase64Map, hideLoading } from '@/config'
 
 interface PropsType {
   showType: 'grid' | 'list'
@@ -54,6 +53,7 @@ interface PropsType {
   modelValue?: string
   title?: string
   isPreview?: boolean
+  notCompress?: boolean
 }
 
 interface FileItemType {
@@ -75,7 +75,7 @@ watch(
   (val) => {
     if (val) {
       const fileList = JSON.parse(val)
-      console.log(imageUrlAndBase64Map, 'imageUrlAndBase64Map')
+      // console.log(imageUrlAndBase64Map, 'imageUrlAndBase64Map')
       if (fileList && fileList.length) {
         // 拿到图片map
         const list = fileList.map((item: any) => {
@@ -142,7 +142,7 @@ const chooseFiles = () => {
   // 选择图片文件
   uni.chooseImage({
     count: props.limit,
-    sizeType: ['original'],
+    sizeType: props.notCompress ? ['original'] : ['compressed'],
     extension: props.accepts || [],
     success(res) {
       const paths = Array.isArray(res.tempFilePaths) ? res.tempFilePaths : [res.tempFilePaths]
@@ -152,19 +152,19 @@ const chooseFiles = () => {
           const files = res.map((item) => {
             const name = item.path?.split('/').pop() || ''
             return {
-              base64: item.base64 || '',
+              base64: '',
               path: item.path || '',
               editName: name,
               isEdit: false,
               name,
-              url: `${ossDomain}migrate/files/image/${name}`
+              url: item.url || ''
             }
           })
           // 新上传的图片存入map
           files.forEach((item) => {
             imageUrlAndBase64Map[item.url] = {
-              base64: item.base64 || '',
-              path: item.path
+              base64: '',
+              path: item.path || ''
             }
           })
           // 新增的图片
@@ -177,8 +177,14 @@ const chooseFiles = () => {
   })
 }
 
-const delFile = (index: number) => {
-  filesList.value.splice(index, 1)
+const delFile = async (index: number) => {
+  const deleteImg = filesList.value.splice(index, 1)
+  // 删除本地图片
+  // console.log(deleteImg, 'deleteImg')
+  if (deleteImg && deleteImg.length) {
+    const deleteItem = deleteImg[0]
+    await deleteImgApi(deleteItem ? deleteItem.url : '')
+  }
   updateFilesList()
 }
 
@@ -194,7 +200,7 @@ const updateFilesList = () => {
   })
   const str = JSON.stringify(result)
   emit('updateFileList', str)
-  console.log(str, '更改后的')
+  // console.log(str, '更改后的')
   emit('update:modelValue', str)
 }
 

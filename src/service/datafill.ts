@@ -91,16 +91,6 @@ export const updateLandlordAppendantApi = (uid: string, data: AppendantType[]) =
 }
 
 /**
- * 删除附属物
- * @param uid 业主uid
- * @param itemId 附属物uid
- * @returns
- */
-export const deleteLandlordAppendantApi = (uid: string, itemId: string) => {
-  return DataFillController.deleteLandlordAppendant(uid, itemId)
-}
-
-/**
  * 更新安置意愿
  * @param uid 业主uid
  * @param data 安置意愿信息
@@ -195,15 +185,6 @@ export const updateLandlordCompanyApi = (uid: string, data: any) => {
   return DataFillController.updateLandlordCompany(uid, data)
 }
 
-/**
- * 删除企业/个体户
- * @param uid 业主uid
- * @returns
- */
-export const deleteLandlordCompanyApi = (uid: string) => {
-  return DataFillController.deleteLandlordCompany(uid)
-}
-
 // ---------------
 
 /**
@@ -224,16 +205,6 @@ export const deleteLandlordCompanyApi = (uid: string) => {
  */
 export const updateLandlordManagementApi = (uid: string, data: ManagementType[]) => {
   return DataFillController.updateLandlordManagement(uid, data)
-}
-
-/**
- * 删除企业营收
- * @param uid 业主uid
- * @param itemId 企业营收uid
- * @returns
- */
-export const deleteLandlordManagementApi = (uid: string, itemId: string) => {
-  return DataFillController.deleteLandlordManagement(uid, itemId)
 }
 
 // ---------------

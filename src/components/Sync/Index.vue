@@ -139,8 +139,8 @@ const getImageObj = async () => {
   if (result && result.length) {
     result.forEach((item) => {
       imageUrlAndBase64Map[item.url] = {
-        base64: item.base64 || '',
-        path: item.path
+        base64: '',
+        path: item.path || ''
       }
     })
   }
@@ -162,7 +162,7 @@ const pollingSuccess = async () => {
   // 同步成功后 处理字典
   await getDictObj()
   // 同步成功后 处理图片
-  // await getImageObj()
+  await getImageObj()
   // 普通同步后 更新当前项目信息
   if (props.from === 'sync') {
     await defaultSyncHandle()

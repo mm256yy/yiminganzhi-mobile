@@ -364,6 +364,7 @@
                 :file-list="formData.housePic"
                 :limit="20"
                 show-type="list"
+                notCompress
                 :accepts="['.jpg', '.png']"
               />
             </uni-forms-item>

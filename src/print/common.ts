@@ -534,10 +534,12 @@ export const getFushuwu = (landlord: LandlordType) => {
   ]
   const { immigrantAppendantList } = landlord
   if (immigrantAppendantList && immigrantAppendantList.length) {
-    immigrantAppendantList.forEach((item, index) => {
+    let dex = 0
+    immigrantAppendantList.forEach((item) => {
       if (item.number || item.remark) {
+        dex += 1
         body.push([
-          { text: index + 1, style: 'td' },
+          { text: dex, style: 'td' },
           { text: item.name || '', style: 'td' },
           { text: item.size || '', style: 'td' },
           { text: item.unit || '', style: 'td' },
@@ -666,34 +668,17 @@ export const getGrave = (landlord: LandlordType) => {
 
 // 房屋示意图
 export const getHousePic = (landlord: LandlordType) => {
-  const { immigrantHouseList } = landlord
-  const imgs: any[] = []
+  const { houseImageList } = landlord
   const body: any[] = [[{ text: '房屋示意图', bold: true, fontSize: 12, style: 'td' }]]
-  if (immigrantHouseList && immigrantHouseList.length) {
-    immigrantHouseList.forEach((item) => {
-      // 处理过的房屋图片数组
-      if (item.housePicArray && item.housePicArray.length) {
-        item.housePicArray.forEach((houseItem: any) => {
-          houseItem.base64 && imgs.push(houseItem.base64)
-        })
-      }
-    })
-    if (imgs.length) {
-      imgs.forEach((img) => {
-        body.push([
-          {
-            image: img,
-            fit: [540, imgHeight]
-          }
-        ])
-      })
-    } else {
+  if (houseImageList && houseImageList.length) {
+    houseImageList.forEach((img: string) => {
       body.push([
         {
-          text: '无'
+          image: img,
+          fit: [540, imgHeight]
         }
       ])
-    }
+    })
   } else {
     body.push([
       {

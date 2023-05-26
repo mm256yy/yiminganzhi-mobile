@@ -263,15 +263,16 @@ const getImageObj = async () => {
   if (result && result.length) {
     result.forEach((item) => {
       imageUrlAndBase64Map[item.url] = {
-        base64: item.base64,
-        path: item.path
+        base64: '',
+        path: item.path || ''
       }
     })
   }
+  console.log('home img', imageUrlAndBase64Map)
 }
 
 onMounted(() => {
-  // getImageObj() // 5.25内存爆了
+  getImageObj()
   const systemInfo = uni.getSystemInfoSync()
   appVersion.value = systemInfo.appWgtVersion || '1.0.0'
 })
@@ -282,13 +283,11 @@ onShow(() => {
   userInfo.value = user
   projectInfo.value = project
 
-  console.log(projectInfo, 'projectInfo')
   networkCheck().then((res) => {
     netWork.value = res
   })
 
   getHomeCollectionApi().then((res) => {
-    console.log(res, '统计数据')
     collection.value = res || null
   })
 })

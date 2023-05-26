@@ -6,6 +6,7 @@ import { ImageTableName, ImageDDLType } from '@/database'
 import dayjs from 'dayjs'
 import { Common } from './common'
 import { pathToBase64 } from 'image-tools'
+import { ossDomain } from '@/config'
 import { ImgItemType } from '@/types/sync'
 
 class Image extends Common {
@@ -18,7 +19,7 @@ class Image extends Common {
   getList(): Promise<ImageDDLType[]> {
     return new Promise(async (resolve, reject) => {
       try {
-        const sql = `select * from ${ImageTableName} where status = '1'`
+        const sql = `select * from ${ImageTableName}`
         const list: ImageDDLType[] = await this.db.selectSql(sql)
         resolve(list)
       } catch (error) {
@@ -111,17 +112,33 @@ class Image extends Common {
                 const imgPathAndUrls = localPaths
                   .filter((item) => !!item)
                   .map((item) => {
+                    const name = item.split('/').pop() || ''
                     return {
-                      url: '',
+                      url: `${ossDomain}migrate/files/image/${name}`,
                       base64: '',
                       path: item
                     }
                   })
                 // 第一次赋值
                 _that.imgs = imgPathAndUrls
+                // _that
+                //   .imgPathTobase64Batch(imgPathAndUrls)
+                //   .then((res) => _that.doneSave(res))
+                //   .then((res) => {
+                //     if (res) {
+                //       // 存入数据库成功
+                //       console.log('图片：存入数据库成功')
+                //       resolve(_that.imgs)
+                //     } else {
+                //       reject()
+                //     }
+                //   })
+                //   .finally(() => {
+                //     localPaths = []
+                //   })
+
                 _that
-                  .imgPathTobase64Batch(imgPathAndUrls)
-                  .then((res) => _that.doneSave(res))
+                  .doneSave(imgPathAndUrls)
                   .then((res) => {
                     if (res) {
                       // 存入数据库成功
@@ -141,6 +158,24 @@ class Image extends Common {
       } catch (error) {
         console.log(error, 'Image-batchAddImg-error')
         reject(false)
+      }
+    })
+  }
+
+  public deleteImg(url: string): Promise<boolean> {
+    return new Promise(async (resolve) => {
+      try {
+        if (!url) {
+          resolve(false)
+          return
+        }
+        await this.db.deleteTableData(ImageTableName, 'url', url).catch(() => {
+          resolve(false)
+          return
+        })
+        resolve(true)
+      } catch (error) {
+        console.log(error, 'deleteImg-error')
       }
     })
   }

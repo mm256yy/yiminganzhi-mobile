@@ -21,6 +21,7 @@ import {
 } from '@/types/common'
 import dayjs from 'dayjs'
 import { imageUrlAndBase64Map } from '@/config'
+import { pathToBase64 } from 'image-tools'
 import { GraveController } from './grave'
 
 export class Landlord extends Common {
@@ -379,28 +380,13 @@ export class Landlord extends Common {
           if (res.demographicList && res.demographicList.length) {
             res.demographicList = res.demographicList.filter((item) => item.isDelete !== '1')
           }
-          if (res.immigrantAppendantList && res.immigrantAppendantList.length) {
-            res.immigrantAppendantList = res.immigrantAppendantList.filter(
-              (item) => item.isDelete !== '1'
-            )
-          }
 
           if (res.immigrantHouseList && res.immigrantHouseList.length) {
             res.immigrantHouseList = res.immigrantHouseList.filter((item) => item.isDelete !== '1')
           }
-          if (res.immigrantIncomeList && res.immigrantIncomeList.length) {
-            res.immigrantIncomeList = res.immigrantIncomeList.filter(
-              (item) => item.isDelete !== '1'
-            )
-          }
+
           if (res.immigrantTreeList && res.immigrantTreeList.length) {
             res.immigrantTreeList = res.immigrantTreeList.filter((item) => item.isDelete !== '1')
-          }
-
-          if (res.immigrantManagementList && res.immigrantManagementList.length) {
-            res.immigrantManagementList = res.immigrantManagementList.filter(
-              (item) => item.isDelete !== '1'
-            )
           }
 
           if (res.immigrantEquipmentList && res.immigrantEquipmentList.length) {
@@ -472,7 +458,7 @@ export class Landlord extends Common {
   }
 
   // 业主列表-uid查询单个数据-打印使用
-  getLandlordByUidWithPrint(uids: string[]): Promise<LandlordType[] | null> {
+  getLandlordByUidWithPrint(uids: string[], templateIds: number[]): Promise<LandlordType[] | null> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!uids || !uids.length) {
@@ -542,7 +528,14 @@ export class Landlord extends Common {
                 (item) => item.isDelete !== '1'
               )
             }
+
+            // 存放房屋图片链接
+            const landlordHouseImageList: string[] = []
             if (res.immigrantHouseList && res.immigrantHouseList.length) {
+              res.immigrantHouseList = res.immigrantHouseList.filter(
+                (item) => item.isDelete !== '1'
+              )
+
               res.immigrantHouseList.forEach((item) => {
                 item.houseTypeText = formatDict(item.houseType, 266)
                 item.usageTypeText = formatDict(item.usageType, 265)
@@ -555,25 +548,40 @@ export class Landlord extends Common {
                   // 处理房屋图片相关
                   const houseImgs = JSON.parse(item.housePic)
                   if (houseImgs && houseImgs.length) {
-                    const imgs: any = []
                     houseImgs.forEach((imgItem: any) => {
                       if (/\.(jpg|jpeg|png|JPG|PNG)/.test(imgItem.url)) {
-                        imgs.push({
-                          url: imgItem.url,
-                          base64: imageUrlAndBase64Map[imgItem.url]
-                            ? imageUrlAndBase64Map[imgItem.url].base64
-                            : ''
-                        })
+                        if (imageUrlAndBase64Map[imgItem.url]) {
+                          landlordHouseImageList.push(imageUrlAndBase64Map[imgItem.url].path)
+                        }
                       }
                     })
-                    item.housePicArray = imgs
                   }
                 }
               })
-              res.immigrantHouseList = res.immigrantHouseList.filter(
-                (item) => item.isDelete !== '1'
-              )
             }
+
+            /**
+             * 房屋图片相关的处理
+             * 2 居民户房屋模版id
+             * 102 企业房屋模版id
+             * 202 个体户房屋模版id
+             */
+            res.houseImageList = []
+            if ([2, 102, 202].includes(templateIds[0])) {
+              // 拿到房屋图片的base64
+              if (landlordHouseImageList && landlordHouseImageList.length) {
+                const imgsRes = await Promise.all(
+                  landlordHouseImageList.map((item) => pathToBase64(item))
+                ).catch((imgErr) => {
+                  res.houseImageList = []
+                  console.log(imgErr, 'imgErr')
+                })
+                res.houseImageList = imgsRes
+              } else {
+                res.houseImageList = []
+              }
+            }
+
             if (res.immigrantIncomeList && res.immigrantIncomeList.length) {
               res.immigrantIncomeList = res.immigrantIncomeList.filter(
                 (item) => item.isDelete !== '1'

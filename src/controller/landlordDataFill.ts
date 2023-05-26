@@ -282,7 +282,8 @@ class DataFill extends Landlord {
         }
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
-          landlordItem.immigrantTreeList = data.map((item) => {
+          const deleteList = landlordItem.immigrantTreeList.filter((item) => item.isDelete === '1')
+          const newList = data.map((item) => {
             if (!item.uid) {
               const itemUid = guid()
               item.uid = itemUid
@@ -290,6 +291,7 @@ class DataFill extends Landlord {
             }
             return item
           })
+          landlordItem.immigrantTreeList = [...deleteList, ...newList]
         } else {
           reject(false)
           console.log('业主信息查询失败')

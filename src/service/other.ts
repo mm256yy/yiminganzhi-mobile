@@ -76,6 +76,11 @@ export const batchUploadImgApi = (data: string[]) => {
   return ImageController.batchAddImg(data)
 }
 
+// 图片删除
+export const deleteImgApi = (url: string) => {
+  return ImageController.deleteImg(url)
+}
+
 // 获取打印模版
 export const getPrintTemplatesApi = (type: PrintType) => {
   return PrintController.getTemplateList(type)
