@@ -155,7 +155,15 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import dayjs from 'dayjs'
-import { formatDict, formatStr, formatNum, routerForward, getStorage, StorageKey } from '@/utils'
+import {
+  formatDict,
+  formatStr,
+  formatNum,
+  routerForward,
+  getStorage,
+  StorageKey,
+  fmtPicUrl
+} from '@/utils'
 import { MainStage, MainType } from '@/types/common'
 import modifyRecords from '../modifyRecords/index.vue' // 引入修改记录组件
 import { showToast } from '@/config'
@@ -200,7 +208,11 @@ const toLink = (type: string, data?: any) => {
       ...data,
       completedTime: data.completedTime
         ? dayjs(data.completedTime).format('YYYY-MM')
-        : data.completedTime
+        : data.completedTime,
+      housePic: fmtPicUrl(data.housePic),
+      landPic: fmtPicUrl(data.landPic),
+      otherPic: fmtPicUrl(data.otherPic),
+      homePic: fmtPicUrl(data.homePic)
     }
     routerForward('houseInfoEdit', {
       params: JSON.stringify(params),
