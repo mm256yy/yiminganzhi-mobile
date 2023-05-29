@@ -189,6 +189,7 @@ export interface LandlordQuery {
 export interface LandlordSearchType {
   name: string
   type: MainType
+  doorNo?: string
   areaCode?: string
   townCode?: string
   villageCode?: string

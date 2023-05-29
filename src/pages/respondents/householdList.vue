@@ -20,8 +20,9 @@
         <input
           type="text"
           class="ipt"
-          placeholder="搜索名称"
+          placeholder="搜索名称/户号"
           :value="keyWords"
+          :confirm-type="'search'"
           @confirm="iptChange"
         />
         <uni-icons v-if="keyWords" @click="clear" type="clear" color="#999999" size="14rpx" />
