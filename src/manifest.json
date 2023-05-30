@@ -137,20 +137,6 @@
                     "pid" : "1633",
                     "parameters" : {}
                 }
-            },
-            "da-printpdf" : {
-                "__plugin_info__" : {
-                    "name" : "原生PDF打印，Base64转文件",
-                    "description" : "调用原生PDF打印功能",
-                    "platforms" : "Android",
-                    "url" : "https://ext.dcloud.net.cn/plugin?id=7780",
-                    "android_package_name" : "io.dcloud.migrate",
-                    "ios_bundle_id" : "",
-                    "isCloud" : true,
-                    "bought" : 1,
-                    "pid" : "7780",
-                    "parameters" : {}
-                }
             }
         }
     },

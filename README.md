@@ -98,7 +98,7 @@
 
 打印插件：收费 0 元 线上用 YanYu-PrintPDF: https://ext.dcloud.net.cn/plugin?id=1633
 
-收费 10 元 供测试用 da-printpdf: https://ext.dcloud.net.cn/plugin?id=7780
+<!-- 收费 10 元 供测试用 da-printpdf: https://ext.dcloud.net.cn/plugin?id=7780 -->
 
 说明：如果免费插件不可用，可购买收费插件，功能相同
 
