@@ -3,31 +3,22 @@
     <view class="work-wrap">
       <view class="work-box">
         <view class="work-head">
-          <view class="search-box">
-            <input
-              type="text"
-              confirm-type="search"
-              placeholder="请输入居民户姓名、个体户名称、企业名称"
-              class="ipt"
-              @confirm="onIptChange"
-            />
-            <uni-icons type="search" color="#171718" size="8rpx" />
-          </view>
-
           <view class="time-box">
             <view
               :class="['time-item', timeId === '-1' ? 'active' : '']"
               @click="onChooseDays('-1')"
-              >前一天</view
             >
-            <view :class="['time-item', timeId === '0' ? 'active' : '']" @click="onChooseDays('0')"
-              >今天</view
-            >
+              前一天
+            </view>
+            <view :class="['time-item', timeId === '0' ? 'active' : '']" @click="onChooseDays('0')">
+              今天
+            </view>
             <view
               :class="['time-item', timeId === '-7' ? 'active' : '']"
               @click="onChooseDays('-7')"
-              >最近七天</view
             >
+              最近七天
+            </view>
 
             <uni-datetime-picker :value="time" @change="onTimePickerChange" type="daterange">
               <view
@@ -45,6 +36,16 @@
               </view>
             </uni-datetime-picker>
           </view>
+          <view class="search-box">
+            <input
+              type="text"
+              confirm-type="search"
+              placeholder="请输入居民户姓名、个体户名称、企业名称"
+              class="ipt"
+              @confirm="onIptChange"
+            />
+            <uni-icons type="search" color="#171718" size="8rpx" />
+          </view>
         </view>
 
         <view class="tabs-box">
@@ -59,8 +60,9 @@
             </view>
           </view>
           <view class="total">
-            <text>{{ getTypeText() }}提交合计：</text><text class="num">{{ tableData.length }}</text
-            ><text>户</text>
+            <text>{{ getTypeText() }}提交合计：</text>
+            <text class="num">{{ tableData.length }}</text>
+            <text>户</text>
           </view>
         </view>
 
@@ -85,7 +87,7 @@
             </uni-tr>
 
             <uni-tr v-for="(item, index) in tableData" :key="index">
-              <uni-td>{{ item.name }}</uni-td>
+              <uni-td class="blue" @click="toLink(item)">{{ item.name }}</uni-td>
               <uni-td>{{ item.doorNo }}</uni-td>
               <uni-td>{{ item.hasPropertyAccount ? '是' : '否' }}</uni-td>
               <uni-td>{{ item.townCodeText }}</uni-td>
@@ -104,7 +106,7 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 import dayjs from 'dayjs'
-import { getStorage, StorageKey } from '@/utils'
+import { getStorage, StorageKey, routerForward } from '@/utils'
 import Container from '@/components/Container/index.vue'
 import { getSubmitListApi } from '@/service'
 import { MainType } from '@/types/common'
@@ -202,6 +204,26 @@ const getTypeText = () => {
 const onIptChange = (e: any) => {
   name.value = e.detail.value
   serach()
+}
+
+// 填报
+const routerMap: any = {
+  [MainType.PeasantHousehold]: 'household',
+  [MainType.IndividualHousehold]: 'selfPerson',
+  [MainType.Company]: 'enterprise',
+  [MainType.Village]: 'collective'
+}
+
+/**
+ * 跳转至指定页面
+ * @param{object} data 当前项信息
+ */
+const toLink = (data: any) => {
+  const name = routerMap[tabType.value]
+  routerForward(name, {
+    type: 'edit',
+    uid: data.uid
+  })
 }
 
 onMounted(() => {
@@ -374,5 +396,9 @@ onMounted(() => {
   font-size: 9rpx;
   line-height: 28rpx;
   color: #171718;
+
+  &.blue {
+    color: #3e73ec;
+  }
 }
 </style>
