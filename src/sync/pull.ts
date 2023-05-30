@@ -140,7 +140,10 @@ class PullData {
   public getPullStatus(): boolean {
     const status = this.count === this.needPullCount
     if (status) {
+      // 同步成功 写入行政区划map数据
       setStorage(StorageKey.DISTRICTMAP, this.districtMap)
+      // 推送拉取都成功 写入状态
+      setStorage(StorageKey.PUSHSTATUS, 'syncEnd')
     }
     return status
   }

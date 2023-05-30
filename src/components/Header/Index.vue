@@ -88,8 +88,7 @@ import { StorageKey, getStorage } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { MainType, PrintType } from '@/types/common'
 import { base64ToPath } from 'image-tools'
-const printpdfModule = uni.requireNativePlugin('da-printpdf')
-// const YanYuprintPdf = uni.requireNativePlugin('YanYu-PrintPDF')
+const YanYuprintPdf = uni.requireNativePlugin('YanYu-PrintPDF')
 
 interface PrintListType {
   name: string
@@ -309,9 +308,8 @@ export default {
       } else {
         // 打印pdf 将临时路径转化成绝对路径
         const path = plus.io.convertLocalFileSystemURL(filePath)
-        // YanYuprintPdf.managerPrint(path)
+        YanYuprintPdf.managerPrint(path)
         console.log('print path:', path)
-        printpdfModule.printPdf(path)
       }
     },
     getPrintErrorResult(err?: any) {

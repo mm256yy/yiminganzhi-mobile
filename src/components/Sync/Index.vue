@@ -10,7 +10,7 @@
           <text class="tit">数据同步成功</text>
         </view>
         <view class="pup-title" v-else>
-          <uni-icons type="info-filled" color="#F75454" size="19rpx" />
+          <uni-icons type="clear" color="#F75454" size="19rpx" />
           <text class="tit">数据同步失败</text>
         </view>
         <view class="pup-cont">
@@ -50,6 +50,10 @@
                 <text class="txt">{{ pushData.message }}</text>
               </view>
             </view>
+
+            <view class="pup-item" v-else>
+              <view class="txt txt-center err"> 网络波动，请到网络状态良好的位置再次同步 </view>
+            </view>
           </template>
         </view>
 
@@ -64,7 +68,7 @@
         <div class="network">
           <image class="img" src="@/static/images/network_error.png" mode="scaleToFill" />
           <view class="txt">数据同步失败</view>
-          <view class="info">网络异常，请到网络状态良好的位置再次上传</view>
+          <view class="info">网络异常，请到网络状态良好的位置再次同步</view>
         </div>
         <view class="pup-btn">
           <view class="btn" @click="closeNetworkPup">确定</view>
@@ -170,10 +174,7 @@ const pollingSuccess = async () => {
   console.log('同步后逻辑')
   uni.hideLoading()
   clearInterval(intervalId.value)
-  // 清理缓存的base64图片
-  for (const k in imageUrlAndBase64Map) {
-    delete imageUrlAndBase64Map[k]
-  }
+
   openPup()
   uni.$emit('SyncEnd')
 }
@@ -261,15 +262,21 @@ const onSync = async () => {
             polling()
           })
           .catch(() => {
+            // uni.hideLoading()
+            // uni.$emit('SyncEnd')
+            // uni.showToast({
+            //   title: '登录失效',
+            //   icon: 'none'
+            // })
+            // nextTick(() => {
+            //   routerForward('login')
+            // })
+
+            // 拉取项目信息失败
             uni.hideLoading()
+            syncStatus.value = false
+            openPup()
             uni.$emit('SyncEnd')
-            uni.showToast({
-              title: '登录失效',
-              icon: 'none'
-            })
-            nextTick(() => {
-              routerForward('login')
-            })
           })
       } else {
         uni.hideLoading()
@@ -435,6 +442,7 @@ defineExpose({
       }
 
       .txt {
+        flex: 1;
         font-size: 9rpx;
         color: #171718;
 
@@ -445,6 +453,13 @@ defineExpose({
 
       .err {
         color: #f75454;
+      }
+
+      .txt-center {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
       }
     }
   }

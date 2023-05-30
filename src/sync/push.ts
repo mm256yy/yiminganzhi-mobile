@@ -17,6 +17,7 @@ import { PushStateType, DeleteRecordType, LandlordType } from '@/types/sync'
 import dayjs from 'dayjs'
 import { pushDataApi } from './api'
 import { env, getHeaderCommonParams } from '@/config'
+import { StorageKey, getStorage, setStorage } from '@/utils'
 
 class PushData {
   public db: any
@@ -397,6 +398,12 @@ class PushData {
           this.getModifyGraveList()
         ])
           .then(() => {
+            /**
+             * 同步推送状态：
+             * syncEnd：同步成功，推/拉 都成功
+             * pushEnd：推送成功，拉取失败
+             */
+            const pushStatus = getStorage(StorageKey.PUSHSTATUS) || 'syncEnd'
             // 拿到结果了
             const {
               peasantHouseholdPushDtoList,
@@ -416,10 +423,13 @@ class PushData {
               deleteRecordList,
               pullTime,
               villageList,
-              immigrantGraveList
+              immigrantGraveList,
+              pushStatus
             })
               .then((res) => {
                 console.log('推送: 接口suc:', res)
+                // 推送成功 写入状态
+                setStorage(StorageKey.PUSHSTATUS, 'pushEnd')
                 resolve(res)
               })
               .catch((err) => {

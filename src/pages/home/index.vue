@@ -187,7 +187,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
-import { getStorage, routerForward, setStorage, StorageKey, networkCheck } from '@/utils'
+import { getStorage, routerForward, resetCache, StorageKey, networkCheck } from '@/utils'
 import { loginOutApi } from './api'
 import { getHomeCollectionApi, getImgListApi } from '@/service'
 import { pullInstance } from '@/sync'
@@ -236,12 +236,8 @@ const loginOut = () => {
       userInfo.value = null
       projectInfo.value = null
       collection.value = null
-      setStorage(StorageKey.TOKEN, '')
-      setStorage(StorageKey.USERINFO, null)
-      setStorage(StorageKey.LOGINTIME, '')
-      setStorage(StorageKey.PROJECTID, '')
-      setStorage(StorageKey.PROJECTINFO, null)
-      setStorage(StorageKey.PULLTIME, '')
+      // 重置本地缓存
+      resetCache()
       pullInstance
         .resetTable()
         .then(() => {

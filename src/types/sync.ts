@@ -155,6 +155,7 @@ export interface PushStateType {
   deleteRecordList: DeleteRecordType[]
   villageList: VillageType[]
   immigrantGraveList: GraveType[]
+  pushStatus?: 'pushEnd' | 'syncEnd'
 }
 
 export interface ImgItemType {

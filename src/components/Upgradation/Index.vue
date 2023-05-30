@@ -78,7 +78,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { StorageKey, setStorage } from '@/utils'
+import { resetCache } from '@/utils'
 import { pullInstance } from '@/sync'
 let downloadTask: any = null
 
@@ -221,15 +221,9 @@ export default defineComponent({
     },
     installPackage() {
       this.installing = true
-      // 重置登录时间 重启时需要重新登录
-
-      setStorage(StorageKey.TOKEN, '')
-      setStorage(StorageKey.USERINFO, null)
-      setStorage(StorageKey.LOGINTIME, '')
-      setStorage(StorageKey.PROJECTID, '')
-      setStorage(StorageKey.PROJECTINFO, null)
-      setStorage(StorageKey.PULLTIME, '')
-
+      // 重置本地存储
+      resetCache()
+      // 重置数据库表
       pullInstance.resetTable().then(() => {
         plus.runtime.install(
           this.tempFilePath,
