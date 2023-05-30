@@ -385,9 +385,7 @@ onLoad((option: any) => {
     if (option.type === 'edit') {
       formData.value = JSON.parse(option.params)
       selectValue.value = formData.value.occupation ? JSON.parse(formData.value.occupation) : []
-      selectLabel.value = formData.value.occupation
-        ? fmtOccupation(occupationOptions.value, formData.value.occupation)
-        : ''
+      selectLabel.value = fmtOccupation(occupationOptions.value, formData.value.occupation)
       selectedData.value = formData.value.occupation
         ? fmtOccupationStr(occupationOptions.value, formData.value.occupation, 1)
         : ''
