@@ -18,83 +18,89 @@
               <!-- tab 切换 -->
               <Tabs :dataList="tabsList" :current-index="tabVal" @select-tabs="selectTabs" />
 
-              <!-- 居民户信息 -->
-              <household-info v-if="tabVal === 0" :dataInfo="dataInfo" />
+              <view
+                class="touch-content"
+                v-touch:swipe.left="touchLeft"
+                v-touch:swipe.right="touchRight"
+              >
+                <!-- 居民户信息 -->
+                <household-info v-if="tabVal === 0" :dataInfo="dataInfo" />
 
-              <!-- 人口信息 -->
-              <demographic-info
-                v-if="tabVal === 1"
-                :dataList="dataInfo.demographicList"
-                :dataInfo="dataInfo"
-                :occupationOptions="occupationOptions"
-                :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '人口信息')"
-                @delete-demographic="deleteDemographic"
-              />
+                <!-- 人口信息 -->
+                <demographic-info
+                  v-if="tabVal === 1"
+                  :dataList="dataInfo.demographicList"
+                  :dataInfo="dataInfo"
+                  :occupationOptions="occupationOptions"
+                  :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '人口信息')"
+                  @delete-demographic="deleteDemographic"
+                />
 
-              <!-- 房屋信息 -->
-              <house-info
-                v-if="tabVal === 2"
-                :dataList="dataInfo.immigrantHouseList"
-                :dataInfo="dataInfo"
-                :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '房屋信息')"
-                :mainType="MainType.PeasantHousehold"
-                @delete-house="deleteHouse"
-              />
+                <!-- 房屋信息 -->
+                <house-info
+                  v-if="tabVal === 2"
+                  :dataList="dataInfo.immigrantHouseList"
+                  :dataInfo="dataInfo"
+                  :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '房屋信息')"
+                  :mainType="MainType.PeasantHousehold"
+                  @delete-house="deleteHouse"
+                />
 
-              <!-- 附属物信息 -->
-              <appendant-info
-                v-if="tabVal === 3"
-                :dataInfo="dataInfo"
-                :dataList="dataInfo.immigrantAppendantList"
-                :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '附属物信息')"
-                :mainType="MainType.PeasantHousehold"
-                @submit="updateAppendantInfo"
-              />
+                <!-- 附属物信息 -->
+                <appendant-info
+                  v-if="tabVal === 3"
+                  :dataInfo="dataInfo"
+                  :dataList="dataInfo.immigrantAppendantList"
+                  :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '附属物信息')"
+                  :mainType="MainType.PeasantHousehold"
+                  @submit="updateAppendantInfo"
+                />
 
-              <!-- 零星（林）果木信息 -->
-              <tree-info
-                v-if="tabVal === 4"
-                :dataList="dataInfo.immigrantTreeList"
-                :dataInfo="dataInfo"
-                :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '果树信息')"
-                :mainType="MainType.PeasantHousehold"
-                @delete-tree="deleteTree"
-                @update-fruit-tree-info="updateFruitTreeInfo"
-              />
+                <!-- 零星（林）果木信息 -->
+                <tree-info
+                  v-if="tabVal === 4"
+                  :dataList="dataInfo.immigrantTreeList"
+                  :dataInfo="dataInfo"
+                  :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '果树信息')"
+                  :mainType="MainType.PeasantHousehold"
+                  @delete-tree="deleteTree"
+                  @update-fruit-tree-info="updateFruitTreeInfo"
+                />
 
-              <!-- 坟墓信息 -->
-              <grave-info
-                v-if="tabVal === 5"
-                :dataInfo="dataInfo"
-                :dataList="dataInfo.immigrantGraveList"
-                :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '坟墓信息')"
-                @delete-grave-info="deleteGraveInfo"
-              />
+                <!-- 坟墓信息 -->
+                <grave-info
+                  v-if="tabVal === 5"
+                  :dataInfo="dataInfo"
+                  :dataList="dataInfo.immigrantGraveList"
+                  :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '坟墓信息')"
+                  @delete-grave-info="deleteGraveInfo"
+                />
 
-              <!-- 家庭收入信息 -->
-              <revenue-info
-                v-if="tabVal === 6"
-                :dataList="dataInfo.immigrantIncomeList"
-                :dataInfo="dataInfo"
-                :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '收入信息')"
-                @submit="updateRevenueInfo"
-              />
+                <!-- 家庭收入信息 -->
+                <revenue-info
+                  v-if="tabVal === 6"
+                  :dataList="dataInfo.immigrantIncomeList"
+                  :dataInfo="dataInfo"
+                  :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '收入信息')"
+                  @submit="updateRevenueInfo"
+                />
 
-              <!-- 安置意愿信息 -->
-              <willingness-info
-                v-if="tabVal === 7"
-                :willData="dataInfo.immigrantWill"
-                :dataInfo="dataInfo"
-                :updateLog="fmtUpdateLog(dataInfo.updateLogList, '安置意愿信息')"
-                @submit="updateWillingnessInfo"
-              />
+                <!-- 安置意愿信息 -->
+                <willingness-info
+                  v-if="tabVal === 7"
+                  :willData="dataInfo.immigrantWill"
+                  :dataInfo="dataInfo"
+                  :updateLog="fmtUpdateLog(dataInfo.updateLogList, '安置意愿信息')"
+                  @submit="updateWillingnessInfo"
+                />
 
-              <!-- 附件上传 -->
-              <attachment-upload
-                v-if="tabVal === 8"
-                :dataInfo="dataInfo"
-                @submit="updateAttachment"
-              />
+                <!-- 附件上传 -->
+                <attachment-upload
+                  v-if="tabVal === 8"
+                  :dataInfo="dataInfo"
+                  @submit="updateAttachment"
+                />
+              </view>
             </view>
           </view>
 
@@ -188,6 +194,22 @@ const emit = defineEmits(['updateData'])
 // tab 切换
 const selectTabs = (data: any) => {
   tabVal.value = data.value
+}
+
+// 页面向左滑动, tab 跟随页面一起动
+const touchLeft = () => {
+  tabVal.value += 1
+  if (tabVal.value > tabsList.value.length - 1) {
+    tabVal.value = 0
+  }
+}
+
+// 页面向右滑动, tab 跟随页面一起动
+const touchRight = () => {
+  tabVal.value -= 1
+  if (tabVal.value < 0) {
+    tabVal.value = tabsList.value.length - 1
+  }
 }
 
 /**
@@ -357,6 +379,7 @@ const updateData = () => {
   display: flex;
   flex-direction: column;
   flex: 1;
+  overflow: hidden;
 }
 
 .main-nav {
@@ -426,6 +449,12 @@ const updateData = () => {
   background-color: #fff;
   box-sizing: border-box;
   flex-direction: column;
+
+  .touch-content {
+    width: 100%;
+    height: calc(100vh - 33rpx - 12rpx - 33rpx - 60rpx - var(--status-bar-height));
+    overflow-y: scroll;
+  }
 }
 
 .null-wrapper {

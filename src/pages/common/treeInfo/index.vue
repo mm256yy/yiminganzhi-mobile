@@ -1,5 +1,5 @@
 <template>
-  <view class="tree-info-wrapper">
+  <view :class="['tree-info-wrapper', formData && formData.length === 0 ? 'p-b-0' : '']">
     <view class="tree-container" v-if="formData && formData.length > 0">
       <view class="row">
         <view class="row-wrapper">
@@ -215,9 +215,13 @@ const closeModifyRecords = () => {
 <style lang="scss" scoped>
 .tree-info-wrapper {
   width: 100%;
-  height: calc(100vh - 33rpx - 12rpx - 60rpx - var(--status-bar-height));
+  height: calc(100vh - 33rpx - 12rpx - 33rpx - 28rpx - 60rpx - var(--status-bar-height));
   padding-bottom: 80rpx;
   overflow-y: scroll;
+
+  &.p-b-0 {
+    padding-bottom: 0;
+  }
 
   .tree-container {
     display: table;

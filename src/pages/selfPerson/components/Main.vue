@@ -18,48 +18,54 @@
               <!-- tab 切换 -->
               <Tabs :dataList="tabsList" :current-index="tabVal" @select-tabs="selectTabs" />
 
-              <!-- 个体户基本概况 -->
-              <base-info v-if="tabVal === 0" :dataInfo="dataInfo.company" :baseInfo="dataInfo" />
+              <view
+                class="touch-content"
+                v-touch:swipe.left="touchLeft"
+                v-touch:swipe.right="touchRight"
+              >
+                <!-- 个体户基本概况 -->
+                <base-info v-if="tabVal === 0" :dataInfo="dataInfo.company" :baseInfo="dataInfo" />
 
-              <!-- 房屋信息 -->
-              <house-info
-                v-if="tabVal === 1"
-                :dataList="dataInfo.immigrantHouseList"
-                :dataInfo="dataInfo"
-                @delete-house="deleteHouse"
-              />
+                <!-- 房屋信息 -->
+                <house-info
+                  v-if="tabVal === 1"
+                  :dataList="dataInfo.immigrantHouseList"
+                  :dataInfo="dataInfo"
+                  @delete-house="deleteHouse"
+                />
 
-              <!-- 零星（林）果木信息 -->
-              <tree-info
-                v-if="tabVal === 2"
-                :dataList="dataInfo.immigrantTreeList"
-                :dataInfo="dataInfo"
-                @delete-tree="deleteTree"
-                @update-fruit-tree-info="updateFruitTreeInfo"
-              />
+                <!-- 零星（林）果木信息 -->
+                <tree-info
+                  v-if="tabVal === 2"
+                  :dataList="dataInfo.immigrantTreeList"
+                  :dataInfo="dataInfo"
+                  @delete-tree="deleteTree"
+                  @update-fruit-tree-info="updateFruitTreeInfo"
+                />
 
-              <!-- 附属物信息 -->
-              <appendant-info
-                v-if="tabVal === 3"
-                :dataInfo="dataInfo"
-                :dataList="dataInfo.immigrantAppendantList"
-                @submit="updateAppendantInfo"
-              />
+                <!-- 附属物信息 -->
+                <appendant-info
+                  v-if="tabVal === 3"
+                  :dataInfo="dataInfo"
+                  :dataList="dataInfo.immigrantAppendantList"
+                  @submit="updateAppendantInfo"
+                />
 
-              <!-- 设施设备信息 -->
-              <equipment-info
-                v-if="tabVal === 4"
-                :dataList="dataInfo.immigrantEquipmentList"
-                :dataInfo="dataInfo"
-                @delete-equipment="deleteEquipment"
-              />
+                <!-- 设施设备信息 -->
+                <equipment-info
+                  v-if="tabVal === 4"
+                  :dataList="dataInfo.immigrantEquipmentList"
+                  :dataInfo="dataInfo"
+                  @delete-equipment="deleteEquipment"
+                />
 
-              <!-- 照片上传 -->
-              <attachment-upload
-                v-if="tabVal === 5"
-                :dataInfo="dataInfo"
-                @submit="updateAttachment"
-              />
+                <!-- 照片上传 -->
+                <attachment-upload
+                  v-if="tabVal === 5"
+                  :dataInfo="dataInfo"
+                  @submit="updateAttachment"
+                />
+              </view>
             </view>
           </view>
 
@@ -135,6 +141,22 @@ const emit = defineEmits(['updateData'])
 // tab 切换
 const selectTabs = (data: any) => {
   tabVal.value = data.value
+}
+
+// 页面向左滑动, tab 跟随页面一起动
+const touchLeft = () => {
+  tabVal.value += 1
+  if (tabVal.value > tabsList.value.length - 1) {
+    tabVal.value = 0
+  }
+}
+
+// 页面向右滑动, tab 跟随页面一起动
+const touchRight = () => {
+  tabVal.value -= 1
+  if (tabVal.value < 0) {
+    tabVal.value = tabsList.value.length - 1
+  }
 }
 
 // 更新整体数据
@@ -249,6 +271,7 @@ const updateAttachment = (params: any) => {
   display: flex;
   flex-direction: column;
   flex: 1;
+  overflow: hidden;
 }
 
 .view-item {
@@ -314,6 +337,12 @@ const updateAttachment = (params: any) => {
   background-color: #fff;
   box-sizing: border-box;
   flex-direction: column;
+
+  .touch-content {
+    width: 100%;
+    height: calc(100vh - 33rpx - 12rpx - 33rpx - 60rpx - var(--status-bar-height));
+    overflow-y: scroll;
+  }
 }
 
 .null-wrapper {
