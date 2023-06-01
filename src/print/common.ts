@@ -424,7 +424,7 @@ export const getHouseInfo = (landlord: LandlordType) => {
     ],
     [
       { text: '幢号', style: 'td' },
-      { text: '类别', style: 'td' },
+      { text: '产别', style: 'td' },
       { text: '房屋高程', style: 'td' },
       { text: '层数', style: 'td' },
       { text: '建筑面积', style: 'td' },
@@ -441,7 +441,7 @@ export const getHouseInfo = (landlord: LandlordType) => {
     immigrantHouseList.forEach((item) => {
       body.push([
         { text: item.houseNo || '', style: 'td' },
-        { text: item.houseTypeText || '', style: 'td' },
+        { text: item.propertyTypeText || '', style: 'td' },
         { text: item.houseHeight || '', style: 'td' },
         { text: item.storeyNumber || '', style: 'td' },
         { text: item.landArea || '', style: 'td' },

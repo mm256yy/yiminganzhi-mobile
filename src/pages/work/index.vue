@@ -5,6 +5,12 @@
         <view class="work-head">
           <view class="time-box">
             <view
+              :class="['time-item', timeId === 'all' ? 'active' : '']"
+              @click="onChooseDays('all')"
+            >
+              全部
+            </view>
+            <view
               :class="['time-item', timeId === '-1' ? 'active' : '']"
               @click="onChooseDays('-1')"
             >
@@ -20,7 +26,13 @@
               最近七天
             </view>
 
-            <uni-datetime-picker :value="time" @change="onTimePickerChange" type="daterange">
+            <uni-datetime-picker
+              type="daterange"
+              v-model="time"
+              :start="time[0]"
+              :end="time[1]"
+              @change="onTimePickerChange"
+            >
               <view
                 :class="['time-item', 'range', timeId === 'custom' ? 'active' : '']"
                 v-if="time && time.length"
@@ -173,15 +185,22 @@ const getLocationText = (key: string) => {
 }
 
 const onChooseDays = (type: string) => {
+  console.log('年：', dayjs().get('year'))
   timeId.value = type
-  if (type === '-1') {
+  if (type === 'all') {
+    const startDay = `${dayjs().get('year')}-01-01`
+    const endDay = dayjs().subtract(1, 'day').format(viewFormat)
+    time.value = [startDay, endDay]
+  } else if (type === '-1') {
     const day = dayjs().subtract(1, 'day').format(viewFormat)
     time.value = [day, day]
   } else if (type === '0') {
     const day = dayjs().format(viewFormat)
     time.value = [day, day]
   } else if (type === '-7') {
-    time.value = [dayjs().subtract(7, 'day').format(viewFormat), dayjs().format(viewFormat)]
+    const startDay = dayjs().subtract(7, 'day').format(viewFormat)
+    const endDay = dayjs().format(viewFormat)
+    time.value = [startDay, endDay]
   }
   serach()
 }
@@ -288,7 +307,7 @@ onMounted(() => {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 70rpx;
+        width: 66rpx;
         height: 21rpx;
         margin-right: 6rpx;
         font-size: 9rpx;
