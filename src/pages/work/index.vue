@@ -185,10 +185,9 @@ const getLocationText = (key: string) => {
 }
 
 const onChooseDays = (type: string) => {
-  console.log('年：', dayjs().get('year'))
   timeId.value = type
   if (type === 'all') {
-    const startDay = `${dayjs().get('year')}-01-01`
+    const startDay = `${dayjs().year()}-01-01`
     const endDay = dayjs().subtract(1, 'day').format(viewFormat)
     time.value = [startDay, endDay]
   } else if (type === '-1') {
