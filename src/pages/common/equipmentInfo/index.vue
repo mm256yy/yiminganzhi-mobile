@@ -125,7 +125,7 @@ const toLink = (type: string, data?: any) => {
   if (type === 'edit') {
     const params = {
       ...data,
-      year: data.year ? dayjs(data.year).format('YYYY-MM-DD') : null
+      year: data.year ? dayjs(data.year).format('YYYY') : ''
     }
     routerForward('equipmentInfoEdit', {
       params: JSON.stringify(params),

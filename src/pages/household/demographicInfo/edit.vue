@@ -367,11 +367,7 @@ const getDate = () => {
   if (formData.value.birthday) {
     return formData.value.birthday
   } else {
-    const date = new Date()
-    let year = date.getFullYear()
-    let month: any = date.getMonth() + 1
-    month = month > 9 ? month : '0' + month
-    return `${year}-${month}`
+    return `${dayjs().year()}-${dayjs().month() + 1}`
   }
 }
 
@@ -429,7 +425,6 @@ const submit = () => {
     ...formData.value,
     birthday: formData.value.birthday ? dayjs(formData.value.birthday) : formData.value.birthday
   }
-  console.log('params:', params)
   if (!formData.value.name) {
     showToast('请输入姓名')
     return
