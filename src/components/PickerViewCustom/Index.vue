@@ -42,7 +42,7 @@ import { showToast } from '@/config/msg'
 
 interface PropsType {
   type?: string
-  value?: string[]
+  value: string | string[]
 }
 
 const props = defineProps<PropsType>()
