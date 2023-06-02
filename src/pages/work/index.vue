@@ -188,7 +188,7 @@ const onChooseDays = (type: string) => {
   timeId.value = type
   if (type === 'all') {
     const startDay = `${dayjs().year()}-01-01`
-    const endDay = dayjs().subtract(1, 'day').format(viewFormat)
+    const endDay = dayjs().format(viewFormat)
     time.value = [startDay, endDay]
   } else if (type === '-1') {
     const day = dayjs().subtract(1, 'day').format(viewFormat)
