@@ -547,7 +547,7 @@ class PullData {
                 try {
                   const imgArr = JSON.parse(houseItem.housePic)
                   imgArr.forEach((imgItem: any) => {
-                    if (/\.(jpg|jpeg|png|JPG|PNG)/.test(imgItem.url)) {
+                    if (/\.(jpg|jpeg|png|JPEG|JPG|PNG)/.test(imgItem.url)) {
                       imgUrls.push(imgItem.url)
                     }
                   })

@@ -242,7 +242,7 @@ class PushData {
                 } = landlordItem
                 if (demographicList && demographicList.length) {
                   demographicList.forEach((item) => {
-                    if (item.uid && item.isDelete === '1') {
+                    if (item.uid && item.id && item.isDelete === '1') {
                       deleteList.push({
                         type: 'demographicList',
                         deleteId: item.uid,
@@ -253,7 +253,7 @@ class PushData {
                 }
                 if (immigrantHouseList && immigrantHouseList.length) {
                   immigrantHouseList.forEach((item) => {
-                    if (item.uid && item.isDelete === '1') {
+                    if (item.uid && item.id && item.isDelete === '1') {
                       deleteList.push({
                         type: 'immigrantHouseList',
                         deleteId: item.uid,
@@ -265,7 +265,7 @@ class PushData {
 
                 if (immigrantTreeList && immigrantTreeList.length) {
                   immigrantTreeList.forEach((item) => {
-                    if (item.uid && item.isDelete === '1') {
+                    if (item.uid && item.id && item.isDelete === '1') {
                       deleteList.push({
                         type: 'immigrantTreeList',
                         deleteId: item.uid
@@ -275,7 +275,7 @@ class PushData {
                 }
                 if (immigrantEquipmentList && immigrantEquipmentList.length) {
                   immigrantEquipmentList.forEach((item) => {
-                    if (item.uid && item.isDelete === '1') {
+                    if (item.uid && item.id && item.isDelete === '1') {
                       deleteList.push({
                         type: 'immigrantEquipmentList',
                         deleteId: item.uid
@@ -285,7 +285,7 @@ class PushData {
                 }
                 if (immigrantFacilitiesList && immigrantFacilitiesList.length) {
                   immigrantFacilitiesList.forEach((item) => {
-                    if (item.uid && item.isDelete === '1') {
+                    if (item.uid && item.id && item.isDelete === '1') {
                       deleteList.push({
                         type: 'immigrantFacilitiesList',
                         deleteId: item.uid
