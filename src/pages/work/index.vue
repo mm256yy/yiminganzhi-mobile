@@ -26,16 +26,15 @@
               最近七天
             </view>
 
-            <uni-datetime-picker
+            <picker-view-custom
               type="daterange"
-              v-model="time"
-              :start="time[0]"
-              :end="time[1]"
-              @change="onTimePickerChange"
+              :value="time"
+              @open="openTimePicker"
+              @confirm="onTimePickerChange"
             >
               <view
                 :class="['time-item', 'range', timeId === 'custom' ? 'active' : '']"
-                v-if="time && time.length"
+                v-if="time && time[0] && time[1]"
               >
                 <text class="txt">{{ time[0] }}</text>
                 <text class="txt">&nbsp;-&nbsp;</text>
@@ -46,7 +45,7 @@
                 <text class="txt">&nbsp;-&nbsp;</text>
                 <text class="txt">结束时间</text>
               </view>
-            </uni-datetime-picker>
+            </picker-view-custom>
           </view>
           <view class="search-box">
             <input
@@ -120,6 +119,7 @@ import { ref, onMounted } from 'vue'
 import dayjs from 'dayjs'
 import { getStorage, StorageKey, routerForward } from '@/utils'
 import Container from '@/components/Container/index.vue'
+import PickerViewCustom from '@/components/PickerViewCustom/Index.vue'
 import { getSubmitListApi } from '@/service'
 import { MainType } from '@/types/common'
 import { LandlordType } from '@/types/sync'
@@ -204,8 +204,17 @@ const onChooseDays = (type: string) => {
   serach()
 }
 
-const onTimePickerChange = (val: any) => {
+// 打开日期选择框
+const openTimePicker = () => {
   timeId.value = 'custom'
+}
+
+/**
+ * 确定选择的日期
+ * @{object} val 当前选择的日期
+ */
+const onTimePickerChange = (val: any) => {
+  console.log('val:', val)
   time.value = val
   serach()
 }
