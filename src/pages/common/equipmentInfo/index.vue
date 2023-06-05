@@ -136,7 +136,7 @@ const toLink = (type: string, data?: any) => {
       name: '',
       size: '',
       unit: '',
-      number: '',
+      number: null,
       remark: '',
       uid: '',
       purpose: '',

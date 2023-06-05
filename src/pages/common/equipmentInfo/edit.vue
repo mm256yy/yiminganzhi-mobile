@@ -144,7 +144,7 @@ import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import dayjs from 'dayjs'
 import { addLandlordEquipmentApi, updateLandlordEquipmentApi } from '@/service'
-import { routerBack, getStorage, StorageKey } from '@/utils'
+import { routerBack, getStorage, StorageKey, formatNum } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
 
@@ -209,6 +209,8 @@ const submit = () => {
   const params = {
     doorNo,
     ...formData.value,
+    number: formData.value.number ? Number(formData.value.number) : null,
+    amount: formData.value.amount ? Number(formatNum(formData.value.amount)) : null,
     year: formData.value.year ? dayjs(formData.value.year) : formData.value.year
   }
   form.value?.validate().then((valid: any) => {

@@ -69,8 +69,8 @@ watch(
           startYear.value = Number(arr[0])
           startMonth.value = Number(arr[1]) - 1
           startDay.value = Number(arr[2]) - 1
-          currentValues.value = [startYear.value, startMonth.value, startDay.value]
         }
+        currentValues.value = [startYear.value, startMonth.value, startDay.value]
       } else if (val[0] === 'daterange') {
         let arr1 = val[1] && val[1].length ? val[1][0].split('-') : []
         let arr2 = val[1] && val[1].length ? val[1][1].split('-') : []
@@ -98,8 +98,8 @@ watch(
           startYear.value = Number(arr[0])
           startMonth.value = Number(arr[1]) - 1
           startDay.value = Number(arr[2]) - 1
-          currentValues.value = [startYear.value, startMonth.value, startDay.value]
         }
+        currentValues.value = [startYear.value, startMonth.value, startDay.value]
       }
     }
   },
@@ -181,7 +181,6 @@ const fmtNum = (val: number) => {
 
 const confirm = () => {
   visible.value = false
-  console.log('毫秒数：', dayjs('2023-06-02').valueOf())
   if (props.type === 'date') {
     emit('confirm', `${startYear.value}-${fmtNum(startMonth.value)}-${fmtNum(startDay.value)}`)
   } else if (props.type === 'daterange') {
