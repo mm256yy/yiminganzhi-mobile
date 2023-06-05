@@ -58,6 +58,8 @@ class PullData {
   public districtMap: { [key: string]: string }
   // 图片压缩的质量
   private quality: number
+  // 拉取失败 返回的对象
+  public pullError: any
 
   constructor() {
     // 拉取的计数
@@ -93,6 +95,7 @@ class PullData {
     }
 
     this.districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
+    this.pullError = null
   }
 
   public init() {
@@ -127,11 +130,14 @@ class PullData {
     return new Promise(async (resolve, reject) => {
       this.count = 0
       this.maxCount = baseMaxCount
+      this.pullError = null
+      // 优先拉取项目
       const res = await this.pullProjectData()
       if (res) {
         this.pull()
         resolve(true)
       } else {
+        // 项目拉取失败 唯一特殊的情况
         reject()
       }
     })
@@ -150,7 +156,10 @@ class PullData {
 
   public pullProjectData() {
     return new Promise(async (resolve) => {
-      const result = await getProjectDataApi().catch(() => {
+      const result = await getProjectDataApi().catch((error) => {
+        if (error && !this.pullError) {
+          this.pullError = error
+        }
         resolve(false)
       })
       console.log('接口: 项目数据', result)
@@ -171,7 +180,10 @@ class PullData {
 
   // 获取配置信息
   public async getConfigData() {
-    const result = await getConfigDataApi().catch(() => {
+    const result = await getConfigDataApi().catch((error) => {
+      if (error && !this.pullError) {
+        this.pullError = error
+      }
       this.maxCount = -1
     })
     console.log('接口: 配置数据', result)
@@ -280,7 +292,10 @@ class PullData {
           this.maxCount = -1
         }
       })
-      .catch(() => {
+      .catch((error) => {
+        if (error && !this.pullError) {
+          this.pullError = error
+        }
         this.maxCount = -1
       })
   }
@@ -305,7 +320,10 @@ class PullData {
 
   // 获取基础信息
   public async getBaseData() {
-    const result = await getBaseDataApi().catch(() => {
+    const result = await getBaseDataApi().catch((error) => {
+      if (error && !this.pullError) {
+        this.pullError = error
+      }
       this.maxCount = -1
     })
     console.log('接口: 基础数据', result)
@@ -362,7 +380,10 @@ class PullData {
 
   // 获取统计数据
   public async getCollect() {
-    const result = await getCollectApi().catch(() => {
+    const result = await getCollectApi().catch((error) => {
+      if (error && !this.pullError) {
+        this.pullError = error
+      }
       this.maxCount = -1
     })
     console.log('接口: 统计数据', result)

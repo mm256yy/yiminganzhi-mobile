@@ -22,7 +22,7 @@ function rejectHandle(err: Http.Result, reject: any) {
       uni.showToast({
         title: err.message || '正在排队中，请稍后！',
         icon: 'none',
-        duration: 3000
+        duration: 1000
       })
       reject(err)
       break

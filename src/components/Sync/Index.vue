@@ -1,6 +1,6 @@
 <template>
   <div>
-    <uni-popup ref="popup" type="center">
+    <uni-popup ref="popup" type="center" :mask-click="false">
       <view class="popup-box">
         <view v-if="!syncStatus" class="close" @click.stop="closePup">
           <uni-icons type="closeempty" color="#979797" size="12rpx" />
@@ -60,12 +60,29 @@
                 pushData.message === '网络不给力，请检查你的网络设置~'
               "
             >
-              <view class="txt txt-center"> 网络波动，请到网络状态良好的位置再次同步 </view>
+              <view class="txt txt-center"> 推送时网络波动，请到网络状态良好的位置再次同步 </view>
+            </view>
+
+            <view
+              class="pup-item"
+              v-else-if="
+                pullData &&
+                pullData.data &&
+                pullData.data.message === '网络不给力，请检查你的网络设置~'
+              "
+            >
+              <view class="txt txt-center"> 拉取时网络波动，请到网络状态良好的位置再次同步 </view>
             </view>
             <!-- 其他问题：数据格式/代码异常等等 -->
             <view class="pup-item" v-else>
               <view class="txt txt-center err">
-                {{ pushData && pushData.message ? pushData.message : '未知错误' }}
+                {{
+                  pushData && pushData.message
+                    ? pushData.message
+                    : pullData && pullData.data && pullData.data.message
+                    ? pullData.data.message
+                    : '未知错误'
+                }}
               </view>
             </view>
           </template>
@@ -137,6 +154,7 @@ const pullData = ref<
     individualNum: number
     villageNum: number
     virutalVillageNum: number
+    data: any
   }>
 >({})
 // 同步 推送统计信息
@@ -173,7 +191,8 @@ const pollingSuccess = async () => {
     companyNum,
     individualNum,
     villageNum,
-    virutalVillageNum
+    virutalVillageNum,
+    data: null
   }
   syncStatus.value = true
   console.log('同步成功!!!')
@@ -202,6 +221,8 @@ const polling = () => {
     if (pullInstance.maxCount === -1 || count.value === pullInstance.maxCount) {
       uni.hideLoading()
       clearInterval(intervalId.value)
+      console.log('拉取错误:', pullInstance.pullError)
+      pullData.value.data = pullInstance.pullError
       syncStatus.value = false
       openPup()
       uni.$emit('SyncEnd')
@@ -288,6 +309,7 @@ const onSync = async () => {
 
             // 拉取项目信息失败
             uni.hideLoading()
+            pullData.value.data = pullInstance.pullError
             syncStatus.value = false
             openPup()
             uni.$emit('SyncEnd')
@@ -308,8 +330,9 @@ const onSync = async () => {
         console.log(errData, '推送服务端失败信息')
       } else {
         uni.showToast({
-          title: '推送返回为空',
-          icon: 'error'
+          title: '推送异常',
+          icon: 'error',
+          duration: 3000
         })
       }
       uni.$emit('SyncEnd')
