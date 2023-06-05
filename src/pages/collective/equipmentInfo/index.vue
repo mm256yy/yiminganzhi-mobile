@@ -144,7 +144,7 @@ const toLink = (type: string, data?: any) => {
   if (type === 'edit') {
     let params = {
       ...data,
-      completedTime: data.completedTime ? dayjs(data.completedTime).format('YYYY-MM-DD') : null
+      completedTime: data.completedTime ? dayjs(data.completedTime).format('YYYY-MM') : null
     }
     routerForward('collectiveEquipmentInfoEdit', {
       params: JSON.stringify(params),

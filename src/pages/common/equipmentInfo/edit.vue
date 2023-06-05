@@ -211,7 +211,7 @@ const submit = () => {
     ...formData.value,
     number: formData.value.number ? Number(formData.value.number) : null,
     amount: formData.value.amount ? Number(formatNum(formData.value.amount)) : null,
-    year: formData.value.year ? dayjs(formData.value.year) : formData.value.year
+    year: formData.value.year ? dayjs(formData.value.year) : null
   }
   form.value?.validate().then((valid: any) => {
     if (valid) {

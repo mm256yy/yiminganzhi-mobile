@@ -1,6 +1,33 @@
 <template>
   <view class="picker-wrapper" @click.stop="open">
-    <slot></slot>
+    <slot>
+      <view v-if="props.type === 'daterange'">
+        <view class="range-date" v-if="currentValues && currentValues.length === 6">
+          <text class="txt">{{
+            currentValues[0] + '-' + (currentValues[1] + 1) + '-' + (currentValues[2] + 1)
+          }}</text>
+          <text class="txt">&nbsp;-&nbsp;</text>
+          <text class="txt">{{
+            currentValues[3] + '-' + (currentValues[4] + 1) + '-' + (currentValues[5] + 1)
+          }}</text>
+        </view>
+        <view class="range-date" v-else>
+          <text class="txt">开始时间</text>
+          <text class="txt">&nbsp;-&nbsp;</text>
+          <text class="txt">结束时间</text>
+        </view>
+      </view>
+      <view v-else>
+        <view class="range-date" v-if="currentValues && currentValues.length === 3">
+          <text class="txt">{{
+            currentValues[0] + '-' + (currentValues[1] + 1) + '-' + (currentValues[2] + 1)
+          }}</text>
+        </view>
+        <view class="range-date" v-else>
+          <text class="txt">选择日期</text>
+        </view>
+      </view>
+    </slot>
     <view class="picker-content" v-if="visible">
       <view class="title-wrapper">
         <view class="cancel" @click.stop="cancel">取消</view>
@@ -199,6 +226,25 @@ const confirm = () => {
 
 <style lang="scss">
 .picker-wrapper {
+  .range-date {
+    display: flex;
+    width: auto;
+    height: 21rpx;
+    padding: 0 10rpx;
+    margin-right: 6rpx;
+    font-size: 9rpx;
+    color: #171718;
+    background-color: #f3f6fa;
+    border-radius: 2rpx;
+    align-items: center;
+    justify-content: center;
+
+    .txt {
+      font-size: 9rpx;
+      color: #171718;
+    }
+  }
+
   .picker-content {
     position: fixed;
     top: 0;
