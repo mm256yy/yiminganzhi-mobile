@@ -538,6 +538,7 @@ export class Landlord extends Common {
 
               res.immigrantHouseList.forEach((item) => {
                 item.houseTypeText = formatDict(item.houseType, 266)
+                item.propertyTypeText = formatDict(item.propertyType, 284)
                 item.usageTypeText = formatDict(item.usageType, 265)
                 item.constructionTypeText = formatDict(item.constructionType, 252)
                 item.completedTimeText = item.completedTime

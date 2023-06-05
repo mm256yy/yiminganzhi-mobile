@@ -5,6 +5,12 @@
         <view class="work-head">
           <view class="time-box">
             <view
+              :class="['time-item', timeId === 'all' ? 'active' : '']"
+              @click="onChooseDays('all')"
+            >
+              全部
+            </view>
+            <view
               :class="['time-item', timeId === '-1' ? 'active' : '']"
               @click="onChooseDays('-1')"
             >
@@ -20,10 +26,15 @@
               最近七天
             </view>
 
-            <uni-datetime-picker :value="time" @change="onTimePickerChange" type="daterange">
+            <picker-view-custom
+              type="daterange"
+              :value="time"
+              @open="openTimePicker"
+              @confirm="onTimePickerChange"
+            >
               <view
                 :class="['time-item', 'range', timeId === 'custom' ? 'active' : '']"
-                v-if="time && time.length"
+                v-if="time && time[0] && time[1]"
               >
                 <text class="txt">{{ time[0] }}</text>
                 <text class="txt">&nbsp;-&nbsp;</text>
@@ -34,7 +45,7 @@
                 <text class="txt">&nbsp;-&nbsp;</text>
                 <text class="txt">结束时间</text>
               </view>
-            </uni-datetime-picker>
+            </picker-view-custom>
           </view>
           <view class="search-box">
             <input
@@ -108,6 +119,7 @@ import { ref, onMounted } from 'vue'
 import dayjs from 'dayjs'
 import { getStorage, StorageKey, routerForward } from '@/utils'
 import Container from '@/components/Container/index.vue'
+import PickerViewCustom from '@/components/PickerViewCustom/Index.vue'
 import { getSubmitListApi } from '@/service'
 import { MainType } from '@/types/common'
 import { LandlordType } from '@/types/sync'
@@ -174,20 +186,35 @@ const getLocationText = (key: string) => {
 
 const onChooseDays = (type: string) => {
   timeId.value = type
-  if (type === '-1') {
+  if (type === 'all') {
+    const startDay = `${dayjs().year()}-01-01`
+    const endDay = dayjs().format(viewFormat)
+    time.value = [startDay, endDay]
+  } else if (type === '-1') {
     const day = dayjs().subtract(1, 'day').format(viewFormat)
     time.value = [day, day]
   } else if (type === '0') {
     const day = dayjs().format(viewFormat)
     time.value = [day, day]
   } else if (type === '-7') {
-    time.value = [dayjs().subtract(7, 'day').format(viewFormat), dayjs().format(viewFormat)]
+    const startDay = dayjs().subtract(7, 'day').format(viewFormat)
+    const endDay = dayjs().format(viewFormat)
+    time.value = [startDay, endDay]
   }
   serach()
 }
 
-const onTimePickerChange = (val: any) => {
+// 打开日期选择框
+const openTimePicker = () => {
   timeId.value = 'custom'
+}
+
+/**
+ * 确定选择的日期
+ * @{object} val 当前选择的日期
+ */
+const onTimePickerChange = (val: any) => {
+  console.log('val:', val)
   time.value = val
   serach()
 }
@@ -288,7 +315,7 @@ onMounted(() => {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 70rpx;
+        width: 66rpx;
         height: 21rpx;
         margin-right: 6rpx;
         font-size: 9rpx;

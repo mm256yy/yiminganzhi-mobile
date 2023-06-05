@@ -494,11 +494,7 @@ const getDate = () => {
   if (formData.value.completedTime) {
     return formData.value.completedTime
   } else {
-    const date = new Date()
-    let year = date.getFullYear()
-    let month: any = date.getMonth() + 1
-    month = month > 9 ? month : '0' + month
-    return `${year}-${month}`
+    return `${dayjs().year()}-${dayjs().month() + 1}`
   }
 }
 

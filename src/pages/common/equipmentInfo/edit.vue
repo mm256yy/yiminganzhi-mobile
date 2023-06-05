@@ -65,7 +65,21 @@
               label-align="right"
               name="formData.year"
             >
-              <uni-datetime-picker type="date" placeholder="选择年份" v-model="formData.year" />
+              <view class="picker-wrapper">
+                <!-- 当选择的日期颗粒度为year时，start 和 end 必须赋值（空字符串也可以），否则会在控制台报警告信息 -->
+                <picker
+                  mode="date"
+                  start=""
+                  end=""
+                  :value="currentYear"
+                  :fields="'year'"
+                  @change="dateChange"
+                >
+                  <view :class="['uni-input', formData.year ? '' : 'select']">
+                    {{ formData.year ? formData.year : '选择年份' }}
+                  </view>
+                </picker>
+              </view>
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -130,7 +144,7 @@ import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import dayjs from 'dayjs'
 import { addLandlordEquipmentApi, updateLandlordEquipmentApi } from '@/service'
-import { routerBack, getStorage, StorageKey } from '@/utils'
+import { routerBack, getStorage, StorageKey, formatNum } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
 
@@ -146,11 +160,23 @@ const focusIndex = ref<number>(-1)
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
 
+// 获取年份
+const getYear = () => {
+  if (formData.value.year) {
+    return formData.value.year
+  } else {
+    return dayjs().year()
+  }
+}
+
+const currentYear = ref<any>('')
+
 onLoad((option: any) => {
   if (option) {
     let params = JSON.parse(option.params)
     formData.value = { ...params }
     commonParams.value = JSON.parse(option.commonParams)
+    currentYear.value = getYear()
     if (commonParams.value.type === 'edit') {
       title.value = '设施设备信息编辑'
     } else if (commonParams.value.type === 'add') {
@@ -169,12 +195,22 @@ const inputBlur = () => {
   focusIndex.value = -1
 }
 
+/**
+ * 建造/购置年份选择
+ * @param {Object} e
+ */
+const dateChange = (e: any) => {
+  formData.value.year = e.detail.value
+}
+
 // 表单提交
 const submit = () => {
   const { uid, type, doorNo } = commonParams.value
   const params = {
     doorNo,
     ...formData.value,
+    number: formData.value.number ? Number(formData.value.number) : null,
+    amount: formData.value.amount ? Number(formatNum(formData.value.amount)) : null,
     year: formData.value.year ? dayjs(formData.value.year) : formData.value.year
   }
   form.value?.validate().then((valid: any) => {
@@ -263,6 +299,29 @@ const submit = () => {
       ::v-deep.uni-input-input,
       ::v-deep.uni-input-placeholder {
         font-size: 9rpx !important;
+      }
+
+      .picker-wrapper {
+        display: flex;
+        width: 200rpx;
+        height: 23rpx;
+        padding-left: 7rpx;
+        overflow: hidden;
+        font-size: 9rpx;
+        line-height: 23rpx;
+        color: #171718;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+
+        .uni-input {
+          width: 180rpx;
+
+          &.select {
+            color: #999;
+          }
+        }
       }
 
       .input-wrapper {

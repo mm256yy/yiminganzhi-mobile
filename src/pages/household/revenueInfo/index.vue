@@ -187,7 +187,7 @@ const focusIndex = ref<number>(-1)
 // 公共的参数
 const commonParams = {
   doorNo: props.dataInfo.doorNo,
-  amount: '',
+  amount: null,
   remark: ''
 }
 

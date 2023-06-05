@@ -55,7 +55,8 @@
 import { ref, onMounted } from 'vue'
 import { getAppendantListApi } from '@/service'
 import { MainStage, MainType } from '@/types/common'
-import { getStorage, StorageKey } from '@/utils'
+import { AppendantType } from '@/types/datafill'
+import { getStorage, StorageKey, formatNum } from '@/utils'
 import modifyRecords from '../modifyRecords/index.vue' // 引入修改记录组件
 
 const props = defineProps({
@@ -87,7 +88,7 @@ const showRecord = ref<boolean>(false)
 const formData = ref<any>([])
 const emit = defineEmits(['submit'])
 const commonParams = {
-  number: '',
+  number: null,
   remark: ''
 }
 
@@ -108,7 +109,14 @@ const getList = () => {
 
 // 表单提交
 const submit = () => {
-  const params = [...formData.value]
+  const arr: any = []
+  formData.value.map((item: any) => {
+    arr.push({
+      ...item,
+      number: item.number ? Number(formatNum(item.number)) : null
+    })
+  })
+  const params = [...arr]
   emit('submit', params)
 }
 
