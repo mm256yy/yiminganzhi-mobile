@@ -50,10 +50,6 @@ const props = defineProps({
   type: {
     type: String,
     default: ''
-  },
-  villageCode: {
-    type: String,
-    default: ''
   }
 })
 
@@ -71,7 +67,6 @@ const getLandlordListBySearch = (name: string, type: any) => {
   let params = {
     name,
     type,
-    villageCode: props.villageCode,
     page: 1,
     pageSize: 50
   }
@@ -199,7 +194,7 @@ const confirmSelect = () => {
   .search-list {
     width: 100%;
     height: calc(100vh - 30rpx - 10rpx - 5rpx - var(--status-bar-height));
-    padding: 0 15rpx;
+    padding: 0 15rpx 50rpx 15rpx;
     margin-top: 5rpx;
     overflow-y: scroll;
     background-color: #fff;
