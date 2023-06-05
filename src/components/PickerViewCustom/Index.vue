@@ -46,7 +46,9 @@
           <view class="item" v-for="(item, index) in months()" :key="index">{{ item }}</view>
         </picker-view-column>
         <picker-view-column>
-          <view class="item" v-for="(item, index) in days()" :key="index">{{ item }}</view>
+          <view class="item" v-for="(item, index) in days(startYear, startMonth)" :key="index">{{
+            item
+          }}</view>
         </picker-view-column>
         <picker-view-column v-if="props.type === 'daterange'">
           <view class="item" v-for="(item, index) in years()" :key="index">{{ item }}</view>
@@ -55,7 +57,9 @@
           <view class="item" v-for="(item, index) in months()" :key="index">{{ item }}</view>
         </picker-view-column>
         <picker-view-column v-if="props.type === 'daterange'">
-          <view class="item" v-for="(item, index) in days()" :key="index">{{ item }}</view>
+          <view class="item" v-for="(item, index) in days(endYear, endMonth)" :key="index">{{
+            item
+          }}</view>
         </picker-view-column>
       </picker-view>
     </view>
@@ -138,7 +142,7 @@ watch(
 
 const years = () => {
   let arr: any = []
-  for (let i = 1990; i <= dayjs().year(); i++) {
+  for (let i = 1790; i <= dayjs().year(); i++) {
     arr.push(i)
   }
   return arr
@@ -152,9 +156,18 @@ const months = () => {
   return arr
 }
 
-const days = () => {
+/**
+ * 获取当前年月下有多少天
+ * @param{Object} year 年
+ * @param{Object} month 月
+ */
+const getDays = (year: number, month: number) => {
+  return new Date(year, month, 0).getDate()
+}
+
+const days = (year: number, month: number) => {
   let arr: any = []
-  for (let i = 1; i <= 31; i++) {
+  for (let i = 1; i <= getDays(year, month); i++) {
     arr.push(i)
   }
   return arr
@@ -165,18 +178,18 @@ const change = (e: any) => {
   if (props.type === 'date') {
     startYear.value = years()[val[0]]
     startMonth.value = months()[val[1]]
-    startDay.value = days()[val[2]]
+    startDay.value = days(startYear.value, startMonth.value)[val[2]]
   } else if (props.type === 'daterange') {
     startYear.value = years()[val[0]]
     startMonth.value = months()[val[1]]
-    startDay.value = days()[val[2]]
+    startDay.value = days(startYear.value, startMonth.value)[val[2]]
     endYear.value = years()[val[3]]
     endMonth.value = months()[val[4]]
-    endDay.value = days()[val[5]]
+    endDay.value = days(endYear.value, endMonth.value)[val[5]]
   } else {
     startYear.value = years()[val[0]]
     startMonth.value = months()[val[1]]
-    startDay.value = days()[val[2]]
+    startDay.value = days(startYear.value, startMonth.value)[val[2]]
   }
 }
 

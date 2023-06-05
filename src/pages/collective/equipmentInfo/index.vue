@@ -160,7 +160,7 @@ const toLink = (type: string, data?: any) => {
       facilitiesCode: '',
       number: null,
       unit: '',
-      completedTime: '',
+      completedTime: null,
       scopes: '',
       benefit: null,
       cost: null,

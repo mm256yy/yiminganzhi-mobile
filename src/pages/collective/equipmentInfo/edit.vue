@@ -335,9 +335,7 @@ const submit = () => {
       ? Number(formatNum(formData.value.originalInvest))
       : null,
     workersNum: formData.value.workersNum ? Number(formData.value.workersNum) : null,
-    completedTime: formData.value.completedTime
-      ? dayjs(formData.value.completedTime)
-      : formData.value.completedTime
+    completedTime: formData.value.completedTime ? dayjs(formData.value.completedTime) : null
   }
   if (type === 'add') {
     addLandlordFacilitiesApi(uid, params)
