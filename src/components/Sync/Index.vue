@@ -40,6 +40,7 @@
           </template>
 
           <template v-else>
+            <!-- 数据填写问题 没通过校验 -->
             <view class="pup-item" v-if="pushData && pushData.data">
               <view class="tit err">上传失败:&nbsp;</view>
               <view class="txt" @click="gotoEdit(pushData)">
@@ -50,9 +51,22 @@
                 <text class="txt">{{ pushData.message }}</text>
               </view>
             </view>
-
+            <!-- 网络问题 -->
+            <view
+              class="pup-item"
+              v-else-if="
+                pushData &&
+                pushData.message &&
+                pushData.message === '网络不给力，请检查你的网络设置~'
+              "
+            >
+              <view class="txt txt-center"> 网络波动，请到网络状态良好的位置再次同步 </view>
+            </view>
+            <!-- 其他问题：数据格式/代码异常等等 -->
             <view class="pup-item" v-else>
-              <view class="txt txt-center err"> 网络波动，请到网络状态良好的位置再次同步 </view>
+              <view class="txt txt-center err">
+                {{ pushData && pushData.message ? pushData.message : '未知错误' }}
+              </view>
             </view>
           </template>
         </view>
@@ -428,7 +442,7 @@ defineExpose({
       flex-direction: row;
       align-items: center;
       width: 378rpx;
-      height: 33rpx;
+      min-height: 33rpx;
       padding: 0 9rpx;
       margin-bottom: 9rpx;
       background: #f6f7f9;
