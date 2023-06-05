@@ -123,11 +123,13 @@
               label-align="right"
               name="formData.completedTime"
             >
-              <uni-datetime-picker
-                type="date"
-                placeholder="选择年份"
-                v-model="formData.completedTime"
-              />
+              <view class="picker-wrapper">
+                <picker mode="date" :value="currentDate" :fields="'month'" @change="bindDateChange">
+                  <view :class="['uni-input', formData.completedTime ? '' : 'select']">
+                    {{ formData.completedTime ? formData.completedTime : '选择年月' }}
+                  </view>
+                </picker>
+              </view>
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -275,12 +277,24 @@ const commonParams = ref<any>({})
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
 
+// 获取年月
+const getDate = () => {
+  if (formData.value.birthday) {
+    return formData.value.birthday
+  } else {
+    return `${dayjs().year()}-${dayjs().month() + 1}`
+  }
+}
+
+const currentDate = ref<any>('')
+
 // 获取上个页面传递的参数，给表单赋值
 onLoad((option: any) => {
   if (option) {
     commonParams.value = JSON.parse(option.commonParams)
     let params = JSON.parse(option.params)
     formData.value = { ...params }
+    currentDate.value = getDate()
     if (commonParams.value.type === 'edit') {
       title.value = '农村小型专项及农副业设施信息编辑'
     } else if (commonParams.value.type === 'add') {
@@ -297,6 +311,14 @@ const inputFocus = (index: number) => {
 // 输入框失去焦点事件
 const inputBlur = () => {
   focusIndex.value = -1
+}
+
+/**
+ * 建成年月选择
+ * @param{Object} e
+ */
+const bindDateChange = (e: any) => {
+  formData.value.completedTime = e.detail.value
 }
 
 // 表单提交
@@ -399,6 +421,29 @@ const submit = () => {
       ::v-deep.uni-input-input,
       ::v-deep.uni-input-placeholder {
         font-size: 9rpx !important;
+      }
+
+      .picker-wrapper {
+        display: flex;
+        width: 200rpx;
+        height: 23rpx;
+        padding-left: 7rpx;
+        overflow: hidden;
+        font-size: 9rpx;
+        line-height: 23rpx;
+        color: #171718;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+
+        .uni-input {
+          width: 180rpx;
+
+          &.select {
+            color: #999;
+          }
+        }
       }
 
       .input-wrapper {

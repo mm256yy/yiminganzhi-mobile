@@ -395,7 +395,8 @@ onLoad((option: any) => {
 })
 
 /**
- *日期选择
+ * 日期选择
+ * @param{Object} e
  */
 const bindDateChange = (e: any) => {
   formData.value.birthday = e.detail.value
