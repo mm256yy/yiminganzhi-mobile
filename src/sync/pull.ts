@@ -146,6 +146,15 @@ class PullData {
   public getPullStatus(): boolean {
     const status = this.count === this.needPullCount
     if (status) {
+      // 同步成功 更新拉取时间
+      const { pullTime } = this.state
+      if (pullTime) {
+        // 同步时间 存入other库
+        setStorage(StorageKey.PULLTIME, pullTime)
+        const fields = "'type','content','updatedDate'"
+        const values = `'${OtherDataType.PullTime}','${pullTime}','${getCurrentTimeStamp()}'`
+        this.db.insertOrReplaceData(OtherTableName, values, fields)
+      }
       // 同步成功 写入行政区划map数据
       setStorage(StorageKey.DISTRICTMAP, this.districtMap)
       // 推送拉取都成功 写入状态
@@ -302,14 +311,6 @@ class PullData {
 
   // 获取调查对象成功处理函数
   private getLandlordDataSuccess() {
-    const { pullTime } = this.state
-    if (pullTime) {
-      // 同步时间 存入other库
-      setStorage(StorageKey.PULLTIME, pullTime)
-      const fields = "'type','content','updatedDate'"
-      const values = `'${OtherDataType.PullTime}','${pullTime}','${getCurrentTimeStamp()}'`
-      this.db.insertOrReplaceData(OtherTableName, values, fields)
-    }
     // 存储调查对象数据
     this.pullLandlord().then((res) => {
       res && this.count++

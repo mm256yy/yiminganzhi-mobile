@@ -159,6 +159,11 @@ class PushData {
   getPullTime() {
     return new Promise((resolve, reject) => {
       try {
+        const time = getStorage(StorageKey.PULLTIME)
+        if (time) {
+          resolve(Number(time))
+          return
+        }
         db.selectTableData(OtherTableName, 'type', OtherDataType.PullTime)
           .then((res: any) => {
             this.state.pullTime = res.content
