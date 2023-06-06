@@ -64,7 +64,11 @@
           <view class="item" v-for="(item, index) in months()" :key="index">{{ item }}</view>
         </picker-view-column>
         <picker-view-column>
-          <view class="item" v-for="(item, index) in days(startYear, startMonth + 1)" :key="index">
+          <view
+            class="item"
+            v-for="(item, index) in days(years()[startYearIndex], months()[startMonthIndex])"
+            :key="index"
+          >
             {{ item }}
           </view>
         </picker-view-column>
@@ -75,7 +79,11 @@
           <view class="item" v-for="(item, index) in months()" :key="index">{{ item }}</view>
         </picker-view-column>
         <picker-view-column v-if="props.type === 'daterange'">
-          <view class="item" v-for="(item, index) in days(endYear, endMonth + 1)" :key="index">
+          <view
+            class="item"
+            v-for="(item, index) in days(years()[endYearIndex], months()[endMonthIndex])"
+            :key="index"
+          >
             {{ item }}
           </view>
         </picker-view-column>
@@ -101,6 +109,7 @@ const indicatorStyle = `height: 50px;`
 
 const emit = defineEmits(['open', 'confirm'])
 
+// 生成年份数组
 const years = () => {
   let arr: any = []
   for (let i = 1790; i <= dayjs().year(); i++) {
@@ -109,6 +118,7 @@ const years = () => {
   return arr
 }
 
+// 生成月份数组
 const months = () => {
   let arr: any = []
   for (let i = 1; i <= 12; i++) {
@@ -139,14 +149,16 @@ const days = (year: number, month: number) => {
   return arr
 }
 
-const startYear = ref<number>(getArrayIndex(years(), dayjs().year()))
-const startMonth = ref<number>(getArrayIndex(months(), dayjs().month()))
-const startDay = ref<number>(
-  getArrayIndex(days(dayjs().year(), dayjs().month() + 1), dayjs().date())
+const startYearIndex = ref<number>(getArrayIndex(years(), dayjs().year()))
+const startMonthIndex = ref<number>(getArrayIndex(months(), dayjs().month() + 1))
+const startDayIndex = ref<number>(
+  getArrayIndex(days(dayjs().year(), dayjs().month()), dayjs().date())
 )
-const endYear = ref<number>(getArrayIndex(years(), dayjs().year()))
-const endMonth = ref<number>(getArrayIndex(months(), dayjs().month()))
-const endDay = ref<number>(getArrayIndex(days(dayjs().year(), dayjs().month() + 1), dayjs().date()))
+const endYearIndex = ref<number>(getArrayIndex(years(), dayjs().year()))
+const endMonthIndex = ref<number>(getArrayIndex(months(), dayjs().month() + 1))
+const endDayIndex = ref<number>(
+  getArrayIndex(days(dayjs().year(), dayjs().month()), dayjs().date())
+)
 const currentValues = ref<number[]>([])
 
 // 初始化时，需要将实际的年、月、日转换为对应的年、月、日数组的下标进行回显
@@ -157,40 +169,43 @@ watch(
       if (val[0] === 'date') {
         let arr = val[1] && val[1].length ? val[1].split('-') : []
         if (arr && arr.length) {
-          startYear.value = getArrayIndex(years(), Number(arr[0]))
-          startMonth.value = getArrayIndex(months(), Number(arr[1]))
-          startDay.value = getArrayIndex(days(Number(arr[0]), Number(arr[1])), Number(arr[2]))
+          startYearIndex.value = getArrayIndex(years(), Number(arr[0]))
+          startMonthIndex.value = getArrayIndex(months(), Number(arr[1]))
+          startDayIndex.value = getArrayIndex(days(Number(arr[0]), Number(arr[1])), Number(arr[2]))
         }
-        currentValues.value = [startYear.value, startMonth.value, startDay.value]
+        currentValues.value = [startYearIndex.value, startMonthIndex.value, startDayIndex.value]
       } else if (val[0] === 'daterange') {
         let arr1 = val[1] && val[1].length ? val[1][0].split('-') : []
         let arr2 = val[1] && val[1].length ? val[1][1].split('-') : []
         if (arr1 && arr1.length) {
-          startYear.value = getArrayIndex(years(), Number(arr1[0]))
-          startMonth.value = getArrayIndex(months(), Number(arr1[1]))
-          startDay.value = getArrayIndex(days(Number(arr1[0]), Number(arr1[1])), Number(arr1[2]))
+          startYearIndex.value = getArrayIndex(years(), Number(arr1[0]))
+          startMonthIndex.value = getArrayIndex(months(), Number(arr1[1]))
+          startDayIndex.value = getArrayIndex(
+            days(Number(arr1[0]), Number(arr1[1])),
+            Number(arr1[2])
+          )
         }
         if (arr2 && arr2.length) {
-          endYear.value = getArrayIndex(years(), Number(arr2[0]))
-          endMonth.value = getArrayIndex(months(), Number(arr2[1]))
-          endDay.value = getArrayIndex(days(Number(arr2[0]), Number(arr2[1])), Number(arr2[2]))
+          endYearIndex.value = getArrayIndex(years(), Number(arr2[0]))
+          endMonthIndex.value = getArrayIndex(months(), Number(arr2[1]))
+          endDayIndex.value = getArrayIndex(days(Number(arr2[0]), Number(arr2[1])), Number(arr2[2]))
         }
         currentValues.value = [
-          startYear.value,
-          startMonth.value,
-          startDay.value,
-          endYear.value,
-          endMonth.value,
-          endDay.value
+          startYearIndex.value,
+          startMonthIndex.value,
+          startDayIndex.value,
+          endYearIndex.value,
+          endMonthIndex.value,
+          endDayIndex.value
         ]
       } else {
         let arr = val[1] && val[1].length ? val[1].split('-') : []
         if (arr && arr.length) {
-          startYear.value = getArrayIndex(years(), Number(arr[0]))
-          startMonth.value = getArrayIndex(months(), Number(arr[1]))
-          startDay.value = getArrayIndex(days(Number(arr[0]), Number(arr[1])), Number(arr[2]))
+          startYearIndex.value = getArrayIndex(years(), Number(arr[0]))
+          startMonthIndex.value = getArrayIndex(months(), Number(arr[1]))
+          startDayIndex.value = getArrayIndex(days(Number(arr[0]), Number(arr[1])), Number(arr[2]))
         }
-        currentValues.value = [startYear.value, startMonth.value, startDay.value]
+        currentValues.value = [startYearIndex.value, startMonthIndex.value, startDayIndex.value]
       }
     }
   },
@@ -200,31 +215,37 @@ watch(
   }
 )
 
+/**
+ * 日期选择发生变化时的事件
+ * @param{Object} e
+ */
 const change = (e: any) => {
   const val = e.detail.value
   if (props.type === 'date') {
-    startYear.value = Number(val[0])
-    startMonth.value = Number(val[1])
-    startDay.value = Number(val[2])
+    startYearIndex.value = Number(val[0])
+    startMonthIndex.value = Number(val[1])
+    startDayIndex.value = Number(val[2])
   } else if (props.type === 'daterange') {
-    startYear.value = Number(val[0])
-    startMonth.value = Number(val[1])
-    startDay.value = Number(val[2])
-    endYear.value = Number(val[3])
-    endMonth.value = Number(val[4])
-    endDay.value = Number(val[5])
+    startYearIndex.value = Number(val[0])
+    startMonthIndex.value = Number(val[1])
+    startDayIndex.value = Number(val[2])
+    endYearIndex.value = Number(val[3])
+    endMonthIndex.value = Number(val[4])
+    endDayIndex.value = Number(val[5])
   } else {
-    startYear.value = Number(val[0])
-    startMonth.value = Number(val[1])
-    startDay.value = Number(val[2])
+    startYearIndex.value = Number(val[0])
+    startMonthIndex.value = Number(val[1])
+    startDayIndex.value = Number(val[2])
   }
 }
 
+// 初始化打开日期选择组件
 const open = () => {
   visible.value = true
   emit('open')
 }
 
+// 关闭日期选择组件
 const cancel = () => {
   visible.value = false
 }
@@ -246,20 +267,21 @@ const fmtNum = (val: number) => {
   }
 }
 
+// 确认选择，将选中的时间下标通过数组转换为对应的实际日期
 const confirm = () => {
   visible.value = false
   if (props.type === 'date') {
-    const startYears = years()[startYear.value]
-    const startMonths = months()[startMonth.value]
-    const startDays = days(startYears, startMonths)[startDay.value]
+    const startYears = years()[startYearIndex.value]
+    const startMonths = months()[startMonthIndex.value]
+    const startDays = days(startYears, startMonths)[startDayIndex.value]
     emit('confirm', `${startYears}-${fmtNum(startMonths)}-${fmtNum(startDays)}`)
   } else if (props.type === 'daterange') {
-    const startYears = years()[startYear.value]
-    const startMonths = months()[startMonth.value]
-    const startDays = days(startYears, startMonths)[startDay.value]
-    const endYears = years()[endYear.value]
-    const endMonths = months()[endMonth.value]
-    const endDays = days(endYears, endMonths)[endDay.value]
+    const startYears = years()[startYearIndex.value]
+    const startMonths = months()[startMonthIndex.value]
+    const startDays = days(startYears, startMonths)[startDayIndex.value]
+    const endYears = years()[endYearIndex.value]
+    const endMonths = months()[endMonthIndex.value]
+    const endDays = days(endYears, endMonths)[endDayIndex.value]
     let startDate = `${startYears}-${fmtNum(startMonths)}-${fmtNum(startDays)}`
     let endDate = `${endYears}-${fmtNum(endMonths)}-${fmtNum(endDays)}`
     if (dayjs(endDate).valueOf() < dayjs(startDate).valueOf()) {
@@ -268,9 +290,9 @@ const confirm = () => {
     }
     emit('confirm', [startDate, endDate])
   } else {
-    const startYears = years()[startYear.value]
-    const startMonths = months()[startMonth.value]
-    const startDays = days(startYears, startMonths)[startDay.value]
+    const startYears = years()[startYearIndex.value]
+    const startMonths = months()[startMonthIndex.value]
+    const startDays = days(startYears, startMonths)[startDayIndex.value]
     emit('confirm', `${startYears}-${fmtNum(startMonths)}-${fmtNum(startDays)}`)
   }
 }
