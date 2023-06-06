@@ -255,3 +255,18 @@ export const fmtUpdateLog = (arr: any, type: string) => {
   }
   return newArr
 }
+
+/**
+ * 获取数组的下标
+ * @param{Array} arr
+ * @param{Object} obj
+ */
+export const getArrayIndex = (arr: any, obj: any) => {
+  let i = arr.length
+  while (i--) {
+    if (arr[i] === obj) {
+      return i
+    }
+  }
+  return -1
+}

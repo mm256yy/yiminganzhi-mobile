@@ -214,7 +214,6 @@ const openTimePicker = () => {
  * @{object} val 当前选择的日期
  */
 const onTimePickerChange = (val: any) => {
-  console.log('val:', val)
   time.value = val
   serach()
 }

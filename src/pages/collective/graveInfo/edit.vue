@@ -138,7 +138,6 @@
     <search-list
       v-show="showSearch"
       :type="MainType.PeasantHousehold"
-      :villageCode="commonParams.villageCode"
       @close="close"
       @confirm-select="confirmSelect"
     />
