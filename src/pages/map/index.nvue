@@ -198,8 +198,15 @@ const getLatlngOnline = (): Promise<LocationType> => {
 // 离线获取定位
 const getLatlngOffline = (): Promise<LocationType> => {
   return new Promise((resolve, reject) => {
-    plus.geolocation.getCurrentPosition(
-      (res) => {
+    /**
+     * 监听当前定位
+     */
+    let wid = 0
+    wid = plus.geolocation.watchPosition(
+      function (res) {
+        console.log(res, 'watchPosition res')
+        plus.geolocation.clearWatch(wid)
+        wid = 0
         // 坐标转换
         if (res && res.coordsType === 'wgs84') {
           const { lat: latitude, lon: longitude } = gcj_encrypt(
@@ -218,21 +225,92 @@ const getLatlngOffline = (): Promise<LocationType> => {
           longitude: res.coords?.longitude || 0
         })
       },
-      (error) => {
+      function (error) {
+        plus.geolocation.clearWatch(wid)
+        wid = 0
+
         uni.hideLoading()
+        let msg = ''
+        switch (error.code) {
+          case 1:
+            msg = '请打开系统定位授权'
+            break
+          case 2:
+            msg = '检查系统定位服务是否开启'
+            break
+          case 3:
+            msg = '定位超时'
+            break
+          default:
+            msg = '无法获取当前定位'
+            break
+        }
         uni.showToast({
-          title: error.message,
+          title: msg,
           duration: 3000,
           icon: 'none'
         })
         reject()
       },
       {
-        provider: 'amap',
-        timeout: 10000,
+        timeout: 50000, // 时间短了 定位不到
         geocode: false
       }
     )
+
+    /**
+     * 获取当前定位
+     */
+    // plus.geolocation.getCurrentPosition(
+    //   function (res) {
+    //     console.log(res, 'getCurrentPosition')
+    //     // 坐标转换
+    //     if (res && res.coordsType === 'wgs84') {
+    //       const { lat: latitude, lon: longitude } = gcj_encrypt(
+    //         res.coords?.latitude || 0,
+    //         res.coords?.longitude || 0
+    //       )
+    //       resolve({
+    //         latitude,
+    //         longitude
+    //       })
+    //       return
+    //     }
+
+    //     resolve({
+    //       latitude: res.coords?.latitude || 0,
+    //       longitude: res.coords?.longitude || 0
+    //     })
+    //   },
+    //   function (error) {
+    //     uni.hideLoading()
+    //     let msg = ''
+    //     switch (error.code) {
+    //       case 1:
+    //         msg = '请打开系统定位授权'
+    //         break
+    //       case 2:
+    //         msg = '检查系统定位服务是否开启'
+    //         break
+    //       case 3:
+    //         msg = '定位超时'
+    //         break
+    //       default:
+    //         msg = '无法获取当前定位'
+    //         break
+    //     }
+    //     uni.showToast({
+    //       title: msg,
+    //       duration: 3000,
+    //       icon: 'none'
+    //     })
+    //     reject()
+    //   },
+    //   {
+    //     timeout: 50000,
+    //     geocode: false
+    //   }
+    // )
   })
 }
 
@@ -266,12 +344,16 @@ const getCurrentLocation = () => {
     networkCheck().then(async (res) => {
       uni.hideLoading()
       uni.showLoading({
-        title: '获取当前定位中',
+        title: '获取当前定位中,请耐心等待...',
         mask: true
       })
       const result = res ? await getLatlngOnline() : await getLatlngOffline()
       uni.hideLoading()
       if (result) {
+        uni.showToast({
+          title: '定位成功！',
+          icon: 'success'
+        })
         positionSuccess(result.longitude, result.latitude)
       }
     })
