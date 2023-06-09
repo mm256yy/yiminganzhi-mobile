@@ -137,6 +137,20 @@
                     "pid" : "1633",
                     "parameters" : {}
                 }
+            },
+            "da-comgps" : {
+                "__plugin_info__" : {
+                    "name" : "原生GPS定位信息获取",
+                    "description" : "调用原生GPS获取位置信息精准定位",
+                    "platforms" : "Android",
+                    "url" : "https://ext.dcloud.net.cn/plugin?id=7772",
+                    "android_package_name" : "io.dcloud.migrate",
+                    "ios_bundle_id" : "",
+                    "isCloud" : true,
+                    "bought" : 1,
+                    "pid" : "7772",
+                    "parameters" : {}
+                }
             }
         }
     },

@@ -28,23 +28,19 @@
         mode="scaleToFill"
       />
     </view>
-
-    <!-- <view class="map-info">
-      <MapInfo />
-    </view> -->
   </view>
 </template>
 
 <script setup lang="ts">
 import { onLoad } from '@dcloudio/uni-app'
-import { nextTick, ref, getCurrentInstance } from 'vue'
+import { nextTick, ref } from 'vue'
 import { routerBack, networkCheck, gcj_encrypt } from '../../utils'
-// import MapInfo from './components/MapInfo.vue'
 
+const gpsModule = uni.requireNativePlugin('da-comgps')
 const sysInfo = uni.getSystemInfoSync()
 const statusBarHeight = sysInfo.statusBarHeight || 0
-const instance = getCurrentInstance()
-const _this = instance?.appContext.config.globalProperties
+// const instance = getCurrentInstance()
+// const _this = instance?.appContext.config.globalProperties
 
 interface LocationType {
   longitude: number
@@ -185,7 +181,7 @@ const getLatlngOnline = (): Promise<LocationType> => {
       fail: () => {
         uni.hideLoading()
         uni.showToast({
-          title: '当前位置获取失败,请检查是否打开GPS',
+          title: '当前位置获取失败,请检查是否打开定位服务',
           duration: 3000,
           icon: 'none'
         })
@@ -198,6 +194,28 @@ const getLatlngOnline = (): Promise<LocationType> => {
 // 离线获取定位
 const getLatlngOffline = (): Promise<LocationType> => {
   return new Promise((resolve, reject) => {
+    // 社区原生插件 调用GPS获取定位
+    // @ts-ignore
+    const gpsInfo = gpsModule.getLocateInfo()
+    console.log('GPS定位信息：', gpsInfo)
+
+    if (gpsInfo) {
+      // 坐标转换 wgs84 -> gcj02
+      const { lat: latitude, lon: longitude } = gcj_encrypt(
+        gpsInfo.latitude || 0,
+        gpsInfo.longitude || 0
+      )
+      console.log('定位结果:', longitude, latitude)
+      resolve({
+        latitude,
+        longitude
+      })
+      return
+    }
+    /**
+     * 原生定位
+     */
+    // nativeLoacation()
     /**
      * 监听当前定位
      */
@@ -226,6 +244,7 @@ const getLatlngOffline = (): Promise<LocationType> => {
         })
       },
       function (error) {
+        console.log(error, 'watchPosition err')
         plus.geolocation.clearWatch(wid)
         wid = 0
 
@@ -253,8 +272,8 @@ const getLatlngOffline = (): Promise<LocationType> => {
         reject()
       },
       {
-        timeout: 50000, // 时间短了 定位不到
-        geocode: false
+        provider: 'system',
+        timeout: 50000
       }
     )
 
@@ -338,25 +357,92 @@ const positionSuccess = (longitude, latitude) => {
   }
 }
 
+const nativeLoacation = () => {
+  const context = plus.android.importClass('android.content.Context')
+  const locationManager = plus.android.importClass('android.location.LocationManager')
+  const main = plus.android.runtimeMainActivity()
+  // @ts-ignore
+  const mainSvr = main.getSystemService(context.LOCATION_SERVICE)
+  // @ts-ignore
+  console.log(mainSvr.isProviderEnabled(locationManager.GPS_PROVIDER))
+  // 定位方式有network和GPS两种
+  const locationListener = plus.android.implements('android.location.LocationListener', {
+    onLocationChanged: function (location) {
+      const latitude = plus.android.invoke(location, 'getLatitude')
+      const longitude = plus.android.invoke(location, 'getLongitude')
+      const gpsLocation = 'lat:' + latitude + ',lng:' + longitude
+      console.log(gpsLocation, 'onLocationChanged')
+    },
+    //GPS开启的时候调用
+    onProviderEnabled: function (res) {
+      console.log('GPS开启调用：' + JSON.stringify(res))
+    },
+    //GPS关闭的时候调用
+    onProviderDisabled: function (res) {
+      console.log('GPS定位模块关闭，将无法获取经纬度信息:' + JSON.stringify(res))
+    },
+    //当GPS状态发生改变的时候调用
+    onStatusChanged: function (p, s, e) {
+      console.log('位置变化:' + JSON.stringify(p))
+    }
+  })
+  // locationManager.GPS_PROVIDER 只使用GPS，locationManager参数可以自己百度
+  // @ts-ignore
+  mainSvr.requestLocationUpdates(locationManager.GPS_PROVIDER, 60000, 0, locationListener)
+}
+
+const currentLocationHandle = async () => {
+  const res = await networkCheck()
+  uni.showLoading({
+    title: '获取当前定位中,请耐心等待...',
+    mask: true
+  })
+  const result = res ? await getLatlngOnline() : await getLatlngOffline()
+  uni.hideLoading()
+  if (result) {
+    uni.showToast({
+      title: '定位成功！',
+      icon: 'success'
+    })
+    positionSuccess(result.longitude, result.latitude)
+  }
+}
+
 // 获取当前位置 并标记
 const getCurrentLocation = () => {
   setTimeout(() => {
-    networkCheck().then(async (res) => {
-      uni.hideLoading()
-      uni.showLoading({
-        title: '获取当前定位中,请耐心等待...',
-        mask: true
+    uni.hideLoading()
+
+    const context = plus.android.importClass('android.content.Context')
+    const locationManager = plus.android.importClass('android.location.LocationManager')
+    const main = plus.android.runtimeMainActivity()
+    // @ts-ignore
+    const mainSvr = main.getSystemService(context.LOCATION_SERVICE)
+    // @ts-ignore
+    if (!mainSvr.isProviderEnabled(locationManager.GPS_PROVIDER)) {
+      uni.showModal({
+        title: '提示',
+        content: '请打开本机定位服务功能',
+        showCancel: false,
+        success() {
+          // @ts-ignore
+          if (!mainSvr.isProviderEnabled(locationManager.GPS_PROVIDER)) {
+            const Intent = plus.android.importClass('android.content.Intent')
+            const Settings = plus.android.importClass('android.provider.Settings')
+            // @ts-ignore
+            // 华为鸿蒙系统 定位开关在隐私设置中
+            const intent = new Intent(Settings.ACTION_PRIVACY_SETTINGS)
+            // @ts-ignore
+            main.startActivity(intent)
+          }
+        }
       })
-      const result = res ? await getLatlngOnline() : await getLatlngOffline()
-      uni.hideLoading()
-      if (result) {
-        uni.showToast({
-          title: '定位成功！',
-          icon: 'success'
-        })
-        positionSuccess(result.longitude, result.latitude)
-      }
-    })
+      return
+    } else {
+      console.log('GPS已经开启')
+      // 获取定位信息
+      currentLocationHandle()
+    }
   }, 1000)
 }
 
