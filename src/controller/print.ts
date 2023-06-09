@@ -49,6 +49,8 @@ class Print extends Landlord {
             promiseArray.push(printPdf.createSelfemployed(templateIds, landlord))
           } else if (type === PrintType.printCompany) {
             promiseArray.push(printPdf.createCompany(templateIds, landlord))
+          } else if (type === PrintType.printCollective) {
+            promiseArray.push(printPdf.createCollective(templateIds, landlord))
           }
         })
         // 并行生成

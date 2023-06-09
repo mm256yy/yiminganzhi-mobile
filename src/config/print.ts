@@ -2,6 +2,7 @@
 // 0-99居民户相关模版id
 // 100-199 企业相关
 // 200-299 个体户相关
+// 300-399 村集体相关
 export const templates = [
   {
     uid: 1,
@@ -73,5 +74,19 @@ export const templates = [
     templateModule: '实物采集',
     templateName: '个体户设施设备打印',
     templateType: 'printIndividualHousehold'
+  },
+  {
+    uid: 300,
+    id: 300,
+    templateModule: '实物采集',
+    templateName: '村集体信息表打印',
+    templateType: 'printCollective'
+  },
+  {
+    uid: 301,
+    id: 301,
+    templateModule: '实物采集',
+    templateName: '村集体房屋示意图打印',
+    templateType: 'printCollective'
   }
 ]
