@@ -351,13 +351,11 @@ class PrintCore {
         const stringArray: string[] = []
         if (templateIds.includes(300)) {
           const definition = getCollectiveInfoDefinition(landlord, projectInfo)
-          console.log('definition:', JSON.stringify(definition))
           const dataUrl = await this.getBase64(definition).catch(() => {
             reject('生成村集体基本信息pdf失败')
             console.error('生成村集体基本信息pdf失败')
             return
           })
-          console.log('dataUrl:', dataUrl)
           if (dataUrl) {
             stringArray.push(dataUrl)
           }

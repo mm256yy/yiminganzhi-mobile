@@ -617,6 +617,7 @@ export class Landlord extends Common {
               res.immigrantFacilitiesList.forEach((item) => {
                 item.facilitiesTypeText = formatDict(item.facilitiesType, 236)
                 item.locationTypeText = formatDict(item.locationType, 326)
+                item.unitText = formatDict(item.unit, 268)
               })
               res.immigrantFacilitiesList = res.immigrantFacilitiesList.filter(
                 (item) => item.isDelete !== '1'

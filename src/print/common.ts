@@ -335,7 +335,7 @@ export const getCollectiveTableHead = (landlord: LandlordType, projectInfo: Proj
       body: [
         [
           {
-            rowSpan: 4,
+            rowSpan: 3,
             colSpan: 2,
             border: [true, true, false, false],
             stack: [
@@ -364,9 +364,21 @@ export const getCollectiveTableHead = (landlord: LandlordType, projectInfo: Proj
           },
           ''
         ],
-        ['', '', { text: '地理位置', style: 'td' }, { text: landlord.address || '', style: 'td' }],
+        [
+          '',
+          '',
+          { text: '地理位置', style: 'td' },
+          {
+            text:
+              `${landlord.areaCodeText ? landlord.areaCodeText : ''}${
+                landlord.townCodeText ? landlord.townCodeText : ''
+              }${landlord.villageCodeText ? landlord.villageCodeText : ''}${
+                landlord.virutalVillageCodeText ? landlord.virutalVillageCodeText : ''
+              }` || '',
+            style: 'td'
+          }
+        ],
         ['', '', { text: '村集体名称', style: 'td' }, { text: landlord.name || '', style: 'td' }],
-        ['', '', { text: '联系方式', style: 'td' }, { text: landlord.phone || '', style: 'td' }],
         [
           {
             text: `所属区域：${landlord.locationTypeText || ''}`,
@@ -380,8 +392,8 @@ export const getCollectiveTableHead = (landlord: LandlordType, projectInfo: Proj
             alignment: 'left',
             style: 'td'
           },
-          '',
-          ''
+          { text: '联系方式', style: 'td' },
+          { text: landlord.phone || '', style: 'td' }
         ]
       ]
     },
@@ -833,6 +845,16 @@ export const getEquipment = (landlord: LandlordType) => {
 export const getVillageEquipment = (landlord: LandlordType) => {
   const body: any[] = [
     [
+      { text: '农村小型专项及农副业设施信息', bold: true, colSpan: 8, fontSize: 12, style: 'td' },
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      ''
+    ],
+    [
       { text: '序号', style: 'td' },
       { text: '设施名称', style: 'td' },
       { text: '设施类别', style: 'td' },
@@ -852,7 +874,7 @@ export const getVillageEquipment = (landlord: LandlordType) => {
         { text: item.facilitiesTypeText || '', style: 'td' },
         { text: item.locationTypeText || '', style: 'td' },
         { text: item.number || '', style: 'td' },
-        { text: item.unit || '', style: 'td' },
+        { text: item.unitText || '', style: 'td' },
         { text: item.specificLocation || '', style: 'td' },
         { text: item.remark || '', style: 'td' }
       ])
