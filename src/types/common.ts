@@ -206,7 +206,8 @@ export interface PageQueryType {
 
 // 打印的类别
 export enum PrintType {
-  print = 'print',
-  printCompany = 'printCompany',
-  printIndividualHousehold = 'printIndividualHousehold'
+  print = 'print', // 居民户
+  printCompany = 'printCompany', // 企业
+  printIndividualHousehold = 'printIndividualHousehold', // 个体户
+  printCollective = 'printCollective' // 村集体
 }

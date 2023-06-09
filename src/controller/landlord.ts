@@ -614,6 +614,10 @@ export class Landlord extends Common {
             }
 
             if (res.immigrantFacilitiesList && res.immigrantFacilitiesList.length) {
+              res.immigrantFacilitiesList.forEach((item) => {
+                item.facilitiesTypeText = formatDict(item.facilitiesType, 236)
+                item.locationTypeText = formatDict(item.locationType, 326)
+              })
               res.immigrantFacilitiesList = res.immigrantFacilitiesList.filter(
                 (item) => item.isDelete !== '1'
               )

@@ -309,7 +309,6 @@ export default {
         // 打印pdf 将临时路径转化成绝对路径
         const path = plus.io.convertLocalFileSystemURL(filePath)
         YanYuprintPdf.managerPrint(path)
-        console.log('print path:', path)
       }
     },
     getPrintErrorResult(err?: any) {
@@ -320,6 +319,7 @@ export default {
       })
     },
     getPrintResult(result: any[]) {
+      // console.log('result:', result)
       // 拿到打印结果
       const base64Str = result[0][0]
       if (!base64Str) {
@@ -408,7 +408,9 @@ export default {
             promiseArray.push(printPdf.createSelfemployed(templateIds, landlord, projectInfo))
           } else if (type === 'printCompany') {
             promiseArray.push(printPdf.createCompany(templateIds, landlord, projectInfo))
-          }
+          } else if (type === 'printCollective') {
+						promiseArray.push(printPdf.createCollective(templateIds, landlord, projectInfo))
+					}
         })
         // 并行生成
         Promise.all(promiseArray)

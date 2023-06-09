@@ -9,7 +9,9 @@ import {
   getSelfemployedBaseDefinition,
   getSelfemployedEquipmentDefinition,
   getSelfemployedHouseDefinition,
-  getSelfemployedInfoDefinition
+  getSelfemployedInfoDefinition,
+  getCollectiveInfoDefinition,
+  getCollectiveHouseDefinition
 } from './templates'
 import { ProjectType } from '@/types/common'
 ;(pdfMake as any).vfs = pdfFonts.vfs
@@ -321,6 +323,64 @@ class PrintCore {
       } catch (err) {
         console.error('err', err)
         reject('createCompany错误')
+      }
+    })
+  }
+
+  // 创建村集体相关的pdf配置信息
+  public createCollective(
+    templateIds: number[],
+    landlord: LandlordType,
+    projectInfo: ProjectType
+  ): Promise<string | string[]> {
+    /**
+     * 2个模版
+     * 1.基本信息
+     * 2.房屋信息
+     */
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!templateIds || !templateIds.length) {
+          reject('模版信息为空')
+          return
+        }
+        if (!landlord) {
+          reject('业主信息为空')
+          return
+        }
+        const stringArray: string[] = []
+        if (templateIds.includes(300)) {
+          const definition = getCollectiveInfoDefinition(landlord, projectInfo)
+          console.log('definition:', JSON.stringify(definition))
+          const dataUrl = await this.getBase64(definition).catch(() => {
+            reject('生成村集体基本信息pdf失败')
+            console.error('生成村集体基本信息pdf失败')
+            return
+          })
+          console.log('dataUrl:', dataUrl)
+          if (dataUrl) {
+            stringArray.push(dataUrl)
+          }
+        }
+        if (templateIds.includes(301)) {
+          const definition = getCollectiveHouseDefinition(landlord, projectInfo)
+          const dataUrl = await this.getBase64(definition).catch(() => {
+            reject('生成村集体房屋示意图pdf失败')
+            console.error('生成村集体房屋示意图pdf失败')
+            return
+          })
+          if (dataUrl) {
+            stringArray.push(dataUrl)
+          }
+        }
+        if (stringArray.length) {
+          resolve(stringArray)
+          return
+        }
+        reject('createCollective失败')
+      } catch (err) {
+        console.log('err', err)
+        reject('createCollective错误')
       }
     })
   }

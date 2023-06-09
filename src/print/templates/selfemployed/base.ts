@@ -135,7 +135,7 @@ export const selfemployedBaseDefinition = {
             ''
           ],
           [
-            { text: '注册资金', colSpan: 2, style: 'td' },
+            { text: '注册资金 (万元)', colSpan: 2, style: 'td' },
             '',
             { text: '3', colSpan: 7, style: 'td' },
             '',
@@ -147,13 +147,13 @@ export const selfemployedBaseDefinition = {
           ],
 
           [
-            { text: '固定资产', rowSpan: 2, style: 'td_2' },
+            { text: '固定资产 (万元)', rowSpan: 2, style: 'td_2' },
             { text: '原值 (万元)', style: 'td' },
             { text: '3', style: 'td' },
-            { text: '固定资产', rowSpan: 2, style: 'td_2' },
+            { text: '固定资产 (万元)', rowSpan: 2, style: 'td_2' },
             { text: '原值 (万元)', style: 'td' },
             { text: '3', style: 'td' },
-            { text: '注册资金', rowSpan: 2, colSpan: 2, style: 'td_2' },
+            { text: '注册资金 (万元)', rowSpan: 2, colSpan: 2, style: 'td_2' },
             '',
             { text: '3', rowSpan: 2, style: 'td_2' }
           ],
@@ -429,7 +429,7 @@ const getMainInfo = (landlord: LandlordType) => {
           ''
         ],
         [
-          { text: '注册资金', colSpan: 2, style: 'td' },
+          { text: '注册资金 (万元)', colSpan: 2, style: 'td' },
           '',
           { text: company.registeredAmount || '', colSpan: 7, style: 'td' },
           '',
@@ -441,13 +441,13 @@ const getMainInfo = (landlord: LandlordType) => {
         ],
 
         [
-          { text: '固定资产', rowSpan: 2, style: 'td_2' },
+          { text: '固定资产 (万元)', rowSpan: 2, style: 'td_2' },
           { text: '原值 (万元)', style: 'td' },
           { text: company.fixedAssetsOriginalValue || '', style: 'td' },
-          { text: '职工人数', rowSpan: 2, style: 'td_2' },
+          { text: '职工人数 (人)', rowSpan: 2, style: 'td_2' },
           { text: '正式工（人）', style: 'td' },
           { text: company.regularWorkerNum || '', style: 'td' },
-          { text: '年工资总额', rowSpan: 2, colSpan: 2, style: 'td_2' },
+          { text: '年工资总额 (万元)', rowSpan: 2, colSpan: 2, style: 'td_2' },
           '',
           { text: company.annualPayroll || '', rowSpan: 2, style: 'td_2' }
         ],

@@ -65,7 +65,7 @@ export const companyBaseDefinition = {
           [
             { text: '营业执照编号', style: 'td' },
             { text: '3', style: 'td' },
-            { text: '注册资金', style: 'td' },
+            { text: '注册资金 (万元)', style: 'td' },
             { text: '3', style: 'td' },
             { text: '成立日期', style: 'td' },
             { text: '3', style: 'td' }
@@ -102,23 +102,23 @@ export const companyBaseDefinition = {
         body: [
           [{ text: ' 财务、经营状况及初步处理意向', colSpan: 6, style: 'td' }, '', '', '', '', ''],
           [
-            { text: '固定资产原值', style: 'td' },
+            { text: '固定资产原值 (万元)', style: 'td' },
             { text: '3', style: 'td' },
-            { text: '年工资总额', style: 'td' },
+            { text: '年工资总额 (万元)', style: 'td' },
             { text: '3', style: 'td' },
-            { text: '正式工', style: 'td' },
+            { text: '正式工 (人)', style: 'td' },
             { text: '3', style: 'td' }
           ],
           [
-            { text: '临时工', style: 'td' },
+            { text: '临时工 (人)', style: 'td' },
             { text: '3', style: 'td' },
-            { text: '近3年平均产值', style: 'td' },
+            { text: '近3年平均产值 (万元)', style: 'td' },
             { text: '3', style: 'td' },
-            { text: '近3年平均利润', style: 'td' },
+            { text: '近3年平均利润 (万元)', style: 'td' },
             { text: '3', style: 'td' }
           ],
           [
-            { text: '近3年平均缴税额', style: 'td' },
+            { text: '近3年平均缴税额 (万元)', style: 'td' },
             { text: '3', style: 'td' },
             { text: '涉及情况', style: 'td' },
             { text: '3', style: 'td' },
@@ -137,24 +137,24 @@ export const companyBaseDefinition = {
           [{ text: '土地使用情况', colSpan: 9, style: 'td' }, '', '', '', '', '', '', '', ''],
           [
             { text: '序号', rowSpan: 2, style: 'td_2' },
-            { text: '权属面积', style: 'td' },
+            { text: '权属面积 (亩)', style: 'td' },
             { text: '3', style: 'td' },
             { text: '划拨', rowSpan: 2, style: 'td_2' },
-            { text: '权属面积', style: 'td' },
+            { text: '权属面积 (亩)', style: 'td' },
             { text: '3', style: 'td' },
             { text: '租用', rowSpan: 2, style: 'td_2' },
-            { text: '权属面积', style: 'td' },
+            { text: '权属面积 (亩)', style: 'td' },
             { text: '3', style: 'td' }
           ],
           [
             '',
-            { text: '占用面积', style: 'td' },
+            { text: '占用面积 (亩)', style: 'td' },
             { text: '3', style: 'td' },
             '',
-            { text: '占用面积', style: 'td' },
+            { text: '占用面积 (亩)', style: 'td' },
             { text: '3', style: 'td' },
             '',
-            { text: '占用面积', style: 'td' },
+            { text: '占用面积 (亩)', style: 'td' },
             { text: '3', style: 'td' }
           ]
         ]
@@ -214,7 +214,7 @@ const getCompanyInfo1 = (landlord: LandlordType) => {
         [
           { text: '营业执照编号', style: 'td' },
           { text: company.licenceNo || '', style: 'td' },
-          { text: '注册资金', style: 'td' },
+          { text: '注册资金 (万元)', style: 'td' },
           { text: company.registeredAmount || '', style: 'td' },
           { text: '成立日期', style: 'td' },
           { text: company.establishDateText || '', style: 'td' }
@@ -267,23 +267,23 @@ const getCompanyInfo2 = (landlord: LandlordType) => {
           ''
         ],
         [
-          { text: '固定资产原值', style: 'td' },
+          { text: '固定资产原值 (万元)', style: 'td' },
           { text: company.fixedAssetsOriginalValue || '', style: 'td' },
-          { text: '年工资总额', style: 'td' },
+          { text: '年工资总额 (万元)', style: 'td' },
           { text: company.annualPayroll || '', style: 'td' },
-          { text: '正式工', style: 'td' },
+          { text: '正式工 (人)', style: 'td' },
           { text: company.regularWorkerNum || '', style: 'td' }
         ],
         [
-          { text: '临时工', style: 'td' },
+          { text: '临时工 (人)', style: 'td' },
           { text: company.temporaryWorkerNum || '', style: 'td' },
-          { text: '近3年平均产值', style: 'td' },
+          { text: '近3年平均产值 (万元)', style: 'td' },
           { text: company.averageAnnualOutputValue || '', style: 'td' },
-          { text: '近3年平均利润', style: 'td' },
+          { text: '近3年平均利润 (万元)', style: 'td' },
           { text: company.averageAnnualProfit || '', style: 'td' }
         ],
         [
-          { text: '近3年平均缴税额', style: 'td' },
+          { text: '近3年平均缴税额 (万元)', style: 'td' },
           { text: company.averageAnnualTaxPaid || '', style: 'td' },
           { text: '涉及情况', style: 'td' },
           { text: company.informationInvolvedText || '', style: 'td' },
@@ -315,24 +315,24 @@ const getCompanyInfo3 = (landlord: LandlordType) => {
         ],
         [
           { text: '出让', rowSpan: 2, style: 'td_2' },
-          { text: '权属面积', style: 'td' },
+          { text: '权属面积 (亩)', style: 'td' },
           { text: company.sellOwnershipArea || '', style: 'td' },
           { text: '划拨', rowSpan: 2, style: 'td_2' },
-          { text: '权属面积', style: 'td' },
+          { text: '权属面积 (亩)', style: 'td' },
           { text: company.transferOwnershipArea || '', style: 'td' },
           { text: '租用', rowSpan: 2, style: 'td_2' },
-          { text: '权属面积', style: 'td' },
+          { text: '权属面积 (亩)', style: 'td' },
           { text: company.rentOwnershipArea || '', style: 'td' }
         ],
         [
           '',
-          { text: '占用面积', style: 'td' },
+          { text: '占用面积 (亩)', style: 'td' },
           { text: company.sellOccupiedArea || '', style: 'td' },
           '',
-          { text: '占用面积', style: 'td' },
+          { text: '占用面积 (亩)', style: 'td' },
           { text: company.transferOccupiedArea || '', style: 'td' },
           '',
-          { text: '占用面积', style: 'td' },
+          { text: '占用面积 (亩)', style: 'td' },
           { text: company.rentOccupiedArea || '', style: 'td' }
         ]
       ]
