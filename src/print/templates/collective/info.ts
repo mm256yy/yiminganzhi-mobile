@@ -183,7 +183,7 @@ export const collectiveInfoDefinition = {
     {
       layout,
       table: {
-        widths: [20, 80, 50, 50, 50, 50, 100, 80],
+        widths: [20, 80, 50, 50, 50, 50, 100, '*'],
         body: [
           [
             { text: '农村小型专项及农副业设施信息', colSpan: 8, style: 'td' },
