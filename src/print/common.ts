@@ -893,7 +893,7 @@ export const getVillageEquipment = (landlord: LandlordType) => {
   }
   return {
     table: {
-      widths: [20, 80, 50, 50, 50, 50, 100, '*'],
+      widths: [20, 80, 50, 50, 50, 50, 100, 82],
       headerRows: 2,
       body
     },
