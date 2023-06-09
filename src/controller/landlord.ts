@@ -566,9 +566,10 @@ export class Landlord extends Common {
              * 2 居民户房屋模版id
              * 102 企业房屋模版id
              * 202 个体户房屋模版id
+             * 301 村集体房屋模板id
              */
             res.houseImageList = []
-            if ([2, 102, 202].includes(templateIds[0])) {
+            if ([2, 102, 202, 301].includes(templateIds[0])) {
               // 拿到房屋图片的base64
               if (landlordHouseImageList && landlordHouseImageList.length) {
                 const imgsRes = await Promise.all(
