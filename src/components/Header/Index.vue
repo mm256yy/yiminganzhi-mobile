@@ -4,6 +4,10 @@
       <view class="list-header-left">
         <view class="name">{{ dataInfo.name }}</view>
         <view class="account-no">{{ dataInfo.doorNo }}</view>
+        <view class="fill-number"
+          >填报进度&nbsp;<text class="green">{{ totalFillNumber - hasNotFillNumber }}</text
+          >/{{ totalFillNumber }}</view
+        >
       </view>
 
       <view class="list-header-right">
@@ -11,7 +15,14 @@
           <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
           <text class="txt">打印表格</text>
         </view>
-
+        <view
+          v-if="!dataInfo.signStatus || dataInfo.signStatus === 'UnSign'"
+          class="btn-wrapper report"
+          @click="tableSign"
+        >
+          <image class="icon" src="@/static/images/qianzi_icon.png" mode="scaleToFill" />
+          <text class="txt">报表签字</text>
+        </view>
         <view
           v-if="!dataInfo.reportStatus || dataInfo.reportStatus === 'UnReport'"
           class="btn-wrapper report"
@@ -83,7 +94,7 @@
 </template>
 
 <script lang="ts">
-import { reportDataApi, getPrintTemplatesApi, getPrintLandlordApi } from '@/service'
+import { reportDataApi, getPrintTemplatesApi, getPrintLandlordApi, signDataApi } from '@/service'
 import { StorageKey, getStorage } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { MainType, PrintType } from '@/types/common'
@@ -137,6 +148,105 @@ export default {
       default: ''
     }
   },
+  computed: {
+    totalFillNumber: function () {
+      switch (this.type) {
+        case MainType.PeasantHousehold:
+          return 8
+          break
+        case MainType.Company:
+          return 6
+          break
+        case MainType.IndividualHousehold:
+          return 5
+          break
+        case MainType.Village:
+          return 6
+          break
+        default:
+          return 8
+          break
+      }
+    },
+    hasNotFillNumber: function () {
+      const {
+        demographicList,
+        immigrantAppendantList,
+        immigrantGraveList,
+        immigrantHouseList,
+        immigrantIncomeList,
+        immigrantTreeList,
+        immigrantWill,
+        immigrantManagementList,
+        immigrantEquipmentList,
+        immigrantFacilitiesList,
+        type,
+        immigrantFile
+      } = this.dataInfo
+
+      let nullCount = 0
+      if (this.isNullArray(immigrantHouseList)) {
+        nullCount++
+      }
+      if (this.isNullArray(immigrantTreeList)) {
+        nullCount++
+      }
+      if (this.isNullArray(immigrantAppendantList)) {
+        nullCount++
+      }
+      // 上报开始校验数据
+      if (type === MainType.PeasantHousehold) {
+        // 居民户
+        if (this.isNullArray(demographicList)) {
+          nullCount++
+        }
+        if (this.isNullArray(immigrantIncomeList)) {
+          nullCount++
+        }
+
+        if (!immigrantWill || (!immigrantWill.productionType && !immigrantWill.removalType)) {
+          nullCount++
+        }
+        if (this.isNullArray(immigrantGraveList)) {
+          nullCount++
+        }
+        if (!immigrantFile || !immigrantFile.otherPic) {
+          nullCount++
+        }
+      } else if (type === MainType.IndividualHousehold) {
+        // 个体户
+        if (this.isNullArray(immigrantEquipmentList)) {
+          nullCount++
+        }
+        if (!immigrantFile || !immigrantFile.otherPic) {
+          nullCount++
+        }
+      } else if (type === MainType.Company) {
+        // 企业
+        if (!immigrantFile || !immigrantFile.otherPic) {
+          nullCount++
+        }
+        if (this.isNullArray(immigrantManagementList)) {
+          nullCount++
+        }
+        if (this.isNullArray(immigrantEquipmentList)) {
+          nullCount++
+        }
+      } else if (type === MainType.Village) {
+        // 村集体
+        if (this.isNullArray(immigrantGraveList)) {
+          nullCount++
+        }
+        if (this.isNullArray(immigrantFacilitiesList)) {
+          nullCount++
+        }
+        if (!immigrantFile || !immigrantFile.otherPic) {
+          nullCount++
+        }
+      }
+      return nullCount
+    }
+  },
   watch: {
     dataInfo: function (val, old) {
       // 切换业主时 清理缓存
@@ -149,6 +259,23 @@ export default {
     }
   },
   methods: {
+    // 是否为空数组
+    isNullArray(arr: any) {
+      return !arr || (Array.isArray(arr) && !arr.length)
+    },
+    // 报表签字
+    tableSign() {
+      signDataApi(this.dataInfo.uid)
+        .then((res) => {
+          if (res) {
+            showToast(SUCCESS_MSG)
+            this.$emit('updateData')
+          }
+        })
+        .catch(() => {
+          showToast(ERROR_MSG)
+        })
+    },
     // 数据上报校验
     reportDataCheck() {
       let query = {
@@ -463,6 +590,24 @@ export default {
       .account-no {
         font-size: 13rpx;
         color: #1c5df1;
+      }
+
+      .fill-number {
+        display: flex;
+        height: 24rpx;
+        padding: 0 18rpx;
+        margin-left: 14rpx;
+        font-size: 11rpx;
+        font-weight: 500;
+        color: #171718;
+        background-color: #e1f0ff;
+        border-radius: 28rpx;
+        align-items: center;
+        justify-content: center;
+
+        .green {
+          color: #30a952;
+        }
       }
     }
 

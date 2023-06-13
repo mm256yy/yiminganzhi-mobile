@@ -85,3 +85,8 @@ export const deleteImgApi = (url: string) => {
 export const getPrintTemplatesApi = (type: PrintType) => {
   return PrintController.getTemplateList(type)
 }
+
+// 获取首页top5
+export const getStatisticApi = (type: OtherDataType) => {
+  return OtherController.getOtherWithType(type)
+}

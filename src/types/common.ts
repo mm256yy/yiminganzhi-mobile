@@ -78,6 +78,12 @@ export enum ReportStatusEnum {
   UnReport = 'UnReport'
 }
 
+// 签字状态
+export enum SignStatusEnum {
+  SignSucceed = 'SignSucceed',
+  UnSign = 'UnSign'
+}
+
 // 项目进行到的阶段，survey: 调查填报阶段， review: 复核阶段
 export enum MainStage {
   survey = 'survey',

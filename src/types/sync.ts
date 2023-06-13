@@ -65,6 +65,8 @@ export interface LandlordType {
   type: MainType
   totalNum?: number
   reportNum?: number
+  signStatus?: string
+  signDate?: any
   [key: string]: any
 
   // 人口

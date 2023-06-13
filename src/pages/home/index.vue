@@ -58,6 +58,9 @@
       </view>
 
       <view class="main-enter">
+        <!-- top5 -->
+        <Echart />
+
         <view class="enter-item" @click="toLink('householdList')">
           <view class="inner">
             <view class="top">
@@ -186,6 +189,7 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
+import Echart from './components/Echart.vue'
 import { onShow } from '@dcloudio/uni-app'
 import { getStorage, routerForward, resetCache, StorageKey, networkCheck } from '@/utils'
 import { loginOutApi } from './api'
@@ -474,7 +478,7 @@ onShow(() => {
       display: flex;
       width: 117rpx;
       height: 141rpx;
-      margin-right: 14rpx;
+      margin-right: 6rpx;
       background: linear-gradient(180deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
       border-radius: 11rpx;
       box-shadow: 0rpx 0rpx 12rpx 0rpx rgba(0, 0, 0, 0.08);

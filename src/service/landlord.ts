@@ -65,6 +65,11 @@ export const reportDataApi = (query: ReportParamsType) => {
   return LandlordController.reportData(query)
 }
 
+// 报表签字
+export const signDataApi = (uid: string) => {
+  return LandlordController.signData(uid)
+}
+
 // 打印数据获取
 export const getPrintLandlordApi = (uids: string[], templateIds: number[]) => {
   return LandlordController.getLandlordByUidWithPrint(uids, templateIds)
