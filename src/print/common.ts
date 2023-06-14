@@ -808,7 +808,7 @@ export const getEquipment = (landlord: LandlordType) => {
         { text: index + 1, style: 'td' },
         { text: item.name || '', style: 'td' },
         { text: item.size || '', style: 'td' },
-        { text: item.unit || '', style: 'td' },
+        { text: item.unitText || '', style: 'td' },
         { text: item.number || '', style: 'td' },
         { text: item.purpose || '', style: 'td' },
         { text: item.yearText || '', style: 'td' },
