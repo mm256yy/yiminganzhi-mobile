@@ -609,6 +609,7 @@ export class Landlord extends Common {
               res.immigrantEquipmentList.forEach((item) => {
                 item.yearText = item.year ? dayjs(item.year).format('YYYY年') : ''
                 item.moveTypeText = formatDict(item.moveType, 221)
+                item.unitText = formatDict(item.unit, 268)
               })
               res.immigrantEquipmentList = res.immigrantEquipmentList.filter(
                 (item) => item.isDelete !== '1'
