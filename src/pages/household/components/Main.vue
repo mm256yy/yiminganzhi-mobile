@@ -117,7 +117,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { fmtUpdateLog } from '@/utils'
 import { MainType, PrintType } from '@/types/common'
@@ -176,20 +176,91 @@ const props = defineProps({
   }
 })
 
-const tabsList = ref([
-  { label: '居民户信息', value: 0, defIcon: iconHouseholdDef, selIcon: iconHouseholdSel },
-  { label: '人口信息', value: 1, defIcon: iconDemographicDef, selIcon: iconDemographicSel },
-  { label: '房屋信息', value: 2, defIcon: iconHouseDef, selIcon: iconHouseSel },
-  { label: '附属物信息', value: 3, defIcon: iconAccessoryDef, selIcon: iconAccessorySel },
-  { label: '零星 (林) 果木', value: 4, defIcon: iconTreeDef, selIcon: iconTreeSel },
-  { label: '坟墓信息', value: 5, defIcon: iconGraveDef, selIcon: iconGraveSel },
-  { label: '家庭收入信息', value: 6, defIcon: iconRevenueDef, selIcon: iconRevenueSel },
-  { label: '安置意愿信息', value: 7, defIcon: iconWillingnessDef, selIcon: iconWillingnessSel },
-  { label: '附件上传', value: 8, defIcon: iconAttachmentDef, selIcon: iconAttachmentSel }
-])
+const tabsList = computed(() => {
+  const {
+    demographicList,
+    immigrantAppendantList,
+    immigrantGraveList,
+    immigrantHouseList,
+    immigrantIncomeList,
+    immigrantTreeList,
+    immigrantWill,
+    immigrantFile
+  } = props.dataInfo
+  return [
+    {
+      label: '居民户信息',
+      value: 0,
+      filled: false,
+      defIcon: iconHouseholdDef,
+      selIcon: iconHouseholdSel
+    },
+    {
+      label: '人口信息',
+      value: 1,
+      filled: isNotNullArray(demographicList),
+      defIcon: iconDemographicDef,
+      selIcon: iconDemographicSel
+    },
+    {
+      label: '房屋信息',
+      value: 2,
+      filled: isNotNullArray(immigrantHouseList),
+      defIcon: iconHouseDef,
+      selIcon: iconHouseSel
+    },
+    {
+      label: '附属物信息',
+      value: 3,
+      filled: isNotNullArray(immigrantAppendantList),
+      defIcon: iconAccessoryDef,
+      selIcon: iconAccessorySel
+    },
+    {
+      label: '零星 (林) 果木',
+      value: 4,
+      filled: isNotNullArray(immigrantTreeList),
+      defIcon: iconTreeDef,
+      selIcon: iconTreeSel
+    },
+    {
+      label: '坟墓信息',
+      value: 5,
+      filled: isNotNullArray(immigrantGraveList),
+      defIcon: iconGraveDef,
+      selIcon: iconGraveSel
+    },
+    {
+      label: '家庭收入信息',
+      value: 6,
+      filled: isNotNullArray(immigrantIncomeList),
+      defIcon: iconRevenueDef,
+      selIcon: iconRevenueSel
+    },
+    {
+      label: '安置意愿信息',
+      value: 7,
+      filled: immigrantWill && (immigrantWill.productionType || immigrantWill.removalType),
+      defIcon: iconWillingnessDef,
+      selIcon: iconWillingnessSel
+    },
+    {
+      label: '附件上传',
+      value: 8,
+      filled: immigrantFile && immigrantFile.otherPic,
+      defIcon: iconAttachmentDef,
+      selIcon: iconAttachmentSel
+    }
+  ]
+})
 
 const tabVal = ref<number>(0)
 const emit = defineEmits(['updateData'])
+
+// 是否为空数组
+const isNotNullArray = (arr: any) => {
+  return arr && Array.isArray(arr) && arr.length
+}
 
 // tab 切换
 const selectTabs = (data: any) => {

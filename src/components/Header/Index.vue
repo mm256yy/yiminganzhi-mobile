@@ -5,7 +5,7 @@
         <view class="name">{{ dataInfo.name }}</view>
         <view class="account-no">{{ dataInfo.doorNo }}</view>
         <view class="fill-number"
-          >填报进度&nbsp;<text class="green">{{ totalFillNumber - hasNotFillNumber }}</text
+          >填报进度&nbsp;<text class="green">{{ fillNumber }}</text
           >/{{ totalFillNumber }}</view
         >
       </view>
@@ -168,7 +168,7 @@ export default {
           break
       }
     },
-    hasNotFillNumber: function () {
+    fillNumber: function () {
       const {
         demographicList,
         immigrantAppendantList,
@@ -184,67 +184,67 @@ export default {
         immigrantFile
       } = this.dataInfo
 
-      let nullCount = 0
-      if (this.isNullArray(immigrantHouseList)) {
-        nullCount++
+      let fillCount = 0
+      if (this.isNotNullArray(immigrantHouseList)) {
+        fillCount++
       }
-      if (this.isNullArray(immigrantTreeList)) {
-        nullCount++
+      if (this.isNotNullArray(immigrantTreeList)) {
+        fillCount++
       }
-      if (this.isNullArray(immigrantAppendantList)) {
-        nullCount++
+      if (this.isNotNullArray(immigrantAppendantList)) {
+        fillCount++
       }
       // 上报开始校验数据
       if (type === MainType.PeasantHousehold) {
         // 居民户
-        if (this.isNullArray(demographicList)) {
-          nullCount++
+        if (this.isNotNullArray(demographicList)) {
+          fillCount++
         }
-        if (this.isNullArray(immigrantIncomeList)) {
-          nullCount++
+        if (this.isNotNullArray(immigrantIncomeList)) {
+          fillCount++
         }
 
-        if (!immigrantWill || (!immigrantWill.productionType && !immigrantWill.removalType)) {
-          nullCount++
+        if (immigrantWill && (immigrantWill.productionType || immigrantWill.removalType)) {
+          fillCount++
         }
-        if (this.isNullArray(immigrantGraveList)) {
-          nullCount++
+        if (this.isNotNullArray(immigrantGraveList)) {
+          fillCount++
         }
-        if (!immigrantFile || !immigrantFile.otherPic) {
-          nullCount++
+        if (immigrantFile && immigrantFile.otherPic) {
+          fillCount++
         }
       } else if (type === MainType.IndividualHousehold) {
         // 个体户
-        if (this.isNullArray(immigrantEquipmentList)) {
-          nullCount++
+        if (this.isNotNullArray(immigrantEquipmentList)) {
+          fillCount++
         }
-        if (!immigrantFile || !immigrantFile.otherPic) {
-          nullCount++
+        if (immigrantFile && immigrantFile.otherPic) {
+          fillCount++
         }
       } else if (type === MainType.Company) {
         // 企业
-        if (!immigrantFile || !immigrantFile.otherPic) {
-          nullCount++
+        if (immigrantFile && immigrantFile.otherPic) {
+          fillCount++
         }
-        if (this.isNullArray(immigrantManagementList)) {
-          nullCount++
+        if (this.isNotNullArray(immigrantManagementList)) {
+          fillCount++
         }
-        if (this.isNullArray(immigrantEquipmentList)) {
-          nullCount++
+        if (this.isNotNullArray(immigrantEquipmentList)) {
+          fillCount++
         }
       } else if (type === MainType.Village) {
         // 村集体
-        if (this.isNullArray(immigrantGraveList)) {
-          nullCount++
+        if (this.isNotNullArray(immigrantGraveList)) {
+          fillCount++
         }
-        if (this.isNullArray(immigrantFacilitiesList)) {
-          nullCount++
+        if (this.isNotNullArray(immigrantFacilitiesList)) {
+          fillCount++
         }
-        if (!immigrantFile || !immigrantFile.otherPic) {
-          nullCount++
+        if (immigrantFile && immigrantFile.otherPic) {
+          fillCount++
         }
       }
-      return nullCount
+      return fillCount
     }
   },
   watch: {
@@ -260,9 +260,10 @@ export default {
   },
   methods: {
     // 是否为空数组
-    isNullArray(arr: any) {
-      return !arr || (Array.isArray(arr) && !arr.length)
+    isNotNullArray(arr: any) {
+      return arr && Array.isArray(arr) && arr.length
     },
+
     // 报表签字
     tableSign() {
       signDataApi(this.dataInfo.uid)
@@ -630,11 +631,11 @@ export default {
         }
 
         &.print {
-          margin-right: 7rpx;
           background-color: #30a952;
         }
 
         &.report {
+          margin-left: 7rpx;
           background-color: #3e73ec;
         }
 

@@ -18,7 +18,7 @@
       </view>
 
       <view class="echart-wrap">
-        <view class="echart-item" v-for="item in echartOptions" :key="item.name">
+        <view class="echart-item" v-for="item in echartOptions" :key="item.index">
           <view class="echart-item-lt">
             <image class="top-img" :src="item.img" mode="scaleToFill" />
             <text class="user-name">{{ item.name }}</text>
@@ -51,6 +51,7 @@ import { OtherDataType } from '@/database'
 interface OptionsType {
   name: string
   number: number
+  index?: number
   progress?: number
   img?: string
 }
@@ -173,6 +174,7 @@ const getStatisticData = (id?: number) => {
     }
     return {
       ...item,
+      index,
       progress: ((item.number / max) * 100) | 0,
       img: getImg(index)
     }

@@ -82,7 +82,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { MainType, PrintType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
@@ -126,17 +126,67 @@ const props = withDefaults(defineProps<PropsType>(), {
   dataInfo: {}
 })
 
-const tabsList = ref([
-  { label: '个体户基本概况', value: 0, defIcon: iconBaseDef, selIcon: iconBaseSel },
-  { label: '房屋信息', value: 1, defIcon: iconHouseDef, selIcon: iconHouseSel },
-  { label: '零星 (林) 果木', value: 2, defIcon: iconTreeDef, selIcon: iconTreeSel },
-  { label: '附属物信息', value: 3, defIcon: iconAppurtenanceDef, selIcon: iconAppurtenanceSel },
-  { label: '设施设备信息', value: 4, defIcon: iconEquipmentDef, selIcon: iconEquipmentSel },
-  { label: '照片上传', value: 5, defIcon: iconPhotoDef, selIcon: iconPhotoSel }
-])
+const tabsList = computed(() => {
+  const {
+    immigrantAppendantList,
+    immigrantHouseList,
+    immigrantTreeList,
+    immigrantEquipmentList,
+    immigrantFile
+  } = props.dataInfo
+  return [
+    {
+      label: '个体户基本概况',
+      value: 0,
+      filled: false,
+      defIcon: iconBaseDef,
+      selIcon: iconBaseSel
+    },
+    {
+      label: '房屋信息',
+      value: 1,
+      filled: isNotNullArray(immigrantHouseList),
+      defIcon: iconHouseDef,
+      selIcon: iconHouseSel
+    },
+    {
+      label: '零星 (林) 果木',
+      value: 2,
+      filled: isNotNullArray(immigrantTreeList),
+      defIcon: iconTreeDef,
+      selIcon: iconTreeSel
+    },
+    {
+      label: '附属物信息',
+      value: 3,
+      filled: isNotNullArray(immigrantAppendantList),
+      defIcon: iconAppurtenanceDef,
+      selIcon: iconAppurtenanceSel
+    },
+    {
+      label: '设施设备信息',
+      value: 4,
+      filled: isNotNullArray(immigrantEquipmentList),
+      defIcon: iconEquipmentDef,
+      selIcon: iconEquipmentSel
+    },
+    {
+      label: '照片上传',
+      value: 5,
+      filled: immigrantFile && immigrantFile.otherPic,
+      defIcon: iconPhotoDef,
+      selIcon: iconPhotoSel
+    }
+  ]
+})
 
 const tabVal = ref<number>(0)
 const emit = defineEmits(['updateData'])
+
+// 是否为空数组
+const isNotNullArray = (arr: any) => {
+  return arr && Array.isArray(arr) && arr.length
+}
 
 // tab 切换
 const selectTabs = (data: any) => {
