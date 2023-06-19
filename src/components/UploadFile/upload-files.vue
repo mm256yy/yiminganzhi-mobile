@@ -13,7 +13,7 @@
           <view class="files__image is-text-image">
             <image
               class="header-image"
-              :src="item.path ? item.path : netWork ? item.url : defaultImg"
+              :src="filterImgSrc(item)"
               mode="aspectFit"
               @click.stop="prviewImage(item, index)"
             />
@@ -62,7 +62,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, onBeforeMount } from 'vue'
 import { networkCheck } from '@/utils'
 import defaultImg from '@/static/images/icon_null_data.png'
 
@@ -76,7 +76,7 @@ const netWork = ref<boolean>(true)
 const props = defineProps<PropsType>()
 const emit = defineEmits(['choose', 'prviewImage', 'delFile', 'updateFileList'])
 
-onMounted(() => {
+onBeforeMount(() => {
   networkCheck().then((res) => {
     netWork.value = res
   })
@@ -106,6 +106,12 @@ const prviewImage = (item: any, index: number) => {
 
 const delFile = (index: number) => {
   emit('delFile', index)
+}
+
+const filterImgSrc = (item: any) => {
+  const url = item.url.split('?')[0]
+  const zipUrl = `${url}?x-oss-process=image/quality,Q_60/resize,mfit,w_200`
+  return item.path ? item.path : netWork.value ? zipUrl : defaultImg
 }
 </script>
 
