@@ -756,9 +756,11 @@ export const getGrave = (landlord: LandlordType) => {
 
 // 房屋示意图
 export const getHousePic = (landlord: LandlordType) => {
-  const { houseImageList } = landlord
+  const { houseImageList, images } = landlord
   const body: any[] = [[{ text: '房屋示意图', bold: true, fontSize: 12, style: 'td' }]]
+
   if (houseImageList && houseImageList.length) {
+    console.log('打印房屋示意图：离线')
     houseImageList.forEach((img: string) => {
       body.push([
         {
@@ -767,7 +769,20 @@ export const getHousePic = (landlord: LandlordType) => {
         }
       ])
     })
-  } else {
+  }
+  if (images && images.length) {
+    console.log('打印房屋示意图：在线')
+    images.forEach((_img: any, dex: number) => {
+      body.push([
+        {
+          image: `img_${dex}`,
+          fit: [540, imgHeight]
+        }
+      ])
+    })
+  }
+
+  if (!(houseImageList && houseImageList.length) && !(images && images.length)) {
     body.push([
       {
         text: '无'

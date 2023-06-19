@@ -145,8 +145,18 @@ class PrintCore {
           }
         }
         if (templateIds.includes(2)) {
+          const { images: imgs } = landlord
+          const images: any = {}
+          if (window.navigator.onLine) {
+            // 处理图片
+            if (imgs && imgs.length) {
+              imgs.forEach((url: string, dex: number) => {
+                images[`img_${dex}`] = url
+              })
+            }
+          }
           const definition = getPeopleHouseDefinition(landlord, projectInfo)
-          const dataUrl = await this.getBase64(definition).catch(() => {
+          const dataUrl = await this.getBase64({ images, ...definition }).catch(() => {
             reject('生成居民户房屋示意图pdf失败')
             console.error('生成居民户房屋示意图pdf失败')
             return
@@ -214,8 +224,18 @@ class PrintCore {
           }
         }
         if (templateIds.includes(202)) {
+          const { images: imgs } = landlord
+          const images: any = {}
+          if (window.navigator.onLine) {
+            // 处理图片
+            if (imgs && imgs.length) {
+              imgs.forEach((url: string, dex: number) => {
+                images[`img_${dex}`] = url
+              })
+            }
+          }
           const definition = getSelfemployedHouseDefinition(landlord, projectInfo)
-          const dataUrl = await this.getBase64(definition).catch(() => {
+          const dataUrl = await this.getBase64({ images, ...definition }).catch(() => {
             reject('生成个体户房屋示意图pdf失败')
             console.error('生成个体户房屋示意图pdf失败')
             return
@@ -294,8 +314,18 @@ class PrintCore {
           }
         }
         if (templateIds.includes(102)) {
+          const { images: imgs } = landlord
+          const images: any = {}
+          if (window.navigator.onLine) {
+            // 处理图片
+            if (imgs && imgs.length) {
+              imgs.forEach((url: string, dex: number) => {
+                images[`img_${dex}`] = url
+              })
+            }
+          }
           const definition = getSelfemployedHouseDefinition(landlord, projectInfo)
-          const dataUrl = await this.getBase64(definition).catch(() => {
+          const dataUrl = await this.getBase64({ images, ...definition }).catch(() => {
             reject('生成企业房屋示意图pdf失败')
             console.error('生成企业房屋示意图pdf失败')
             return
@@ -361,8 +391,19 @@ class PrintCore {
           }
         }
         if (templateIds.includes(301)) {
+          const { images: imgs } = landlord
+          const images: any = {}
+          if (window.navigator.onLine) {
+            // 处理图片
+            if (imgs && imgs.length) {
+              imgs.forEach((url: string, dex: number) => {
+                images[`img_${dex}`] = url
+              })
+            }
+          }
+
           const definition = getCollectiveHouseDefinition(landlord, projectInfo)
-          const dataUrl = await this.getBase64(definition).catch(() => {
+          const dataUrl = await this.getBase64({ images, ...definition }).catch(() => {
             reject('生成村集体房屋示意图pdf失败')
             console.error('生成村集体房屋示意图pdf失败')
             return
