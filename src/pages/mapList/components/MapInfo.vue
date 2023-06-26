@@ -44,7 +44,7 @@
           <view class="dot" />
         </view>
         <text class="name">户号：</text>
-        <text class="text primary">{{ props.dataInfo.doorNo }}</text>
+        <text class="text primary">{{ filterViewDoorNo(props.dataInfo) }}</text>
       </view>
 
       <view class="info-item">
@@ -94,7 +94,7 @@
 
 <script lang="ts" setup>
 import { MainType } from '@/types/common'
-import { routerForward } from '@/utils'
+import { filterViewDoorNo, routerForward } from '@/utils'
 
 const props = defineProps({
   dataInfo: {

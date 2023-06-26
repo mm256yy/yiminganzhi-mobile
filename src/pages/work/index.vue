@@ -99,7 +99,7 @@
 
             <uni-tr v-for="(item, index) in tableData" :key="index">
               <uni-td class="blue" @click="toLink(item)">{{ item.name }}</uni-td>
-              <uni-td>{{ item.doorNo }}</uni-td>
+              <uni-td>{{ filterViewDoorNo(item) }}</uni-td>
               <uni-td>{{ item.hasPropertyAccount ? '是' : '否' }}</uni-td>
               <uni-td>{{ item.townCodeText }}</uni-td>
               <uni-td>{{ item.villageCodeText }}</uni-td>
@@ -117,7 +117,7 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 import dayjs from 'dayjs'
-import { getStorage, StorageKey, routerForward } from '@/utils'
+import { getStorage, StorageKey, routerForward, filterViewDoorNo } from '@/utils'
 import Container from '@/components/Container/index.vue'
 import PickerViewCustom from '@/components/PickerViewCustom/Index.vue'
 import { getSubmitListApi } from '@/service'

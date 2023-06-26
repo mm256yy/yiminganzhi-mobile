@@ -46,7 +46,7 @@
               <view class="txt" @click="gotoEdit(pushData)">
                 <text class="txt">{{ pushData.data.name }}</text>
                 <text class="err" v-if="pushData.code === -3"
-                  >户号：{{ pushData.data.doorNo }}</text
+                  >户号：{{ filterViewDoorNo(pushData.data) }}</text
                 >
                 <text class="txt">{{ pushData.message }}</text>
               </view>
@@ -116,7 +116,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick, onBeforeUnmount } from 'vue'
+import { ref, onBeforeUnmount } from 'vue'
 import Upgradation from '@/components/Upgradation/Index.vue'
 import { ProjectType, MainType } from '@/types/common'
 import { pullInstance, pushInstance } from '@/sync'
@@ -128,7 +128,8 @@ import {
   setStorage,
   getStorage,
   StorageKey,
-  compareVersion
+  compareVersion,
+  filterViewDoorNo
 } from '@/utils'
 
 interface PropsType {

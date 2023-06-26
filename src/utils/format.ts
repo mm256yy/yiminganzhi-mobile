@@ -1,3 +1,4 @@
+import { MainType } from '@/types/common'
 import { getStorage, StorageKey } from '@/utils'
 
 /**
@@ -269,4 +270,34 @@ export const getArrayIndex = (arr: any, obj: any) => {
     }
   }
   return -1
+}
+
+// 户号后四位之前的显示
+export const filterViewDoorNoWithBefore = (doorNo: string) => {
+  if (!doorNo) {
+    return ''
+  }
+  return `${doorNo[5]}${doorNo[7]}${doorNo[8]}`
+}
+
+// 显示doorNo
+export const filterViewDoorNo = (data: any, projectInfo?: any): string => {
+  const { doorNo, type } = data || {}
+  if (!doorNo) {
+    return ''
+  }
+  if (projectInfo && projectInfo.reservoirCode === 'fxsk') {
+    return doorNo
+  }
+  const isFxsk = (getStorage(StorageKey.PROJECTINFO) || {}).reservoirCode === 'fxsk'
+  if (isFxsk) {
+    return doorNo
+  }
+  // 6、8、9、11、12、13、14、15、16
+  if (type && type === MainType.PeasantHousehold) {
+    const before = filterViewDoorNoWithBefore(doorNo)
+    const lastSix = doorNo.slice(doorNo.length - 6 < 0 ? 0 : doorNo.length - 6, doorNo.length)
+    return `${before}${lastSix}`
+  }
+  return doorNo
 }

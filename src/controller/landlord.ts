@@ -691,7 +691,10 @@ export class Landlord extends Common {
           sql += ` and type = '${type}'`
         }
         if (name) {
-          sql += ` and (name like '%${name}%' or doorNo like '%${name}%')`
+          sql += ` and (name like '%${name}%' or doorNo like '%${name.slice(
+            name.length - 6 < 0 ? 0 : name.length - 6,
+            name.length
+          )}%')`
         }
         if (areaCode) {
           sql += ` and areaCode = '${areaCode}'`

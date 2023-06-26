@@ -78,7 +78,11 @@
             >
               <view v-if="!formData.id" :class="['input-wrapper', isFocus ? 'focus' : '']">
                 <view class="pre-txt">
-                  {{ compatibleOldSystems() ? formData.otherCode : formData.villageCode }}
+                  {{
+                    compatibleOldSystems()
+                      ? formData.otherCode
+                      : filterViewDoorNoWithBefore(formData.villageCode)
+                  }}
                 </view>
                 <input
                   class="input-txt"
@@ -91,7 +95,11 @@
                 />
               </view>
               <view v-else class="input-wrapper">
-                <input class="input-txt disabled" v-model="formData.doorNo" disabled />
+                <input
+                  class="input-txt disabled"
+                  :value="filterViewDoorNo({ ...formData, type: MainType.PeasantHousehold })"
+                  disabled
+                />
               </view>
             </uni-forms-item>
           </uni-col>
@@ -184,7 +192,14 @@
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { routerBack, getStorage, StorageKey, routerForward } from '@/utils'
+import {
+  routerBack,
+  getStorage,
+  StorageKey,
+  routerForward,
+  filterViewDoorNo,
+  filterViewDoorNoWithBefore
+} from '@/utils'
 import { addLandlordApi, updateLandlordApi } from '@/service'
 import { locationTypes, yesAndNoEnums } from '@/config/common'
 import { compatibleOldSystems } from '@/pages/common/config'
@@ -208,6 +223,7 @@ const formData = ref<any>({
   hasPropertyAccount: 'true', // 是否财产户, 默认是
   address: '', // 户籍所在地
   inundationRange: '', // 淹没范围
+  type: MainType.PeasantHousehold,
   // altitude: null, // 高程
   longitude: '', // 经度
   latitude: '' // 纬度
@@ -240,6 +256,7 @@ onLoad((option: any) => {
     if (compatibleOldSystems() && option.otherCode) {
       formData.value.otherCode = option.otherCode
     }
+    formData.value.type = MainType.PeasantHousehold
   }
 })
 

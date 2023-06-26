@@ -3,7 +3,7 @@
     <view class="list-header-rt">
       <view class="list-header-left">
         <view class="name">{{ dataInfo.name }}</view>
-        <view class="account-no">{{ dataInfo.doorNo }}</view>
+        <view class="account-no">{{ filterViewDoorNoMd(dataInfo) }}</view>
       </view>
 
       <view class="list-header-right">
@@ -84,7 +84,7 @@
 
 <script lang="ts">
 import { reportDataApi, getPrintTemplatesApi, getPrintLandlordApi } from '@/service'
-import { StorageKey, getCurrentTimeStamp, getStorage } from '@/utils'
+import { StorageKey, getCurrentTimeStamp, getStorage, filterViewDoorNo } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { MainType, PrintType } from '@/types/common'
 import { base64ToPath } from 'image-tools'
@@ -149,6 +149,9 @@ export default {
     }
   },
   methods: {
+    filterViewDoorNoMd(data: any) {
+      return filterViewDoorNo(data)
+    },
     // 数据上报校验
     reportDataCheck() {
       let query = {

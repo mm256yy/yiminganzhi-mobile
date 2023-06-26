@@ -15,7 +15,7 @@
               <view class="col">
                 <view class="label">户号：</view>
                 <view class="content">
-                  {{ formatStr(props.dataInfo.doorNo) }}
+                  {{ filterViewDoorNo(props.dataInfo) }}
                 </view>
               </view>
             </uni-col>
@@ -99,7 +99,14 @@
 </template>
 
 <script lang="ts" setup>
-import { formatStr, formatDict, dictOption, splitStr, routerForward } from '@/utils'
+import {
+  formatStr,
+  formatDict,
+  dictOption,
+  splitStr,
+  routerForward,
+  filterViewDoorNo
+} from '@/utils'
 import { locationTypes, yesAndNoEnums } from '@/config/common'
 import { compatibleOldSystems } from '@/pages/common/config'
 

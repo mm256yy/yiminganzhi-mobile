@@ -1,6 +1,7 @@
 import { MainType, ProjectType } from '@/types/common'
 import { LandlordType } from '@/types/sync'
 import { imgHeight, layout } from './config'
+import { filterViewDoorNo } from '@/utils'
 
 /**
  * 公共模块
@@ -105,7 +106,7 @@ export const getCompanyTableHead = (landlord: LandlordType, projectInfo: Project
                     : landlord.type === MainType.Village
                     ? '村集体'
                     : ''
-                } ${landlord.name} ${landlord.doorNo} 号）`,
+                } ${landlord.name} ${filterViewDoorNo(landlord, projectInfo) || ''} 号）`,
                 alignment: 'center',
                 margin: [headMargin, 0, headMargin, 0]
               }
@@ -241,7 +242,10 @@ export const getCompanyBaseTableHead = (landlord: LandlordType, projectInfo: Pro
             }编码`,
             style: 'td'
           },
-          { text: landlord.doorNo || '', style: 'td' }
+          {
+            text: filterViewDoorNo(landlord, projectInfo) || '',
+            style: 'td'
+          }
         ],
         [
           {
@@ -285,7 +289,9 @@ export const getPeopleTableHead = (landlord: LandlordType, projectInfo: ProjectT
                 margin: [headMargin, 0, headMargin, 2]
               },
               {
-                text: `（居民户 ${landlord.name || ''} ${landlord.doorNo || ''} 号）`,
+                text: `（居民户 ${landlord.name || ''} ${
+                  filterViewDoorNo(landlord, projectInfo) || ''
+                } 号）`,
                 alignment: 'center',
                 margin: [headMargin, 0, headMargin, 0]
               }
@@ -782,7 +788,7 @@ export const getHousePic = (landlord: LandlordType) => {
     })
   }
 
-  if (!(houseImageList && houseImageList.length) && !(images && images.length)) {
+  if (body.length === 1) {
     body.push([
       {
         text: '无'

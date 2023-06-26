@@ -34,7 +34,7 @@
       </view>
 
       <view class="tree-item-rt">
-        <text class="num">{{ props.data.doorNo }}</text>
+        <text class="num">{{ filterViewDoorNo(props.data) }}</text>
       </view>
     </view>
     <!-- 行政区划 无子集 -->
@@ -67,6 +67,7 @@
 </template>
 
 <script lang="ts" setup>
+import { filterViewDoorNo } from '@/utils'
 import { LandlordType } from '@/types/sync'
 import { ref, computed, onMounted } from 'vue'
 

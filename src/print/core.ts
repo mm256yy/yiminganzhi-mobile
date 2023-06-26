@@ -145,6 +145,7 @@ class PrintCore {
           }
         }
         if (templateIds.includes(2)) {
+          let definition: any = getPeopleHouseDefinition(landlord, projectInfo)
           const { images: imgs } = landlord
           const images: any = {}
           if (window.navigator.onLine) {
@@ -153,12 +154,12 @@ class PrintCore {
               imgs.forEach((url: string, dex: number) => {
                 images[`img_${dex}`] = url
               })
+              definition = { ...definition, images }
             }
           }
-          const definition = getPeopleHouseDefinition(landlord, projectInfo)
-          const dataUrl = await this.getBase64({ images, ...definition }).catch(() => {
+          const dataUrl = await this.getBase64(definition).catch((err) => {
             reject('生成居民户房屋示意图pdf失败')
-            console.error('生成居民户房屋示意图pdf失败')
+            console.error('生成居民户房屋示意图pdf失败', err)
             return
           })
           if (dataUrl) {
@@ -224,6 +225,7 @@ class PrintCore {
           }
         }
         if (templateIds.includes(202)) {
+          let definition: any = getSelfemployedHouseDefinition(landlord, projectInfo)
           const { images: imgs } = landlord
           const images: any = {}
           if (window.navigator.onLine) {
@@ -232,10 +234,10 @@ class PrintCore {
               imgs.forEach((url: string, dex: number) => {
                 images[`img_${dex}`] = url
               })
+              definition = { ...definition, images }
             }
           }
-          const definition = getSelfemployedHouseDefinition(landlord, projectInfo)
-          const dataUrl = await this.getBase64({ images, ...definition }).catch(() => {
+          const dataUrl = await this.getBase64(definition).catch(() => {
             reject('生成个体户房屋示意图pdf失败')
             console.error('生成个体户房屋示意图pdf失败')
             return
@@ -314,6 +316,7 @@ class PrintCore {
           }
         }
         if (templateIds.includes(102)) {
+          let definition: any = getSelfemployedHouseDefinition(landlord, projectInfo)
           const { images: imgs } = landlord
           const images: any = {}
           if (window.navigator.onLine) {
@@ -322,10 +325,10 @@ class PrintCore {
               imgs.forEach((url: string, dex: number) => {
                 images[`img_${dex}`] = url
               })
+              definition = { ...definition, images }
             }
           }
-          const definition = getSelfemployedHouseDefinition(landlord, projectInfo)
-          const dataUrl = await this.getBase64({ images, ...definition }).catch(() => {
+          const dataUrl = await this.getBase64(definition).catch(() => {
             reject('生成企业房屋示意图pdf失败')
             console.error('生成企业房屋示意图pdf失败')
             return
@@ -391,6 +394,7 @@ class PrintCore {
           }
         }
         if (templateIds.includes(301)) {
+          let definition: any = getCollectiveHouseDefinition(landlord, projectInfo)
           const { images: imgs } = landlord
           const images: any = {}
           if (window.navigator.onLine) {
@@ -399,11 +403,10 @@ class PrintCore {
               imgs.forEach((url: string, dex: number) => {
                 images[`img_${dex}`] = url
               })
+              definition = { ...definition, images }
             }
           }
-
-          const definition = getCollectiveHouseDefinition(landlord, projectInfo)
-          const dataUrl = await this.getBase64({ images, ...definition }).catch(() => {
+          const dataUrl = await this.getBase64(definition).catch(() => {
             reject('生成村集体房屋示意图pdf失败')
             console.error('生成村集体房屋示意图pdf失败')
             return
