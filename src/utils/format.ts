@@ -281,20 +281,13 @@ export const filterViewDoorNoWithBefore = (doorNo: string) => {
 }
 
 // 显示doorNo
-export const filterViewDoorNo = (data: any, projectInfo?: any): string => {
+export const filterViewDoorNo = (data: any): string => {
   const { doorNo, type } = data || {}
   if (!doorNo) {
     return ''
   }
-  if (projectInfo && projectInfo.reservoirCode === 'fxsk') {
-    return doorNo
-  }
-  const isFxsk = (getStorage(StorageKey.PROJECTINFO) || {}).reservoirCode === 'fxsk'
-  if (isFxsk) {
-    return doorNo
-  }
   // 6、8、9、11、12、13、14、15、16
-  if (type && type === MainType.PeasantHousehold) {
+  if (type && type === MainType.PeasantHousehold && doorNo.length === 16) {
     const before = filterViewDoorNoWithBefore(doorNo)
     const lastSix = doorNo.slice(doorNo.length - 6 < 0 ? 0 : doorNo.length - 6, doorNo.length)
     return `${before}${lastSix}`

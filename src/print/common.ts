@@ -106,7 +106,7 @@ export const getCompanyTableHead = (landlord: LandlordType, projectInfo: Project
                     : landlord.type === MainType.Village
                     ? '村集体'
                     : ''
-                } ${landlord.name} ${filterViewDoorNo(landlord, projectInfo) || ''} 号）`,
+                } ${landlord.name} ${filterViewDoorNo(landlord) || ''} 号）`,
                 alignment: 'center',
                 margin: [headMargin, 0, headMargin, 0]
               }
@@ -243,7 +243,7 @@ export const getCompanyBaseTableHead = (landlord: LandlordType, projectInfo: Pro
             style: 'td'
           },
           {
-            text: filterViewDoorNo(landlord, projectInfo) || '',
+            text: filterViewDoorNo(landlord) || '',
             style: 'td'
           }
         ],
@@ -289,9 +289,7 @@ export const getPeopleTableHead = (landlord: LandlordType, projectInfo: ProjectT
                 margin: [headMargin, 0, headMargin, 2]
               },
               {
-                text: `（居民户 ${landlord.name || ''} ${
-                  filterViewDoorNo(landlord, projectInfo) || ''
-                } 号）`,
+                text: `（居民户 ${landlord.name || ''} ${filterViewDoorNo(landlord) || ''} 号）`,
                 alignment: 'center',
                 margin: [headMargin, 0, headMargin, 0]
               }
