@@ -150,7 +150,7 @@ const tabsList = computed(() => {
     {
       label: '村集体基本情况',
       value: 0,
-      filled: false,
+      filled: true,
       defIcon: iconBaseDef,
       selIcon: iconBaseSel
     },

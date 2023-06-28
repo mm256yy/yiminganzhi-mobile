@@ -138,7 +138,7 @@ const tabsList = computed(() => {
     {
       label: '个体户基本概况',
       value: 0,
-      filled: false,
+      filled: true,
       defIcon: iconBaseDef,
       selIcon: iconBaseSel
     },

@@ -885,9 +885,11 @@ export class Landlord extends Common {
           return
         }
 
+        const userInfo = getStorage(StorageKey.USERINFO)
         // 更新上报相关字段
         data.signStatus = SignStatusEnum.SignSucceed
         data.signDate = dayjs()
+        data.signUser = userInfo.id
 
         const values = `status = 'modify',signStatus = '${
           SignStatusEnum.SignSucceed

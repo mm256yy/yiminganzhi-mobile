@@ -152,19 +152,19 @@ export default {
     totalFillNumber: function () {
       switch (this.type) {
         case MainType.PeasantHousehold:
-          return 8
+          return 9
           break
         case MainType.Company:
-          return 6
+          return 7
           break
         case MainType.IndividualHousehold:
-          return 5
-          break
-        case MainType.Village:
           return 6
           break
+        case MainType.Village:
+          return 7
+          break
         default:
-          return 8
+          return 9
           break
       }
     },
@@ -184,7 +184,7 @@ export default {
         immigrantFile
       } = this.dataInfo
 
-      let fillCount = 0
+      let fillCount = 1
       if (this.isNotNullArray(immigrantHouseList)) {
         fillCount++
       }

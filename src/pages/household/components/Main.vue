@@ -191,7 +191,7 @@ const tabsList = computed(() => {
     {
       label: '居民户信息',
       value: 0,
-      filled: false,
+      filled: true,
       defIcon: iconHouseholdDef,
       selIcon: iconHouseholdSel
     },

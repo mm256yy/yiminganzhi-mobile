@@ -144,7 +144,7 @@ const tabsList = computed(() => {
   } = props.dataInfo
 
   return [
-    { label: '企业基本概况', value: 0, filled: false, defIcon: iconBaseDef, selIcon: iconBaseSel },
+    { label: '企业基本概况', value: 0, filled: true, defIcon: iconBaseDef, selIcon: iconBaseSel },
     {
       label: '房屋信息',
       value: 1,

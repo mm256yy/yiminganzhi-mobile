@@ -8,7 +8,7 @@
         @click="selectTabs(item, index)"
       >
         <image
-          v-if="index > 0 && item.filled"
+          v-if="item.filled"
           class="fill-suc-icon"
           src="@/static/images/tabs_fill_suc.png"
           mode="scaleToFill"
