@@ -217,3 +217,15 @@ export enum PrintType {
   printIndividualHousehold = 'printIndividualHousehold', // 个体户
   printCollective = 'printCollective' // 村集体
 }
+
+export interface Top5ItemType {
+  name: string
+  number: number
+}
+// top5
+export interface Top5Type {
+  homeReportTop: Top5ItemType[]
+  homeReportTopToday: Top5ItemType[]
+  homeSignTop: Top5ItemType[]
+  homeSignTopToday: Top5ItemType[]
+}

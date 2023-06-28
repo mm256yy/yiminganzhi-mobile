@@ -86,6 +86,7 @@ class PullData {
       professionalTree: [],
       upgradation: null,
       immigrantGraveList: [],
+      top5Statistic: null,
 
       peasantHouseholdNum: 0,
       companyNum: 0,
@@ -208,7 +209,12 @@ class PullData {
       dictValList,
       districtTree,
       districtList,
-      professionalTree
+      professionalTree,
+
+      homeReportTop,
+      homeReportTopToday,
+      homeSignTop,
+      homeSignTopToday
     } = result
     // 需要reset
     this.state.immigrantIncomeConfigList = immigrantIncomeConfigList
@@ -218,6 +224,12 @@ class PullData {
     this.state.districtList = districtList
     this.state.professionalTree = professionalTree
     this.state.immigrantAppendantConfigList = immigrantAppendantOptionList
+    this.state.top5Statistic = {
+      homeReportTop,
+      homeReportTopToday,
+      homeSignTop,
+      homeSignTopToday
+    }
 
     this.pullDict().then((res: boolean) => {
       res && this.count++
@@ -257,6 +269,7 @@ class PullData {
       // 重置 释放缓存
       this.state.districtTree = []
       this.state.professionalTree = []
+      this.state.top5Statistic = null
       console.log('拉取: 其他', res)
     })
   }
@@ -848,7 +861,7 @@ class PullData {
   /** 其他 */
   private pullOther(): Promise<boolean> {
     return new Promise(async (resolve) => {
-      const { districtTree, professionalTree } = this.state
+      const { districtTree, professionalTree, top5Statistic } = this.state
       await db.transaction('begin').catch(() => {
         resolve(false)
       })
@@ -866,6 +879,15 @@ class PullData {
         const fields = "'type','content','updatedDate'"
         const values = `'${OtherDataType.ProfessionalTree}','${JSON.stringify(
           professionalTree
+        )}','${getCurrentTimeStamp()}'`
+        db.insertOrReplaceData(OtherTableName, values, fields)
+      }
+
+      if (top5Statistic) {
+        // top5
+        const fields = "'type','content','updatedDate'"
+        const values = `'${OtherDataType.Top5}','${JSON.stringify(
+          top5Statistic
         )}','${getCurrentTimeStamp()}'`
         db.insertOrReplaceData(OtherTableName, values, fields)
       }

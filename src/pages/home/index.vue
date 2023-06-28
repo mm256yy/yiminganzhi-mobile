@@ -268,7 +268,6 @@ const getImageObj = async () => {
       }
     })
   }
-  console.log('home img', imageUrlAndBase64Map)
 }
 
 onMounted(() => {

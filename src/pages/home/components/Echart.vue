@@ -40,6 +40,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import { getStatisticApi } from '@/service'
+import { Top5Type, Top5ItemType } from '@/types/common'
 
 import top5_1 from '@/static/images/statistic_top1.png'
 import top5_2 from '@/static/images/statistic_top2.png'
@@ -76,58 +77,12 @@ const tabs = ref([
   }
 ])
 
-const arr = [
-  {
-    name: '章三',
-    number: 242
-  },
-  {
-    name: '章三',
-    number: 142
-  },
-  {
-    name: '章三',
-    number: 92
-  },
-  {
-    name: '章三',
-    number: 78
-  },
-  {
-    name: '章三',
-    number: 22
-  }
-]
-
-const arr2 = [
-  {
-    name: '里斯',
-    number: 142
-  },
-  {
-    name: '里斯',
-    number: 112
-  },
-  {
-    name: '里斯',
-    number: 92
-  },
-  {
-    name: '里斯',
-    number: 68
-  },
-  {
-    name: '里斯',
-    number: 12
-  }
-]
-const statisticData = ref([arr, arr, arr2, arr2])
-// {
-//   historyReport: arr,
-//   todayReport: arr,
-//   historySign: arr,
-//   todaySign: arr
-// }
+const statisticData = ref<Top5Type>({
+  homeReportTop: [],
+  homeReportTopToday: [],
+  homeSignTop: [],
+  homeSignTopToday: []
+})
 
 const echartOptions = ref<OptionsType[]>([])
 
@@ -150,25 +105,27 @@ const getImg = (index: number) => {
 }
 
 const getStatisticDataRequest = async () => {
-  // const data = await getStatisticApi(OtherDataType.Top5)
-  // statisticData.value = data
+  const data: Top5Type = await getStatisticApi(OtherDataType.Top5)
+  statisticData.value = data
+  console.log(data, 'data')
   getStatisticData()
 }
 
 const getStatisticData = (id?: number) => {
   let max = 0
-  let arr = []
+  let arr: any = []
   if (id) {
-    arr = statisticData.value[id]
-    // arr = id === 1 ? data.todayReport :
-    // id === 2 ? data.historySign :
-    // data.todaySign
+    arr =
+      id === 1
+        ? statisticData.value?.homeReportTopToday
+        : id === 2
+        ? statisticData.value?.homeSignTop
+        : statisticData.value?.homeSignTopToday
   } else {
-    arr = statisticData.value[0]
-    // arr = data.historyReport
+    arr = statisticData.value?.homeReportTop
   }
   const top5Array = arr.slice(0, 5)
-  const options = top5Array.map((item, index) => {
+  const options = top5Array.map((item: Top5ItemType, index: number) => {
     if (index === 0) {
       max = item.number
     }
@@ -295,11 +252,12 @@ onMounted(() => {
       }
 
       .user-name {
-        width: 25rpx; // 32
+        width: 32rpx; // 32
         overflow: hidden;
         font-size: 8rpx;
         font-weight: 400;
         color: #333333;
+        text-overflow: ellipsis;
         word-break: keep-all;
       }
     }
