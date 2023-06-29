@@ -1,34 +1,30 @@
 <template>
   <view class="appendant-info-wrapper">
-    <view class="appendant-container">
+    <view class="appendant-container" v-if="formData && formData.length">
       <view class="row">
         <view class="row-wrapper">
-          <view class="col">序号</view>
-          <view class="col w-108">项目</view>
-          <view class="col w-104">规格</view>
-          <view class="col">单位</view>
-          <view class="col w-87">数量</view>
-          <view class="col w-168">备注</view>
+          <view class="col w-50">序号</view>
+          <view class="col">项目</view>
+          <view class="col">规格</view>
+          <view class="col w-50">单位</view>
+          <view class="col w-50">数量</view>
+          <view class="col w-334">备注</view>
         </view>
       </view>
       <view class="row"></view>
       <view class="row" v-for="(item, index) in formData" :key="item.id">
-        <view class="col">{{ index + 1 }}</view>
-        <view class="col w-117">{{ item.name }}</view>
-        <view class="col w-57">{{ item.size }}</view>
-        <view class="col">{{ item.unit }}</view>
-        <view class="col w-94">
-          <input class="remark" type="number" v-model="item.number" placeholder="请输入" />
-        </view>
-        <view class="col w-183">
-          <input
-            class="remark"
-            v-model="item.remark"
-            :maxlength="100"
-            placeholder="请输入(100字以内)"
-          />
-        </view>
+        <view class="col w-50">{{ index + 1 }}</view>
+        <view class="col">{{ item.name }}</view>
+        <view class="col">{{ item.size }}</view>
+        <view class="col w-50">{{ item.unit }}</view>
+        <view class="col w-50">{{ item.number }}</view>
+        <view class="col w-334">{{ item.remark }}</view>
       </view>
+    </view>
+
+    <view class="null-wrapper" v-else>
+      <image class="icon" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
+      <view class="tips">请先配置附属物信息</view>
     </view>
 
     <image
@@ -40,10 +36,10 @@
     />
 
     <image
-      class="btn submit"
-      src="@/static/images/icon_submit.png"
+      class="btn edit"
+      src="@/static/images/icon_edit.png"
       mode="scaleToFill"
-      @click="submit"
+      @click="toEdit"
     />
 
     <!-- 复核修改记录 -->
@@ -53,10 +49,9 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { getAppendantListApi } from '@/service'
+import { onShow } from '@dcloudio/uni-app'
 import { MainStage, MainType } from '@/types/common'
-import { AppendantType } from '@/types/datafill'
-import { getStorage, StorageKey, formatNum } from '@/utils'
+import { getStorage, StorageKey, routerForward } from '@/utils'
 import modifyRecords from '../modifyRecords/index.vue' // 引入修改记录组件
 
 const props = defineProps({
@@ -86,38 +81,33 @@ const stage = projectInfo?.status ? projectInfo.status : MainStage.survey
 const showRecord = ref<boolean>(false)
 
 const formData = ref<any>([])
-const emit = defineEmits(['submit'])
-const commonParams = {
-  number: null,
-  remark: ''
+const emit = defineEmits(['updateData'])
+
+const initData = async () => {
+  if (props.dataList && props.dataList.length > 0) {
+    console.log('dataList:', props.dataList)
+    let arr = props.dataList.filter((item: any) => item.number || item.remark)
+    formData.value = [...arr]
+  }
 }
 
-// 获取附属物初始化列表信息
-const getList = () => {
-  getAppendantListApi().then((res) => {
-    res.map((item: any) => {
-      formData.value.push({
-        surveyId: item.id,
-        name: item.name,
-        size: item.size,
-        unit: item.unit,
-        ...commonParams
-      })
-    })
+onShow(() => {
+  // 接收来自编辑页派发的 updateData 事件
+  uni.$on('updateData', () => {
+    emit('updateData')
   })
-}
+  setTimeout(() => {
+    initData()
+  }, 1000)
+})
 
-// 表单提交
-const submit = () => {
-  const arr: any = []
-  formData.value.map((item: any) => {
-    arr.push({
-      ...item,
-      number: item.number ? Number(formatNum(item.number)) : null
-    })
+// 编辑
+const toEdit = () => {
+  const { uid } = props.dataInfo
+  routerForward('appendantInfoEdit', {
+    uid,
+    dataList: JSON.stringify(props.dataList)
   })
-  const params = [...arr]
-  emit('submit', params)
 }
 
 // 展示修改记录
@@ -129,14 +119,6 @@ const showModifyRecord = () => {
 const closeModifyRecords = () => {
   showRecord.value = false
 }
-
-onMounted(() => {
-  if (props.dataList && props.dataList.length > 0) {
-    formData.value = [...props.dataList]
-  } else {
-    getList()
-  }
-})
 </script>
 
 <style lang="scss" scoped>
@@ -172,7 +154,7 @@ onMounted(() => {
 
           .col {
             display: table-cell;
-            width: 32rpx;
+            width: 121rpx;
             height: 28rpx;
             padding: 0;
             font-size: 9rpx;
@@ -182,20 +164,12 @@ onMounted(() => {
             vertical-align: middle;
             border: none;
 
-            &.w-108 {
-              width: 108rpx;
+            &.w-50 {
+              width: 50rpx;
             }
 
-            &.w-104 {
-              width: 104rpx;
-            }
-
-            &.w-87 {
-              width: 87rpx;
-            }
-
-            &.w-168 {
-              width: 168rpx;
+            &.w-334 {
+              width: 334rpx;
             }
           }
         }
@@ -203,7 +177,7 @@ onMounted(() => {
 
       .col {
         display: table-cell;
-        width: 35rpx;
+        width: 121rpx;
         height: 28rpx;
         padding-left: 9rpx;
         font-size: 9rpx;
@@ -212,20 +186,12 @@ onMounted(() => {
         vertical-align: middle;
         border: 1rpx solid #f0f0f0;
 
-        &.w-117 {
-          width: 117rpx;
+        &.w-50 {
+          width: 50rpx;
         }
 
-        &.w-57 {
-          width: 57rpx;
-        }
-
-        &.w-94 {
-          width: 94rpx;
-        }
-
-        &.w-183 {
-          width: 183rpx;
+        &.w-334 {
+          width: 334rpx;
         }
 
         .input-wrapper {
@@ -276,6 +242,28 @@ onMounted(() => {
     }
   }
 
+  .null-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    height: calc(100vh - 33rpx - 12rpx - 33rpx - 24rpx - 60rpx - var(--status-bar-height));
+    background-color: #fff;
+
+    .icon {
+      width: 152rpx;
+      height: 92rpx;
+    }
+
+    .tips {
+      margin-top: 17rpx;
+      font-size: 9rpx;
+      line-height: 1;
+      color: #171718;
+    }
+  }
+
   .btn {
     position: fixed;
     right: 25rpx;
@@ -283,7 +271,7 @@ onMounted(() => {
     height: 28rpx;
     border-radius: 50%;
 
-    &.submit {
+    &.edit {
       bottom: 16rpx;
     }
 

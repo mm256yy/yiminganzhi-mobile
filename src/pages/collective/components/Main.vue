@@ -48,7 +48,6 @@
                   v-if="tabVal === 3"
                   :dataInfo="dataInfo"
                   :dataList="dataInfo.immigrantAppendantList"
-                  @submit="updateAppendantInfo"
                 />
 
                 <!-- 坟墓信息 -->
@@ -92,7 +91,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
-import { routerForward } from '@/utils'
 import { MainType, PrintType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
 import Header from '@/components/Header/Index.vue'
@@ -109,7 +107,6 @@ import {
   deleteLandlordHouseApi,
   deleteLandlordTreeApi,
   updateLandlordTreeApi,
-  updateLandlordAppendantApi,
   deleteLandlordFacilitiesApi,
   deleteLandlordGraveApi,
   updateLandlordImmigrantFileApi
@@ -233,19 +230,19 @@ const updateFruitTreeInfo = (data: any) => {
  * 更新附属物信息
  * @param(Array) data
  */
-const updateAppendantInfo = (data: any) => {
-  const params = [...data]
-  updateLandlordAppendantApi(props.dataInfo.uid, params)
-    .then((res) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch((e) => {
-      showToast(ERROR_MSG)
-    })
-}
+// const updateAppendantInfo = (data: any) => {
+//   const params = [...data]
+//   updateLandlordAppendantApi(props.dataInfo.uid, params)
+//     .then((res) => {
+//       if (res) {
+//         showToast(SUCCESS_MSG)
+//         updateData()
+//       }
+//     })
+//     .catch((e) => {
+//       showToast(ERROR_MSG)
+//     })
+// }
 
 /**
  * 删除农村专项设施设备信息

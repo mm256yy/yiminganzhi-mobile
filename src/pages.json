@@ -120,6 +120,13 @@
 			}
 		},
 		{
+			"name": "appendantInfoEdit",
+			"path": "pages/common/appendantInfo/edit",
+			"style": {
+				"navigationBarTitleText": "附属物信息编辑"
+			}
+		},
+		{
 			"name": "sync",
 			"path": "pages/sync/index",
 			"style": {

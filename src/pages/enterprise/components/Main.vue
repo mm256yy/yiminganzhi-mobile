@@ -48,7 +48,6 @@
                   v-if="tabVal === 3"
                   :dataList="dataInfo.immigrantAppendantList"
                   :dataInfo="dataInfo"
-                  @submit="updateAppendantInfo"
                 />
 
                 <!-- 设施设备信息 -->
@@ -228,20 +227,20 @@ const updateFruitTreeInfo = (data: any) => {
  * 更新附属物信息
  * @param(Array) data 提交的参数集合
  */
-const updateAppendantInfo = (data: any) => {
-  const params = [...data]
-  console.log('update-params:', params)
-  updateLandlordAppendantApi(props.dataInfo.uid, params)
-    .then((res: any) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch(() => {
-      showToast(ERROR_MSG)
-    })
-}
+// const updateAppendantInfo = (data: any) => {
+//   const params = [...data]
+//   console.log('update-params:', params)
+//   updateLandlordAppendantApi(props.dataInfo.uid, params)
+//     .then((res: any) => {
+//       if (res) {
+//         showToast(SUCCESS_MSG)
+//         updateData()
+//       }
+//     })
+//     .catch(() => {
+//       showToast(ERROR_MSG)
+//     })
+// }
 
 /**
  * 设施设备 - 删除
