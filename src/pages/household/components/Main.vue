@@ -300,24 +300,6 @@ const updateFruitTreeInfo = (data: any) => {
 }
 
 /**
- * 更新附属物信息
- * @param(Array) data
- */
-// const updateAppendantInfo = (data: any) => {
-//   const params = [...data]
-//   updateLandlordAppendantApi(props.dataInfo.uid, params)
-//     .then((res) => {
-//       if (res) {
-//         showToast(SUCCESS_MSG)
-//         updateData()
-//       }
-//     })
-//     .catch(() => {
-//       showToast(ERROR_MSG)
-//     })
-// }
-
-/**
  * 更新家庭收入信息
  * @param(Array) data
  */

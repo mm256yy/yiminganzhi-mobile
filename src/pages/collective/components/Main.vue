@@ -48,6 +48,7 @@
                   v-if="tabVal === 3"
                   :dataInfo="dataInfo"
                   :dataList="dataInfo.immigrantAppendantList"
+                  @update-data="updateData"
                 />
 
                 <!-- 坟墓信息 -->
@@ -225,24 +226,6 @@ const updateFruitTreeInfo = (data: any) => {
       showToast(ERROR_MSG)
     })
 }
-
-/**
- * 更新附属物信息
- * @param(Array) data
- */
-// const updateAppendantInfo = (data: any) => {
-//   const params = [...data]
-//   updateLandlordAppendantApi(props.dataInfo.uid, params)
-//     .then((res) => {
-//       if (res) {
-//         showToast(SUCCESS_MSG)
-//         updateData()
-//       }
-//     })
-//     .catch((e) => {
-//       showToast(ERROR_MSG)
-//     })
-// }
 
 /**
  * 删除农村专项设施设备信息
