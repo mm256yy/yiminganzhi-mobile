@@ -63,8 +63,6 @@
                   :dataInfo="dataInfo"
                   :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '果树信息')"
                   :mainType="MainType.PeasantHousehold"
-                  @delete-tree="deleteTree"
-                  @update-fruit-tree-info="updateFruitTreeInfo"
                 />
 
                 <!-- 坟墓信息 -->
@@ -137,9 +135,7 @@ import attachmentUpload from '../../common/attachmentUpload/index.vue' // 引入
 import {
   deleteLandlordPeopleApi,
   deleteLandlordHouseApi,
-  deleteLandlordTreeApi,
   deleteLandlordGraveApi,
-  updateLandlordTreeApi,
   updateLandlordAppendantApi,
   updateLandlordFamilyIncomeApi,
   updateLandlordWillApi,
@@ -249,23 +245,6 @@ const deleteHouse = (data: any, reason?: string) => {
 }
 
 /**
- * 零星（林）果木信息 - 删除
- * @param(Object) data 被删除的行信息
- */
-const deleteTree = (data: any) => {
-  deleteLandlordTreeApi(props.dataInfo.uid, data.uid)
-    .then((res) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch(() => {
-      showToast(ERROR_MSG)
-    })
-}
-
-/**
  * 删除坟墓信息
  * @param data
  */
@@ -278,24 +257,6 @@ const deleteGraveInfo = (data: any) => {
       }
     })
     .catch((e) => {
-      showToast(ERROR_MSG)
-    })
-}
-
-/**
- * 零星（林）果木信息 - 更新
- * @param(Array) data 提交的参数集合
- */
-const updateFruitTreeInfo = (data: any) => {
-  const params = [...data]
-  updateLandlordTreeApi(props.dataInfo.uid, params)
-    .then((res) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch(() => {
       showToast(ERROR_MSG)
     })
 }

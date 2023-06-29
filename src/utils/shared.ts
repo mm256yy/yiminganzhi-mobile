@@ -183,3 +183,31 @@ export function compareVersion(version1 = '0', version2 = '0') {
 
   return result
 }
+
+/**
+ * 深拷贝
+ * @param {object} target - 需要被深拷贝的对象
+ * @param {object} map - 注入到已有对象，选填
+ * @return {object} 结果对象
+ */
+export function deepClone(target: any, map?: any) {
+  let cloneTarget: any
+  if (!map) {
+    map = new WeakMap()
+  }
+  if (target !== null && (typeof target === 'object' || Array.isArray(target))) {
+    cloneTarget = Array.isArray(target) ? [] : {}
+    const keys = Object.keys(target)
+    if (map.has(target)) {
+      return map.get(target)
+    }
+    for (const key of keys) {
+      cloneTarget[key] = deepClone(target[key], map) // eslint-disable-line
+    }
+    map.set(target, cloneTarget)
+  } else {
+    cloneTarget = target
+  }
+
+  return cloneTarget
+}

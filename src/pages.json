@@ -176,6 +176,13 @@
 			}
 		},
 		{
+			"name": "treeEdit",
+			"path": "pages/common/treeInfo/treeEdit",
+			"style": {
+				"navigationBarTitleText": "编辑零星(林)果木"
+			}
+		},
+		{
 			"name": "work",
 			"path": "pages/work/index",
 			"style": {
