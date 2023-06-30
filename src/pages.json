@@ -50,6 +50,13 @@
 			}
 		},
 		{
+			"name": "householdRevenueInfoEdit",
+			"path": "pages/household/revenueInfo/edit",
+			"style": {
+				"navigationBarTitleText": "居民户填报-家庭收入信息编辑"
+			}
+		},
+		{
 			"name": "houseInfoEdit",
 			"path": "pages/common/houseInfo/edit",
 			"style": {
@@ -68,6 +75,13 @@
 			"path": "pages/enterprise/baseInfo/edit",
 			"style": {
 				"navigationBarTitleText": "企业填报-企业基本概况编辑"
+			}
+		},
+		{
+			"name": "businessInfoEdit",
+			"path": "pages/enterprise/businessInfo/edit",
+			"style": {
+				"navigationBarTitleText": "经营现状信息编辑"
 			}
 		},
 		{
@@ -117,6 +131,13 @@
 			"path": "pages/collective/equipmentInfo/edit",
 			"style": {
 				"navigationBarTitleText": "村集体填报-农村专项设施设备信息新增/编辑"
+			}
+		},
+		{
+			"name": "appendantInfoEdit",
+			"path": "pages/common/appendantInfo/edit",
+			"style": {
+				"navigationBarTitleText": "附属物信息编辑"
 			}
 		},
 		{
@@ -173,6 +194,13 @@
 			"path": "pages/village/edit",
 			"style": {
 				"navigationBarTitleText": "自然村-添加/修改自然村"
+			}
+		},
+		{
+			"name": "treeEdit",
+			"path": "pages/common/treeInfo/treeEdit",
+			"style": {
+				"navigationBarTitleText": "编辑零星(林)果木"
 			}
 		},
 		{

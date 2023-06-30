@@ -204,13 +204,11 @@ const updateFilesList = () => {
   emit('update:modelValue', str)
 }
 
-const prviewImage = (item: any, index: number) => {
-  const urls = filesList.value.map((fileItem) => {
-    return fileItem.path ? fileItem.path : netWork.value ? fileItem.url : defaultImg
-  })
+const prviewImage = (item: any) => {
+  const url = item.path ? item.path : netWork.value ? item.url : defaultImg
   uni.previewImage({
-    urls,
-    current: index,
+    urls: [url],
+    current: 0,
     success: function (data) {
       hideLoading()
       console.log('data:', data)

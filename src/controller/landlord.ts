@@ -11,7 +11,14 @@ import {
 } from '@/database'
 import { Common } from './common'
 import { LandlordType } from '@/types/sync'
-import { guid, getCurrentTimeStamp, getStorage, StorageKey, formatDict } from '@/utils'
+import {
+  guid,
+  getCurrentTimeStamp,
+  getStorage,
+  StorageKey,
+  formatDict,
+  networkCheck
+} from '@/utils'
 import {
   LandlordQuery,
   MainType,
@@ -473,7 +480,7 @@ export class Landlord extends Common {
           }
         })
         const sql = `select * from ${LandlordTableName} where uid in (${uidsString})`
-
+        const network = await networkCheck()
         const result: LandlordDDLType[] = await this.db.selectSql(sql)
         const landlordArray: LandlordType[] = result.map((item) => JSON.parse(item.content))
         const realLandlordArr: LandlordType[] = []
@@ -530,8 +537,10 @@ export class Landlord extends Common {
               )
             }
 
-            // 存放房屋图片链接
+            // 存放房屋图片链接-离线
             const landlordHouseImageList: string[] = []
+            // 在线图片保存
+            const images: string[] = []
             if (res.immigrantHouseList && res.immigrantHouseList.length) {
               res.immigrantHouseList = res.immigrantHouseList.filter(
                 (item) => item.isDelete !== '1'
@@ -551,9 +560,19 @@ export class Landlord extends Common {
                   const houseImgs = JSON.parse(item.housePic)
                   if (houseImgs && houseImgs.length) {
                     houseImgs.forEach((imgItem: any) => {
-                      if (/\.(jpg|jpeg|png|JPG|PNG)/.test(imgItem.url)) {
+                      if (/\.(jpg|jpeg|png|JPG|PNG|JPEG)/.test(imgItem.url)) {
                         if (imageUrlAndBase64Map[imgItem.url]) {
                           landlordHouseImageList.push(imageUrlAndBase64Map[imgItem.url].path)
+                        } else {
+                          if (network) {
+                            images.push(
+                              // 处理图片链接
+                              imgItem.url.replace(
+                                'https://zdwp.oss-cn-hangzhou.aliyuncs.com/',
+                                'https://oss.zdwp.tech/'
+                              )
+                            )
+                          }
                         }
                       }
                     })
@@ -561,7 +580,10 @@ export class Landlord extends Common {
                 }
               })
             }
-
+            // 图片字段赋值-在线
+            res.images = images
+            // 图片字段赋值-离线
+            res.houseImageList = []
             /**
              * 房屋图片相关的处理
              * 2 居民户房屋模版id
@@ -569,7 +591,8 @@ export class Landlord extends Common {
              * 202 个体户房屋模版id
              * 301 村集体房屋模板id
              */
-            res.houseImageList = []
+
+            // 只有在打印房屋示意图时需要处理图片
             if ([2, 102, 202, 301].includes(templateIds[0])) {
               // 拿到房屋图片的base64
               if (landlordHouseImageList && landlordHouseImageList.length) {

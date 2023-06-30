@@ -39,8 +39,6 @@
                   v-if="tabVal === 2"
                   :dataList="dataInfo.immigrantTreeList"
                   :dataInfo="dataInfo"
-                  @delete-tree="deleteTree"
-                  @update-fruit-tree-info="updateFruitTreeInfo"
                 />
 
                 <!-- 附属物信息 -->
@@ -48,7 +46,7 @@
                   v-if="tabVal === 3"
                   :dataList="dataInfo.immigrantAppendantList"
                   :dataInfo="dataInfo"
-                  @submit="updateAppendantInfo"
+                  @update-data="updateData"
                 />
 
                 <!-- 设施设备信息 -->
@@ -64,7 +62,7 @@
                   v-if="tabVal === 5"
                   :dataList="dataInfo.immigrantManagementList"
                   :dataInfo="dataInfo"
-                  @submit="updateBusinessInfo"
+                  @update-data="updateData"
                 />
 
                 <!-- 照片上传 -->
@@ -102,11 +100,7 @@ import attachmentUpload from '../../common/attachmentUpload/index.vue' // 引入
 
 import {
   deleteLandlordHouseApi,
-  deleteLandlordTreeApi,
-  updateLandlordTreeApi,
-  updateLandlordAppendantApi,
   deleteLandlordEquipmentApi,
-  updateLandlordManagementApi,
   updateLandlordImmigrantFileApi
 } from '@/service'
 
@@ -240,85 +234,13 @@ const deleteHouse = (data: any) => {
     })
 }
 
-/**
- * 零星（林）果木信息 - 删除
- * @param(Object) data 被删除的行信息
- */
-const deleteTree = (data: any) => {
-  deleteLandlordTreeApi(props.dataInfo.uid, data.uid)
-    .then((res: any) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch(() => {
-      showToast(ERROR_MSG)
-    })
-}
-
-/**
- * 零星（林）果木信息 - 更新
- * @param(Array) data 提交的参数集合
- */
-const updateFruitTreeInfo = (data: any) => {
-  const params = [...data]
-  updateLandlordTreeApi(props.dataInfo.uid, params)
-    .then((res: any) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch(() => {
-      showToast(ERROR_MSG)
-    })
-}
-
-/**
- * 更新附属物信息
- * @param(Array) data 提交的参数集合
- */
-const updateAppendantInfo = (data: any) => {
-  const params = [...data]
-  console.log('update-params:', params)
-  updateLandlordAppendantApi(props.dataInfo.uid, params)
-    .then((res: any) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch(() => {
-      showToast(ERROR_MSG)
-    })
-}
-
-/**
+/*
  * 设施设备 - 删除
  * @param(Object) data 被删除的行信息
  */
 const deleteEquipment = (data: any) => {
   deleteLandlordEquipmentApi(props.dataInfo.uid, data.uid)
     .then((res: any) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch(() => {
-      showToast(ERROR_MSG)
-    })
-}
-
-/**
- * 更新经营现状信息
- * @param data
- */
-const updateBusinessInfo = (data: any) => {
-  const params = [...data]
-  updateLandlordManagementApi(props.dataInfo.uid, params)
-    .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
         updateData()

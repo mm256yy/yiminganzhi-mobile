@@ -445,6 +445,10 @@ class PullData {
   }
 
   public resetTable(): Promise<any> {
+    /**
+     * 为啥要做清理？
+     * 表字段有新增或者修改 如果不做删除 字段就不会被更新 就会导致操作表时报错
+     */
     return new Promise((resolve, reject) => {
       Promise.all([
         db.dropTable(ProjectTableName),
@@ -457,7 +461,7 @@ class PullData {
         db.dropTable(DistrictTableName),
         db.dropTable(VillageTableName),
         db.dropTable(AppendantTableName),
-        db.dropTable(ImageTableName),
+        // db.dropTable(ImageTableName), // 图片库不做清理 数据库字段不要做变更
         db.dropTable(GraveTableName)
       ])
         .then((res) => {

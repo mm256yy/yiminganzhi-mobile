@@ -95,7 +95,7 @@
 
 <script lang="ts">
 import { reportDataApi, getPrintTemplatesApi, getPrintLandlordApi, signDataApi } from '@/service'
-import { StorageKey, getStorage } from '@/utils'
+import { StorageKey, getCurrentTimeStamp, getStorage } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { MainType, PrintType } from '@/types/common'
 import { base64ToPath } from 'image-tools'
@@ -416,7 +416,8 @@ export default {
         landlords: landlordArray,
         projectInfo,
         templateIds,
-        type: this.templateType
+        type: this.templateType,
+        timeStamp: getCurrentTimeStamp()
       }
     },
 

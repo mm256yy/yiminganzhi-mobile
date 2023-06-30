@@ -4,7 +4,7 @@
       <view class="file-picker__box-content">
         <image
           class="file-image"
-          :src="item.path ? item.path : netWork ? item.url : defaultImg"
+          :src="filterImgSrc(item)"
           mode="aspectFill"
           @click.stop="prviewImage(item, index)"
         />
@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, onBeforeMount } from 'vue'
 import { networkCheck } from '@/utils'
 import defaultImg from '@/static/images/icon_null_data.png'
 
@@ -39,7 +39,7 @@ const netWork = ref<boolean>(true)
 const props = defineProps<PropsType>()
 const emit = defineEmits(['choose', 'prviewImage', 'delFile'])
 
-onMounted(() => {
+onBeforeMount(() => {
   networkCheck().then((res) => {
     netWork.value = res
   })
@@ -55,6 +55,12 @@ const prviewImage = (item: any, index: number) => {
 
 const delFile = (index: number) => {
   emit('delFile', index)
+}
+
+const filterImgSrc = (item: any) => {
+  const url = item.url.split('?')[0]
+  const zipUrl = `${url}?x-oss-process=image/quality,Q_60/resize,mfit,w_200`
+  return item.path ? item.path : netWork.value ? zipUrl : defaultImg
 }
 </script>
 
