@@ -17,25 +17,25 @@
       <view class="row" v-for="(item, index) in treeList" :key="item.id">
         <view class="col">{{ index + 1 }}</view>
         <view class="col w-63">
-          <text>{{ item.name }}</text>
+          {{ item.name }}
         </view>
         <view class="col w-63">
-          <text>{{ formatDict(item.usageType, 325) }}</text>
+          {{ formatDict(item.usageType, 325) }}
         </view>
         <view class="col w-63">
-          <text>{{ formatDict(item.inundationRange, 346) }}</text>
+          {{ formatDict(item.inundationRange, 346) }}
         </view>
         <view class="col w-64">
-          <text>{{ formatDict(item.size, 269) }}</text>
+          {{ formatDict(item.size, 269) }}
         </view>
         <view class="col w-64">
-          <text>{{ formatDict(item.unit, 264) }}</text>
+          {{ formatDict(item.unit, 264) }}
         </view>
         <view class="col w-64">
-          <text>{{ item.number }}</text>
+          {{ item.number }}
         </view>
         <view class="col w-67 remark">
-          <text>{{ item.remark }}</text>
+          {{ item.remark }}
         </view>
       </view>
     </view>
