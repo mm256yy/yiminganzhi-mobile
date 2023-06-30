@@ -85,7 +85,6 @@ const emit = defineEmits(['updateData'])
 
 const initData = async () => {
   if (props.dataList && props.dataList.length > 0) {
-    console.log('dataList:', props.dataList)
     let arr = props.dataList.filter((item: any) => item.number || item.remark)
     formData.value = [...arr]
   }
@@ -93,12 +92,10 @@ const initData = async () => {
 
 onShow(() => {
   // 接收来自编辑页派发的 updateData 事件
-  uni.$on('updateData', () => {
+  uni.$on('updateData', (data: any) => {
+    formData.value = [...JSON.parse(data)]
     emit('updateData')
   })
-  setTimeout(() => {
-    initData()
-  }, 1000)
 })
 
 // 编辑
@@ -119,6 +116,9 @@ const showModifyRecord = () => {
 const closeModifyRecords = () => {
   showRecord.value = false
 }
+onMounted(() => {
+  initData()
+})
 </script>
 
 <style lang="scss" scoped>

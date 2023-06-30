@@ -96,11 +96,12 @@ const submit = () => {
     })
   })
   const params = [...arr]
+  const data = formData.value.filter((item: any) => item.number || item.remark)
   updateLandlordAppendantApi(uid.value, params)
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
-        uni.$emit('updateData')
+        uni.$emit('updateData', JSON.stringify(data))
         routerBack()
       }
     })
