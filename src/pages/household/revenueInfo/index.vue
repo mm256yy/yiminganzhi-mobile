@@ -8,8 +8,8 @@
           <view :class="['input-wrapper', focusIndex === index ? 'focus' : '']">
             <input
               class="input-txt"
-              placeholder="请输入"
               type="digit"
+              disabled
               @input="amountChange($event, item)"
               v-model="item.amount"
               @focus="inputFocus(index)"
@@ -25,8 +25,8 @@
           <view :class="['input-wrapper', focusIndex === index ? 'focus' : '']">
             <input
               class="input-txt w-150"
-              placeholder="请输入"
               type="text"
+              disabled
               v-model="item.remark"
               @focus="inputFocus(index)"
               @blur="inputBlur"
@@ -53,8 +53,8 @@
           <view :class="['input-wrapper', focusIndex === index ? 'focus' : '']">
             <input
               class="input-txt"
-              placeholder="请输入"
               type="digit"
+              disabled
               v-model="item.amount"
               @input="amountChange($event, item)"
               @focus="inputFocus(index)"
@@ -70,8 +70,8 @@
           <view :class="['input-wrapper', focusIndex === index ? 'focus' : '']">
             <input
               class="input-txt w-150"
-              placeholder="请输入"
               type="text"
+              disabled
               v-model="item.remark"
               @focus="inputFocus(index)"
               @blur="inputBlur"
@@ -98,8 +98,8 @@
           <view :class="['input-wrapper', focusIndex === index ? 'focus' : '']">
             <input
               class="input-txt"
-              placeholder="请输入金额"
               type="digit"
+              disabled
               v-model="item.amount"
               @input="amountChange($event, item)"
               @focus="inputFocus(index)"
@@ -115,8 +115,8 @@
           <view :class="['input-wrapper', focusIndex === index ? 'focus' : '']">
             <input
               class="input-txt w-150"
-              placeholder="请输入"
               type="text"
+              disabled
               v-model="item.remark"
               @focus="inputFocus(index)"
               @blur="inputBlur"
@@ -145,10 +145,10 @@
     />
 
     <image
-      class="btn submit"
-      src="@/static/images/icon_submit.png"
+      class="btn edit"
+      src="@/static/images/icon_edit.png"
       mode="scaleToFill"
-      @click="submit"
+      @click="toEdit"
     />
 
     <!-- 复核修改记录 -->
@@ -158,9 +158,10 @@
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
+import { onShow } from '@dcloudio/uni-app'
 import { getFamilyIncomeListApi } from '@/service'
 import { MainType, MainStage } from '@/types/common'
-import { getStorage, StorageKey, formatNum } from '@/utils'
+import { getStorage, StorageKey, formatNum, routerForward } from '@/utils'
 import modifyRecords from '../../common/modifyRecords/index.vue' // 引入修改记录组件
 
 const props = defineProps({
@@ -200,6 +201,42 @@ const secondData = ref<any>([])
 // 其他
 const otherData = ref<any>([])
 
+const emit = defineEmits(['updateData'])
+
+onShow(() => {
+  // 接收来自编辑页派发的 updateData 事件
+  uni.$on('updateData', (data: any) => {
+    let arr: any = [...JSON.parse(data)]
+    resetData()
+    if (arr && arr.length) {
+      genNewArr(arr)
+    }
+    emit('updateData')
+  })
+})
+
+// 重置数据
+const resetData = () => {
+  // 第一产业数据
+  firstData.value = []
+
+  // 第二、三产业数据
+  secondData.value = []
+
+  // 其他
+  otherData.value = []
+}
+
+// 编辑
+const toEdit = () => {
+  const { doorNo, uid } = props.dataInfo
+  routerForward('householdRevenueInfoEdit', {
+    doorNo,
+    uid,
+    dataList: JSON.stringify(props.dataList)
+  })
+}
+
 // 展示修改记录
 const showModifyRecord = () => {
   showRecord.value = true
@@ -230,8 +267,6 @@ const amountChange = (e: any, item: any) => {
     item.amount = value
   }
 }
-
-const emit = defineEmits(['submit'])
 
 /**
  * 初始化 - 生成新的数组
@@ -321,12 +356,6 @@ const total = () => {
   let sum = 0
   sum = statistics('1') + statistics('2') + statistics('3')
   return sum
-}
-
-// 表单提交
-const submit = () => {
-  const params = [...firstData.value, ...secondData.value, ...otherData.value]
-  emit('submit', params)
 }
 
 onMounted(() => {
@@ -467,7 +496,7 @@ onMounted(() => {
     height: 28rpx;
     border-radius: 50%;
 
-    &.submit {
+    &.edit {
       bottom: 16rpx;
     }
 

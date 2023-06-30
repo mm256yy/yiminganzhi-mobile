@@ -46,7 +46,7 @@
                   v-if="tabVal === 3"
                   :dataInfo="dataInfo"
                   :dataList="dataInfo.immigrantAppendantList"
-                  @submit="updateAppendantInfo"
+                  @update-data="updateData"
                 />
 
                 <!-- 设施设备信息 -->
@@ -85,7 +85,6 @@ import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { MainType, PrintType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
 import Header from '@/components/Header/Index.vue'
-// import Tree from '@/components/Tree/Index.vue'
 import Tabs from '@/components/Tabs/Index.vue'
 import baseInfo from '../baseInfo/index.vue' // 引入个体户基本概况组件
 import houseInfo from '../../common/houseInfo/index.vue' // 引入房屋信息组件
@@ -96,7 +95,6 @@ import attachmentUpload from '../../common/attachmentUpload/index.vue' // 引入
 
 import {
   deleteLandlordHouseApi,
-  updateLandlordAppendantApi,
   deleteLandlordEquipmentApi,
   updateLandlordImmigrantFileApi
 } from '@/service'
@@ -177,25 +175,6 @@ const deleteHouse = (data: any) => {
     })
 }
 
-/**
- * 更新附属物信息
- * @param(Array) data
- */
-const updateAppendantInfo = (data: any) => {
-  const params = [...data]
-  updateLandlordAppendantApi(props.dataInfo.uid, params)
-    .then((res) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch(() => {
-      showToast(ERROR_MSG)
-    })
-}
-
-/**
  * 设施设备 - 删除
  * @param(Object) data 被删除的行信息
  */

@@ -53,7 +53,7 @@
                   :dataList="dataInfo.immigrantAppendantList"
                   :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '附属物信息')"
                   :mainType="MainType.PeasantHousehold"
-                  @submit="updateAppendantInfo"
+                  @update-data="updateData"
                 />
 
                 <!-- 零星（林）果木信息 -->
@@ -80,7 +80,7 @@
                   :dataList="dataInfo.immigrantIncomeList"
                   :dataInfo="dataInfo"
                   :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '收入信息')"
-                  @submit="updateRevenueInfo"
+                  @update-data="updateData"
                 />
 
                 <!-- 安置意愿信息 -->
@@ -136,8 +136,6 @@ import {
   deleteLandlordPeopleApi,
   deleteLandlordHouseApi,
   deleteLandlordGraveApi,
-  updateLandlordAppendantApi,
-  updateLandlordFamilyIncomeApi,
   updateLandlordWillApi,
   updateLandlordImmigrantFileApi
 } from '@/service'
@@ -261,43 +259,6 @@ const deleteGraveInfo = (data: any) => {
     })
 }
 
-/**
- * 更新附属物信息
- * @param(Array) data
- */
-const updateAppendantInfo = (data: any) => {
-  const params = [...data]
-  updateLandlordAppendantApi(props.dataInfo.uid, params)
-    .then((res) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch(() => {
-      showToast(ERROR_MSG)
-    })
-}
-
-/**
- * 更新家庭收入信息
- * @param(Array) data
- */
-const updateRevenueInfo = (data: any) => {
-  const params = [...data]
-  updateLandlordFamilyIncomeApi(props.dataInfo.uid, params)
-    .then((res) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch(() => {
-      showToast(ERROR_MSG)
-    })
-}
-
-/**
  * 更新安置意愿信息
  * @param(Array) data
  */
