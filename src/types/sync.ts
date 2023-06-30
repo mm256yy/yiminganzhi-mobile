@@ -20,7 +20,8 @@ import {
   VillageType,
   MainType,
   DistrictType,
-  CollectType
+  CollectType,
+  Top5Type
 } from './common'
 
 // 农户列表
@@ -65,6 +66,8 @@ export interface LandlordType {
   type: MainType
   totalNum?: number
   reportNum?: number
+  signStatus?: string
+  signDate?: any
   [key: string]: any
 
   // 人口
@@ -141,6 +144,7 @@ export interface StateType {
   professionalTree: LabelValueChildrenType[]
   upgradation: AppVersionDtoType | null
   immigrantGraveList: GraveType[]
+  top5Statistic: Top5Type | null
 
   peasantHouseholdNum: number
   companyNum: number

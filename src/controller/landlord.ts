@@ -24,7 +24,8 @@ import {
   MainType,
   ReportParamsType,
   LandlordSearchType,
-  ReportStatusEnum
+  ReportStatusEnum,
+  SignStatusEnum
 } from '@/types/common'
 import dayjs from 'dayjs'
 import { imageUrlAndBase64Map } from '@/config'
@@ -890,6 +891,47 @@ export class Landlord extends Common {
         resolve(true)
       } catch (error) {
         console.log(error, 'reportData-error')
+        reject('未知错误')
+      }
+    })
+  }
+
+  // 报表签字
+  signData(uid: string): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!uid) {
+          reject('uid参数缺失')
+          return
+        }
+        // 更新时 需要拿到没有做过滤的数据
+        const data = await this.getLandlordByUidNoFilter(uid)
+        if (!data) {
+          reject('获取业主信息失败')
+          return
+        }
+
+        const userInfo = getStorage(StorageKey.USERINFO)
+        // 更新上报相关字段
+        data.signStatus = SignStatusEnum.SignSucceed
+        data.signDate = dayjs()
+        data.signUser = userInfo.id
+
+        const values = `status = 'modify',signStatus = '${
+          SignStatusEnum.SignSucceed
+        }',signDate = '${dayjs().format(this.format)}',content = '${JSON.stringify(
+          data
+        )}',updatedDate = '${getCurrentTimeStamp()}'`
+        const sql = `update ${LandlordTableName} set ${values} where uid = '${data.uid}' and isDelete = '0'`
+        const res = await this.db.execteSql([sql])
+        if (res && res.code) {
+          reject('更新状态失败')
+          console.log('更新状态失败')
+          return
+        }
+        resolve(true)
+      } catch (error) {
+        console.log(error, 'signData-error')
         reject('未知错误')
       }
     })

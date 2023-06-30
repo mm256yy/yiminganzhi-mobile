@@ -7,6 +7,12 @@
         :class="['tabs-item', currentIndex === index ? 'active' : '']"
         @click="selectTabs(item, index)"
       >
+        <image
+          v-if="item.filled"
+          class="fill-suc-icon"
+          src="@/static/images/tabs_fill_suc.png"
+          mode="scaleToFill"
+        />
         <view class="icon-wrapper">
           <image
             class="icon"
@@ -52,6 +58,15 @@ watch(
   }
 )
 
+watch(
+  () => props.dataList,
+  (val) => {
+    if (val && val.length) {
+      tabsList.value = JSON.parse(JSON.stringify(val))
+    }
+  }
+)
+
 onMounted(() => {
   if (props.dataList && props.dataList.length) {
     tabsList.value = JSON.parse(JSON.stringify(props.dataList))
@@ -86,6 +101,7 @@ onMounted(() => {
     }
 
     .tabs-item {
+      position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -111,6 +127,14 @@ onMounted(() => {
           justify-content: center;
           height: 38rpx;
         }
+      }
+
+      .fill-suc-icon {
+        position: absolute;
+        top: 4rpx;
+        right: 4rpx;
+        width: 11rpx;
+        height: 11rpx;
       }
 
       .icon-wrapper {

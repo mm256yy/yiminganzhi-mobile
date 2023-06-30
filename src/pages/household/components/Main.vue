@@ -53,7 +53,7 @@
                   :dataList="dataInfo.immigrantAppendantList"
                   :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '附属物信息')"
                   :mainType="MainType.PeasantHousehold"
-                  @submit="updateAppendantInfo"
+                  @update-data="updateData"
                 />
 
                 <!-- 零星（林）果木信息 -->
@@ -63,8 +63,6 @@
                   :dataInfo="dataInfo"
                   :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '果树信息')"
                   :mainType="MainType.PeasantHousehold"
-                  @delete-tree="deleteTree"
-                  @update-fruit-tree-info="updateFruitTreeInfo"
                 />
 
                 <!-- 坟墓信息 -->
@@ -82,7 +80,7 @@
                   :dataList="dataInfo.immigrantIncomeList"
                   :dataInfo="dataInfo"
                   :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '收入信息')"
-                  @submit="updateRevenueInfo"
+                  @update-data="updateData"
                 />
 
                 <!-- 安置意愿信息 -->
@@ -117,7 +115,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { fmtUpdateLog } from '@/utils'
 import { MainType, PrintType } from '@/types/common'
@@ -137,11 +135,7 @@ import attachmentUpload from '../../common/attachmentUpload/index.vue' // 引入
 import {
   deleteLandlordPeopleApi,
   deleteLandlordHouseApi,
-  deleteLandlordTreeApi,
   deleteLandlordGraveApi,
-  updateLandlordTreeApi,
-  updateLandlordAppendantApi,
-  updateLandlordFamilyIncomeApi,
   updateLandlordWillApi,
   updateLandlordImmigrantFileApi
 } from '@/service'
@@ -176,20 +170,91 @@ const props = defineProps({
   }
 })
 
-const tabsList = ref([
-  { label: '居民户信息', value: 0, defIcon: iconHouseholdDef, selIcon: iconHouseholdSel },
-  { label: '人口信息', value: 1, defIcon: iconDemographicDef, selIcon: iconDemographicSel },
-  { label: '房屋信息', value: 2, defIcon: iconHouseDef, selIcon: iconHouseSel },
-  { label: '附属物信息', value: 3, defIcon: iconAccessoryDef, selIcon: iconAccessorySel },
-  { label: '零星 (林) 果木', value: 4, defIcon: iconTreeDef, selIcon: iconTreeSel },
-  { label: '坟墓信息', value: 5, defIcon: iconGraveDef, selIcon: iconGraveSel },
-  { label: '家庭收入信息', value: 6, defIcon: iconRevenueDef, selIcon: iconRevenueSel },
-  { label: '安置意愿信息', value: 7, defIcon: iconWillingnessDef, selIcon: iconWillingnessSel },
-  { label: '附件上传', value: 8, defIcon: iconAttachmentDef, selIcon: iconAttachmentSel }
-])
+const tabsList = computed(() => {
+  const {
+    demographicList,
+    immigrantAppendantList,
+    immigrantGraveList,
+    immigrantHouseList,
+    immigrantIncomeList,
+    immigrantTreeList,
+    immigrantWill,
+    immigrantFile
+  } = props.dataInfo
+  return [
+    {
+      label: '居民户信息',
+      value: 0,
+      filled: true,
+      defIcon: iconHouseholdDef,
+      selIcon: iconHouseholdSel
+    },
+    {
+      label: '人口信息',
+      value: 1,
+      filled: isNotNullArray(demographicList),
+      defIcon: iconDemographicDef,
+      selIcon: iconDemographicSel
+    },
+    {
+      label: '房屋信息',
+      value: 2,
+      filled: isNotNullArray(immigrantHouseList),
+      defIcon: iconHouseDef,
+      selIcon: iconHouseSel
+    },
+    {
+      label: '附属物信息',
+      value: 3,
+      filled: isNotNullArray(immigrantAppendantList),
+      defIcon: iconAccessoryDef,
+      selIcon: iconAccessorySel
+    },
+    {
+      label: '零星 (林) 果木',
+      value: 4,
+      filled: isNotNullArray(immigrantTreeList),
+      defIcon: iconTreeDef,
+      selIcon: iconTreeSel
+    },
+    {
+      label: '坟墓信息',
+      value: 5,
+      filled: isNotNullArray(immigrantGraveList),
+      defIcon: iconGraveDef,
+      selIcon: iconGraveSel
+    },
+    {
+      label: '家庭收入信息',
+      value: 6,
+      filled: isNotNullArray(immigrantIncomeList),
+      defIcon: iconRevenueDef,
+      selIcon: iconRevenueSel
+    },
+    {
+      label: '安置意愿信息',
+      value: 7,
+      filled: immigrantWill && (immigrantWill.productionType || immigrantWill.removalType),
+      defIcon: iconWillingnessDef,
+      selIcon: iconWillingnessSel
+    },
+    {
+      label: '附件上传',
+      value: 8,
+      filled: immigrantFile && immigrantFile.otherPic,
+      defIcon: iconAttachmentDef,
+      selIcon: iconAttachmentSel
+    }
+  ]
+})
 
 const tabVal = ref<number>(0)
 const emit = defineEmits(['updateData'])
+
+// 是否为空数组
+const isNotNullArray = (arr: any) => {
+  return arr && Array.isArray(arr) && arr.length
+}
 
 // tab 切换
 const selectTabs = (data: any) => {
@@ -249,23 +314,6 @@ const deleteHouse = (data: any, reason?: string) => {
 }
 
 /**
- * 零星（林）果木信息 - 删除
- * @param(Object) data 被删除的行信息
- */
-const deleteTree = (data: any) => {
-  deleteLandlordTreeApi(props.dataInfo.uid, data.uid)
-    .then((res) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch(() => {
-      showToast(ERROR_MSG)
-    })
-}
-
-/**
  * 删除坟墓信息
  * @param data
  */
@@ -282,61 +330,7 @@ const deleteGraveInfo = (data: any) => {
     })
 }
 
-/**
- * 零星（林）果木信息 - 更新
- * @param(Array) data 提交的参数集合
- */
-const updateFruitTreeInfo = (data: any) => {
-  const params = [...data]
-  updateLandlordTreeApi(props.dataInfo.uid, params)
-    .then((res) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch(() => {
-      showToast(ERROR_MSG)
-    })
-}
-
-/**
- * 更新附属物信息
- * @param(Array) data
- */
-const updateAppendantInfo = (data: any) => {
-  const params = [...data]
-  updateLandlordAppendantApi(props.dataInfo.uid, params)
-    .then((res) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch(() => {
-      showToast(ERROR_MSG)
-    })
-}
-
-/**
- * 更新家庭收入信息
- * @param(Array) data
- */
-const updateRevenueInfo = (data: any) => {
-  const params = [...data]
-  updateLandlordFamilyIncomeApi(props.dataInfo.uid, params)
-    .then((res) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch(() => {
-      showToast(ERROR_MSG)
-    })
-}
-
-/**
+/*
  * 更新安置意愿信息
  * @param(Array) data
  */

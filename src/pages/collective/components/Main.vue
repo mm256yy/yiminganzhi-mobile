@@ -39,8 +39,6 @@
                   v-if="tabVal === 2"
                   :dataList="dataInfo.immigrantTreeList"
                   :dataInfo="dataInfo"
-                  @delete-tree="deleteTree"
-                  @update-fruit-tree-info="updateFruitTreeInfo"
                 />
 
                 <!-- 附属物信息 -->
@@ -48,7 +46,7 @@
                   v-if="tabVal === 3"
                   :dataInfo="dataInfo"
                   :dataList="dataInfo.immigrantAppendantList"
-                  @submit="updateAppendantInfo"
+                  @update-data="updateData"
                 />
 
                 <!-- 坟墓信息 -->
@@ -90,9 +88,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
-import { routerForward } from '@/utils'
 import { MainType, PrintType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
 import Header from '@/components/Header/Index.vue'
@@ -107,9 +104,6 @@ import attachmentUpload from '../../common/attachmentUpload/index.vue' // 引入
 
 import {
   deleteLandlordHouseApi,
-  deleteLandlordTreeApi,
-  updateLandlordTreeApi,
-  updateLandlordAppendantApi,
   deleteLandlordFacilitiesApi,
   deleteLandlordGraveApi,
   updateLandlordImmigrantFileApi
@@ -138,18 +132,75 @@ const props = withDefaults(defineProps<PropsType>(), {
   dataInfo: {}
 })
 
-const tabsList = ref([
-  { label: '村集体基本情况', value: 0, defIcon: iconBaseDef, selIcon: iconBaseSel },
-  { label: '房屋信息', value: 1, defIcon: iconHouseDef, selIcon: iconHouseSel },
-  { label: '零星 (林) 果木', value: 2, defIcon: iconTreeDef, selIcon: iconTreeSel },
-  { label: '附属物信息', value: 3, defIcon: iconAppurtenanceDef, selIcon: iconAppurtenanceSel },
-  { label: '坟墓信息', value: 4, defIcon: iconGraveDef, selIcon: iconGraveSel },
-  { label: '农村专项及设施', value: 5, defIcon: iconEquipmentDef, selIcon: iconEquipmentSel },
-  { label: '照片上传', value: 6, defIcon: iconPhotoDef, selIcon: iconPhotoSel }
-])
+const tabsList = computed(() => {
+  const {
+    immigrantAppendantList,
+    immigrantGraveList,
+    immigrantHouseList,
+    immigrantTreeList,
+    immigrantFacilitiesList,
+    immigrantFile
+  } = props.dataInfo
+  return [
+    {
+      label: '村集体基本情况',
+      value: 0,
+      filled: true,
+      defIcon: iconBaseDef,
+      selIcon: iconBaseSel
+    },
+    {
+      label: '房屋信息',
+      value: 1,
+      filled: isNotNullArray(immigrantHouseList),
+      defIcon: iconHouseDef,
+      selIcon: iconHouseSel
+    },
+    {
+      label: '零星 (林) 果木',
+      value: 2,
+      filled: isNotNullArray(immigrantTreeList),
+      defIcon: iconTreeDef,
+      selIcon: iconTreeSel
+    },
+    {
+      label: '附属物信息',
+      value: 3,
+      filled: isNotNullArray(immigrantAppendantList),
+      defIcon: iconAppurtenanceDef,
+      selIcon: iconAppurtenanceSel
+    },
+    {
+      label: '坟墓信息',
+      value: 4,
+      filled: isNotNullArray(immigrantGraveList),
+      defIcon: iconGraveDef,
+      selIcon: iconGraveSel
+    },
+    {
+      label: '农村专项及设施',
+      value: 5,
+      filled: isNotNullArray(immigrantFacilitiesList),
+      defIcon: iconEquipmentDef,
+      selIcon: iconEquipmentSel
+    },
+    {
+      label: '照片上传',
+      value: 6,
+      filled: immigrantFile && immigrantFile.otherPic,
+      defIcon: iconPhotoDef,
+      selIcon: iconPhotoSel
+    }
+  ]
+})
 
 const tabVal = ref<number>(0)
 const emit = defineEmits(['updateData'])
+
+// 是否为空数组
+const isNotNullArray = (arr: any) => {
+  return arr && Array.isArray(arr) && arr.length
+}
 
 // tab 切换
 const selectTabs = (data: any) => {
@@ -183,59 +234,6 @@ const updateData = () => {
  */
 const deleteHouse = (data: any) => {
   deleteLandlordHouseApi(props.dataInfo.uid, data.uid)
-    .then((res) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch((e) => {
-      showToast(ERROR_MSG)
-    })
-}
-
-/**
- * 零星（林）果木信息 - 删除
- * @param(Object) data 被删除的行信息
- */
-const deleteTree = (data: any) => {
-  deleteLandlordTreeApi(props.dataInfo.uid, data.uid)
-    .then((res) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch((e) => {
-      showToast(ERROR_MSG)
-    })
-}
-
-/**
- * 零星（林）果木信息 - 更新
- * @param(Array) data 提交的参数集合
- */
-const updateFruitTreeInfo = (data: any) => {
-  const params = [...data]
-  updateLandlordTreeApi(props.dataInfo.uid, params)
-    .then((res) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch((e) => {
-      showToast(ERROR_MSG)
-    })
-}
-
-/**
- * 更新附属物信息
- * @param(Array) data
- */
-const updateAppendantInfo = (data: any) => {
-  const params = [...data]
-  updateLandlordAppendantApi(props.dataInfo.uid, params)
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)

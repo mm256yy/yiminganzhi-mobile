@@ -78,6 +78,12 @@ export enum ReportStatusEnum {
   UnReport = 'UnReport'
 }
 
+// 签字状态
+export enum SignStatusEnum {
+  SignSucceed = 'SignSucceed',
+  UnSign = 'UnSign'
+}
+
 // 项目进行到的阶段，survey: 调查填报阶段， review: 复核阶段
 export enum MainStage {
   survey = 'survey',
@@ -210,4 +216,16 @@ export enum PrintType {
   printCompany = 'printCompany', // 企业
   printIndividualHousehold = 'printIndividualHousehold', // 个体户
   printCollective = 'printCollective' // 村集体
+}
+
+export interface Top5ItemType {
+  name: string
+  number: number
+}
+// top5
+export interface Top5Type {
+  homeReportTop: Top5ItemType[]
+  homeReportTopToday: Top5ItemType[]
+  homeSignTop: Top5ItemType[]
+  homeSignTopToday: Top5ItemType[]
 }

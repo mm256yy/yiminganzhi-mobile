@@ -4,6 +4,10 @@
       <view class="list-header-left">
         <view class="name">{{ dataInfo.name }}</view>
         <view class="account-no">{{ filterViewDoorNoMd(dataInfo) }}</view>
+        <view class="fill-number"
+          >填报进度&nbsp;<text class="green">{{ fillNumber }}</text
+          >/{{ totalFillNumber }}</view
+        >
       </view>
 
       <view class="list-header-right">
@@ -11,7 +15,14 @@
           <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
           <text class="txt">打印表格</text>
         </view>
-
+        <view
+          v-if="!dataInfo.signStatus || dataInfo.signStatus === 'UnSign'"
+          class="btn-wrapper report"
+          @click="tableSign"
+        >
+          <image class="icon" src="@/static/images/qianzi_icon.png" mode="scaleToFill" />
+          <text class="txt">报表签字</text>
+        </view>
         <view
           v-if="!dataInfo.reportStatus || dataInfo.reportStatus === 'UnReport'"
           class="btn-wrapper report"
@@ -83,8 +94,8 @@
 </template>
 
 <script lang="ts">
-import { reportDataApi, getPrintTemplatesApi, getPrintLandlordApi } from '@/service'
 import { StorageKey, getCurrentTimeStamp, getStorage, filterViewDoorNo } from '@/utils'
+import { reportDataApi, getPrintTemplatesApi, getPrintLandlordApi, signDataApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { MainType, PrintType } from '@/types/common'
 import { base64ToPath } from 'image-tools'
@@ -137,6 +148,105 @@ export default {
       default: ''
     }
   },
+  computed: {
+    totalFillNumber: function () {
+      switch (this.type) {
+        case MainType.PeasantHousehold:
+          return 9
+          break
+        case MainType.Company:
+          return 7
+          break
+        case MainType.IndividualHousehold:
+          return 6
+          break
+        case MainType.Village:
+          return 7
+          break
+        default:
+          return 9
+          break
+      }
+    },
+    fillNumber: function () {
+      const {
+        demographicList,
+        immigrantAppendantList,
+        immigrantGraveList,
+        immigrantHouseList,
+        immigrantIncomeList,
+        immigrantTreeList,
+        immigrantWill,
+        immigrantManagementList,
+        immigrantEquipmentList,
+        immigrantFacilitiesList,
+        type,
+        immigrantFile
+      } = this.dataInfo
+
+      let fillCount = 1
+      if (this.isNotNullArray(immigrantHouseList)) {
+        fillCount++
+      }
+      if (this.isNotNullArray(immigrantTreeList)) {
+        fillCount++
+      }
+      if (this.isNotNullArray(immigrantAppendantList)) {
+        fillCount++
+      }
+      // 上报开始校验数据
+      if (type === MainType.PeasantHousehold) {
+        // 居民户
+        if (this.isNotNullArray(demographicList)) {
+          fillCount++
+        }
+        if (this.isNotNullArray(immigrantIncomeList)) {
+          fillCount++
+        }
+
+        if (immigrantWill && (immigrantWill.productionType || immigrantWill.removalType)) {
+          fillCount++
+        }
+        if (this.isNotNullArray(immigrantGraveList)) {
+          fillCount++
+        }
+        if (immigrantFile && immigrantFile.otherPic) {
+          fillCount++
+        }
+      } else if (type === MainType.IndividualHousehold) {
+        // 个体户
+        if (this.isNotNullArray(immigrantEquipmentList)) {
+          fillCount++
+        }
+        if (immigrantFile && immigrantFile.otherPic) {
+          fillCount++
+        }
+      } else if (type === MainType.Company) {
+        // 企业
+        if (immigrantFile && immigrantFile.otherPic) {
+          fillCount++
+        }
+        if (this.isNotNullArray(immigrantManagementList)) {
+          fillCount++
+        }
+        if (this.isNotNullArray(immigrantEquipmentList)) {
+          fillCount++
+        }
+      } else if (type === MainType.Village) {
+        // 村集体
+        if (this.isNotNullArray(immigrantGraveList)) {
+          fillCount++
+        }
+        if (this.isNotNullArray(immigrantFacilitiesList)) {
+          fillCount++
+        }
+        if (immigrantFile && immigrantFile.otherPic) {
+          fillCount++
+        }
+      }
+      return fillCount
+    }
+  },
   watch: {
     dataInfo: function (val, old) {
       // 切换业主时 清理缓存
@@ -151,6 +261,24 @@ export default {
   methods: {
     filterViewDoorNoMd(data: any) {
       return filterViewDoorNo(data)
+    },
+    // 是否为空数组
+    isNotNullArray(arr: any) {
+      return arr && Array.isArray(arr) && arr.length
+    },
+
+    // 报表签字
+    tableSign() {
+      signDataApi(this.dataInfo.uid)
+        .then((res) => {
+          if (res) {
+            showToast(SUCCESS_MSG)
+            this.$emit('updateData')
+          }
+        })
+        .catch(() => {
+          showToast(ERROR_MSG)
+        })
     },
     // 数据上报校验
     reportDataCheck() {
@@ -468,6 +596,24 @@ export default {
         font-size: 13rpx;
         color: #1c5df1;
       }
+
+      .fill-number {
+        display: flex;
+        height: 24rpx;
+        padding: 0 18rpx;
+        margin-left: 14rpx;
+        font-size: 11rpx;
+        font-weight: 500;
+        color: #171718;
+        background-color: #e1f0ff;
+        border-radius: 28rpx;
+        align-items: center;
+        justify-content: center;
+
+        .green {
+          color: #30a952;
+        }
+      }
     }
 
     .list-header-right {
@@ -489,11 +635,11 @@ export default {
         }
 
         &.print {
-          margin-right: 7rpx;
           background-color: #30a952;
         }
 
         &.report {
+          margin-left: 7rpx;
           background-color: #3e73ec;
         }
 

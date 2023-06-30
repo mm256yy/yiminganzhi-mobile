@@ -41,6 +41,8 @@ create table if not exists ${LandlordTableName} (
   'reportStatus' text,
   'reportDate' text,
   'reportUser' text,
+  'signStatus' text,
+  'signDate' text,
   'content' text,
   'areaCode' text,
   'townCode' text,
@@ -56,13 +58,15 @@ create table if not exists ${LandlordTableName} (
 `
 
 // 需要更新的字段定义 和 字段赋值
-export const landlordFields = `'uid','id','status','doorNo','type','name','reportStatus','reportDate','reportUser','areaCode','townCode','villageCode','virutalVillageCode','content','longitude','latitude','card','updatedDate','isDelete'`
+export const landlordFields = `'uid','id','status','doorNo','type','name','reportStatus','reportDate','reportUser','signStatus','signDate','areaCode','townCode','villageCode','virutalVillageCode','content','longitude','latitude','card','updatedDate','isDelete'`
 // status 字段为 当前数据是否有变更的状态
 export const getLandlordValues = (item: LandlordType, status: 'default' | 'modify') =>
   `'${item.uid}','${item.id || null}','${status}','${item.doorNo}','${item.type}','${item.name}','${
     item.reportStatus
   }','${item.reportDate ? dayjs(item.reportDate).format('YYYY-MM-DD HH:mm:ss') : ''}','${
     item.reportUser
+  }','${item.signStatus}','${
+    item.signDate ? dayjs(item.signDate).format('YYYY-MM-DD HH:mm:ss') : ''
   }','${item.areaCode}','${item.townCode}','${item.villageCode}','${
     item.virutalVillageCode
   }','${JSON.stringify(item)}','${item.longitude || ''}','${item.latitude || ''}','${
@@ -75,10 +79,10 @@ export const getLandlordSqlValues = (data: LandlordType) =>
     data.doorNo
   }',reportStatus = '${data.reportStatus}',reportDate = '${data.reportDate}',reportUser = '${
     data.reportUser
-  }',areaCode = '${data.areaCode}',townCode = '${data.townCode}',villageCode = '${
-    data.villageCode
-  }',virutalVillageCode = '${data.virutalVillageCode || ''}',content = '${JSON.stringify(
-    data
-  )}',longitude = '${data.longitude || ''}',latitude = '${data.latitude || ''}',card = '${
-    data.card
-  }',updatedDate = '${getCurrentTimeStamp()}'`
+  }',signStatus = '${data.signStatus}',signDate = '${data.signDate}',areaCode = '${
+    data.areaCode
+  }',townCode = '${data.townCode}',villageCode = '${data.villageCode}',virutalVillageCode = '${
+    data.virutalVillageCode || ''
+  }',content = '${JSON.stringify(data)}',longitude = '${data.longitude || ''}',latitude = '${
+    data.latitude || ''
+  }',card = '${data.card}',updatedDate = '${getCurrentTimeStamp()}'`

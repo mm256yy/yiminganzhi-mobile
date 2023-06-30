@@ -6,7 +6,8 @@ export enum OtherDataType {
   MainTree = 'tree', // 主树 镇/行政/自然/农户
   DistrictTree = 'districtTree', // 街道树
   PullTime = 'pullTime', // 同步时间
-  ProfessionalTree = 'professionalTree' // 专业树
+  ProfessionalTree = 'professionalTree', // 专业树
+  Top5 = 'top5' // top5
 }
 
 export interface OtherDDLType {
