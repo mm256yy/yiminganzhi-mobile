@@ -50,6 +50,13 @@
 			}
 		},
 		{
+			"name": "householdRevenueInfoEdit",
+			"path": "pages/household/revenueInfo/edit",
+			"style": {
+				"navigationBarTitleText": "居民户填报-家庭收入信息编辑"
+			}
+		},
+		{
 			"name": "houseInfoEdit",
 			"path": "pages/common/houseInfo/edit",
 			"style": {

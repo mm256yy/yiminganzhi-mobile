@@ -82,7 +82,7 @@
                   :dataList="dataInfo.immigrantIncomeList"
                   :dataInfo="dataInfo"
                   :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '收入信息')"
-                  @submit="updateRevenueInfo"
+                  @update-data="updateData"
                 />
 
                 <!-- 安置意愿信息 -->
@@ -140,7 +140,6 @@ import {
   deleteLandlordTreeApi,
   deleteLandlordGraveApi,
   updateLandlordTreeApi,
-  updateLandlordFamilyIncomeApi,
   updateLandlordWillApi,
   updateLandlordImmigrantFileApi
 } from '@/service'
@@ -288,24 +287,6 @@ const deleteGraveInfo = (data: any) => {
 const updateFruitTreeInfo = (data: any) => {
   const params = [...data]
   updateLandlordTreeApi(props.dataInfo.uid, params)
-    .then((res) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch(() => {
-      showToast(ERROR_MSG)
-    })
-}
-
-/**
- * 更新家庭收入信息
- * @param(Array) data
- */
-const updateRevenueInfo = (data: any) => {
-  const params = [...data]
-  updateLandlordFamilyIncomeApi(props.dataInfo.uid, params)
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
