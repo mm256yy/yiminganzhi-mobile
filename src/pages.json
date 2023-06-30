@@ -78,6 +78,13 @@
 			}
 		},
 		{
+			"name": "businessInfoEdit",
+			"path": "pages/enterprise/businessInfo/edit",
+			"style": {
+				"navigationBarTitleText": "经营现状信息编辑"
+			}
+		},
+		{
 			"name": "equipmentInfoEdit",
 			"path": "pages/common/equipmentInfo/edit",
 			"style": {

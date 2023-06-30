@@ -207,15 +207,25 @@ onShow(() => {
   // 接收来自编辑页派发的 updateData 事件
   uni.$on('updateData', (data: any) => {
     let arr: any = [...JSON.parse(data)]
-    firstData.value = []
-    secondData.value = []
-    otherData.value = []
+    resetData()
     if (arr && arr.length) {
       genNewArr(arr)
     }
     emit('updateData')
   })
 })
+
+// 重置数据
+const resetData = () => {
+  // 第一产业数据
+  firstData.value = []
+
+  // 第二、三产业数据
+  secondData.value = []
+
+  // 其他
+  otherData.value = []
+}
 
 // 编辑
 const toEdit = () => {

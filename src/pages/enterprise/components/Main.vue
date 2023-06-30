@@ -64,7 +64,7 @@
                   v-if="tabVal === 5"
                   :dataList="dataInfo.immigrantManagementList"
                   :dataInfo="dataInfo"
-                  @submit="updateBusinessInfo"
+                  @update-data="updateData"
                 />
 
                 <!-- 照片上传 -->
@@ -105,7 +105,6 @@ import {
   deleteLandlordTreeApi,
   updateLandlordTreeApi,
   deleteLandlordEquipmentApi,
-  updateLandlordManagementApi,
   updateLandlordImmigrantFileApi
 } from '@/service'
 
@@ -230,24 +229,6 @@ const updateFruitTreeInfo = (data: any) => {
 const deleteEquipment = (data: any) => {
   deleteLandlordEquipmentApi(props.dataInfo.uid, data.uid)
     .then((res: any) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch(() => {
-      showToast(ERROR_MSG)
-    })
-}
-
-/**
- * 更新经营现状信息
- * @param data
- */
-const updateBusinessInfo = (data: any) => {
-  const params = [...data]
-  updateLandlordManagementApi(props.dataInfo.uid, params)
-    .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
         updateData()

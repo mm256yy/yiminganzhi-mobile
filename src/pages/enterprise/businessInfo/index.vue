@@ -12,7 +12,7 @@
               <view :class="['input-wrapper', focusIndex === item.id ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastYearAmount"
                   @focus="inputFocus(item.id)"
@@ -28,7 +28,7 @@
               <view :class="['input-wrapper', focusIndex === item.id * 2 ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastTwoYearAmount"
                   @focus="inputFocus(item.id * 2)"
@@ -44,7 +44,7 @@
               <view :class="['input-wrapper', focusIndex === item.id * 3 ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastThreeYearAmount"
                   @focus="inputFocus(item.id * 3)"
@@ -59,7 +59,7 @@
               <view class="label">备注：</view>
               <textarea
                 :class="['txt', focusIndex === item.id * 4 ? 'focus' : '']"
-                placeholder="请输入"
+                disabled
                 v-model="item.remark"
                 @focus="inputFocus(item.id * 4)"
                 @blur="inputBlur"
@@ -82,7 +82,7 @@
               <view :class="['input-wrapper', focusIndex === item.id ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastYearAmount"
                   @focus="inputFocus(item.id)"
@@ -98,7 +98,7 @@
               <view :class="['input-wrapper', focusIndex === item.id * 2 ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastTwoYearAmount"
                   @focus="inputFocus(item.id * 2)"
@@ -114,7 +114,7 @@
               <view :class="['input-wrapper', focusIndex === item.id * 3 ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastThreeYearAmount"
                   @focus="inputFocus(item.id * 3)"
@@ -129,7 +129,7 @@
               <view class="label">备注：</view>
               <textarea
                 :class="['txt', focusIndex === item.id * 4 ? 'focus' : '']"
-                placeholder="请输入"
+                disabled
                 v-model="item.remark"
                 @focus="inputFocus(item.id * 4)"
                 @blur="inputBlur"
@@ -152,7 +152,7 @@
               <view :class="['input-wrapper', focusIndex === item.id ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastYearAmount"
                   @focus="inputFocus(item.id)"
@@ -168,7 +168,7 @@
               <view :class="['input-wrapper', focusIndex === item.id * 2 ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastTwoYearAmount"
                   @focus="inputFocus(item.id * 2)"
@@ -184,7 +184,7 @@
               <view :class="['input-wrapper', focusIndex === item.id * 3 ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastThreeYearAmount"
                   @focus="inputFocus(item.id * 3)"
@@ -199,7 +199,7 @@
               <view class="label">备注：</view>
               <textarea
                 :class="['txt', focusIndex === item.id * 4 ? 'focus' : '']"
-                placeholder="请输入"
+                disabled
                 v-model="item.remark"
                 @focus="inputFocus(item.id * 4)"
                 @blur="inputBlur"
@@ -222,7 +222,7 @@
               <view :class="['input-wrapper', focusIndex === item.id ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastYearAmount"
                   @focus="inputFocus(item.id)"
@@ -238,7 +238,7 @@
               <view :class="['input-wrapper', focusIndex === item.id * 2 ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastTwoYearAmount"
                   @focus="inputFocus(item.id * 2)"
@@ -254,7 +254,7 @@
               <view :class="['input-wrapper', focusIndex === item.id * 3 ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastThreeYearAmount"
                   @focus="inputFocus(item.id * 3)"
@@ -269,7 +269,7 @@
               <view class="label">备注：</view>
               <textarea
                 :class="['txt', focusIndex === item.id * 4 ? 'focus' : '']"
-                placeholder="请输入"
+                disabled
                 v-model="item.remark"
                 @focus="inputFocus(item.id * 4)"
                 @blur="inputBlur"
@@ -294,7 +294,7 @@
               <view :class="['input-wrapper', focusIndex === item.id ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastYearAmount"
                   @focus="inputFocus(item.id)"
@@ -310,7 +310,7 @@
               <view :class="['input-wrapper', focusIndex === item.id * 2 ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastTwoYearAmount"
                   @focus="inputFocus(item.id * 2)"
@@ -326,7 +326,7 @@
               <view :class="['input-wrapper', focusIndex === item.id * 3 ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastThreeYearAmount"
                   @focus="inputFocus(item.id * 3)"
@@ -341,7 +341,7 @@
               <view class="label">备注：</view>
               <textarea
                 :class="['txt', focusIndex === item.id * 4 ? 'focus' : '']"
-                placeholder="请输入"
+                disabled
                 v-model="item.remark"
                 @focus="inputFocus(item.id * 4)"
                 @blur="inputBlur"
@@ -364,7 +364,7 @@
               <view :class="['input-wrapper', focusIndex === item.id ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastYearAmount"
                   @focus="inputFocus(item.id)"
@@ -380,7 +380,7 @@
               <view :class="['input-wrapper', focusIndex === item.id * 2 ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastTwoYearAmount"
                   @focus="inputFocus(item.id * 2)"
@@ -396,7 +396,7 @@
               <view :class="['input-wrapper', focusIndex === item.id * 3 ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastThreeYearAmount"
                   @focus="inputFocus(item.id * 3)"
@@ -411,7 +411,7 @@
               <view class="label">备注：</view>
               <textarea
                 :class="['txt', focusIndex === item.id * 4 ? 'focus' : '']"
-                placeholder="请输入"
+                disabled
                 v-model="item.remark"
                 @focus="inputFocus(item.id * 4)"
                 @blur="inputBlur"
@@ -434,7 +434,7 @@
               <view :class="['input-wrapper', focusIndex === item.id ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastYearAmount"
                   @focus="inputFocus(item.id)"
@@ -450,7 +450,7 @@
               <view :class="['input-wrapper', focusIndex === item.id * 2 ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastTwoYearAmount"
                   @focus="inputFocus(item.id * 2)"
@@ -466,7 +466,7 @@
               <view :class="['input-wrapper', focusIndex === item.id * 3 ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastThreeYearAmount"
                   @focus="inputFocus(item.id * 3)"
@@ -481,7 +481,7 @@
               <view class="label">备注：</view>
               <textarea
                 :class="['txt', focusIndex === item.id * 4 ? 'focus' : '']"
-                placeholder="请输入"
+                disabled
                 v-model="item.remark"
                 @focus="inputFocus(item.id * 4)"
                 @blur="inputBlur"
@@ -504,7 +504,7 @@
               <view :class="['input-wrapper', focusIndex === item.id ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastYearAmount"
                   @focus="inputFocus(item.id)"
@@ -520,7 +520,7 @@
               <view :class="['input-wrapper', focusIndex === item.id * 2 ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastTwoYearAmount"
                   @focus="inputFocus(item.id * 2)"
@@ -536,7 +536,7 @@
               <view :class="['input-wrapper', focusIndex === item.id * 3 ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastThreeYearAmount"
                   @focus="inputFocus(item.id * 3)"
@@ -551,7 +551,7 @@
               <view class="label">备注：</view>
               <textarea
                 :class="['txt', focusIndex === item.id * 4 ? 'focus' : '']"
-                placeholder="请输入"
+                disabled
                 v-model="item.remark"
                 @focus="inputFocus(item.id * 4)"
                 @blur="inputBlur"
@@ -574,7 +574,7 @@
               <view :class="['input-wrapper', focusIndex === item.id ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastYearAmount"
                   @focus="inputFocus(item.id)"
@@ -590,7 +590,7 @@
               <view :class="['input-wrapper', focusIndex === item.id * 2 ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastTwoYearAmount"
                   @focus="inputFocus(item.id * 2)"
@@ -606,7 +606,7 @@
               <view :class="['input-wrapper', focusIndex === item.id * 3 ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastThreeYearAmount"
                   @focus="inputFocus(item.id * 3)"
@@ -621,7 +621,7 @@
               <view class="label">备注：</view>
               <textarea
                 :class="['txt', focusIndex === item.id * 4 ? 'focus' : '']"
-                placeholder="请输入"
+                disabled
                 v-model="item.remark"
                 @focus="inputFocus(item.id * 4)"
                 @blur="inputBlur"
@@ -644,7 +644,7 @@
               <view :class="['input-wrapper', focusIndex === item.id ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastYearAmount"
                   @focus="inputFocus(item.id)"
@@ -660,7 +660,7 @@
               <view :class="['input-wrapper', focusIndex === item.id * 2 ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastTwoYearAmount"
                   @focus="inputFocus(item.id * 2)"
@@ -676,7 +676,7 @@
               <view :class="['input-wrapper', focusIndex === item.id * 3 ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastThreeYearAmount"
                   @focus="inputFocus(item.id * 3)"
@@ -691,7 +691,7 @@
               <view class="label">备注：</view>
               <textarea
                 :class="['txt', focusIndex === item.id * 4 ? 'focus' : '']"
-                placeholder="请输入"
+                disabled
                 v-model="item.remark"
                 @focus="inputFocus(item.id * 4)"
                 @blur="inputBlur"
@@ -714,7 +714,7 @@
               <view :class="['input-wrapper', focusIndex === item.id ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastYearAmount"
                   @focus="inputFocus(item.id)"
@@ -730,7 +730,7 @@
               <view :class="['input-wrapper', focusIndex === item.id * 2 ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastTwoYearAmount"
                   @focus="inputFocus(item.id * 2)"
@@ -746,7 +746,7 @@
               <view :class="['input-wrapper', focusIndex === item.id * 3 ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastThreeYearAmount"
                   @focus="inputFocus(item.id * 3)"
@@ -761,7 +761,7 @@
               <view class="label">备注：</view>
               <textarea
                 :class="['txt', focusIndex === item.id * 4 ? 'focus' : '']"
-                placeholder="请输入"
+                disabled
                 v-model="item.remark"
                 @focus="inputFocus(item.id * 4)"
                 @blur="inputBlur"
@@ -784,7 +784,7 @@
               <view :class="['input-wrapper', focusIndex === item.id ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastYearAmount"
                   @focus="inputFocus(item.id)"
@@ -800,7 +800,7 @@
               <view :class="['input-wrapper', focusIndex === item.id * 2 ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastTwoYearAmount"
                   @focus="inputFocus(item.id * 2)"
@@ -816,7 +816,7 @@
               <view :class="['input-wrapper', focusIndex === item.id * 3 ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  disabled
                   type="number"
                   v-model="item.lastThreeYearAmount"
                   @focus="inputFocus(item.id * 3)"
@@ -831,7 +831,7 @@
               <view class="label">备注：</view>
               <textarea
                 :class="['txt', focusIndex === item.id * 4 ? 'focus' : '']"
-                placeholder="请输入"
+                disabled
                 v-model="item.remark"
                 @focus="inputFocus(item.id * 4)"
                 @blur="inputBlur"
@@ -842,14 +842,16 @@
       </uni-col>
     </uni-row>
 
-    <image class="btn" src="@/static/images/icon_submit.png" mode="scaleToFill" @click="submit" />
+    <image class="btn" src="@/static/images/icon_edit.png" mode="scaleToFill" @click="toEdit" />
   </view>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
+import { onShow } from '@dcloudio/uni-app'
 import { getFamilyIncomeListApi } from '@/service'
 import { MainType } from '@/types/common'
+import { routerForward } from '@/utils'
 
 const props = defineProps({
   dataList: {
@@ -919,7 +921,68 @@ const otherExpenseData = ref<any>([])
 // 其他
 const otherData = ref<any>([])
 
-const emit = defineEmits(['submit'])
+const emit = defineEmits(['updateData'])
+
+onShow(() => {
+  // 接收来自编辑页派发的 updateData 事件
+  uni.$on('updateData', (data: any) => {
+    let arr: any = [...JSON.parse(data)]
+    resetData()
+    if (arr && arr.length) {
+      genNewArr(arr)
+    }
+    emit('updateData')
+  })
+})
+
+// 数据重置
+const resetData = () => {
+  // 收入概况
+  pevenueData.value = []
+
+  // 工资概况
+  salaryData.value = []
+
+  // 职工福利基金
+  welfareFundData.value = []
+
+  // 工会经费
+  laborUnionFundsData.value = []
+
+  // 企业公积金
+  accumulationFundData.value = []
+
+  // 离休人员费用
+  leaveExpensesData.value = []
+
+  // 上缴税收
+  taxPaidData.value = []
+
+  // 企业留利
+  entProfitData.value = []
+
+  // 流动资产贷款
+  currentAssetLoans.value = []
+
+  // 上交管理费
+  mngFeePaidData.value = []
+
+  // 其他财务费用
+  otherExpenseData.value = []
+
+  // 其他
+  otherData.value = []
+}
+
+// 编辑
+const toEdit = () => {
+  const { doorNo, uid } = props.dataInfo
+  routerForward('businessInfoEdit', {
+    doorNo,
+    uid,
+    dataList: JSON.stringify(props.dataList)
+  })
+}
 
 /**
  * 初始化生成新的数组
@@ -1059,25 +1122,6 @@ const genNewArr = (arr?: any[]) => {
 const getBusinessList = async () => {
   const result = await getFamilyIncomeListApi()
   genArr(result)
-}
-
-// 表单提交
-const submit = () => {
-  const params = [
-    ...pevenueData.value,
-    ...salaryData.value,
-    ...welfareFundData.value,
-    ...laborUnionFundsData.value,
-    ...accumulationFundData.value,
-    ...leaveExpensesData.value,
-    ...taxPaidData.value,
-    ...entProfitData.value,
-    ...currentAssetLoans.value,
-    ...mngFeePaidData.value,
-    ...otherExpenseData.value,
-    ...otherData.value
-  ]
-  emit('submit', params)
 }
 
 onMounted(() => {
