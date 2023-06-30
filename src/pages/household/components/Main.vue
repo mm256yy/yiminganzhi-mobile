@@ -259,6 +259,7 @@ const deleteGraveInfo = (data: any) => {
     })
 }
 
+/*
  * 更新安置意愿信息
  * @param(Array) data
  */

@@ -175,6 +175,7 @@ const deleteHouse = (data: any) => {
     })
 }
 
+/*
  * 设施设备 - 删除
  * @param(Object) data 被删除的行信息
  */
