@@ -54,7 +54,7 @@
               <view class="col">
                 <view class="label">建筑面积：</view>
                 <view class="content">
-                  {{ formatNum(item.landArea, '（m³）') }}
+                  {{ formatNum(item.landArea, '（㎡）') }}
                 </view>
               </view>
             </uni-col>

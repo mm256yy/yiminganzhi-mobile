@@ -85,7 +85,11 @@ export const formatNum = (value: any, unit?: string) => {
         return result
       }
     } else {
-      return value
+      if (unit) {
+        return value + unit
+      } else {
+        return value
+      }
     }
   } else {
     return '-'
