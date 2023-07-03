@@ -33,6 +33,21 @@
     >
       <slot></slot>
     </upload-file>
+
+    <uni-popup ref="previewPup" type="center">
+      <view class="popup-wrap">
+        <view class="popup-head">
+          <view class="left-tit">预览图片</view>
+          <view class="icon-box" @click="closePreviewPup">
+            <uni-icons type="clear" size="30" />
+          </view>
+        </view>
+
+        <view class="popup-box">
+          <image class="view-image" :src="previewUrl" mode="widthFix" />
+        </view>
+      </view>
+    </uni-popup>
   </view>
 </template>
 
@@ -69,6 +84,8 @@ const netWork = ref<boolean>(true)
 const props = defineProps<PropsType>()
 const emit = defineEmits(['updateFileList', 'update:modelValue'])
 const filesList = ref<FileItemType[]>([])
+const previewUrl = ref<string>('')
+const previewPup = ref<any>(null)
 
 watch(
   () => props.fileList,
@@ -204,20 +221,30 @@ const updateFilesList = () => {
   emit('update:modelValue', str)
 }
 
+const openPreviewPup = () => {
+  previewPup.value?.open()
+}
+
+const closePreviewPup = () => {
+  previewPup.value?.close()
+}
+
 const prviewImage = (item: any) => {
   const url = item.path ? item.path : netWork.value ? item.url : defaultImg
-  uni.previewImage({
-    urls: [url],
-    current: 0,
-    success: function (data) {
-      hideLoading()
-      console.log('data:', data)
-    },
-    fail: function (err) {
-      hideLoading()
-      console.log(err)
-    }
-  })
+  previewUrl.value = url
+  openPreviewPup()
+  // uni.previewImage({
+  //   urls: [url],
+  //   current: 0,
+  //   success: function (data) {
+  //     hideLoading()
+  //     console.log('data:', data)
+  //   },
+  //   fail: function (err) {
+  //     hideLoading()
+  //     console.log(err)
+  //   }
+  // })
 }
 </script>
 
@@ -268,5 +295,49 @@ const prviewImage = (item: any) => {
 .rotate {
   position: absolute;
   transform: rotate(90deg);
+}
+
+.popup-wrap {
+  position: relative;
+  width: 750rpx;
+  height: 100vh;
+
+  background-color: #fff;
+
+  .popup-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 30rpx;
+    padding: 0 25rpx;
+    background-color: #eee;
+
+    .left-tit {
+      font-size: 14rpx;
+      color: #333;
+    }
+
+    .icon-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20rpx;
+      height: 20rpx;
+    }
+  }
+
+  .popup-box {
+    width: 100%;
+    height: calc(100vh - 30rpx);
+    padding: 0 25rpx;
+    overflow-x: hidden;
+    overflow-y: scroll;
+
+    .view-image {
+      display: block;
+      width: 700rpx;
+    }
+  }
 }
 </style>
