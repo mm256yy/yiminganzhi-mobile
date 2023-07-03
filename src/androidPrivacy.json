@@ -1,10 +1,10 @@
 {
-    "prompt": "template",
+    "prompt" : "template",
     "buttonAccept" : "同意",
-    "disagreeMode": {
-      "support": true,
-      "loadNativePlugins": true,
-      "visitorEntry": true,
-      "showAlways": false 
+    "disagreeMode" : {
+        "support" : true,
+        "loadNativePlugins" : true,
+        "visitorEntry" : true,
+        "showAlways" : false
     }
 }

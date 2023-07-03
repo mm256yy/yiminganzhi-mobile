@@ -210,7 +210,7 @@ export default {
         if (this.isNotNullArray(immigrantGraveList)) {
           fillCount++
         }
-        if (immigrantFile && immigrantFile.otherPic) {
+        if (immigrantFile && immigrantFile.otherPic && immigrantFile.otherPic !== '[]') {
           fillCount++
         }
       } else if (type === MainType.IndividualHousehold) {
@@ -218,12 +218,12 @@ export default {
         if (this.isNotNullArray(immigrantEquipmentList)) {
           fillCount++
         }
-        if (immigrantFile && immigrantFile.otherPic) {
+        if (immigrantFile && immigrantFile.otherPic && immigrantFile.otherPic !== '[]') {
           fillCount++
         }
       } else if (type === MainType.Company) {
         // 企业
-        if (immigrantFile && immigrantFile.otherPic) {
+        if (immigrantFile && immigrantFile.otherPic && immigrantFile.otherPic !== '[]') {
           fillCount++
         }
         if (this.isNotNullArray(immigrantManagementList)) {
@@ -240,7 +240,7 @@ export default {
         if (this.isNotNullArray(immigrantFacilitiesList)) {
           fillCount++
         }
-        if (immigrantFile && immigrantFile.otherPic) {
+        if (immigrantFile && immigrantFile.otherPic && immigrantFile.otherPic !== '[]') {
           fillCount++
         }
       }

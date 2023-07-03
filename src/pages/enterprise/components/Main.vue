@@ -177,7 +177,7 @@ const tabsList = computed(() => {
     {
       label: '照片上传',
       value: 6,
-      filled: immigrantFile && immigrantFile.otherPic,
+      filled: immigrantFile && immigrantFile.otherPic && immigrantFile.otherPic !== '[]',
       defIcon: iconPhotoDef,
       selIcon: iconPhotoSel
     }

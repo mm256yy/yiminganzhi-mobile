@@ -241,7 +241,7 @@ const tabsList = computed(() => {
     {
       label: '附件上传',
       value: 8,
-      filled: immigrantFile && immigrantFile.otherPic,
+      filled: immigrantFile && immigrantFile.otherPic && immigrantFile.otherPic !== '[]',
       defIcon: iconAttachmentDef,
       selIcon: iconAttachmentSel
     }
