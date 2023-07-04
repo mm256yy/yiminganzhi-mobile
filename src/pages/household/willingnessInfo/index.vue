@@ -201,7 +201,6 @@ const inputBlur = () => {
 // 获取生产安置、搬迁安置方式数据
 const getWillList = async () => {
   const result = await getWillListApi()
-  console.log('result:', result)
   configLength.value = result.length
   if (result && result.length) {
     genArr(result)
