@@ -3,7 +3,7 @@
  */
 
 // 默认 dev 环境
-const apiEnv: ApiEnv = 'test'
+const apiEnv: ApiEnv = 'prod'
 
 const envMap = {
   local: {
