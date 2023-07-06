@@ -5,33 +5,13 @@
       <uni-col :span="12">
         <view class="col">
           <view class="label">{{ item.name }}：</view>
-          <view :class="['input-wrapper', focusIndex === index ? 'focus' : '']">
-            <input
-              class="input-txt"
-              type="digit"
-              disabled
-              @input="amountChange($event, item)"
-              v-model="item.amount"
-              @focus="inputFocus(index)"
-              @blur="inputBlur"
-            />
-            <view class="unit">万元</view>
-          </view>
+          <view class="value" v-if="item.amount">{{ item.amount }} 万元 </view>
         </view>
       </uni-col>
       <uni-col :span="12">
         <view class="col">
           <view class="label">备注：</view>
-          <view :class="['input-wrapper', focusIndex === index ? 'focus' : '']">
-            <input
-              class="input-txt w-150"
-              type="text"
-              disabled
-              v-model="item.remark"
-              @focus="inputFocus(index)"
-              @blur="inputBlur"
-            />
-          </view>
+          <view class="value">{{ item.remark }} </view>
         </view>
       </uni-col>
     </uni-row>
@@ -50,33 +30,13 @@
       <uni-col :span="12">
         <view class="col">
           <view class="label">{{ item.name }}：</view>
-          <view :class="['input-wrapper', focusIndex === index ? 'focus' : '']">
-            <input
-              class="input-txt"
-              type="digit"
-              disabled
-              v-model="item.amount"
-              @input="amountChange($event, item)"
-              @focus="inputFocus(index)"
-              @blur="inputBlur"
-            />
-            <view class="unit">万元</view>
-          </view>
+          <view class="value" v-if="item.amount">{{ item.amount }} 万元 </view>
         </view>
       </uni-col>
       <uni-col :span="12">
         <view class="col">
           <view class="label">备注：</view>
-          <view :class="['input-wrapper', focusIndex === index ? 'focus' : '']">
-            <input
-              class="input-txt w-150"
-              type="text"
-              disabled
-              v-model="item.remark"
-              @focus="inputFocus(index)"
-              @blur="inputBlur"
-            />
-          </view>
+          <view class="value">{{ item.remark }} </view>
         </view>
       </uni-col>
     </uni-row>
@@ -95,33 +55,13 @@
       <uni-col class="m-b-10" :span="12">
         <view class="col">
           <view class="label">{{ item.name }}：</view>
-          <view :class="['input-wrapper', focusIndex === index ? 'focus' : '']">
-            <input
-              class="input-txt"
-              type="digit"
-              disabled
-              v-model="item.amount"
-              @input="amountChange($event, item)"
-              @focus="inputFocus(index)"
-              @blur="inputBlur"
-            />
-            <view class="unit">万元</view>
-          </view>
+          <view class="value" v-if="item.amount">{{ item.amount }} 万元 </view>
         </view>
       </uni-col>
       <uni-col :span="12">
         <view class="col">
           <view class="label">备注：</view>
-          <view :class="['input-wrapper', focusIndex === index ? 'focus' : '']">
-            <input
-              class="input-txt w-150"
-              type="text"
-              disabled
-              v-model="item.remark"
-              @focus="inputFocus(index)"
-              @blur="inputBlur"
-            />
-          </view>
+          <view class="value">{{ item.remark }} </view>
         </view>
       </uni-col>
     </uni-row>
@@ -183,7 +123,6 @@ const projectInfo = getStorage(StorageKey.PROJECTINFO)
 // 阶段，如 survey 调查填报阶段， review 复核阶段
 const stage = projectInfo?.status ? projectInfo.status : MainStage.survey
 const showRecord = ref<boolean>(false)
-const focusIndex = ref<number>(-1)
 
 // 公共的参数
 const commonParams = {
@@ -245,27 +184,6 @@ const showModifyRecord = () => {
 // 关闭修改记录弹窗
 const closeModifyRecords = () => {
   showRecord.value = false
-}
-
-// 输入框获得焦点事件
-const inputFocus = (index: number) => {
-  focusIndex.value = index
-}
-
-// 输入框失去焦点事件
-const inputBlur = () => {
-  focusIndex.value = -1
-}
-
-const amountChange = (e: any, item: any) => {
-  const val = e.detail.value
-  if (val) {
-    let value = val
-    if (val.indexOf('.') > 0) {
-      value = value.slice(0, value.indexOf('.') + 3)
-    }
-    item.amount = value
-  }
 }
 
 /**
@@ -396,10 +314,18 @@ onMounted(() => {
     margin-top: 10rpx;
 
     .label {
-      width: 80rpx;
+      width: 150rpx;
       font-size: 9rpx;
       color: #171718;
       text-align: right;
+    }
+
+    .value {
+      width: 200rpx;
+      padding-left: 9rpx;
+      font-size: 9rpx;
+      line-height: 12rpx;
+      color: #171718;
     }
 
     .input-wrapper {
@@ -441,30 +367,12 @@ onMounted(() => {
     }
   }
 
-  .txtarea-wrapper {
-    display: flex;
-    align-items: center;
-
-    .label {
-      width: 80rpx;
-      font-size: 9rpx;
-      color: #171718;
-      text-align: right;
-    }
-
-    .txt {
-      width: 200rpx;
-      height: 23rpx;
-      font-size: 9rpx;
-    }
-  }
-
   .txt-wrapper {
     display: flex;
     align-items: center;
 
     .label {
-      width: 80rpx;
+      width: 150rpx;
       font-size: 9rpx;
       color: #171718;
       text-align: right;
