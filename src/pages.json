@@ -8,6 +8,13 @@
 			}
 		},
 		{
+			"name": "imphome",
+			"path": "pages/home/impIndex",
+			"style": {
+				"navigationBarTitleText": "移民实施首页"
+			}
+		},
+		{
 			"name": "map",
 			"path": "pages/map/index",
 			"style": {

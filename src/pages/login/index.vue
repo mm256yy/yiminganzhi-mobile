@@ -40,17 +40,19 @@
       </view>
       <view class="copy-right">Copyright©浙江省水利水电勘测设计院有限责任公司</view>
     </view>
+
+    <!-- 角色选择弹窗 -->
+    <uni-popup ref="alertDialog" type="dialog" />
   </view>
 </template>
 
 <script lang="ts" setup>
 import { nextTick, ref, unref } from 'vue'
-import { loginApi, userInfoApi } from './api'
+import { loginApi } from './api'
 /* #ifdef APP-PLUS */
 import { pullInstance } from '@/sync'
 /* #endif */
 import { setStorage, StorageKey, routerForward } from '@/utils'
-import { showLoading, hideLoading } from '@/config'
 
 const name = ref<string>('')
 const password = ref<string>('')

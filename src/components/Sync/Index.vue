@@ -107,11 +107,7 @@
       </view>
     </uni-popup>
 
-    <Upgradation
-      v-if="showAppVersionUpgradationPup"
-      :upgradation="upgradation"
-      @close="appUpgradationClose"
-    />
+    <Upgradation v-if="showAppVersionUpgradationPup" :upgradation="upgradation" @close="gotoHome" />
   </div>
 </template>
 
@@ -372,11 +368,18 @@ const closePup = () => {
   popup.value?.close()
 }
 
+/**
+ * 跳转首页
+ */
+const gotoHome = () => {
+  routerForward('home')
+}
+
 // 检测app是否需要更新
 const checkAppVersion = () => {
   const appVersionUpgradation = pullInstance.state.upgradation
   if (!appVersionUpgradation) {
-    routerForward('home')
+    gotoHome()
     return
   }
   // 赋值版本信息
@@ -386,12 +389,8 @@ const checkAppVersion = () => {
     // 当前版本小于发布版本 启动更新
     showAppVersionUpgradationPup.value = true
   } else {
-    routerForward('home')
+    gotoHome()
   }
-}
-
-const appUpgradationClose = () => {
-  routerForward('home')
 }
 
 // 同步完成 确认
