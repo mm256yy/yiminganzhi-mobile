@@ -24,6 +24,20 @@
     </view>
 
     <view class="main-enter">
+      <view class="enter-item" @click="toLink('householdList')">
+        <view class="inner">
+          <view class="top">
+            <image class="enter-icon" src="@/static/images/company_enter.png" mode="scaleToFill" />
+            <view class="enter-name">居民户</view>
+          </view>
+
+          <view class="enter-common">
+            <text class="txt">资产评估</text>
+            <image class="arrow" src="@/static/images/home_arrow_lite.png" mode="scaleToFill" />
+          </view>
+        </view>
+      </view>
+
       <view class="enter-item" @click="toLink('enterpriseList')">
         <view class="inner">
           <view class="top">
