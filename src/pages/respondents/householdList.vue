@@ -223,10 +223,10 @@ const loadMore = () => {
 
 // 填报
 const routerMap: any = {
-  [MainType.PeasantHousehold]: 'household',
-  [MainType.IndividualHousehold]: 'selfPerson',
-  [MainType.Company]: 'enterprise',
-  [MainType.Village]: 'collective'
+  [MainType.PeasantHousehold]: 'householdEva',
+  [MainType.IndividualHousehold]: 'selfPersonEva',
+  [MainType.Company]: 'enterpriseEva',
+  [MainType.Village]: 'collectiveEva'
 }
 
 // 新增 路由 map

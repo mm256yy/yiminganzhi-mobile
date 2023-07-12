@@ -110,8 +110,8 @@ import houseSubjectEva from '../../common/houseSubjectEva/index.vue' // 引入�
 import houseDecorationEva from '../../common/houseDecorationEva/index.vue' // 引入房屋装修评估组件
 import accessoryEva from '../../common/accessoryEva/index.vue' // 引入附属设施评估组件
 import treeEva from '../../common/treeEva/index.vue' // 引入零星(林)果木评估组件
-import landEva from '../landEva/index.vue' // 引入土地基本情况评估组件
-import seedlingsEva from '../seedlingsEva/index.vue' // 引入土地青苗及附着物评估组件
+import landEva from '../../common/landEva/index.vue' // 引入土地基本情况评估组件
+import seedlingsEva from '../../common/seedingsEva/index.vue' // 引入土地青苗及附着物评估组件
 import specialEva from '../specialEva/index.vue' // 引入小型专项评估组件
 
 import {

@@ -107,7 +107,7 @@ onMounted(() => {
       align-items: center;
       justify-content: center;
       flex: none;
-      width: 70rpx;
+      width: 86rpx;
       height: 60rpx;
       margin-right: 6rpx;
       background: #e1f0ff;
@@ -147,7 +147,7 @@ onMounted(() => {
       }
 
       .label {
-        font-size: 9rpx;
+        font-size: 8rpx;
         color: #171718;
         text-align: center;
         word-break: break-all;

@@ -112,12 +112,12 @@ import Back from '@/components/Back/Index.vue'
 import Header from '@/components/Header/Index.vue'
 import Tabs from '@/components/Tabs/Index.vue'
 import baseInfoEva from '../baseInfoEva/index.vue' // 引入居民户信息组件
-import houseSubjectEva from '../houseSubjectEva/index.vue' // 引入人房屋主体评估组件
+import houseSubjectEva from '../../common/houseSubjectEva/index.vue' // 引入人房屋主体评估组件
 import houseDecorationEva from '../../common/houseDecorationEva/index.vue' // 引入房屋装修组件
 import accessoryEva from '../../common/accessoryEva/index.vue' // 引入附属设施评估组件
 import treeEva from '../../common/treeEva/index.vue' // 引入零星（林）果木评估组件
-import landEva from '../landEva/index.vue' // 引入土地基本情况评估组件
-import seedlingsEva from '../seedlingsEva/index.vue' // 引入土地青苗及附着物评估组件
+import landEva from '../../common/landEva/index.vue' // 引入土地基本情况评估组件
+import seedlingsEva from '../../common/seedingsEva/index.vue' // 引入土地青苗及附着物评估组件
 import graveEva from '../graveEva/index.vue' // 引入坟墓评估组件
 
 import { deleteLandlordPeopleApi, deleteLandlordHouseApi, deleteLandlordGraveApi } from '@/service'

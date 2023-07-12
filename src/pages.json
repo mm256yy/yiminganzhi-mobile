@@ -219,9 +219,37 @@
 		},
 		{
 			"name": "householdEva",
+			"path": "pages/household/evaIndex",
+			"style": {
+				"navigationBarTitleText": "居民户评估"
+			}
+		},
+		{
+			"name": "householdImp",
 			"path": "pages/household/impIndex",
 			"style": {
 				"navigationBarTitleText": "居民户实施"
+			}
+		},
+		{
+			"name": "enterpriseEva",
+			"path": "pages/enterprise/evaIndex",
+			"style": {
+				"navigationBarTitleText": "企业评估"
+			}
+		},
+		{
+			"name": "selfPersonEva",
+			"path": "pages/selfPerson/evaIndex",
+			"style": {
+				"navigationBarTitleText": "个体工商户评估"
+			}
+		},
+		{
+			"name": "collectiveEva",
+			"path": "pages/collective/evaIndex",
+			"style": {
+				"navigationBarTitleText": "村集体评估"
 			}
 		},
 		{
