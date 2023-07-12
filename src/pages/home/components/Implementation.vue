@@ -25,6 +25,22 @@
 
     <!-- 具体内容 -->
 
+    <view class="main-enter">
+      <view class="enter-item" @click="toLink('householdImp')">
+        <view class="inner">
+          <view class="top">
+            <image class="enter-icon" src="@/static/images/peple_enter.png" mode="scaleToFill" />
+            <view class="enter-name">居民户</view>
+          </view>
+
+          <view class="enter-common">
+            <text class="txt">移民实施</text>
+            <image class="arrow" src="@/static/images/home_arrow_lite.png" mode="scaleToFill" />
+          </view>
+        </view>
+      </view>
+    </view>
+
     <view class="other-enter self">
       <view class="other-item" @click="toLink('database')">
         <view class="inner">
