@@ -8,14 +8,13 @@
           <view class="project">移民安置综合管理服务平台V{{ appVersion }}</view>
           <view class="project" v-if="projectInfo">&nbsp;-&nbsp;{{ `${projectInfo.name}` }}</view>
           <view class="status" v-if="projectInfo">
-            <!-- {{
-              projectInfo.status && projectInfo.status === 'review'
-                ? '（实物复核）'
-                : projectInfo.status === 'Implementation'
-                ? '（移民实施）'
-                : '（实物采集）'
-            }} -->
-            （移民实施）
+            {{
+              homeViewType === RoleCodeType.investigator
+                ? projectInfo.status && projectInfo.status === 'review'
+                  ? '（实物复核）'
+                  : '（实物采集）'
+                : '（移民实施）'
+            }}
           </view>
         </view>
 
@@ -38,6 +37,12 @@
       <!-- 资产评估的首页 -->
       <Assessor
         v-else-if="homeViewType === RoleCodeType.assessor"
+        @to-link="toLink"
+        @login-in="loginIn"
+      />
+      <!-- 移民实施人员的首页 -->
+      <Implementation
+        v-else-if="homeViewType === RoleCodeType.implementation"
         @to-link="toLink"
         @login-in="loginIn"
       />
@@ -68,6 +73,7 @@ import { RoleCodeType } from '@/types/common'
 import { imageUrlAndBase64Map } from '@/config'
 import Assessor from './components/Assessor.vue'
 import Investigator from './components/Investigator.vue'
+import Implementation from './components/Implementation.vue'
 
 const userInfo = ref<any>(null)
 const projectInfo = ref<any>(null)
