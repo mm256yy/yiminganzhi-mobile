@@ -1,4 +1,5 @@
 <template>
+  <!-- 移民实物采集阶段 —— 企业信息采集/复核 -->
   <view class="page-wrap">
     <image src="@/static/images/common_bg.png" class="head-bg" mode="widthFix" />
     <view class="home-wrap" :style="{ height: `${pageHeight}px` }">

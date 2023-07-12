@@ -1,10 +1,10 @@
 <template>
-  <!-- 移民实物采集阶段 —— 个体户信息采集/复核 -->
+  <!-- 移民实施阶段 —— 企业评估 -->
   <view class="page-wrap">
     <image src="@/static/images/common_bg.png" class="head-bg" mode="widthFix" />
     <view class="home-wrap" :style="{ height: `${pageHeight}px` }">
       <view class="home-body">
-        <Main :dataInfo="dataInfo" @update-data="getLandlordDetail" />
+        <EvaMain :dataInfo="dataInfo" @update-data="getLandlordDetail" />
       </view>
     </view>
   </view>
@@ -14,7 +14,7 @@
 import { onLoad, onShow } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 import { getLandlordItemApi } from '@/service'
-import Main from './components/Main.vue'
+import EvaMain from './components/EvaMain.vue'
 
 const sysInfo = uni.getSystemInfoSync()
 const statusBarHeight = sysInfo.statusBarHeight || 0
@@ -35,7 +35,7 @@ onLoad((option) => {
 })
 
 /**
- * 获取业主详情
+ * 获取企业详情
  * @param(object) uid
  */
 const getLandlordDetail = (uid: string) => {

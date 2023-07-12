@@ -1,20 +1,20 @@
 <template>
-  <!-- 移民实物采集阶段 —— 个体户信息采集/复核 -->
+  <!-- 移民实施阶段 —— 居民户实施 -->
   <view class="page-wrap">
     <image src="@/static/images/common_bg.png" class="head-bg" mode="widthFix" />
     <view class="home-wrap" :style="{ height: `${pageHeight}px` }">
       <view class="home-body">
-        <Main :dataInfo="dataInfo" @update-data="getLandlordDetail" />
+        <ImpMain />
       </view>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import { onLoad, onShow } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 import { getLandlordItemApi } from '@/service'
-import Main from './components/Main.vue'
+import ImpMain from './components/ImpMain.vue'
+import { onLoad, onShow } from '@dcloudio/uni-app'
 
 const sysInfo = uni.getSystemInfoSync()
 const statusBarHeight = sysInfo.statusBarHeight || 0
