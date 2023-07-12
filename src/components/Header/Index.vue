@@ -4,10 +4,11 @@
       <view class="list-header-left">
         <view class="name">{{ dataInfo.name }}</view>
         <view class="account-no">{{ filterViewDoorNoMd(dataInfo) }}</view>
-        <view class="fill-number"
-          >填报进度&nbsp;<text class="green">{{ fillNumber }}</text
-          >/{{ totalFillNumber }}</view
-        >
+        <view class="fill-number">
+          填报进度&nbsp;
+          <text class="green">{{ fillNumber }}</text>
+          /{{ totalFillNumber }}
+        </view>
       </view>
 
       <view class="list-header-right">

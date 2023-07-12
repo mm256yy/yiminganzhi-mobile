@@ -1,7 +1,7 @@
 <template>
   <view class="main-wrap">
-    <!-- 移民实物采集阶段  —— 居民户信息采集 -->
-    <Back class="main-nav" title="居民户填报" />
+    <!-- 移民实施阶段 —— 居民户评估 -->
+    <Back class="main-nav" title="居民户评估" />
 
     <view class="main-cont">
       <view class="list-content">
@@ -25,79 +25,68 @@
                 v-touch:swipe.right="touchRight"
               >
                 <!-- 居民户信息 -->
-                <household-info v-if="tabVal === 0" :dataInfo="dataInfo" />
+                <base-info-eva v-if="tabVal === 0" :dataInfo="dataInfo" />
 
-                <!-- 人口信息 -->
-                <demographic-info
+                <!-- 房屋主体评估 -->
+                <house-subject-eva
                   v-if="tabVal === 1"
-                  :dataList="dataInfo.demographicList"
-                  :dataInfo="dataInfo"
-                  :occupationOptions="occupationOptions"
-                  :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '人口信息')"
-                  @delete-demographic="deleteDemographic"
-                />
-
-                <!-- 房屋信息 -->
-                <house-info
-                  v-if="tabVal === 2"
                   :dataList="dataInfo.immigrantHouseList"
                   :dataInfo="dataInfo"
-                  :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '房屋信息')"
                   :mainType="MainType.PeasantHousehold"
                   @delete-house="deleteHouse"
                 />
 
-                <!-- 附属物信息 -->
-                <appendant-info
+                <!-- 房屋装修评估 -->
+                <house-decoration-eva
+                  v-if="tabVal === 2"
+                  :dataList="dataInfo.immigrantHouseList"
+                  :dataInfo="dataInfo"
+                  :mainType="MainType.PeasantHousehold"
+                  @delete-house="deleteHouseDecoration"
+                />
+
+                <!-- 附属设施评估 -->
+                <accessory-eva
                   v-if="tabVal === 3"
                   :dataInfo="dataInfo"
                   :dataList="dataInfo.immigrantAppendantList"
-                  :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '附属物信息')"
                   :mainType="MainType.PeasantHousehold"
-                  @update-data="updateData"
+                  @delete-accessory="deleteAccessory"
                 />
 
-                <!-- 零星（林）果木信息 -->
-                <tree-info
+                <!-- 零星（林）果木评估 -->
+                <tree-eva
                   v-if="tabVal === 4"
                   :dataList="dataInfo.immigrantTreeList"
                   :dataInfo="dataInfo"
-                  :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '果树信息')"
                   :mainType="MainType.PeasantHousehold"
+                  @delete-tree="deleteTree"
                 />
 
-                <!-- 坟墓信息 -->
-                <grave-info
+                <!-- 土地基本情况评估 -->
+                <land-eva
                   v-if="tabVal === 5"
                   :dataInfo="dataInfo"
-                  :dataList="dataInfo.immigrantGraveList"
-                  :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '坟墓信息')"
-                  @delete-grave-info="deleteGraveInfo"
+                  :dataList="dataInfo.landList"
+                  :mainType="MainType.PeasantHousehold"
+                  @delete-land="deleteLand"
                 />
 
-                <!-- 家庭收入信息 -->
-                <revenue-info
+                <!-- 土地青苗及附着物评估 -->
+                <seedlings-eva
                   v-if="tabVal === 6"
-                  :dataList="dataInfo.immigrantIncomeList"
+                  :dataList="dataInfo.seedlingsList"
                   :dataInfo="dataInfo"
-                  :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '收入信息')"
-                  @update-data="updateData"
+                  :mainType="MainType.PeasantHousehold"
+                  @delete-seedlings="deleteSeedlings"
                 />
 
-                <!-- 安置意愿信息 -->
-                <willingness-info
+                <!-- 坟墓评估 -->
+                <grave-eva
                   v-if="tabVal === 7"
-                  :willData="dataInfo.immigrantWill"
+                  :dataList="dataInfo.graveList"
                   :dataInfo="dataInfo"
-                  :updateLog="fmtUpdateLog(dataInfo.updateLogList, '安置意愿信息')"
-                  @submit="updateWillingnessInfo"
-                />
-
-                <!-- 附件上传 -->
-                <attachment-upload
-                  v-if="tabVal === 8"
-                  :dataInfo="dataInfo"
-                  @submit="updateAttachment"
+                  @delete-grave="deleteGrave"
                 />
               </view>
             </view>
@@ -106,7 +95,7 @@
           <view class="box" v-else>
             <view class="null-wrapper">
               <image class="icon" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
-              <view class="tips">请先选择要填报的居民户</view>
+              <view class="tips">请先选择要评估的居民户</view>
             </view>
           </view>
         </view>
@@ -118,47 +107,37 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
-import { fmtUpdateLog } from '@/utils'
 import { MainType, PrintType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
 import Header from '@/components/Header/Index.vue'
 import Tabs from '@/components/Tabs/Index.vue'
-import householdInfo from '../householdInfo/index.vue' // 引入居民户信息组件
-import demographicInfo from '../demographicInfo/index.vue' // 引入人口信息组件
-import houseInfo from '../../common/houseInfo/index.vue' // 引入房屋信息组件
-import appendantInfo from '../../common/appendantInfo/index.vue' // 引入附属物信息组件
-import treeInfo from '../../common/treeInfo/index.vue' // 引入零星（林）果木信息组件
-import graveInfo from '../graveInfo/index.vue' // 引入坟墓信息组件
-import revenueInfo from '../revenueInfo/index.vue' // 引入安置意愿信息组件
-import willingnessInfo from '../willingnessInfo/index.vue' // 引入安置意愿信息组件
-import attachmentUpload from '../../common/attachmentUpload/index.vue' // 引入附件上传组件
+import baseInfoEva from '../baseInfoEva/index.vue' // 引入居民户信息组件
+import houseSubjectEva from '../houseSubjectEva/index.vue' // 引入人房屋主体评估组件
+import houseDecorationEva from '../../common/houseDecorationEva/index.vue' // 引入房屋装修组件
+import accessoryEva from '../../common/accessoryEva/index.vue' // 引入附属设施评估组件
+import treeEva from '../../common/treeEva/index.vue' // 引入零星（林）果木评估组件
+import landEva from '../landEva/index.vue' // 引入土地基本情况评估组件
+import seedlingsEva from '../seedlingsEva/index.vue' // 引入土地青苗及附着物评估组件
+import graveEva from '../graveEva/index.vue' // 引入坟墓评估组件
 
-import {
-  deleteLandlordPeopleApi,
-  deleteLandlordHouseApi,
-  deleteLandlordGraveApi,
-  updateLandlordWillApi,
-  updateLandlordImmigrantFileApi
-} from '@/service'
+import { deleteLandlordPeopleApi, deleteLandlordHouseApi, deleteLandlordGraveApi } from '@/service'
 
 import iconHouseholdDef from '@/static/images/icon_household_default.png' // 引入居民户信息默认 icon
 import iconHouseholdSel from '@/static/images/icon_household_select.png' // 引入居民户信息选中 icon
-import iconDemographicDef from '@/static/images/icon_demographic_default.png' // 引入人口信息默认 icon
-import iconDemographicSel from '@/static/images/icon_demographic_select.png' // 引入人口信息选中 icon
-import iconHouseDef from '@/static/images/icon_house_default.png' // 引入房屋信息默认 icon
-import iconHouseSel from '@/static/images/icon_house_select.png' // 引入房屋信息选中 icon
-import iconAccessoryDef from '@/static/images/icon_accessory_default.png' // 引入附属物信息默认 icon
-import iconAccessorySel from '@/static/images/icon_accessory_select.png' // 引入附属物信息选中 icon
-import iconTreeDef from '@/static/images/icon_tree_default.png' // 引入零星(林)果木默认 icon
-import iconTreeSel from '@/static/images/icon_tree_select.png' // 引入零星(林)果木默认 icon
-import iconGraveDef from '@/static/images/icon_grave_default.png' // 引入坟墓信息默认 icon
-import iconGraveSel from '@/static/images/icon_grave_select.png' // 引入坟墓信息选中 icon
-import iconAttachmentDef from '@/static/images/icon_attachment_default.png' // 引入附件上传默认 icon
-import iconAttachmentSel from '@/static/images/icon_attachment_select.png' // 引入附件上传选中 icon
-import iconRevenueDef from '@/static/images/icon_revenue_default.png' // 引入家庭收入信息默认 icon
-import iconRevenueSel from '@/static/images/icon_revenue_select.png' // 引入家庭收入信息默认 icon
-import iconWillingnessDef from '@/static/images/icon_willingness_default.png' // 引入安置意愿调查默认 icon
-import iconWillingnessSel from '@/static/images/icon_willingness_select.png' // 引入安置意愿调查默认 icon
+import iconHouseDef from '@/static/images/icon_house_default.png' // 引入房屋主体评估默认 icon
+import iconHouseSel from '@/static/images/icon_house_select.png' // 引入房屋主体评估选中 icon
+import iconDecorationDef from '@/static/images/icon_decoration_default.png' // 引入房屋装修评估默认 icon
+import iconDecorationSel from '@/static/images/icon_decoration_select.png' // 引入房屋装修评估选中 icon
+import iconAccessoryDef from '@/static/images/icon_accessory_default.png' // 引入附属设施评估默认 icon
+import iconAccessorySel from '@/static/images/icon_accessory_select.png' // 引入附属设施评估选中 icon
+import iconTreeDef from '@/static/images/icon_tree_default.png' // 引入零星(林)果木评估默认 icon
+import iconTreeSel from '@/static/images/icon_tree_select.png' // 引入零星(林)果木评估选中 icon
+import iconLandDef from '@/static/images/icon_land_default.png' // 引入土地基本情况评估默认 icon
+import iconLandSel from '@/static/images/icon_land_select.png' // 引入土地基本情况评估选中 icon
+import iconSeedlingsDef from '@/static/images/icon_seedlings_default.png' // 引入土地青苗及附着物评估默认 icon
+import iconSeedlingsSel from '@/static/images/icon_seedlings_select.png' // 引入土地青苗及附着物评估选中 icon
+import iconGraveDef from '@/static/images/icon_grave_default.png' // 引入坟墓评估默认 icon
+import iconGraveSel from '@/static/images/icon_grave_select.png' // 引入坟墓评估选中 icon
 
 const props = defineProps({
   dataInfo: {
@@ -178,9 +157,7 @@ const tabsList = computed(() => {
     immigrantGraveList,
     immigrantHouseList,
     immigrantIncomeList,
-    immigrantTreeList,
-    immigrantWill,
-    immigrantFile
+    immigrantTreeList
   } = props.dataInfo
   return [
     {
@@ -191,60 +168,53 @@ const tabsList = computed(() => {
       selIcon: iconHouseholdSel
     },
     {
-      label: '人口信息',
+      label: '房屋主体评估',
       value: 1,
       filled: isNotNullArray(demographicList),
-      defIcon: iconDemographicDef,
-      selIcon: iconDemographicSel
-    },
-    {
-      label: '房屋信息',
-      value: 2,
-      filled: isNotNullArray(immigrantHouseList),
       defIcon: iconHouseDef,
       selIcon: iconHouseSel
     },
     {
-      label: '附属物信息',
+      label: '房屋装修评估',
+      value: 2,
+      filled: isNotNullArray(immigrantHouseList),
+      defIcon: iconDecorationDef,
+      selIcon: iconDecorationSel
+    },
+    {
+      label: '附属物设施评估',
       value: 3,
       filled: isNotNullArray(immigrantAppendantList),
       defIcon: iconAccessoryDef,
       selIcon: iconAccessorySel
     },
     {
-      label: '零星 (林) 果木',
+      label: '零星 (林) 果木评估',
       value: 4,
       filled: isNotNullArray(immigrantTreeList),
       defIcon: iconTreeDef,
       selIcon: iconTreeSel
     },
     {
-      label: '坟墓信息',
+      label: '土地基本情况评估',
       value: 5,
+      filled: isNotNullArray(immigrantGraveList),
+      defIcon: iconLandDef,
+      selIcon: iconLandSel
+    },
+    {
+      label: '土地青苗及附着物评估',
+      value: 6,
+      filled: isNotNullArray(immigrantIncomeList),
+      defIcon: iconSeedlingsDef,
+      selIcon: iconSeedlingsSel
+    },
+    {
+      label: '坟墓评估',
+      value: 7,
       filled: isNotNullArray(immigrantGraveList),
       defIcon: iconGraveDef,
       selIcon: iconGraveSel
-    },
-    {
-      label: '家庭收入信息',
-      value: 6,
-      filled: isNotNullArray(immigrantIncomeList),
-      defIcon: iconRevenueDef,
-      selIcon: iconRevenueSel
-    },
-    {
-      label: '安置意愿信息',
-      value: 7,
-      filled: immigrantWill && (immigrantWill.productionType || immigrantWill.removalType),
-      defIcon: iconWillingnessDef,
-      selIcon: iconWillingnessSel
-    },
-    {
-      label: '附件上传',
-      value: 8,
-      filled: immigrantFile && immigrantFile.otherPic && immigrantFile.otherPic !== '[]',
-      defIcon: iconAttachmentDef,
-      selIcon: iconAttachmentSel
     }
   ]
 })
@@ -279,25 +249,7 @@ const touchRight = () => {
 }
 
 /**
- * 人口信息 - 删除
- * @param{Object} data 被删除的行信息
- * @param{Object} reason 删除原因（填报阶段没有此参数，复核阶段有此参数）
- */
-const deleteDemographic = (data: any, reason?: string) => {
-  deleteLandlordPeopleApi(props.dataInfo.uid, data.uid, reason)
-    .then((res) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch(() => {
-      showToast(ERROR_MSG)
-    })
-}
-
-/**
- * 房屋信息 - 删除
+ * 房屋主体评估 - 删除
  * @param{Object} data 被删除的行信息
  * @param{Object} reason 删除原因（填报阶段没有此参数，复核阶段有此参数）
  */
@@ -315,10 +267,100 @@ const deleteHouse = (data: any, reason?: string) => {
 }
 
 /**
- * 删除坟墓信息
+ * 房屋装修评估 - 删除
+ * @param{Object} data 被删除的行信息
+ * @param{Object} reason 删除原因（填报阶段没有此参数，复核阶段有此参数）
+ */
+const deleteHouseDecoration = (data: any, reason?: string) => {
+  deleteLandlordHouseApi(props.dataInfo.uid, data.uid, reason)
+    .then((res) => {
+      if (res) {
+        showToast(SUCCESS_MSG)
+        updateData()
+      }
+    })
+    .catch(() => {
+      showToast(ERROR_MSG)
+    })
+}
+
+/**
+ * 附属设施评估 - 删除
+ * @param{Object} data 被删除的行信息
+ * @param{Object} reason 删除原因（填报阶段没有此参数，复核阶段有此参数）
+ */
+const deleteAccessory = (data: any, reason?: string) => {
+  deleteLandlordHouseApi(props.dataInfo.uid, data.uid, reason)
+    .then((res) => {
+      if (res) {
+        showToast(SUCCESS_MSG)
+        updateData()
+      }
+    })
+    .catch(() => {
+      showToast(ERROR_MSG)
+    })
+}
+
+/**
+ * 零星(林)果木评估 - 删除
+ * @param{Object} data 被删除的行信息
+ * @param{Object} reason 删除原因（填报阶段没有此参数，复核阶段有此参数）
+ */
+const deleteTree = (data: any, reason?: string) => {
+  deleteLandlordHouseApi(props.dataInfo.uid, data.uid, reason)
+    .then((res) => {
+      if (res) {
+        showToast(SUCCESS_MSG)
+        updateData()
+      }
+    })
+    .catch(() => {
+      showToast(ERROR_MSG)
+    })
+}
+
+/**
+ * 土地基本情况评估 - 删除
+ * @param{Object} data 被删除的行信息
+ * @param{Object} reason 删除原因（填报阶段没有此参数，复核阶段有此参数）
+ */
+const deleteLand = (data: any, reason?: string) => {
+  deleteLandlordPeopleApi(props.dataInfo.uid, data.uid, reason)
+    .then((res) => {
+      if (res) {
+        showToast(SUCCESS_MSG)
+        updateData()
+      }
+    })
+    .catch(() => {
+      showToast(ERROR_MSG)
+    })
+}
+
+/**
+ * 土地青苗及附着物评估 - 删除
+ * @param{Object} data 被删除的行信息
+ * @param{Object} reason 删除原因（填报阶段没有此参数，复核阶段有此参数）
+ */
+const deleteSeedlings = (data: any, reason?: string) => {
+  deleteLandlordPeopleApi(props.dataInfo.uid, data.uid, reason)
+    .then((res) => {
+      if (res) {
+        showToast(SUCCESS_MSG)
+        updateData()
+      }
+    })
+    .catch(() => {
+      showToast(ERROR_MSG)
+    })
+}
+
+/**
+ * 坟墓评估 - 删除
  * @param data
  */
-const deleteGraveInfo = (data: any) => {
+const deleteGrave = (data: any) => {
   deleteLandlordGraveApi(props.dataInfo.uid, data.uid)
     .then((res) => {
       if (res) {
@@ -327,38 +369,6 @@ const deleteGraveInfo = (data: any) => {
       }
     })
     .catch((e) => {
-      showToast(ERROR_MSG)
-    })
-}
-
-/*
- * 更新安置意愿信息
- * @param(Array) data
- */
-const updateWillingnessInfo = (data: any) => {
-  const params = { ...data }
-  updateLandlordWillApi(props.dataInfo.uid, params)
-    .then((res) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch(() => {
-      showToast(ERROR_MSG)
-    })
-}
-
-// 更新附件
-const updateAttachment = (params: any) => {
-  updateLandlordImmigrantFileApi(props.dataInfo.uid, params)
-    .then((res) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch(() => {
       showToast(ERROR_MSG)
     })
 }
