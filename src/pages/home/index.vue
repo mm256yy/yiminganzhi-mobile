@@ -153,6 +153,13 @@
           </view>
           <image class="arrow-icon" src="@/static/images/home_arrow.png" mode="scaleToFill" />
         </view>
+        <view class="other-item" @click="toLink('householdEva')">
+          <view class="inner">
+            <image class="other-icon" src="@/static/images/yimin_enter.png" mode="scaleToFill" />
+            <text class="other-tit">居民户实施</text>
+          </view>
+          <image class="arrow-icon" src="@/static/images/home_arrow.png" mode="scaleToFill" />
+        </view>
       </view>
 
       <view class="other-enter self">

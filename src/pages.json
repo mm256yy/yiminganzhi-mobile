@@ -218,6 +218,13 @@
 			}
 		},
 		{
+			"name": "householdEva",
+			"path": "pages/household/impIndex",
+			"style": {
+				"navigationBarTitleText": "居民户实施"
+			}
+		},
+		{
 			"name": "database",
 			"path": "pages/database/index",
 			"style": {
