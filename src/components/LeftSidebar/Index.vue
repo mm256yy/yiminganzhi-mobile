@@ -37,11 +37,11 @@ const props = defineProps({
 })
 
 const currentIndex = ref<number>(0)
-const emit = defineEmits(['change'])
+const emit = defineEmits(['switchTab'])
 
 const switchTab = (item: any, index: number) => {
   currentIndex.value = index
-  emit('change', item, index)
+  emit('switchTab', item)
 }
 </script>
 <style lang="scss" scoped>

@@ -23,7 +23,6 @@
   display: flex;
   height: 33rpx;
   padding: 0 6rpx 0 9rpx;
-  border-bottom: 1rpx solid #e1e4ea;
   box-sizing: border-box;
   flex-direction: row;
   align-items: center;
@@ -42,7 +41,7 @@
       align-items: center;
 
       .name {
-        margin: 0 6rpx 0 10rpx;
+        margin: 0 6rpx 0 0;
         font-size: 13rpx;
         color: #171718;
       }
