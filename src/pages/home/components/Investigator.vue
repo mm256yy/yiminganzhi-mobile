@@ -159,7 +159,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import Echart from './components/Echart.vue'
+import Echart from './Echart.vue'
 import { onShow } from '@dcloudio/uni-app'
 import { getStorage, StorageKey } from '@/utils'
 import { getHomeCollectionApi } from '@/service'

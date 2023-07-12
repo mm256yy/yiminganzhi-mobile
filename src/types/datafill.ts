@@ -36,7 +36,36 @@ export interface PopulationType {
   insured: boolean
   addReason?: string // 添加原因
   reason?: string // 删除原因
+
   [key: string]: any
+
+  showDoorNo?: string
+  longitude?: string
+  latitude?: string
+  phone?: string
+  locationType?: string
+  reportStatus?: string
+  fillStatus?: string
+  signStatus?: string
+  hasPropertyAccount?: boolean
+  householdNumber?: string
+  reportDate?: string
+  reportUser?: number
+  signDate?: string
+  signUser?: number
+  uid?: string
+  fillingUpdateDate?: string
+  type?: string
+  inundationRange?: string
+  altitude?: number
+  initialVillageCode?: string
+  status?: string
+  settingWay?: string
+  buildingForm?: string
+  accountName?: string
+  bankName?: string
+  bankAccount?: string
+  accountRemark?: string
 }
 
 // 房屋类型定义
@@ -72,6 +101,31 @@ export interface HouseType {
   addReason?: string // 添加原因
   reason?: string // 删除原因
   [key: string]: any
+
+  otherPic?: string
+  uid?: string
+  homePic?: string
+  inundationRange?: string
+  altitude?: number
+  locationType?: string
+  landPic?: string
+  houseCadPic?: string
+  projectId?: number
+  status?: string
+  hasEstimate?: string
+  situated?: string
+  homesteadArea?: number
+  constructionLevel?: string
+  buildingHeight?: number
+  newnessRate?: number
+  valuationPrice?: number
+  valuationAmount?: number
+  compensationAmount?: number
+  valuationRemark?: string
+  houseNature?: string
+  demographicId?: number
+  ownersSituation?: string
+  deleteReason?: string
 }
 
 // 果木类型定义
@@ -87,6 +141,17 @@ export interface TreeType {
   number: number
   remark: string
   [key: string]: any
+
+  uid?: string
+  inundationRange?: string
+  altitude?: number
+  projectId?: number
+  status?: string
+  price?: number
+  discountRate?: number
+  valuationAmount?: number
+  compensationAmount?: number
+  valuationRemark?: string
 }
 
 // 坟墓类型定义
@@ -106,6 +171,20 @@ export interface GraveType {
   registrantDoorNo: string
   relation: string
   [key: string]: any
+
+  projectId?: number
+  status?: string
+  graveName?: string
+  hasEstimate?: string
+  localClassify?: string
+  valuationAmount?: number
+  compensationAmount?: number
+  migrationFee?: number
+  otherIncentiveFees?: number
+  handleWay?: string
+  settingGrave?: string
+  settingAddress?: string
+  settingRemark?: string
 }
 
 // 附属物
@@ -282,6 +361,9 @@ export interface FacilitiesType {
   remark: string
   uid?: string
   [key: string]: any
+
+  projectId?: number
+  status?: string
 }
 
 export interface TemplateParamsType {

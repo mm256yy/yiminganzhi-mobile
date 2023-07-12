@@ -15,4 +15,7 @@ export const resetCache = () => {
   setStorage(StorageKey.PULLTIME, '')
   // 重置同步状态
   setStorage(StorageKey.PUSHSTATUS, 'syncEnd')
+
+  setStorage(StorageKey.USERROLE, '')
+  setStorage(StorageKey.FULLUSERINFO, null)
 }

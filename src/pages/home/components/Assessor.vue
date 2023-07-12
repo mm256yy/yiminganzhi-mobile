@@ -32,7 +32,7 @@
           </view>
 
           <view class="enter-common">
-            <text class="txt">数据填报</text>
+            <text class="txt">资产评估</text>
             <image class="arrow" src="@/static/images/home_arrow_lite.png" mode="scaleToFill" />
           </view>
         </view>
@@ -46,7 +46,7 @@
           </view>
 
           <view class="enter-common">
-            <text class="txt">数据填报</text>
+            <text class="txt">资产评估</text>
             <image class="arrow" src="@/static/images/home_arrow_lite.png" mode="scaleToFill" />
           </view>
         </view>
@@ -60,7 +60,7 @@
           </view>
 
           <view class="enter-common">
-            <text class="txt">数据填报</text>
+            <text class="txt">资产评估</text>
             <image class="arrow" src="@/static/images/home_arrow_lite.png" mode="scaleToFill" />
           </view>
         </view>
@@ -74,7 +74,7 @@
           </view>
 
           <view class="enter-common">
-            <text class="txt">数据填报</text>
+            <text class="txt">资产评估</text>
             <image class="arrow" src="@/static/images/home_arrow_lite.png" mode="scaleToFill" />
           </view>
         </view>

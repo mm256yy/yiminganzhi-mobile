@@ -10,7 +10,7 @@ export type ProjectType = {
   townCode: string
   reservoirName: string
   districtTree: string[]
-  status: 'survey' | 'review'
+  status: 'survey' | 'review' | 'implementation'
 }
 
 // SURVEY("实物调查","survey"),
@@ -228,4 +228,12 @@ export interface Top5Type {
   homeReportTopToday: Top5ItemType[]
   homeSignTop: Top5ItemType[]
   homeSignTopToday: Top5ItemType[]
+}
+
+// 角色代码
+export enum RoleCodeType {
+  administrators = 'administrators',
+  investigator = 'investigator',
+  implementation = 'implementation',
+  assessor = 'assessor'
 }

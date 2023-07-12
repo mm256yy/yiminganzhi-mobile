@@ -40,15 +40,12 @@
       </view>
       <view class="copy-right">Copyright©浙江省水利水电勘测设计院有限责任公司</view>
     </view>
-
-    <!-- 角色选择弹窗 -->
-    <uni-popup ref="alertDialog" type="dialog" />
   </view>
 </template>
 
 <script lang="ts" setup>
 import { nextTick, ref, unref } from 'vue'
-import { loginApi } from './api'
+import { loginApi, userInfoApi } from './api'
 /* #ifdef APP-PLUS */
 import { pullInstance } from '@/sync'
 /* #endif */
@@ -78,6 +75,29 @@ const doRoute = () => {
   })
 }
 
+// 拉取项目列表
+const pullProjectList = () => {
+  pullInstance
+    .pullProjectData()
+    .then((res) => {
+      if (res) {
+        doRoute()
+      } else {
+        setStorage(StorageKey.TOKEN, '')
+        setStorage(StorageKey.LOGINTIME, '')
+        setStorage(StorageKey.USERINFO, null)
+        uni.showToast({
+          title: '获取项目信息失败，检查设备是否联网或者当前用户是否绑定项目',
+          duration: 3000,
+          icon: 'none'
+        })
+      }
+    })
+    .finally(() => {
+      loading.value = false
+    })
+}
+
 const loginIn = async () => {
   if (loading.value) {
     return
@@ -89,34 +109,17 @@ const loginIn = async () => {
   }).catch(() => {
     loading.value = false
   })
-  console.log('login res', res)
   if (res) {
     const { token, user } = res
     setStorage(StorageKey.TOKEN, token)
     setStorage(StorageKey.LOGINTIME, new Date().getTime())
     setStorage(StorageKey.USERINFO, user)
-    nextTick(async () => {
-      /* #ifdef APP-PLUS */
-      pullInstance
-        .pullProjectData()
-        .then((res) => {
-          if (res) {
-            doRoute()
-          } else {
-            setStorage(StorageKey.TOKEN, '')
-            setStorage(StorageKey.LOGINTIME, '')
-            setStorage(StorageKey.USERINFO, null)
-            uni.showToast({
-              title: '获取项目信息失败，检查设备是否联网或者当前用户是否绑定项目',
-              duration: 3000,
-              icon: 'none'
-            })
-          }
-        })
-        .finally(() => {
-          loading.value = false
-        })
-      /* #endif */
+    // 获取全部的用户信息
+    const allUserInfo = await userInfoApi()
+    setStorage(StorageKey.FULLUSERINFO, allUserInfo)
+
+    nextTick(() => {
+      pullProjectList()
     })
   } else {
     loading.value = false

@@ -7,13 +7,16 @@
           <image class="logo" src="@/static/images/logo.png" />
           <view class="project">移民安置综合管理服务平台V{{ appVersion }}</view>
           <view class="project" v-if="projectInfo">&nbsp;-&nbsp;{{ `${projectInfo.name}` }}</view>
-          <view class="status" v-if="projectInfo">{{
-            projectInfo.status && projectInfo.status === 'review'
-              ? '（实物复核）'
-              : projectInfo.status === 'Implementation'
-              ? '（移民实施）'
-              : '（实物采集）'
-          }}</view>
+          <view class="status" v-if="projectInfo">
+            <!-- {{
+              projectInfo.status && projectInfo.status === 'review'
+                ? '（实物复核）'
+                : projectInfo.status === 'Implementation'
+                ? '（移民实施）'
+                : '（实物采集）'
+            }} -->
+            （移民实施）
+          </view>
         </view>
 
         <view class="header-rt">
@@ -28,13 +31,13 @@
       <!-- 根据不同的角色 展示不同的视图 -->
       <!-- 实物调查的首页 -->
       <Investigator
-        v-if="homeViewType === HomeViewType.investigator"
+        v-if="homeViewType === RoleCodeType.investigator"
         @to-link="toLink"
         @login-in="loginIn"
       />
       <!-- 资产评估的首页 -->
       <Assessor
-        v-else-if="homeViewType === HomeViewType.assessor"
+        v-else-if="homeViewType === RoleCodeType.assessor"
         @to-link="toLink"
         @login-in="loginIn"
       />
@@ -55,22 +58,16 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { onBeforeMount, onMounted, ref } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
-import { getStorage, routerForward, resetCache, StorageKey } from '@/utils'
+import { getStorage, setStorage, routerForward, resetCache, StorageKey } from '@/utils'
 import { loginOutApi } from './api'
 import { getImgListApi } from '@/service'
 import { pullInstance } from '@/sync'
+import { RoleCodeType } from '@/types/common'
 import { imageUrlAndBase64Map } from '@/config'
 import Assessor from './components/Assessor.vue'
 import Investigator from './components/Investigator.vue'
-
-enum HomeViewType {
-  administrators = 'administrators',
-  investigator = 'investigator',
-  implementation = 'implementation',
-  assessor = 'assessor'
-}
 
 const userInfo = ref<any>(null)
 const projectInfo = ref<any>(null)
@@ -80,7 +77,7 @@ const appVersion = ref<string>('')
  * 首页视图类型
  * 不同角色不同的首页内容
  */
-const homeViewType = ref<HomeViewType>(HomeViewType.investigator)
+const homeViewType = ref<RoleCodeType>(RoleCodeType.investigator)
 
 const toLink = (name: string) => {
   routerForward(name)
@@ -145,9 +142,24 @@ const getImageObj = async () => {
  * 判断角色 展示不同的首页
  */
 const roleDetermine = () => {
-  const userInfo = getStorage(StorageKey.USERINFO)
-  const project = getStorage(StorageKey.PROJECTINFO)
+  const projectId = getStorage(StorageKey.PROJECTID)
+  const allUserInfo = getStorage(StorageKey.FULLUSERINFO)
+  if (allUserInfo) {
+    const project = allUserInfo.projectUsers.find((x: any) => x.projectId === projectId)
+    console.log(project, 'project')
+    const role =
+      (project && project.roles && project.roles.length
+        ? project.roles[0].code
+        : RoleCodeType.investigator) || RoleCodeType.assessor
+    // 设置用户角色 默认用户拥有一个角色 角色选择先不考虑
+    setStorage(StorageKey.USERROLE, role)
+    homeViewType.value = role
+  }
 }
+
+onBeforeMount(() => {
+  roleDetermine()
+})
 
 onMounted(() => {
   getImageObj()
@@ -160,6 +172,7 @@ onShow(() => {
   const project = getStorage(StorageKey.PROJECTINFO)
   userInfo.value = user
   projectInfo.value = project
+  console.log(user, 'user')
 })
 </script>
 

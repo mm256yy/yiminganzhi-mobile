@@ -4,7 +4,8 @@ export const getHeaderCommonParams = () => {
   const token = getStorage(StorageKey.TOKEN)
   const projectId = getStorage(StorageKey.PROJECTID) || 0
   const projectInfo = getStorage(StorageKey.PROJECTINFO) || {}
-  const status = projectInfo.status || 'survey' // 阶段， 如 survey 填报、review 复核
+  // todo 默认给实施阶段
+  const status = 'implementation' || projectInfo.status || 'survey' // 阶段， 如 survey 填报、review 复核\ implementation 实施
   const systemInfo = uni.getSystemInfoSync()
   return {
     Authorization: token,

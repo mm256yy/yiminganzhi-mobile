@@ -1,14 +1,16 @@
 export enum StorageKey {
   TOKEN = 'Authorization',
   PROJECTID = 'Project-Id',
-  USERINFO = 'UserInfo',
+  USERINFO = 'UserInfo', // 基础用户信息
   LOGINTIME = 'LoginTime',
   NETWORK = 'Network',
   PROJECTINFO = 'ProjectInfo',
   DISTRICTMAP = 'DistrictMap',
   DICT = 'Dict', // 字典表
   PULLTIME = 'PullTime',
-  PUSHSTATUS = 'PushStatus'
+  PUSHSTATUS = 'PushStatus',
+  FULLUSERINFO = 'FullUserInfo', // 全部的用户信息
+  USERROLE = 'UserRole' // 用户角色
 }
 
 export const getStorage = (key: StorageKey): any => {

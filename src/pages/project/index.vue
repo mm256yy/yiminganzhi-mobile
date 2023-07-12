@@ -50,8 +50,8 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { getProjectListApi } from '@/service'
 import SyncCompont from '@/components/Sync/Index.vue'
-import { routerBack, StorageKey, getStorage, debounce } from '@/utils'
-import { ProjectType } from '@/types/common'
+import { routerBack, StorageKey, getStorage, debounce, setStorage } from '@/utils'
+import { ProjectType, RoleCodeType } from '@/types/common'
 
 const list = ref<any[]>([])
 
