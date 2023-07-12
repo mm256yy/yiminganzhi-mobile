@@ -4,28 +4,35 @@
     <view class="list" v-if="props.dataList && props.dataList.length">
       <view class="list-item" v-for="item in props.dataList" :key="item.id">
         <view class="list-1">
-          <view class="left">水台</view>
+          <view class="left">
+            {{ formatStr(item.name) }}
+          </view>
           <view class="right">
-            <image
+            <!-- <image
               class="icon m-r-10"
               src="@/static/images/icon_delete_mini.png"
               mode="scaleToFill"
               @click="deleteHouse(item)"
-            />
+            /> -->
           </view>
         </view>
-        <view class="list-2" @click="toLink('edit', item)">
+        <!-- <view class="list-2" @click="toLink('edit', item)"> -->
+        <view class="list-2">
           <uni-row>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">规格：</view>
-                <view class="content">水泥</view>
+                <view class="content">
+                  {{ formatStr(item.size) }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">折率：</view>
-                <view class="content">35%</view>
+                <view class="content">
+                  {{ formatStr(item.discountRate, '%') }}
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -34,13 +41,17 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">单位：</view>
-                <view class="content">平方米</view>
+                <view class="content">
+                  {{ formatStr(item.unit) }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">评估金额(元)：</view>
-                <view class="content">35000</view>
+                <view class="content">
+                  {{ formatStr(item.valuationAmount) }}
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -49,13 +60,17 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">数量：</view>
-                <view class="content">1</view>
+                <view class="content">
+                  {{ formatStr(item.number) }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">补偿金额(元)：</view>
-                <view class="content">35000</view>
+                <view class="content">
+                  {{ formatStr(item.compensationAmount) }}
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -68,15 +83,15 @@
       <view class="tips">请先添加附属设施信息</view>
     </view>
 
-    <image
+    <!-- <image
       class="btn add"
       src="@/static/images/icon_add.png"
       mode="scaleToFill"
       @click="toLink('add')"
-    />
+    /> -->
 
     <!-- 删除确认框 -->
-    <uni-popup ref="alertDialog" type="dialog">
+    <!-- <uni-popup ref="alertDialog" type="dialog">
       <uni-popup-dialog
         type="warn"
         mode="input"
@@ -88,15 +103,15 @@
         @confirm="dialogConfirm"
         @close="dialogClose"
       />
-    </uni-popup>
+    </uni-popup> -->
   </view>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import dayjs from 'dayjs'
-import { formatDict, formatStr, routerForward, getStorage, StorageKey, fmtPicUrl } from '@/utils'
-import { showToast } from '@/config'
+// import { ref } from 'vue'
+// import dayjs from 'dayjs'
+import { formatStr } from '@/utils'
+// import { showToast } from '@/config'
 
 const props = defineProps({
   dataList: {
@@ -114,61 +129,61 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['deleteHouse'])
-const alertDialog = ref<any>(null)
-const currentItem = ref<any>({})
-const reason = ref<string>('') // 删除原因
+// const emit = defineEmits(['deleteHouse'])
+// const alertDialog = ref<any>(null)
+// const currentItem = ref<any>({})
+// const reason = ref<string>('') // 删除原因
 
-const toLink = (type: string, data?: any) => {
-  const { dataInfo, mainType } = props
-  const { uid, doorNo, longitude, latitude } = dataInfo
-  let commonParams = { type, uid, doorNo, longitude, latitude, mainType }
-  if (type === 'edit') {
-    let params = {
-      ...data,
-      completedTime: data.completedTime
-        ? dayjs(data.completedTime).format('YYYY-MM')
-        : data.completedTime,
-      housePic: fmtPicUrl(data.housePic),
-      landPic: fmtPicUrl(data.landPic),
-      otherPic: fmtPicUrl(data.otherPic),
-      homePic: fmtPicUrl(data.homePic)
-    }
-    routerForward('houseInfoEdit', {
-      params: JSON.stringify(params),
-      commonParams: JSON.stringify(commonParams)
-    })
-  } else if (type === 'add') {
-    routerForward('houseInfoEdit', {
-      commonParams: JSON.stringify(commonParams)
-    })
-  }
-}
+// const toLink = (type: string, data?: any) => {
+//   const { dataInfo, mainType } = props
+//   const { uid, doorNo, longitude, latitude } = dataInfo
+//   let commonParams = { type, uid, doorNo, longitude, latitude, mainType }
+//   if (type === 'edit') {
+//     let params = {
+//       ...data,
+//       completedTime: data.completedTime
+//         ? dayjs(data.completedTime).format('YYYY-MM')
+//         : data.completedTime,
+//       housePic: fmtPicUrl(data.housePic),
+//       landPic: fmtPicUrl(data.landPic),
+//       otherPic: fmtPicUrl(data.otherPic),
+//       homePic: fmtPicUrl(data.homePic)
+//     }
+//     routerForward('houseInfoEdit', {
+//       params: JSON.stringify(params),
+//       commonParams: JSON.stringify(commonParams)
+//     })
+//   } else if (type === 'add') {
+//     routerForward('houseInfoEdit', {
+//       commonParams: JSON.stringify(commonParams)
+//     })
+//   }
+// }
 
 /**
  * 删除当前行数据
  * @param {Object} data 当前行数据
  */
-const deleteHouse = (data: any) => {
-  alertDialog.value?.open()
-  currentItem.value = { ...data }
-}
+// const deleteHouse = (data: any) => {
+//   alertDialog.value?.open()
+//   currentItem.value = { ...data }
+// }
 
-const dialogConfirm = (data: any) => {
-  if (!data) {
-    showToast('请输入删除原因')
-    return
-  }
-  let params = {
-    ...currentItem.value,
-    reason: data
-  }
-  emit('deleteHouse', params)
-}
+// const dialogConfirm = (data: any) => {
+//   if (!data) {
+//     showToast('请输入删除原因')
+//     return
+//   }
+//   let params = {
+//     ...currentItem.value,
+//     reason: data
+//   }
+//   emit('deleteHouse', params)
+// }
 
-const dialogClose = () => {
-  alertDialog.value.close()
-}
+// const dialogClose = () => {
+//   alertDialog.value.close()
+// }
 </script>
 
 <style lang="scss" scoped>
@@ -225,7 +240,7 @@ const dialogClose = () => {
           flex-direction: row;
 
           .label {
-            width: 56rpx;
+            width: 66rpx;
             height: 16rpx;
             margin-left: 9rpx;
             font-size: 9rpx;

@@ -9,12 +9,12 @@
             幢号：{{ formatStr(item.houseNo) }}
           </view>
           <view class="right">
-            <image
+            <!-- <image
               class="icon m-r-10"
               src="@/static/images/icon_delete_mini.png"
               mode="scaleToFill"
               @click="deleteRowData(item)"
-            />
+            /> -->
           </view>
         </view>
         <view class="list-2" @click="toLink('edit', item)">
@@ -23,14 +23,16 @@
               <view class="col">
                 <view class="label">类别：</view>
                 <view class="content">
-                  {{ formatDict(item.houseType, 266) }}
+                  {{ formatDict(item.fitUpType, 266) }}
                 </view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">折率：</view>
-                <view class="content">35%</view>
+                <view class="content">
+                  {{ formatStr(item.discountRate, '%') }}
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -39,13 +41,17 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">名称：</view>
-                <view class="content">钢架</view>
+                <view class="content">
+                  {{ formatStr(item.fitUpName) }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">评估单价(元)：</view>
-                <view class="content">1200</view>
+                <view class="content">
+                  {{ formatStr(item.price) }}
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -54,13 +60,17 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">单位：</view>
-                <view class="content">平方米</view>
+                <view class="content">
+                  {{ formatDict(item.unit, 268) }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">评估金额(元)：</view>
-                <view class="content">35000</view>
+                <view class="content">
+                  {{ formatStr(item.valuationAmount) }}
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -69,13 +79,17 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">数量：</view>
-                <view class="content">2</view>
+                <view class="content">
+                  {{ formatStr(item.number) }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">补偿金额(元)：</view>
-                <view class="content">35000</view>
+                <view class="content">
+                  {{ formatStr(item.compensationAmount) }}
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -84,7 +98,7 @@
             <uni-col :span="24">
               <view class="col">
                 <view class="label">是否一口价：</view>
-                <view class="content">否</view>
+                <view class="content">是</view>
               </view>
             </uni-col>
           </uni-row>
@@ -120,7 +134,6 @@
     </uni-popup>
   </view>
 </template>
-
 <script lang="ts" setup>
 import { ref } from 'vue'
 import dayjs from 'dayjs'
@@ -254,7 +267,7 @@ const dialogClose = () => {
           flex-direction: row;
 
           .label {
-            width: 56rpx;
+            width: 66rpx;
             height: 16rpx;
             margin-left: 9rpx;
             font-size: 9rpx;
