@@ -2,9 +2,9 @@
   <Container title="居民户列表">
     <template #right>
       <view class="title" @click="onToggleVillage">
-        <text class="tit">{{
-          title.length ? title.filter((item) => !!item).join('/') : '选择行政区划'
-        }}</text>
+        <text class="tit">
+          {{ title.length ? title.filter((item) => !!item).join('/') : '选择行政区划' }}
+        </text>
         <image
           class="icon"
           :style="{ transform: showVillageSelect ? 'rotate(180deg)' : 'rotate(0deg)' }"
@@ -106,7 +106,8 @@ import {
 } from '@/service'
 import { LandlordType } from '@/types/sync'
 import { LandlordSearchType, MainType } from '@/types/common'
-import { routerForward } from '@/utils'
+import { routerForward, getStorage, setStorage, StorageKey } from '@/utils'
+import { RoleCodeType } from '@/types/common'
 
 const tabType = ref<MainType>(MainType.PeasantHousehold)
 const showVillageSelect = ref<boolean>(false)
@@ -125,6 +126,9 @@ const isEnd = ref<boolean>(false)
 
 const page = ref<number>(1)
 const pageSize = ref<number>(10)
+
+// 角色类型，不同角色跳转不同的页面，默认为实物采集页面
+const roleType = ref<RoleCodeType>(getStorage(StorageKey.USERROLE))
 
 const init = () => {
   page.value = 1
@@ -221,20 +225,36 @@ const loadMore = () => {
   getList()
 }
 
+/**
+ * 获取页面跳转的路由 name
+ * @params {Object} roleType 角色类型
+ */
+const getRouterName = (roleType: string) => {
+  if (roleType === RoleCodeType.investigator) {
+    return 'household'
+  } else if (roleType === RoleCodeType.assessor) {
+    return 'householdEva'
+  } else if (roleType === RoleCodeType.implementation) {
+    return 'householdImp'
+  } else {
+    return 'household'
+  }
+}
+
 // 填报
 const routerMap: any = {
-  [MainType.PeasantHousehold]: 'householdEva',
-  [MainType.IndividualHousehold]: 'selfPersonEva',
-  [MainType.Company]: 'enterpriseEva',
-  [MainType.Village]: 'collectiveEva'
+  [MainType.PeasantHousehold]: getRouterName(roleType.value)
+  // [MainType.IndividualHousehold]: 'selfPersonEva',
+  // [MainType.Company]: 'enterpriseEva',
+  // [MainType.Village]: 'collectiveEva'
 }
 
 // 新增 路由 map
 const addRouterMap: any = {
-  [MainType.PeasantHousehold]: 'householdInfoEdit',
-  [MainType.IndividualHousehold]: 'selfBaseInfoEdit',
-  [MainType.Company]: 'baseInfoEdit',
-  [MainType.Village]: 'collectiveBaseInfoEdit'
+  [MainType.PeasantHousehold]: 'householdInfoEdit'
+  // [MainType.IndividualHousehold]: 'selfBaseInfoEdit',
+  // [MainType.Company]: 'baseInfoEdit',
+  // [MainType.Village]: 'collectiveBaseInfoEdit'
 }
 
 const addLandlord = () => {
@@ -274,29 +294,30 @@ const getLandlordDetail = (uid: string, type: string) => {
         `坟墓信息: ${res.immigrantGraveList.length} 条坟墓信息`
       ]
       confirmMsg.value = '是否删除该居民户信息？'
-    } else if (type === MainType.Company) {
-      tipsList.value = [
-        `房屋信息: ${res.immigrantHouseList.length} 条房屋信息`,
-        `附属物信息: ${appendantLength} 条附属物信息`,
-        `零星(林)果木信息: ${res.immigrantTreeList.length} 条零星（林）果木信息`
-      ]
-      confirmMsg.value = '是否删除该企业信息？'
-    } else if (type === MainType.IndividualHousehold) {
-      tipsList.value = [
-        `房屋信息: ${res.immigrantHouseList.length} 条房屋信息`,
-        `附属物信息: ${appendantLength} 条附属物信息`,
-        `零星(林)果木信息: ${res.immigrantTreeList.length} 条零星（林）果木信息`
-      ]
-      confirmMsg.value = '是否删除该个体工商户信息 ？'
-    } else if (type === MainType.Village) {
-      tipsList.value = [
-        `房屋信息: ${res.immigrantHouseList.length} 条房屋信息`,
-        `附属物信息: ${appendantLength} 条附属物信息`,
-        `零星(林)果木信息: ${res.immigrantTreeList.length} 条零星（林）果木信息`,
-        `坟墓信息: ${res.immigrantGraveList.length} 条坟墓信息`
-      ]
-      confirmMsg.value = '是否删除该村集体信息 ？'
     }
+    // } else if (type === MainType.Company) {
+    //   tipsList.value = [
+    //     `房屋信息: ${res.immigrantHouseList.length} 条房屋信息`,
+    //     `附属物信息: ${appendantLength} 条附属物信息`,
+    //     `零星(林)果木信息: ${res.immigrantTreeList.length} 条零星（林）果木信息`
+    //   ]
+    //   confirmMsg.value = '是否删除该企业信息？'
+    // } else if (type === MainType.IndividualHousehold) {
+    //   tipsList.value = [
+    //     `房屋信息: ${res.immigrantHouseList.length} 条房屋信息`,
+    //     `附属物信息: ${appendantLength} 条附属物信息`,
+    //     `零星(林)果木信息: ${res.immigrantTreeList.length} 条零星（林）果木信息`
+    //   ]
+    //   confirmMsg.value = '是否删除该个体工商户信息 ？'
+    // } else if (type === MainType.Village) {
+    //   tipsList.value = [
+    //     `房屋信息: ${res.immigrantHouseList.length} 条房屋信息`,
+    //     `附属物信息: ${appendantLength} 条附属物信息`,
+    //     `零星(林)果木信息: ${res.immigrantTreeList.length} 条零星（林）果木信息`,
+    //     `坟墓信息: ${res.immigrantGraveList.length} 条坟墓信息`
+    //   ]
+    //   confirmMsg.value = '是否删除该村集体信息 ？'
+    // }
   })
 }
 

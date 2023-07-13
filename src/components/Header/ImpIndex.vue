@@ -2,12 +2,12 @@
   <view class="list-header">
     <view class="list-header-rt">
       <view class="list-header-left">
-        <view class="name">李三</view>
-        <view class="account-no">767676767777</view>
+        <view class="name">吴亦凡</view>
+        <view class="account-no">311100127</view>
         <view class="fill-number">
           填报进度&nbsp;
           <text class="green">0</text>
-          /7
+          /16
         </view>
       </view>
 
@@ -23,6 +23,7 @@
   display: flex;
   height: 33rpx;
   padding: 0 6rpx 0 9rpx;
+  box-shadow: 0 0 6rpx 0 rgba(0, 0, 0, 0.08);
   box-sizing: border-box;
   flex-direction: row;
   align-items: center;

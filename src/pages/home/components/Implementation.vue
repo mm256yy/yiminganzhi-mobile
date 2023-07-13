@@ -26,7 +26,7 @@
     <!-- 具体内容 -->
 
     <view class="main-enter">
-      <view class="enter-item" @click="toLink('householdImp')">
+      <view class="enter-item" @click="toLink('householdList')">
         <view class="inner">
           <view class="top">
             <image class="enter-icon" src="@/static/images/peple_enter.png" mode="scaleToFill" />

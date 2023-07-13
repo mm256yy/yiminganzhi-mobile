@@ -8,11 +8,11 @@
             幢号 102
           </view>
           <view class="right">
-            <image
+            <!-- <image
               class="icon m-r-10"
               src="@/static/images/icon_delete_mini.png"
               mode="scaleToFill"
-            />
+            /> -->
           </view>
         </view>
         <view class="list-2">
@@ -84,7 +84,7 @@
       <view class="tips">请先添加房屋确权信息</view>
     </view> -->
 
-    <image class="btn add" src="@/static/images/icon_add.png" mode="scaleToFill" />
+    <!-- <image class="btn add" src="@/static/images/icon_add.png" mode="scaleToFill" /> -->
 
     <!-- 删除确认框 -->
     <!-- <uni-popup
@@ -247,7 +247,7 @@
           flex-direction: row;
 
           .label {
-            width: 56rpx;
+            width: 86rpx;
             height: 16rpx;
             margin-left: 9rpx;
             font-size: 9rpx;

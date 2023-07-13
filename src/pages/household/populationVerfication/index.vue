@@ -6,15 +6,15 @@
         <view class="list-1">
           <view class="left">
             <view class="icon">户主</view>
-            <view class="name">杨汉中</view>
+            <view class="name">吴亦凡</view>
           </view>
           <view class="right">
-            <image
+            <!-- <image
               class="icon m-r-10"
               src="@/static/images/icon_delete_mini.png"
               mode="scaleToFill"
               @click="deletePopulation"
-            />
+            /> -->
           </view>
         </view>
         <view class="list-2">
@@ -43,7 +43,7 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">婚姻状况：</view>
-                <view class="content">已婚</view>
+                <view class="content">未婚</view>
               </view>
             </uni-col>
           </uni-row>
@@ -64,7 +64,7 @@
       <view class="tips">请先添加人口核定信息</view>
     </view> -->
 
-    <image class="btn add" src="@/static/images/icon_add.png" mode="scaleToFill" />
+    <!-- <image class="btn add" src="@/static/images/icon_add.png" mode="scaleToFill" /> -->
 
     <!-- 删除确认弹框 -->
     <!-- <uni-popup ref="alertDialog" type="dialog">
@@ -84,7 +84,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+// import { ref } from 'vue'
 // import dayjs from 'dayjs'
 // import {
 //   formatDict,
@@ -147,10 +147,10 @@ import { ref } from 'vue'
  * 删除当前行数据
  * @param {Object} data 当前行数据
  */
-const deletePopulation = () => {
-  // alertDialog.value?.open()
-  // currentItem.value = { ...data }
-}
+// const deletePopulation = () => {
+//   alertDialog.value?.open()
+//   currentItem.value = { ...data }
+// }
 
 // const dialogConfirm = (data: any) => {
 //   if (!data) {
