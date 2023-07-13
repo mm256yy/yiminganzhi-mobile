@@ -1,5 +1,6 @@
 <template>
   <view class="house-info-wrapper">
+    <!-- 居民户实施 —— 房屋确权 -->
     <view class="list" v-if="props.dataList && props.dataList.length > 0">
       <view class="list-item" v-for="item in props.dataList" :key="item.id">
         <view class="list-1">
@@ -85,10 +86,11 @@
       </view>
     </view>
 
-    <!-- <view class="null-wrapper" v-else>
+    <view class="null-wrapper" v-else>
       <image class="icon" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
-      <view class="tips">请先添加房屋确权信息</view>
-    </view> -->
+      <view class="tips">暂无房屋确权信息</view>
+      <!-- <view class="tips">请先添加房屋确权信息</view> -->
+    </view>
 
     <!-- <image class="btn add" src="@/static/images/icon_add.png" mode="scaleToFill" /> -->
 

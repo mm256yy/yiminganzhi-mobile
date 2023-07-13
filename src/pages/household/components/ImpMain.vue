@@ -139,7 +139,9 @@ const switchTab = (item: any) => {
 
       .box {
         width: 100%;
-        padding: 0 9rpx;
+        height: calc(100vh - 33rpx - 12rpx - 33rpx - var(--status-bar-height));
+        padding: 0 6rpx;
+        overflow-y: scroll;
         box-sizing: border-box;
       }
     }
