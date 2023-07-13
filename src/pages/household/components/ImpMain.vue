@@ -16,6 +16,9 @@
 
           <!-- 房屋确权 -->
           <house-confrim v-if="tabVal === 2" />
+
+          <!--移民建卡-->
+          <migrateCard v-if="tabVal === 10" />
         </view>
       </view>
     </view>
@@ -28,6 +31,7 @@ import LeftSidebar from '@/components/LeftSidebar/Index.vue' // 引入左侧边�
 import Header from '@/components/Header/ImpIndex.vue' // 引入头部组件
 import populationVerfication from '../populationVerfication/index.vue' // 引入人口核定组件
 import houseConfrim from '../houseConfirm/index.vue' // 引入房屋确权组件
+import migrateCard from '../migrateCard/index.vue' // 移民建卡
 
 import iconRkhdDef from '@/static/images/icon_rkhd_def.png' // 引入人口核定默认 icon
 import iconRkhdSel from '@/static/images/icon_rkhd_sel.png' // 引入人口核定选中时 icon
