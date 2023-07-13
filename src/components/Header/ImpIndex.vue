@@ -33,59 +33,40 @@ export default {
     totalFillNumber: function () {
       switch (this.type) {
         case MainType.PeasantHousehold:
-          return 8
+          return 17
           break
         case MainType.Company:
-          return 8
+          return 17
           break
         case MainType.IndividualHousehold:
-          return 8
+          return 17
           break
         case MainType.Village:
-          return 8
+          return 17
           break
         default:
-          return 8
+          return 17
           break
       }
     },
     fillNumber: function () {
       const {
+        demographicList,
         immigrantHouseList,
-        assetHouseFitUpList,
-        immigrantAppendantList,
-        immigrantTreeList,
-        assetLandList,
-        assetAppendantList,
-        immigrantGraveList,
         immigrantEquipmentList,
         immigrantFacilitiesList,
         type
       } = this.dataInfo
 
-      let fillCount = 1
-      if (this.isNotNullArray(immigrantHouseList)) {
-        fillCount++
-      }
-      if (this.isNotNullArray(assetHouseFitUpList)) {
-        fillCount++
-      }
-      if (this.isNotNullArray(immigrantAppendantList)) {
-        fillCount++
-      }
-      if (this.isNotNullArray(immigrantTreeList)) {
-        fillCount++
-      }
-      if (this.isNotNullArray(assetLandList)) {
-        fillCount++
-      }
-      if (this.isNotNullArray(assetAppendantList)) {
-        fillCount++
-      }
+      let fillCount = 0
+
       // 上报开始校验数据
       if (type === MainType.PeasantHousehold) {
         // 居民户
-        if (this.isNotNullArray(immigrantGraveList)) {
+        if (this.isNotNullArray(demographicList)) {
+          fillCount++
+        }
+        if (this.isNotNullArray(immigrantHouseList)) {
           fillCount++
         }
       } else if (type === MainType.IndividualHousehold) {

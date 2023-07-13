@@ -4,7 +4,7 @@
     <Back title="居民户实施" />
 
     <view class="content">
-      <LeftSidebar title="居民户信息" :dataList="sidebarList" @switch-tab="switchTab" />
+      <LeftSidebar @switch-tab="switchTab" :dataList="sidebarList" />
 
       <view class="right">
         <!-- 头部 -->
@@ -29,14 +29,14 @@
           />
 
           <!--移民建卡-->
-          <migrateCard v-if="tabVal === 10" />
+          <migrateCard v-if="tabVal === 9" />
         </view>
       </view>
     </view>
   </view>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { MainType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
 import LeftSidebar from '@/components/LeftSidebar/Index.vue' // 引入左侧边栏组件
@@ -90,28 +90,54 @@ const props = defineProps({
   }
 })
 
-const sidebarList = [
-  { label: '居民户信息', value: 1, iconDef: iconHouseholdDef, iconSel: iconHouseholdSel },
-  { label: '人口核定', value: 2, iconDef: iconRkhdDef, iconSel: iconRkhdSel },
-  { label: '房屋确权', value: 3, iconDef: iconFwqqDef, iconSel: iconFwqqSel },
-  { label: '模拟安置', value: 4, iconDef: iconMnazDef, iconSel: iconMnazSel },
-  { label: '安置确认', value: 5, iconDef: iconAzqrDef, iconSel: iconAzqrSel },
-  { label: '过渡安置', value: 6, iconDef: iconGdazDef, iconSel: iconGdazSel },
-  { label: '选房确认', value: 7, iconDef: iconXfqrDef, iconSel: iconXfqrSel },
-  { label: '选址确认', value: 8, iconDef: iconXzqrDef, iconSel: iconXzqrSel },
-  { label: '协议签订', value: 9, iconDef: iconXyqdDef, iconSel: iconXyqdSel },
-  { label: '移民建卡', value: 10, iconDef: iconYmjkDef, iconSel: iconYmjkSel },
-  { label: '房屋腾空', value: 11, iconDef: iconFwtkDef, iconSel: iconFwtkSel },
-  { label: '青苗腾空', value: 12, iconDef: iconQmtkDef, iconSel: iconQmtkSel },
-  { label: '自建房', value: 13, iconDef: iconZjfDef, iconSel: iconZjfSel },
-  { label: '统建房', value: 14, iconDef: iconTjfDef, iconSel: iconTjfSel },
-  { label: '社保', value: 15, iconDef: iconSbDef, iconSel: iconSbSel },
-  { label: '生产用地', value: 16, iconDef: iconScydDef, iconSel: iconScydSel },
-  { label: '其他安置', value: 17, iconDef: iconQtazDef, iconSel: iconQtazSel },
-  { label: '相关手续', value: 18, iconDef: iconXgsxDef, iconSel: iconXgsxSel }
-]
-
 const tabVal = ref<number>(1)
+
+// 是否为空数组
+const isNotNullArray = (arr: any) => {
+  return arr && Array.isArray(arr) && arr.length
+}
+
+const sidebarList = computed(() => {
+  const { demographicList, immigrantHouseList } = props.dataInfo
+  return [
+    {
+      label: '居民户信息',
+      value: 1,
+      filled: false,
+      iconDef: iconHouseholdDef,
+      iconSel: iconHouseholdSel
+    },
+    {
+      label: '人口核定',
+      value: 2,
+      filled: isNotNullArray(demographicList),
+      iconDef: iconRkhdDef,
+      iconSel: iconRkhdSel
+    },
+    {
+      label: '房屋确权',
+      value: 3,
+      filled: isNotNullArray(immigrantHouseList),
+      iconDef: iconFwqqDef,
+      iconSel: iconFwqqSel
+    },
+    { label: '模拟安置', value: 4, filled: false, iconDef: iconMnazDef, iconSel: iconMnazSel },
+    { label: '安置确认', value: 5, filled: false, iconDef: iconAzqrDef, iconSel: iconAzqrSel },
+    { label: '选房确认', value: 6, filled: false, iconDef: iconXfqrDef, iconSel: iconXfqrSel },
+    { label: '选址确认', value: 7, filled: false, iconDef: iconXzqrDef, iconSel: iconXzqrSel },
+    { label: '协议签订', value: 8, filled: false, iconDef: iconXyqdDef, iconSel: iconXyqdSel },
+    { label: '移民建卡', value: 9, filled: false, iconDef: iconYmjkDef, iconSel: iconYmjkSel },
+    { label: '房屋腾空', value: 10, filled: false, iconDef: iconFwtkDef, iconSel: iconFwtkSel },
+    { label: '青苗腾空', value: 11, filled: false, iconDef: iconQmtkDef, iconSel: iconQmtkSel },
+    { label: '过渡安置', value: 12, filled: false, iconDef: iconGdazDef, iconSel: iconGdazSel },
+    { label: '自建房', value: 13, filled: false, iconDef: iconZjfDef, iconSel: iconZjfSel },
+    { label: '统建房', value: 14, filled: false, iconDef: iconTjfDef, iconSel: iconTjfSel },
+    { label: '社保', value: 15, filled: false, iconDef: iconSbDef, iconSel: iconSbSel },
+    { label: '生产用地', value: 16, filled: false, iconDef: iconScydDef, iconSel: iconScydSel },
+    { label: '其他安置', value: 17, filled: false, iconDef: iconQtazDef, iconSel: iconQtazSel },
+    { label: '相关手续', value: 18, filled: false, iconDef: iconXgsxDef, iconSel: iconXgsxSel }
+  ]
+})
 
 const switchTab = (item: any) => {
   tabVal.value = item.value
