@@ -8,14 +8,25 @@
 
       <view class="right">
         <!-- 头部 -->
-        <Header />
+        <Header :dataInfo="dataInfo" :type="MainType.PeasantHousehold" />
 
         <view class="box">
+          <!-- 居民户信息 -->
+          <base-info-imp v-if="tabVal === 1" :dataInfo="dataInfo" />
+
           <!-- 人口核定 -->
-          <population-verfication v-if="tabVal === 1" />
+          <population-verfication
+            v-if="tabVal === 2"
+            :dataList="dataInfo.demographicList"
+            :dataInfo="dataInfo"
+          />
 
           <!-- 房屋确权 -->
-          <house-confrim v-if="tabVal === 2" />
+          <house-confrim
+            v-if="tabVal === 3"
+            :dataList="dataInfo.immigrantHouseList"
+            :dataInfo="dataInfo"
+          />
         </view>
       </view>
     </view>
@@ -23,28 +34,30 @@
 </template>
 <script lang="ts" setup>
 import { ref } from 'vue'
+import { MainType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
 import LeftSidebar from '@/components/LeftSidebar/Index.vue' // 引入左侧边栏组件
 import Header from '@/components/Header/ImpIndex.vue' // 引入头部组件
+import baseInfoImp from '../baseInfoImp/index.vue'
 import populationVerfication from '../populationVerfication/index.vue' // 引入人口核定组件
 import houseConfrim from '../houseConfirm/index.vue' // 引入房屋确权组件
 
+import iconHouseholdDef from '@/static/images/icon_household_imp_def.png' // 引入居民户信息默认 icon
+import iconHouseholdSel from '@/static/images/icon_household_imp_sel.png' // 引入居民户信息选中时 icon
 import iconRkhdDef from '@/static/images/icon_rkhd_def.png' // 引入人口核定默认 icon
 import iconRkhdSel from '@/static/images/icon_rkhd_sel.png' // 引入人口核定选中时 icon
 import iconFwqqDef from '@/static/images/icon_fwqq_def.png' // 引入房屋确权默认 icon
 import iconFwqqSel from '@/static/images/icon_fwqq_sel.png' // 引入房屋确权选中时 icon
-import iconBqmnDef from '@/static/images/icon_bqmn_def.png' // 引入搬迁模拟默认 icon
-import iconBqmnSel from '@/static/images/icon_bqmn_sel.png' // 引入搬迁模拟选中时 icon
-import iconScmnDef from '@/static/images/icon_scmn_def.png' // 引入生产模拟默认 icon
-import iconScmnSel from '@/static/images/icon_scmn_sel.png' // 引入生产模拟选中时 icon
-import iconMnjgDef from '@/static/images/icon_mnjg_def.png' // 引入模拟结果默认 icon
-import iconMnjgSel from '@/static/images/icon_mnjg_sel.png' // 引入模拟结果选中时 icon
-import iconBqazDef from '@/static/images/icon_bqaz_def.png' // 引入搬迁安置默认 icon
-import iconBqazSel from '@/static/images/icon_bqaz_sel.png' // 引入搬迁安置选中时 icon
-import iconScazDef from '@/static/images/icon_scaz_def.png' // 引入生产安置默认 icon
-import iconScazSel from '@/static/images/icon_scaz_sel.png' // 引入生产安置选中时 icon
-import iconFmazDef from '@/static/images/icon_fmaz_def.png' // 引入坟墓安置默认 icon
-import iconFmazSel from '@/static/images/icon_fmaz_sel.png' // 引入坟墓安置选中时 icon
+import iconMnazDef from '@/static/images/icon_mnaz_def.png' // 引入模拟安置默认 icon
+import iconMnazSel from '@/static/images/icon_mnaz_sel.png' // 引入模拟安置选中时 icon
+import iconAzqrDef from '@/static/images/icon_azqr_def.png' // 引入安置确认默认 icon
+import iconAzqrSel from '@/static/images/icon_azqr_sel.png' // 引入安置确认选中时 icon
+import iconGdazDef from '@/static/images/icon_gdaz_def.png' // 引入过渡安置默认 icon
+import iconGdazSel from '@/static/images/icon_gdaz_sel.png' // 引入过渡安置选中时 icon
+import iconXfqrDef from '@/static/images/icon_xfqr_def.png' // 引入选房确认默认 icon
+import iconXfqrSel from '@/static/images/icon_xfqr_sel.png' // 引入选房确认选中时 icon
+import iconXzqrDef from '@/static/images/icon_xzqr_def.png' // 引入选址确认默认 icon
+import iconXzqrSel from '@/static/images/icon_xzqr_sel.png' // 引入选址确认选中时 icon
 import iconXyqdDef from '@/static/images/icon_xyqd_def.png' // 引入协议签订默认 icon
 import iconXyqdSel from '@/static/images/icon_xyqd_sel.png' // 引入协议签订选中时 icon
 import iconYmjkDef from '@/static/images/icon_ymjk_def.png' // 引入移民建卡默认 icon
@@ -57,32 +70,39 @@ import iconZjfDef from '@/static/images/icon_zjf_def.png' // 引入自建房默�
 import iconZjfSel from '@/static/images/icon_zjf_sel.png' // 引入自建房选中时 icon
 import iconTjfDef from '@/static/images/icon_tjf_def.png' // 引入统建房默认 icon
 import iconTjfSel from '@/static/images/icon_tjf_sel.png' // 引入统建房选中时 icon
-import iconScydDef from '@/static/images/icon_scyd_def.png' // 引入生产用地默认 icon
-import iconScydSel from '@/static/images/icon_scyd_sel.png' // 引入生产用地选中时 icon
 import iconSbDef from '@/static/images/icon_sb_def.png' // 引入社保默认 icon
 import iconSbSel from '@/static/images/icon_sb_sel.png' // 引入社保选中时 icon
+import iconScydDef from '@/static/images/icon_scyd_def.png' // 引入生产用地默认 icon
+import iconScydSel from '@/static/images/icon_scyd_sel.png' // 引入生产用地选中时 icon
 import iconQtazDef from '@/static/images/icon_qtaz_def.png' // 引入其他安置默认 icon
 import iconQtazSel from '@/static/images/icon_qtaz_sel.png' // 引入其他安置选中时 icon
 import iconXgsxDef from '@/static/images/icon_xgsx_def.png' // 引入相关手续默认 icon
 import iconXgsxSel from '@/static/images/icon_xgsx_sel.png' // 引入相关手续选中时 icon
 
+const props = defineProps({
+  dataInfo: {
+    type: Object,
+    default: () => {}
+  }
+})
+
 const sidebarList = [
-  { label: '人口核定', value: 1, iconDef: iconRkhdDef, iconSel: iconRkhdSel },
-  { label: '房屋确权', value: 2, iconDef: iconFwqqDef, iconSel: iconFwqqSel },
-  { label: '搬迁模拟', value: 3, iconDef: iconBqmnDef, iconSel: iconBqmnSel },
-  { label: '生产模拟', value: 4, iconDef: iconScmnDef, iconSel: iconScmnSel },
-  { label: '模拟结果', value: 5, iconDef: iconMnjgDef, iconSel: iconMnjgSel },
-  { label: '搬迁安置', value: 6, iconDef: iconBqazDef, iconSel: iconBqazSel },
-  { label: '生产安置', value: 7, iconDef: iconScazDef, iconSel: iconScazSel },
-  { label: '坟墓安置', value: 8, iconDef: iconFmazDef, iconSel: iconFmazSel },
+  { label: '居民户信息', value: 1, iconDef: iconHouseholdDef, iconSel: iconHouseholdSel },
+  { label: '人口核定', value: 2, iconDef: iconRkhdDef, iconSel: iconRkhdSel },
+  { label: '房屋确权', value: 3, iconDef: iconFwqqDef, iconSel: iconFwqqSel },
+  { label: '模拟安置', value: 4, iconDef: iconMnazDef, iconSel: iconMnazSel },
+  { label: '安置确认', value: 5, iconDef: iconAzqrDef, iconSel: iconAzqrSel },
+  { label: '过渡安置', value: 6, iconDef: iconGdazDef, iconSel: iconGdazSel },
+  { label: '选房确认', value: 7, iconDef: iconXfqrDef, iconSel: iconXfqrSel },
+  { label: '选址确认', value: 8, iconDef: iconXzqrDef, iconSel: iconXzqrSel },
   { label: '协议签订', value: 9, iconDef: iconXyqdDef, iconSel: iconXyqdSel },
   { label: '移民建卡', value: 10, iconDef: iconYmjkDef, iconSel: iconYmjkSel },
   { label: '房屋腾空', value: 11, iconDef: iconFwtkDef, iconSel: iconFwtkSel },
   { label: '青苗腾空', value: 12, iconDef: iconQmtkDef, iconSel: iconQmtkSel },
   { label: '自建房', value: 13, iconDef: iconZjfDef, iconSel: iconZjfSel },
   { label: '统建房', value: 14, iconDef: iconTjfDef, iconSel: iconTjfSel },
-  { label: '生产用地', value: 15, iconDef: iconScydDef, iconSel: iconScydSel },
-  { label: '社保', value: 16, iconDef: iconSbDef, iconSel: iconSbSel },
+  { label: '社保', value: 15, iconDef: iconSbDef, iconSel: iconSbSel },
+  { label: '生产用地', value: 16, iconDef: iconScydDef, iconSel: iconScydSel },
   { label: '其他安置', value: 17, iconDef: iconQtazDef, iconSel: iconQtazSel },
   { label: '相关手续', value: 18, iconDef: iconXgsxDef, iconSel: iconXgsxSel }
 ]

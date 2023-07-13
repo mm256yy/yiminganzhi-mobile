@@ -259,7 +259,7 @@ const props = defineProps({
           flex-direction: row;
 
           .label {
-            width: 66rpx;
+            width: 80rpx;
             height: 16rpx;
             margin-left: 9rpx;
             font-size: 9rpx;

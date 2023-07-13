@@ -30,9 +30,10 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">折率：</view>
-                <view class="content">
+                <view class="content">90%</view>
+                <!-- <view class="content">
                   {{ formatStr(item.discountRate, '%') }}
-                </view>
+                </view> -->
               </view>
             </uni-col>
           </uni-row>
@@ -49,9 +50,10 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">单价(元)：</view>
-                <view class="content">
+                <view class="content">200</view>
+                <!-- <view class="content">
                   {{ formatStr(item.price) }}
-                </view>
+                </view> -->
               </view>
             </uni-col>
           </uni-row>
@@ -68,9 +70,10 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">评估金额(元)：</view>
-                <view class="content">
+                <view class="content">200</view>
+                <!-- <view class="content">
                   {{ formatStr(item.valuationAmount) }}
-                </view>
+                </view> -->
               </view>
             </uni-col>
           </uni-row>
@@ -87,9 +90,10 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">补偿金额(元)：</view>
-                <view class="content">
+                <view class="content">200</view>
+                <!-- <view class="content">
                   {{ formatStr(item.compensationAmount) }}
-                </view>
+                </view> -->
               </view>
             </uni-col>
           </uni-row>

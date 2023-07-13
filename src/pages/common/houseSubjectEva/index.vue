@@ -31,7 +31,8 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">成新率：</view>
-                <view class="content">{{ formatStr(item.newnessRate, '%') }}</view>
+                <view class="content">35%</view>
+                <!-- <view class="content">{{ formatStr(item.newnessRate, '%') }}</view> -->
               </view>
             </uni-col>
           </uni-row>
@@ -46,7 +47,8 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">评估单价(元/㎡)：</view>
-                <view class="content">{{ formatStr(item.valuationPrice) }}</view>
+                <view class="content">10000</view>
+                <!-- <view class="content">{{ formatStr(item.valuationPrice) }}</view> -->
               </view>
             </uni-col>
           </uni-row>
@@ -61,7 +63,8 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">评估金额(元)：</view>
-                <view class="content">{{ formatStr(item.valuationAmount) }}</view>
+                <view class="content">10000</view>
+                <!-- <view class="content">{{ formatStr(item.valuationAmount) }}</view> -->
               </view>
             </uni-col>
           </uni-row>
@@ -231,7 +234,7 @@ const props = defineProps({
           flex-direction: row;
 
           .label {
-            width: 66rpx;
+            width: 80rpx;
             height: 16rpx;
             margin-left: 9rpx;
             font-size: 9rpx;

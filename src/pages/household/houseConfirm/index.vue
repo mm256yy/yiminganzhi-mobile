@@ -1,11 +1,11 @@
 <template>
   <view class="house-info-wrapper">
-    <view class="list">
-      <view class="list-item">
+    <view class="list" v-if="props.dataList && props.dataList.length > 0">
+      <view class="list-item" v-for="item in props.dataList" :key="item.id">
         <view class="list-1">
           <view class="left">
             <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-            幢号 102
+            幢号 {{ formatStr(item.houseNo) }}
           </view>
           <view class="right">
             <!-- <image
@@ -20,13 +20,15 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">房屋类型：</view>
-                <view class="content">主房</view>
+                <view class="content">
+                  {{ formatDict(item.usageType, 265) }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">集体土地使用权证：</view>
-                <view class="content">125000</view>
+                <view class="content">JTTDZ125000</view>
               </view>
             </uni-col>
           </uni-row>
@@ -35,7 +37,9 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">结构类型：</view>
-                <view class="content">钢架</view>
+                <view class="content">
+                  {{ formatDict(item.constructionType, 252) }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="12">
@@ -50,13 +54,15 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">建筑面积(㎡)：</view>
-                <view class="content">75</view>
+                <view class="content">
+                  {{ formatStr(item.landArea) }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">房屋产权人：</view>
-                <view class="content">李四</view>
+                <view class="content">{{ dataInfo.name }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -109,33 +115,20 @@
 <script lang="ts" setup>
 // import { ref } from 'vue'
 // import dayjs from 'dayjs'
-// import {
-//   formatDict,
-//   formatStr,
-//   formatNum,
-//   routerForward,
-//   getStorage,
-//   StorageKey,
-//   fmtPicUrl
-// } from '@/utils'
+import { formatDict, formatStr } from '@/utils'
 // import { MainStage, MainType } from '@/types/common'
 // import { showToast } from '@/config'
 
-// const props = defineProps({
-//   dataList: {
-//     type: Array as any,
-//     default: () => []
-//   },
-//   dataInfo: {
-//     type: Object as any,
-//     default: () => {}
-//   },
-//   // 主体类型，如居民户、企业、个体户、村集体
-//   mainType: {
-//     type: String,
-//     default: ''
-//   }
-// })
+const props = defineProps({
+  dataList: {
+    type: Array as any,
+    default: () => []
+  },
+  dataInfo: {
+    type: Object as any,
+    default: () => {}
+  }
+})
 
 // const emit = defineEmits(['deleteHouse'])
 // const alertDialog = ref<any>(null)
