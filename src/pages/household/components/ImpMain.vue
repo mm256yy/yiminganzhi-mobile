@@ -27,6 +27,9 @@
             :dataList="dataInfo.immigrantHouseList"
             :dataInfo="dataInfo"
           />
+
+          <!--移民建卡-->
+          <migrateCard v-if="tabVal === 10" />
         </view>
       </view>
     </view>
@@ -41,6 +44,7 @@ import Header from '@/components/Header/ImpIndex.vue' // 引入头部组件
 import baseInfoImp from '../baseInfoImp/index.vue'
 import populationVerfication from '../populationVerfication/index.vue' // 引入人口核定组件
 import houseConfrim from '../houseConfirm/index.vue' // 引入房屋确权组件
+import migrateCard from '../migrateCard/index.vue' // 移民建卡
 
 import iconHouseholdDef from '@/static/images/icon_household_imp_def.png' // 引入居民户信息默认 icon
 import iconHouseholdSel from '@/static/images/icon_household_imp_sel.png' // 引入居民户信息选中时 icon
