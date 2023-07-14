@@ -16,6 +16,9 @@
 
           <!-- 房屋确权 -->
           <house-confrim v-if="tabVal === 2" />
+
+          <!-- 模拟安置 -->
+          <ImitateResettle v-if="tabVal === 3" />
         </view>
       </view>
     </view>
@@ -26,6 +29,7 @@ import { ref } from 'vue'
 import Back from '@/components/Back/Index.vue'
 import LeftSidebar from '@/components/LeftSidebar/Index.vue' // 引入左侧边栏组件
 import Header from '@/components/Header/ImpIndex.vue' // 引入头部组件
+import ImitateResettle from '../imitateResettle/index.vue'
 import populationVerfication from '../populationVerfication/index.vue' // 引入人口核定组件
 import houseConfrim from '../houseConfirm/index.vue' // 引入房屋确权组件
 
@@ -69,7 +73,7 @@ import iconXgsxSel from '@/static/images/icon_xgsx_sel.png' // 引入相关手�
 const sidebarList = [
   { label: '人口核定', value: 1, iconDef: iconRkhdDef, iconSel: iconRkhdSel },
   { label: '房屋确权', value: 2, iconDef: iconFwqqDef, iconSel: iconFwqqSel },
-  { label: '搬迁模拟', value: 3, iconDef: iconBqmnDef, iconSel: iconBqmnSel },
+  { label: '模拟安置', value: 3, iconDef: iconBqmnDef, iconSel: iconBqmnSel },
   { label: '生产模拟', value: 4, iconDef: iconScmnDef, iconSel: iconScmnSel },
   { label: '模拟结果', value: 5, iconDef: iconMnjgDef, iconSel: iconMnjgSel },
   { label: '搬迁安置', value: 6, iconDef: iconBqazDef, iconSel: iconBqazSel },
@@ -87,7 +91,7 @@ const sidebarList = [
   { label: '相关手续', value: 18, iconDef: iconXgsxDef, iconSel: iconXgsxSel }
 ]
 
-const tabVal = ref<number>(1)
+const tabVal = ref<number>(3)
 
 const switchTab = (item: any) => {
   tabVal.value = item.value
@@ -115,7 +119,8 @@ const switchTab = (item: any) => {
 
       .box {
         width: 100%;
-        padding: 0 9rpx;
+        height: 100%;
+        padding: 0 6rpx;
         box-sizing: border-box;
       }
     }
