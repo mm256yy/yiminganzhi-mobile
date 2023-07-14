@@ -38,7 +38,7 @@
                 <!-- 房屋装修评估 -->
                 <house-decoration-eva
                   v-if="tabVal === 2"
-                  :dataList="dataInfo.immigrantHouseList"
+                  :dataList="dataInfo.assetHouseFitUpList"
                   :dataInfo="dataInfo"
                   @delete-house="deleteHouseDecoration"
                 />
@@ -62,7 +62,7 @@
                 <!-- 土地基本情况评估 -->
                 <land-eva
                   v-if="tabVal === 5"
-                  :dataList="dataInfo.immigrantGraveList"
+                  :dataList="dataInfo.assetLandList"
                   :dataInfo="dataInfo"
                   @delete-land="deleteLand"
                 />
@@ -70,7 +70,7 @@
                 <!-- 土地青苗及附着物评估 -->
                 <seedlings-eva
                   v-if="tabVal === 6"
-                  :dataList="dataInfo.immigrantGraveList"
+                  :dataList="dataInfo.assetAppendantList"
                   :dataInfo="dataInfo"
                   @delete-seedlings="deleteSeedlings"
                 />
@@ -147,10 +147,12 @@ const props = withDefaults(defineProps<PropsType>(), {
 
 const tabsList = computed(() => {
   const {
-    immigrantAppendantList,
-    immigrantGraveList,
     immigrantHouseList,
+    assetHouseFitUpList,
+    immigrantAppendantList,
     immigrantTreeList,
+    assetLandList,
+    assetAppendantList,
     immigrantFacilitiesList
   } = props.dataInfo
   return [
@@ -171,7 +173,7 @@ const tabsList = computed(() => {
     {
       label: '房屋装修评估',
       value: 2,
-      filled: isNotNullArray(immigrantHouseList),
+      filled: isNotNullArray(assetHouseFitUpList),
       defIcon: iconDecorationDef,
       selIcon: iconDecorationSel
     },
@@ -193,14 +195,14 @@ const tabsList = computed(() => {
     {
       label: '土地基本情况评估',
       value: 5,
-      filled: isNotNullArray(immigrantGraveList),
+      filled: isNotNullArray(assetLandList),
       defIcon: iconLandDef,
       selIcon: iconLandSel
     },
     {
       label: '土地青苗及附着物评估',
       value: 6,
-      filled: isNotNullArray(immigrantFacilitiesList),
+      filled: isNotNullArray(assetAppendantList),
       defIcon: iconSeedlingsDef,
       selIcon: iconSeedlingsSel
     },

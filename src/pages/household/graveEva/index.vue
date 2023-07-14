@@ -1,13 +1,10 @@
 <template>
   <view class="grave-eva-wrapper">
     <!-- 坟墓评估 -->
-    <!-- <view class="list" v-if="props.dataList && props.dataList.length > 0">
-      <view class="list-item" v-for="item in props.dataList" :key="item.id"> -->
-    <view class="list">
-      <view class="list-item">
+    <view class="list" v-if="props.dataList && props.dataList.length > 0">
+      <view class="list-item" v-for="item in props.dataList" :key="item.id">
         <view class="list-1">
-          <!-- <view class="left"> 与登记人关系：{{ formatDict(item.relation, 307) }} </view> -->
-          <view class="left"> 与登记人关系：父子</view>
+          <view class="left"> 与登记人关系：{{ formatDict(item.relation, 307) }} </view>
           <!-- <view class="right" v-if="item.relation !== '1'">
             <image
               class="icon m-r-10"
@@ -23,13 +20,18 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">所处位置：</view>
-                <view class="content">大力山村</view>
+                <view class="content">
+                  {{ formatStr(item.gravePositionText) }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">评估金额(元)：</view>
-                <view class="content">500</view>
+                <view class="content">2000</view>
+                <!-- <view class="content">
+                  {{ formatStr(item.valuationAmount) }}
+                </view> -->
               </view>
             </uni-col>
           </uni-row>
@@ -38,14 +40,18 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">立墓年份：</view>
-                <!-- <view class="content">{{ formatStr(item.graveYear) }}</view> -->
-                <view class="content">2000年</view>
+                <view class="content">
+                  {{ formatStr(item.graveYear) }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">坟墓补偿费(元)：</view>
-                <view class="content">30000</view>
+                <view class="content">2000</view>
+                <!-- <view class="content">
+                  {{ formatStr(item.compensationAmount) }}
+                </view> -->
               </view>
             </uni-col>
           </uni-row>
@@ -54,13 +60,18 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">穴位(穴)：</view>
-                <view class="content">1</view>
+                <view class="content">
+                  {{ formatStr(item.graveTypeText) }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">坟墓迁移费(元)：</view>
-                <view class="content">30000</view>
+                <view class="content">2000</view>
+                <!-- <view class="content">
+                  {{ formatStr(item.migrationFee) }}
+                </view> -->
               </view>
             </uni-col>
           </uni-row>
@@ -69,7 +80,9 @@
             <uni-col :span="24">
               <view class="col">
                 <view class="label">材料：</view>
-                <view class="content">花岗岩</view>
+                <view class="content">
+                  {{ formatStr(item.materialsText) }}
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -77,10 +90,10 @@
       </view>
     </view>
 
-    <!-- <view class="null-wrapper" v-else>
+    <view class="null-wrapper" v-else>
       <image class="icon" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
       <view class="tips">暂无信息</view>
-    </view> -->
+    </view>
 
     <!-- <image
       class="btn add"
@@ -109,21 +122,21 @@
 <script lang="ts" setup>
 // import { ref } from 'vue'
 // import { onLoad } from '@dcloudio/uni-app'
-// import { formatStr, formatDict, routerForward } from '@/utils'
+import { formatStr, formatDict } from '@/utils'
 // import { MainType } from '@/types/common'
 // import { getLandlordListApi } from '@/service'
 // import { showToast } from '@/config'
 
-// const props = defineProps({
-//   dataInfo: {
-//     type: Object as any,
-//     default: () => {}
-//   },
-//   dataList: {
-//     type: Array as any,
-//     default: () => []
-//   }
-// })
+const props = defineProps({
+  dataInfo: {
+    type: Object as any,
+    default: () => {}
+  },
+  dataList: {
+    type: Array as any,
+    default: () => []
+  }
+})
 
 // const emit = defineEmits(['deleteGrave'])
 // const alertDialog = ref<any>(null)
@@ -279,7 +292,7 @@
           flex-direction: row;
 
           .label {
-            width: 65rpx;
+            width: 70rpx;
             height: 16rpx;
             margin-left: 9rpx;
             font-size: 9rpx;

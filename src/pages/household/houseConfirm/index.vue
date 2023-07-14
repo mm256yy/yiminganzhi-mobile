@@ -1,18 +1,19 @@
 <template>
   <view class="house-info-wrapper">
-    <view class="list">
-      <view class="list-item">
+    <!-- 居民户实施 —— 房屋确权 -->
+    <view class="list" v-if="props.dataList && props.dataList.length > 0">
+      <view class="list-item" v-for="item in props.dataList" :key="item.id">
         <view class="list-1">
           <view class="left">
             <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-            幢号 102
+            幢号 {{ formatStr(item.houseNo) }}
           </view>
           <view class="right">
-            <image
+            <!-- <image
               class="icon m-r-10"
               src="@/static/images/icon_delete_mini.png"
               mode="scaleToFill"
-            />
+            /> -->
           </view>
         </view>
         <view class="list-2">
@@ -20,13 +21,15 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">房屋类型：</view>
-                <view class="content">主房</view>
+                <view class="content">
+                  {{ formatDict(item.usageType, 265) }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">集体土地使用权证：</view>
-                <view class="content">125000</view>
+                <view class="content">JTTDZ125000</view>
               </view>
             </uni-col>
           </uni-row>
@@ -35,7 +38,9 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">结构类型：</view>
-                <view class="content">钢架</view>
+                <view class="content">
+                  {{ formatDict(item.constructionType, 252) }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="12">
@@ -50,13 +55,15 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">建筑面积(㎡)：</view>
-                <view class="content">75</view>
+                <view class="content">
+                  {{ formatStr(item.landArea) }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">房屋产权人：</view>
-                <view class="content">李四</view>
+                <view class="content">{{ dataInfo.name }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -66,12 +73,18 @@
               <view class="col">
                 <view class="label">房屋性质：</view>
                 <view class="content">共有</view>
+                <!-- <view class="content">
+                  {{ formatStr(item.houseNature) }}
+                </view> -->
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">共有人情况：</view>
                 <view class="content">无说明</view>
+                <!-- <view class="content">
+                  {{ formatStr(item.ownersSituation) }}
+                </view> -->
               </view>
             </uni-col>
           </uni-row>
@@ -79,12 +92,13 @@
       </view>
     </view>
 
-    <!-- <view class="null-wrapper" v-else>
+    <view class="null-wrapper" v-else>
       <image class="icon" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
-      <view class="tips">请先添加房屋确权信息</view>
-    </view> -->
+      <view class="tips">暂无房屋确权信息</view>
+      <!-- <view class="tips">请先添加房屋确权信息</view> -->
+    </view>
 
-    <image class="btn add" src="@/static/images/icon_add.png" mode="scaleToFill" />
+    <!-- <image class="btn add" src="@/static/images/icon_add.png" mode="scaleToFill" /> -->
 
     <!-- 删除确认框 -->
     <!-- <uni-popup
@@ -109,33 +123,20 @@
 <script lang="ts" setup>
 // import { ref } from 'vue'
 // import dayjs from 'dayjs'
-// import {
-//   formatDict,
-//   formatStr,
-//   formatNum,
-//   routerForward,
-//   getStorage,
-//   StorageKey,
-//   fmtPicUrl
-// } from '@/utils'
+import { formatDict, formatStr } from '@/utils'
 // import { MainStage, MainType } from '@/types/common'
 // import { showToast } from '@/config'
 
-// const props = defineProps({
-//   dataList: {
-//     type: Array as any,
-//     default: () => []
-//   },
-//   dataInfo: {
-//     type: Object as any,
-//     default: () => {}
-//   },
-//   // 主体类型，如居民户、企业、个体户、村集体
-//   mainType: {
-//     type: String,
-//     default: ''
-//   }
-// })
+const props = defineProps({
+  dataList: {
+    type: Array as any,
+    default: () => []
+  },
+  dataInfo: {
+    type: Object as any,
+    default: () => {}
+  }
+})
 
 // const emit = defineEmits(['deleteHouse'])
 // const alertDialog = ref<any>(null)
@@ -247,7 +248,7 @@
           flex-direction: row;
 
           .label {
-            width: 56rpx;
+            width: 86rpx;
             height: 16rpx;
             margin-left: 9rpx;
             font-size: 9rpx;

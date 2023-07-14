@@ -2,21 +2,186 @@
   <view class="list-header">
     <view class="list-header-rt">
       <view class="list-header-left">
-        <view class="name">李三</view>
-        <view class="account-no">767676767777</view>
+        <view class="name">{{ dataInfo.name }}</view>
+        <view class="account-no">{{ filterViewDoorNoMd(dataInfo) }}</view>
         <view class="fill-number">
           填报进度&nbsp;
-          <text class="green">0</text>
-          /7
+          <text class="green">{{ fillNumber }}</text>
+          /{{ totalFillNumber }}
         </view>
       </view>
-
-      <view class="list-header-right" />
     </view>
   </view>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts">
+import { filterViewDoorNo } from '@/utils'
+import { MainType } from '@/types/common'
+
+export default {
+  props: {
+    dataInfo: {
+      type: Object,
+      default: () => {}
+    },
+    type: {
+      type: String,
+      default: ''
+    }
+  },
+  computed: {
+    totalFillNumber: function () {
+      switch (this.type) {
+        case MainType.PeasantHousehold:
+          return 8
+          break
+        case MainType.Company:
+          return 8
+          break
+        case MainType.IndividualHousehold:
+          return 8
+          break
+        case MainType.Village:
+          return 8
+          break
+        default:
+          return 8
+          break
+      }
+    },
+    fillNumber: function () {
+      const {
+        immigrantHouseList,
+        assetHouseFitUpList,
+        immigrantAppendantList,
+        immigrantTreeList,
+        assetLandList,
+        assetAppendantList,
+        immigrantGraveList,
+        immigrantEquipmentList,
+        immigrantFacilitiesList,
+        type
+      } = this.dataInfo
+
+      let fillCount = 1
+      if (this.isNotNullArray(immigrantHouseList)) {
+        fillCount++
+      }
+      if (this.isNotNullArray(assetHouseFitUpList)) {
+        fillCount++
+      }
+      if (this.isNotNullArray(immigrantAppendantList)) {
+        fillCount++
+      }
+      if (this.isNotNullArray(immigrantTreeList)) {
+        fillCount++
+      }
+      if (this.isNotNullArray(assetLandList)) {
+        fillCount++
+      }
+      if (this.isNotNullArray(assetAppendantList)) {
+        fillCount++
+      }
+      // 上报开始校验数据
+      if (type === MainType.PeasantHousehold) {
+        // 居民户
+        if (this.isNotNullArray(immigrantGraveList)) {
+          fillCount++
+        }
+      } else if (type === MainType.IndividualHousehold) {
+        // 个体户
+        if (this.isNotNullArray(immigrantEquipmentList)) {
+          fillCount++
+        }
+      } else if (type === MainType.Company) {
+        // 企业
+        if (this.isNotNullArray(immigrantEquipmentList)) {
+          fillCount++
+        }
+      } else if (type === MainType.Village) {
+        // 村集体
+        if (this.isNotNullArray(immigrantFacilitiesList)) {
+          fillCount++
+        }
+      }
+      return fillCount
+    }
+  },
+  watch: {
+    dataInfo: function (val, old) {
+      // 切换业主时 清理缓存
+      if (JSON.stringify(val) === JSON.stringify(old)) {
+        return
+      }
+    }
+  },
+  methods: {
+    filterViewDoorNoMd(data: any) {
+      return filterViewDoorNo(data)
+    },
+    // 是否为空数组
+    isNotNullArray(arr: any) {
+      return arr && Array.isArray(arr) && arr.length
+    }
+  }
+}
+</script>
+
+<script module="print" lang="renderjs">
+import { printPdf } from '@/print'
+
+export default {
+  methods: {
+    getPdf(newValue, oldValue, ownerInstance, instance) {
+      console.log('触发了属性变更')
+      try {
+        // 拿到业主详情
+        // 根据模版id生成对应的pdf 拿到base64
+        const {
+          landlords,
+          projectInfo,
+          templateIds,
+          type
+        } = newValue
+        if (!landlords || !landlords.length) {
+          console.log('landlords数据为空')
+          return
+        }
+        if (!templateIds || !templateIds.length) {
+          console.log('templateIds数据为空')
+          return
+        }
+
+        const promiseArray = []
+        landlords.forEach((landlord) => {
+          if (type === 'print') {
+            promiseArray.push(printPdf.createPeople(templateIds, landlord, projectInfo))
+          } else if (type === 'printIndividualHousehold') {
+            promiseArray.push(printPdf.createSelfemployed(templateIds, landlord, projectInfo))
+          } else if (type === 'printCompany') {
+            promiseArray.push(printPdf.createCompany(templateIds, landlord, projectInfo))
+          } else if (type === 'printCollective') {
+						promiseArray.push(printPdf.createCollective(templateIds, landlord, projectInfo))
+					}
+        })
+        // 并行生成
+        Promise.all(promiseArray)
+          .then((result) => {
+            // [['',''], ['', '']] 两个业主返回的数据结构
+            // [['']] 单个业主 单个模版的数据结构
+            ownerInstance.callMethod('getPrintResult', result)
+          })
+          .catch((err) => {
+            console.error(err, '-errr')
+            ownerInstance.callMethod('getPrintErrorResult', err)
+          })
+      } catch (error) {
+        console.error(error)
+      }
+    }
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 .list-header {

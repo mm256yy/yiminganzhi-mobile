@@ -4,7 +4,7 @@
     <image src="@/static/images/common_bg.png" class="head-bg" mode="widthFix" />
     <view class="home-wrap" :style="{ height: `${pageHeight}px` }">
       <view class="home-body">
-        <ImpMain />
+        <ImpMain :dataInfo="dataInfo" @update-data="getLandlordDetail" />
       </view>
     </view>
   </view>
