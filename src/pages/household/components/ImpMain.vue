@@ -29,7 +29,11 @@
           />
 
           <!--移民建卡-->
-          <migrateCard v-if="tabVal === 9" />
+          <migrateCard
+            v-if="tabVal === 9"
+            :dataInfo="dataInfo"
+            :dataList="dataInfo.demographicList"
+          />
         </view>
       </view>
     </view>
