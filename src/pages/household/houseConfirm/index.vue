@@ -73,12 +73,18 @@
               <view class="col">
                 <view class="label">房屋性质：</view>
                 <view class="content">共有</view>
+                <!-- <view class="content">
+                  {{ formatStr(item.houseNature) }}
+                </view> -->
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">共有人情况：</view>
                 <view class="content">无说明</view>
+                <!-- <view class="content">
+                  {{ formatStr(item.ownersSituation) }}
+                </view> -->
               </view>
             </uni-col>
           </uni-row>
