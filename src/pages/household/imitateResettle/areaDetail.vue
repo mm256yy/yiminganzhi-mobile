@@ -26,7 +26,7 @@
       <view class="tabs-cont">
         <view v-if="tabId === 1" class="tab-cont-item">
           <view class="common-head">
-            <image class="icon" src="" mode="scaleToFill" />
+            <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
             <text>A地块基本信息</text>
           </view>
 
@@ -67,7 +67,7 @@
           </view>
 
           <view class="common-head">
-            <image class="icon" src="" mode="scaleToFill" />
+            <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
             <text>周边配套</text>
           </view>
 
@@ -94,7 +94,7 @@
           </view>
 
           <view class="common-head">
-            <image class="icon" src="" mode="scaleToFill" />
+            <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
             <text>地图</text>
           </view>
 
@@ -104,7 +104,7 @@
           </view>
 
           <view class="common-head">
-            <image class="icon" src="" mode="scaleToFill" />
+            <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
             <text>户型图</text>
           </view>
 
@@ -138,7 +138,7 @@
 
         <view v-else-if="tabId === 2" class="tab-cont-item">
           <view class="common-head">
-            <image class="icon" src="" mode="scaleToFill" />
+            <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
             <text>A地块基本信息</text>
           </view>
 
@@ -179,7 +179,7 @@
           </view>
 
           <view class="common-head">
-            <image class="icon" src="" mode="scaleToFill" />
+            <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
             <text>周边配套</text>
           </view>
 
@@ -206,7 +206,7 @@
           </view>
 
           <view class="common-head">
-            <image class="icon" src="" mode="scaleToFill" />
+            <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
             <text>地图</text>
           </view>
 
@@ -216,7 +216,7 @@
           </view>
 
           <view class="common-head">
-            <image class="icon" src="" mode="scaleToFill" />
+            <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
             <text>户型图</text>
           </view>
 
@@ -250,7 +250,7 @@
 
         <view v-else-if="tabId === 3" class="tab-cont-item">
           <view class="common-head">
-            <image class="icon" src="" mode="scaleToFill" />
+            <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
             <text>A地块基本信息</text>
           </view>
 
@@ -291,7 +291,7 @@
           </view>
 
           <view class="common-head">
-            <image class="icon" src="" mode="scaleToFill" />
+            <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
             <text>周边配套</text>
           </view>
 
@@ -318,7 +318,7 @@
           </view>
 
           <view class="common-head">
-            <image class="icon" src="" mode="scaleToFill" />
+            <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
             <text>地图</text>
           </view>
 
@@ -328,7 +328,7 @@
           </view>
 
           <view class="common-head">
-            <image class="icon" src="" mode="scaleToFill" />
+            <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
             <text>户型图</text>
           </view>
 
@@ -362,7 +362,7 @@
 
         <view v-else-if="tabId === 4" class="tab-cont-item">
           <view class="common-head">
-            <image class="icon" src="" mode="scaleToFill" />
+            <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
             <text>A地块基本信息</text>
           </view>
 
@@ -403,7 +403,7 @@
           </view>
 
           <view class="common-head">
-            <image class="icon" src="" mode="scaleToFill" />
+            <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
             <text>周边配套</text>
           </view>
 
@@ -430,7 +430,7 @@
           </view>
 
           <view class="common-head">
-            <image class="icon" src="" mode="scaleToFill" />
+            <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
             <text>地图</text>
           </view>
 
@@ -440,7 +440,7 @@
           </view>
 
           <view class="common-head">
-            <image class="icon" src="" mode="scaleToFill" />
+            <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
             <text>户型图</text>
           </view>
 
@@ -474,7 +474,7 @@
 
         <view v-else-if="tabId === 5" class="tab-cont-item">
           <view class="common-head">
-            <image class="icon" src="" mode="scaleToFill" />
+            <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
             <text>A地块基本信息</text>
           </view>
 
@@ -515,7 +515,7 @@
           </view>
 
           <view class="common-head">
-            <image class="icon" src="" mode="scaleToFill" />
+            <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
             <text>周边配套</text>
           </view>
 
@@ -542,7 +542,7 @@
           </view>
 
           <view class="common-head">
-            <image class="icon" src="" mode="scaleToFill" />
+            <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
             <text>地图</text>
           </view>
 
@@ -552,7 +552,7 @@
           </view>
 
           <view class="common-head">
-            <image class="icon" src="" mode="scaleToFill" />
+            <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
             <text>户型图</text>
           </view>
 
@@ -812,10 +812,9 @@ const close = () => {
   align-items: center;
 
   .icon {
-    width: 4rpx;
-    height: 4rpx;
+    width: 10rpx;
+    height: 10rpx;
     margin-right: 6rpx;
-    background-color: #3e73ec;
   }
 }
 </style>

@@ -12,7 +12,7 @@
 
     <view class="desc-box">
       <view class="common-head">
-        <image class="icon" src="" mode="scaleToFill" />
+        <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
         <text>宅基地安置说明</text>
       </view>
 
@@ -25,7 +25,7 @@
       </view>
 
       <view class="common-head">
-        <image class="icon" src="" mode="scaleToFill" />
+        <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
         <text>公寓安置说明</text>
       </view>
 
@@ -66,10 +66,9 @@ const close = () => {
   align-items: center;
 
   .icon {
-    width: 4rpx;
-    height: 4rpx;
+    width: 10rpx;
+    height: 10rpx;
     margin-right: 6rpx;
-    background-color: #3e73ec;
   }
 }
 

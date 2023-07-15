@@ -31,7 +31,8 @@
           />
 
           <!-- 模拟安置 -->
-          <ImitateResettle v-if="tabVal === 4" />
+          <ImitateResettle v-if="tabVal === 4" :dataInfo="(dataInfo as any)" />
+          <ImitateResettleConfirm v-if="tabVal === 5" :dataInfo="(dataInfo as any)" />
 
           <!--移民建卡-->
           <migrateCard
@@ -51,6 +52,7 @@ import Back from '@/components/Back/Index.vue'
 import LeftSidebar from '@/components/LeftSidebar/Index.vue' // 引入左侧边栏组件
 import Header from '@/components/Header/ImpIndex.vue' // 引入头部组件
 import ImitateResettle from '../imitateResettle/index.vue'
+import ImitateResettleConfirm from '../imitateResettle/confirm.vue'
 import baseInfoImp from '../baseInfoImp/index.vue'
 import populationVerfication from '../populationVerfication/index.vue' // 引入人口核定组件
 import houseConfrim from '../houseConfirm/index.vue' // 引入房屋确权组件
@@ -100,7 +102,7 @@ const props = defineProps({
   }
 })
 
-const tabVal = ref<number>(3)
+const tabVal = ref<number>(4)
 
 // 是否为空数组
 const isNotNullArray = (arr: any) => {

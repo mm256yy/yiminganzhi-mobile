@@ -400,27 +400,14 @@
     </view>
 
     <view class="btn-wrap">
-      <view @click="addCar($event)" class="add-btn"> 加入比选 </view>
+      <view @click="addCar($event)" class="add-btn"> 确定方案 </view>
     </view>
 
     <view class="tab-pup">
       <view class="tab-item" @click="viewPdf">安置办法</view>
       <view class="tab-item" @click="descClick">安置说明</view>
       <view class="tab-item" @click="areaDetailOpen">安置点详情</view>
-      <view class="tab-item" @click="planOpen">
-        方案比选
-        <!-- 加购特效 -->
-        <cartsBall
-          ref="cartBtn"
-          :endPos="{
-            x: width,
-            y: height
-          }"
-        />
-        <view class="cart-num" v-if="contrastPlans && contrastPlans.length">
-          {{ contrastPlans.length }}
-        </view>
-      </view>
+      <view class="tab-item" @click="planOpen"> 安置确认 </view>
     </view>
 
     <uni-popup ref="descpopup" type="center">
@@ -432,7 +419,7 @@
     </uni-popup>
 
     <uni-popup ref="planpopup" type="center">
-      <planSelect @close="planClose" @update-plan="updatePlan" />
+      <planSelect :plans="contrastPlans" @close="planClose" @update-plan="() => {}" />
     </uni-popup>
   </view>
 </template>
@@ -440,7 +427,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { StorageKey, setStorage, getStorage } from '@/utils/storage'
-import cartsBall from './cartsBall.vue'
 import resettleDesc from './resettleDesc.vue'
 import areaDetail from './areaDetail.vue'
 import planSelect from './planSelect.vue'
@@ -473,10 +459,6 @@ const uid = computed<any>(() => {
   return props.dataInfo.uid
 })
 
-console.log(immigrantWill, demographicList, 'immigrantWill')
-
-const height = ref<number>(0)
-const width = ref<number>(0)
 const tabId = ref<number>(0)
 const descpopup = ref<any>(null)
 const areadetailpopup = ref<any>(null)
@@ -487,68 +469,56 @@ const resettleDefault = ref(deepClone(baseInfoDefault))
 const apartmentAreaSizeArray = ref(deepClone(apartmentAreaSize))
 
 // 方案数据
-const contrastPlans = ref<any>([])
+const contrastPlans = ref<any[]>([])
 
 // 农村生成安置方式
 const resettleWayVillage = ref<any[]>([...resettleWay1, ...resettleWay2])
 const apartmentTotalArea = ref<number>(0)
 
 onMounted(() => {
-  height.value = uni.getWindowInfo().windowHeight - 50
-  width.value = uni.getWindowInfo().windowWidth - 240
-
-  updatePlan()
+  // 拿到模拟安置选择好的方案
+  getPlan()
 })
 
-const cartBtn = ref()
-
-const updatePlan = () => {
-  console.log(99)
+const getPlan = () => {
   const contrast = getStorage(StorageKey.CONTRASTPLANS) || []
-  contrastPlans.value = contrast
+  if (contrast && contrast.length) {
+    const selectPlan = contrast.find((item: any) => item.isSelected)
+    if (selectPlan) {
+      resettleDefault.value = selectPlan
+    } else {
+      resettleDefault.value = deepClone(baseInfoDefault)
+    }
+  } else {
+    resettleDefault.value = deepClone(baseInfoDefault)
+  }
+
+  contrastPlans.value = [resettleDefault.value]
 }
 
 // 加入比选
 const addCar = (e: any) => {
   // 存入数据
-  if (contrastPlans.value && contrastPlans.value.length < 3) {
-    if (
-      !resettleDefault.value.homesteadResettleNum ||
-      !resettleDefault.value.apartmentResettleNum
-    ) {
-      uni.showToast({
-        title: '请填写安置方案',
-        icon: 'none'
-      })
-      return
-    }
-    contrastPlans.value.push(
-      deepClone({
-        id: guid(),
-        ...resettleDefault.value,
-        apartmentResettleArea: apartmentAreaSizeArray.value
-      })
-    )
 
-    setStorage(StorageKey.CONTRASTPLANS, contrastPlans.value)
-    console.log(JSON.stringify(contrastPlans.value), 'submit')
-
-    // 重置当前选择
-    apartmentAreaSizeArray.value = deepClone(apartmentAreaSize)
-    resettleDefault.value = deepClone(baseInfoDefault)
-
-    cartBtn.value.drop({
-      x: e.detail.x,
-      y: e.detail.y
-    })
-  } else {
+  if (!resettleDefault.value.homesteadResettleNum || !resettleDefault.value.apartmentResettleNum) {
     uni.showToast({
-      title: '方案不能超过 3 个',
+      title: '请选择安置方案',
       icon: 'none'
     })
+    return
   }
+  const select = deepClone({
+    id: guid(),
+    ...resettleDefault.value,
+    isSelected: true,
+    apartmentResettleArea: apartmentAreaSizeArray.value
+  })
+  contrastPlans.value = [select]
+  uni.showToast({
+    title: '保存方案成功',
+    icon: 'none'
+  })
 }
-
 const descClick = () => {
   descpopup.value?.open()
 }
