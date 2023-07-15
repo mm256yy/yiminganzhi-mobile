@@ -36,6 +36,7 @@
 
           <!-- 模拟安置 -->
           <ImitateResettle v-if="tabVal === 4" :dataInfo="(dataInfo as any)" />
+          <!-- 安置确认 -->
           <ImitateResettleConfirm v-if="tabVal === 5" :dataInfo="(dataInfo as any)" />
 
           <!-- 选房确认 -->
@@ -43,6 +44,9 @@
 
           <!-- 选址确认 -->
           <confirm-address v-if="tabVal === 7" :dataInfo="dataInfo" />
+
+          <!-- 协议 -->
+          <Agreement v-if="tabVal === 8" />
 
           <!--移民建卡-->
           <migrateCard
@@ -66,6 +70,7 @@ import LeftSidebar from '@/components/LeftSidebar/Index.vue' // 引入左侧边�
 import Header from '@/components/Header/ImpIndex.vue' // 引入头部组件
 import ImitateResettle from '../imitateResettle/index.vue'
 import ImitateResettleConfirm from '../imitateResettle/confirm.vue'
+import Agreement from '../agreement/index.vue'
 import baseInfoImp from '../baseInfoImp/index.vue'
 import populationVerfication from '../populationVerfication/index.vue' // 引入人口核定组件
 import houseConfirm from '../houseConfirm/index.vue' // 引入房屋确权组件
@@ -149,12 +154,12 @@ const sidebarList = computed(() => {
       iconDef: iconFwqqDef,
       iconSel: iconFwqqSel
     },
-    { label: '模拟安置', value: 4, filled: false, iconDef: iconMnazDef, iconSel: iconMnazSel },
-    { label: '安置确认', value: 5, filled: false, iconDef: iconAzqrDef, iconSel: iconAzqrSel },
+    { label: '模拟安置', value: 4, filled: true, iconDef: iconMnazDef, iconSel: iconMnazSel },
+    { label: '安置确认', value: 5, filled: true, iconDef: iconAzqrDef, iconSel: iconAzqrSel },
     { label: '选房确认', value: 6, filled: true, iconDef: iconXfqrDef, iconSel: iconXfqrSel },
     { label: '选址确认', value: 7, filled: true, iconDef: iconXzqrDef, iconSel: iconXzqrSel },
-    { label: '协议签订', value: 8, filled: false, iconDef: iconXyqdDef, iconSel: iconXyqdSel },
-    { label: '移民建卡', value: 9, filled: false, iconDef: iconYmjkDef, iconSel: iconYmjkSel },
+    { label: '协议签订', value: 8, filled: true, iconDef: iconXyqdDef, iconSel: iconXyqdSel },
+    { label: '移民建卡', value: 9, filled: true, iconDef: iconYmjkDef, iconSel: iconYmjkSel },
     { label: '房屋腾空', value: 10, filled: false, iconDef: iconFwtkDef, iconSel: iconFwtkSel },
     { label: '青苗腾空', value: 11, filled: false, iconDef: iconQmtkDef, iconSel: iconQmtkSel },
     { label: '过渡安置', value: 12, filled: true, iconDef: iconGdazDef, iconSel: iconGdazSel },
