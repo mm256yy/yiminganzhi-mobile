@@ -10,7 +10,8 @@ export enum StorageKey {
   PULLTIME = 'PullTime',
   PUSHSTATUS = 'PushStatus',
   FULLUSERINFO = 'FullUserInfo', // 全部的用户信息
-  USERROLE = 'UserRole' // 用户角色
+  USERROLE = 'UserRole', // 用户角色
+  CONTRASTPLANS = 'ContrastPlans' // 必选方案
 }
 
 export const getStorage = (key: StorageKey): any => {

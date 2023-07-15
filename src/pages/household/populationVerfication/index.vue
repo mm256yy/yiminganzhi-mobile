@@ -1,20 +1,20 @@
 <template>
   <view class="population-wrapper">
     <!-- 居民户实施 —— 人口核定 -->
-    <view class="list">
-      <view class="list-item">
+    <view class="list" v-if="props.dataList && props.dataList.length > 0">
+      <view class="list-item" v-for="item in props.dataList" :key="item.id">
         <view class="list-1">
           <view class="left">
-            <view class="icon">户主</view>
-            <view class="name">杨汉中</view>
+            <view class="icon">{{ formatDict(item.relation, 307) }}</view>
+            <view class="name">{{ formatStr(item.name) }}</view>
           </view>
           <view class="right">
-            <image
+            <!-- <image
               class="icon m-r-10"
               src="@/static/images/icon_delete_mini.png"
               mode="scaleToFill"
               @click="deletePopulation"
-            />
+            /> -->
           </view>
         </view>
         <view class="list-2">
@@ -22,13 +22,17 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">性别：</view>
-                <view class="content">男</view>
+                <view class="content">
+                  {{ formatDict(item.sex, 292) }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">身份证号：</view>
-                <view class="content">360429199008071235</view>
+                <view class="content">
+                  {{ formatStr(item.card) }}
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -43,7 +47,9 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">婚姻状况：</view>
-                <view class="content">已婚</view>
+                <view class="content">
+                  {{ formatDict(item.marital, 260) }}
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -51,7 +57,9 @@
             <uni-col :span="24">
               <view class="col">
                 <view class="label">人口性质：</view>
-                <view class="content">册内人口</view>
+                <view class="content">
+                  {{ formatDict(item.populationType, 244) }}
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -59,12 +67,12 @@
       </view>
     </view>
 
-    <!-- <view class="null-wrapper" v-else>
+    <view class="null-wrapper" v-else>
       <image class="icon" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
       <view class="tips">请先添加人口核定信息</view>
-    </view> -->
+    </view>
 
-    <image class="btn add" src="@/static/images/icon_add.png" mode="scaleToFill" />
+    <!-- <image class="btn add" src="@/static/images/icon_add.png" mode="scaleToFill" /> -->
 
     <!-- 删除确认弹框 -->
     <!-- <uni-popup ref="alertDialog" type="dialog">
@@ -84,34 +92,22 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+// import { ref } from 'vue'
 // import dayjs from 'dayjs'
-// import {
-//   formatDict,
-//   formatStr,
-//   fmtOccupationStr,
-//   routerForward,
-//   fmtPicUrl,
-//   getStorage,
-//   StorageKey
-// } from '@/utils'
+import { formatDict, formatStr } from '@/utils'
 // import { showToast } from '@/config'
 // import { MainStage } from '@/types/common'
 
-// const props = defineProps({
-//   dataList: {
-//     type: Array as any,
-//     default: () => {}
-//   },
-//   dataInfo: {
-//     type: Object as any,
-//     default: () => {}
-//   },
-//   occupationOptions: {
-//     type: Array as any,
-//     default: () => []
-//   }
-// })
+const props = defineProps({
+  dataList: {
+    type: Array as any,
+    default: () => {}
+  },
+  dataInfo: {
+    type: Object as any,
+    default: () => {}
+  }
+})
 
 // const emit = defineEmits(['deletePopulation'])
 // const alertDialog = ref<any>(null)
@@ -147,10 +143,10 @@ import { ref } from 'vue'
  * 删除当前行数据
  * @param {Object} data 当前行数据
  */
-const deletePopulation = () => {
-  // alertDialog.value?.open()
-  // currentItem.value = { ...data }
-}
+// const deletePopulation = () => {
+//   alertDialog.value?.open()
+//   currentItem.value = { ...data }
+// }
 
 // const dialogConfirm = (data: any) => {
 //   if (!data) {

@@ -162,6 +162,13 @@
 			}
 		},
 		{
+			"name": "homeHoldList",
+			"path": "pages/respondents/homeHoldList",
+			"style": {
+				"navigationBarTitleText": "居民户列表"
+			}
+		},
+		{
 			"name": "enterpriseList",
 			"path": "pages/respondents/enterpriseList",
 			"style": {

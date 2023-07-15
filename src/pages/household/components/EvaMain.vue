@@ -8,12 +8,7 @@
         <view class="list-box">
           <view class="box" v-if="JSON.stringify(props.dataInfo) !== '{}'">
             <!-- 头部 -->
-            <Header
-              :dataInfo="dataInfo"
-              :type="MainType.PeasantHousehold"
-              :templateType="PrintType.print"
-              @update-data="updateData"
-            />
+            <Header :dataInfo="dataInfo" :type="MainType.PeasantHousehold" />
 
             <view class="tabs-content">
               <!-- tab 切换 -->
@@ -33,16 +28,14 @@
                   :dataList="dataInfo.immigrantHouseList"
                   :dataInfo="dataInfo"
                   :mainType="MainType.PeasantHousehold"
-                  @delete-house="deleteHouse"
                 />
 
                 <!-- 房屋装修评估 -->
                 <house-decoration-eva
                   v-if="tabVal === 2"
-                  :dataList="dataInfo.immigrantHouseList"
+                  :dataList="dataInfo.assetHouseFitUpList"
                   :dataInfo="dataInfo"
                   :mainType="MainType.PeasantHousehold"
-                  @delete-house="deleteHouseDecoration"
                 />
 
                 <!-- 附属设施评估 -->
@@ -51,7 +44,6 @@
                   :dataInfo="dataInfo"
                   :dataList="dataInfo.immigrantAppendantList"
                   :mainType="MainType.PeasantHousehold"
-                  @delete-accessory="deleteAccessory"
                 />
 
                 <!-- 零星（林）果木评估 -->
@@ -60,33 +52,29 @@
                   :dataList="dataInfo.immigrantTreeList"
                   :dataInfo="dataInfo"
                   :mainType="MainType.PeasantHousehold"
-                  @delete-tree="deleteTree"
                 />
 
                 <!-- 土地基本情况评估 -->
                 <land-eva
                   v-if="tabVal === 5"
                   :dataInfo="dataInfo"
-                  :dataList="dataInfo.landList"
+                  :dataList="dataInfo.assetLandList"
                   :mainType="MainType.PeasantHousehold"
-                  @delete-land="deleteLand"
                 />
 
                 <!-- 土地青苗及附着物评估 -->
                 <seedlings-eva
                   v-if="tabVal === 6"
-                  :dataList="dataInfo.seedlingsList"
+                  :dataList="dataInfo.assetAppendantList"
                   :dataInfo="dataInfo"
                   :mainType="MainType.PeasantHousehold"
-                  @delete-seedlings="deleteSeedlings"
                 />
 
                 <!-- 坟墓评估 -->
                 <grave-eva
                   v-if="tabVal === 7"
-                  :dataList="dataInfo.graveList"
+                  :dataList="dataInfo.immigrantGraveList"
                   :dataInfo="dataInfo"
-                  @delete-grave="deleteGrave"
                 />
               </view>
             </view>
@@ -106,10 +94,10 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
-import { MainType, PrintType } from '@/types/common'
+// import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
+import { MainType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
-import Header from '@/components/Header/Index.vue'
+import Header from '@/components/Header/EvaIndex.vue'
 import Tabs from '@/components/Tabs/Index.vue'
 import baseInfoEva from '../baseInfoEva/index.vue' // 引入居民户信息组件
 import houseSubjectEva from '../../common/houseSubjectEva/index.vue' // 引入人房屋主体评估组件
@@ -120,7 +108,7 @@ import landEva from '../../common/landEva/index.vue' // 引入土地基本情况
 import seedlingsEva from '../../common/seedingsEva/index.vue' // 引入土地青苗及附着物评估组件
 import graveEva from '../graveEva/index.vue' // 引入坟墓评估组件
 
-import { deleteLandlordPeopleApi, deleteLandlordHouseApi, deleteLandlordGraveApi } from '@/service'
+// import { deleteLandlordPeopleApi, deleteLandlordHouseApi, deleteLandlordGraveApi } from '@/service'
 
 import iconHouseholdDef from '@/static/images/icon_household_default.png' // 引入居民户信息默认 icon
 import iconHouseholdSel from '@/static/images/icon_household_select.png' // 引入居民户信息选中 icon
@@ -152,12 +140,13 @@ const props = defineProps({
 
 const tabsList = computed(() => {
   const {
-    demographicList,
-    immigrantAppendantList,
-    immigrantGraveList,
     immigrantHouseList,
-    immigrantIncomeList,
-    immigrantTreeList
+    assetHouseFitUpList,
+    immigrantAppendantList,
+    immigrantTreeList,
+    assetLandList,
+    assetAppendantList,
+    immigrantGraveList
   } = props.dataInfo
   return [
     {
@@ -170,14 +159,14 @@ const tabsList = computed(() => {
     {
       label: '房屋主体评估',
       value: 1,
-      filled: isNotNullArray(demographicList),
+      filled: isNotNullArray(immigrantHouseList),
       defIcon: iconHouseDef,
       selIcon: iconHouseSel
     },
     {
       label: '房屋装修评估',
       value: 2,
-      filled: isNotNullArray(immigrantHouseList),
+      filled: isNotNullArray(assetHouseFitUpList),
       defIcon: iconDecorationDef,
       selIcon: iconDecorationSel
     },
@@ -198,14 +187,14 @@ const tabsList = computed(() => {
     {
       label: '土地基本情况评估',
       value: 5,
-      filled: isNotNullArray(immigrantGraveList),
+      filled: isNotNullArray(assetLandList),
       defIcon: iconLandDef,
       selIcon: iconLandSel
     },
     {
       label: '土地青苗及附着物评估',
       value: 6,
-      filled: isNotNullArray(immigrantIncomeList),
+      filled: isNotNullArray(assetAppendantList),
       defIcon: iconSeedlingsDef,
       selIcon: iconSeedlingsSel
     },
@@ -253,130 +242,130 @@ const touchRight = () => {
  * @param{Object} data 被删除的行信息
  * @param{Object} reason 删除原因（填报阶段没有此参数，复核阶段有此参数）
  */
-const deleteHouse = (data: any, reason?: string) => {
-  deleteLandlordHouseApi(props.dataInfo.uid, data.uid, reason)
-    .then((res) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch(() => {
-      showToast(ERROR_MSG)
-    })
-}
+// const deleteHouse = (data: any, reason?: string) => {
+//   deleteLandlordHouseApi(props.dataInfo.uid, data.uid, reason)
+//     .then((res) => {
+//       if (res) {
+//         showToast(SUCCESS_MSG)
+//         updateData()
+//       }
+//     })
+//     .catch(() => {
+//       showToast(ERROR_MSG)
+//     })
+// }
 
 /**
  * 房屋装修评估 - 删除
  * @param{Object} data 被删除的行信息
  * @param{Object} reason 删除原因（填报阶段没有此参数，复核阶段有此参数）
  */
-const deleteHouseDecoration = (data: any, reason?: string) => {
-  deleteLandlordHouseApi(props.dataInfo.uid, data.uid, reason)
-    .then((res) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch(() => {
-      showToast(ERROR_MSG)
-    })
-}
+// const deleteHouseDecoration = (data: any, reason?: string) => {
+//   deleteLandlordHouseApi(props.dataInfo.uid, data.uid, reason)
+//     .then((res) => {
+//       if (res) {
+//         showToast(SUCCESS_MSG)
+//         updateData()
+//       }
+//     })
+//     .catch(() => {
+//       showToast(ERROR_MSG)
+//     })
+// }
 
 /**
  * 附属设施评估 - 删除
  * @param{Object} data 被删除的行信息
  * @param{Object} reason 删除原因（填报阶段没有此参数，复核阶段有此参数）
  */
-const deleteAccessory = (data: any, reason?: string) => {
-  deleteLandlordHouseApi(props.dataInfo.uid, data.uid, reason)
-    .then((res) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch(() => {
-      showToast(ERROR_MSG)
-    })
-}
+// const deleteAccessory = (data: any, reason?: string) => {
+//   deleteLandlordHouseApi(props.dataInfo.uid, data.uid, reason)
+//     .then((res) => {
+//       if (res) {
+//         showToast(SUCCESS_MSG)
+//         updateData()
+//       }
+//     })
+//     .catch(() => {
+//       showToast(ERROR_MSG)
+//     })
+// }
 
 /**
  * 零星(林)果木评估 - 删除
  * @param{Object} data 被删除的行信息
  * @param{Object} reason 删除原因（填报阶段没有此参数，复核阶段有此参数）
  */
-const deleteTree = (data: any, reason?: string) => {
-  deleteLandlordHouseApi(props.dataInfo.uid, data.uid, reason)
-    .then((res) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch(() => {
-      showToast(ERROR_MSG)
-    })
-}
+// const deleteTree = (data: any, reason?: string) => {
+//   deleteLandlordHouseApi(props.dataInfo.uid, data.uid, reason)
+//     .then((res) => {
+//       if (res) {
+//         showToast(SUCCESS_MSG)
+//         updateData()
+//       }
+//     })
+//     .catch(() => {
+//       showToast(ERROR_MSG)
+//     })
+// }
 
 /**
  * 土地基本情况评估 - 删除
  * @param{Object} data 被删除的行信息
  * @param{Object} reason 删除原因（填报阶段没有此参数，复核阶段有此参数）
  */
-const deleteLand = (data: any, reason?: string) => {
-  deleteLandlordPeopleApi(props.dataInfo.uid, data.uid, reason)
-    .then((res) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch(() => {
-      showToast(ERROR_MSG)
-    })
-}
+// const deleteLand = (data: any, reason?: string) => {
+//   deleteLandlordPeopleApi(props.dataInfo.uid, data.uid, reason)
+//     .then((res) => {
+//       if (res) {
+//         showToast(SUCCESS_MSG)
+//         updateData()
+//       }
+//     })
+//     .catch(() => {
+//       showToast(ERROR_MSG)
+//     })
+// }
 
 /**
  * 土地青苗及附着物评估 - 删除
  * @param{Object} data 被删除的行信息
  * @param{Object} reason 删除原因（填报阶段没有此参数，复核阶段有此参数）
  */
-const deleteSeedlings = (data: any, reason?: string) => {
-  deleteLandlordPeopleApi(props.dataInfo.uid, data.uid, reason)
-    .then((res) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch(() => {
-      showToast(ERROR_MSG)
-    })
-}
+// const deleteSeedlings = (data: any, reason?: string) => {
+//   deleteLandlordPeopleApi(props.dataInfo.uid, data.uid, reason)
+//     .then((res) => {
+//       if (res) {
+//         showToast(SUCCESS_MSG)
+//         updateData()
+//       }
+//     })
+//     .catch(() => {
+//       showToast(ERROR_MSG)
+//     })
+// }
 
 /**
  * 坟墓评估 - 删除
  * @param data
  */
-const deleteGrave = (data: any) => {
-  deleteLandlordGraveApi(props.dataInfo.uid, data.uid)
-    .then((res) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch((e) => {
-      showToast(ERROR_MSG)
-    })
-}
+// const deleteGrave = (data: any) => {
+//   deleteLandlordGraveApi(props.dataInfo.uid, data.uid)
+//     .then((res) => {
+//       if (res) {
+//         showToast(SUCCESS_MSG)
+//         updateData()
+//       }
+//     })
+//     .catch((e) => {
+//       showToast(ERROR_MSG)
+//     })
+// }
 
 // 更新整体数据
-const updateData = () => {
-  emit('updateData', props.dataInfo.uid)
-}
+// const updateData = () => {
+//   emit('updateData', props.dataInfo.uid)
+// }
 </script>
 
 <style lang="scss">
