@@ -28,6 +28,12 @@
             :dataInfo="dataInfo"
           />
 
+          <house-confrim
+            v-if="tabVal === 3"
+            :dataList="dataInfo.immigrantHouseList"
+            :dataInfo="dataInfo"
+          />
+
           <!-- 模拟安置 -->
           <ImitateResettle v-if="tabVal === 4" :dataInfo="(dataInfo as any)" />
           <ImitateResettleConfirm v-if="tabVal === 5" :dataInfo="(dataInfo as any)" />
