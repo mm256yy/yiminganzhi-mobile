@@ -28,14 +28,9 @@
             :dataInfo="dataInfo"
           />
 
-          <house-confrim
-            v-if="tabVal === 3"
-            :dataList="dataInfo.immigrantHouseList"
-            :dataInfo="dataInfo"
-          />
-
           <!-- 模拟安置 -->
           <ImitateResettle v-if="tabVal === 4" :dataInfo="(dataInfo as any)" />
+
           <!-- 安置确认 -->
           <ImitateResettleConfirm v-if="tabVal === 5" :dataInfo="(dataInfo as any)" />
 
@@ -43,7 +38,7 @@
           <confirm-room v-if="tabVal === 6" :dataInfo="dataInfo" />
 
           <!-- 选址确认 -->
-          <confirm-address v-if="tabVal === 7" :dataInfo="dataInfo" />
+          <confirm-address v-if="tabVal === 7" />
 
           <!-- 协议 -->
           <Agreement v-if="tabVal === 8" />
@@ -123,7 +118,7 @@ const props = defineProps({
   }
 })
 
-const tabVal = ref<number>(4)
+const tabVal = ref<number>(1)
 
 // 是否为空数组
 const isNotNullArray = (arr: any) => {

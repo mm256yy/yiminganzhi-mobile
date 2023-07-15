@@ -6,7 +6,7 @@
         <view class="account-no">{{ filterViewDoorNoMd(dataInfo) }}</view>
         <view class="fill-number">
           填报进度&nbsp;
-          <text class="green">{{ fillNumber }}</text>
+          <text class="green">9</text>
           /{{ totalFillNumber }}
         </view>
       </view>
