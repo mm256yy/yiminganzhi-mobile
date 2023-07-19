@@ -169,11 +169,7 @@ const resetData = () => {
 // 编辑
 const toEdit = () => {
   const { doorNo, uid } = props.dataInfo
-  routerForward('householdRevenueInfoEdit', {
-    doorNo,
-    uid,
-    dataList: JSON.stringify(props.dataList)
-  })
+  routerForward('householdRevenueInfoEdit', { doorNo, uid })
 }
 
 // 展示修改记录

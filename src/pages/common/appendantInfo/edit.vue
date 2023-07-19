@@ -13,7 +13,7 @@
             <view class="col w-342">备注</view>
           </view>
         </view>
-        <view class="row"></view>
+        <view class="row" />
         <view class="row" v-for="(item, index) in formData" :key="item.id">
           <view class="col w-50">{{ index + 1 }}</view>
           <view class="col">{{ item.name }}</view>
@@ -46,7 +46,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { getAppendantListApi, updateLandlordAppendantApi } from '@/service'
+import { getLandlordItemApi, getAppendantListApi, updateLandlordAppendantApi } from '@/service'
 import { formatNum, routerBack } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
@@ -62,17 +62,12 @@ const commonParams = {
 onLoad((option: any) => {
   if (option) {
     uid.value = option.uid ? option.uid : ''
-    let arr = JSON.parse(option.dataList)
-    if (arr && arr.length) {
-      formData.value = [...arr]
-    } else {
-      getList()
-    }
+    getAppendantList(uid.value)
   }
 })
 
-// 获取附属物初始化列表信息
-const getList = () => {
+// 获取附属物初始化列表信息(未填写的)
+const initAppendantList = () => {
   getAppendantListApi().then((res) => {
     res.map((item: any) => {
       formData.value.push({
@@ -83,6 +78,21 @@ const getList = () => {
         ...commonParams
       })
     })
+  })
+}
+
+/**
+ * 获取附属物信息列表(含已填写和未填写)
+ * @param(object) uid
+ */
+const getAppendantList = (uid: string) => {
+  getLandlordItemApi(uid).then((res: any) => {
+    let arr = res?.immigrantAppendantList.filter((item: any) => item.number || item.remark)
+    if (arr && arr.length) {
+      formData.value = [...res?.immigrantAppendantList]
+    } else {
+      initAppendantList()
+    }
   })
 }
 

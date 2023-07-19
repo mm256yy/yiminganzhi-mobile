@@ -11,7 +11,7 @@
           <view class="col w-334">备注</view>
         </view>
       </view>
-      <view class="row"></view>
+      <view class="row" />
       <view class="row" v-for="(item, index) in formData" :key="item.id">
         <view class="col w-50">{{ index + 1 }}</view>
         <view class="col">{{ item.name }}</view>
@@ -101,10 +101,7 @@ onShow(() => {
 // 编辑
 const toEdit = () => {
   const { uid } = props.dataInfo
-  routerForward('appendantInfoEdit', {
-    uid,
-    dataList: JSON.stringify(props.dataList)
-  })
+  routerForward('appendantInfoEdit', { uid })
 }
 
 // 展示修改记录

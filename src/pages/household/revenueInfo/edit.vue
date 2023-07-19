@@ -151,7 +151,11 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { getFamilyIncomeListApi, updateLandlordFamilyIncomeApi } from '@/service'
+import {
+  getLandlordItemApi,
+  getFamilyIncomeListApi,
+  updateLandlordFamilyIncomeApi
+} from '@/service'
 import { MainType } from '@/types/common'
 import { formatNum, routerBack } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
@@ -166,12 +170,7 @@ onLoad((option: any) => {
   if (option) {
     doorNo.value = option.doorNo ? option.doorNo : ''
     uid.value = option.uid ? option.uid : ''
-    let arr = JSON.parse(option.dataList)
-    if (arr && arr.length) {
-      genNewArr(arr)
-    } else {
-      getRevenueList()
-    }
+    getList(uid.value)
   }
 })
 
@@ -213,6 +212,21 @@ const amountChange = (e: any, item: any) => {
 }
 
 const emit = defineEmits(['submit'])
+
+/**
+ * 获取家庭收入信息列表(含已填写和未填写)
+ * @param(object) uid
+ */
+const getList = (uid: string) => {
+  getLandlordItemApi(uid).then((res: any) => {
+    let arr = res?.immigrantIncomeList
+    if (arr && arr.length) {
+      genNewArr(arr)
+    } else {
+      getRevenueList()
+    }
+  })
+}
 
 /**
  * 初始化 - 生成新的数组
