@@ -24,8 +24,8 @@ export interface LandlordDDLType {
   longitude: string | number
   latitude: string | number
   card: string
-  status: 'modify' | 'default'
-  isDelete: '0' | '1'
+  padStatus: 'modify' | 'default'
+  isPadDelete: '0' | '1'
   updatedDate: string
 }
 
@@ -51,14 +51,14 @@ create table if not exists ${LandlordTableName} (
   'longitude' text DEFAULT NULL,
   'latitude' text DEFAULT NULL,
   'card' text,
-  'status' text,
-  'isDelete' text,
+  'padStatus' text,
+  'isPadDelete' text,
   'updatedDate' text DEFAULT NULL
 );
 `
 
 // 需要更新的字段定义 和 字段赋值
-export const landlordFields = `'uid','id','status','doorNo','type','name','reportStatus','reportDate','reportUser','signStatus','signDate','areaCode','townCode','villageCode','virutalVillageCode','content','longitude','latitude','card','updatedDate','isDelete'`
+export const landlordFields = `'uid','id','padStatus','doorNo','type','name','reportStatus','reportDate','reportUser','signStatus','signDate','areaCode','townCode','villageCode','virutalVillageCode','content','longitude','latitude','card','updatedDate','isPadDelete'`
 // status 字段为 当前数据是否有变更的状态
 export const getLandlordValues = (item: LandlordType, status: 'default' | 'modify') =>
   `'${item.uid}','${item.id || null}','${status}','${item.doorNo}','${item.type}','${item.name}','${
@@ -75,7 +75,7 @@ export const getLandlordValues = (item: LandlordType, status: 'default' | 'modif
 
 // 获取 更新的sql值
 export const getLandlordSqlValues = (data: LandlordType) =>
-  `status = 'modify',type = '${data.type}',name = '${data.name}',doorNo = '${
+  `padStatus = 'modify',type = '${data.type}',name = '${data.name}',doorNo = '${
     data.doorNo
   }',reportStatus = '${data.reportStatus}',reportDate = '${data.reportDate}',reportUser = '${
     data.reportUser

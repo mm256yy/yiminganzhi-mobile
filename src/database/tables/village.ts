@@ -8,8 +8,8 @@ export interface VillageDDLType {
   name: string
   content: string
   updatedDate: string
-  isDelete: '0' | '1'
-  status: 'modify' | 'default'
+  isPadDelete: '0' | '1'
+  padStatus: 'modify' | 'default'
 }
 
 export const VillageTableName = 'village'
@@ -17,10 +17,10 @@ export const VillageTableName = 'village'
 export const VillageDDL = `
 create table if not exists ${VillageTableName} (
   'uid' text PRIMARY KEY,
-  'status' text,
+  'padStatus' text,
   'content' text,
   'parentCode' text,
-  'isDelete' text,
+  'isPadDelete' text,
   'name' text,
   'updatedDate' text DEFAULT NULL
 );
