@@ -564,12 +564,12 @@ const tabChange = (id: number) => {
 }
 
 // 宅基地面积选择
-const homesteadAreaChange = (id: number) => {
+const homesteadAreaChange = (id: string) => {
   resettleDefault.value.homesteadResettleArea = id
 }
 
 // 住宅地块
-const homesteadPlaceChange = (id: number) => {
+const homesteadPlaceChange = (id: string) => {
   resettleDefault.value.homesteadResettleRegion = id
 }
 
@@ -595,7 +595,7 @@ const computedTotalArea = () => {
 }
 
 // 公寓地块
-const apartmentPlaceChange = (id: number) => {
+const apartmentPlaceChange = (id: string) => {
   resettleDefault.value.apartmentResettleRegion = id
 }
 
