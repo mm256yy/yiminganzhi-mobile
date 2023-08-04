@@ -118,7 +118,7 @@ const props = defineProps({
   }
 })
 
-const tabVal = ref<number>(1)
+const tabVal = ref<number>(4)
 
 // 是否为空数组
 const isNotNullArray = (arr: any) => {

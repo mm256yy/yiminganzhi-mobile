@@ -1,38 +1,51 @@
 <template>
-  <view class="homestead-wrap">
-    <view class="common-form-group">
-      <view class="common-form-item">
-        <view class="common-label">户主：</view>
-        <view class="common-value">
-          {{ resettlePeopleInfo.householder ? resettlePeopleInfo.householder.name : '' }}
+  <view class="house-wrap">
+    <view class="house-box">
+      <view class="common-head">
+        <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
+        <text>家庭情况</text>
+      </view>
+
+      <view class="base-info">
+        <view class="base-column">
+          <view class="info-item">
+            <view class="label">户主：</view>
+            <view class="value">
+              {{ resettlePeopleInfo.householder ? resettlePeopleInfo.householder.name : '' }}</view
+            >
+          </view>
+          <view class="info-item">
+            <view class="label">迁出地址：</view>
+            <view class="value">
+              {{ resettlePeopleInfo.householder ? resettlePeopleInfo.householder.address : '' }}
+            </view>
+          </view>
+        </view>
+
+        <view class="base-column">
+          <view class="info-item">
+            <view class="label">户内人口：</view>
+            <view class="value">{{ resettlePeopleInfo.total }}</view>
+          </view>
+          <view class="info-item">
+            <view class="label">联系方式：</view>
+            <view class="value">
+              {{ resettlePeopleInfo.householder ? resettlePeopleInfo.householder.phone : '' }}</view
+            >
+          </view>
         </view>
       </view>
 
-      <view class="common-form-item">
-        <view class="common-label">户内人口：</view>
-        <view class="common-value"> {{ resettlePeopleInfo.total }} </view>
+      <view class="common-head">
+        <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
+        <text>家庭情况</text>
       </view>
 
-      <view class="common-form-item">
-        <view class="common-label">迁出地：</view>
-        <view class="common-value"> fdsadsa </view>
+      <view class="info-text"> 该户选择集中供养 </view>
+
+      <view class="btn-wrap">
+        <view class="btn" @click="submitResettle">确定，进入下一步</view>
       </view>
-
-      <view class="common-form-item">
-        <view class="common-label">联系方式：</view>
-        <view class="common-value">
-          {{ resettlePeopleInfo.householder ? resettlePeopleInfo.householder.phone : '' }}
-        </view>
-      </view>
-    </view>
-
-    <view class="common-form-item">
-      <view class="common-label">集中供养：</view>
-      <view class="common-value"> 该户选择集中供养 </view>
-    </view>
-
-    <view class="btn-wrap">
-      <view class="btn" @click="submitResettle">确定，进入下一步</view>
     </view>
   </view>
 </template>
@@ -68,37 +81,64 @@ const submitResettle = async () => {
     houseAreaType: HouseType.concentrate,
     doorNo: props.doorNo
   }
-  if (props.immigrantSettle && props.immigrantSettle.id) {
-    params.id = props.immigrantSettle.id
+  if (props.immigrantSettle && props.immigrantSettle.uid) {
+    params.uid = props.immigrantSettle.uid
   }
   emit('submit', params)
 }
 </script>
 
 <style lang="scss" scoped>
-.common-form-group {
+.base-info {
   display: flex;
-  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0 12rpx;
+  margin-top: 9rpx;
+
+  .base-column {
+    flex: 50%;
+
+    .info-item {
+      display: flex;
+      align-items: center;
+      height: 13rpx;
+      margin: 6rpx 6rpx 0 0;
+
+      .label {
+        flex: none;
+        width: 75rpx;
+        font-size: 9rpx;
+        color: rgba(19, 19, 19, 0.4);
+      }
+
+      .value {
+        flex: 1;
+        font-size: 9rpx;
+        color: #171718;
+      }
+    }
+  }
 }
 
-.common-form-item {
+.common-head {
   display: flex;
+  width: 100%;
+  height: 28rpx;
+  margin-top: 9rpx;
+  font-size: 9rpx;
+  font-weight: 500;
+  color: #171718;
+  background: #ffffff;
+  border-bottom: 1rpx solid #f0f0f0;
+  border-radius: 5rpx 5rpx 0px 0px;
+  flex-direction: row;
   align-items: center;
-  padding: 22px 0;
-  border-bottom: 1px dotted #ebebeb;
 
-  .common-label {
-    width: 140px;
-    font-size: 14px;
-    line-height: 32px;
-    color: #131313;
-    text-align: right;
-  }
-
-  .common-value {
-    flex: 1;
-    font-size: 14px;
-    color: #131313;
+  .icon {
+    width: 10rpx;
+    height: 10rpx;
+    margin-right: 6rpx;
   }
 }
 
@@ -106,19 +146,27 @@ const submitResettle = async () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px;
+  padding: 15rpx 0 65rpx;
 
   .btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 40px;
-    padding: 0 26px;
-    font-size: 16px;
+    height: 26rpx;
+    min-width: 70rpx;
+    padding: 0 11px;
+    font-size: 11px;
     font-weight: 500;
     color: #ffffff;
     background: #3e73ec;
-    border-radius: 4px 4px 4px 4px;
+    border-radius: 2rpx;
   }
+}
+
+.info-text {
+  padding: 5rpx 12rpx;
+  margin-top: 6rpx;
+  font-size: 9rpx;
+  color: #171718;
 }
 </style>

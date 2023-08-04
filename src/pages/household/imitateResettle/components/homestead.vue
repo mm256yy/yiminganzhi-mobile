@@ -1,122 +1,141 @@
 <template>
-  <view class="house-item">
-    <view class="item">
-      <view class="label">安置房类型：</view>
-      <view class="value-box"> 宅基地 </view>
-    </view>
+  <view class="house-wrap">
+    <view class="house-box">
+      <view class="item">
+        <view class="label">宅基地安置人数：</view>
+        <view class="value-box">
+          <text class="red">{{ baseInfo.familyNum }}</text
+          >人，其中该户农村移民 ： <text class="red">{{ baseInfo.ruralMigrantNum }}</text
+          >人，随迁人口：<text class="red">{{ baseInfo.farmingMigrantNum }}</text
+          >人
+        </view>
+      </view>
 
-    <view class="item">
-      <view class="label">安置人数：</view>
-      <view class="value-box" />
-    </view>
+      <view class="item">
+        <view class="label flex-start">选择地块：</view>
+        <view class="value-box">
+          <view class="flex-row">
+            <view
+              class="area-item"
+              :class="{ active: settleAddress === item.id }"
+              @click="homesteadPlaceChange(item.id)"
+              v-for="item in resettleArea"
+              :key="item.id"
+            >
+              <uni-icons
+                class="icon"
+                type="map"
+                :color="settleAddress === item.id ? '#3E73EC' : '#131313'"
+                size="16"
+              />
+              <text>{{ item.name }}</text>
+            </view>
+          </view>
+        </view>
+      </view>
 
-    <view class="item">
-      <view class="label">选择地块：</view>
-      <view class="value-box">
-        <view class="flex-row">
-          <view
-            class="area-item"
-            :class="{ active: resettleDefault.homesteadResettleRegion === item.id }"
-            @click="homesteadPlaceChange(item.id)"
-            v-for="item in resettleArea"
-            :key="item.id"
-          >
-            <uni-icons
-              class="icon"
-              type="map"
-              :color="resettleDefault.homesteadResettleRegion === item.id ? '#3E73EC' : '#131313'"
-              size="16"
-            />
-            <text>{{ item.name }}</text>
+      <view class="item">
+        <view class="label flex-start">宅基地面积：</view>
+        <view class="value-box">
+          <view class="flex-row box-wrap">
+            <view
+              class="check-item"
+              :class="{ active: areaType === item.id }"
+              @click="homesteadAreaChange(item.id)"
+              v-for="item in areaSizeArray"
+              :key="item.id"
+            >
+              {{ item.name }}{{ item.unit }}
+            </view>
           </view>
         </view>
       </view>
     </view>
 
-    <view class="item">
-      <view class="label">宅基地面积：</view>
-      <view class="value-box">
-        <view class="flex-row">
-          <view
-            class="check-item"
-            :class="{ active: resettleDefault.homesteadResettleArea === item.id }"
-            @click="homesteadAreaChange(item.id)"
-            v-for="item in homesteadAreaSize"
-            :key="item.id"
-          >
-            {{ item.name }}{{ item.unit }}
-          </view>
-        </view>
-      </view>
-    </view>
-
-    <view class="item">
-      <view class="label">建房层数：</view>
-      <view class="value-box">
-        <input
-          type="number"
-          class="full-ipt"
-          v-model.number="resettleDefault.homesteadResettleLayersCount"
-        />
-      </view>
-    </view>
-
-    <view class="item">
-      <view class="label">预估单价：</view>
-      <view class="value-box">
-        <view class="ipt-wrap middle">
-          <input
-            type="number"
-            class="ipt"
-            v-model.number="resettleDefault.homesteadResettlePrice"
-          />
-          <view class="unit">元/㎡</view>
-        </view>
-      </view>
-    </view>
-
-    <view class="item">
-      <view class="label">房屋建安费：</view>
-      <view class="value-box">
-        <text class="txt red-bold">{{ resettleDefault.homesteadBuildPrice }}</text>
-        <text class="txt"> 元</text>
-      </view>
-    </view>
-
-    <view class="item">
-      <view class="label">建房补助费：</view>
-      <view class="value-box">
-        <text class="txt red-bold">{{ resettleDefault.buildHouseSubsidyPrice }}</text>
-        <text class="txt"> 元</text>
-      </view>
+    <view class="btn-wrap">
+      <view class="btn" @click="submitResettle"> 确定，进入下一步 </view>
     </view>
   </view>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { homesteadAreaSize, resettleArea } from '../config'
+import { ref, computed, watch } from 'vue'
+import { homesteadAreaSize, resettleArea, HouseType } from '../config'
 
-const resettleDefault = ref()
+interface PropsType {
+  baseInfo: any
+  doorNo: string
+  immigrantSettle: any
+  fromResettleConfirm?: boolean
+}
+
+const emit = defineEmits(['submit'])
+const props = defineProps<PropsType>()
+
+const settleAddress = ref('1')
+const areaType = ref('1')
+
+watch(
+  () => props.immigrantSettle,
+  (val) => {
+    if (val) {
+      const { areaType: area, settleAddress: settleArea } = val
+      areaType.value = area
+      settleAddress.value = settleArea
+    }
+  },
+  {
+    deep: true,
+    immediate: true
+  }
+)
+
+const areaSizeArray = computed(() => {
+  const len = props.baseInfo.familyNum
+  const sizeArray = homesteadAreaSize.map((item) => {
+    if (len >= item.needPeopleNumber) {
+      item.disabled = false
+    } else {
+      item.disabled = true
+    }
+    return item
+  })
+  console.log(sizeArray, 'sizeArray')
+  return sizeArray
+})
+
+const submitResettle = async () => {
+  const params: any = {
+    houseAreaType: HouseType.homestead,
+    doorNo: props.doorNo,
+    settleAddress: settleAddress.value,
+    areaType: areaType.value
+  }
+  if (props.immigrantSettle && props.immigrantSettle.uid) {
+    params.uid = props.immigrantSettle.uid
+  }
+  emit('submit', params)
+}
 
 // 宅基地面积选择
 const homesteadAreaChange = (id: string) => {
-  resettleDefault.value.homesteadResettleArea = id
+  areaType.value = id
 }
 
 // 住宅地块
 const homesteadPlaceChange = (id: string) => {
-  resettleDefault.value.homesteadResettleRegion = id
+  settleAddress.value = id
 }
 </script>
 
 <style lang="scss" scoped>
-.house-item {
-  display: flex;
-  width: 100%;
-  height: auto;
-  padding: 9rpx 12rpx;
+.house-wrap {
   margin-top: 9rpx;
+}
+
+.house-box {
+  display: flex;
+  padding: 9rpx 12rpx;
   background: linear-gradient(
     180deg,
     rgba(242, 246, 255, 0.62) 0%,
@@ -137,6 +156,7 @@ const homesteadPlaceChange = (id: string) => {
     .label {
       width: 84rpx;
       font-size: 9rpx;
+      line-height: 23rpx;
       color: #171718;
       text-align: right;
 
@@ -236,7 +256,7 @@ const homesteadPlaceChange = (id: string) => {
     display: inline-flex;
     height: 23rpx;
     padding: 0 14rpx;
-    margin-right: 14rpx;
+    margin: 0 14rpx 12rpx 0;
     font-size: 9rpx;
     color: #171718;
     background: #ffffff;
@@ -327,6 +347,32 @@ const homesteadPlaceChange = (id: string) => {
         }
       }
     }
+  }
+
+  .box-wrap {
+    flex-wrap: wrap;
+    width: 210rpx;
+  }
+}
+
+.btn-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15rpx 0 65rpx;
+
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 26rpx;
+    min-width: 70rpx;
+    padding: 0 11px;
+    font-size: 11px;
+    font-weight: 500;
+    color: #ffffff;
+    background: #3e73ec;
+    border-radius: 2rpx;
   }
 }
 </style>

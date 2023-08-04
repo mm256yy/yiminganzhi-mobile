@@ -26,7 +26,7 @@
           </view>
         </view>
         <view class="row-field">
-          <view class="field-box" @click.prevent.stop="toLink('homeHoldList')">
+          <view class="field-box" @click.prevent.stop="toLink('householdList')">
             <view class="line-1">5</view>
             <view class="flex">
               <view

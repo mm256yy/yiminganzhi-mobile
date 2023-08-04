@@ -247,104 +247,126 @@ export const apartmentAreaSize = [
 // 自谋出路
 export const selfResettleData = [
   {
+    id: 0,
     type: 'compensate',
     title: '补偿费',
     subProject: '房屋补偿补助款',
     unit: 'm²',
     number: 2,
     costPrice: 1000,
-    totalPrice: 22222
+    totalPrice: 22222,
+    rowspan: 3
   },
   {
+    id: 1,
     type: 'compensate',
     title: '补偿费',
     subProject: '地面青苗附着物补偿款',
     unit: 'm²',
     number: 2,
     costPrice: 1000,
-    totalPrice: 22222
+    totalPrice: 22222,
+    rowspan: 0
   },
   {
+    id: 2,
     type: 'compensate',
     title: '补偿费',
     subProject: '宅基地补偿款 (超面积)',
     unit: 'm²',
     number: 2,
     costPrice: 1000,
-    totalPrice: 22222
+    totalPrice: 22222,
+    rowspan: 0
   },
 
   {
+    id: 3,
     type: 'subsidy',
     title: '补助费',
     subProject: '建房补助费',
     unit: 'm²',
     number: 2,
     costPrice: 1000,
-    totalPrice: 22222
+    totalPrice: 22222,
+    rowspan: 3
   },
   {
+    id: 4,
     type: 'subsidy',
     title: '补助费',
     subProject: '搬迁补助费',
     unit: 'm²',
     number: 2,
     costPrice: 1000,
-    totalPrice: 22222
+    totalPrice: 22222,
+    rowspan: 0
   },
   {
+    id: 5,
     type: 'subsidy',
     title: '补助费',
     subProject: '过渡期生产生活补助款',
     unit: 'm²',
     number: 2,
     costPrice: 1000,
-    totalPrice: 22222
+    totalPrice: 22222,
+    rowspan: 0
   },
 
   {
+    id: 6,
     type: 'reward',
     title: '奖励费',
     subProject: '签订动迁安置协议奖励',
     unit: 'm²',
     number: 2,
     costPrice: 1000,
-    totalPrice: 22222
+    totalPrice: 22222,
+    rowspan: 5
   },
   {
+    id: 7,
     type: 'reward',
     title: '奖励费',
     subProject: '房屋腾空奖励',
     unit: 'm²',
     number: 2,
     costPrice: 1000,
-    totalPrice: 22222
+    totalPrice: 22222,
+    rowspan: 0
   },
   {
+    id: 8,
     type: 'reward',
     title: '奖励费',
     subProject: '启动建房奖励',
     unit: 'm²',
     number: 2,
     costPrice: 1000,
-    totalPrice: 22222
+    totalPrice: 22222,
+    rowspan: 0
   },
   {
+    id: 9,
     type: 'reward',
     title: '奖励费',
     subProject: '完成建房奖励',
     unit: 'm²',
     number: 2,
     costPrice: 1000,
-    totalPrice: 22222
+    totalPrice: 22222,
+    rowspan: 0
   },
   {
+    id: 10,
     type: 'reward',
     title: '奖励费',
     subProject: '搬迁入驻奖励',
     unit: 'm²',
     number: 2,
     costPrice: 1000,
-    totalPrice: 22222
+    totalPrice: 22222,
+    rowspan: 0
   }
 ]

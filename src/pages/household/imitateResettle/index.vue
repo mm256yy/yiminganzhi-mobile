@@ -1,33 +1,76 @@
 <template>
   <view class="resettle-wrap">
-    <div class="imitate-step-tab">
-      <div
+    <view class="imitate-step-tab">
+      <view
         class="step-item"
         :class="{ active: stepIndex === item.id }"
         v-for="item in stepArray"
         :key="item.id"
         @click="stepClick(item.id)"
       >
-        <div class="number" v-if="!item.done">{{ item.id }}</div>
+        <view class="number" v-if="!item.done">{{ item.id }}</view>
 
-        <div class="done" v-else>
-          <img class="icon" src="@/assets/imgs/done_icon.png" alt="✅" />
-        </div>
-        <div class="name">{{ item.name }}</div>
-        <div class="next" v-if="stepArray.length - 1 >= item.id"></div>
-      </div>
-    </div>
+        <view class="done" v-else>
+          <image class="icon" src="@/static/images/done_icon.png" alt="✅" />
+        </view>
+        <view class="name">{{ item.name }}</view>
+        <view class="next" v-if="stepArray.length - 1 >= item.id" />
+      </view>
+    </view>
 
-    <div class="imitate-step-cont">
+    <view class="imitate-step-cont">
       <!-- 搬迁安置 step -->
-      <div class="step-cont-move" v-if="stepIndex === 1"> </div>
+      <view class="step-cont-item" v-if="stepIndex === 1">
+        <view class="plan-tab">
+          <view class="plan-label">安置方式</view>
+          <view
+            class="plan-tab-item"
+            v-for="item in dict[372]"
+            :class="{ active: houseAreaType === item.value }"
+            @click="houseAreaTypeChange(item)"
+            :key="item.value"
+          >
+            {{ item.text }}
+          </view>
+        </view>
+        <homestead
+          v-if="houseAreaType === HouseType.homestead"
+          :baseInfo="props.dataInfo"
+          :doorNo="props.dataInfo.doorNo"
+          :immigrantSettle="{}"
+          :fromResettleConfirm="false"
+          @submit="immigrantSettleSubmit"
+        />
+        <apartment
+          v-else-if="houseAreaType === HouseType.flat"
+          :baseInfo="props.dataInfo"
+          :doorNo="props.dataInfo.doorNo"
+          :immigrantSettle="{}"
+          :fromResettleConfirm="false"
+          @submit="immigrantSettleSubmit"
+        />
+        <centerSupport
+          v-else-if="houseAreaType === HouseType.concentrate"
+          :data="demographicList"
+          :doorNo="props.dataInfo.doorNo"
+          :immigrantSettle="{}"
+          :fromResettleConfirm="false"
+          @submit="immigrantSettleSubmit"
+        />
+        <findSelf
+          v-else-if="houseAreaType === HouseType.oneself"
+          :data="demographicList"
+          :doorNo="props.dataInfo.doorNo"
+          :immigrantSettle="{}"
+          :fromResettleConfirm="false"
+          @submit="immigrantSettleSubmit"
+        />
+      </view>
       <!-- 生产安置 step -->
-      <div class="step-cont-production" v-else-if="stepIndex === 2">
-        <div class="btn-wrap">
-          <div class="btn" @click="stepNext"> 确认 </div>
-        </div>
-      </div>
-    </div>
+      <view class="step-cont-item" v-else-if="stepIndex === 2">
+        <people :demographicList="demographicList" @submit="productionResettleSubmit" />
+      </view>
+    </view>
 
     <view class="tab-pup">
       <view class="tab-item" @click="viewPdf">安置办法</view>
@@ -46,11 +89,18 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
-import { StorageKey, setStorage, getStorage } from '@/utils/storage'
+import { computed, ref } from 'vue'
+import { StorageKey, getStorage } from '@/utils/storage'
 import resettleDesc from './resettleDesc.vue'
 import areaDetail from './areaDetail.vue'
+import people from './components/people.vue'
+import homestead from './components/homestead.vue'
+import apartment from './components/apartment.vue'
+import centerSupport from './components/centerSupport.vue'
+import findSelf from './components/findSelf.vue'
+
 import { LandlordType } from '@/types/sync'
+import { HouseType } from './config'
 
 interface PropsType {
   dataInfo: LandlordType
@@ -72,6 +122,9 @@ const uid = computed<any>(() => {
 const descpopup = ref<any>(null)
 const areadetailpopup = ref<any>(null)
 const tableData = ref<any[]>([])
+const houseAreaType = ref<HouseType>(HouseType.homestead)
+// 获取数据字典
+const dict = getStorage(StorageKey.DICT)
 
 // 步骤条
 const stepArray = ref([
@@ -121,33 +174,35 @@ const viewPdf = () => {
   })
 }
 
+const stepClick = (id: any) => {
+  stepIndex.value = id
+}
+
+const houseAreaTypeChange = (item: any) => {
+  houseAreaType.value = item.value
+}
+
 /**
  * 生产安置确认
  */
-
-const stepNext = async () => {
-  // 校验数据
-  const notFillArray = tableData.value.filter((item: any) => !item.settingWay)
-  if (notFillArray && notFillArray.length) {
-    uni.showToast({ title: '请选择安置方式', icon: 'none' })
-    return
-  }
-  const data = tableData.value.map((item: any) => {
-    return {
-      demographicId: item.demographicId,
-      settingWay: item.settingWay,
-      settingRemark: item.settingRemark
-    }
-  })
+const productionResettleSubmit = async (data: any) => {
   // const res = await saveSimulateDemographicApi(data)
   // console.log('安置方式更新结果', res)
   // if (res) {
-  //   ElMessage.success('生产安置保存成功!')
+  //   showToast('生产安置保存成功!')
   // }
 }
 
-const stepClick = (id: any) => {
-  stepIndex.value = id
+/**
+ * 搬迁安置确认
+ */
+const immigrantSettleSubmit = async (data: any) => {
+  // const res = await saveSimulateImmigrantSettleApi(data)
+  // console.log('搬迁安置确认结果', res)
+  // if (res) {
+  //   showToast('搬迁安置保存成功!')
+  //   stepIndex.value += 1
+  // }
 }
 </script>
 
@@ -155,7 +210,151 @@ const stepClick = (id: any) => {
 .resettle-wrap {
   width: 100%;
   height: 100%;
-  padding-bottom: 50rpx;
-  overflow-y: scroll;
+
+  .imitate-step-tab {
+    display: flex;
+    width: 100%;
+    height: 51rpx;
+    padding: 9rpx 0;
+    background: #fff;
+    align-items: center;
+    justify-content: center;
+
+    .step-item {
+      display: flex;
+      align-items: center;
+      margin-right: 6rpx;
+
+      .number {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 21rpx;
+        height: 21rpx;
+        font-size: 9rpx;
+        font-weight: 500;
+        color: #666666;
+        background: #fff;
+        border: 1rpx solid #ebebeb;
+        border-radius: 50%;
+      }
+
+      .done {
+        width: 21rpx;
+        height: 21rpx;
+
+        .icon {
+          width: 21rpx;
+          height: 21rpx;
+        }
+      }
+
+      .name {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 9rpx;
+        font-size: 9rpx;
+        color: #666666;
+        word-wrap: none;
+        white-space: nowrap;
+      }
+
+      .next {
+        width: 178rpx;
+        height: 1rpx;
+        background-color: #ebebeb;
+      }
+
+      &.active {
+        .number {
+          color: #fff;
+          background: #3e73ec;
+          border: 1rpx solid #3e73ec;
+          border-radius: 50%;
+        }
+
+        .name {
+          color: #171718;
+        }
+      }
+    }
+  }
+
+  .imitate-step-cont {
+    height: calc(100% - 51rpx);
+    background-color: #fff;
+  }
+
+  .step-cont-item {
+    height: 100%;
+    overflow-y: scroll;
+
+    .plan-tab {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 33rpx;
+      padding-top: 9rpx;
+      margin: 9rpx 0;
+
+      .plan-label {
+        font-size: 9rpx;
+        font-weight: 500;
+        color: #171718;
+      }
+
+      .plan-tab-item {
+        display: flex;
+        height: 23rpx;
+        padding: 0 21rpx;
+        margin-left: 9rpx;
+        font-size: 9rpx;
+        font-weight: 500;
+        color: #171718;
+        background-color: #fff;
+        border: 1rpx solid #ebebeb;
+        border-radius: 5rpx;
+        align-items: center;
+        justify-content: center;
+
+        &.active {
+          color: #3e73ec;
+          background-color: #f2f6ff;
+          border: 1rpx solid #3e73ec;
+        }
+      }
+    }
+  }
+}
+
+.tab-pup {
+  position: fixed;
+  right: 176rpx;
+  bottom: 23rpx;
+
+  display: flex;
+  height: 32rpx;
+  padding: 0 14rpx;
+  background: #ffffff;
+  border-radius: 38rpx;
+  box-shadow: 0rpx 5rpx 12rpx 5rpx rgba(0, 0, 0, 0.05);
+  align-items: center;
+
+  .tab-item {
+    display: flex;
+    height: 13rpx;
+    padding: 0 7rpx;
+    font-size: 9rpx;
+    color: #171718;
+    border-right: 1rpx solid #ebebeb;
+    align-items: center;
+    justify-content: center;
+
+    &:last-child {
+      border-right: 0 none;
+    }
+  }
 }
 </style>

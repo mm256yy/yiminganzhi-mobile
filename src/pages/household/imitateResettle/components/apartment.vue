@@ -1,232 +1,384 @@
 <template>
-  <view class="house-item">
-    <view class="item">
-      <view class="label">安置房类型：</view>
-      <view class="value-box"> 公寓房 </view>
-    </view>
-
-    <view class="item">
-      <view class="label">安置人数：</view>
-      <view class="value-box" />
-    </view>
-
-    <view class="item">
-      <view class="label">选择地块：</view>
-      <view class="value-box">
-        <view class="flex-row">
-          <view
-            class="area-item"
-            :class="{ active: resettleDefault.apartmentResettleRegion === item.id }"
-            @click="apartmentPlaceChange(item.id)"
-            v-for="item in resettleArea"
-            :key="item.id"
-          >
-            <uni-icons
-              class="icon"
-              type="map"
-              :color="resettleDefault.apartmentResettleRegion === item.id ? '#3E73EC' : '#131313'"
-              size="16"
-            />
-            <text>{{ item.name }}</text>
-          </view>
+  <view class="house-wrap">
+    <view class="house-box">
+      <view class="item">
+        <view class="label">宅基地安置人数：</view>
+        <view class="value-box">
+          <text class="red">{{ baseInfo.familyNum }}</text
+          >人，其中该户农村移民 ： <text class="red">{{ baseInfo.ruralMigrantNum }}</text
+          >人，随迁人口：<text class="red">{{ baseInfo.farmingMigrantNum }}</text
+          >人
         </view>
       </view>
-    </view>
 
-    <view class="item">
-      <view class="label flex-start">可选公寓面积：</view>
-      <view class="value-box">
-        <view class="check-item-box">
-          <view
-            class="area-check-item"
-            :class="{ active: item.isSelected }"
-            v-for="item in apartmentAreaSizeArray"
-            :key="item.id"
-          >
-            <view class="item-lt">
-              <view class="area-num">{{ item.name }}{{ item.unit }}</view>
-              <text> x 数量</text>
-              <input class="ipt" type="number" v-model.number="item.num" />
-              <text>套</text>
+      <view class="item">
+        <view class="label">选择地块：</view>
+        <view class="value-box">
+          <view class="flex-row">
+            <view
+              class="area-item"
+              :class="{ active: settleAddress === item.id }"
+              @click="apartmentPlaceChange(item.id)"
+              v-for="item in apartmentArea"
+              :key="item.id"
+            >
+              <uni-icons
+                class="icon"
+                type="map"
+                :color="settleAddress === item.id ? '#3E73EC' : '#131313'"
+                size="16"
+              />
+              <text>{{ item.name }}</text>
             </view>
-            <view class="item-rt" @click="apartmentAreaChange(item)" />
           </view>
         </view>
       </view>
-    </view>
 
-    <view class="item">
-      <view class="label"> 推荐方案： </view>
-      <view class="value-box">
-        <div class="plan-table-wrap">
-          <table>
-            <!-- 第一行 -->
-            <tr class="head-tr">
-              <td colspan="2" class="column-w1 bold">搬迁安置</td>
+      <view class="item">
+        <view class="label flex-start"> 推荐方案： </view>
+        <view class="value-box">
+          <view class="plan-table-wrap">
+            <table>
+              <!-- 第一行 -->
+              <tr class="head-tr">
+                <td colspan="2" class="column-w1 bold">搬迁安置</td>
 
-              <td class="column-w3" v-for="(item, index) in tableData" :key="item.id">
-                <div class="plan-tit" :class="{ active: item.isSelected }">
-                  方案{{ index + 1 }}
-                </div>
-              </td>
-            </tr>
+                <td class="column-w3" v-for="(item, index) in tableData" :key="item.id">
+                  <view class="plan-tit" :class="{ active: item.isSelected }">
+                    方案{{ index + 1 }}
+                  </view>
+                </td>
+              </tr>
 
-            <tr>
-              <td rowspan="4" class="column-w1 bold">套数</td>
-              <td class="column-w2">65</td>
-              <td class="column-w3" v-for="item in tableData" :key="item.id">
-                {{ item.typeOneNum }}
-              </td>
-            </tr>
+              <tr>
+                <td rowspan="4" class="column-w1 bold">套数</td>
+                <td class="column-w2">65</td>
+                <td class="column-w3" v-for="item in tableData" :key="item.id">
+                  {{ item.typeOneNum }}
+                </td>
+              </tr>
 
-            <tr>
-              <td class="column-w2">85</td>
-              <td class="column-w3" v-for="item in tableData" :key="item.id">
-                {{ item.typeTwoNum }}
-              </td>
-            </tr>
+              <tr>
+                <td class="column-w2">85</td>
+                <td class="column-w3" v-for="item in tableData" :key="item.id">
+                  {{ item.typeTwoNum }}
+                </td>
+              </tr>
 
-            <tr>
-              <td class="column-w2">110</td>
-              <td class="column-w3" v-for="item in tableData" :key="item.id">
-                {{ item.typeThreeNum }}
-              </td>
-            </tr>
+              <tr>
+                <td class="column-w2">110</td>
+                <td class="column-w3" v-for="item in tableData" :key="item.id">
+                  {{ item.typeThreeNum }}
+                </td>
+              </tr>
 
-            <tr>
-              <td class="column-w2">140</td>
-              <td class="column-w3" v-for="item in tableData" :key="item.id">
-                {{ item.typeFourNum }}
-              </td>
-            </tr>
+              <tr>
+                <td class="column-w2">140</td>
+                <td class="column-w3" v-for="item in tableData" :key="item.id">
+                  {{ item.typeFourNum }}
+                </td>
+              </tr>
 
-            <tr>
-              <td class="column-w1 bold" colspan="2">购房总面积</td>
-              <td class="column-w3" v-for="item in tableData" :key="item.id">
-                {{ item.areaTotal }}
-              </td>
-            </tr>
+              <tr>
+                <td class="column-w1 bold" colspan="2">购房总面积</td>
+                <td class="column-w3" v-for="item in tableData" :key="item.id">
+                  {{ item.areaTotal }}
+                </td>
+              </tr>
 
-            <tr>
-              <td class="column-w1" rowspan="3">金额</td>
-              <td class="column-w2">购房金额估算</td>
-              <td class="column-w3" v-for="item in tableData" :key="item.id">
-                <div class="flex-center-center pointer" @click="viewBuyHouseClick(item.id)">
-                  {{ item.preorderAmount }}
-                  <!-- <Icon icon="ant-design:question-circle-filled" color="#DCDFE6" /> -->
-                </div>
-              </td>
-            </tr>
+              <tr>
+                <td class="column-w1" rowspan="3">金额</td>
+                <td class="column-w2">购房金额估算</td>
+                <td class="column-w3" v-for="item in tableData" :key="item.id">
+                  <view class="flex-center-center pointer" @click="viewBuyHouseClick(item.id)">
+                    {{ item.preorderAmount }}
+                    <uni-icons type="help-filled" size="24" color="#DCDFE6" />
+                  </view>
+                </td>
+              </tr>
 
-            <tr>
-              <td class="column-w2">补偿补助估算</td>
-              <td class="column-w3" v-for="item in tableData" :key="item.id">
-                <div class="flex-center-center pointer" @click="viewSubsidyClick(item.id)">
-                  {{ item.compensationAmount }}
-                  <!-- <Icon icon="ant-design:question-circle-filled" color="#DCDFE6" /> -->
-                </div>
-              </td>
-            </tr>
+              <tr>
+                <td class="column-w2">补偿补助估算</td>
+                <td class="column-w3" v-for="item in tableData" :key="item.id">
+                  <view class="flex-center-center pointer" @click="viewSubsidyClick(item.id)">
+                    {{ item.compensationAmount }}
+                    <uni-icons type="help-filled" size="24" color="#DCDFE6" />
+                  </view>
+                </td>
+              </tr>
 
-            <tr>
-              <td class="column-w2">差额</td>
-              <td class="column-w3" v-for="item in tableData" :key="item.id">
-                {{ item.differenceAmount }}
-              </td>
-            </tr>
+              <tr>
+                <td class="column-w2">差额</td>
+                <td class="column-w3" v-for="item in tableData" :key="item.id">
+                  {{ item.differenceAmount }}
+                </td>
+              </tr>
 
-            <tr>
-              <td class="column-w1 bold" colspan="2">确定方案</td>
-              <td class="column-w3" v-for="item in tableData" :key="item.type">
-                <div
-                  class="select-btn"
-                  :class="{ active: item.isSelected }"
-                  @click="selectPlan(item.type)"
-                >
-                  <div class="icon" v-if="!item.isSelected"></div>
-                  <!-- <Icon v-else icon="ant-design:check-circle-filled" size="16" color="#3E73EC" /> -->
-                  <div class="txt">选择该方案</div>
-                </div>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </view>
-    </view>
-
-    <view class="item">
-      <view class="label">已选户型：</view>
-      <view class="value-box flex-row">
-        <template v-for="item in apartmentAreaSizeArray" :key="item.id">
-          <template v-if="item.isSelected">
-            <text class="txt">{{ item.name }}{{ item.unit }}户型 </text>
-            <text class="txt red">{{ item.num }}</text>
-            <text class="txt">套，</text>
-          </template>
-        </template>
-        <text>已选总面积 </text>
-        <text class="txt red">{{ 0 }}m²</text>
-      </view>
-    </view>
-
-    <view class="item">
-      <view class="label">建房补助费：</view>
-      <view class="value-box">
-        <text class="txt red-bold">{{ resettleDefault.buildHouseSubsidyPrice }}</text>
-        <text class="txt"> 元</text>
-      </view>
-    </view>
-
-    <view class="item">
-      <view class="label flex-start">购房总金额：</view>
-      <view class="value-box">
-        <view>
-          <text class="txt red-bold">{{ resettleDefault.apartmentBuyPrice }}</text>
-          <text class="txt"> 元</text>
-        </view>
-        <view class="desc">
-          (实际选购面积在安排面积内以综合成本价购买，超出安排面积的部分以市场优惠价购买)
+              <tr>
+                <td class="column-w1 bold" colspan="2">确定方案</td>
+                <td class="column-w3" v-for="item in tableData" :key="item.type">
+                  <view
+                    class="select-btn"
+                    :class="{ active: item.isSelected }"
+                    @click="selectPlan(item.type)"
+                  >
+                    <view class="icon" v-if="!item.isSelected" />
+                    <uni-icons v-else type="checkbox-filled" size="24" color="#3E73EC" />
+                    <view class="txt">选择该方案</view>
+                  </view>
+                </td>
+              </tr>
+            </table>
+          </view>
         </view>
       </view>
+
+      <view class="item">
+        <view class="label flex-start">可选公寓面积：</view>
+        <view class="value-box">
+          <view class="check-item-box">
+            <view
+              class="area-check-item"
+              :class="{ active: item.isSelected }"
+              v-for="item in areaSize"
+              :key="item.id"
+            >
+              <view class="item-lt">
+                <view class="area-num">{{ item.name }}{{ item.unit }}</view>
+                <text> x 数量</text>
+                <input class="ipt" type="number" v-model.number="item.num" />
+                <text>套</text>
+              </view>
+              <view class="item-rt" />
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="item">
+        <view class="label flex-start">选定户型及数量：</view>
+        <view class="value-box">
+          <view class="info-item">
+            根据您输入的安置人数：
+            <text class="red">{{ baseInfo.familyNum }}</text> 人，选购总面积为：
+            <text class="red">{{ totalArea }}</text
+            >m²
+          </view>
+
+          <view class="info-item">
+            选择选定户型为：
+            <template v-for="item in areaSize" :key="item.id">
+              <template v-if="item.num > 0">
+                <text class="red">{{ item.name }}</text> {{ item.unit
+                }}<text class="red">{{ item.num }}</text
+                >套
+                <text>，</text>
+              </template>
+            </template>
+          </view>
+
+          <view class="info-item">
+            剩余面积： <text class="red">{{ residueArea }}</text> ㎡ 超出面积：
+            <text class="red">{{ exceedArea }}</text
+            >m²
+          </view>
+
+          <view class="info-item">
+            购房金额估算： <text class="red">{{ exceedArea * 1500 }}</text> 元
+          </view>
+
+          <view class="info-item"> 购房总金额=选购总面积“成本价+超出面积"市场优惠价 </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="btn-wrap">
+      <view class="btn" @click="submitResettle"> 确定，进入下一步 </view>
     </view>
   </view>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { apartmentAreaSize, resettleArea } from '../config'
-import { deepClone } from '@/utils'
+import { ref, computed, onMounted, watch } from 'vue'
+import { apartmentArea, apartmentAreaSize, HouseType } from '../config'
+import { showToast } from '@/config'
 
-const resettleDefault = ref()
-// 公寓面积选择
-const apartmentAreaSizeArray = ref(deepClone(apartmentAreaSize))
-const tableData = ref<any[]>([])
+interface PropsType {
+  doorNo: string
+  baseInfo: any
+  immigrantSettle: any
+  fromResettleConfirm?: boolean
+}
 
-// 公寓地块
+const emit = defineEmits(['submit'])
+const props = defineProps<PropsType>()
+const settleAddress = ref<string>('1')
+const areaSize = ref<any[]>(apartmentAreaSize)
+
+const pricePup = ref(false)
+const buyHousePup = ref(false)
+
+// 方案数据
+const tableData = ref<any>([])
+
 const apartmentPlaceChange = (id: string) => {
-  resettleDefault.value.apartmentResettleRegion = id
+  settleAddress.value = id
 }
 
-// 公寓面积选择
-const apartmentAreaChange = (data: any) => {
-  data.isSelected = !data.isSelected
+// 获取方案
+const getPlans = async () => {
+  // const res = await getBestResettlePlanApi(props.doorNo)
+  // console.log(res, 'res')
+  // if (res) {
+  //   tableData.value = res.map((item) => {
+  //     item.isSelected = false
+  //     return item
+  //   })
+  // }
 }
 
-const viewBuyHouseClick = (id: string) => {}
-const selectPlan = (type: any) => {
-  console.log(type)
+onMounted(() => {
+  if (!props.fromResettleConfirm) {
+    getPlans()
+  }
+})
+
+watch(
+  () => props.immigrantSettle,
+  (val) => {
+    if (val) {
+      console.log(val, 'val')
+      const { settleAddress: settleArea, typeOneNum, typeTwoNum, typeThreeNum, typeFourNum } = val
+
+      settleAddress.value = settleArea
+      areaSize.value = areaSize.value.map((item, index) => {
+        if (index === 0) {
+          item.num = typeOneNum
+        } else if (index === 1) {
+          item.num = typeTwoNum
+        } else if (index === 2) {
+          item.num = typeThreeNum
+        } else if (index === 3) {
+          item.num = typeFourNum
+        }
+        return item
+      })
+    }
+  },
+  {
+    deep: true,
+    immediate: true
+  }
+)
+
+// 总面积
+const totalArea = computed(() => {
+  let sum = 0
+  areaSize.value.forEach((item) => {
+    if (item.num > 0) {
+      sum += item.name * item.num
+    }
+  })
+  return sum
+})
+
+// 剩余面积
+const residueArea = computed(() => {
+  const residue = props.baseInfo.familyNum * 40 - totalArea.value
+  return residue < 0 ? 0 : residue
+})
+
+// 超出面积
+const exceedArea = computed(() => {
+  const exceed = totalArea.value - props.baseInfo.familyNum * 40
+  return exceed < 0 ? 0 : exceed
+})
+
+// 选择该方案
+const selectPlan = (type: string) => {
+  const real = tableData.value.map((item: any) => {
+    if (item.type === type) {
+      item.isSelected = !item.isSelected
+    } else {
+      item.isSelected = false
+    }
+    return item
+  })
+  console.log(real)
+  tableData.value = [...real]
 }
 
-const viewSubsidyClick = (id: string) => {}
+// 补偿补助明细
+const viewSubsidyClick = (id: string) => {
+  console.log(id, 'id')
+  pricePup.value = true
+}
+
+// 购房金额明细
+const viewBuyHouseClick = (id: string) => {
+  console.log(id, 'id')
+  buyHousePup.value = true
+}
+
+// 提交
+const submitResettle = async () => {
+  let typeOneNum = 0
+  let typeTwoNum = 0
+  let typeThreeNum = 0
+  let typeFourNum = 0
+
+  const selectedPlanItem = tableData.value.find((item: any) => item.isSelected)
+  if (selectedPlanItem) {
+    typeOneNum = selectedPlanItem.typeOneNum
+    typeTwoNum = selectedPlanItem.typeTwoNum
+    typeThreeNum = selectedPlanItem.typeThreeNum
+    typeFourNum = selectedPlanItem.typeFourNum
+  } else {
+    const areaItem = areaSize.value.find((item) => item.num > 0)
+    if (!areaItem) {
+      showToast('请选择公寓面积')
+      return
+    }
+    areaSize.value.forEach((item, index) => {
+      if (index === 0) {
+        typeOneNum = item.num
+      }
+      if (index === 1) {
+        typeTwoNum = item.num
+      }
+      if (index === 2) {
+        typeThreeNum = item.num
+      }
+      if (index === 3) {
+        typeFourNum = item.num
+      }
+    })
+  }
+
+  const params: any = {
+    houseAreaType: HouseType.flat,
+    doorNo: props.doorNo,
+    settleAddress: settleAddress.value,
+    typeOneNum,
+    typeTwoNum,
+    typeThreeNum,
+    typeFourNum
+  }
+  if (props.immigrantSettle && props.immigrantSettle.uid) {
+    params.uid = props.immigrantSettle.uid
+  }
+  emit('submit', params)
+}
 </script>
 
 <style lang="scss" scoped>
-.house-item {
-  display: flex;
-  width: 100%;
-  height: auto;
-  padding: 9rpx 12rpx;
+.house-wrap {
   margin-top: 9rpx;
+}
+
+.house-box {
+  display: flex;
+  padding: 9rpx 12rpx;
   background: linear-gradient(
     180deg,
     rgba(242, 246, 255, 0.62) 0%,
@@ -246,7 +398,9 @@ const viewSubsidyClick = (id: string) => {}
 
     .label {
       width: 84rpx;
+      margin-right: 6rpx;
       font-size: 9rpx;
+      line-height: 23rpx;
       color: #171718;
       text-align: right;
 
@@ -338,7 +492,7 @@ const viewSubsidyClick = (id: string) => {}
     &.active {
       color: #3e73ec;
       background: #f2f6ff;
-      border: 1px solid #3e73ec;
+      border: 1rpx solid #3e73ec;
     }
   }
 
@@ -444,33 +598,33 @@ const viewSubsidyClick = (id: string) => {}
   table {
     /* 用于表格属性, 表示表格的两边框合并为一条 */
     border-collapse: collapse;
-    border-right: 1px solid #ebebeb;
-    border-bottom: 1px solid #ebebeb;
+    border-right: 1rpx solid #ebebeb;
+    border-bottom: 1rpx solid #ebebeb;
     /* 设置边缘间距0 */
     border-spacing: 0;
   }
 
   tr td {
-    height: 40px;
-    font-size: 14px;
+    height: 28rpx;
+    font-size: 8rpx;
     color: #171718;
     text-align: center;
-    border-top: 1px solid #ebebeb;
-    border-right: 1px solid #ebebeb;
-    border-left: 1px solid #ebebeb;
+    border-top: 1rpx solid #ebebeb;
+    border-right: 1rpx solid #ebebeb;
+    border-left: 1rpx solid #ebebeb;
   }
 
   .column-w1 {
-    width: 153px;
+    width: 59rpx;
     background: #f6f6f6;
   }
 
   .column-w2 {
-    width: 160px;
+    width: 69rpx;
   }
 
   .column-w3 {
-    width: 273px;
+    width: 88rpx;
   }
 
   .bold {
@@ -502,18 +656,47 @@ const viewSubsidyClick = (id: string) => {}
     justify-content: center;
 
     .icon {
-      width: 16px;
-      height: 16px;
+      width: 9rpx;
+      height: 9rpx;
       background: #ffffff;
-      border: 1px solid #dcdde6;
+      border: 1rpx solid #dcdde6;
       border-radius: 50%;
     }
 
     .txt {
-      margin-left: 10px;
-      font-size: 14px;
+      margin-left: 6rpx;
+      font-size: 8rpx;
       color: #171718;
     }
+  }
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  font-size: 9rpx;
+  font-weight: 500;
+  color: #171718;
+}
+
+.btn-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15rpx 0 65rpx;
+
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 26rpx;
+    min-width: 70rpx;
+    padding: 0 11px;
+    font-size: 11px;
+    font-weight: 500;
+    color: #ffffff;
+    background: #3e73ec;
+    border-radius: 2rpx;
   }
 }
 </style>

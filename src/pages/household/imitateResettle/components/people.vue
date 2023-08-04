@@ -1,62 +1,179 @@
 <template>
   <view class="population-list">
-    <!-- <view class="population-item" v-for="item in demographicList" :key="item.uid">
-      <view class="item-list">
-        <view class="item">
-          <view class="label">姓名：</view>
-          <view class="value">{{ item.name }}</view>
-        </view>
-        <view class="item">
-          <view class="label">与户主关系：</view>
-          <view class="value">{{ formatDict(item.relation, 307) }}</view>
-        </view>
-        <view class="item">
-          <view class="label">人口性质：</view>
-          <view class="value">{{ formatDict(item.populationNature, 363) }}</view>
-        </view>
-        <view class="item">
-          <view class="label">生产用地补偿：</view>
-          <view class="value">生产安置</view>
-        </view>
-        <view class="item">
-          <view class="label">补助标准：</view>
-          <view class="value">由政府统一安排生活用地的安置方式</view>
-        </view>
+    <view class="population-item" v-for="item in tableData" :key="item.uid">
+      <view class="item">
+        <view class="label">姓名：</view>
+        <view class="value">{{ item.name }}</view>
+      </view>
+      <view class="item">
+        <view class="label">与户主关系：</view>
+        <view class="value">{{ formatDict(item.relation, 307) }}</view>
       </view>
 
-      <view class="item-list">
-        <view class="item">
-          <view class="label">生产安置方式：</view>
-          <view class="value">
-            <uni-data-select
-              class="select-wrap"
-              v-model="item.settingWay"
-              @change="wayChange($event, item)"
-              :localdata="resettleWayVillage"
-            />
-          </view>
-        </view>
-        <view class="item">
-          <view class="label">户籍类别：</view>
-          <view class="value">{{ formatDict(item.censusType, 249) }}</view>
-        </view>
-        <view class="item">
-          <view class="label">搬迁补助：</view>
-          <view class="value red">3,500元/人</view>
-        </view>
-        <view class="item">
-          <view class="label">房屋装修补偿：</view>
-          <view class="value red">7,000元</view>
-        </view>
-        <view class="item">
-          <view class="label">合计：</view>
-          <view class="value red">10,500元</view>
+      <view class="item">
+        <view class="label">性别：</view>
+        <view class="value">{{ item.sex }}</view>
+      </view>
+
+      <view class="item">
+        <view class="label">年龄：</view>
+        <view class="value">{{ item.birthday }}</view>
+      </view>
+      <view class="item">
+        <view class="label">户籍类型：</view>
+        <view class="value">{{ item.censusType }}</view>
+      </view>
+      <view class="item">
+        <view class="label">人口性质：</view>
+        <view class="value">{{ item.populationNature }}</view>
+      </view>
+
+      <view class="item">
+        <view class="label">安置方式：</view>
+        <view class="value">
+          <uni-data-select class="select-wrap" v-model="item.settingWay" :localdata="dict[375]" />
         </view>
       </view>
-    </view> -->
+      <view class="item two-col">
+        <view class="label">备注：</view>
+        <view class="value ipt-box">
+          <input type="text" class="ipt" v-model="item.settingRemark" />
+        </view>
+      </view>
+    </view>
+
+    <view class="btn-wrap">
+      <view class="btn" @click="stepNext"> 确认 </view>
+    </view>
   </view>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { ref, watch } from 'vue'
+import { formatDict, getStorage, StorageKey } from '@/utils'
+import { PopulationType } from '@/types/datafill'
+import { showToast } from '@/config'
 
-<style lang="scss" scoped></style>
+interface PropsType {
+  demographicList: PopulationType[]
+}
+
+const emit = defineEmits(['submit'])
+const props = defineProps<PropsType>()
+// 获取数据字典
+const dict = getStorage(StorageKey.DICT)
+console.log(dict[375], 'dict')
+const tableData = ref<any[]>([])
+
+watch(
+  () => props.demographicList,
+  (val) => {
+    if (val) {
+      tableData.value = val
+    }
+  },
+  { immediate: true, deep: true }
+)
+
+const stepNext = async () => {
+  // 校验数据
+  const notFillArray = tableData.value.filter((item) => !item.settingWay)
+  if (notFillArray && notFillArray.length) {
+    showToast('请选择安置方式')
+    return
+  }
+  const data = tableData.value.map((item) => {
+    return {
+      demographicId: item.demographicId,
+      settingWay: item.settingWay,
+      settingRemark: item.settingRemark
+    }
+  })
+  emit('submit', data)
+}
+</script>
+
+<style lang="scss" scoped>
+.population-list {
+  width: 100%;
+  height: 100%;
+  padding: 0 9rpx;
+}
+
+.population-item {
+  display: flex;
+  width: 504rpx;
+  height: 94rpx;
+  padding: 9rpx 12rpx;
+  margin-bottom: 9rpx;
+  background: #f2f6ff;
+  border-radius: 5rpx;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  .item {
+    display: flex;
+    height: 21rpx;
+    flex: 33%;
+    flex-direction: row;
+    align-items: center;
+
+    .label {
+      flex: none;
+      width: 56rpx;
+      font-size: 9rpx;
+      color: #171718;
+      text-align: right;
+    }
+
+    .value {
+      flex: 1;
+      font-size: 9rpx;
+      color: #131313;
+      word-break: keep-all;
+      white-space: nowrap;
+    }
+
+    .select-wrap {
+      width: 94rpx;
+      height: 21rpx;
+      overflow: hidden;
+      background: #ffffff;
+      border: 1rpx solid #ebebeb !important;
+      border-radius: 2rpx;
+    }
+
+    .ipt {
+      width: 100%;
+      height: 21rpx;
+      background: #fff;
+      border: 1rpx solid #ebebeb !important;
+      border-radius: 2rpx;
+    }
+
+    &.two-col {
+      flex: 66%;
+    }
+  }
+}
+
+.btn-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 15rpx 65rpx;
+
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 26rpx;
+    padding: 0 11px;
+    font-size: 11px;
+    font-weight: 500;
+    color: #ffffff;
+    background: #3e73ec;
+    border-radius: 2rpx;
+  }
+}
+</style>
