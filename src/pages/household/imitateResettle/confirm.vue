@@ -414,9 +414,9 @@
       <resettleDesc @close="descClose" />
     </uni-popup>
 
-    <uni-popup ref="areadetailpopup" type="center">
+    <!-- <uni-popup ref="areadetailpopup" type="center">
       <areaDetail @close="areaDetailClose" />
-    </uni-popup>
+    </uni-popup> -->
 
     <uni-popup ref="planpopup" type="center">
       <planSelect :plans="contrastPlans" @close="planClose" @update-plan="() => {}" />
@@ -428,7 +428,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { StorageKey, setStorage, getStorage } from '@/utils/storage'
 import resettleDesc from './resettleDesc.vue'
-import areaDetail from './areaDetail.vue'
+// import areaDetail from './areaDetail.vue'
 import planSelect from './planSelect.vue'
 import {
   resettleWay1,

@@ -235,7 +235,22 @@
 			"name": "householdImp",
 			"path": "pages/household/impIndex",
 			"style": {
-				"navigationBarTitleText": "居民户实施"
+				"navigationBarTitleText": "居民户实施",
+				"app-plus": {
+					"titleNView": false ,
+					"subNVues":[
+						{
+							"id": "areaDetail",
+							"path": "pages/household/subNVue/areaDetail.nvue",
+							"type": "popup",
+							"style": {
+								"width": "527rpx",
+								"height": "350rpx",
+								"margin": "auto"
+							}
+						}
+					]
+				}
 			}
 		},
 		{

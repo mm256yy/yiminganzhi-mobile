@@ -81,18 +81,13 @@
     <uni-popup ref="descpopup" type="center">
       <resettleDesc @close="descClose" />
     </uni-popup>
-
-    <uni-popup ref="areadetailpopup" type="center">
-      <areaDetail @close="areaDetailClose" />
-    </uni-popup>
   </view>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
 import { StorageKey, getStorage } from '@/utils/storage'
 import resettleDesc from './resettleDesc.vue'
-import areaDetail from './areaDetail.vue'
 import people from './components/people.vue'
 import homestead from './components/homestead.vue'
 import apartment from './components/apartment.vue'
@@ -107,6 +102,8 @@ interface PropsType {
 }
 
 const props = defineProps<PropsType>()
+const areaDetailSubNVue = uni.getSubNVueById('areaDetail')
+
 const demographicList = computed(() => {
   return props.dataInfo && props.dataInfo.demographicList ? props.dataInfo.demographicList : []
 })
@@ -120,7 +117,6 @@ const uid = computed<any>(() => {
 })
 
 const descpopup = ref<any>(null)
-const areadetailpopup = ref<any>(null)
 const tableData = ref<any[]>([])
 const houseAreaType = ref<HouseType>(HouseType.homestead)
 // 获取数据字典
@@ -148,14 +144,6 @@ const descClick = () => {
 
 const descClose = () => {
   descpopup.value?.close()
-}
-
-const areaDetailOpen = () => {
-  areadetailpopup.value?.open()
-}
-
-const areaDetailClose = () => {
-  areadetailpopup.value?.close()
 }
 
 const viewPdf = () => {
@@ -204,6 +192,24 @@ const immigrantSettleSubmit = async (data: any) => {
   //   stepIndex.value += 1
   // }
 }
+
+// 打开/关闭子窗口
+const areaDetailOpen = () => {
+  areaDetailSubNVue.show('zoom-out')
+}
+const areaDetailClose = () => {
+  areaDetailSubNVue.hide('zoom-in')
+}
+
+onMounted(() => {
+  console.log(areaDetailSubNVue, 'areaDetailSubNVue')
+  // 监听关闭子窗口
+  uni.$on('areaDetailClose', areaDetailClose)
+})
+
+onBeforeUnmount(() => {
+  uni.$off('areaDetailClose', areaDetailClose)
+})
 </script>
 
 <style lang="scss" scoped>
