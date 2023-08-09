@@ -29,24 +29,22 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              required
-              label="项目"
+              label="地块编号"
+              :label-width="150"
+              label-align="right"
+              name="formData.landNumber"
+            >
+              <uni-easyinput v-model="formData.landNumber" type="text" placeholder="请输入" />
+            </uni-forms-item>
+          </uni-col>
+          <uni-col :span="12">
+            <uni-forms-item
+              label="名称"
               :label-width="150"
               label-align="right"
               name="formData.name"
             >
               <uni-easyinput v-model="formData.name" type="text" placeholder="请输入" />
-            </uni-forms-item>
-          </uni-col>
-          <uni-col :span="12">
-            <uni-forms-item
-              required
-              label="规格"
-              :label-width="150"
-              label-align="right"
-              name="formData.size"
-            >
-              <uni-data-select v-model="formData.size" :localdata="dict[267]" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -59,7 +57,7 @@
               label-align="right"
               name="formData.unit"
             >
-              <uni-data-select v-model="formData.unit" :localdata="dict[268]" />
+              <uni-data-select v-model="formData.unit" :localdata="dict[264]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -91,18 +89,20 @@
                   @focus="inputFocus(2)"
                   @blur="inputBlur"
                 />
-                <view class="unit">元</view>
+                <view class="unit">
+                  元{{ formData.unit ? '/' + formatDict(formData.unit, 264) : '' }}
+                </view>
               </view>
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              label="折率"
+              label="费率"
               :label-width="150"
               label-align="right"
-              name="formData.discountRate"
+              name="formData.rate"
             >
-              <uni-easyinput v-model="formData.discountRate" type="number" placeholder="请输入" />
+              <uni-easyinput v-model="formData.rate" type="number" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -186,8 +186,8 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { routerBack, getStorage, StorageKey } from '@/utils'
-import { addLandlordHouseApi, updateLandlordHouseApi, getLandlordItemApi } from '@/service'
+import { routerBack, getStorage, StorageKey, formatDict } from '@/utils'
+import { updateLandlordTreeApi, getLandlordItemApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
 
@@ -199,14 +199,12 @@ const formData = ref<any>({
   doorNo: commonParams.value.doorNo,
   status: 'implementation',
   addReason: '',
-  houseNo: '',
-  isFixedPrice: '',
-  fitUpType: '',
-  fitUpName: '',
+  landNumber: '',
+  name: '',
   unit: '',
   number: '',
   price: '',
-  discountRate: '',
+  rate: '',
   valuationAmount: '',
   compensationAmount: '',
   remark: ''
@@ -225,7 +223,7 @@ const focusIndex = ref<number>(-1)
 const getLandlordDetail = () => {
   const { uid, itemUid } = commonParams.value
   getLandlordItemApi(uid).then((res: any) => {
-    let arr: any = res && res.assetAppendantList ? res.assetAppendantList : []
+    let arr: any = res && res.assetLandList ? res.assetLandList : []
     if (arr && arr.length) {
       let obj: any = arr.filter((item: any) => item.uid === itemUid)[0]
       formData.value = { ...obj }
@@ -238,10 +236,10 @@ onLoad((option: any) => {
     commonParams.value = JSON.parse(option.params)
     const { type } = commonParams.value
     if (type === 'edit') {
-      title.value = '附属物设施评估编辑'
+      title.value = '土地青苗及附着物评估编辑'
       getLandlordDetail()
     } else if (type === 'add') {
-      title.value = '新增附属物设施评估'
+      title.value = '新增土地青苗及附着物评估'
     }
   }
 })
@@ -267,12 +265,9 @@ const submit = () => {
   if (!formData.value.addReason && type === 'add') {
     showToast('请输入新增原因')
     return
-  } else if (!formData.value.name) {
-    showToast('请输入项目名称')
-    return
   } else {
     if (type === 'add') {
-      addLandlordHouseApi(uid, params)
+      updateLandlordTreeApi(uid, params)
         .then((res) => {
           if (res) {
             showToast(SUCCESS_MSG)
@@ -283,7 +278,7 @@ const submit = () => {
           showToast(ERROR_MSG)
         })
     } else if (type === 'edit') {
-      updateLandlordHouseApi(uid, params)
+      updateLandlordTreeApi(uid, params)
         .then((res) => {
           if (res) {
             showToast(SUCCESS_MSG)
@@ -391,7 +386,7 @@ const submit = () => {
         }
 
         .input-txt {
-          width: 168rpx;
+          width: 141rpx;
           height: 35px;
           padding-left: 7rpx;
           font-size: 9rpx;
@@ -400,7 +395,7 @@ const submit = () => {
         }
 
         .unit {
-          width: 23rpx;
+          width: 50rpx;
           height: 35px;
           font-size: 9rpx;
           line-height: 35px;

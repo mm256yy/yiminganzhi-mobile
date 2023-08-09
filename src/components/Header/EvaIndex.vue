@@ -33,7 +33,7 @@ export default {
     totalFillNumber: function () {
       switch (this.type) {
         case MainType.PeasantHousehold:
-          return 8
+          return 7
           break
         case MainType.Company:
           return 8

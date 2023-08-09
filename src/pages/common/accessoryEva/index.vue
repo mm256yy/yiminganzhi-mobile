@@ -8,16 +8,15 @@
             {{ formatStr(item.name) }}
           </view>
           <view class="right">
-            <!-- <image
+            <image
               class="icon m-r-10"
               src="@/static/images/icon_delete_mini.png"
               mode="scaleToFill"
-              @click="deleteHouse(item)"
-            /> -->
+              @click="deleteAccessory(item)"
+            />
           </view>
         </view>
-        <!-- <view class="list-2" @click="toLink('edit', item)"> -->
-        <view class="list-2">
+        <view class="list-2" @click="toLink('edit', item.uid)">
           <uni-row>
             <uni-col :span="12">
               <view class="col">
@@ -30,10 +29,9 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">折率：</view>
-                <view class="content">40%</view>
-                <!-- <view class="content">
+                <view class="content">
                   {{ formatStr(item.discountRate, '%') }}
-                </view> -->
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -50,10 +48,9 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">评估金额(元)：</view>
-                <view class="content">1000</view>
-                <!-- <view class="content">
+                <view class="content">
                   {{ formatStr(item.valuationAmount) }}
-                </view> -->
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -70,10 +67,9 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">补偿金额(元)：</view>
-                <view class="content">1000</view>
-                <!-- <view class="content">
+                <view class="content">
                   {{ formatStr(item.compensationAmount) }}
-                </view> -->
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -86,15 +82,15 @@
       <view class="tips">请先添加附属设施信息</view>
     </view>
 
-    <!-- <image
+    <image
       class="btn add"
       src="@/static/images/icon_add.png"
       mode="scaleToFill"
       @click="toLink('add')"
-    /> -->
+    />
 
     <!-- 删除确认框 -->
-    <!-- <uni-popup ref="alertDialog" type="dialog">
+    <uni-popup ref="alertDialog" type="dialog">
       <uni-popup-dialog
         type="warn"
         mode="input"
@@ -106,15 +102,14 @@
         @confirm="dialogConfirm"
         @close="dialogClose"
       />
-    </uni-popup> -->
+    </uni-popup>
   </view>
 </template>
 
 <script lang="ts" setup>
-// import { ref } from 'vue'
-// import dayjs from 'dayjs'
-import { formatStr } from '@/utils'
-// import { showToast } from '@/config'
+import { ref } from 'vue'
+import { formatStr, routerForward } from '@/utils'
+import { showToast } from '@/config'
 
 const props = defineProps({
   dataList: {
@@ -132,61 +127,51 @@ const props = defineProps({
   }
 })
 
-// const emit = defineEmits(['deleteHouse'])
-// const alertDialog = ref<any>(null)
-// const currentItem = ref<any>({})
-// const reason = ref<string>('') // 删除原因
+const emit = defineEmits(['deleteAccessory'])
+const alertDialog = ref<any>(null)
+const currentItem = ref<any>({})
+const reason = ref<string>('') // 删除原因
 
-// const toLink = (type: string, data?: any) => {
-//   const { dataInfo, mainType } = props
-//   const { uid, doorNo, longitude, latitude } = dataInfo
-//   let commonParams = { type, uid, doorNo, longitude, latitude, mainType }
-//   if (type === 'edit') {
-//     let params = {
-//       ...data,
-//       completedTime: data.completedTime
-//         ? dayjs(data.completedTime).format('YYYY-MM')
-//         : data.completedTime,
-//       housePic: fmtPicUrl(data.housePic),
-//       landPic: fmtPicUrl(data.landPic),
-//       otherPic: fmtPicUrl(data.otherPic),
-//       homePic: fmtPicUrl(data.homePic)
-//     }
-//     routerForward('houseInfoEdit', {
-//       params: JSON.stringify(params),
-//       commonParams: JSON.stringify(commonParams)
-//     })
-//   } else if (type === 'add') {
-//     routerForward('houseInfoEdit', {
-//       commonParams: JSON.stringify(commonParams)
-//     })
-//   }
-// }
+const toLink = (type: string, itemUid?: any) => {
+  const { uid, doorNo } = props.dataInfo
+
+  if (type === 'edit') {
+    let params = { type, uid, doorNo, itemUid }
+    routerForward('accessoryEvaEdit', {
+      params: JSON.stringify(params)
+    })
+  } else if (type === 'add') {
+    let params = { type, uid, doorNo }
+    routerForward('accessoryEvaEdit', {
+      params: JSON.stringify(params)
+    })
+  }
+}
 
 /**
  * 删除当前行数据
  * @param {Object} data 当前行数据
  */
-// const deleteHouse = (data: any) => {
-//   alertDialog.value?.open()
-//   currentItem.value = { ...data }
-// }
+const deleteAccessory = (data: any) => {
+  alertDialog.value?.open()
+  currentItem.value = { ...data }
+}
 
-// const dialogConfirm = (data: any) => {
-//   if (!data) {
-//     showToast('请输入删除原因')
-//     return
-//   }
-//   let params = {
-//     ...currentItem.value,
-//     reason: data
-//   }
-//   emit('deleteHouse', params)
-// }
+const dialogConfirm = (data: any) => {
+  if (!data) {
+    showToast('请输入删除原因')
+    return
+  }
+  let params = {
+    ...currentItem.value,
+    reason: data
+  }
+  emit('deleteAccessory', params)
+}
 
-// const dialogClose = () => {
-//   alertDialog.value.close()
-// }
+const dialogClose = () => {
+  alertDialog.value.close()
+}
 </script>
 
 <style lang="scss" scoped>

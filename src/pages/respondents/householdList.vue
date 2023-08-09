@@ -53,7 +53,8 @@
       </view>
     </view>
 
-    <view class="add-box" @click="addLandlord">
+    <!-- roleType: 角色类型，assessor 资产评估用户，资产评估时不能添加新的居民户信息 -->
+    <view v-if="roleType !== RoleCodeType.assessor" class="add-box" @click="addLandlord">
       <uni-icons type="plusempty" color="#ffffff" size="10rpx" />
     </view>
 
@@ -105,9 +106,8 @@ import {
   getLandlordItemApi
 } from '@/service'
 import { LandlordType } from '@/types/sync'
-import { LandlordSearchType, MainType } from '@/types/common'
-import { routerForward, getStorage, setStorage, StorageKey } from '@/utils'
-import { RoleCodeType } from '@/types/common'
+import { LandlordSearchType, MainType, RoleCodeType } from '@/types/common'
+import { routerForward, getStorage, StorageKey } from '@/utils'
 
 const tabType = ref<MainType>(MainType.PeasantHousehold)
 const showVillageSelect = ref<boolean>(false)
