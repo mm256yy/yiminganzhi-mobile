@@ -28,7 +28,7 @@
               <view class="col">
                 <view class="label">所在位置：</view>
                 <view class="content">
-                  {{ dictOption(locationTypes, props.dataInfo.locationType) }}
+                  {{ formatDict(props.dataInfo.locationType, 326) }}
                 </view>
               </view>
             </uni-col>
@@ -71,8 +71,7 @@
 </template>
 
 <script lang="ts" setup>
-import { dictOption, formatStr, splitStr, routerForward } from '@/utils'
-import { locationTypes } from '@/config/common'
+import { formatStr, formatDict, routerForward } from '@/utils'
 
 const props = defineProps({
   dataInfo: {

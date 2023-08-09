@@ -15,13 +15,13 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">村集体名称：</view>
-                <view class="content">大力山村</view>
+                <view class="content">{{ formatStr(props.dataInfo.name) }}</view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">村集体编码：</view>
-                <view class="content">603050007</view>
+                <view class="content">{{ formatStr(props.dataInfo.doorNo) }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -30,13 +30,22 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">所属区域：</view>
-                <view class="content">龙游县大力山村</view>
+                <view class="content">
+                  {{
+                    (props.dataInfo.areaCodeText ? props.dataInfo.areaCodeText : '') +
+                    (props.dataInfo.townCodeText ? props.dataInfo.townCodeText : '') +
+                    (props.dataInfo.villageCodeText ? props.dataInfo.villageCodeText : '') +
+                    (props.dataInfo.virutalVillageCodeText
+                      ? props.dataInfo.virutalVillageCodeText
+                      : '')
+                  }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">联系方式：</view>
-                <view class="content">17289436274</view>
+                <view class="content">{{ formatStr(props.dataInfo.phone) }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -45,7 +54,9 @@
             <uni-col :span="24">
               <view class="col">
                 <view class="label">所在位置：</view>
-                <view class="content">淹没区</view>
+                <view class="content">
+                  {{ formatDict(props.dataInfo.locationType, 326) }}
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -61,6 +72,8 @@
 </template>
 
 <script lang="ts" setup>
+import { formatStr, formatDict } from '@/utils'
+
 const props = defineProps({
   dataInfo: {
     type: Object as any,

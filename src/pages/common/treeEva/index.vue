@@ -138,11 +138,6 @@ const props = defineProps({
   dataInfo: {
     type: Object as any,
     default: () => {}
-  },
-  // 主体类型，如居民户、企业、个体户、村集体
-  mainType: {
-    type: String,
-    default: ''
   }
 })
 

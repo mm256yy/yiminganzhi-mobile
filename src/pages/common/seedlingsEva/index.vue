@@ -12,7 +12,7 @@
               class="icon m-r-10"
               src="@/static/images/icon_delete_mini.png"
               mode="scaleToFill"
-              @click="deleteHouse(item)"
+              @click="deleteSeedlings(item)"
             />
           </view>
         </view>
@@ -98,7 +98,7 @@
         cancelText="取消"
         confirmText="确认"
         title="确认删除？"
-        :value="reason"
+        :value="deleteReason"
         placeholder="请输入删除原因"
         @confirm="dialogConfirm"
         @close="dialogClose"
@@ -120,18 +120,13 @@ const props = defineProps({
   dataInfo: {
     type: Object as any,
     default: () => {}
-  },
-  // 主体类型，如居民户、企业、个体户、村集体
-  mainType: {
-    type: String,
-    default: ''
   }
 })
 
 const emit = defineEmits(['deleteSeedlings'])
 const alertDialog = ref<any>(null)
 const currentItem = ref<any>({})
-const reason = ref<string>('') // 删除原因
+const deleteReason = ref<string>('') // 删除原因
 
 const toLink = (type: string, itemUid?: any) => {
   const { uid, doorNo } = props.dataInfo
@@ -153,7 +148,7 @@ const toLink = (type: string, itemUid?: any) => {
  * 删除当前行数据
  * @param {Object} data 当前行数据
  */
-const deleteHouse = (data: any) => {
+const deleteSeedlings = (data: any) => {
   alertDialog.value?.open()
   currentItem.value = { ...data }
 }
@@ -165,7 +160,7 @@ const dialogConfirm = (data: any) => {
   }
   let params = {
     ...currentItem,
-    reason: data
+    deleteReason: data
   }
   emit('deleteSeedlings', params)
 }

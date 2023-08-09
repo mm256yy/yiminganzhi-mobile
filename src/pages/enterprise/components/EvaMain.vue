@@ -32,7 +32,6 @@
                   v-if="tabVal === 1"
                   :dataList="dataInfo.immigrantHouseList"
                   :dataInfo="dataInfo"
-                  :mainType="MainType.Company"
                   @updateData="updateData"
                 />
 
@@ -41,7 +40,6 @@
                   v-if="tabVal === 2"
                   :dataList="dataInfo.assetHouseFitUpList"
                   :dataInfo="dataInfo"
-                  :mainType="MainType.Company"
                   @deleteHouseDecoration="deleteHouseDecoration"
                   @updateData="updateData"
                 />
@@ -51,7 +49,6 @@
                   v-if="tabVal === 3"
                   :dataList="dataInfo.immigrantAppendantList"
                   :dataInfo="dataInfo"
-                  :mainType="MainType.Company"
                   @deleteAccessory="deleteAccessory"
                   @updateData="updateData"
                 />
@@ -61,7 +58,6 @@
                   v-if="tabVal === 4"
                   :dataList="dataInfo.immigrantTreeList"
                   :dataInfo="dataInfo"
-                  :mainType="MainType.Company"
                   @deleteTree="deleteTree"
                   @updateData="updateData"
                 />
@@ -71,7 +67,6 @@
                   v-if="tabVal === 5"
                   :dataList="dataInfo.assetLandList"
                   :dataInfo="dataInfo"
-                  :mainType="MainType.Company"
                   @deleteLand="deleteLand"
                   @updateData="updateData"
                 />
@@ -81,7 +76,6 @@
                   v-if="tabVal === 6"
                   :dataList="dataInfo.assetAppendantList"
                   :dataInfo="dataInfo"
-                  :mainType="MainType.Company"
                   @deleteSeedlings="deleteSeedlings"
                   @updateData="updateData"
                 />
@@ -91,7 +85,6 @@
                   v-if="tabVal === 7"
                   :dataList="dataInfo.immigrantEquipmentList"
                   :dataInfo="dataInfo"
-                  :mainType="MainType.Company"
                   @deleteEquipment="deleteEquipment"
                   @updateData="updateData"
                 />
@@ -124,7 +117,7 @@ import houseDecorationEva from '../../common/houseDecorationEva/index.vue' // �
 import accessoryEva from '../../common/accessoryEva/index.vue' // 引入附属设施评估组件
 import treeEva from '../../common/treeEva/index.vue' // 引入零星(林)果木评估组件
 import landEva from '../../common/landEva/index.vue' // 引入土地基本情况评估组件
-import seedlingsEva from '../../common/seedlingsEva/edit.vue' // 引入土地青苗及附着物评估组件
+import seedlingsEva from '../../common/seedlingsEva/index.vue' // 引入土地青苗及附着物评估组件
 import equipmentEva from '../../common/equipmentEva/index.vue' // 引入设施设备评估组件
 
 import {

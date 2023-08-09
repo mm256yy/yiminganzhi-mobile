@@ -543,7 +543,7 @@
 
 <script lang="ts" setup>
 import dayjs from 'dayjs'
-import { formatStr, formatDict, splitStr, routerForward, fmtPicUrl } from '@/utils'
+import { formatStr, formatDict, routerForward, fmtPicUrl } from '@/utils'
 import UploadFile from '@/components/UploadFile/index.vue'
 
 const props = defineProps({

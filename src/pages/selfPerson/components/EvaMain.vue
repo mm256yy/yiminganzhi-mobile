@@ -8,12 +8,7 @@
         <view class="list-box">
           <view class="box" v-if="JSON.stringify(props.dataInfo) !== '{}'">
             <!-- 头部 -->
-            <Header
-              :dataInfo="dataInfo"
-              :type="MainType.IndividualHousehold"
-              :templateType="PrintType.printIndividualHousehold"
-              @updateData="updateData"
-            />
+            <Header :dataInfo="dataInfo" :type="MainType.IndividualHousehold" />
 
             <view class="tabs-content">
               <!-- tab 切换 -->
@@ -32,7 +27,6 @@
                   v-if="tabVal === 1"
                   :dataList="dataInfo.immigrantHouseList"
                   :dataInfo="dataInfo"
-                  :mainType="MainType.IndividualHousehold"
                   @updateData="updateData"
                 />
 
@@ -41,7 +35,6 @@
                   v-if="tabVal === 2"
                   :dataList="dataInfo.assetHouseFitUpList"
                   :dataInfo="dataInfo"
-                  :mainType="MainType.IndividualHousehold"
                   @deleteHouseDecoration="deleteHouseDecoration"
                   @updateData="updateData"
                 />
@@ -51,7 +44,6 @@
                   v-if="tabVal === 3"
                   :dataInfo="dataInfo"
                   :dataList="dataInfo.immigrantAppendantList"
-                  :mainType="MainType.IndividualHousehold"
                   @deleteAccessory="deleteAccessory"
                   @updateData="updateData"
                 />
@@ -61,7 +53,6 @@
                   v-if="tabVal === 4"
                   :dataList="dataInfo.immigrantTreeList"
                   :dataInfo="dataInfo"
-                  :mainType="MainType.IndividualHousehold"
                   @deleteTree="deleteTree"
                   @updateData="updateData"
                 />
@@ -71,7 +62,6 @@
                   v-if="tabVal === 5"
                   :dataList="dataInfo.assetLandList"
                   :dataInfo="dataInfo"
-                  :mainType="MainType.IndividualHousehold"
                   @deleteLand="deleteLand"
                   @updateData="updateData"
                 />
@@ -81,7 +71,6 @@
                   v-if="tabVal === 6"
                   :dataList="dataInfo.assetAppendantList"
                   :dataInfo="dataInfo"
-                  :mainType="MainType.IndividualHousehold"
                   @deleteSeedlings="deleteSeedlings"
                   @updateData="updateData"
                 />
@@ -91,7 +80,6 @@
                   v-if="tabVal === 7"
                   :dataList="dataInfo.immigrantEquipmentList"
                   :dataInfo="dataInfo"
-                  :mainType="MainType.IndividualHousehold"
                   @deleteEquipment="deleteEquipment"
                   @updateData="updateData"
                 />
@@ -116,7 +104,7 @@ import { computed, ref } from 'vue'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { MainType, PrintType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
-import Header from '@/components/Header/Index.vue'
+import Header from '@/components/Header/EvaIndex.vue'
 import Tabs from '@/components/Tabs/Index.vue'
 import baseInfoEva from '../baseInfoEva/index.vue' // 引入基本信息组件
 import houseSubjectEva from '../../common/houseSubjectEva/index.vue' // 引入房屋主体评估组件
@@ -130,7 +118,6 @@ import equipmentEva from '../../common/equipmentEva/index.vue' // 引入设施�
 import {
   deleteLandlordHouseApi,
   deleteLandlordEquipmentApi,
-  updateLandlordImmigrantFileApi,
   deleteLandlordPeopleApi
 } from '@/service'
 
@@ -377,20 +364,6 @@ const deleteSeedlings = (data: any, reason?: string) => {
 const deleteEquipment = (data: any) => {
   deleteLandlordEquipmentApi(props.dataInfo.uid, data.uid)
     .then((res: any) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch(() => {
-      showToast(ERROR_MSG)
-    })
-}
-
-// 更新照片
-const updateAttachment = (params: any) => {
-  updateLandlordImmigrantFileApi(props.dataInfo.uid, params)
-    .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
         updateData()

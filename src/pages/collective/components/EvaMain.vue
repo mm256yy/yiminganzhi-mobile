@@ -8,12 +8,7 @@
         <view class="list-box">
           <view class="box" v-if="JSON.stringify(props.dataInfo) !== '{}'">
             <!-- 头部 -->
-            <Header
-              :dataInfo="dataInfo"
-              :type="MainType.Village"
-              :templateType="PrintType.printCollective"
-              @update-data="updateData"
-            />
+            <Header :dataInfo="dataInfo" :type="MainType.Village" />
 
             <view class="tabs-content">
               <!-- tab 切换 -->
@@ -32,7 +27,6 @@
                   v-if="tabVal === 1"
                   :dataList="dataInfo.immigrantHouseList"
                   :dataInfo="dataInfo"
-                  :mainType="MainType.Village"
                   @updateData="updateData"
                 />
 
@@ -41,7 +35,6 @@
                   v-if="tabVal === 2"
                   :dataList="dataInfo.assetHouseFitUpList"
                   :dataInfo="dataInfo"
-                  :mainType="MainType.Village"
                   @deleteHouseDecoration="deleteHouseDecoration"
                   @updateData="updateData"
                 />
@@ -51,7 +44,6 @@
                   v-if="tabVal === 3"
                   :dataInfo="dataInfo"
                   :dataList="dataInfo.immigrantAppendantList"
-                  :mainType="MainType.Village"
                   @deleteAccessory="deleteAccessory"
                   @updateData="updateData"
                 />
@@ -61,7 +53,6 @@
                   v-if="tabVal === 4"
                   :dataList="dataInfo.immigrantTreeList"
                   :dataInfo="dataInfo"
-                  :mainType="MainType.Village"
                   @deleteTree="deleteTree"
                   @updateData="updateData"
                 />
@@ -71,7 +62,6 @@
                   v-if="tabVal === 5"
                   :dataList="dataInfo.assetLandList"
                   :dataInfo="dataInfo"
-                  :mainType="MainType.Village"
                   @deleteLand="deleteLand"
                   @updateData="updateData"
                 />
@@ -81,7 +71,6 @@
                   v-if="tabVal === 6"
                   :dataList="dataInfo.assetAppendantList"
                   :dataInfo="dataInfo"
-                  :mainType="MainType.Village"
                   @deleteSeedlings="deleteSeedlings"
                   @updateData="updateData"
                 />
@@ -91,7 +80,6 @@
                   v-if="tabVal === 7"
                   :dataList="dataInfo.immigrantFacilitiesList"
                   :dataInfo="dataInfo"
-                  :mainType="MainType.Village"
                   @deleteSpecial="deleteSpecial"
                   @updateData="updateData"
                 />
@@ -114,9 +102,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
-import { MainType, PrintType } from '@/types/common'
+import { MainType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
-import Header from '@/components/Header/Index.vue'
+import Header from '@/components/Header/EvaIndex.vue'
 import Tabs from '@/components/Tabs/Index.vue'
 import baseInfoEva from '../baseInfoEva/index.vue' // 引入基本信息组件
 import houseSubjectEva from '../../common/houseSubjectEva/index.vue' // 引入房屋主体评估组件

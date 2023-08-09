@@ -27,7 +27,6 @@
                   v-if="tabVal === 1"
                   :dataList="dataInfo.immigrantHouseList"
                   :dataInfo="dataInfo"
-                  :mainType="MainType.PeasantHousehold"
                   @updateData="updateData"
                 />
 
@@ -36,7 +35,6 @@
                   v-if="tabVal === 2"
                   :dataList="dataInfo.assetHouseFitUpList"
                   :dataInfo="dataInfo"
-                  :mainType="MainType.PeasantHousehold"
                   @deleteHouseDecoration="deleteHouseDecoration"
                   @updateData="updateData"
                 />
@@ -46,7 +44,6 @@
                   v-if="tabVal === 3"
                   :dataInfo="dataInfo"
                   :dataList="dataInfo.assetAppendantList"
-                  :mainType="MainType.PeasantHousehold"
                   @deleteAccessory="deleteAccessory"
                   @updateData="updateData"
                 />
@@ -56,7 +53,6 @@
                   v-if="tabVal === 4"
                   :dataList="dataInfo.immigrantTreeList"
                   :dataInfo="dataInfo"
-                  :mainType="MainType.PeasantHousehold"
                   @deleteTree="deleteTree"
                   @updateData="updateData"
                 />
@@ -66,7 +62,6 @@
                   v-if="tabVal === 5"
                   :dataInfo="dataInfo"
                   :dataList="dataInfo.assetLandList"
-                  :mainType="MainType.PeasantHousehold"
                   @deleteLand="deleteLand"
                   @updateData="updateData"
                 />
@@ -76,7 +71,6 @@
                   v-if="tabVal === 6"
                   :dataList="dataInfo.assetLandList"
                   :dataInfo="dataInfo"
-                  :mainType="MainType.PeasantHousehold"
                   @deleteSeedlings="deleteSeedlings"
                   @updateData="updateData"
                 />

@@ -295,6 +295,20 @@
 			}
 		},
 		{
+			"name": "equipmentEvaEdit",
+			"path": "pages/common/equipmentEva/edit",
+			"style": {
+				"navigationBarTitleText": "编辑设施设备评估"
+			}
+		},
+		{
+			"name": "specialEvaEdit",
+			"path": "pages/collective/specialEva/edit",
+			"style": {
+				"navigationBarTitleText": "编辑小型专项评估"
+			}
+		},
+		{
 			"name": "householdImp",
 			"path": "pages/household/impIndex",
 			"style": {
