@@ -858,7 +858,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { getFamilyIncomeListApi, updateLandlordManagementApi } from '@/service'
+import { getLandlordItemApi, getFamilyIncomeListApi, updateLandlordManagementApi } from '@/service'
 import { MainType } from '@/types/common'
 import { routerBack } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
@@ -919,12 +919,7 @@ onLoad((option: any) => {
   if (option) {
     doorNo.value = option.doorNo ? option.doorNo : ''
     uid.value = option.uid ? option.uid : ''
-    let arr = JSON.parse(option.dataList)
-    if (arr && arr.length) {
-      genNewArr(arr)
-    } else {
-      getBusinessList()
-    }
+    getList(uid.value)
   }
 })
 
@@ -935,6 +930,21 @@ const commonParams = {
   lastTwoYearAmount: '', // 近两年收入
   lastThreeYearAmount: '', // 近三年收入
   remark: '' // 备注
+}
+
+/**
+ * 获取经营现状信息列表(含已填写和未填写)
+ * @param(object) uid
+ */
+const getList = (uid: string) => {
+  getLandlordItemApi(uid).then((res: any) => {
+    let arr = res?.immigrantManagementList
+    if (arr && arr.length) {
+      genNewArr(arr)
+    } else {
+      getBusinessList()
+    }
+  })
 }
 
 /**

@@ -153,6 +153,7 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="人口类型"
               :label-width="150"
               label-align="right"
@@ -164,6 +165,7 @@
           <uni-col :span="12">
             <uni-forms-item
               label="人口类别"
+              required
               :label-width="150"
               label-align="right"
               name="formData.populationSort"
@@ -174,6 +176,7 @@
           <uni-col :span="12">
             <uni-forms-item
               label="户籍册类别"
+              required
               :label-width="150"
               label-align="right"
               name="formData.censusType"
@@ -434,6 +437,15 @@ const submit = () => {
     return
   } else if (!formData.value.insuranceType) {
     showToast('请选择参保情况')
+    return
+  } else if (!formData.value.populationType) {
+    showToast('请选择人口类型')
+    return
+  } else if (!formData.value.populationSort) {
+    showToast('请选择人口类别')
+    return
+  } else if (!formData.value.censusType) {
+    showToast('请选择户籍册类别')
     return
   } else if (!formData.value.addReason && type.value === 'add' && stage === MainStage.review) {
     showToast('请输入新增原因')

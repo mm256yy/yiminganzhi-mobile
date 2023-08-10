@@ -57,6 +57,7 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="所在位置"
               :label-width="150"
               label-align="right"
@@ -340,6 +341,9 @@ const submit = () => {
     formData.value.suffixNo.length !== 4
   ) {
     showToast('户号不全，请输入四位数字')
+    return
+  } else if (!formData.value.locationType) {
+    showToast('请选择所在位置')
     return
   } else {
     if (type.value === 'add') {

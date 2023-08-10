@@ -223,6 +223,7 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="房屋高程"
               :label-width="150"
               label-align="right"
@@ -561,8 +562,37 @@ const submit = () => {
     return
   } else if (!formData.value.usageType) {
     showToast('请选择房屋用途')
-  } else if (!formData.value.propertyType) {
+    return
+  }
+  // else if (!formData.value.storeyHeight) {
+  //   showToast('请输入层高')
+  //   return
+  // }
+  // else if (!formData.value.storeyNumber) {
+  //   showToast('请输入层数')
+  //   return
+  // }
+  // else if (!formData.value.landArea) {
+  //   showToast('请输入建筑面积')
+  //   return
+  // }
+  // else if (!formData.value.locationType) {
+  //   showToast('请选择所在位置')
+  //   return
+  // }
+  // else if (!formData.value.constructionType) {
+  //   showToast('请选择结构类型')
+  //   return
+  // }
+  // else if (!formData.value.inundationRange) {
+  //   showToast('请选择淹没范围')
+  //   return
+  // }
+  else if (!formData.value.propertyType) {
     showToast('请选择房屋产别')
+    return
+  } else if (!formData.value.houseHeight) {
+    showToast('请输入房屋高程')
     return
   } else if (
     !formData.value.addReason &&

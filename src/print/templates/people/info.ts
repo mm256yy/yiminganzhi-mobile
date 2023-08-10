@@ -7,8 +7,8 @@ import {
   getPopulation,
   getHouseInfo,
   getFushuwu,
-  getTree,
-  getGrave
+  getTree
+  // getGrave
 } from '../../common'
 
 // 居民户基本信息 模版
@@ -306,6 +306,7 @@ export const getPeopleInfoDefinition = (landlord: LandlordType, projectInfo: Pro
   if (!landlord) {
     return peopleInfoDefinition
   }
+  //    getGrave(landlord)
   return {
     content: [
       getHead(landlord, projectInfo),
@@ -313,8 +314,7 @@ export const getPeopleInfoDefinition = (landlord: LandlordType, projectInfo: Pro
       getPopulation(landlord),
       getHouseInfo(landlord),
       getFushuwu(landlord),
-      getTree(landlord),
-      getGrave(landlord)
+      getTree(landlord)
     ],
     footer: getFooter
   }
