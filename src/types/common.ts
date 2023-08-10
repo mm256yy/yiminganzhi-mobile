@@ -237,3 +237,11 @@ export enum RoleCodeType {
   implementation = 'implementation',
   assessor = 'assessor'
 }
+
+// 安置方式
+export enum HouseType {
+  homestead = 'homestead',
+  flat = 'flat',
+  oneself = 'oneself',
+  concentrate = 'concentrate'
+}

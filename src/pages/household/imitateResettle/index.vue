@@ -95,7 +95,7 @@ import centerSupport from './components/centerSupport.vue'
 import findSelf from './components/findSelf.vue'
 
 import { LandlordType } from '@/types/sync'
-import { HouseType } from './config'
+import { HouseType } from '@/types/common'
 
 interface PropsType {
   dataInfo: LandlordType

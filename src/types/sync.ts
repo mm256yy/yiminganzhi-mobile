@@ -10,7 +10,8 @@ import {
   ManagementType,
   EquipmentType,
   FacilitiesType,
-  CompanyType
+  CompanyType,
+  UpdateLogType
 } from './datafill'
 import {
   ProjectType,
@@ -23,6 +24,21 @@ import {
   CollectType,
   Top5Type
 } from './common'
+import {
+  AssetHouseFitUpType,
+  AssetLandType,
+  AssetAppendantType,
+  ImmigrantDocumentationType,
+  ImmigrantSettleType,
+  ImmigrantLandType,
+  ImmigrantChooseHouseType,
+  ImmigrantCompensationCardType,
+  ImmigrantHouseEmptyType,
+  ImmigrantLandEmptyType,
+  ImmigrantExcessType,
+  ImmigrantBuildOneselfType,
+  ImmigrantProceduresType
+} from './impDataFill'
 
 // 农户列表
 export interface LandlordType {
@@ -95,6 +111,42 @@ export interface LandlordType {
   immigrantFacilitiesList: FacilitiesType[]
   // 个体户 / 公司 扩展字段
   company: CompanyType
+
+  isUpdate?: string
+  showDoorNo: string
+  fillStatus: string
+  signUser: number
+  initialVillageCode: string
+  status: string
+  settingWay: string
+  buildingForm: string
+  accountName: string
+  bankName: string
+  bankAccount: string
+  accountRemark: string
+  householdPic: string
+  familyPic: string
+  housePic: string
+  resettlePic: string
+  implementFillStatus: string
+  implementEscalationStatus: string
+  disposalMeasuresPic: string
+
+  updateLogList: UpdateLogType[]
+  assetHouseFitUpList: AssetHouseFitUpType[]
+  assetLandList: AssetLandType[]
+  assetAppendantList: AssetAppendantType[]
+  immigrantDocumentation: ImmigrantDocumentationType
+  immigrantSettle: ImmigrantSettleType
+  immigrantLand: ImmigrantLandType
+  immigrantChooseHouseList: ImmigrantChooseHouseType[]
+  immigrantCompensationCardList: ImmigrantCompensationCardType[]
+  immigrantHouseEmpty: ImmigrantHouseEmptyType
+  immigrantLandEmpty: ImmigrantLandEmptyType
+  immigrantExcess: ImmigrantExcessType
+  immigrantBuildOneself: ImmigrantBuildOneselfType[]
+  immigrantProcedures: ImmigrantProceduresType[]
+  cityCodeText?: string
 }
 
 export interface AppVersionDtoType {

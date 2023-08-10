@@ -200,8 +200,9 @@
 
 <script lang="ts" setup>
 import { ref, computed, onMounted, watch } from 'vue'
-import { apartmentArea, apartmentAreaSize, HouseType } from '../config'
+import { apartmentArea, apartmentAreaSize } from '../config'
 import { showToast } from '@/config'
+import { HouseType } from '@/types/common'
 
 interface PropsType {
   doorNo: string

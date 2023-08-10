@@ -241,11 +241,11 @@
 					"subNVues":[
 						{
 							"id": "areaDetail",
-							"path": "pages/household/subNVue/areaDetail.nvue",
+							"path": "pages/household/areaDetail",
 							"type": "popup",
 							"style": {
 								"width": "527rpx",
-								"height": "350rpx",
+								"height": "382rpx",
 								"margin": "auto"
 							}
 						}

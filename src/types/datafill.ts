@@ -66,6 +66,25 @@ export interface PopulationType {
   bankName?: string
   bankAccount?: string
   accountRemark?: string
+
+  householdId?: number
+  populationSort?: string
+  insuranceType?: string
+  cardPic?: string
+  householdPic?: string
+  remark?: string
+  otherPic?: string
+  populationNature?: string
+  checkRemark?: string
+  deleteReason?: string
+  isDelete?: string
+  settingRemark?: string
+  productionStatus?: string
+  relocateStatus?: string
+  productionCompleteTime?: string
+  relocateCompleteTime?: string
+  productionPic?: string
+  relocatePic?: string
 }
 
 // 房屋类型定义
@@ -126,6 +145,10 @@ export interface HouseType {
   demographicId?: number
   ownersSituation?: string
   deleteReason?: string
+
+  isDelete?: string
+  isCompliance?: string // 是否合法，0不合法，1合法
+  otherProofPic?: string // 	佐证文件
 }
 
 // 果木类型定义
@@ -152,6 +175,10 @@ export interface TreeType {
   valuationAmount?: number
   compensationAmount?: number
   valuationRemark?: string
+
+  addReason?: string
+  deleteReason?: string
+  isDelete?: string
 }
 
 // 坟墓类型定义
@@ -185,6 +212,11 @@ export interface GraveType {
   settingGrave?: string
   settingAddress?: string
   settingRemark?: string
+
+  graveNo?: string
+  addReason?: string
+  deleteReason?: string
+  isDelete?: string
 }
 
 // 附属物
@@ -335,6 +367,17 @@ export interface EquipmentType {
   amount: number
   moveType: string
   [key: string]: any
+
+  projectId?: number
+  status: string
+  addReason?: string // 新增原因
+  deleteReason?: string // 删除原因
+  isDelete?: string // 是否删除，0正常，1已删除
+  price?: number // 单价
+  discountRate?: number // 折率
+  valuationAmount?: number // 评估金额
+  compensationAmount?: number // 补偿金额
+  valuationRemark?: string // 评估备注
 }
 
 export interface FacilitiesType {
@@ -364,6 +407,15 @@ export interface FacilitiesType {
 
   projectId?: number
   status?: string
+
+  addReason?: string // 新增原因
+  deleteReason?: string // 删除原因
+  isDelete?: string // 是否删除，0正常，1已删除
+  price?: number // 单价
+  discountRate?: number // 折率
+  valuationAmount?: number // 评估金额
+  compensationAmount?: number // 补偿金额
+  valuationRemark?: string // 评估备注
 }
 
 export interface TemplateParamsType {
@@ -371,4 +423,17 @@ export interface TemplateParamsType {
   projectId: number
   templateType: string
   templateModule: string
+}
+
+// 更新日志
+export interface UpdateLogType {
+  isUpdate?: string
+  id?: number
+  createdName: string
+  type: string
+  operationType: string
+  updateJson: string
+  name: string
+  doorNo: string
+  reason?: string
 }

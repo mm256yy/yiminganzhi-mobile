@@ -52,7 +52,7 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { HouseType } from '../config'
+import { HouseType } from '@/types/common'
 
 interface PropsType {
   data: any

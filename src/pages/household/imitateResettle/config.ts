@@ -129,13 +129,6 @@ export const apartmentArea = [
   }
 ]
 
-export enum HouseType {
-  homestead = 'homestead',
-  flat = 'flat',
-  oneself = 'oneself',
-  concentrate = 'concentrate'
-}
-
 export const resettleHouseType = [
   {
     id: 'homestead',

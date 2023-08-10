@@ -33,7 +33,8 @@
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
-import { HouseType, selfResettleData } from '../config'
+import { selfResettleData } from '../config'
+import { HouseType } from '@/types/common'
 
 interface PropsType {
   data?: any
