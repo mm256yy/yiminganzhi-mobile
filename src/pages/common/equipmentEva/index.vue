@@ -4,28 +4,28 @@
     <view class="list" v-if="props.dataList && props.dataList.length">
       <view class="list-item" v-for="item in props.dataList" :key="item.id">
         <view class="list-1">
-          <view class="left">挖掘机</view>
+          <view class="left">{{ formatStr(item.name) }}</view>
           <view class="right">
             <image
               class="icon m-r-10"
               src="@/static/images/icon_delete_mini.png"
               mode="scaleToFill"
-              @click="deleteHouse(item)"
+              @click="deleteEquipment(item)"
             />
           </view>
         </view>
-        <view class="list-2" @click="toLink('edit', item)">
+        <view class="list-2" @click="toLink('edit', item.uid)">
           <uni-row>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">单位：</view>
-                <view class="content">辆</view>
+                <view class="content">{{ formatDict(item.unit, 268) }}</view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">成新率：</view>
-                <view class="content">35%</view>
+                <view class="content">{{ formatStr(item.newnessRate, '%') }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -34,13 +34,15 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">建造/购置年份：</view>
-                <view class="content">2000年</view>
+                <view class="content">
+                  {{ dayjs(item.year).format('YYYY年') || '-' }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
-                <view class="label">原值(元)：</view>
-                <view class="content">35000</view>
+                <view class="label">原值(万元)：</view>
+                <view class="content">{{ formatStr(item.amount) }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -49,13 +51,13 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">数量：</view>
-                <view class="content">1</view>
+                <view class="content">{{ formatStr(item.number) }}</view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">评估单价(元)：</view>
-                <view class="content">35000</view>
+                <view class="content">{{ formatStr(item.price) }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -64,13 +66,13 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">规格型号：</view>
-                <view class="content">三吨位</view>
+                <view class="content">{{ formatStr(item.size) }}</view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">补偿金额(元)：</view>
-                <view class="content">35000</view>
+                <view class="content">{{ formatStr(item.compensationAmount) }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -98,7 +100,7 @@
         cancelText="取消"
         confirmText="确认"
         title="确认删除？"
-        :value="reason"
+        :value="deleteReason"
         placeholder="请输入删除原因"
         @confirm="dialogConfirm"
         @close="dialogClose"
@@ -110,7 +112,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import dayjs from 'dayjs'
-import { formatDict, formatStr, routerForward, getStorage, StorageKey, fmtPicUrl } from '@/utils'
+import { formatDict, formatStr, routerForward } from '@/utils'
 import { showToast } from '@/config'
 
 const props = defineProps({
@@ -121,41 +123,30 @@ const props = defineProps({
   dataInfo: {
     type: Object as any,
     default: () => {}
-  },
-  // 主体类型，如居民户、企业、个体户、村集体
-  mainType: {
-    type: String,
-    default: ''
   }
 })
 
 const emit = defineEmits(['deleteEquipment'])
 const alertDialog = ref<any>(null)
 const currentItem = ref<any>({})
-const reason = ref<string>('') // 删除原因
+const deleteReason = ref<string>('') // 删除原因
 
-const toLink = (type: string, data?: any) => {
-  const { dataInfo, mainType } = props
-  const { uid, doorNo, longitude, latitude } = dataInfo
-  let commonParams = { type, uid, doorNo, longitude, latitude, mainType }
+/**
+ * 页面跳转
+ * @params {Object} type 类型
+ * @params {Object} itemUid 当前项 uid
+ */
+const toLink = (type: string, itemUid?: any) => {
+  const { uid, doorNo } = props.dataInfo
   if (type === 'edit') {
-    let params = {
-      ...data,
-      completedTime: data.completedTime
-        ? dayjs(data.completedTime).format('YYYY-MM')
-        : data.completedTime,
-      housePic: fmtPicUrl(data.housePic),
-      landPic: fmtPicUrl(data.landPic),
-      otherPic: fmtPicUrl(data.otherPic),
-      homePic: fmtPicUrl(data.homePic)
-    }
-    routerForward('houseInfoEdit', {
-      params: JSON.stringify(params),
-      commonParams: JSON.stringify(commonParams)
+    let params = { type, uid, doorNo, itemUid }
+    routerForward('equipmentEvaEdit', {
+      params: JSON.stringify(params)
     })
   } else if (type === 'add') {
-    routerForward('houseInfoEdit', {
-      commonParams: JSON.stringify(commonParams)
+    let params = { type, uid, doorNo }
+    routerForward('equipmentEvaEdit', {
+      params: JSON.stringify(params)
     })
   }
 }
@@ -164,7 +155,7 @@ const toLink = (type: string, data?: any) => {
  * 删除当前行数据
  * @param {Object} data 当前行数据
  */
-const deleteHouse = (data: any) => {
+const deleteEquipment = (data: any) => {
   alertDialog.value?.open()
   currentItem.value = { ...data }
 }
@@ -176,7 +167,7 @@ const dialogConfirm = (data: any) => {
   }
   let params = {
     ...currentItem.value,
-    reason: data
+    deleteReason: data
   }
   emit('deleteEquipment', params)
 }
@@ -240,7 +231,7 @@ const dialogClose = () => {
           flex-direction: row;
 
           .label {
-            width: 56rpx;
+            width: 80rpx;
             height: 16rpx;
             margin-left: 9rpx;
             font-size: 9rpx;

@@ -135,7 +135,6 @@ const defaultRow = {
  * 获取业主详情
  * @param(object) uid
  */
-
 const getLandlordDetail = () => {
   getLandlordItemApi(uid.value).then((res: any) => {
     dataInfo.value = deepClone(res)

@@ -29,22 +29,22 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
+              label="地块编号"
+              :label-width="150"
+              label-align="right"
+              name="formData.landNumber"
+            >
+              <uni-easyinput v-model="formData.landNumber" type="text" placeholder="请输入" />
+            </uni-forms-item>
+          </uni-col>
+          <uni-col :span="12">
+            <uni-forms-item
               label="名称"
               :label-width="150"
               label-align="right"
               name="formData.name"
             >
               <uni-easyinput v-model="formData.name" type="text" placeholder="请输入" />
-            </uni-forms-item>
-          </uni-col>
-          <uni-col :span="12">
-            <uni-forms-item
-              label="规格/型号"
-              :label-width="150"
-              label-align="right"
-              name="formData.size"
-            >
-              <uni-easyinput v-model="formData.size" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -57,7 +57,7 @@
               label-align="right"
               name="formData.unit"
             >
-              <uni-data-select v-model="formData.unit" :localdata="dict[268]" />
+              <uni-data-select v-model="formData.unit" :localdata="dict[264]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -75,102 +75,34 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              label="用途"
+              label="单价"
               :label-width="150"
               label-align="right"
-              name="formData.purpose"
-            >
-              <uni-easyinput v-model="formData.purpose" type="text" placeholder="请输入" />
-            </uni-forms-item>
-          </uni-col>
-          <uni-col :span="12">
-            <uni-forms-item
-              label="建造/购置年份"
-              :label-width="150"
-              label-align="right"
-              name="formData.year"
-            >
-              <view class="picker-wrapper">
-                <!-- 当选择的日期颗粒度为year时，start 和 end 必须赋值（空字符串也可以），否则会在控制台报警告信息 -->
-                <picker
-                  mode="date"
-                  start=""
-                  end=""
-                  :value="currentYear"
-                  :fields="'year'"
-                  @change="dateChange"
-                >
-                  <view :class="['uni-input', formData.year ? '' : 'select']">
-                    {{ formData.year ? formData.year : '选择年份' }}
-                  </view>
-                </picker>
-              </view>
-            </uni-forms-item>
-          </uni-col>
-        </uni-row>
-
-        <uni-row>
-          <uni-col :span="12">
-            <uni-forms-item
-              label="原值"
-              :label-width="150"
-              label-align="right"
-              name="formData.amount"
+              name="formData.price"
             >
               <view :class="['input-wrapper', focusIndex === 2 ? 'focus' : '']">
                 <input
                   class="input-txt"
                   placeholder="请输入"
                   type="number"
-                  v-model="formData.amount"
+                  v-model="formData.price"
                   @focus="inputFocus(2)"
                   @blur="inputBlur"
                 />
-                <view class="unit">万元</view>
+                <view class="unit">
+                  元{{ formData.unit ? '/' + formatDict(formData.unit, 264) : '' }}
+                </view>
               </view>
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              label="搬迁方式"
+              label="费率"
               :label-width="150"
               label-align="right"
-              name="formData.moveType"
+              name="formData.rate"
             >
-              <uni-data-select v-model="formData.moveType" :localdata="dict[221]" />
-            </uni-forms-item>
-          </uni-col>
-        </uni-row>
-
-        <uni-row>
-          <uni-col :span="12">
-            <uni-forms-item
-              label="评估单价"
-              :label-width="150"
-              label-align="right"
-              name="formData.price"
-            >
-              <view :class="['input-wrapper', focusIndex === 3 ? 'focus' : '']">
-                <input
-                  class="input-txt"
-                  placeholder="请输入"
-                  type="number"
-                  v-model="formData.price"
-                  @focus="inputFocus(3)"
-                  @blur="inputBlur"
-                />
-                <view class="unit">元</view>
-              </view>
-            </uni-forms-item>
-          </uni-col>
-          <uni-col :span="12">
-            <uni-forms-item
-              label="成新率"
-              :label-width="150"
-              label-align="right"
-              name="formData.newnessRate"
-            >
-              <uni-easyinput v-model="formData.newnessRate" type="number" placeholder="请输入" />
+              <uni-easyinput v-model="formData.rate" type="number" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -183,13 +115,13 @@
               label-align="right"
               name="formData.valuationAmount"
             >
-              <view :class="['input-wrapper', focusIndex === 4 ? 'focus' : '']">
+              <view :class="['input-wrapper', focusIndex === 3 ? 'focus' : '']">
                 <input
                   class="input-txt"
                   placeholder="请输入"
                   type="number"
                   v-model="formData.valuationAmount"
-                  @focus="inputFocus(4)"
+                  @focus="inputFocus(3)"
                   @blur="inputBlur"
                 />
                 <view class="unit">元</view>
@@ -203,13 +135,13 @@
               label-align="right"
               name="formData.compensationAmount"
             >
-              <view :class="['input-wrapper', focusIndex === 5 ? 'focus' : '']">
+              <view :class="['input-wrapper', focusIndex === 4 ? 'focus' : '']">
                 <input
                   class="input-txt"
                   placeholder="请输入"
                   type="number"
                   v-model="formData.compensationAmount"
-                  @focus="inputFocus(5)"
+                  @focus="inputFocus(4)"
                   @blur="inputBlur"
                 />
                 <view class="unit">元</view>
@@ -224,15 +156,15 @@
               label="备注"
               :label-width="150"
               label-align="right"
-              name="formData.valuationRemark"
+              name="formData.remark"
             >
-              <view :class="['input-txtarea-wrapper', focusIndex === 6 ? 'focus' : '']">
+              <view :class="['input-txtarea-wrapper', focusIndex === 5 ? 'focus' : '']">
                 <textarea
                   class="input-txtarea"
                   placeholder="请输入(50字以内)"
                   :maxlength="50"
-                  v-model="formData.valuationRemark"
-                  @focus="inputFocus(6)"
+                  v-model="formData.remark"
+                  @focus="inputFocus(5)"
                   @blur="inputBlur"
                 ></textarea>
               </view>
@@ -254,9 +186,8 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import dayjs from 'dayjs'
-import { routerBack, getStorage, StorageKey } from '@/utils'
-import { addLandlordEquipmentApi, updateLandlordEquipmentApi, getLandlordItemApi } from '@/service'
+import { routerBack, getStorage, StorageKey, formatDict } from '@/utils'
+import { updateLandlordTreeApi, getLandlordItemApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
 
@@ -268,19 +199,15 @@ const formData = ref<any>({
   doorNo: commonParams.value.doorNo,
   status: 'implementation',
   addReason: '',
+  landNumber: '',
   name: '',
-  size: '',
   unit: '',
   number: '',
-  purpose: '',
-  year: '',
-  amount: '',
-  moveType: '',
   price: '',
-  newnessRate: '',
+  rate: '',
   valuationAmount: '',
   compensationAmount: '',
-  valuationRemark: ''
+  remark: ''
 })
 
 // 获取数据字典
@@ -289,17 +216,6 @@ const dict = getStorage(StorageKey.DICT)
 // 获得焦点的输入框下标
 const focusIndex = ref<number>(-1)
 
-const currentYear = ref<any>('')
-
-// 获取年份
-const getYear = () => {
-  if (formData.value.year) {
-    return formData.value.year
-  } else {
-    return dayjs().year()
-  }
-}
-
 /**
  * 获取业主详情
  * @param(object) uid
@@ -307,14 +223,10 @@ const getYear = () => {
 const getLandlordDetail = () => {
   const { uid, itemUid } = commonParams.value
   getLandlordItemApi(uid).then((res: any) => {
-    let arr: any = res && res.immigrantEquipmentList ? res.immigrantEquipmentList : []
+    let arr: any = res && res.assetLandList ? res.assetLandList : []
     if (arr && arr.length) {
       let obj: any = arr.filter((item: any) => item.uid === itemUid)[0]
-      formData.value = {
-        ...obj,
-        year: obj.year ? dayjs(obj.year) : ''
-      }
-      currentYear.value = obj.year ? dayjs(obj.year) : ''
+      formData.value = { ...obj }
     }
   })
 }
@@ -324,11 +236,10 @@ onLoad((option: any) => {
     commonParams.value = JSON.parse(option.params)
     const { type } = commonParams.value
     if (type === 'edit') {
-      title.value = '设施设备评估编辑'
+      title.value = '土地青苗及附着物评估编辑'
       getLandlordDetail()
     } else if (type === 'add') {
-      currentYear.value = getYear()
-      title.value = '新增设施设备评估'
+      title.value = '新增土地青苗及附着物评估'
     }
   }
 })
@@ -343,21 +254,12 @@ const inputBlur = () => {
   focusIndex.value = -1
 }
 
-/**
- * 建造/购置年份选择
- * @param {Object} e
- */
-const dateChange = (e: any) => {
-  formData.value.year = e.detail.value
-}
-
 // 表单提交
 const submit = () => {
   const { uid, doorNo, type } = commonParams.value
   const params = {
     doorNo,
-    ...formData.value,
-    year: formData.value.year ? dayjs(formData.value.year) : ''
+    ...formData.value
   }
 
   if (!formData.value.addReason && type === 'add') {
@@ -365,7 +267,7 @@ const submit = () => {
     return
   } else {
     if (type === 'add') {
-      addLandlordEquipmentApi(uid, params)
+      updateLandlordTreeApi(uid, params)
         .then((res) => {
           if (res) {
             showToast(SUCCESS_MSG)
@@ -376,7 +278,7 @@ const submit = () => {
           showToast(ERROR_MSG)
         })
     } else if (type === 'edit') {
-      updateLandlordEquipmentApi(uid, params)
+      updateLandlordTreeApi(uid, params)
         .then((res) => {
           if (res) {
             showToast(SUCCESS_MSG)
@@ -483,12 +385,8 @@ const submit = () => {
           border-color: rgb(41, 121, 255);
         }
 
-        &.disabled {
-          background-color: #f5f7fa;
-        }
-
         .input-txt {
-          width: 168rpx;
+          width: 141rpx;
           height: 35px;
           padding-left: 7rpx;
           font-size: 9rpx;
@@ -497,7 +395,7 @@ const submit = () => {
         }
 
         .unit {
-          width: 23rpx;
+          width: 50rpx;
           height: 35px;
           font-size: 9rpx;
           line-height: 35px;

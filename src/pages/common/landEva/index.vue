@@ -8,16 +8,15 @@
             {{ formatStr(item.landName) }}
           </view>
           <view class="right">
-            <!-- <image
+            <image
               class="icon m-r-10"
               src="@/static/images/icon_delete_mini.png"
               mode="scaleToFill"
-              @click="deleteHouse(item)"
-            /> -->
+              @click="deleteLand(item)"
+            />
           </view>
         </view>
-        <!-- <view class="list-2" @click="toLink('edit', item)"> -->
-        <view class="list-2">
+        <view class="list-2" @click="toLink('edit', item.uid)">
           <uni-row>
             <uni-col :span="12">
               <view class="col">
@@ -42,7 +41,7 @@
               <view class="col">
                 <view class="label">所在位置：</view>
                 <view class="content">
-                  {{ formatDict(item.locationType, 288) }}
+                  {{ formatDict(item.locationType, 326) }}
                 </view>
               </view>
             </uni-col>
@@ -102,15 +101,15 @@
       <view class="tips">请先添加土地基本情况</view>
     </view>
 
-    <!-- <image
+    <image
       class="btn add"
       src="@/static/images/icon_add.png"
       mode="scaleToFill"
       @click="toLink('add')"
-    /> -->
+    />
 
     <!-- 删除确认框 -->
-    <!-- <uni-popup ref="alertDialog" type="dialog">
+    <uni-popup ref="alertDialog" type="dialog">
       <uni-popup-dialog
         type="warn"
         mode="input"
@@ -122,15 +121,14 @@
         @confirm="dialogConfirm"
         @close="dialogClose"
       />
-    </uni-popup> -->
+    </uni-popup>
   </view>
 </template>
 
 <script lang="ts" setup>
-// import { ref } from 'vue'
-// import dayjs from 'dayjs'
-import { formatDict, formatStr } from '@/utils'
-// import { showToast } from '@/config'
+import { ref } from 'vue'
+import { formatDict, formatStr, routerForward } from '@/utils'
+import { showToast } from '@/config'
 
 const props = defineProps({
   dataList: {
@@ -140,69 +138,53 @@ const props = defineProps({
   dataInfo: {
     type: Object as any,
     default: () => {}
-  },
-  // 主体类型，如居民户、企业、个体户、村集体
-  mainType: {
-    type: String,
-    default: ''
   }
 })
 
-// const emit = defineEmits(['deleteLand'])
-// const alertDialog = ref<any>(null)
-// const currentItem = ref<any>({})
-// const reason = ref<string>('') // 删除原因
+const emit = defineEmits(['deleteLand'])
+const alertDialog = ref<any>(null)
+const currentItem = ref<any>({})
+const reason = ref<string>('') // 删除原因
 
-// const toLink = (type: string, data?: any) => {
-//   const { dataInfo, mainType } = props
-//   const { uid, doorNo, longitude, latitude } = dataInfo
-//   let commonParams = { type, uid, doorNo, longitude, latitude, mainType }
-//   if (type === 'edit') {
-//     let params = {
-//       ...data,
-//       completedTime: data.completedTime
-//         ? dayjs(data.completedTime).format('YYYY-MM')
-//         : data.completedTime,
-//       housePic: fmtPicUrl(data.housePic),
-//       landPic: fmtPicUrl(data.landPic),
-//       otherPic: fmtPicUrl(data.otherPic),
-//       homePic: fmtPicUrl(data.homePic)
-//     }
-//     routerForward('houseInfoEdit', {
-//       params: JSON.stringify(params),
-//       commonParams: JSON.stringify(commonParams)
-//     })
-//   } else if (type === 'add') {
-//     routerForward('houseInfoEdit', {
-//       commonParams: JSON.stringify(commonParams)
-//     })
-//   }
-// }
+const toLink = (type: string, itemUid?: any) => {
+  const { uid, doorNo } = props.dataInfo
+  if (type === 'edit') {
+    let params = { type, uid, doorNo, itemUid }
+    routerForward('landEvaEdit', {
+      params: JSON.stringify(params)
+    })
+  } else if (type === 'add') {
+    let params = { type, uid, doorNo }
+    routerForward('landEvaEdit', {
+      params: JSON.stringify(params)
+    })
+  }
+}
 
-// /**
-//  * 删除当前行数据
-//  * @param {Object} data 当前行数据
-//  */
-// const deleteHouse = (data: any) => {
-//   alertDialog.value?.open()
-//   currentItem.value = { ...data }
-// }
+/**
+ * 删除当前行数据
+ * @param {Object} data 当前行数据
+ */
+const deleteLand = (data: any) => {
+  alertDialog.value?.open()
+  currentItem.value = { ...data }
+}
 
-// const dialogConfirm = (data: any) => {
-//   if (!data) {
-//     showToast('请输入删除原因')
-//     return
-//   }
-//   let params = {
-//     ...currentItem,
-//     reason: data
-//   }
-//   emit('deleteLand', params)
-// }
+const dialogConfirm = (data: any) => {
+  if (!data) {
+    showToast('请输入删除原因')
+    return
+  }
+  let params = {
+    ...currentItem,
+    reason: data
+  }
+  emit('deleteLand', params)
+}
 
-// const dialogClose = () => {
-//   alertDialog.value.close()
-// }
+const dialogClose = () => {
+  alertDialog.value.close()
+}
 </script>
 
 <style lang="scss" scoped>

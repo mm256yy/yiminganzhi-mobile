@@ -53,7 +53,8 @@
       </view>
     </view>
 
-    <view class="add-box" @click="addLandlord">
+    <!-- roleType: 角色类型，assessor 资产评估用户，资产评估时不能添加新的个体工商户信息 -->
+    <view v-if="roleType !== RoleCodeType.assessor" class="add-box" @click="addLandlord">
       <uni-icons type="plusempty" color="#ffffff" size="10rpx" />
     </view>
 
@@ -105,8 +106,8 @@ import {
   getLandlordItemApi
 } from '@/service'
 import { LandlordType } from '@/types/sync'
-import { LandlordSearchType, MainType } from '@/types/common'
-import { routerForward } from '@/utils'
+import { LandlordSearchType, MainType, RoleCodeType } from '@/types/common'
+import { routerForward, getStorage, StorageKey } from '@/utils'
 
 const tabType = ref<MainType>(MainType.IndividualHousehold)
 const showVillageSelect = ref<boolean>(false)
@@ -125,6 +126,9 @@ const isEnd = ref<boolean>(false)
 
 const page = ref<number>(1)
 const pageSize = ref<number>(10)
+
+// 角色类型，不同角色跳转不同的页面，默认为实物采集页面
+const roleType = ref<RoleCodeType>(getStorage(StorageKey.USERROLE))
 
 const init = () => {
   page.value = 1
@@ -219,20 +223,36 @@ const loadMore = () => {
   getList()
 }
 
+/**
+ * 获取页面跳转的路由 name
+ * @params {Object} roleType 角色类型
+ */
+const getRouterName = (roleType: string) => {
+  if (roleType === RoleCodeType.investigator) {
+    return 'selfPerson'
+  } else if (roleType === RoleCodeType.assessor) {
+    return 'selfPersonEva'
+  } else if (roleType === RoleCodeType.implementation) {
+    return 'selfPersonImp'
+  } else {
+    return 'selfPerson'
+  }
+}
+
 // 填报
 const routerMap: any = {
-  [MainType.PeasantHousehold]: 'household',
-  [MainType.IndividualHousehold]: 'selfPerson',
-  [MainType.Company]: 'enterprise',
-  [MainType.Village]: 'collective'
+  [MainType.IndividualHousehold]: getRouterName(roleType.value)
+  // [MainType.PeasantHousehold]: 'household',
+  // [MainType.Company]: 'enterprise',
+  // [MainType.Village]: 'collective'
 }
 
 // 新增 路由 map
 const addRouterMap: any = {
-  [MainType.PeasantHousehold]: 'householdInfoEdit',
-  [MainType.IndividualHousehold]: 'selfBaseInfoEdit',
-  [MainType.Company]: 'baseInfoEdit',
-  [MainType.Village]: 'collectiveBaseInfoEdit'
+  [MainType.IndividualHousehold]: 'selfBaseInfoEdit'
+  // [MainType.PeasantHousehold]: 'householdInfoEdit',
+  // [MainType.Company]: 'baseInfoEdit',
+  // [MainType.Village]: 'collectiveBaseInfoEdit'
 }
 
 const addLandlord = () => {

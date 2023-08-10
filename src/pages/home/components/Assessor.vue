@@ -38,8 +38,7 @@
         </view>
       </view>
 
-      <!-- <view class="enter-item" @click="toLink('enterpriseList')"> -->
-      <view class="enter-item">
+      <view class="enter-item" @click="toLink('enterpriseList')">
         <view class="inner">
           <view class="top">
             <image class="enter-icon" src="@/static/images/company_enter.png" mode="scaleToFill" />
@@ -53,8 +52,7 @@
         </view>
       </view>
 
-      <!-- <view class="enter-item" @click="toLink('selfPersonList')"> -->
-      <view class="enter-item">
+      <view class="enter-item" @click="toLink('selfPersonList')">
         <view class="inner">
           <view class="top">
             <image class="enter-icon" src="@/static/images/single_enter.png" mode="scaleToFill" />
@@ -68,8 +66,7 @@
         </view>
       </view>
 
-      <!-- <view class="enter-item" @click="toLink('collectiveList')"> -->
-      <view class="enter-item">
+      <view class="enter-item" @click="toLink('collectiveList')">
         <view class="inner">
           <view class="top">
             <image class="enter-icon" src="@/static/images/jt_enter.png" mode="scaleToFill" />

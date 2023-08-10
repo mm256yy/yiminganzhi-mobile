@@ -17,8 +17,7 @@
             /> -->
           </view>
         </view>
-        <!-- <view class="list-2" @click="toLink('edit', item)"> -->
-        <view class="list-2">
+        <view class="list-2" @click="toLink('edit', item.uid)">
           <uni-row>
             <uni-col :span="12">
               <view class="col">
@@ -31,8 +30,7 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">成新率：</view>
-                <view class="content">35%</view>
-                <!-- <view class="content">{{ formatStr(item.newnessRate, '%') }}</view> -->
+                <view class="content">{{ formatStr(item.newnessRate, '%') }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -47,8 +45,7 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">评估单价(元/㎡)：</view>
-                <view class="content">10000</view>
-                <!-- <view class="content">{{ formatStr(item.valuationPrice) }}</view> -->
+                <view class="content">{{ formatStr(item.valuationPrice) }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -63,8 +60,7 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">评估金额(元)：</view>
-                <view class="content">10000</view>
-                <!-- <view class="content">{{ formatStr(item.valuationAmount) }}</view> -->
+                <view class="content">{{ formatStr(item.valuationAmount) }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -103,9 +99,8 @@
 
 <script lang="ts" setup>
 // import { ref } from 'vue'
-// import dayjs from 'dayjs'
-import { formatDict, formatStr } from '@/utils'
 // import { showToast } from '@/config'
+import { formatDict, formatStr, routerForward } from '@/utils'
 
 const props = defineProps({
   dataList: {
@@ -115,44 +110,28 @@ const props = defineProps({
   dataInfo: {
     type: Object as any,
     default: () => {}
-  },
-  // 主体类型，如居民户、企业、个体户、村集体
-  mainType: {
-    type: String,
-    default: ''
   }
 })
 
-// const emit = defineEmits(['deleteHouse'])
+const emit = defineEmits(['deleteHouse'])
 // const alertDialog = ref<any>(null)
 // const currentItem = ref<any>({})
 // const reason = ref<string>('') // 删除原因
 
-// const toLink = (type: string, data?: any) => {
-//   const { dataInfo, mainType } = props
-//   const { uid, doorNo, longitude, latitude } = dataInfo
-//   let commonParams = { type, uid, doorNo, longitude, latitude, mainType }
-//   if (type === 'edit') {
-//     let params = {
-//       ...data,
-//       completedTime: data.completedTime
-//         ? dayjs(data.completedTime).format('YYYY-MM')
-//         : data.completedTime,
-//       housePic: fmtPicUrl(data.housePic),
-//       landPic: fmtPicUrl(data.landPic),
-//       otherPic: fmtPicUrl(data.otherPic),
-//       homePic: fmtPicUrl(data.homePic)
-//     }
-//     routerForward('houseInfoEdit', {
-//       params: JSON.stringify(params),
-//       commonParams: JSON.stringify(commonParams)
-//     })
-//   } else if (type === 'add') {
-//     routerForward('houseInfoEdit', {
-//       commonParams: JSON.stringify(commonParams)
-//     })
-//   }
-// }
+const toLink = (type: string, itemUid?: number) => {
+  const { uid, doorNo } = props.dataInfo
+  if (type === 'edit') {
+    let params = { type, uid, itemUid, doorNo }
+    routerForward('houseSubjectEvaEdit', {
+      params: JSON.stringify(params)
+    })
+  } else if (type === 'add') {
+    let params = { type, uid, doorNo }
+    routerForward('houseSubjectEvaEdit', {
+      params: JSON.stringify(params)
+    })
+  }
+}
 
 /**
  * 删除当前行数据

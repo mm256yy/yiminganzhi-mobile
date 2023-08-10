@@ -1,8 +1,7 @@
 <template>
   <!-- 企业基本信息（评估） -->
   <view class="base-info-wrapper">
-    <!-- <view class="list" v-if="props.dataInfo"> -->
-    <view class="list">
+    <view class="list" v-if="props.dataInfo">
       <view class="list-item">
         <view class="list-1">
           <view class="left">
@@ -16,13 +15,13 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">企业名称：</view>
-                <view class="content">国康地板有限公司佐溪分公司</view>
+                <view class="content">{{ formatStr(props.dataInfo.name) }}</view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">企业编码：</view>
-                <view class="content">603050007</view>
+                <view class="content">{{ formatStr(props.dataInfo.doorNo) }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -31,13 +30,19 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">所属区域：</view>
-                <view class="content">大力山村</view>
+                <view class="content">
+                  {{
+                    (props.dataInfo.areaCodeText ? props.dataInfo.areaCodeText : '') +
+                    (props.dataInfo.townCodeText ? props.dataInfo.townCodeText : '') +
+                    (props.dataInfo.villageCodeText ? props.dataInfo.villageCodeText : '')
+                  }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">联系方式：</view>
-                <view class="content">17289436274</view>
+                <view class="content">{{ formatStr(props.dataInfo.phone) }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -46,13 +51,17 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">所在位置：</view>
-                <view class="content">淹没区</view>
+                <view class="content">
+                  {{ formatDict(props.dataInfo.locationType, 326) }}
+                </view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">公司地址：</view>
-                <view class="content">浙江省金华市武义县清溪镇杨村234号</view>
+                <view class="content">
+                  {{ formatStr(props.dataInfo.companyAddress) }}
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -60,20 +69,22 @@
       </view>
     </view>
 
-    <!-- <view class="null-wrapper" v-else>
+    <view class="null-wrapper" v-else>
       <image class="icon" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
       <view class="tips">暂无信息</view>
-    </view> -->
+    </view>
   </view>
 </template>
 
 <script lang="ts" setup>
-// const props = defineProps({
-//   dataInfo: {
-//     type: Object as any,
-//     default: () => {}
-//   }
-// })
+import { formatStr, formatDict } from '@/utils'
+
+const props = defineProps({
+  dataInfo: {
+    type: Object as any,
+    default: () => {}
+  }
+})
 </script>
 
 <style lang="scss" scoped>

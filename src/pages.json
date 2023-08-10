@@ -232,6 +232,83 @@
 			}
 		},
 		{
+			"name": "enterpriseEva",
+			"path": "pages/enterprise/evaIndex",
+			"style": {
+				"navigationBarTitleText": "企业评估"
+			}
+		},
+		{
+			"name": "selfPersonEva",
+			"path": "pages/selfPerson/evaIndex",
+			"style": {
+				"navigationBarTitleText": "个体工商户评估"
+			}
+		},
+		{
+			"name": "collectiveEva",
+			"path": "pages/collective/evaIndex",
+			"style": {
+				"navigationBarTitleText": "村集体评估"
+			}
+		},
+		{
+			"name": "houseSubjectEvaEdit",
+			"path": "pages/common/houseSubjectEva/edit",
+			"style": {
+				"navigationBarTitleText": "编辑房屋主体评估"
+			}
+		},
+		{
+			"name": "houseDecorationEvaEdit",
+			"path": "pages/common/houseDecorationEva/edit",
+			"style": {
+				"navigationBarTitleText": "编辑房屋装修评估"
+			}
+		},
+		{
+			"name": "accessoryEvaEdit",
+			"path": "pages/common/accessoryEva/edit",
+			"style": {
+				"navigationBarTitleText": "编辑附属物设施评估"
+			}
+		},
+		{
+			"name": "treeEvaEdit",
+			"path": "pages/common/treeEva/edit",
+			"style": {
+				"navigationBarTitleText": "编辑零星(林)果木评估"
+			}
+		},
+		{
+			"name": "landEvaEdit",
+			"path": "pages/common/landEva/edit",
+			"style": {
+				"navigationBarTitleText": "编辑土地基本情况评估"
+			}
+		},
+		{
+			"name": "seedlingsEvaEdit",
+			"path": "pages/common/seedlingsEva/edit",
+			"style": {
+				"navigationBarTitleText": "编辑土地青苗及附着物评估"
+			}
+		},
+		{
+			"name": "equipmentEvaEdit",
+			"path": "pages/common/equipmentEva/edit",
+			"style": {
+				"navigationBarTitleText": "编辑设施设备评估"
+			}
+		},
+		{
+			"name": "specialEvaEdit",
+			"path": "pages/collective/specialEva/edit",
+			"style": {
+				"navigationBarTitleText": "编辑小型专项评估"
+			}
+		},
+		{
 			"name": "householdImp",
 			"path": "pages/household/impIndex",
 			"style": {
@@ -254,24 +331,24 @@
 			}
 		},
 		{
-			"name": "enterpriseEva",
-			"path": "pages/enterprise/evaIndex",
+			"name": "enterpriseImp",
+			"path": "pages/enterprise/impIndex",
 			"style": {
-				"navigationBarTitleText": "企业评估"
+				"navigationBarTitleText": "企业实施"
 			}
 		},
 		{
-			"name": "selfPersonEva",
-			"path": "pages/selfPerson/evaIndex",
+			"name": "selfPersonImp",
+			"path": "pages/selfPerson/impIndex",
 			"style": {
-				"navigationBarTitleText": "个体工商户评估"
+				"navigationBarTitleText": "个体工商户实施"
 			}
 		},
 		{
-			"name": "collectiveEva",
-			"path": "pages/collective/evaIndex",
+			"name": "collectiveImp",
+			"path": "pages/collective/impIndex",
 			"style": {
-				"navigationBarTitleText": "村集体评估"
+				"navigationBarTitleText": "村集体实施"
 			}
 		},
 		{

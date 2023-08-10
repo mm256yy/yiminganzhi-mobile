@@ -8,12 +8,7 @@
         <view class="list-box">
           <view class="box" v-if="JSON.stringify(props.dataInfo) !== '{}'">
             <!-- 头部 -->
-            <Header
-              :dataInfo="dataInfo"
-              :type="MainType.IndividualHousehold"
-              :templateType="PrintType.printIndividualHousehold"
-              @update-data="updateData"
-            />
+            <Header :dataInfo="dataInfo" :type="MainType.IndividualHousehold" />
 
             <view class="tabs-content">
               <!-- tab 切换 -->
@@ -32,7 +27,7 @@
                   v-if="tabVal === 1"
                   :dataList="dataInfo.immigrantHouseList"
                   :dataInfo="dataInfo"
-                  @delete-house="deleteHouse"
+                  @updateData="updateData"
                 />
 
                 <!-- 房屋装修评估 -->
@@ -40,7 +35,8 @@
                   v-if="tabVal === 2"
                   :dataList="dataInfo.assetHouseFitUpList"
                   :dataInfo="dataInfo"
-                  @delete-house="deleteHouseDecoration"
+                  @deleteHouseDecoration="deleteHouseDecoration"
+                  @updateData="updateData"
                 />
 
                 <!-- 附属设施评估 -->
@@ -48,7 +44,8 @@
                   v-if="tabVal === 3"
                   :dataInfo="dataInfo"
                   :dataList="dataInfo.immigrantAppendantList"
-                  @delete-accessory="deleteAccessory"
+                  @deleteAccessory="deleteAccessory"
+                  @updateData="updateData"
                 />
 
                 <!-- 零星(林)果木信息 -->
@@ -56,7 +53,8 @@
                   v-if="tabVal === 4"
                   :dataList="dataInfo.immigrantTreeList"
                   :dataInfo="dataInfo"
-                  @delete-tree="deleteTree"
+                  @deleteTree="deleteTree"
+                  @updateData="updateData"
                 />
 
                 <!-- 土地基本情况评估 -->
@@ -64,7 +62,8 @@
                   v-if="tabVal === 5"
                   :dataList="dataInfo.assetLandList"
                   :dataInfo="dataInfo"
-                  @delete-land="deleteLand"
+                  @deleteLand="deleteLand"
+                  @updateData="updateData"
                 />
 
                 <!-- 土地青苗及附着物评估 -->
@@ -72,7 +71,8 @@
                   v-if="tabVal === 6"
                   :dataList="dataInfo.assetAppendantList"
                   :dataInfo="dataInfo"
-                  @delete-seedlings="deleteSeedlings"
+                  @deleteSeedlings="deleteSeedlings"
+                  @updateData="updateData"
                 />
 
                 <!-- 设施设备评估 -->
@@ -80,7 +80,8 @@
                   v-if="tabVal === 7"
                   :dataList="dataInfo.immigrantEquipmentList"
                   :dataInfo="dataInfo"
-                  @delete-equipment="deleteEquipment"
+                  @deleteEquipment="deleteEquipment"
+                  @updateData="updateData"
                 />
               </view>
             </view>
@@ -103,7 +104,7 @@ import { computed, ref } from 'vue'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { MainType, PrintType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
-import Header from '@/components/Header/Index.vue'
+import Header from '@/components/Header/EvaIndex.vue'
 import Tabs from '@/components/Tabs/Index.vue'
 import baseInfoEva from '../baseInfoEva/index.vue' // 引入基本信息组件
 import houseSubjectEva from '../../common/houseSubjectEva/index.vue' // 引入房屋主体评估组件
@@ -111,13 +112,12 @@ import houseDecorationEva from '../../common/houseDecorationEva/index.vue' // �
 import accessoryEva from '../../common/accessoryEva/index.vue' // 引入附属设施评估组件
 import treeEva from '../../common/treeEva/index.vue' // 引入零星（林）果木评估组件
 import landEva from '../../common/landEva/index.vue' // 引入土地基本情况评估组件
-import seedlingsEva from '../../common/seedingsEva/index.vue' // 引入土地青苗及附着物评估组件
+import seedlingsEva from '../../common/seedlingsEva/index.vue' // 引入土地青苗及附着物评估组件
 import equipmentEva from '../../common/equipmentEva/index.vue' // 引入设施设备评估组件
 
 import {
   deleteLandlordHouseApi,
   deleteLandlordEquipmentApi,
-  updateLandlordImmigrantFileApi,
   deleteLandlordPeopleApi
 } from '@/service'
 
@@ -254,18 +254,18 @@ const updateData = () => {
  * 房屋主体评估 - 删除
  * @param(Object) data 被删除的行信息
  */
-const deleteHouse = (data: any) => {
-  deleteLandlordHouseApi(props.dataInfo.uid, data.uid)
-    .then((res) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch(() => {
-      showToast(ERROR_MSG)
-    })
-}
+// const deleteHouse = (data: any) => {
+//   deleteLandlordHouseApi(props.dataInfo.uid, data.uid)
+//     .then((res) => {
+//       if (res) {
+//         showToast(SUCCESS_MSG)
+//         updateData()
+//       }
+//     })
+//     .catch(() => {
+//       showToast(ERROR_MSG)
+//     })
+// }
 
 /**
  * 房屋装修评估 - 删除
@@ -364,20 +364,6 @@ const deleteSeedlings = (data: any, reason?: string) => {
 const deleteEquipment = (data: any) => {
   deleteLandlordEquipmentApi(props.dataInfo.uid, data.uid)
     .then((res: any) => {
-      if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
-      }
-    })
-    .catch(() => {
-      showToast(ERROR_MSG)
-    })
-}
-
-// 更新照片
-const updateAttachment = (params: any) => {
-  updateLandlordImmigrantFileApi(props.dataInfo.uid, params)
-    .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
         updateData()
