@@ -13,8 +13,8 @@ export interface GraveDDLType {
 
   content: string
   updatedDate: string
-  isDelete: '0' | '1'
-  status: 'modify' | 'default'
+  isPadDelete: '0' | '1'
+  padStatus: 'modify' | 'default'
 }
 
 export const GraveTableName = 'grave'
@@ -27,8 +27,8 @@ create table if not exists ${GraveTableName} (
   'villageDoorNo' text,
   'uid' text PRIMARY KEY,
   'content' text,
-  'isDelete' text,
-  'status' text,
+  'isPadDelete' text,
+  'padStatus' text,
   'updatedDate' text DEFAULT NULL
 );
 `

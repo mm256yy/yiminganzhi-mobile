@@ -53,7 +53,7 @@ class PushData {
   getModifyLandlordList() {
     return new Promise((resolve, reject) => {
       try {
-        db.selectTableData(LandlordTableName, 'status', 'modify', 'isDelete', '0')
+        db.selectTableData(LandlordTableName, 'padStatus', 'modify', 'isPadDelete', '0')
           .then((res: LandlordDDLType[]) => {
             let list: LandlordType[] = res.map((item) => JSON.parse(item.content))
             // 删除信息过滤
@@ -69,35 +69,35 @@ class PushData {
 
                 if (demographicList && demographicList.length) {
                   landlordItem.demographicList = demographicList.filter(
-                    (item) => item.isDelete !== '1'
+                    (item) => item.isPadDelete !== '1'
                   )
                 }
 
                 if (immigrantHouseList && immigrantHouseList.length) {
                   landlordItem.immigrantHouseList = immigrantHouseList.filter(
-                    (item) => item.isDelete !== '1'
+                    (item) => item.isPadDelete !== '1'
                   )
                 }
 
                 if (immigrantTreeList && immigrantTreeList.length) {
                   landlordItem.immigrantTreeList = immigrantTreeList.filter(
-                    (item) => item.isDelete !== '1'
+                    (item) => item.isPadDelete !== '1'
                   )
                 }
 
                 // if (immigrantManagementList && immigrantManagementList.length) {
                 //   landlordItem.immigrantManagementList = immigrantManagementList.filter(
-                //     (item) => item.isDelete !== '1'
+                //     (item) => item.isPadDelete !== '1'
                 //   )
                 // }
                 if (immigrantEquipmentList && immigrantEquipmentList.length) {
                   landlordItem.immigrantEquipmentList = immigrantEquipmentList.filter(
-                    (item) => item.isDelete !== '1'
+                    (item) => item.isPadDelete !== '1'
                   )
                 }
                 if (immigrantFacilitiesList && immigrantFacilitiesList.length) {
                   landlordItem.immigrantFacilitiesList = immigrantFacilitiesList.filter(
-                    (item) => item.isDelete !== '1'
+                    (item) => item.isPadDelete !== '1'
                   )
                 }
 
@@ -121,7 +121,7 @@ class PushData {
   getModifyVillageList() {
     return new Promise((resolve, reject) => {
       try {
-        db.selectTableData(VillageTableName, 'status', 'modify', 'isDelete', '0')
+        db.selectTableData(VillageTableName, 'padStatus', 'modify', 'isPadDelete', '0')
           .then((res: VillageDDLType[]) => {
             const result = res.map((item) => JSON.parse(item.content))
             this.state.villageList = result
@@ -140,7 +140,7 @@ class PushData {
   getModifyGraveList() {
     return new Promise((resolve, reject) => {
       try {
-        db.selectTableData(GraveTableName, 'status', 'modify', 'isDelete', '0')
+        db.selectTableData(GraveTableName, 'padStatus', 'modify', 'isPadDelete', '0')
           .then((res: VillageDDLType[]) => {
             const result = res.map((item) => JSON.parse(item.content))
             this.state.immigrantGraveList = result
@@ -187,7 +187,7 @@ class PushData {
         // 自然村
         const villageList: VillageType[] = await db.selectTableData(
           VillageTableName,
-          'isDelete',
+          'isPadDelete',
           '1'
         )
         if (this.isArrayAndNotNull(villageList)) {
@@ -204,7 +204,7 @@ class PushData {
         // 删除的坟墓
         const immigrantGraveList: GraveDDLType[] = await db.selectTableData(
           GraveTableName,
-          'isDelete',
+          'isPadDelete',
           '1'
         )
         if (this.isArrayAndNotNull(immigrantGraveList)) {
@@ -226,9 +226,9 @@ class PushData {
         // 拿到 删除的人口房屋等信息
         const modifyList: LandlordDDLType[] = await db.selectTableData(
           LandlordTableName,
-          'status',
+          'padStatus',
           'modify',
-          'isDelete',
+          'isPadDelete',
           '0'
         )
 
@@ -247,7 +247,7 @@ class PushData {
                 } = landlordItem
                 if (demographicList && demographicList.length) {
                   demographicList.forEach((item) => {
-                    if (item.uid && item.id && item.isDelete === '1') {
+                    if (item.uid && item.id && item.isPadDelete === '1') {
                       deleteList.push({
                         type: 'demographicList',
                         deleteId: item.uid,
@@ -258,7 +258,7 @@ class PushData {
                 }
                 if (immigrantHouseList && immigrantHouseList.length) {
                   immigrantHouseList.forEach((item) => {
-                    if (item.uid && item.id && item.isDelete === '1') {
+                    if (item.uid && item.id && item.isPadDelete === '1') {
                       deleteList.push({
                         type: 'immigrantHouseList',
                         deleteId: item.uid,
@@ -270,7 +270,7 @@ class PushData {
 
                 if (immigrantTreeList && immigrantTreeList.length) {
                   immigrantTreeList.forEach((item) => {
-                    if (item.uid && item.id && item.isDelete === '1') {
+                    if (item.uid && item.id && item.isPadDelete === '1') {
                       deleteList.push({
                         type: 'immigrantTreeList',
                         deleteId: item.uid
@@ -280,7 +280,7 @@ class PushData {
                 }
                 if (immigrantEquipmentList && immigrantEquipmentList.length) {
                   immigrantEquipmentList.forEach((item) => {
-                    if (item.uid && item.id && item.isDelete === '1') {
+                    if (item.uid && item.id && item.isPadDelete === '1') {
                       deleteList.push({
                         type: 'immigrantEquipmentList',
                         deleteId: item.uid
@@ -290,7 +290,7 @@ class PushData {
                 }
                 if (immigrantFacilitiesList && immigrantFacilitiesList.length) {
                   immigrantFacilitiesList.forEach((item) => {
-                    if (item.uid && item.id && item.isDelete === '1') {
+                    if (item.uid && item.id && item.isPadDelete === '1') {
                       deleteList.push({
                         type: 'immigrantFacilitiesList',
                         deleteId: item.uid
@@ -304,7 +304,11 @@ class PushData {
         }
 
         // 删除的调查对象
-        const list: LandlordDDLType[] = await db.selectTableData(LandlordTableName, 'isDelete', '1')
+        const list: LandlordDDLType[] = await db.selectTableData(
+          LandlordTableName,
+          'isPadDelete',
+          '1'
+        )
         if (this.isArrayAndNotNull(list)) {
           const realList = list.map((landlordItem) => JSON.parse(landlordItem.content))
           if (this.isArrayAndNotNull(realList)) {

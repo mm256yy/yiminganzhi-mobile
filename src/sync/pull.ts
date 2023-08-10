@@ -548,9 +548,9 @@ class PullData {
 
           // content: string
           // updatedDate: string
-          // isDelete: '0' | '1'
+          // isPadDelete: '0' | '1'
           const fields =
-            "'uid','registrantId','registrantDoorNo','villageId','villageDoorNo','content','updatedDate','isDelete','status'"
+            "'uid','registrantId','registrantDoorNo','villageId','villageDoorNo','content','updatedDate','isPadDelete','padStatus'"
           const values = `'${item.uid}','${item.registrantId}','${item.registrantDoorNo}','${
             item.villageId
           }','${item.villageDoorNo}','${JSON.stringify(
@@ -706,7 +706,8 @@ class PullData {
         })
         list.forEach((item) => {
           this.districtMap[item.code] = item.name
-          const fields = "'uid','isDelete','status','parentCode','name','content','updatedDate'"
+          const fields =
+            "'uid','isPadDelete','padStatus','parentCode','name','content','updatedDate'"
           const values = `'${item.uid}','0','default','${item.parentCode}','${
             item.name
           }','${JSON.stringify(item)}','${getCurrentTimeStamp()}'`

@@ -53,7 +53,7 @@ export class Landlord extends Common {
         // doorNo: string
         // type: MainType
         let array: LandlordType[] = []
-        const sql = `select uid, id, name, doorNo, type, longitude, latitude, areaCode, townCode, villageCode, virutalVillageCode from ${LandlordTableName} where isDelete = '0' and type = '${type}'`
+        const sql = `select uid, id, name, doorNo, type, longitude, latitude, areaCode, townCode, villageCode, virutalVillageCode from ${LandlordTableName} where isPadDelete = '0' and type = '${type}'`
         const list: LandlordDDLType[] = await this.db.selectSql(sql)
         if (this.isArrayAndNotNull(list)) {
           const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
@@ -94,7 +94,7 @@ export class Landlord extends Common {
         // doorNo: string
         // type: MainType
         let array: LandlordType[] = []
-        const sql = `select uid, id, name, doorNo, type, longitude, latitude, areaCode, townCode, villageCode, virutalVillageCode from ${LandlordTableName} where isDelete = '0' and type = '${type}' and (longitude != '' and longitude is not null) and (latitude != '' and latitude is not null)`
+        const sql = `select uid, id, name, doorNo, type, longitude, latitude, areaCode, townCode, villageCode, virutalVillageCode from ${LandlordTableName} where isPadDelete = '0' and type = '${type}' and (longitude != '' and longitude is not null) and (latitude != '' and latitude is not null)`
         const list: LandlordDDLType[] = await this.db.selectSql(sql)
         console.log(list, '居民户地图列表')
         if (this.isArrayAndNotNull(list)) {
@@ -127,7 +127,7 @@ export class Landlord extends Common {
     return new Promise(async (resolve, reject) => {
       try {
         const array: LandlordType[] = []
-        const sql = `select * from ${LandlordTableName} where isDelete = '0' and type = '${type}' order by updatedDate desc limit ${pageSize} offset ${
+        const sql = `select * from ${LandlordTableName} where isPadDelete = '0' and type = '${type}' order by updatedDate desc limit ${pageSize} offset ${
           (page - 1) * pageSize
         }`
         const list: LandlordDDLType[] = await this.db.selectSql(sql)
@@ -169,7 +169,7 @@ export class Landlord extends Common {
         }
         const { name, timeArray, userId } = data
         const array: LandlordType[] = []
-        let sql = `select * from ${LandlordTableName} where isDelete = '0'`
+        let sql = `select * from ${LandlordTableName} where isPadDelete = '0'`
         if (name) {
           sql += ` and name like '%${name}%'`
         }
@@ -297,7 +297,7 @@ export class Landlord extends Common {
         const landlord = await this.getLandlordByUidNoFilter(data.uid)
         const newData = { ...landlord, ...data }
         const values = getLandlordSqlValues(newData)
-        const sql = `update ${LandlordTableName} set ${values} where uid = '${newData.uid}' and isDelete = '0'`
+        const sql = `update ${LandlordTableName} set ${values} where uid = '${newData.uid}' and isPadDelete = '0'`
         const res = await this.db.execteSql([sql])
         if (res && res.code) {
           reject(false)
@@ -322,7 +322,7 @@ export class Landlord extends Common {
         }
         // 拿到更新的sql字符串
         const values = getLandlordSqlValues(data)
-        const sql = `update ${LandlordTableName} set ${values} where uid = '${data.uid}' and isDelete = '0'`
+        const sql = `update ${LandlordTableName} set ${values} where uid = '${data.uid}' and isPadDelete = '0'`
         const res = await this.db.execteSql([sql])
         if (res && res.code) {
           reject(false)
@@ -344,7 +344,7 @@ export class Landlord extends Common {
           reject(false)
           return
         }
-        const values = `status = 'modify',isDelete = '1',updatedDate = '${getCurrentTimeStamp()}'`
+        const values = `status = 'modify',isPadDelete = '1',updatedDate = '${getCurrentTimeStamp()}'`
         const res = await this.db.updateTableData(LandlordTableName, values, 'uid', uid)
         if (res && res.code) {
           reject(false)
@@ -370,7 +370,7 @@ export class Landlord extends Common {
           LandlordTableName,
           'uid',
           uid,
-          'isDelete',
+          'isPadDelete',
           '0'
         )
         const res: LandlordType = result && result[0] ? JSON.parse(result[0].content) : {}
@@ -379,33 +379,35 @@ export class Landlord extends Common {
         const graveList = await GraveController.getListWithLandlord(res.type, res.doorNo)
         if (res && res.uid) {
           // if (res.immigrantGraveList && res.immigrantGraveList.length) {
-          //   res.immigrantGraveList = res.immigrantGraveList.filter((item) => item.isDelete !== '1')
+          //   res.immigrantGraveList = res.immigrantGraveList.filter((item) => item.isPadDelete !== '1')
           // }
 
           // 赋值坟墓信息
           res.immigrantGraveList = graveList
           // console.log(graveList, 'graveList')
           if (res.demographicList && res.demographicList.length) {
-            res.demographicList = res.demographicList.filter((item) => item.isDelete !== '1')
+            res.demographicList = res.demographicList.filter((item) => item.isPadDelete !== '1')
           }
 
           if (res.immigrantHouseList && res.immigrantHouseList.length) {
-            res.immigrantHouseList = res.immigrantHouseList.filter((item) => item.isDelete !== '1')
+            res.immigrantHouseList = res.immigrantHouseList.filter(
+              (item) => item.isPadDelete !== '1'
+            )
           }
 
           if (res.immigrantTreeList && res.immigrantTreeList.length) {
-            res.immigrantTreeList = res.immigrantTreeList.filter((item) => item.isDelete !== '1')
+            res.immigrantTreeList = res.immigrantTreeList.filter((item) => item.isPadDelete !== '1')
           }
 
           if (res.immigrantEquipmentList && res.immigrantEquipmentList.length) {
             res.immigrantEquipmentList = res.immigrantEquipmentList.filter(
-              (item) => item.isDelete !== '1'
+              (item) => item.isPadDelete !== '1'
             )
           }
 
           if (res.immigrantFacilitiesList && res.immigrantFacilitiesList.length) {
             res.immigrantFacilitiesList = res.immigrantFacilitiesList.filter(
-              (item) => item.isDelete !== '1'
+              (item) => item.isPadDelete !== '1'
             )
           }
 
@@ -440,7 +442,7 @@ export class Landlord extends Common {
           LandlordTableName,
           'uid',
           uid,
-          'isDelete',
+          'isPadDelete',
           '0'
         )
         const res: LandlordType = result && result[0] ? JSON.parse(result[0].content) : {}
@@ -520,11 +522,11 @@ export class Landlord extends Common {
                 item.maritalText = formatDict(item.marital, 260)
                 item.populationTypeText = formatDict(item.populationType, 244)
               })
-              res.demographicList = res.demographicList.filter((item) => item.isDelete !== '1')
+              res.demographicList = res.demographicList.filter((item) => item.isPadDelete !== '1')
             }
             if (res.immigrantAppendantList && res.immigrantAppendantList.length) {
               res.immigrantAppendantList = res.immigrantAppendantList.filter(
-                (item) => item.isDelete !== '1'
+                (item) => item.isPadDelete !== '1'
               )
             }
             if (res.immigrantGraveList && res.immigrantGraveList.length) {
@@ -533,7 +535,7 @@ export class Landlord extends Common {
                 item.materialsText = formatDict(item.materials, 295)
               })
               res.immigrantGraveList = res.immigrantGraveList.filter(
-                (item) => item.isDelete !== '1'
+                (item) => item.isPadDelete !== '1'
               )
             }
 
@@ -543,7 +545,7 @@ export class Landlord extends Common {
             const images: string[] = []
             if (res.immigrantHouseList && res.immigrantHouseList.length) {
               res.immigrantHouseList = res.immigrantHouseList.filter(
-                (item) => item.isDelete !== '1'
+                (item) => item.isPadDelete !== '1'
               )
 
               res.immigrantHouseList.forEach((item) => {
@@ -610,7 +612,7 @@ export class Landlord extends Common {
 
             if (res.immigrantIncomeList && res.immigrantIncomeList.length) {
               res.immigrantIncomeList = res.immigrantIncomeList.filter(
-                (item) => item.isDelete !== '1'
+                (item) => item.isPadDelete !== '1'
               )
             }
             if (res.immigrantTreeList && res.immigrantTreeList.length) {
@@ -619,12 +621,14 @@ export class Landlord extends Common {
                 item.sizeText = formatDict(item.size, 269)
                 item.unitText = formatDict(item.unit, 264)
               })
-              res.immigrantTreeList = res.immigrantTreeList.filter((item) => item.isDelete !== '1')
+              res.immigrantTreeList = res.immigrantTreeList.filter(
+                (item) => item.isPadDelete !== '1'
+              )
             }
 
             if (res.immigrantManagementList && res.immigrantManagementList.length) {
               res.immigrantManagementList = res.immigrantManagementList.filter(
-                (item) => item.isDelete !== '1'
+                (item) => item.isPadDelete !== '1'
               )
             }
 
@@ -635,7 +639,7 @@ export class Landlord extends Common {
                 item.unitText = formatDict(item.unit, 268)
               })
               res.immigrantEquipmentList = res.immigrantEquipmentList.filter(
-                (item) => item.isDelete !== '1'
+                (item) => item.isPadDelete !== '1'
               )
             }
 
@@ -646,7 +650,7 @@ export class Landlord extends Common {
                 item.unitText = formatDict(item.unit, 268)
               })
               res.immigrantFacilitiesList = res.immigrantFacilitiesList.filter(
-                (item) => item.isDelete !== '1'
+                (item) => item.isPadDelete !== '1'
               )
             }
 
@@ -687,7 +691,7 @@ export class Landlord extends Common {
           page = 1
         } = data || {}
         const array: LandlordType[] = []
-        let sql = `select * from ${LandlordTableName} where isDelete = '0'`
+        let sql = `select * from ${LandlordTableName} where isPadDelete = '0'`
         if (type) {
           sql += ` and type = '${type}'`
         }
@@ -881,7 +885,7 @@ export class Landlord extends Common {
         }',reportDate = '${dayjs().format(this.format)}',reportUser = '${
           realData.reportUser
         }',content = '${JSON.stringify(realData)}',updatedDate = '${getCurrentTimeStamp()}'`
-        const sql = `update ${LandlordTableName} set ${values} where uid = '${realData.uid}' and isDelete = '0'`
+        const sql = `update ${LandlordTableName} set ${values} where uid = '${realData.uid}' and isPadDelete = '0'`
         const res = await this.db.execteSql([sql])
         if (res && res.code) {
           reject('更新状态失败')
@@ -922,7 +926,7 @@ export class Landlord extends Common {
         }',signDate = '${dayjs().format(this.format)}',content = '${JSON.stringify(
           data
         )}',updatedDate = '${getCurrentTimeStamp()}'`
-        const sql = `update ${LandlordTableName} set ${values} where uid = '${data.uid}' and isDelete = '0'`
+        const sql = `update ${LandlordTableName} set ${values} where uid = '${data.uid}' and isPadDelete = '0'`
         const res = await this.db.execteSql([sql])
         if (res && res.code) {
           reject('更新状态失败')
@@ -942,7 +946,7 @@ export class Landlord extends Common {
     return new Promise(async (resolve, reject) => {
       try {
         const array: string[] = []
-        let sql = `select areaCode, townCode, villageCode from ${LandlordTableName} where isDelete = '0'`
+        let sql = `select areaCode, townCode, villageCode from ${LandlordTableName} where isPadDelete = '0'`
         if (type) {
           sql += ` and type = '${type}'`
         }

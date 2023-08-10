@@ -35,7 +35,7 @@ class Grave extends Common {
     return new Promise(async (resolve, reject) => {
       try {
         const array: GraveType[] = []
-        let sql = `select * from ${GraveTableName} where isDelete = '0'`
+        let sql = `select * from ${GraveTableName} where isPadDelete = '0'`
         if (type === MainType.PeasantHousehold) {
           sql += ` and registrantDoorNo = '${doorNo}' order by updatedDate desc`
         } else if (type === MainType.Village) {
@@ -67,7 +67,7 @@ class Grave extends Common {
         const uid = guid()
         item.uid = uid
         const fields =
-          "'uid','registrantId','registrantDoorNo','villageId','villageDoorNo','content','updatedDate','isDelete','status'"
+          "'uid','registrantId','registrantDoorNo','villageId','villageDoorNo','content','updatedDate','isPadDelete','status'"
         const values = `'${uid}','${item.registrantId}','${item.registrantDoorNo}','${
           item.villageId
         }','${item.villageDoorNo}','${JSON.stringify(
@@ -102,7 +102,7 @@ class Grave extends Common {
         }',registrantId = '${item.registrantId}',registrantDoorNo = '${
           item.registrantDoorNo
         }',content = '${JSON.stringify(item)}',updatedDate = '${getCurrentTimeStamp()}'`
-        const sql = `update ${GraveTableName} set ${values} where uid = '${item.uid}' and isDelete = '0'`
+        const sql = `update ${GraveTableName} set ${values} where uid = '${item.uid}' and isPadDelete = '0'`
         const res = await this.db.execteSql([sql])
         if (res && res.code) {
           reject(false)
@@ -124,7 +124,7 @@ class Grave extends Common {
           reject(false)
           return
         }
-        const values = `status = 'modify',isDelete = '1',updatedDate = '${getCurrentTimeStamp()}'`
+        const values = `status = 'modify',isPadDelete = '1',updatedDate = '${getCurrentTimeStamp()}'`
         const res = await this.db.updateTableData(GraveTableName, values, 'uid', uid)
         if (res && res.code) {
           reject(false)

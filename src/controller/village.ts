@@ -17,7 +17,7 @@ class Village extends Common {
     return new Promise(async (resolve, reject) => {
       try {
         const array: VillageType[] = []
-        const sql = `select * from ${VillageTableName} where isDelete = '0' order by updatedDate desc`
+        const sql = `select * from ${VillageTableName} where isPadDelete = '0' order by updatedDate desc`
         const res1: VillageDDLType[] = await this.db.selectSql(sql)
         const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
         if (this.isArrayAndNotNull(res1)) {
@@ -54,7 +54,7 @@ class Village extends Common {
       try {
         const { page = 1, pageSize = 10, name } = data
         const array: VillageType[] = []
-        let sql = `select * from ${VillageTableName} where isDelete = '0'`
+        let sql = `select * from ${VillageTableName} where isPadDelete = '0'`
         if (name) {
           sql += ` and name like '%${name}%'`
         }
@@ -104,7 +104,7 @@ class Village extends Common {
         }
         const uid = guid()
         data.uid = uid
-        const fields = `'uid','isDelete','status','name','parentCode','content','updatedDate'`
+        const fields = `'uid','isPadDelete','status','name','parentCode','content','updatedDate'`
         const values = `'${uid}','0','modify','${data.name}','${data.parentCode}','${JSON.stringify(
           data
         )}','${getCurrentTimeStamp()}'`
@@ -150,7 +150,7 @@ class Village extends Common {
         if (!uid) {
           reject(false)
         }
-        const values = `status = 'modify',isDelete = '1',updatedDate = '${getCurrentTimeStamp()}'`
+        const values = `status = 'modify',isPadDelete = '1',updatedDate = '${getCurrentTimeStamp()}'`
         const res = await this.db.updateTableData(VillageTableName, values, 'uid', uid)
         if (res && res.code) {
           reject(false)
@@ -174,7 +174,7 @@ class Village extends Common {
           VillageTableName,
           'uid',
           uid,
-          'isDelete',
+          'isPadDelete',
           '0'
         )
         if (res && res[0]) {

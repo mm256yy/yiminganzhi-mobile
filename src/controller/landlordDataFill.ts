@@ -52,7 +52,7 @@ class DataFill extends Landlord {
         }
         const itemUid = guid()
         data.uid = itemUid
-        data.isDelete = '0'
+        data.isPadDelete = '0'
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           if (!landlordItem.demographicList) {
@@ -130,7 +130,7 @@ class DataFill extends Landlord {
           landlordItem.demographicList = landlordItem.demographicList.map((item) => {
             if (item.uid === itemUid) {
               item.reason = reason || ''
-              item.isDelete = '1'
+              item.isPadDelete = '1'
             }
             return item
           })
@@ -169,7 +169,7 @@ class DataFill extends Landlord {
             if (!item.uid) {
               const itemUid = guid()
               item.uid = itemUid
-              item.isDelete = '0'
+              item.isPadDelete = '0'
             }
             return item
           })
@@ -200,7 +200,7 @@ class DataFill extends Landlord {
         if (landlordItem) {
           landlordItem.immigrantAppendantList = landlordItem.immigrantAppendantList.map((item) => {
             if (item.uid === itemUid) {
-              item.isDelete = '1'
+              item.isPadDelete = '1'
             }
             return item
           })
@@ -282,12 +282,14 @@ class DataFill extends Landlord {
         }
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
-          const deleteList = landlordItem.immigrantTreeList.filter((item) => item.isDelete === '1')
+          const deleteList = landlordItem.immigrantTreeList.filter(
+            (item) => item.isPadDelete === '1'
+          )
           const newList = data.map((item) => {
             if (!item.uid) {
               const itemUid = guid()
               item.uid = itemUid
-              item.isDelete = '0'
+              item.isPadDelete = '0'
             }
             return item
           })
@@ -319,7 +321,7 @@ class DataFill extends Landlord {
         if (landlordItem) {
           landlordItem.immigrantTreeList = landlordItem.immigrantTreeList.map((item) => {
             if (item.uid === itemUid) {
-              item.isDelete = '1'
+              item.isPadDelete = '1'
             }
             return item
           })
@@ -349,7 +351,7 @@ class DataFill extends Landlord {
   //       }
   //       const itemUid = guid()
   //       data.uid = itemUid
-  //       data.isDelete = '0'
+  //       data.isPadDelete = '0'
   //       const landlordItem = await this.getLandlordByUidNoFilter(uid)
   //       if (landlordItem) {
   //         if (!landlordItem.immigrantGraveList) {
@@ -414,7 +416,7 @@ class DataFill extends Landlord {
   //       if (landlordItem) {
   //         landlordItem.immigrantGraveList = landlordItem.immigrantGraveList.map((item) => {
   //           if (item.uid === itemUid) {
-  //             item.isDelete = '1'
+  //             item.isPadDelete = '1'
   //           }
   //           return item
   //         })
@@ -444,7 +446,7 @@ class DataFill extends Landlord {
         }
         const itemUid = guid()
         data.uid = itemUid
-        data.isDelete = '0'
+        data.isPadDelete = '0'
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           if (!landlordItem.immigrantHouseList) {
@@ -511,7 +513,7 @@ class DataFill extends Landlord {
           landlordItem.immigrantHouseList = landlordItem.immigrantHouseList.map((item) => {
             if (item.uid === itemUid) {
               item.reason = reason || ''
-              item.isDelete = '1'
+              item.isPadDelete = '1'
             }
             return item
           })
@@ -552,7 +554,7 @@ class DataFill extends Landlord {
             if (!item.uid) {
               const itemUid = guid()
               item.uid = itemUid
-              item.isDelete = '0'
+              item.isPadDelete = '0'
             }
             return item
           })
@@ -585,7 +587,7 @@ class DataFill extends Landlord {
           if (!data.uid) {
             const itemUid = guid()
             data.uid = itemUid
-            data.isDelete = '0'
+            data.isPadDelete = '0'
           }
           landlordItem.immigrantFile = data
         } else {
@@ -653,7 +655,7 @@ class DataFill extends Landlord {
         }
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
-          landlordItem.company.isDelete = '1'
+          landlordItem.company.isPadDelete = '1'
         } else {
           reject(false)
           console.log('业主信息查询失败')
@@ -680,7 +682,7 @@ class DataFill extends Landlord {
         }
         const itemUid = guid()
         data.uid = itemUid
-        data.isDelete = '0'
+        data.isPadDelete = '0'
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           if (!landlordItem.immigrantEquipmentList) {
@@ -745,7 +747,7 @@ class DataFill extends Landlord {
         if (landlordItem) {
           landlordItem.immigrantEquipmentList = landlordItem.immigrantEquipmentList.map((item) => {
             if (item.uid === itemUid) {
-              item.isDelete = '1'
+              item.isPadDelete = '1'
             }
             return item
           })
@@ -775,7 +777,7 @@ class DataFill extends Landlord {
         }
         const itemUid = guid()
         data.uid = itemUid
-        data.isDelete = '0'
+        data.isPadDelete = '0'
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           if (!landlordItem.immigrantManagementList) {
@@ -816,7 +818,7 @@ class DataFill extends Landlord {
             if (!item.uid) {
               const itemUid = guid()
               item.uid = itemUid
-              item.isDelete = '0'
+              item.isPadDelete = '0'
             }
             return item
           })
@@ -848,7 +850,7 @@ class DataFill extends Landlord {
           landlordItem.immigrantManagementList = landlordItem.immigrantManagementList.map(
             (item) => {
               if (item.uid === itemUid) {
-                item.isDelete = '1'
+                item.isPadDelete = '1'
               }
               return item
             }
@@ -879,7 +881,7 @@ class DataFill extends Landlord {
         }
         const itemUid = guid()
         data.uid = itemUid
-        data.isDelete = '0'
+        data.isPadDelete = '0'
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           if (!landlordItem.immigrantFacilitiesList) {
@@ -947,7 +949,7 @@ class DataFill extends Landlord {
           landlordItem.immigrantFacilitiesList = landlordItem.immigrantFacilitiesList.map(
             (item) => {
               if (item.uid === itemUid) {
-                item.isDelete = '1'
+                item.isPadDelete = '1'
               }
               return item
             }
