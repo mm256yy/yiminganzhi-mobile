@@ -51,8 +51,8 @@ create table if not exists ${LandlordTableName} (
   'longitude' text DEFAULT NULL,
   'latitude' text DEFAULT NULL,
   'card' text,
-  'padStatus' text,
-  'isPadDelete' text,
+  'padStatus' text DEFAULT 'default',
+  'isPadDelete' text DEFAULT '0',
   'updatedDate' text DEFAULT NULL
 );
 `

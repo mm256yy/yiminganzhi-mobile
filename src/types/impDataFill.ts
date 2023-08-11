@@ -182,6 +182,7 @@ export interface ImmigrantChooseHouseType {
   lotteryOrderVerifyPic: string
   placeOrderVerifyPic: string
   carNo: string
+  [key: string]: any
 }
 
 // 移民建卡 immigrantCompensationCardList
@@ -200,6 +201,7 @@ export interface ImmigrantCompensationCardType {
   totalPrice: number
   isVerify: string
   type: string
+  [key: string]: any
 }
 
 // 房屋腾空 immigrantHouseEmpty
@@ -255,6 +257,7 @@ export interface ImmigrantBuildOneselfType {
   name: string
   type: string
   isComplete: string
+  [key: string]: any
 }
 
 // 相关手续 immigrantProcedures
@@ -271,4 +274,5 @@ export interface ImmigrantProceduresType {
   type: string
   needHandle: string
   isComplete: string
+  [key: string]: any
 }

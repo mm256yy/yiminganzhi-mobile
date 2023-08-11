@@ -137,6 +137,91 @@ class Grave extends Common {
       }
     })
   }
+
+  // 单个坟墓查询
+  getGraveByUid(uid: string): Promise<GraveType | null> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!uid) {
+          reject(null)
+          return
+        }
+        const result: GraveDDLType[] = await this.db.selectTableData(GraveTableName, 'uid', uid)
+
+        const res: GraveType = result && result[0] ? JSON.parse(result[0].content) : {}
+        if (res && res.uid) {
+          resolve(res)
+          return
+        }
+        reject(null)
+      } catch (error) {
+        console.log(error, 'Grave-get-error')
+        reject(null)
+      }
+    })
+  }
+
+  // 业主列表删除-实施阶段
+  impDeleteGrave(uid: string, deleteReason?: string): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!uid) {
+          reject(false)
+          console.log('核心字段缺失')
+          return
+        }
+        const item = await this.getGraveByUid(uid)
+        if (item) {
+          item.isDelete = '1'
+          item.deleteReason = deleteReason || ''
+          const values = `status = 'modify',content = '${JSON.stringify(
+            item
+          )}',updatedDate = '${getCurrentTimeStamp()}'`
+          const sql = `update ${GraveTableName} set ${values} where uid = '${item.uid}'`
+          const res = await this.db.execteSql([sql])
+          if (res && res.code) {
+            reject(false)
+            return
+          }
+          resolve(true)
+        } else {
+          reject(false)
+          console.log('坟墓信息查询失败')
+          return
+        }
+      } catch (error) {
+        console.log(error, 'impDeleteGrave-error')
+        reject(false)
+      }
+    })
+  }
+
+  getImpListWithLandlord(type: MainType, doorNo: string): Promise<GraveType[]> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let array: GraveType[] = []
+        let sql = `select * from ${GraveTableName} where isPadDelete = '0'`
+        if (type === MainType.PeasantHousehold) {
+          sql += ` and registrantDoorNo = '${doorNo}' order by updatedDate desc`
+        } else if (type === MainType.Village) {
+          sql += ` and villageDoorNo = '${doorNo}' order by updatedDate desc`
+        }
+
+        const list: GraveDDLType[] = await this.db.selectSql(sql)
+        if (this.isArrayAndNotNull(list)) {
+          list.forEach((item) => {
+            array.push(JSON.parse(item.content))
+          })
+          // 实施阶段 软删除 需要过滤掉
+          array = array.filter((item) => item.isDelete !== '1')
+        }
+        resolve(array)
+      } catch (error) {
+        console.log(error, 'grave-get-list-error')
+        reject([])
+      }
+    })
+  }
 }
 
 export const GraveController = new Grave()

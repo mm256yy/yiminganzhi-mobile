@@ -136,14 +136,14 @@ export interface LandlordType {
   assetHouseFitUpList: AssetHouseFitUpType[]
   assetLandList: AssetLandType[]
   assetAppendantList: AssetAppendantType[]
-  immigrantDocumentation: ImmigrantDocumentationType
-  immigrantSettle: ImmigrantSettleType
-  immigrantLand: ImmigrantLandType
+  immigrantDocumentation: Partial<ImmigrantDocumentationType>
+  immigrantSettle: Partial<ImmigrantSettleType>
+  immigrantLand: Partial<ImmigrantLandType>
   immigrantChooseHouseList: ImmigrantChooseHouseType[]
   immigrantCompensationCardList: ImmigrantCompensationCardType[]
-  immigrantHouseEmpty: ImmigrantHouseEmptyType
-  immigrantLandEmpty: ImmigrantLandEmptyType
-  immigrantExcess: ImmigrantExcessType
+  immigrantHouseEmpty: Partial<ImmigrantHouseEmptyType>
+  immigrantLandEmpty: Partial<ImmigrantLandEmptyType>
+  immigrantExcess: Partial<ImmigrantExcessType>
   immigrantBuildOneself: ImmigrantBuildOneselfType[]
   immigrantProcedures: ImmigrantProceduresType[]
   cityCodeText?: string

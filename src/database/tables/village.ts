@@ -17,10 +17,10 @@ export const VillageTableName = 'village'
 export const VillageDDL = `
 create table if not exists ${VillageTableName} (
   'uid' text PRIMARY KEY,
-  'padStatus' text,
+  'padStatus' text DEFAULT 'default',
   'content' text,
   'parentCode' text,
-  'isPadDelete' text,
+  'isPadDelete' text DEFAULT '0',
   'name' text,
   'updatedDate' text DEFAULT NULL
 );

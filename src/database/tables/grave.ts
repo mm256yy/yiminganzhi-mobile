@@ -27,8 +27,8 @@ create table if not exists ${GraveTableName} (
   'villageDoorNo' text,
   'uid' text PRIMARY KEY,
   'content' text,
-  'isPadDelete' text,
-  'padStatus' text,
+  'isPadDelete' text DEFAULT '0',
+  'padStatus' text DEFAULT 'default',
   'updatedDate' text DEFAULT NULL
 );
 `

@@ -231,6 +231,21 @@ export interface AppendantType {
   number: number
   remark: string
   [key: string]: any
+
+  isUpdate?: string
+  uid?: string
+  inundationRange?: string
+  altitude?: number
+  projectId?: number
+  status?: string
+  price?: number
+  discountRate?: number
+  valuationAmount?: number
+  compensationAmount?: number
+  valuationRemark?: string
+  addReason?: string
+  deleteReason?: string
+  isDelete?: string
 }
 
 export interface WillProductionType {
