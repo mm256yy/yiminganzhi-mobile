@@ -11,7 +11,8 @@ export enum StorageKey {
   PUSHSTATUS = 'PushStatus',
   FULLUSERINFO = 'FullUserInfo', // 全部的用户信息
   USERROLE = 'UserRole', // 用户角色
-  CONTRASTPLANS = 'ContrastPlans' // 必选方案
+  CONTRASTPLANS = 'ContrastPlans', // 必选方案
+  STAGESTATUS = 'StageStatus' // 所处阶段（实物调查/实物复核/移民实施） 不同阶段 不同的数据
 }
 
 export const getStorage = (key: StorageKey): any => {

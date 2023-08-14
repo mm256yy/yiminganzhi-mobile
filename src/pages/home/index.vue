@@ -65,7 +65,7 @@
 <script lang="ts" setup>
 import { onBeforeMount, onMounted, ref } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
-import { getStorage, setStorage, routerForward, resetCache, StorageKey } from '@/utils'
+import { getStorage, routerForward, resetCache, StorageKey } from '@/utils'
 import { loginOutApi } from './api'
 import { getImgListApi } from '@/service'
 import { pullInstance } from '@/sync'
@@ -144,27 +144,10 @@ const getImageObj = async () => {
   }
 }
 
-/**
- * 判断角色 展示不同的首页
- */
-const roleDetermine = () => {
-  const projectId = getStorage(StorageKey.PROJECTID)
-  const allUserInfo = getStorage(StorageKey.FULLUSERINFO)
-  if (allUserInfo) {
-    const project = allUserInfo.projectUsers.find((x: any) => x.projectId === projectId)
-    console.log(project, 'project')
-    const role =
-      (project && project.roles && project.roles.length
-        ? project.roles[0].code
-        : RoleCodeType.investigator) || RoleCodeType.assessor
-    // 设置用户角色 默认用户拥有一个角色 角色选择先不考虑
-    setStorage(StorageKey.USERROLE, role)
-    homeViewType.value = role
-  }
-}
-
 onBeforeMount(() => {
-  roleDetermine()
+  // 不同角色展示不同的首页视图
+  const role = getStorage(StorageKey.USERROLE)
+  homeViewType.value = role
 })
 
 onMounted(() => {

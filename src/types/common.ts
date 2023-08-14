@@ -10,7 +10,7 @@ export type ProjectType = {
   townCode: string
   reservoirName: string
   districtTree: string[]
-  status: 'survey' | 'review' | 'implementation'
+  status: MainStage
 }
 
 // SURVEY("实物调查","survey"),
@@ -84,10 +84,11 @@ export enum SignStatusEnum {
   UnSign = 'UnSign'
 }
 
-// 项目进行到的阶段，survey: 调查填报阶段， review: 复核阶段
+// 项目进行到的阶段，survey: 调查填报阶段， review: 复核阶段, implementation: 实施阶段
 export enum MainStage {
   survey = 'survey',
-  review = 'review'
+  review = 'review',
+  implementation = 'implementation'
 }
 
 /**
@@ -235,7 +236,8 @@ export enum RoleCodeType {
   administrators = 'administrators',
   investigator = 'investigator',
   implementation = 'implementation',
-  assessor = 'assessor'
+  assessor = 'assessor',
+  reviewer = 'reviewer'
 }
 
 // 安置方式

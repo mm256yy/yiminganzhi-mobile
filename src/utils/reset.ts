@@ -18,4 +18,9 @@ export const resetCache = () => {
 
   setStorage(StorageKey.USERROLE, '')
   setStorage(StorageKey.FULLUSERINFO, null)
+  setStorage(StorageKey.STAGESTATUS, '')
+  setStorage(StorageKey.CONTRASTPLANS, null)
+
+  setStorage(StorageKey.DISTRICTMAP, null)
+  setStorage(StorageKey.DICT, null)
 }
