@@ -173,8 +173,8 @@ class ImpDataFill extends ImpLandlord {
       }
     })
   }
-  // 调查对象-附属物修改操作
-  updateLandlordAppendant(uid: string, data: AppendantType[]): Promise<boolean> {
+  // 调查对象-附属物修改操作 批量
+  updateLandlordAppendantBatch(uid: string, data: AppendantType[]): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!uid) {
@@ -206,11 +206,43 @@ class ImpDataFill extends ImpLandlord {
         const updateRes = await this.updateLandlord(landlordItem)
         updateRes ? resolve(true) : reject(false)
       } catch (error) {
+        console.log(error, 'updateLandlordAppendantBatch-error')
+        reject(false)
+      }
+    })
+  }
+  // 调查对象-附属物修改操作
+  updateLandlordAppendant(uid: string, data: AppendantType): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!uid) {
+          reject(false)
+          console.log('调查对象uid缺失')
+          return
+        }
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
+        if (landlordItem) {
+          landlordItem.immigrantAppendantList = landlordItem.immigrantAppendantList.map((item) => {
+            if (item.uid === data.uid) {
+              item = { ...item, ...data }
+            }
+            return item
+          })
+        } else {
+          reject(false)
+          console.log('调查对象信息查询失败')
+          return
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
         console.log(error, 'updateLandlordAppendant-error')
         reject(false)
       }
     })
   }
+
   // 调查对象-附属物删除操作
   deleteLandlordAppendant(uid: string, itemUid: string, deleteReason?: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
@@ -277,7 +309,7 @@ class ImpDataFill extends ImpLandlord {
     })
   }
   // 调查对象-果木修改操作
-  updateLandlordTree(uid: string, data: TreeType[]): Promise<boolean> {
+  updateLandlordTreeBatch(uid: string, data: TreeType[]): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!uid) {
@@ -292,8 +324,8 @@ class ImpDataFill extends ImpLandlord {
         }
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
-          const deleteList = landlordItem.immigrantTreeList.filter((item) => item.isDelete === '1')
-          const newList = data.map((item) => {
+          // const deleteList = landlordItem.immigrantTreeList.filter((item) => item.isDelete === '1')
+          landlordItem.immigrantTreeList = data.map((item) => {
             if (!item.uid) {
               const itemUid = guid()
               item.uid = itemUid
@@ -301,7 +333,37 @@ class ImpDataFill extends ImpLandlord {
             }
             return item
           })
-          landlordItem.immigrantTreeList = [...deleteList, ...newList]
+        } else {
+          reject(false)
+          console.log('调查对象信息查询失败')
+          return
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'updateLandlordTreeBatch-error')
+        reject(false)
+      }
+    })
+  }
+  // 调查对象-附属物修改操作
+  updateLandlordTree(uid: string, data: TreeType): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!uid) {
+          reject(false)
+          console.log('调查对象uid缺失')
+          return
+        }
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
+        if (landlordItem) {
+          landlordItem.immigrantTreeList = landlordItem.immigrantTreeList.map((item) => {
+            if (item.uid === data.uid) {
+              item = { ...item, ...data }
+            }
+            return item
+          })
         } else {
           reject(false)
           console.log('调查对象信息查询失败')
@@ -477,8 +539,8 @@ class ImpDataFill extends ImpLandlord {
       }
     })
   }
-  // 调查对象-房屋装修 修改操作
-  updateLandlordHouseFitUp(uid: string, data: AssetHouseFitUpType[]): Promise<boolean> {
+  // 调查对象-房屋装修 修改操作 批量
+  updateLandlordHouseFitUpBatch(uid: string, data: AssetHouseFitUpType[]): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!uid) {
@@ -498,6 +560,37 @@ class ImpDataFill extends ImpLandlord {
               const itemUid = guid()
               item.uid = itemUid
               item.isDelete = '0'
+            }
+            return item
+          })
+        } else {
+          reject(false)
+          console.log('调查对象信息查询失败')
+          return
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'updateLandlordHouseFitUpBatch-error')
+        reject(false)
+      }
+    })
+  }
+  // 调查对象-房屋装修 修改操作
+  updateLandlordHouseFitUp(uid: string, data: AssetHouseFitUpType): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!uid) {
+          reject(false)
+          console.log('调查对象uid缺失')
+          return
+        }
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
+        if (landlordItem) {
+          landlordItem.assetHouseFitUpList = landlordItem.assetHouseFitUpList.map((item) => {
+            if (item.uid === data.uid) {
+              item = { ...item, ...data }
             }
             return item
           })
@@ -776,8 +869,8 @@ class ImpDataFill extends ImpLandlord {
       }
     })
   }
-  // 调查对象-土地基本情况 修改操作
-  updateLandlordAssetLand(uid: string, data: AssetLandType[]): Promise<boolean> {
+  // 调查对象-土地基本情况 修改操作 批量
+  updateLandlordAssetLandBatch(uid: string, data: AssetLandType[]): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!uid) {
@@ -797,6 +890,37 @@ class ImpDataFill extends ImpLandlord {
               const itemUid = guid()
               item.uid = itemUid
               item.isDelete = '0'
+            }
+            return item
+          })
+        } else {
+          reject(false)
+          console.log('调查对象信息查询失败')
+          return
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'updateLandlordAssetLandBatch-error')
+        reject(false)
+      }
+    })
+  }
+  // 调查对象-土地基本情况 修改操作
+  updateLandlordAssetLand(uid: string, data: AssetLandType): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!uid) {
+          reject(false)
+          console.log('调查对象uid缺失')
+          return
+        }
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
+        if (landlordItem) {
+          landlordItem.assetLandList = landlordItem.assetLandList.map((item) => {
+            if (item.uid === data.uid) {
+              item = { ...item, ...data }
             }
             return item
           })
@@ -880,7 +1004,7 @@ class ImpDataFill extends ImpLandlord {
     })
   }
   // 调查对象-土地青苗及附着物 修改操作
-  updateLandlordAssetAppendant(uid: string, data: AssetAppendantType[]): Promise<boolean> {
+  updateLandlordAssetAppendantBatch(uid: string, data: AssetAppendantType[]): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!uid) {
@@ -900,6 +1024,37 @@ class ImpDataFill extends ImpLandlord {
               const itemUid = guid()
               item.uid = itemUid
               item.isDelete = '0'
+            }
+            return item
+          })
+        } else {
+          reject(false)
+          console.log('调查对象信息查询失败')
+          return
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'updateLandlordAssetAppendantBatch-error')
+        reject(false)
+      }
+    })
+  }
+  // 调查对象-土地青苗及附着物 修改操作
+  updateLandlordAssetAppendant(uid: string, data: AssetAppendantType): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!uid) {
+          reject(false)
+          console.log('调查对象uid缺失')
+          return
+        }
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
+        if (landlordItem) {
+          landlordItem.assetAppendantList = landlordItem.assetAppendantList.map((item) => {
+            if (item.uid === data.uid) {
+              item = { ...item, ...data }
             }
             return item
           })
@@ -1216,8 +1371,8 @@ class ImpDataFill extends ImpLandlord {
     })
   }
 
-  // 调查对象-选房择址 修改操作
-  updateLandlordChooseHouse(uid: string, data: ImmigrantChooseHouseType[]): Promise<boolean> {
+  // 调查对象-选房择址 修改操作 批量
+  updateLandlordChooseHouseBatch(uid: string, data: ImmigrantChooseHouseType[]): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!uid) {
@@ -1249,6 +1404,40 @@ class ImpDataFill extends ImpLandlord {
         const updateRes = await this.updateLandlord(landlordItem)
         updateRes ? resolve(true) : reject(false)
       } catch (error) {
+        console.log(error, 'updateLandlordChooseHouseBatch-error')
+        reject(false)
+      }
+    })
+  }
+
+  // 调查对象-选房择址 修改操作
+  updateLandlordChooseHouse(uid: string, data: ImmigrantChooseHouseType): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!uid) {
+          reject(false)
+          console.log('调查对象uid缺失')
+          return
+        }
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
+        if (landlordItem) {
+          landlordItem.immigrantChooseHouseList = landlordItem.immigrantChooseHouseList.map(
+            (item) => {
+              if (item.uid === data.uid) {
+                item = { ...item, ...data }
+              }
+              return item
+            }
+          )
+        } else {
+          reject(false)
+          console.log('调查对象信息查询失败')
+          return
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
         console.log(error, 'updateLandlordChooseHouse-error')
         reject(false)
       }
@@ -1256,7 +1445,7 @@ class ImpDataFill extends ImpLandlord {
   }
 
   // 调查对象-移民建卡 修改操作
-  updateLandlordCompensationCard(
+  updateLandlordCompensationCardBatch(
     uid: string,
     data: ImmigrantCompensationCardType[]
   ): Promise<boolean> {
@@ -1282,6 +1471,42 @@ class ImpDataFill extends ImpLandlord {
             }
             return item
           })
+        } else {
+          reject(false)
+          console.log('调查对象信息查询失败')
+          return
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'updateLandlordCompensationCardBatch-error')
+        reject(false)
+      }
+    })
+  }
+
+  // 调查对象-移民建卡 修改操作
+  updateLandlordCompensationCard(
+    uid: string,
+    data: ImmigrantCompensationCardType
+  ): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!uid) {
+          reject(false)
+          console.log('调查对象uid缺失')
+          return
+        }
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
+        if (landlordItem) {
+          landlordItem.immigrantCompensationCardList =
+            landlordItem.immigrantCompensationCardList.map((item) => {
+              if (item.uid === data.uid) {
+                item = { ...item, ...data }
+              }
+              return item
+            })
         } else {
           reject(false)
           console.log('调查对象信息查询失败')

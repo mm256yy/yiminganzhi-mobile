@@ -72,12 +72,24 @@ export const addImpLandlordAppendantApi = (uid: string, data: AppendantType) => 
 
 /**
  * 更新附属物
+ * 批量
  * @param uid 调查对象uid
  * @param data 附属物信息
  * @returns
  */
-export const updateImpLandlordAppendantApi = (uid: string, data: AppendantType[]) => {
+export const updateImpLandlordAppendantApi = (uid: string, data: AppendantType) => {
   return ImpDataFillController.updateLandlordAppendant(uid, data)
+}
+
+/**
+ * 更新附属物
+ * 批量
+ * @param uid 调查对象uid
+ * @param data 附属物信息
+ * @returns
+ */
+export const updateImpLandlordAppendantBatchApi = (uid: string, data: AppendantType[]) => {
+  return ImpDataFillController.updateLandlordAppendantBatch(uid, data)
 }
 
 /**
@@ -137,11 +149,22 @@ export const addImpLandlordTreeApi = (uid: string, data: TreeType) => {
 
 /**
  * 更新果木信息
+ * 批量
  * @param uid 调查对象uid
  * @param list 果木信息
  * @returns
  */
-export const updateImpLandlordTreeApi = (uid: string, data: TreeType[]) => {
+export const updateImpLandlordTreeBatchApi = (uid: string, data: TreeType[]) => {
+  return ImpDataFillController.updateLandlordTreeBatch(uid, data)
+}
+
+/**
+ * 更新果木信息
+ * @param uid 调查对象uid
+ * @param list 果木信息
+ * @returns
+ */
+export const updateImpLandlordTreeApi = (uid: string, data: TreeType) => {
   return ImpDataFillController.updateLandlordTree(uid, data)
 }
 
@@ -169,11 +192,22 @@ export const addImpLandlordHouseFitUpApi = (uid: string, data: AssetHouseFitUpTy
 
 /**
  * 更新房屋装修
+ * 批量
  * @param uid 调查对象uid
  * @param list 房屋装修
  * @returns
  */
-export const updateImpLandlordHouseFitUpApi = (uid: string, data: AssetHouseFitUpType[]) => {
+export const updateImpLandlordHouseFitUpBatchApi = (uid: string, data: AssetHouseFitUpType[]) => {
+  return ImpDataFillController.updateLandlordHouseFitUpBatch(uid, data)
+}
+
+/**
+ * 更新房屋装修
+ * @param uid 调查对象uid
+ * @param data 房屋装修
+ * @returns
+ */
+export const updateImpLandlordHouseFitUpApi = (uid: string, data: AssetHouseFitUpType) => {
   return ImpDataFillController.updateLandlordHouseFitUp(uid, data)
 }
 
@@ -297,11 +331,22 @@ export const addImpLandlordAssetLandApi = (uid: string, data: AssetLandType) => 
 
 /**
  * 更新土地基本情况
+ * 批量
  * @param uid 调查对象uid
  * @param list 土地基本情况
  * @returns
  */
-export const updateImpLandlordAssetLandApi = (uid: string, data: AssetLandType[]) => {
+export const updateImpLandlordAssetLandBatchApi = (uid: string, data: AssetLandType[]) => {
+  return ImpDataFillController.updateLandlordAssetLandBatch(uid, data)
+}
+
+/**
+ * 更新土地基本情况
+ * @param uid 调查对象uid
+ * @param data 土地基本情况
+ * @returns
+ */
+export const updateImpLandlordAssetLandApi = (uid: string, data: AssetLandType) => {
   return ImpDataFillController.updateLandlordAssetLand(uid, data)
 }
 
@@ -330,11 +375,25 @@ export const addImpLandlordAssetAppendantApi = (uid: string, data: AssetAppendan
 /**
  * 更新 土地青苗及附着物
  * @param uid 调查对象uid
+ * @param data 土地青苗及附着物
+ * @returns
+ */
+export const updateImpLandlordAssetAppendantApi = (uid: string, data: AssetAppendantType) => {
+  return ImpDataFillController.updateLandlordAssetAppendant(uid, data)
+}
+
+/**
+ * 更新 土地青苗及附着物
+ * 批量
+ * @param uid 调查对象uid
  * @param list 土地青苗及附着物
  * @returns
  */
-export const updateImpLandlordAssetAppendantApi = (uid: string, data: AssetAppendantType[]) => {
-  return ImpDataFillController.updateLandlordAssetAppendant(uid, data)
+export const updateImpLandlordAssetAppendantBatchApi = (
+  uid: string,
+  data: AssetAppendantType[]
+) => {
+  return ImpDataFillController.updateLandlordAssetAppendantBatch(uid, data)
 }
 
 /**
@@ -442,15 +501,43 @@ export const updateImpLandlordExcessApi = (uid: string, data: Partial<ImmigrantE
 
 /**
  * 更新 选房择址
+ * 批量
+ * @param uid 调查对象uid
+ * @param list 选房择址
+ * @returns
+ */
+export const updateImpLandlordChooseHouseBatchApi = (
+  uid: string,
+  data: ImmigrantChooseHouseType[]
+) => {
+  return ImpDataFillController.updateLandlordChooseHouseBatch(uid, data)
+}
+
+/**
+ * 更新 选房择址
  * @param uid 调查对象uid
  * @param data 选房择址
  * @returns
  */
-export const updateImpLandlordChooseHouseApi = (uid: string, data: ImmigrantChooseHouseType[]) => {
+export const updateImpLandlordChooseHouseApi = (uid: string, data: ImmigrantChooseHouseType) => {
   return ImpDataFillController.updateLandlordChooseHouse(uid, data)
 }
 
 // -------
+
+/**
+ * 更新 移民建卡
+ * 批量
+ * @param uid 调查对象uid
+ * @param data 移民建卡
+ * @returns
+ */
+export const updateImpLandlordCompensationCardBatchApi = (
+  uid: string,
+  data: ImmigrantCompensationCardType[]
+) => {
+  return ImpDataFillController.updateLandlordCompensationCardBatch(uid, data)
+}
 
 /**
  * 更新 移民建卡
@@ -460,7 +547,7 @@ export const updateImpLandlordChooseHouseApi = (uid: string, data: ImmigrantChoo
  */
 export const updateImpLandlordCompensationCardApi = (
   uid: string,
-  data: ImmigrantCompensationCardType[]
+  data: ImmigrantCompensationCardType
 ) => {
   return ImpDataFillController.updateLandlordCompensationCard(uid, data)
 }
