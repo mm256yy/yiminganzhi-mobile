@@ -27,7 +27,7 @@
                   v-if="tabVal === 1"
                   :dataList="dataInfo.immigrantHouseList"
                   :dataInfo="dataInfo"
-                  @updateData="updateData"
+                  @update-data="updateData"
                 />
 
                 <!-- 房屋装修评估 -->
@@ -35,8 +35,8 @@
                   v-if="tabVal === 2"
                   :dataList="dataInfo.assetHouseFitUpList"
                   :dataInfo="dataInfo"
-                  @deleteHouseDecoration="deleteHouseDecoration"
-                  @updateData="updateData"
+                  @delete-house-decoration="deleteHouseDecoration"
+                  @update-data="updateData"
                 />
 
                 <!-- 附属设施评估 -->
@@ -44,8 +44,8 @@
                   v-if="tabVal === 3"
                   :dataInfo="dataInfo"
                   :dataList="dataInfo.assetAppendantList"
-                  @deleteAccessory="deleteAccessory"
-                  @updateData="updateData"
+                  @delete-accessory="deleteAccessory"
+                  @update-data="updateData"
                 />
 
                 <!-- 零星（林）果木评估 -->
@@ -53,8 +53,8 @@
                   v-if="tabVal === 4"
                   :dataList="dataInfo.immigrantTreeList"
                   :dataInfo="dataInfo"
-                  @deleteTree="deleteTree"
-                  @updateData="updateData"
+                  @delete-tree="deleteTree"
+                  @update-data="updateData"
                 />
 
                 <!-- 土地基本情况评估 -->
@@ -62,8 +62,8 @@
                   v-if="tabVal === 5"
                   :dataInfo="dataInfo"
                   :dataList="dataInfo.assetLandList"
-                  @deleteLand="deleteLand"
-                  @updateData="updateData"
+                  @delete-land="deleteLand"
+                  @update-data="updateData"
                 />
 
                 <!-- 土地青苗及附着物评估 -->
@@ -71,8 +71,8 @@
                   v-if="tabVal === 6"
                   :dataList="dataInfo.assetLandList"
                   :dataInfo="dataInfo"
-                  @deleteSeedlings="deleteSeedlings"
-                  @updateData="updateData"
+                  @delete-seedlings="deleteSeedlings"
+                  @update-data="updateData"
                 />
 
                 <!-- 坟墓评估 -->
@@ -113,7 +113,13 @@ import landEva from '../../common/landEva/index.vue' // 引入土地基本情况
 import seedlingsEva from '../../common/seedlingsEva/index.vue' // 引入土地青苗及附着物评估组件
 // import graveEva from '../graveEva/index.vue' // 引入坟墓评估组件
 
-import { deleteLandlordPeopleApi, deleteLandlordHouseApi } from '@/service'
+import {
+  deleteImpLandlordHouseFitUpApi,
+  deleteImpLandlordAppendantApi,
+  deleteImpLandlordTreeApi,
+  deleteImpLandlordAssetLandApi,
+  deleteImpLandlordAssetAppendantApi
+} from '@/service'
 
 import iconHouseholdDef from '@/static/images/icon_household_default.png' // 引入居民户信息默认 icon
 import iconHouseholdSel from '@/static/images/icon_household_select.png' // 引入居民户信息选中 icon
@@ -247,7 +253,7 @@ const touchRight = () => {
  * @param{Object} reason 删除原因（填报阶段没有此参数，复核阶段有此参数）
  */
 // const deleteHouse = (data: any, reason?: string) => {
-//   deleteLandlordHouseApi(props.dataInfo.uid, data.uid, reason)
+//   deleteImpLandlordHouseApi(props.dataInfo.uid, data.uid, reason)
 //     .then((res) => {
 //       if (res) {
 //         showToast(SUCCESS_MSG)
@@ -265,7 +271,7 @@ const touchRight = () => {
  * @param{Object} reason 删除原因（填报阶段没有此参数，复核阶段有此参数）
  */
 const deleteHouseDecoration = (data: any, reason?: string) => {
-  deleteLandlordHouseApi(props.dataInfo.uid, data.uid, reason)
+  deleteImpLandlordHouseFitUpApi(props.dataInfo.uid, data.uid, reason)
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
@@ -283,7 +289,7 @@ const deleteHouseDecoration = (data: any, reason?: string) => {
  * @param{Object} reason 删除原因（填报阶段没有此参数，复核阶段有此参数）
  */
 const deleteAccessory = (data: any, reason?: string) => {
-  deleteLandlordHouseApi(props.dataInfo.uid, data.uid, reason)
+  deleteImpLandlordAppendantApi(props.dataInfo.uid, data.uid, reason)
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
@@ -301,7 +307,7 @@ const deleteAccessory = (data: any, reason?: string) => {
  * @param{Object} reason 删除原因（填报阶段没有此参数，复核阶段有此参数）
  */
 const deleteTree = (data: any, reason?: string) => {
-  deleteLandlordHouseApi(props.dataInfo.uid, data.uid, reason)
+  deleteImpLandlordTreeApi(props.dataInfo.uid, data.uid, reason)
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
@@ -319,7 +325,7 @@ const deleteTree = (data: any, reason?: string) => {
  * @param{Object} reason 删除原因（填报阶段没有此参数，复核阶段有此参数）
  */
 const deleteLand = (data: any, reason?: string) => {
-  deleteLandlordPeopleApi(props.dataInfo.uid, data.uid, reason)
+  deleteImpLandlordAssetLandApi(props.dataInfo.uid, data.uid, reason)
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
@@ -337,7 +343,7 @@ const deleteLand = (data: any, reason?: string) => {
  * @param{Object} reason 删除原因（填报阶段没有此参数，复核阶段有此参数）
  */
 const deleteSeedlings = (data: any, reason?: string) => {
-  deleteLandlordPeopleApi(props.dataInfo.uid, data.uid, reason)
+  deleteImpLandlordAssetAppendantApi(props.dataInfo.uid, data.uid, reason)
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
@@ -354,7 +360,7 @@ const deleteSeedlings = (data: any, reason?: string) => {
  * @param data
  */
 // const deleteGrave = (data: any) => {
-//   deleteLandlordGraveApi(props.dataInfo.uid, data.uid)
+//   deleteImpLandlordGraveApi(props.dataInfo.uid, data.uid)
 //     .then((res) => {
 //       if (res) {
 //         showToast(SUCCESS_MSG)

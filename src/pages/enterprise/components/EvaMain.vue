@@ -32,7 +32,7 @@
                   v-if="tabVal === 1"
                   :dataList="dataInfo.immigrantHouseList"
                   :dataInfo="dataInfo"
-                  @updateData="updateData"
+                  @update-data="updateData"
                 />
 
                 <!-- 房屋装修评估 -->
@@ -40,8 +40,8 @@
                   v-if="tabVal === 2"
                   :dataList="dataInfo.assetHouseFitUpList"
                   :dataInfo="dataInfo"
-                  @deleteHouseDecoration="deleteHouseDecoration"
-                  @updateData="updateData"
+                  @delete-house-decoration="deleteHouseDecoration"
+                  @update-data="updateData"
                 />
 
                 <!-- 附属设施评估 -->
@@ -49,8 +49,8 @@
                   v-if="tabVal === 3"
                   :dataList="dataInfo.immigrantAppendantList"
                   :dataInfo="dataInfo"
-                  @deleteAccessory="deleteAccessory"
-                  @updateData="updateData"
+                  @delete-accessory="deleteAccessory"
+                  @update-data="updateData"
                 />
 
                 <!-- 零星(林)果木评估 -->
@@ -58,8 +58,8 @@
                   v-if="tabVal === 4"
                   :dataList="dataInfo.immigrantTreeList"
                   :dataInfo="dataInfo"
-                  @deleteTree="deleteTree"
-                  @updateData="updateData"
+                  @delete-tree="deleteTree"
+                  @update-data="updateData"
                 />
 
                 <!-- 土地基本情况评估 -->
@@ -67,8 +67,8 @@
                   v-if="tabVal === 5"
                   :dataList="dataInfo.assetLandList"
                   :dataInfo="dataInfo"
-                  @deleteLand="deleteLand"
-                  @updateData="updateData"
+                  @delete-land="deleteLand"
+                  @update-data="updateData"
                 />
 
                 <!-- 土地青苗及附着物评估 -->
@@ -76,8 +76,8 @@
                   v-if="tabVal === 6"
                   :dataList="dataInfo.assetAppendantList"
                   :dataInfo="dataInfo"
-                  @deleteSeedlings="deleteSeedlings"
-                  @updateData="updateData"
+                  @delete-seedlings="deleteSeedlings"
+                  @update-data="updateData"
                 />
 
                 <!-- 设施设备评估 -->
@@ -85,8 +85,8 @@
                   v-if="tabVal === 7"
                   :dataList="dataInfo.immigrantEquipmentList"
                   :dataInfo="dataInfo"
-                  @deleteEquipment="deleteEquipment"
-                  @updateData="updateData"
+                  @delete-equipment="deleteEquipment"
+                  @update-data="updateData"
                 />
               </view>
             </view>
@@ -121,9 +121,12 @@ import seedlingsEva from '../../common/seedlingsEva/index.vue' // 引入土地�
 import equipmentEva from '../../common/equipmentEva/index.vue' // 引入设施设备评估组件
 
 import {
-  deleteLandlordHouseApi,
-  deleteLandlordEquipmentApi,
-  deleteLandlordFacilitiesApi
+  deleteImpLandlordHouseFitUpApi,
+  deleteImpLandlordAppendantApi,
+  deleteImpLandlordTreeApi,
+  deleteImpLandlordAssetLandApi,
+  deleteImpLandlordAssetAppendantApi,
+  deleteImpLandlordEquipmentApi
 } from '@/service'
 
 import iconBaseDef from '@/static/images/icon_base_default.png' // 引入企业信息默认 icon
@@ -260,7 +263,7 @@ const updateData = () => {
  * @param(Object) data 被删除的行信息
  */
 // const deleteHouse = (data: any) => {
-//   deleteLandlordHouseApi(props.dataInfo.uid, data.uid)
+//   deleteImpLandlordHouseApi(props.dataInfo.uid, data.uid)
 //     .then((res: any) => {
 //       if (res) {
 //         showToast(SUCCESS_MSG)
@@ -277,7 +280,7 @@ const updateData = () => {
  * @param(Object) data 被删除的行信息
  */
 const deleteHouseDecoration = (data: any) => {
-  deleteLandlordHouseApi(props.dataInfo.uid, data.uid)
+  deleteImpLandlordHouseFitUpApi(props.dataInfo.uid, data.uid)
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
@@ -294,7 +297,7 @@ const deleteHouseDecoration = (data: any) => {
  * @param data 被删除的行信息
  */
 const deleteAccessory = (data: any) => {
-  deleteLandlordFacilitiesApi(props.dataInfo.uid, data.uid)
+  deleteImpLandlordAppendantApi(props.dataInfo.uid, data.uid)
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
@@ -311,7 +314,7 @@ const deleteAccessory = (data: any) => {
  * @param data
  */
 const deleteTree = (data: any) => {
-  deleteLandlordFacilitiesApi(props.dataInfo.uid, data.uid)
+  deleteImpLandlordTreeApi(props.dataInfo.uid, data.uid)
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
@@ -328,7 +331,7 @@ const deleteTree = (data: any) => {
  * @param data 被删除的行信息
  */
 const deleteLand = (data: any) => {
-  deleteLandlordFacilitiesApi(props.dataInfo.uid, data.uid)
+  deleteImpLandlordAssetLandApi(props.dataInfo.uid, data.uid)
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
@@ -345,7 +348,7 @@ const deleteLand = (data: any) => {
  * @param data 被删除的行信息
  */
 const deleteSeedlings = (data: any) => {
-  deleteLandlordFacilitiesApi(props.dataInfo.uid, data.uid)
+  deleteImpLandlordAssetAppendantApi(props.dataInfo.uid, data.uid)
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
@@ -362,7 +365,7 @@ const deleteSeedlings = (data: any) => {
  * @param(Object) data 被删除的行信息
  */
 const deleteEquipment = (data: any) => {
-  deleteLandlordEquipmentApi(props.dataInfo.uid, data.uid)
+  deleteImpLandlordEquipmentApi(props.dataInfo.uid, data.uid)
     .then((res: any) => {
       if (res) {
         showToast(SUCCESS_MSG)

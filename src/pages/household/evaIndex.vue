@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { getLandlordItemApi, getOtherItemApi } from '@/service'
+import { getEvaLandlordItemApi, getOtherItemApi } from '@/service'
 import { OtherDataType } from '@/database'
 import EvaMain from './components/EvaMain.vue'
 import { onLoad, onShow } from '@dcloudio/uni-app'
@@ -50,7 +50,7 @@ onMounted(() => {
  * @param(object) uid
  */
 const getLandlordDetail = (uid: string) => {
-  getLandlordItemApi(uid).then((res: any) => {
+  getEvaLandlordItemApi(uid).then((res: any) => {
     console.log('res:', res)
     dataInfo.value = { ...res }
   })

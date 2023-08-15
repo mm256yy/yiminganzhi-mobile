@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import { onLoad, onShow } from '@dcloudio/uni-app'
 import { ref } from 'vue'
-import { getLandlordItemApi } from '@/service'
+import { getEvaLandlordItemApi } from '@/service'
 import EvaMain from './components/EvaMain.vue'
 
 const sysInfo = uni.getSystemInfoSync()
@@ -39,7 +39,7 @@ onLoad((option) => {
  * @param(object) uid
  */
 const getLandlordDetail = (uid: string) => {
-  getLandlordItemApi(uid).then((res: any) => {
+  getEvaLandlordItemApi(uid).then((res: any) => {
     console.log('res:', res)
     dataInfo.value = { ...res }
   })
