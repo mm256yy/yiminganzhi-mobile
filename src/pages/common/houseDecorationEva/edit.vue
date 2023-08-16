@@ -247,7 +247,11 @@
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { routerBack, getStorage, StorageKey } from '@/utils'
-import { addLandlordHouseApi, updateLandlordHouseApi, getLandlordItemApi } from '@/service'
+import {
+  addImpLandlordHouseFitUpApi,
+  updateImpLandlordHouseFitUpBatchApi,
+  getEvaLandlordItemApi
+} from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
 
@@ -284,7 +288,7 @@ const focusIndex = ref<number>(-1)
  */
 const getLandlordDetail = () => {
   const { uid, itemUid } = commonParams.value
-  getLandlordItemApi(uid).then((res: any) => {
+  getEvaLandlordItemApi(uid).then((res: any) => {
     let arr: any = res && res.assetHouseFitUpList ? res.assetHouseFitUpList : []
     if (arr && arr.length) {
       let obj: any = arr.filter((item: any) => item.uid === itemUid)[0]
@@ -335,7 +339,7 @@ const submit = () => {
     return
   } else {
     if (type === 'add') {
-      addLandlordHouseApi(uid, params)
+      addImpLandlordHouseFitUpApi(uid, params)
         .then((res) => {
           if (res) {
             showToast(SUCCESS_MSG)
@@ -346,7 +350,7 @@ const submit = () => {
           showToast(ERROR_MSG)
         })
     } else if (type === 'edit') {
-      updateLandlordHouseApi(uid, params)
+      updateImpLandlordHouseFitUpBatchApi(uid, params)
         .then((res) => {
           if (res) {
             showToast(SUCCESS_MSG)

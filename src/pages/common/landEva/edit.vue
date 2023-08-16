@@ -241,7 +241,11 @@
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { routerBack, getStorage, StorageKey } from '@/utils'
-import { updateLandlordTreeApi, getLandlordItemApi } from '@/service'
+import {
+  addImpLandlordAssetLandApi,
+  updateImpLandlordAssetLandApi,
+  getEvaLandlordItemApi
+} from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
 
@@ -280,7 +284,7 @@ const focusIndex = ref<number>(-1)
  */
 const getLandlordDetail = () => {
   const { uid, itemUid } = commonParams.value
-  getLandlordItemApi(uid).then((res: any) => {
+  getEvaLandlordItemApi(uid).then((res: any) => {
     let arr: any = res && res.assetLandList ? res.assetLandList : []
     if (arr && arr.length) {
       let obj: any = arr.filter((item: any) => item.uid === itemUid)[0]
@@ -325,7 +329,7 @@ const submit = () => {
     return
   } else {
     if (type === 'add') {
-      updateLandlordTreeApi(uid, params)
+      addImpLandlordAssetLandApi(uid, params)
         .then((res) => {
           if (res) {
             showToast(SUCCESS_MSG)
@@ -336,7 +340,7 @@ const submit = () => {
           showToast(ERROR_MSG)
         })
     } else if (type === 'edit') {
-      updateLandlordTreeApi(uid, params)
+      updateImpLandlordAssetLandApi(uid, params)
         .then((res) => {
           if (res) {
             showToast(SUCCESS_MSG)

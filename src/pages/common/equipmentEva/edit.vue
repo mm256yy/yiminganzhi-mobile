@@ -256,7 +256,11 @@ import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import dayjs from 'dayjs'
 import { routerBack, getStorage, StorageKey } from '@/utils'
-import { addLandlordEquipmentApi, updateLandlordEquipmentApi, getLandlordItemApi } from '@/service'
+import {
+  addImpLandlordEquipmentApi,
+  updateImpLandlordEquipmentApi,
+  getEvaLandlordItemApi
+} from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
 
@@ -306,7 +310,7 @@ const getYear = () => {
  */
 const getLandlordDetail = () => {
   const { uid, itemUid } = commonParams.value
-  getLandlordItemApi(uid).then((res: any) => {
+  getEvaLandlordItemApi(uid).then((res: any) => {
     let arr: any = res && res.immigrantEquipmentList ? res.immigrantEquipmentList : []
     if (arr && arr.length) {
       let obj: any = arr.filter((item: any) => item.uid === itemUid)[0]
@@ -365,7 +369,7 @@ const submit = () => {
     return
   } else {
     if (type === 'add') {
-      addLandlordEquipmentApi(uid, params)
+      addImpLandlordEquipmentApi(uid, params)
         .then((res) => {
           if (res) {
             showToast(SUCCESS_MSG)
@@ -376,7 +380,7 @@ const submit = () => {
           showToast(ERROR_MSG)
         })
     } else if (type === 'edit') {
-      updateLandlordEquipmentApi(uid, params)
+      updateImpLandlordEquipmentApi(uid, params)
         .then((res) => {
           if (res) {
             showToast(SUCCESS_MSG)
