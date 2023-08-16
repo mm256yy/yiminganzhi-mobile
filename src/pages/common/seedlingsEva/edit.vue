@@ -1,6 +1,6 @@
 <template>
   <view class="form-wrapper">
-    <Back :title="title" needConfirm />
+    <Back :title="title" />
     <view class="main">
       <uni-forms class="form" ref="form" :modelValue="formData">
         <uni-row v-if="commonParams.type === 'add'">
@@ -227,7 +227,7 @@ const focusIndex = ref<number>(-1)
 const getLandlordDetail = () => {
   const { uid, itemUid } = commonParams.value
   getEvaLandlordItemApi(uid).then((res: any) => {
-    let arr: any = res && res.assetLandList ? res.assetLandList : []
+    let arr: any = res && res.assetAppendantList ? res.assetAppendantList : []
     if (arr && arr.length) {
       let obj: any = arr.filter((item: any) => item.uid === itemUid)[0]
       formData.value = { ...obj }

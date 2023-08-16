@@ -46,7 +46,11 @@
               label-align="right"
               name="formData.isFixedPrice"
             >
-              <uni-data-select v-model="formData.isFixedPrice" :localdata="dict[376]" />
+              <uni-data-select
+                v-model="formData.isFixedPrice"
+                :localdata="dict[376]"
+                @change="change"
+              />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -249,7 +253,7 @@ import { onLoad } from '@dcloudio/uni-app'
 import { routerBack, getStorage, StorageKey } from '@/utils'
 import {
   addImpLandlordHouseFitUpApi,
-  updateImpLandlordHouseFitUpBatchApi,
+  updateImpLandlordHouseFitUpApi,
   getEvaLandlordItemApi
 } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
@@ -320,6 +324,23 @@ const inputBlur = () => {
   focusIndex.value = -1
 }
 
+/**
+ * 是否一口价选项选择
+ * @params {Object} val
+ */
+const change = (val: any) => {
+  // 当选择了一口价时，以下部分字段置为空
+  if (val === '1') {
+    formData.value.fitUpType = ''
+    formData.value.fitUpName = ''
+    formData.value.unit = ''
+    formData.value.number = ''
+    formData.value.price = ''
+    formData.value.discountRate = ''
+    formData.value.valuationAmount = ''
+  }
+}
+
 // 表单提交
 const submit = () => {
   const { uid, doorNo, type } = commonParams.value
@@ -350,7 +371,7 @@ const submit = () => {
           showToast(ERROR_MSG)
         })
     } else if (type === 'edit') {
-      updateImpLandlordHouseFitUpBatchApi(uid, params)
+      updateImpLandlordHouseFitUpApi(uid, params)
         .then((res) => {
           if (res) {
             showToast(SUCCESS_MSG)

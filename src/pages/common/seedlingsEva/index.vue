@@ -159,7 +159,7 @@ const dialogConfirm = (data: any) => {
     return
   }
   let params = {
-    ...currentItem,
+    ...currentItem.value,
     deleteReason: data
   }
   emit('deleteSeedlings', params)

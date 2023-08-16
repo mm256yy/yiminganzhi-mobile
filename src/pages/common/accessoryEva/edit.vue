@@ -229,7 +229,7 @@ const focusIndex = ref<number>(-1)
 const getLandlordDetail = () => {
   const { uid, itemUid } = commonParams.value
   getEvaLandlordItemApi(uid).then((res: any) => {
-    let arr: any = res && res.assetAppendantList ? res.assetAppendantList : []
+    let arr: any = res && res.immigrantAppendantList ? res.immigrantAppendantList : []
     if (arr && arr.length) {
       let obj: any = arr.filter((item: any) => item.uid === itemUid)[0]
       formData.value = { ...obj }

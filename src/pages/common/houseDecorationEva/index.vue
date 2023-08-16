@@ -94,15 +94,6 @@
               </view>
             </uni-col>
           </uni-row>
-
-          <uni-row>
-            <uni-col :span="24">
-              <view class="col">
-                <view class="label">是否一口价：</view>
-                <view class="content">{{ formatDict(item.fixedPrice, 268) }}</view>
-              </view>
-            </uni-col>
-          </uni-row>
         </view>
       </view>
     </view>

@@ -43,7 +43,7 @@
                 <accessory-eva
                   v-if="tabVal === 3"
                   :dataInfo="dataInfo"
-                  :dataList="dataInfo.assetAppendantList"
+                  :dataList="dataInfo.immigrantAppendantList"
                   @delete-accessory="deleteAccessory"
                   @update-data="updateData"
                 />
@@ -69,7 +69,7 @@
                 <!-- 土地青苗及附着物评估 -->
                 <seedlings-eva
                   v-if="tabVal === 6"
-                  :dataList="dataInfo.assetLandList"
+                  :dataList="dataInfo.assetAppendantList"
                   :dataInfo="dataInfo"
                   @delete-seedlings="deleteSeedlings"
                   @update-data="updateData"

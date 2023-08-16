@@ -116,13 +116,13 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">坟墓评估合计：</view>
-                <view class="content" />
+                <view class="content">0</view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">资产评估合计：</view>
-                <view class="content" />
+                <view class="content">0</view>
               </view>
             </uni-col>
           </uni-row>

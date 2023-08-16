@@ -177,7 +177,7 @@ const dialogConfirm = (data: any) => {
     return
   }
   let params = {
-    ...currentItem,
+    ...currentItem.value,
     reason: data
   }
   emit('deleteTree', params)
