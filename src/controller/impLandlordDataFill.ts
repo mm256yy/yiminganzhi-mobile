@@ -71,6 +71,44 @@ class ImpDataFill extends ImpLandlord {
       }
     })
   }
+  // 调查对象-人口修改操作 批量
+  updateLandlordPeopleBatch(uid: string, data: PopulationType[]): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!uid) {
+          reject(false)
+          console.log('调查对象uid缺失')
+          return
+        }
+        if (!data || !data.length) {
+          reject(false)
+          console.log('附属物列表缺失')
+          return
+        }
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
+        if (landlordItem) {
+          landlordItem.demographicList = data.map((item) => {
+            if (!item.uid) {
+              const itemUid = guid()
+              item.uid = itemUid
+              item.isDelete = '0'
+            }
+            return item
+          })
+        } else {
+          reject(false)
+          console.log('调查对象信息查询失败')
+          return
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'updateLandlordPeopleBatch-error')
+        reject(false)
+      }
+    })
+  }
   // 调查对象-人口修改操作
   updateLandlordPeople(uid: string, data: PopulationType): Promise<boolean | string> {
     return new Promise(async (resolve, reject) => {

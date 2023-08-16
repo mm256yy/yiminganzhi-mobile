@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { getLandlordItemApi } from '@/service'
+import { getImpLandlordItemApi } from '@/service'
 import ImpMain from './components/ImpMain.vue'
 import { onLoad, onShow } from '@dcloudio/uni-app'
 
@@ -39,7 +39,7 @@ onLoad((option) => {
  * @param(object) uid
  */
 const getLandlordDetail = (uid: string) => {
-  getLandlordItemApi(uid).then((res: any) => {
+  getImpLandlordItemApi(uid).then((res: any) => {
     console.log('res:', res)
     dataInfo.value = { ...res }
   })

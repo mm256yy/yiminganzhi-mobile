@@ -131,23 +131,23 @@ export const apartmentArea = [
 
 export const resettleHouseType = [
   {
-    id: 'homestead',
-    name: '宅基地',
+    value: 'homestead',
+    text: '宅基地',
     disabled: false
   },
   {
-    id: 'flat',
-    name: '公寓房',
+    value: 'flat',
+    text: '公寓房',
     disabled: false
   },
   {
-    id: 'oneself',
-    name: '自谋出路',
+    value: 'oneself',
+    text: '自谋出路',
     disabled: false
   },
   {
-    id: 'concentrate',
-    name: '集中供养',
+    value: 'concentrate',
+    text: '集中供养',
     disabled: false
   }
 ]

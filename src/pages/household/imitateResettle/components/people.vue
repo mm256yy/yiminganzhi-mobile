@@ -31,18 +31,25 @@
       <view class="item">
         <view class="label">安置方式：</view>
         <view class="value">
-          <uni-data-select class="select-wrap" v-model="item.settingWay" :localdata="dict[375]" />
+          <uni-data-select
+            v-if="props.isEdit"
+            class="select-wrap"
+            v-model="item.settingWay"
+            :localdata="dict[375]"
+          />
+          <text v-else>{{ formatDict(item.settingWay, 375) }}</text>
         </view>
       </view>
       <view class="item two-col">
         <view class="label">备注：</view>
         <view class="value ipt-box">
-          <input type="text" class="ipt" v-model="item.settingRemark" />
+          <input v-if="props.isEdit" type="text" class="ipt" v-model="item.settingRemark" />
+          <text v-else>{{ item.settingRemark }}</text>
         </view>
       </view>
     </view>
 
-    <view class="btn-wrap">
+    <view class="btn-wrap" v-if="props.isEdit">
       <view class="btn" @click="stepNext"> 确认 </view>
     </view>
   </view>
@@ -55,6 +62,7 @@ import { PopulationType } from '@/types/datafill'
 import { showToast } from '@/config'
 
 interface PropsType {
+  isEdit: boolean
   demographicList: PopulationType[]
 }
 
@@ -102,10 +110,9 @@ const stepNext = async () => {
 
 .population-item {
   display: flex;
-  width: 504rpx;
   height: 94rpx;
   padding: 9rpx 12rpx;
-  margin-bottom: 9rpx;
+  margin-top: 9rpx;
   background: #f2f6ff;
   border-radius: 5rpx;
   flex-direction: row;
@@ -146,6 +153,7 @@ const stepNext = async () => {
     .ipt {
       width: 100%;
       height: 21rpx;
+      padding: 0 4rpx;
       background: #fff;
       border: 1rpx solid #ebebeb !important;
       border-radius: 2rpx;
@@ -161,7 +169,7 @@ const stepNext = async () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 15rpx 65rpx;
+  padding: 9rpx 15rpx 65rpx;
 
   .btn {
     display: flex;
@@ -175,5 +183,14 @@ const stepNext = async () => {
     background: #3e73ec;
     border-radius: 2rpx;
   }
+}
+
+::v-deep.uni-select__input-text {
+  font-size: 9rpx !important;
+}
+
+::v-deep.uni-input-input,
+::v-deep.uni-input-placeholder {
+  font-size: 9rpx !important;
 }
 </style>

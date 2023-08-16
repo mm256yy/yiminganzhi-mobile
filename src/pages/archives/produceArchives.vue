@@ -2,12 +2,12 @@
   <view>
     <view class="common-head">
       <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-      <text>坟墓安置档案上传</text>
+      <text>生产安置档案上传</text>
     </view>
 
     <view class="arch-box">
       <view class="arch-item">
-        <view class="arch-label">坟墓安置确认单：</view>
+        <view class="arch-label"><text class="red">*</text> 生产安置确认单：</view>
         <view class="arch-value">
           <uploadFiles
             :limit="20"
@@ -32,15 +32,59 @@
         </view>
       </view>
     </view>
+
+    <image
+      class="submit-btn"
+      src="@/static/images/icon_submit.png"
+      mode="scaleToFill"
+      @click="submit"
+    />
   </view>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import uploadFiles from '@/components/UploadFile/index.vue'
+import { ImmigrantDocumentationType } from '@/types/impDataFill'
 
+interface PropsType {
+  immigrantDocumentation: Partial<ImmigrantDocumentationType>
+}
+
+const props = defineProps<PropsType>()
+const emit = defineEmits(['submit'])
 const pic1 = ref<string>('[]')
 const pic2 = ref<string>('[]')
+
+watch(
+  () => props.immigrantDocumentation,
+  (val) => {
+    if (val) {
+      const { produceVerifyPic, produceOtherPic } = val
+      if (produceVerifyPic) {
+        pic1.value = produceVerifyPic
+      }
+      if (produceOtherPic) {
+        pic2.value = produceOtherPic
+      }
+    }
+  },
+  { immediate: true, deep: true }
+)
+
+const submit = async () => {
+  if (!pic1.value || pic1.value === '[]') {
+    uni.showToast({
+      title: '请上传确认单',
+      icon: 'none'
+    })
+    return
+  }
+  emit('submit', {
+    produceVerifyPic: pic1.value,
+    produceOtherPic: pic2.value
+  })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -72,10 +116,14 @@ const pic2 = ref<string>('[]')
     margin-top: 9rpx;
 
     .arch-label {
-      width: 75rpx;
+      width: 80rpx;
       font-size: 9rpx;
       color: #171718;
       text-align: right;
+
+      .red {
+        color: red;
+      }
     }
 
     .arch-value {
@@ -84,5 +132,14 @@ const pic2 = ref<string>('[]')
       align-items: center;
     }
   }
+}
+
+.submit-btn {
+  position: fixed;
+  right: 25rpx;
+  bottom: 20rpx;
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%;
 }
 </style>

@@ -15,9 +15,12 @@
       @prview-image="prviewImage"
     >
       <slot>
-        <view class="is-add">
-          <view class="icon-add" />
-          <view class="icon-add rotate" />
+        <view>
+          <view class="is-add">
+            <view class="icon-add" />
+            <view class="icon-add rotate" />
+          </view>
+          <text class="add-txt">点击上传</text>
         </view>
       </slot>
     </upload-image>
@@ -286,15 +289,20 @@ const prviewImage = (item: any) => {
 }
 
 .icon-add {
-  width: 50px;
-  height: 5px;
-  background-color: #f1f1f1;
-  border-radius: 2px;
+  width: 9px;
+  height: 2px;
+  background-color: #aebbd5;
 }
 
 .rotate {
   position: absolute;
   transform: rotate(90deg);
+}
+
+.add-txt {
+  margin-top: 12rpx;
+  font-size: 8rpx;
+  color: #3e73ec;
 }
 
 .popup-wrap {

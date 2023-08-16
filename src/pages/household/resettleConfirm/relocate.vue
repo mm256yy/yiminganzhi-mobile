@@ -1,6 +1,34 @@
 <template>
   <!-- 安置确认 搬迁安置 -->
   <view class="relocate-wrap">
+    <view class="btn-box-wrap">
+      <view class="btn-box">
+        <view class="btn green-btn">
+          <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
+          <text class="txt">打印报表</text>
+        </view>
+        <view class="btn blue-btn" @click="onImportDataPre">
+          <image class="icon" src="@/static/images/icon_import.png" mode="scaleToFill" />
+          <text class="txt">导入模拟安置数据</text>
+        </view>
+
+        <view class="btn blue-btn" @click="editRelocate">
+          <image class="icon" src="@/static/images/icon_sign_white.png" mode="scaleToFill" />
+          <text class="txt">修改</text>
+        </view>
+
+        <view class="btn blue-btn" @click="archivesUpload">
+          <image class="icon" src="@/static/images/icon_dangan_upload.png" mode="scaleToFill" />
+          <text class="txt">档案上传</text>
+        </view>
+
+        <!-- <view class="btn blue-btn">
+          <image class="icon" src="@/static/images/icon_feedback.png" mode="scaleToFill" />
+          <text class="txt">问题反馈</text>
+        </view> -->
+      </view>
+    </view>
+
     <view class="common-head">
       <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
       <text>搬迁安置信息</text>
@@ -33,52 +61,17 @@
       </uni-table>
     </view>
 
-    <view class="edit-wrap">
-      <view class="plan-tab">
-        <view class="plan-label">安置方式</view>
-        <view
-          class="plan-tab-item"
-          v-for="item in dict[372]"
-          :class="{ active: houseType === item.value }"
-          @click="houseTypeChange(item)"
-          :key="item.value"
-        >
-          {{ item.text }}
-        </view>
-      </view>
-      <homestead
-        v-if="houseType === HouseType.homestead"
-        :baseInfo="props.dataInfo"
-        :doorNo="props.dataInfo.doorNo"
-        :immigrantSettle="{}"
-        :fromResettleConfirm="false"
-        @submit="immigrantSettleSubmit"
+    <uni-popup ref="alertDialog" type="dialog">
+      <uni-popup-dialog
+        type="warn"
+        cancelText="取消"
+        confirmText="确认"
+        title="请确认是否导入？"
+        content="导入模拟数据后，列表中的安置方式将被覆盖"
+        @confirm="onConfirm"
+        @close="onClose"
       />
-      <apartment
-        v-else-if="houseType === HouseType.flat"
-        :baseInfo="props.dataInfo"
-        :doorNo="props.dataInfo.doorNo"
-        :immigrantSettle="{}"
-        :fromResettleConfirm="false"
-        @submit="immigrantSettleSubmit"
-      />
-      <centerSupport
-        v-else-if="houseType === HouseType.concentrate"
-        :data="demographicList"
-        :doorNo="props.dataInfo.doorNo"
-        :immigrantSettle="{}"
-        :fromResettleConfirm="false"
-        @submit="immigrantSettleSubmit"
-      />
-      <findSelf
-        v-else-if="houseType === HouseType.oneself"
-        :data="demographicList"
-        :doorNo="props.dataInfo.doorNo"
-        :immigrantSettle="{}"
-        :fromResettleConfirm="false"
-        @submit="immigrantSettleSubmit"
-      />
-    </view>
+    </uni-popup>
   </view>
 </template>
 
@@ -86,7 +79,7 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import { LandlordType } from '@/types/sync'
 import { HouseType } from '@/types/common'
-import { StorageKey, getStorage } from '@/utils/storage'
+import { ImmigrantSettleType } from '@/types/impDataFill'
 import {
   resettleArea,
   resettleHouseType,
@@ -94,11 +87,8 @@ import {
   apartmentAreaSize,
   homesteadAreaSize
 } from '../imitateResettle/config'
-
-import homestead from '../imitateResettle/components/homestead.vue'
-import apartment from '../imitateResettle/components/apartment.vue'
-import centerSupport from '../imitateResettle/components/centerSupport.vue'
-import findSelf from '../imitateResettle/components/findSelf.vue'
+import { updateImpLandlordRelocateResettleApi } from '@/service'
+import { routerBack, routerForward } from '@/utils'
 
 interface PropsType {
   dataInfo: LandlordType
@@ -108,46 +98,17 @@ const props = defineProps<PropsType>()
 const loading = ref<boolean>(false)
 const tableData = ref<any[]>([])
 
-const demographicList = computed(() => {
-  return props.dataInfo && props.dataInfo.demographicList ? props.dataInfo.demographicList : []
-})
-
 const houseType = ref<HouseType>(HouseType.homestead)
 const immigrantSettle = ref<any>(null)
 const mockImmigrantSettle = ref<any>(null)
-const editDialogVisible = ref<boolean>(false)
-const peopleList = ref<any[]>([])
-// 获取数据字典
-const dict = getStorage(StorageKey.DICT)
-const form = ref<any>({})
+const alertDialog = ref<any>(null)
 
 onMounted(() => {
-  form.value = props.dataInfo
   // 获取模拟数据
   getMockData()
   // 获取搬迁安置数据
   getRelocationInfo()
 })
-
-const rules = ref()
-const dialogVisible = ref(false)
-
-/**
- * 根据户主人口性质过滤安置类型
- */
-const filterHouseType = () => {
-  const population = peopleList.value.find((item) => item.relation === '1')
-  // 农村移民
-  if (population && population.populationNature !== '1') {
-    return resettleHouseType.map((item) => {
-      if (item.id === HouseType.homestead) {
-        item.disabled = true
-      }
-      return item
-    })
-  }
-  return resettleHouseType
-}
 
 /**
  * 获取搬迁安置方式信息
@@ -166,7 +127,7 @@ watch(
     // 整成数组
     if (!res) return
     if (res.houseType === HouseType.homestead || res.houseType === HouseType.flat) {
-      const houseTypeText = resettleHouseType.find((item) => item.id === res.houseType)?.name
+      const houseTypeText = resettleHouseType.find((item) => item.value === res.houseType)?.text
       if (res.houseType === HouseType.homestead) {
         tableData.value = [
           {
@@ -226,6 +187,7 @@ watch(
     immediate: true
   }
 )
+
 // 获取模拟数据
 const getMockData = async () => {
   // const res = await getSimulateImmigrantSettleApi(props.dataInfo.doorNo)
@@ -234,57 +196,139 @@ const getMockData = async () => {
   // }
 }
 
+const archivesUpload = () => {
+  routerForward('archives', {
+    type: 2
+  })
+}
+
 // 导入
 const onImportDataPre = async () => {
-  dialogVisible.value = true
+  alertDialog.value?.open()
 }
 
 // 导入数据
-const onImportData = async () => {
+const onImportData = () => {
   // 拿到模拟安置的配置
-  immigrantSettle.value = { ...mockImmigrantSettle.value }
-  houseType.value = mockImmigrantSettle.value.houseType
-  // ElMessage.success('导入成功！')
+  const {
+    houseAreaType,
+    typeOneNum,
+    typeTwoNum,
+    typeThreeNum,
+    typeFourNum,
+    settleAddress,
+    doorNo,
+    areaType
+  } = mockImmigrantSettle.value
+  immigrantSettle.value = {
+    houseAreaType,
+    typeOneNum,
+    typeTwoNum,
+    typeThreeNum,
+    typeFourNum,
+    settleAddress,
+    doorNo,
+    areaType
+  }
+  houseType.value = houseAreaType
+  immigrantSettleSubmit(immigrantSettle.value)
 }
 
 const onClose = () => {
-  dialogVisible.value = false
+  alertDialog.value?.close()
 }
 
-const onSubmit = () => {
-  dialogVisible.value = false
+const onConfirm = () => {
+  alertDialog.value?.close()
   onImportData()
 }
 
-// 新增 搬迁安置信息
-const onEditResettle = () => {
-  onEditOpen()
+const editRelocate = () => {
+  routerForward('relocateConfirm', {
+    uid: props.dataInfo.uid
+  })
 }
 
-const onEditOpen = () => {
-  editDialogVisible.value = true
-}
-
-const onEditClose = () => {
-  editDialogVisible.value = false
-}
-
-const houseTypeChange = (item: any) => {
-  houseType.value = item.value
-}
-
-const immigrantSettleSubmit = async (params: any) => {
-  // const res = await saveRelocationInfoApi(params)
-  // console.log(res, '保存结果')
-  // if (res) {
-  //   editDialogVisible.value = false
-  //   immigrantSettle.value = res
-  //   ElMessage.success('保存成功！')
-  // }
+const immigrantSettleSubmit = async (data: Partial<ImmigrantSettleType>) => {
+  const res = await updateImpLandlordRelocateResettleApi(props.dataInfo.uid, data)
+  console.log(res, '保存结果')
+  if (res) {
+    uni.showToast({
+      title: '保存成功！',
+      icon: 'success'
+    })
+    routerBack()
+  }
 }
 </script>
 
 <style lang="scss" scoped>
+.btn-box-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9rpx 0 0;
+
+  .edit-back {
+    display: flex;
+    height: 23rpx;
+    padding: 0 9rpx;
+    background-color: #3e73ec;
+    border-radius: 23rpx;
+    align-items: center;
+    justify-content: center;
+
+    .icon {
+      width: 9rpx;
+      height: 9rpx;
+      margin-right: 3rpx;
+    }
+
+    .txt {
+      font-size: 9rpx;
+      line-height: 11rpx;
+      color: #ffffff;
+    }
+  }
+}
+
+.btn-box {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  .btn {
+    display: flex;
+    height: 23rpx;
+    padding: 0 9rpx;
+    margin-left: 6rpx;
+    background: #3e73ec;
+    border-radius: 23rpx;
+    align-items: center;
+    justify-content: center;
+
+    &.green-btn {
+      background-color: #30a952;
+    }
+
+    &.blue-btn {
+      background: #3e73ec;
+    }
+
+    .icon {
+      width: 9rpx;
+      height: 9rpx;
+      margin-right: 3rpx;
+    }
+
+    .txt {
+      font-size: 9rpx;
+      line-height: 11rpx;
+      color: #ffffff;
+    }
+  }
+}
+
 .common-head {
   display: flex;
   width: 100%;

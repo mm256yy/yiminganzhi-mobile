@@ -40,6 +40,17 @@ export const addImpLandlordPeopleApi = (uid: string, data: PopulationType) => {
 
 /**
  * 更新人口
+ * 批量
+ * @param uid 调查对象uid
+ * @param list 人口信息
+ * @returns
+ */
+export const updateImpLandlordPeopleBatchApi = (uid: string, data: PopulationType[]) => {
+  return ImpDataFillController.updateLandlordPeopleBatch(uid, data)
+}
+
+/**
+ * 更新人口
  * @param uid 调查对象uid
  * @param data 人口信息
  * @returns
@@ -224,8 +235,16 @@ export const deleteImpLandlordHouseFitUpApi = (uid: string, itemId: string, reas
 // -------------
 
 /**
- * 添加坟墓
+ * 获取坟墓
  * @param uid 调查对象uid
+ */
+export const getImpLandlordGraveItemApi = (uid: string) => {
+  return GraveController.getGraveByUid(uid)
+}
+
+/**
+ * 添加坟墓
+
  * @param data 坟墓信息
  * @returns
  */
@@ -235,7 +254,6 @@ export const addImpLandlordGraveApi = (data: GraveType) => {
 
 /**
  * 更新坟墓
- * @param uid 调查对象uid
  * @param data 坟墓信息
  * @returns
  */
@@ -245,8 +263,8 @@ export const updateImpLandlordGraveApi = (data: GraveType) => {
 
 /**
  * 删除坟墓信息
- * @param uid 调查对象uid
- * @param itemId 坟墓uid
+ * @param uid 坟墓uid
+ * @param reason 理由
  * @returns
  */
 export const deleteImpLandlordGraveApi = (uid: string, reason?: string) => {

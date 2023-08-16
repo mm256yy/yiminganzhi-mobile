@@ -68,7 +68,11 @@
       </view>
       <!-- 生产安置 step -->
       <view class="step-cont-item" v-else-if="stepIndex === 2">
-        <people :demographicList="demographicList" @submit="productionResettleSubmit" />
+        <people
+          :is-edit="true"
+          :demographicList="demographicList"
+          @submit="productionResettleSubmit"
+        />
       </view>
     </view>
 

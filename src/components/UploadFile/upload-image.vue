@@ -16,10 +16,7 @@
     </view>
     <view v-if="props.filesList.length < props.limit && !props.isPreview" class="file-picker__box">
       <view class="file-picker__box-content is-add" @click="choose">
-        <slot>
-          <!-- <view class="icon-add" />
-          <view class="icon-add rotate" /> -->
-        </slot>
+        <slot> </slot>
       </view>
     </view>
   </view>
@@ -76,13 +73,12 @@ const filterImgSrc = (item: any) => {
 
 .file-picker__box {
   position: relative;
-  // flex: 0 0 33.3%;
-  width: 33.3%;
+  width: 87rpx;
   height: 0;
-  padding-top: 33.33%;
-  /* #ifndef APP-NVUE */
+  padding-top: 87rpx;
+  background: #fbfdff;
+  border-radius: 2rpx;
   box-sizing: border-box;
-  /* #endif */
 }
 
 .file-picker__box-content {
@@ -93,7 +89,7 @@ const filterImgSrc = (item: any) => {
   left: 0;
   margin: 5px;
   overflow: hidden;
-  border: 1px #eee solid;
+  border: 1rpx dashed #c3cbd9;
   border-radius: 5px;
 }
 

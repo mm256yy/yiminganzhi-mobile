@@ -318,7 +318,7 @@
 					"subNVues":[
 						{
 							"id": "areaDetail",
-							"path": "pages/household/subNVue/areaDetail.nvue",
+							"path": "pages/household/areaDetail",
 							"type": "popup",
 							"style": {
 								"width": "527rpx",
@@ -351,6 +351,36 @@
 				"navigationBarTitleText": "村集体实施"
 			}
 		},
+		{
+			"name": "archives",
+			"path": "pages/archives/index",
+			"style": {
+				"navigationBarTitleText": "档案上传"
+			}
+		},
+		{
+			"name": "graveConfirm",
+			"path": "pages/household/resettleConfirm/graveEdit",
+			"style": {
+				"navigationBarTitleText": "坟墓安置编辑"
+			}
+		},
+		{
+			"name": "peopleConfirm",
+			"path": "pages/household/resettleConfirm/peopleEdit",
+			"style": {
+				"navigationBarTitleText": "生产安置编辑"
+			}
+		},
+		{
+			"name": "relocateConfirm",
+			"path": "pages/household/resettleConfirm/relocateEdit",
+			"style": {
+				"navigationBarTitleText": "搬迁安置编辑"
+			}
+		},
+		
+
 
 		{
 			"name": "database",

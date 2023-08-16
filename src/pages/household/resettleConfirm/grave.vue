@@ -5,7 +5,7 @@
         <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
         <text class="txt">打印报表</text>
       </view>
-      <view class="btn blue-btn">
+      <view class="btn blue-btn" @click="addGrave">
         <image class="icon" src="@/static/images/icon_plus.png" mode="scaleToFill" />
         <text class="txt">添加</text>
       </view>
@@ -14,10 +14,10 @@
         <text class="txt">档案上传</text>
       </view>
 
-      <view class="btn blue-btn">
+      <!-- <view class="btn blue-btn">
         <image class="icon" src="@/static/images/icon_feedback.png" mode="scaleToFill" />
         <text class="txt">问题反馈</text>
-      </view>
+      </view> -->
     </view>
     <view class="common-head">
       <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
@@ -54,38 +54,58 @@
           <uni-td>{{ item.settingGrave }}</uni-td>
           <uni-td>
             <view class="table-btn">
-              <view class="btn primary-btn">确认</view>
-              <view class="btn red-btn">删除</view>
+              <view class="btn primary-btn" @click="updateGrave(item.uid as string)">确认</view>
+              <view class="btn red-btn" @click="deleteGrave(item.uid as string)">删除</view>
             </view>
           </uni-td>
         </uni-tr>
       </uni-table>
     </view>
-
-    <EditForm :actionType="actionType" />
     <Archives />
   </view>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import EditForm from './editForm.vue'
-import Archives from './archives.vue'
+import { computed, ref } from 'vue'
+import { routerForward } from '@/utils'
+import { deleteImpLandlordGraveApi } from '@/service'
+import { LandlordType } from '@/types/sync'
 
+interface PropsType {
+  dataInfo: LandlordType
+}
+
+const props = defineProps<PropsType>()
 const loading = ref<boolean>(false)
-const tableData = ref<any[]>([
-  {
-    relation: '2',
-    materials: '2',
-    graveTypeText: '2',
-    number: 2,
-    handleWayText: 2,
-    settleRemark: 2,
-    settingGrave: 3
-  }
-])
 
-const actionType = ref<'add' | 'edit'>('add')
+const tableData = computed(() => {
+  return props.dataInfo.immigrantGraveList || []
+})
+
+const addGrave = () => {
+  routerForward('graveConfirm', {
+    actionType: 'add',
+    uid: ''
+  })
+}
+
+const updateGrave = (uid: string) => {
+  routerForward('graveConfirm', {
+    actionType: 'edit',
+    uid
+  })
+}
+
+const deleteGrave = async (uid: string) => {
+  const res = await deleteImpLandlordGraveApi(uid)
+  if (res) {
+    uni.showToast({
+      title: '保存成功！',
+      icon: 'success'
+    })
+    // 更新列表
+  }
+}
 </script>
 
 <style lang="scss" scoped>

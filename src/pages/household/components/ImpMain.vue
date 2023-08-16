@@ -64,7 +64,7 @@ import Back from '@/components/Back/Index.vue'
 import LeftSidebar from '@/components/LeftSidebar/Index.vue' // 引入左侧边栏组件
 import Header from '@/components/Header/ImpIndex.vue' // 引入头部组件
 import ImitateResettle from '../imitateResettle/index.vue'
-import ImitateResettleConfirm from '../resettleConfirm/grave.vue'
+import ImitateResettleConfirm from '../resettleConfirm/relocate.vue'
 import Agreement from '../agreement/index.vue'
 import baseInfoImp from '../baseInfoImp/index.vue'
 import populationVerfication from '../populationVerfication/index.vue' // 引入人口核定组件
