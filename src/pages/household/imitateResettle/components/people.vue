@@ -16,8 +16,8 @@
       </view>
 
       <view class="item">
-        <view class="label">年龄：</view>
-        <view class="value">{{ item.birthday }}</view>
+        <view class="label">身份证号：</view>
+        <view class="value">{{ item.card }}</view>
       </view>
       <view class="item">
         <view class="label">户籍类型：</view>
@@ -173,15 +173,16 @@ const stepNext = async () => {
 
   .btn {
     display: flex;
-    align-items: center;
-    justify-content: center;
     height: 26rpx;
+    min-width: 70rpx;
     padding: 0 11px;
     font-size: 11px;
     font-weight: 500;
     color: #ffffff;
     background: #3e73ec;
     border-radius: 2rpx;
+    align-items: center;
+    justify-content: center;
   }
 }
 
