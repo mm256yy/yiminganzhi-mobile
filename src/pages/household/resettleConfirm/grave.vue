@@ -9,7 +9,7 @@
         <image class="icon" src="@/static/images/icon_plus.png" mode="scaleToFill" />
         <text class="txt">添加</text>
       </view>
-      <view class="btn blue-btn">
+      <view class="btn blue-btn" @click="archivesUpload">
         <image class="icon" src="@/static/images/icon_dangan_upload.png" mode="scaleToFill" />
         <text class="txt">档案上传</text>
       </view>
@@ -107,6 +107,12 @@ const deleteGrave = async (uid: string) => {
     })
     // 更新列表
   }
+}
+
+const archivesUpload = () => {
+  routerForward('archives', {
+    type: 3
+  })
 }
 </script>
 
