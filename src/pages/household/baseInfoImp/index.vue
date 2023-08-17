@@ -171,7 +171,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { formatStr, dictOption, formatDict } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { locationTypes, yesAndNoEnums } from '@/config/common'
@@ -185,22 +185,6 @@ interface PropsType {
 
 const props = defineProps<PropsType>()
 const emit = defineEmits(['updateData'])
-
-// const householdPic = computed(() => {
-//   return props.dataInfo.householdPic || '[]'
-// })
-
-// const familyPic = computed(() => {
-//   return props.dataInfo.familyPic || '[]'
-// })
-
-// const housePic = computed(() => {
-//   return props.dataInfo.housePic || '[]'
-// })
-
-// const resettlePic = computed(() => {
-//   return props.dataInfo.resettlePic || '[]'
-// })
 
 const householdPicStr = ref<string>('[]') // 户主照片
 const familyPicStr = ref<string>('[]') // 全家福照片
