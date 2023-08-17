@@ -30,6 +30,9 @@
 
           <!-- 模拟安置 -->
           <ImitateResettle v-if="tabVal === 6" :dataInfo="(dataInfo as any)" />
+          <ProduceResettleConfirm v-if="tabVal === 7" :dataInfo="(dataInfo as any)" />
+          <RelocateResettleConfirm v-if="tabVal === 8" :dataInfo="(dataInfo as any)" />
+          <GraveResettleConfirm v-if="tabVal === 9" :dataInfo="(dataInfo as any)" />
 
           <!--移民建卡-->
           <migrateCard
@@ -60,6 +63,9 @@ import populationVerfication from '../populationVerfication/index.vue' // 引入
 import houseConfirm from '../houseConfirm/index.vue' // 引入房屋确权组件
 
 import ImitateResettle from '../imitateResettle/index.vue' // 引入模拟安置组件
+import ProduceResettleConfirm from '../resettleConfirm/produce.vue'
+import RelocateResettleConfirm from '../resettleConfirm/relocate.vue'
+import GraveResettleConfirm from '../resettleConfirm/grave.vue'
 import Agreement from '../agreement/index.vue' // 引入动迁协议组件
 import migrateCard from '../migrateCard/index.vue' // 引入移民建卡组件
 import transResettlement from '../transResettlement/index.vue' // 引入过渡安置组件

@@ -344,7 +344,7 @@ export class Landlord extends Common {
           reject(false)
           return
         }
-        const values = `status = 'modify',isPadDelete = '1',updatedDate = '${getCurrentTimeStamp()}'`
+        const values = `padStatus = 'modify',isPadDelete = '1',updatedDate = '${getCurrentTimeStamp()}'`
         const res = await this.db.updateTableData(LandlordTableName, values, 'uid', uid)
         if (res && res.code) {
           reject(false)
@@ -880,7 +880,7 @@ export class Landlord extends Common {
         realData.reportDate = dayjs()
         realData.reportUser = userInfo.id
 
-        const values = `status = 'modify',reportStatus = '${
+        const values = `padStatus = 'modify',reportStatus = '${
           ReportStatusEnum.ReportSucceed
         }',reportDate = '${dayjs().format(this.format)}',reportUser = '${
           realData.reportUser
@@ -921,7 +921,7 @@ export class Landlord extends Common {
         data.signDate = dayjs()
         data.signUser = userInfo.id
 
-        const values = `status = 'modify',signStatus = '${
+        const values = `padStatus = 'modify',signStatus = '${
           SignStatusEnum.SignSucceed
         }',signDate = '${dayjs().format(this.format)}',content = '${JSON.stringify(
           data

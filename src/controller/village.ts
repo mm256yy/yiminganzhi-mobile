@@ -104,7 +104,7 @@ class Village extends Common {
         }
         const uid = guid()
         data.uid = uid
-        const fields = `'uid','isPadDelete','status','name','parentCode','content','updatedDate'`
+        const fields = `'uid','isPadDelete','padStatus','name','parentCode','content','updatedDate'`
         const values = `'${uid}','0','modify','${data.name}','${data.parentCode}','${JSON.stringify(
           data
         )}','${getCurrentTimeStamp()}'`
@@ -127,7 +127,7 @@ class Village extends Common {
         if (!data) {
           reject(false)
         }
-        const values = `status = 'modify',name = '${data.name}',parentCode = '${
+        const values = `padStatus = 'modify',name = '${data.name}',parentCode = '${
           data.parentCode
         }',content = '${JSON.stringify(data)}',updatedDate = '${getCurrentTimeStamp()}'`
         const sql = `update ${VillageTableName} set ${values} where uid = '${data.uid}'`
@@ -150,7 +150,7 @@ class Village extends Common {
         if (!uid) {
           reject(false)
         }
-        const values = `status = 'modify',isPadDelete = '1',updatedDate = '${getCurrentTimeStamp()}'`
+        const values = `padStatus = 'modify',isPadDelete = '1',updatedDate = '${getCurrentTimeStamp()}'`
         const res = await this.db.updateTableData(VillageTableName, values, 'uid', uid)
         if (res && res.code) {
           reject(false)

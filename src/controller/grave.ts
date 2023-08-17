@@ -67,7 +67,7 @@ class Grave extends Common {
         const uid = guid()
         item.uid = uid
         const fields =
-          "'uid','registrantId','registrantDoorNo','villageId','villageDoorNo','content','updatedDate','isPadDelete','status'"
+          "'uid','registrantId','registrantDoorNo','villageId','villageDoorNo','content','updatedDate','isPadDelete','padStatus'"
         const values = `'${uid}','${item.registrantId}','${item.registrantDoorNo}','${
           item.villageId
         }','${item.villageDoorNo}','${JSON.stringify(
@@ -97,7 +97,7 @@ class Grave extends Common {
           return
         }
 
-        const values = `status = 'modify',villageDoorNo = '${item.villageDoorNo}',villageId = '${
+        const values = `padStatus = 'modify',villageDoorNo = '${item.villageDoorNo}',villageId = '${
           item.villageId
         }',registrantId = '${item.registrantId}',registrantDoorNo = '${
           item.registrantDoorNo
@@ -124,7 +124,7 @@ class Grave extends Common {
           reject(false)
           return
         }
-        const values = `status = 'modify',isPadDelete = '1',updatedDate = '${getCurrentTimeStamp()}'`
+        const values = `padStatus = 'modify',isPadDelete = '1',updatedDate = '${getCurrentTimeStamp()}'`
         const res = await this.db.updateTableData(GraveTableName, values, 'uid', uid)
         if (res && res.code) {
           reject(false)
@@ -174,7 +174,7 @@ class Grave extends Common {
         if (item) {
           item.isDelete = '1'
           item.deleteReason = deleteReason || ''
-          const values = `status = 'modify',content = '${JSON.stringify(
+          const values = `padStatus = 'modify',content = '${JSON.stringify(
             item
           )}',updatedDate = '${getCurrentTimeStamp()}'`
           const sql = `update ${GraveTableName} set ${values} where uid = '${item.uid}'`

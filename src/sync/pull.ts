@@ -214,7 +214,10 @@ class PullData {
       homeReportTop,
       homeReportTopToday,
       homeSignTop,
-      homeSignTopToday
+      homeSignTopToday,
+      chooseConfig,
+      houseConfig,
+      immigrantCompensationCardConfig
     } = result
     // 需要reset
     this.state.immigrantIncomeConfigList = immigrantIncomeConfigList

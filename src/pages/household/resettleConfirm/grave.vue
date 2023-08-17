@@ -45,13 +45,15 @@
         </uni-tr>
 
         <uni-tr v-for="(item, index) in tableData" :key="index">
-          <uni-td>{{ item.relation }}</uni-td>
-          <uni-td>{{ item.materials }}</uni-td>
+          <uni-td>{{ formatDict(item.relation, 307) }}</uni-td>
+          <uni-td>{{ formatDict(item.materials, 295) }}</uni-td>
           <uni-td>{{ item.graveTypeText }}</uni-td>
           <uni-td>{{ item.number }}</uni-td>
-          <uni-td>{{ item.handleWayText }}</uni-td>
-          <uni-td>{{ item.settleRemark }}</uni-td>
-          <uni-td>{{ item.settingGrave }}</uni-td>
+          <uni-td>{{ formatDict(item.handleWay, 238) }}</uni-td>
+          <uni-td>{{ item.remark }}</uni-td>
+          <uni-td>
+            {{ item.handleWay === '1' ? item.settingAddress : formatDict(item.settingGrave, 377) }}
+          </uni-td>
           <uni-td>
             <view class="table-btn">
               <view class="btn primary-btn" @click="updateGrave(item.uid as string)">确认</view>
@@ -67,7 +69,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { routerForward } from '@/utils'
+import { routerForward, formatDict } from '@/utils'
 import { deleteImpLandlordGraveApi } from '@/service'
 import { LandlordType } from '@/types/sync'
 
