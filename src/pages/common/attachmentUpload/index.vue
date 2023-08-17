@@ -47,7 +47,6 @@ const submit = () => {
     doorNo: props.dataInfo.doorNo,
     otherPic: pic.value
   }
-  console.log('params:', params)
   emit('submit', params)
 }
 </script>

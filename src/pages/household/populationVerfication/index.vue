@@ -9,15 +9,15 @@
             <view class="name">{{ formatStr(item.name) }}</view>
           </view>
           <view class="right">
-            <!-- <image
+            <image
               class="icon m-r-10"
               src="@/static/images/icon_delete_mini.png"
               mode="scaleToFill"
               @click="deletePopulation"
-            /> -->
+            />
           </view>
         </view>
-        <view class="list-2">
+        <view class="list-2" @click="toLink('edit', item)">
           <uni-row>
             <uni-col :span="12">
               <view class="col">
@@ -41,7 +41,7 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">户籍类别：</view>
-                <view class="content">农村家庭户</view>
+                <view class="content">{{ formatDict(item.censusType, 249) }}</view>
               </view>
             </uni-col>
             <uni-col :span="12">
@@ -72,10 +72,10 @@
       <view class="tips">请先添加人口核定信息</view>
     </view>
 
-    <!-- <image class="btn add" src="@/static/images/icon_add.png" mode="scaleToFill" /> -->
+    <image class="btn add" src="@/static/images/icon_add.png" mode="scaleToFill" />
 
     <!-- 删除确认弹框 -->
-    <!-- <uni-popup ref="alertDialog" type="dialog">
+    <uni-popup ref="alertDialog" type="dialog">
       <uni-popup-dialog
         type="warn"
         mode="input"
@@ -87,16 +87,14 @@
         @confirm="dialogConfirm"
         @close="dialogClose"
       />
-    </uni-popup> -->
+    </uni-popup>
   </view>
 </template>
 
 <script lang="ts" setup>
-// import { ref } from 'vue'
-// import dayjs from 'dayjs'
-import { formatDict, formatStr } from '@/utils'
-// import { showToast } from '@/config'
-// import { MainStage } from '@/types/common'
+import { ref } from 'vue'
+import { formatDict, formatStr, routerForward, fmtPicUrl } from '@/utils'
+import { showToast } from '@/config'
 
 const props = defineProps({
   dataList: {
@@ -109,60 +107,41 @@ const props = defineProps({
   }
 })
 
-// const emit = defineEmits(['deletePopulation'])
-// const alertDialog = ref<any>(null)
-// const currentItem = ref<any>({})
-// const reason = ref<string>('') // 删除原因
+const emit = defineEmits(['deletePopulation'])
+const alertDialog = ref<any>(null)
+const currentItem = ref<any>({})
+const reason = ref<string>('') // 删除原因
 
-// const toLink = (type: string, data?: any) => {
-//   const { uid } = props.dataInfo
-//   if (type === 'add') {
-//     routerForward('demographicInfoEdit', {
-//       type,
-//       uid,
-//       occupationOptions: JSON.stringify(props.occupationOptions)
-//     })
-//   } else if (type === 'edit') {
-//     let params = {
-//       ...data,
-//       cardPic: fmtPicUrl(data.cardPic),
-//       householdPic: fmtPicUrl(data.householdPic),
-//       otherPic: fmtPicUrl(data.otherPic),
-//       birthday: data.birthday ? dayjs(data.birthday).format('YYYY-MM') : null
-//     }
-//     routerForward('demographicInfoEdit', {
-//       params: JSON.stringify(params),
-//       occupationOptions: JSON.stringify(props.occupationOptions),
-//       type,
-//       uid
-//     })
-//   }
-// }
+const toLink = (type: string, data?: any) => {
+  const { uid } = props.dataInfo
+  let params = { type, uid }
+  routerForward('populationVerficationEdit', { params: JSON.stringify(params) })
+}
 
 /**
  * 删除当前行数据
  * @param {Object} data 当前行数据
  */
-// const deletePopulation = () => {
-//   alertDialog.value?.open()
-//   currentItem.value = { ...data }
-// }
+const deletePopulation = (data: any) => {
+  alertDialog.value?.open()
+  currentItem.value = { ...data }
+}
 
-// const dialogConfirm = (data: any) => {
-//   if (!data) {
-//     showToast('请输入删除原因')
-//     return
-//   }
-//   let params = {
-//     ...currentItem.value,
-//     reason: data
-//   }
-//   emit('deletePopulation', params)
-// }
+const dialogConfirm = (data: any) => {
+  if (!data) {
+    showToast('请输入删除原因')
+    return
+  }
+  let params = {
+    ...currentItem.value,
+    reason: data
+  }
+  emit('deletePopulation', params)
+}
 
-// const dialogClose = () => {
-//   alertDialog.value.close()
-// }
+const dialogClose = () => {
+  alertDialog.value.close()
+}
 </script>
 
 <style lang="scss" scoped>

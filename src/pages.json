@@ -359,6 +359,13 @@
 			}
 		},
 		{
+			"name": "populationVerficationEdit",
+			"path": "pages/household/populationVerficationEdit/index",
+			"style": {
+				"navigationBarTitleText": "人口核定编辑"
+			}
+		},
+		{
 			"name": "graveConfirm",
 			"path": "pages/household/resettleConfirm/graveEdit",
 			"style": {
@@ -379,9 +386,6 @@
 				"navigationBarTitleText": "搬迁安置编辑"
 			}
 		},
-		
-
-
 		{
 			"name": "database",
 			"path": "pages/database/index",
