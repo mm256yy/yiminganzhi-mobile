@@ -1,6 +1,6 @@
 <template>
   <view class="form-wrapper">
-    <Back :title="title" />
+    <Back :title="title" needConfirm />
     <view class="main">
       <uni-forms class="form" ref="form" :modelValue="formData">
         <uni-row v-if="commonParams.type === 'add'">
