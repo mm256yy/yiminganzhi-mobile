@@ -44,11 +44,10 @@
         emptyText="暂无更多数据"
       >
         <uni-tr>
-          <uni-th width="66rpx">安置区域</uni-th>
-          <uni-th width="60rpx">户型</uni-th>
-          <uni-th width="90rpx">数量（套数）</uni-th>
-          <uni-th width="52rpx">类型</uni-th>
-          <uni-th>备注</uni-th>
+          <uni-th>安置区域</uni-th>
+          <uni-th>户型</uni-th>
+          <uni-th>数量（套数）</uni-th>
+          <uni-th>类型</uni-th>
         </uni-tr>
 
         <uni-tr v-for="(item, index) in tableData" :key="index">
@@ -99,43 +98,32 @@ const loading = ref<boolean>(false)
 const tableData = ref<any[]>([])
 
 const houseType = ref<HouseType>(HouseType.homestead)
-const immigrantSettle = ref<any>(null)
-const mockImmigrantSettle = ref<any>(null)
 const alertDialog = ref<any>(null)
-
-onMounted(() => {
-  // 获取模拟数据
-  getMockData()
-  // 获取搬迁安置数据
-  getRelocationInfo()
+// 搬迁安置
+const immigrantSettle = computed(() => {
+  return props.dataInfo && props.dataInfo.immigrantSettle ? props.dataInfo.immigrantSettle : {}
 })
-
-/**
- * 获取搬迁安置方式信息
- */
-const getRelocationInfo = async () => {
-  // const res = await getRelocationInfoApi(props.doorNo)
-  // if (res) {
-  //   houseType.value = res.houseType
-  //   immigrantSettle.value = res
-  // }
-}
+// 模拟数据
+const mockImmigrantSettle = computed(() => {
+  return props.dataInfo && props.dataInfo.simulateImmigrantSettle
+    ? props.dataInfo.simulateImmigrantSettle
+    : {}
+})
 
 watch(
   () => immigrantSettle.value,
   (res) => {
     // 整成数组
     if (!res) return
-    if (res.houseType === HouseType.homestead || res.houseType === HouseType.flat) {
-      const houseTypeText = resettleHouseType.find((item) => item.value === res.houseType)?.text
-      if (res.houseType === HouseType.homestead) {
+    if (res.houseAreaType === HouseType.homestead || res.houseAreaType === HouseType.flat) {
+      const houseTypeText = resettleHouseType.find((item) => item.value === res.houseAreaType)?.text
+      if (res.houseAreaType === HouseType.homestead) {
         tableData.value = [
           {
             houseTypeText,
             settleAddressText: resettleArea.find((item) => item.id === res.settleAddress)?.name,
             area: homesteadAreaSize.find((item) => item.id === res.areaType)?.name,
-            num: 1,
-            resettleRemark: res.resettleRemark
+            num: 1
           }
         ]
       } else {
@@ -145,8 +133,7 @@ watch(
             houseTypeText,
             settleAddressText: apartmentArea.find((item) => item.id === res.settleAddress)?.name,
             area: apartmentAreaSize[0].name,
-            num: res.typeOneNum,
-            resettleRemark: res.resettleRemark
+            num: res.typeOneNum
           })
         }
         if (res.typeTwoNum) {
@@ -154,8 +141,7 @@ watch(
             houseTypeText,
             settleAddressText: apartmentArea.find((item) => item.id === res.settleAddress)?.name,
             area: apartmentAreaSize[1].name,
-            num: res.typeTwoNum,
-            resettleRemark: res.resettleRemark
+            num: res.typeTwoNum
           })
         }
         if (res.typeThreeNum) {
@@ -163,8 +149,7 @@ watch(
             houseTypeText,
             settleAddressText: apartmentArea.find((item) => item.id === res.settleAddress)?.name,
             area: apartmentAreaSize[2].name,
-            num: res.typeThreeNum,
-            resettleRemark: res.resettleRemark
+            num: res.typeThreeNum
           })
         }
         if (res.typeFourNum) {
@@ -172,8 +157,7 @@ watch(
             houseTypeText,
             settleAddressText: apartmentArea.find((item) => item.id === res.settleAddress)?.name,
             area: apartmentAreaSize[3].name,
-            num: res.typeFourNum,
-            resettleRemark: res.resettleRemark
+            num: res.typeFourNum
           })
         }
         tableData.value = array
@@ -188,17 +172,10 @@ watch(
   }
 )
 
-// 获取模拟数据
-const getMockData = async () => {
-  // const res = await getSimulateImmigrantSettleApi(props.dataInfo.doorNo)
-  // if (res) {
-  //   mockImmigrantSettle.value = res
-  // }
-}
-
 const archivesUpload = () => {
   routerForward('archives', {
-    type: 2
+    type: 2,
+    uid: props.dataInfo.uid
   })
 }
 
@@ -220,7 +197,7 @@ const onImportData = () => {
     doorNo,
     areaType
   } = mockImmigrantSettle.value
-  immigrantSettle.value = {
+  const data = {
     houseAreaType,
     typeOneNum,
     typeTwoNum,
@@ -230,8 +207,8 @@ const onImportData = () => {
     doorNo,
     areaType
   }
-  houseType.value = houseAreaType
-  immigrantSettleSubmit(immigrantSettle.value)
+  houseType.value = houseAreaType as HouseType
+  immigrantSettleSubmit(data)
 }
 
 const onClose = () => {

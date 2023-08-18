@@ -92,7 +92,11 @@ class PullData {
       companyNum: 0,
       individualNum: 0,
       villageNum: 0,
-      virutalVillageNum: 0
+      virutalVillageNum: 0,
+
+      chooseConfig: [],
+      houseConfig: [],
+      immigrantCompensationCardConfig: []
     }
 
     this.districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
@@ -233,6 +237,9 @@ class PullData {
       homeSignTop,
       homeSignTopToday
     }
+    this.state.chooseConfig = chooseConfig
+    this.state.houseConfig = houseConfig
+    this.state.immigrantCompensationCardConfig = immigrantCompensationCardConfig
 
     this.pullDict().then((res: boolean) => {
       res && this.count++
@@ -273,6 +280,10 @@ class PullData {
       this.state.districtTree = []
       this.state.professionalTree = []
       this.state.top5Statistic = null
+
+      this.state.chooseConfig = []
+      this.state.houseConfig = []
+      this.state.immigrantCompensationCardConfig = []
       console.log('拉取: 其他', res)
     })
   }
@@ -869,7 +880,14 @@ class PullData {
   /** 其他 */
   private pullOther(): Promise<boolean> {
     return new Promise(async (resolve) => {
-      const { districtTree, professionalTree, top5Statistic } = this.state
+      const {
+        districtTree,
+        professionalTree,
+        top5Statistic,
+        chooseConfig,
+        houseConfig,
+        immigrantCompensationCardConfig
+      } = this.state
       await db.transaction('begin').catch(() => {
         resolve(false)
       })
@@ -899,6 +917,34 @@ class PullData {
         )}','${getCurrentTimeStamp()}'`
         db.insertOrReplaceData(OtherTableName, values, fields)
       }
+
+      if (chooseConfig && chooseConfig.length) {
+        // 地块配置
+        const fields = "'type','content','updatedDate'"
+        const values = `'${OtherDataType.ChooseConfig}','${JSON.stringify(
+          chooseConfig
+        )}','${getCurrentTimeStamp()}'`
+        db.insertOrReplaceData(OtherTableName, values, fields)
+      }
+
+      if (houseConfig && houseConfig.length) {
+        // 撞号房号配置
+        const fields = "'type','content','updatedDate'"
+        const values = `'${OtherDataType.HouseConfig}','${JSON.stringify(
+          houseConfig
+        )}','${getCurrentTimeStamp()}'`
+        db.insertOrReplaceData(OtherTableName, values, fields)
+      }
+
+      if (immigrantCompensationCardConfig && immigrantCompensationCardConfig.length) {
+        // 移民建卡配置
+        const fields = "'type','content','updatedDate'"
+        const values = `'${OtherDataType.ImmigrantCompensationCardConfig}','${JSON.stringify(
+          immigrantCompensationCardConfig
+        )}','${getCurrentTimeStamp()}'`
+        db.insertOrReplaceData(OtherTableName, values, fields)
+      }
+
       await db.transaction('commit').catch(() => {
         resolve(false)
       })

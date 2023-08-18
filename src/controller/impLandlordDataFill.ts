@@ -24,7 +24,9 @@ import {
   ImmigrantChooseHouseType,
   ImmigrantCompensationCardType,
   ImmigrantBuildOneselfType,
-  ImmigrantProceduresType
+  ImmigrantProceduresType,
+  SimulateDemographicType,
+  SimulateImmigrantSettleType
 } from '@/types/impDataFill'
 import { ImpLandlord } from './impLandlord'
 
@@ -1637,6 +1639,87 @@ class ImpDataFill extends ImpLandlord {
         updateRes ? resolve(true) : reject(false)
       } catch (error) {
         console.log(error, 'updateLandlordProcedures-error')
+        reject(false)
+      }
+    })
+  }
+
+  // 模拟安置 生产安置
+  updateImpLandlordSimulateDemographic(
+    uid: string,
+    data: Partial<SimulateDemographicType>[]
+  ): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!data || !uid) {
+          reject(false)
+          console.log('uid或数据缺失')
+          return
+        }
+
+        // 拿到详情信息
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
+        if (landlordItem) {
+          landlordItem.simulateDemographic = data.map((item) => {
+            if (!item.uid) {
+              const itemUid = guid()
+              item.uid = itemUid
+            }
+            return item
+          })
+        } else {
+          reject(false)
+          console.log('调查对象信息查询失败')
+          return
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'updateImpLandlordSimulateDemographic-error')
+        reject(false)
+      }
+    })
+  }
+
+  // 模拟安置 搬迁安置
+  updateImpLandlordSimulateImmigrantSettle(
+    uid: string,
+    data: Partial<SimulateImmigrantSettleType>
+  ): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!data || !uid) {
+          reject(false)
+          console.log('uid或数据缺失')
+          return
+        }
+
+        // 拿到详情信息
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
+        if (landlordItem) {
+          if (landlordItem.simulateImmigrantSettle) {
+            // 存在
+            landlordItem.simulateImmigrantSettle = {
+              ...landlordItem.simulateImmigrantSettle,
+              ...data
+            }
+          } else {
+            landlordItem.simulateImmigrantSettle = { ...data }
+          }
+          if (!landlordItem.simulateImmigrantSettle.uid) {
+            landlordItem.simulateImmigrantSettle.uid = guid()
+          }
+        } else {
+          reject(false)
+          console.log('调查对象信息查询失败')
+          return
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'updateImpLandlordSimulateImmigrantSettle-error')
         reject(false)
       }
     })

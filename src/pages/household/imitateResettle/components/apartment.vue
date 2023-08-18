@@ -4,9 +4,11 @@
       <view class="item">
         <view class="label">宅基地安置人数：</view>
         <view class="value-box">
-          <text class="red">{{ baseInfo.familyNum }}</text
-          >人，其中该户农村移民 ： <text class="red">{{ baseInfo.ruralMigrantNum }}</text
-          >人，随迁人口：<text class="red">{{ baseInfo.farmingMigrantNum }}</text
+          <text class="red">{{ familyNum }}</text
+          >人，其中该户农村移民 ： <text class="red">{{ ruralMigrantNum }}</text
+          >人，非农移民 ：{{ unruralMigrantNum }}人，随迁人口：<text class="red">{{
+            otherNum
+          }}</text
           >人
         </view>
       </view>
@@ -160,7 +162,7 @@
         <view class="value-box">
           <view class="info-item">
             根据您输入的安置人数：
-            <text class="red">{{ baseInfo.familyNum }}</text> 人，选购总面积为：
+            <text class="red">{{ familyNum }}</text> 人，选购总面积为：
             <text class="red">{{ totalArea }}</text
             >m²
           </view>
@@ -193,7 +195,9 @@
     </view>
 
     <view class="btn-wrap">
-      <view class="btn" @click="submitResettle"> 确定，进入下一步 </view>
+      <view class="btn" @click="submitResettle"
+        >{{ fromResettleConfirm ? '确定' : '确定，进入下一步' }}
+      </view>
     </view>
   </view>
 </template>
@@ -203,10 +207,11 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { apartmentArea, apartmentAreaSize } from '../config'
 import { showToast } from '@/config'
 import { HouseType } from '@/types/common'
+import { LandlordType } from '@/types/sync'
 
 interface PropsType {
   doorNo: string
-  baseInfo: any
+  baseInfo: LandlordType
   immigrantSettle: any
   fromResettleConfirm?: boolean
 }
@@ -221,6 +226,26 @@ const buyHousePup = ref(false)
 
 // 方案数据
 const tableData = ref<any>([])
+
+// 总人口
+const familyNum = computed(() => {
+  return props.baseInfo.demographicList.length || 1
+})
+
+// 农村移民
+const ruralMigrantNum = computed(() => {
+  return props.baseInfo.demographicList.filter((item) => item.populationNature === '1').length || 0
+})
+
+// 非农移民
+const unruralMigrantNum = computed(() => {
+  return props.baseInfo.demographicList.filter((item) => item.populationNature === '2').length || 0
+})
+
+// 其他人口
+const otherNum = computed(() => {
+  return familyNum.value - ruralMigrantNum.value - unruralMigrantNum.value
+})
 
 const apartmentPlaceChange = (id: string) => {
   settleAddress.value = id
@@ -285,13 +310,13 @@ const totalArea = computed(() => {
 
 // 剩余面积
 const residueArea = computed(() => {
-  const residue = props.baseInfo.familyNum * 40 - totalArea.value
+  const residue = familyNum.value * 40 - totalArea.value
   return residue < 0 ? 0 : residue
 })
 
 // 超出面积
 const exceedArea = computed(() => {
-  const exceed = totalArea.value - props.baseInfo.familyNum * 40
+  const exceed = totalArea.value - familyNum.value * 40
   return exceed < 0 ? 0 : exceed
 })
 
@@ -699,5 +724,10 @@ const submitResettle = async () => {
     background: #3e73ec;
     border-radius: 2rpx;
   }
+}
+
+::v-deep.uni-input-input,
+::v-deep.uni-input-placeholder {
+  font-size: 9rpx !important;
 }
 </style>

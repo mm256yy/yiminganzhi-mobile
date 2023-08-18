@@ -37,7 +37,9 @@ import {
   ImmigrantLandEmptyType,
   ImmigrantExcessType,
   ImmigrantBuildOneselfType,
-  ImmigrantProceduresType
+  ImmigrantProceduresType,
+  SimulateImmigrantSettleType,
+  SimulateDemographicType
 } from './impDataFill'
 
 // 农户列表
@@ -111,6 +113,7 @@ export interface LandlordType {
   immigrantFacilitiesList: FacilitiesType[]
   // 个体户 / 公司 扩展字段
   company: CompanyType
+  cityCodeText?: string
 
   isUpdate?: string
   showDoorNo: string
@@ -146,7 +149,9 @@ export interface LandlordType {
   immigrantExcess: Partial<ImmigrantExcessType>
   immigrantBuildOneself: ImmigrantBuildOneselfType[]
   immigrantProcedures: ImmigrantProceduresType[]
-  cityCodeText?: string
+
+  simulateDemographic: Partial<SimulateDemographicType>[]
+  simulateImmigrantSettle: Partial<SimulateImmigrantSettleType>
 }
 
 export interface AppVersionDtoType {
@@ -172,6 +177,37 @@ interface LabelValueChildrenType {
   label: string
   value: any
   children: LabelValueChildrenType[]
+}
+
+export interface ChooseConfigType {
+  id?: number
+  projectId?: number
+  sort: string
+  type: string
+  name: string
+  isOccupy: string
+}
+
+export interface HouseConfigType {
+  id?: number
+  projectId?: number
+  isOccupy: string
+  level: string
+  code: string
+  parentCode: string
+  name: string
+}
+
+export interface ImmigrantCompensationCardConfigType {
+  id?: number
+  projectId?: number
+  name: string
+  unit: string
+  number: number
+  price: number
+  type: string
+  isUpdate: string
+  totalPrice: number
 }
 
 /**
@@ -203,6 +239,10 @@ export interface StateType {
   individualNum: number
   villageNum: number
   virutalVillageNum: number
+
+  chooseConfig: ChooseConfigType[]
+  houseConfig: HouseConfigType[]
+  immigrantCompensationCardConfig: ImmigrantCompensationCardConfigType[]
 }
 
 export interface PushStateType {

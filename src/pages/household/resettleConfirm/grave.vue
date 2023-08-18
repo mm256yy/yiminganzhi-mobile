@@ -111,7 +111,8 @@ const deleteGrave = async (uid: string) => {
 
 const archivesUpload = () => {
   routerForward('archives', {
-    type: 3
+    type: 3,
+    uid: props.dataInfo.uid
   })
 }
 </script>

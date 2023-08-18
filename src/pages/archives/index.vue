@@ -29,6 +29,7 @@ import { computed, ref } from 'vue'
 import Container from '@/components/Container/index.vue'
 import { updateImpLandlordDocumentationApi, getImpLandlordItemApi } from '@/service'
 import { ImmigrantDocumentationType } from '@/types/impDataFill'
+import { routerBack } from '@/utils'
 
 import ProduceArchives from './produceArchives.vue'
 import RelocateArchives from './relocateArchives.vue'
@@ -98,6 +99,7 @@ const submit = async (data: Partial<ImmigrantDocumentationType>) => {
 // 保存成功后
 const submitSuccess = () => {
   console.log('提交成功逻辑')
+  routerBack()
 }
 </script>
 

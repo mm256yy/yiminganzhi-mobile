@@ -37,7 +37,7 @@
           v-if="houseAreaType === HouseType.homestead"
           :baseInfo="props.dataInfo"
           :doorNo="props.dataInfo.doorNo"
-          :immigrantSettle="{}"
+          :immigrantSettle="simulateImmigrantSettle"
           :fromResettleConfirm="false"
           @submit="immigrantSettleSubmit"
         />
@@ -45,7 +45,7 @@
           v-else-if="houseAreaType === HouseType.flat"
           :baseInfo="props.dataInfo"
           :doorNo="props.dataInfo.doorNo"
-          :immigrantSettle="{}"
+          :immigrantSettle="simulateImmigrantSettle"
           :fromResettleConfirm="false"
           @submit="immigrantSettleSubmit"
         />
@@ -53,7 +53,7 @@
           v-else-if="houseAreaType === HouseType.concentrate"
           :data="demographicList"
           :doorNo="props.dataInfo.doorNo"
-          :immigrantSettle="{}"
+          :immigrantSettle="simulateImmigrantSettle"
           :fromResettleConfirm="false"
           @submit="immigrantSettleSubmit"
         />
@@ -61,7 +61,7 @@
           v-else-if="houseAreaType === HouseType.oneself"
           :data="demographicList"
           :doorNo="props.dataInfo.doorNo"
-          :immigrantSettle="{}"
+          :immigrantSettle="simulateImmigrantSettle"
           :fromResettleConfirm="false"
           @submit="immigrantSettleSubmit"
         />
@@ -70,7 +70,7 @@
       <view class="step-cont-item" v-else-if="stepIndex === 2">
         <people
           :is-edit="true"
-          :demographicList="demographicList"
+          :demographicList="(simulateDemographic as SimulateDemographicType[])"
           @submit="productionResettleSubmit"
         />
       </view>
@@ -100,6 +100,11 @@ import findSelf from './components/findSelf.vue'
 
 import { LandlordType } from '@/types/sync'
 import { HouseType } from '@/types/common'
+import { SimulateDemographicType } from '@/types/impDataFill'
+import {
+  updateImpLandlordSimulateDemographicApi,
+  updateImpLandlordSimulateImmigrantSettleApi
+} from '@/service'
 
 interface PropsType {
   dataInfo: LandlordType
@@ -108,12 +113,46 @@ interface PropsType {
 const props = defineProps<PropsType>()
 const areaDetailSubNVue = uni.getSubNVueById('areaDetail')
 
+// 获取人口列表
 const demographicList = computed(() => {
   return props.dataInfo && props.dataInfo.demographicList ? props.dataInfo.demographicList : []
 })
 
-const immigrantWill = computed<any>(() => {
-  return props.dataInfo && props.dataInfo.immigrantWill ? props.dataInfo.immigrantWill : {}
+// 获取模拟安置 生产安置信息
+const simulateDemographic = computed(() => {
+  return props.dataInfo && props.dataInfo.simulateDemographic
+    ? props.dataInfo.simulateDemographic
+    : demographicList.value.map((item) => {
+        const {
+          id: demographicId,
+          name,
+          sex,
+          relation,
+          card,
+          censusType,
+          populationNature,
+          settingWay,
+          settingRemark
+        } = item
+        return {
+          demographicId,
+          name,
+          sex,
+          relation,
+          card,
+          censusType,
+          populationNature,
+          settingWay,
+          settingRemark
+        }
+      })
+})
+
+// 获取模拟安置 搬迁安置信息
+const simulateImmigrantSettle = computed(() => {
+  return props.dataInfo && props.dataInfo.simulateImmigrantSettle
+    ? props.dataInfo.simulateImmigrantSettle
+    : {}
 })
 
 const uid = computed<any>(() => {
@@ -121,7 +160,6 @@ const uid = computed<any>(() => {
 })
 
 const descpopup = ref<any>(null)
-const tableData = ref<any[]>([])
 const houseAreaType = ref<HouseType>(HouseType.homestead)
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
@@ -178,23 +216,29 @@ const houseAreaTypeChange = (item: any) => {
  * 生产安置确认
  */
 const productionResettleSubmit = async (data: any) => {
-  // const res = await saveSimulateDemographicApi(data)
-  // console.log('安置方式更新结果', res)
-  // if (res) {
-  //   showToast('生产安置保存成功!')
-  // }
+  const res = await updateImpLandlordSimulateDemographicApi(uid.value, data)
+  console.log('生产安置方式更新结果', res)
+  if (res) {
+    uni.showToast({
+      title: '生产安置保存成功!',
+      icon: 'success'
+    })
+  }
 }
 
 /**
  * 搬迁安置确认
  */
 const immigrantSettleSubmit = async (data: any) => {
-  // const res = await saveSimulateImmigrantSettleApi(data)
-  // console.log('搬迁安置确认结果', res)
-  // if (res) {
-  //   showToast('搬迁安置保存成功!')
-  //   stepIndex.value += 1
-  // }
+  const res = await updateImpLandlordSimulateImmigrantSettleApi(uid.value, data)
+  console.log('搬迁安置确认结果', res)
+  if (res) {
+    uni.showToast({
+      title: '搬迁安置保存成功!',
+      icon: 'success'
+    })
+    stepIndex.value += 1
+  }
 }
 
 // 打开/关闭子窗口

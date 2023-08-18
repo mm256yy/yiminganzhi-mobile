@@ -90,3 +90,18 @@ export const getPrintTemplatesApi = (type: PrintType) => {
 export const getStatisticApi = (type: OtherDataType) => {
   return OtherController.getOtherWithType(type)
 }
+
+// 获取地块配置
+export const getChooseConfigApi = () => {
+  return OtherController.getOtherWithType(OtherDataType.ChooseConfig)
+}
+
+// 获取幢号房号配置
+export const getHouseConfigApi = () => {
+  return OtherController.getOtherWithType(OtherDataType.HouseConfig)
+}
+
+// 获取移民建卡配置
+export const getCompensationCardConfigApi = () => {
+  return OtherController.getOtherWithType(OtherDataType.ImmigrantCompensationCardConfig)
+}

@@ -69,7 +69,9 @@ const demographicList = computed(() => {
 })
 
 const mockDemographicList = computed(() => {
-  return props.dataInfo && props.dataInfo.demographicList ? props.dataInfo.demographicList : []
+  return props.dataInfo && props.dataInfo.simulateDemographic
+    ? props.dataInfo.simulateDemographic
+    : []
 })
 
 const editProduce = () => {
@@ -111,7 +113,8 @@ const dialogClose = () => {
 
 const archivesUpload = () => {
   routerForward('archives', {
-    type: 1
+    type: 1,
+    uid: props.dataInfo.uid
   })
 }
 </script>

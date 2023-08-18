@@ -50,7 +50,7 @@
     </view>
 
     <view class="btn-wrap" v-if="props.isEdit">
-      <view class="btn" @click="stepNext"> 确认 </view>
+      <view class="btn" @click="stepNext"> 确定 </view>
     </view>
   </view>
 </template>
@@ -60,17 +60,18 @@ import { ref, watch } from 'vue'
 import { formatDict, getStorage, StorageKey } from '@/utils'
 import { PopulationType } from '@/types/datafill'
 import { showToast } from '@/config'
+import { SimulateDemographicType } from '@/types/impDataFill'
 
 interface PropsType {
   isEdit: boolean
-  demographicList: PopulationType[]
+  demographicList: PopulationType[] | SimulateDemographicType[]
 }
 
 const emit = defineEmits(['submit'])
 const props = defineProps<PropsType>()
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
-console.log(dict[375], 'dict')
+
 const tableData = ref<any[]>([])
 
 watch(
@@ -92,6 +93,7 @@ const stepNext = async () => {
   }
   const data = tableData.value.map((item) => {
     return {
+      ...item,
       demographicId: item.demographicId,
       settingWay: item.settingWay,
       settingRemark: item.settingRemark

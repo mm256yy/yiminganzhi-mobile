@@ -4,9 +4,9 @@
       <view class="item">
         <view class="label">宅基地安置人数：</view>
         <view class="value-box">
-          <text class="red">{{ baseInfo.familyNum }}</text
-          >人，其中该户农村移民 ： <text class="red">{{ baseInfo.ruralMigrantNum }}</text
-          >人，随迁人口：<text class="red">{{ baseInfo.farmingMigrantNum }}</text
+          <text class="red">{{ familyNum }}</text
+          >人，其中该户农村移民 ： <text class="red">{{ ruralMigrantNum }}</text
+          >人，随迁人口：<text class="red">{{ familyNum - ruralMigrantNum }}</text
           >人
         </view>
       </view>
@@ -53,7 +53,9 @@
     </view>
 
     <view class="btn-wrap">
-      <view class="btn" @click="submitResettle"> 确定，进入下一步 </view>
+      <view class="btn" @click="submitResettle">
+        {{ fromResettleConfirm ? '确定' : '确定，进入下一步' }}
+      </view>
     </view>
   </view>
 </template>
@@ -62,9 +64,10 @@
 import { ref, computed, watch } from 'vue'
 import { HouseType } from '@/types/common'
 import { homesteadAreaSize, resettleArea } from '../config'
+import { LandlordType } from '@/types/sync'
 
 interface PropsType {
-  baseInfo: any
+  baseInfo: LandlordType
   doorNo: string
   immigrantSettle: any
   fromResettleConfirm?: boolean
@@ -75,6 +78,26 @@ const props = defineProps<PropsType>()
 
 const settleAddress = ref('1')
 const areaType = ref('1')
+
+// 总人口
+const familyNum = computed(() => {
+  return props.baseInfo.demographicList.length || 1
+})
+
+// 农村移民
+const ruralMigrantNum = computed(() => {
+  return props.baseInfo.demographicList.filter((item) => item.populationNature === '1').length || 0
+})
+
+// 非农移民
+const unruralMigrantNum = computed(() => {
+  return props.baseInfo.demographicList.filter((item) => item.populationNature === '2').length || 0
+})
+
+// 其他人口
+const otherNum = computed(() => {
+  return familyNum.value - ruralMigrantNum.value - unruralMigrantNum.value
+})
 
 watch(
   () => props.immigrantSettle,
@@ -92,7 +115,7 @@ watch(
 )
 
 const areaSizeArray = computed(() => {
-  const len = props.baseInfo.familyNum
+  const len = familyNum.value
   const sizeArray = homesteadAreaSize.map((item) => {
     if (len >= item.needPeopleNumber) {
       item.disabled = false

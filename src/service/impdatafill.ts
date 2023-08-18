@@ -25,7 +25,9 @@ import {
   ImmigrantChooseHouseType,
   ImmigrantCompensationCardType,
   ImmigrantBuildOneselfType,
-  ImmigrantProceduresType
+  ImmigrantProceduresType,
+  SimulateImmigrantSettleType,
+  SimulateDemographicType
 } from '@/types/impDataFill'
 
 /**
@@ -67,6 +69,36 @@ export const updateImpLandlordPeopleApi = (uid: string, data: PopulationType) =>
  */
 export const deleteImpLandlordPeopleApi = (uid: string, itemId: string, reason?: string) => {
   return ImpDataFillController.deleteLandlordPeople(uid, itemId, reason)
+}
+
+// --------------
+
+/**
+ * 更新 模拟安置 生产安置
+ * @param uid
+ * @param data
+ * @returns
+ */
+export const updateImpLandlordSimulateDemographicApi = (
+  uid: string,
+  data: Partial<SimulateDemographicType>[]
+) => {
+  return ImpDataFillController.updateImpLandlordSimulateDemographic(uid, data)
+}
+
+// --------------
+
+/**
+ * 更新 模拟安置 搬迁安置
+ * @param uid
+ * @param data
+ * @returns
+ */
+export const updateImpLandlordSimulateImmigrantSettleApi = (
+  uid: string,
+  data: Partial<SimulateImmigrantSettleType>
+) => {
+  return ImpDataFillController.updateImpLandlordSimulateImmigrantSettle(uid, data)
 }
 
 // --------------

@@ -17,7 +17,7 @@
         </view>
         <homestead
           v-if="houseType === HouseType.homestead"
-          :baseInfo="{}"
+          :baseInfo="(dataInfo as LandlordType)"
           :doorNo="doorNo"
           :immigrantSettle="immigrantSettle"
           :fromResettleConfirm="true"
@@ -25,7 +25,7 @@
         />
         <apartment
           v-else-if="houseType === HouseType.flat"
-          :baseInfo="{}"
+          :baseInfo="(dataInfo as LandlordType)"
           :doorNo="doorNo"
           :immigrantSettle="immigrantSettle"
           :fromResettleConfirm="true"
@@ -68,6 +68,7 @@ import homestead from '../imitateResettle/components/homestead.vue'
 import apartment from '../imitateResettle/components/apartment.vue'
 import centerSupport from '../imitateResettle/components/centerSupport.vue'
 import findSelf from '../imitateResettle/components/findSelf.vue'
+import { LandlordType } from '@/types/sync'
 
 const uid = ref<string>('')
 const doorNo = ref<string>('')
@@ -76,6 +77,7 @@ const houseType = ref<HouseType>(HouseType.homestead)
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
 const immigrantSettle = ref<Partial<ImmigrantSettleType>>()
+const dataInfo = ref<LandlordType>()
 
 onLoad((option) => {
   if (option && option.uid) {
@@ -107,6 +109,7 @@ const getLandlordDetail = async () => {
   if (uid.value) {
     const res = await getImpLandlordItemApi(uid.value)
     if (res) {
+      dataInfo.value = res
       demographicList.value = res.demographicList
       doorNo.value = res.doorNo
       immigrantSettle.value = res.immigrantSettle || {}

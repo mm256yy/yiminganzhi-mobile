@@ -7,7 +7,10 @@ export enum OtherDataType {
   DistrictTree = 'districtTree', // 街道树
   PullTime = 'pullTime', // 同步时间
   ProfessionalTree = 'professionalTree', // 专业树
-  Top5 = 'top5' // top5
+  Top5 = 'top5', // top5
+  ChooseConfig = 'chooseConfig', // 	地块等配置
+  HouseConfig = 'houseConfig', // 幢号房号配置
+  ImmigrantCompensationCardConfig = 'immigrantCompensationCardConfig' // 移民建卡配置
 }
 
 export interface OtherDDLType {

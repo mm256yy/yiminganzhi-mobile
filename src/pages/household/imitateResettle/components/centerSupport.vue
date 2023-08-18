@@ -44,7 +44,9 @@
       <view class="info-text"> 该户选择集中供养 </view>
 
       <view class="btn-wrap">
-        <view class="btn" @click="submitResettle">确定，进入下一步</view>
+        <view class="btn" @click="submitResettle">{{
+          fromResettleConfirm ? '确定' : '确定，进入下一步'
+        }}</view>
       </view>
     </view>
   </view>

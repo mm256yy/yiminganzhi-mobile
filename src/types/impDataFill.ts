@@ -117,6 +117,39 @@ export interface ImmigrantDocumentationType {
   specialPic: string
 }
 
+// 模拟安置 搬迁安置
+export interface SimulateImmigrantSettleType {
+  id?: number
+  doorNo: string
+  uid?: string
+  projectId?: number
+  status?: string
+  peopleNum: number
+  houseAreaType: string
+  houseArea: number
+  typeOneNum: number
+  typeTwoNum: number
+  typeThreeNum: number
+  typeFourNum: number
+  settleAddress: string
+  areaType: string
+  preorderAmount: number
+  compensationAmount: number
+  differenceAmount: number
+}
+
+// 模拟安置 生产安置
+export interface SimulateDemographicType {
+  id?: number
+  doorNo: string
+  projectId?: number
+  uid?: string
+  status?: string
+  settingWay: string
+  settingRemark: string
+  demographicId: number
+}
+
 // 搬迁安置确认 immigrantSettle
 export interface ImmigrantSettleType {
   isUpdate?: string
