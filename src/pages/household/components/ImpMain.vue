@@ -69,14 +69,13 @@ import GraveResettleConfirm from '../resettleConfirm/grave.vue'
 import Agreement from '../agreement/index.vue' // 引入动迁协议组件
 import migrateCard from '../migrateCard/index.vue' // 引入移民建卡组件
 import transResettlement from '../transResettlement/index.vue' // 引入过渡安置组件
+import { LandlordType } from '@/types/sync'
 
-const props = defineProps({
-  dataInfo: {
-    type: Object,
-    default: () => {}
-  }
-})
+interface PropsType {
+  dataInfo: LandlordType
+}
 
+const props = defineProps<PropsType>()
 const tabVal = ref<number>(1)
 
 const switchTab = (item: any) => {

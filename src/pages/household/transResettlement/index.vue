@@ -1,7 +1,7 @@
 <template>
   <view class="trans-wrapper">
     <view class="row-1">
-      <view class="left"></view>
+      <view class="left" />
       <view class="right">
         <view class="btn green">
           <image class="icon" src="@/static/images/icon_print_white.png" mode="scaleToFill" />
@@ -110,7 +110,7 @@
           </view>
         </uni-col>
         <uni-col :span="24">
-          <view class="line"></view>
+          <view class="line" />
         </uni-col>
         <uni-col :span="24">
           <view class="col">
@@ -136,13 +136,13 @@
 </template>
 <script lang="ts" setup>
 import { formatStr } from '@/utils'
+import { LandlordType } from '@/types/sync'
 
-const props = defineProps({
-  dataInfo: {
-    type: Object as any,
-    default: () => {}
-  }
-})
+interface PropsType {
+  dataInfo: LandlordType
+}
+
+const props = defineProps<PropsType>()
 </script>
 <style lang="scss" scoped>
 .trans-wrapper {
