@@ -19,7 +19,6 @@
           <view class="name">请登录</view>
         </view>
       </view>
-
       <view />
     </view>
 

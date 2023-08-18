@@ -19,10 +19,10 @@
         </view>
 
         <view class="header-rt">
-          <view class="btn-item" @click="toLink('project')">
+          <!-- <view class="btn-item" @click="toLink('project')">
             <view class="name">项目切换</view>
             <image class="icon" src="@/static/images/project_enter.png" mode="scaleToFill" />
-          </view>
+          </view> -->
           <view v-if="userInfo" class="login-out" @click="loginOutPre">退出登录</view>
         </view>
       </view>
@@ -44,6 +44,7 @@
       <Implementation
         v-else-if="homeViewType === RoleCodeType.implementation"
         @to-link="toLink"
+        @toParamsLink="toParamsLink"
         @login-in="loginIn"
       />
     </view>
@@ -87,6 +88,13 @@ const homeViewType = ref<RoleCodeType>(RoleCodeType.investigator)
 
 const toLink = (name: string) => {
   routerForward(name)
+}
+
+const toParamsLink = (params: any) => {
+  const { name } = params
+  routerForward(name, {
+    params: JSON.stringify(params)
+  })
 }
 
 const loginIn = () => {

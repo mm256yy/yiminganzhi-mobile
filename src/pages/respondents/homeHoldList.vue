@@ -29,12 +29,15 @@
       </view>
 
       <view class="status-panel">
-        <view class="dot" />
-        <text class="status-label">滞后： </text>
-        <text class="check-label">人口核定：<text class="red-number">2</text> 户</text>
-        <text class="check-label">安置确认：<text class="red-number">1</text> 户</text>
+        <view class="dot" :class="typeColor(sourceType)" />
+        <text class="status-label">{{ typeLabel(sourceType) }}： </text>
+        <text class="check-label"
+          >人口核定：<text class="number" :class="typeColor(sourceType)">2</text> 户</text
+        >
+        <text class="check-label"
+          >安置确认：<text class="number" :class="typeColor(sourceType)">1</text> 户</text
+        >
       </view>
-
       <view class="respondents-list">
         <homeListItem v-for="(item, index) in userList" :key="index" :data="item" />
       </view>
@@ -55,7 +58,7 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, nextTick, unref, computed } from 'vue'
-import { onShow } from '@dcloudio/uni-app'
+import { onLoad, onShow } from '@dcloudio/uni-app'
 import Container from '@/components/Container/index.vue'
 import NaturalVillageTreeSelect from '@/components/NaturalVillageTreeSelect/index.vue'
 import homeListItem from './homeListItem.vue'
@@ -97,6 +100,10 @@ interface Household {
   no: string
 }
 
+interface mapType {
+  [key: number]: any
+}
+
 const userList = ref<Household[]>([
   {
     name: '贾秋燕',
@@ -135,9 +142,30 @@ const villageConfirm = (code: string[], tit: string[]) => {
 
 const getList = () => {}
 
+const sourceType = ref(0) // 源类型 0 滞后 1 预警 2 已完成
+
 onMounted(() => {
   getList()
 })
+
+onLoad((options: any) => {
+  if (options) {
+    const params = options && JSON.parse(options.params)
+    console.log('onLoad-PK2', params)
+    sourceType.value = params.type
+    console.log('onLoad-PK2', sourceType.value)
+  }
+})
+
+// 根据类型获取标签文本值
+const typeLabel = (type: number) => {
+  return type === 0 ? '滞后' : type == 1 ? '预警' : '完成'
+}
+
+// 根据类型获取标签文本颜色
+const typeColor = (type: number) => {
+  return type === 0 ? 'red' : type == 1 ? 'yellow' : 'green'
+}
 </script>
 
 <style lang="scss" scoped>
@@ -210,9 +238,20 @@ onMounted(() => {
     width: 6rpx;
     height: 6rpx;
     margin-left: 20rpx;
-    background: #e43030;
     border: 2px solid rgba(228, 48, 48, 0.1);
     border-radius: 50%;
+
+    &.red {
+      background: #e43030;
+    }
+
+    &.yellow {
+      background: #fec44c;
+    }
+
+    &.green {
+      background: #30a952;
+    }
   }
 
   .status-label {
@@ -229,12 +268,23 @@ onMounted(() => {
     font-weight: 500;
     color: rgba(23, 23, 24, 0.6);
 
-    .red-number {
+    .number {
       padding: 0 5rpx;
       padding-top: 4rpx;
       font-size: 16rpx;
       font-weight: bold;
-      color: #e43030;
+
+      &.red {
+        color: #e43030;
+      }
+
+      &.yellow {
+        color: #fec44c;
+      }
+
+      &.green {
+        color: #30a952;
+      }
     }
   }
 }

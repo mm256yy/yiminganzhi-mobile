@@ -26,7 +26,7 @@
           </view>
         </view>
         <view class="row-field">
-          <view class="field-box" @click.prevent.stop="toLink('householdList')">
+          <view class="field-box" @click.prevent.stop="toLinkParams('homeHoldList', { type: 0 })">
             <view class="line-1">5</view>
             <view class="flex">
               <view
@@ -42,7 +42,7 @@
               <view class="line-2">严重滞后</view>
             </view>
           </view>
-          <view class="field-box">
+          <view class="field-box" @click.prevent.stop="toLinkParams('homeHoldList', { type: 1 })">
             <view class="line-1">5</view>
             <view class="flex">
               <view
@@ -58,7 +58,7 @@
               <view class="line-2">预警</view>
             </view>
           </view>
-          <view class="field-box">
+          <view class="field-box" @click.prevent.stop="toLinkParams('homeHoldList', { type: 2 })">
             <view class="line-1">10</view>
             <view class="flex">
               <view
@@ -303,13 +303,6 @@
         <image class="arrow-icon" src="@/static/images/home_arrow.png" mode="scaleToFill" />
       </view>
     </view>
-
-    <image
-      class="take-photo"
-      src="@/static/images/icon_take_photo.png"
-      @click="takePhoto"
-      mode="scaleToFill"
-    />
   </view>
 </template>
 
@@ -320,12 +313,19 @@ import { getStorage, StorageKey } from '@/utils'
 import Echart from './WorkGroupChart.vue'
 import MessageNotice from './MessageNotice.vue'
 
-const emit = defineEmits(['toLink', 'loginIn'])
+const emit = defineEmits(['toLink', 'toParamsLink', 'loginIn'])
 const userInfo = ref<any>(null)
 const projectInfo = ref<any>(null)
 
 const toLink = (name: string) => {
   emit('toLink', name)
+}
+
+const toLinkParams = (name: string, params: any) => {
+  emit('toParamsLink', {
+    name,
+    ...params
+  })
 }
 
 const loginIn = () => {
@@ -338,18 +338,6 @@ onShow(() => {
   userInfo.value = user
   projectInfo.value = project
 })
-
-// 调用系统拍照功能
-const takePhoto = () => {
-  uni.chooseImage({
-    count: 6, //默认9
-    sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
-    sourceType: ['album', 'camera'], //album 从相册选图，camera 使用相机
-    success: function (res) {
-      console.log(JSON.stringify(res.tempFilePaths)) //拍照图片的路径
-    }
-  })
-}
 </script>
 
 <style lang="scss" scoped>
@@ -451,7 +439,7 @@ const takePhoto = () => {
   display: flex;
   width: 375rpx;
   height: 28rpx;
-  margin: 16rpx auto;
+  margin: 0 auto;
   text-align: center;
   background: rgba(255, 255, 255, 0.95);
   border-radius: 5rpx;
@@ -646,6 +634,7 @@ const takePhoto = () => {
   height: 142rpx;
   padding: 0 12rpx;
   align-items: center;
+  margin-top: 15rpx;
 
   .work {
     width: 457rpx;
@@ -661,7 +650,7 @@ const takePhoto = () => {
   display: flex;
   justify-content: center;
   width: 750rpx;
-  margin-top: 36rpx;
+  margin-top: 26rpx;
 
   &.self {
     // display: none;

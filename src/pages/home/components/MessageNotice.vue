@@ -1,44 +1,75 @@
 <template>
   <view class="statistic">
     <view class="inner">
-      <view class="echart-title">
-        <image src="@/static/images/statistic_head.png" class="icon" />
-        <view class="text">消息通知</view>
-      </view>
-      <view class="top5-tabs">
+      <view class="title-region">
         <view
-          v-for="item in tabs"
-          :key="item.id"
-          class="top5-tab-item"
-          :class="[item.id === currentTab ? 'active' : '']"
-          @click="tabChange(item.id)"
+          class="echart-title"
+          :class="[menuIndex === 0 ? 'active' : '']"
+          @click="handleItemClick(0)"
         >
-          {{ item.name }}
+          <image src="@/static/images/icon_notice.png" class="icon" />
+          <view>消息通知</view>
+        </view>
+        <view
+          class="echart-title"
+          :class="[menuIndex === 1 ? 'active' : '']"
+          @click="handleItemClick(1)"
+        >
+          <image src="@/static/images/icon_feed.png" class="icon" />
+          <view>消息反馈</view>
         </view>
       </view>
-      <view class="top-title">
-        <view>
-          <text class="title-index">序号</text>
-          <text class="title-content">内容</text>
-        </view>
-        <text class="time">发送时间</text>
-      </view>
-      <view class="list">
-        <view class="item-title">
+      <!--消息通知-->
+      <div v-if="menuIndex === 0" class="list-wrapper">
+        <view class="top-title">
           <view>
-            <text class="item-index">1</text>
-            <text class="item-content">您有5还有居民已严重滞后，请推进实施工作</text>
+            <text class="title-index">序号</text>
+            <text class="title-content">内容</text>
           </view>
-          <text class="item-time">2023-05-11</text>
+          <text class="time">发送时间</text>
         </view>
-        <view class="item-title">
+        <view class="list">
+          <view class="item-title">
+            <view>
+              <text class="item-index">1</text>
+              <text class="item-content">您有5还有居民已严重滞后，请推进实施工作</text>
+            </view>
+            <text class="item-time">2023-05-11</text>
+          </view>
+          <view class="item-title">
+            <view>
+              <text class="item-index">2</text>
+              <text class="item-content">您有2户居民未开始填报，请推进实施工作</text>
+            </view>
+            <text class="item-time">2023-05-11</text>
+          </view>
+        </view>
+      </div>
+      <!--消息反馈-->
+      <div v-else class="list-wrapper">
+        <view class="top-title">
           <view>
-            <text class="item-index">2</text>
-            <text class="item-content">您有2户居民未开始填报，请推进实施工作</text>
+            <text class="title-content">内容</text>
           </view>
-          <text class="item-time">2023-05-11</text>
+          <text class="time">提交时间</text>
         </view>
-      </view>
+        <view class="list">
+          <view class="item-title">
+            <view>
+              <text class="item-index">1</text>
+              <text class="item-content">您有5还有居民已严重滞后，请推进实施工作</text>
+            </view>
+            <text class="item-time">2023-05-11</text>
+          </view>
+          <view class="item-title">
+            <view>
+              <text class="item-index">2</text>
+              <text class="item-content">您有2户居民未开始填报，请推进实施工作</text>
+            </view>
+            <text class="item-time">2023-05-11</text>
+          </view>
+        </view>
+      </div>
     </view>
   </view>
 </template>
@@ -47,20 +78,7 @@
 import { ref } from 'vue'
 
 const currentTab = ref(0)
-const tabs = ref([
-  {
-    name: '全部',
-    id: 0
-  },
-  {
-    name: '已读',
-    id: 1
-  },
-  {
-    name: '未读',
-    id: 2
-  }
-])
+let menuIndex = ref(0)
 
 const tabChange = (id: number) => {
   if (currentTab.value === id) {
@@ -68,13 +86,17 @@ const tabChange = (id: number) => {
   }
   currentTab.value = id
 }
+
+const handleItemClick = (index: number) => {
+  menuIndex.value = index
+}
 </script>
 
 <style lang="scss" scoped>
 .statistic {
   display: flex;
   width: 264rpx;
-  height: 142rpx;
+  height: 175rpx;
   margin-right: 11rpx;
   background: linear-gradient(180deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
   border-radius: 9rpx;
@@ -85,7 +107,7 @@ const tabChange = (id: number) => {
   .inner {
     display: flex;
     width: 264rpx;
-    height: 142rpx;
+    height: 175rpx;
     padding: 6rpx;
     background: linear-gradient(180deg, #deebf6 0%, #ffffff 100%);
     border-radius: 9rpx;
@@ -93,26 +115,45 @@ const tabChange = (id: number) => {
   }
 }
 
-.echart-title {
+.title-region {
   display: flex;
-  align-items: center;
-  flex-direction: row;
-  height: 21rpx;
-  padding: 0 6rpx;
-  background: linear-gradient(135deg, #1a63ff 0%, rgba(255, 255, 255, 0) 100%);
-  border-radius: 5rpx;
 
-  .icon {
-    width: 11rpx;
-    height: 11rpx;
-    margin-right: 6rpx;
-  }
+  .echart-title {
+    display: flex;
+    height: 21rpx;
+    padding-left: 30rpx;
+    margin-right: 8rpx;
+    font-size: 10rpx;
+    font-weight: 600;
+    line-height: 21rpx;
+    color: #3e73ec;
+    text-align: center;
+    background: #ffffff;
+    border-radius: 5rpx;
+    flex: 1 auto;
+    align-items: center;
 
-  .text {
-    font-family: YouSheBiaoTiHei-Regular, YouSheBiaoTiHei;
-    font-size: 12rpx;
-    font-weight: 400;
-    color: #ffffff;
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &.active {
+      color: #ffffff;
+      background: linear-gradient(135deg, #1a63ff 0%, rgba(255, 255, 255, 0) 100%);
+    }
+
+    .icon {
+      width: 11rpx;
+      height: 11rpx;
+      margin-right: 6rpx;
+      line-height: 21rpx;
+    }
+
+    .text {
+      font-family: YouSheBiaoTiHei-Regular, YouSheBiaoTiHei;
+      font-size: 10rpx;
+      font-weight: 400;
+    }
   }
 }
 
