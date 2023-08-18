@@ -91,6 +91,9 @@ export const getStatisticApi = (type: OtherDataType) => {
   return OtherController.getOtherWithType(type)
 }
 
+/**
+ * 实施阶段配置
+ */
 // 获取地块配置
 export const getChooseConfigApi = () => {
   return OtherController.getOtherWithType(OtherDataType.ChooseConfig)
