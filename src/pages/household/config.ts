@@ -108,7 +108,7 @@ export const sidebarList = [
             iconSel: iconRkhdSel
           },
           {
-            label: '房屋确权',
+            label: '房屋产权',
             value: 3,
             filled: false,
             iconDef: iconFwqqDef,

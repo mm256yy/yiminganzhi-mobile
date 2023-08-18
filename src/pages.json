@@ -360,9 +360,16 @@
 		},
 		{
 			"name": "populationVerficationEdit",
-			"path": "pages/household/populationVerficationEdit/index",
+			"path": "pages/household/populationVerfication/edit",
 			"style": {
 				"navigationBarTitleText": "人口核定编辑"
+			}
+		},
+		{
+			"name": "housePropertyEdit",
+			"path": "pages/household/houseProperty/edit",
+			"style": {
+				"navigationBarTitleText": "房屋产权编辑"
 			}
 		},
 		{

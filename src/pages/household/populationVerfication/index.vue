@@ -13,7 +13,7 @@
               class="icon m-r-10"
               src="@/static/images/icon_delete_mini.png"
               mode="scaleToFill"
-              @click="deletePopulation"
+              @click="deletePopulation(item)"
             />
           </view>
         </view>
@@ -58,7 +58,7 @@
               <view class="col">
                 <view class="label">人口性质：</view>
                 <view class="content">
-                  {{ formatDict(item.populationType, 244) }}
+                  {{ formatDict(item.populationNature, 263) }}
                 </view>
               </view>
             </uni-col>
@@ -72,7 +72,13 @@
       <view class="tips">请先添加人口核定信息</view>
     </view>
 
-    <image class="btn add" src="@/static/images/icon_add.png" mode="scaleToFill" />
+    <!-- 新增 -->
+    <image
+      class="btn add"
+      src="@/static/images/icon_add.png"
+      mode="scaleToFill"
+      @click="toLink('add')"
+    />
 
     <!-- 删除确认弹框 -->
     <uni-popup ref="alertDialog" type="dialog">
@@ -93,29 +99,34 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { formatDict, formatStr, routerForward, fmtPicUrl } from '@/utils'
+import { formatDict, formatStr, routerForward } from '@/utils'
 import { showToast } from '@/config'
 
-const props = defineProps({
-  dataList: {
-    type: Array as any,
-    default: () => {}
-  },
-  dataInfo: {
-    type: Object as any,
-    default: () => {}
-  }
-})
+interface PropsType {
+  dataList: any[]
+  dataInfo: any
+}
 
+const props = defineProps<PropsType>()
 const emit = defineEmits(['deletePopulation'])
 const alertDialog = ref<any>(null)
 const currentItem = ref<any>({})
 const reason = ref<string>('') // 删除原因
 
 const toLink = (type: string, data?: any) => {
-  const { uid } = props.dataInfo
-  let params = { type, uid }
-  routerForward('populationVerficationEdit', { params: JSON.stringify(params) })
+  const { uid, doorNo } = props.dataInfo
+  // 增计人口不允许编辑
+  if (type === 'edit' && data.addReason !== '3') {
+    let params = { type, uid, doorNo, itemUid: data.uid }
+    routerForward('populationVerficationEdit', {
+      params: JSON.stringify(params)
+    })
+  } else if (type === 'add') {
+    let params = { type, uid, doorNo }
+    routerForward('populationVerficationEdit', {
+      params: JSON.stringify(params)
+    })
+  }
 }
 
 /**
@@ -134,7 +145,7 @@ const dialogConfirm = (data: any) => {
   }
   let params = {
     ...currentItem.value,
-    reason: data
+    deleteReason: data
   }
   emit('deletePopulation', params)
 }

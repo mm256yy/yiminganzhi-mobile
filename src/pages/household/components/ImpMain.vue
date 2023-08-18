@@ -19,10 +19,11 @@
             v-if="tabVal === 2"
             :dataList="dataInfo.demographicList"
             :dataInfo="dataInfo"
+            @deletePopulation="deletePopulation"
           />
 
-          <!-- 房屋确权 -->
-          <house-confirm
+          <!-- 房屋产权 -->
+          <house-property
             v-if="tabVal === 3"
             :dataList="dataInfo.immigrantHouseList"
             :dataInfo="dataInfo"
@@ -54,13 +55,17 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { MainType } from '@/types/common'
+import { LandlordType } from '@/types/sync'
 import { sidebarList } from '../config'
+import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
+import { deleteImpLandlordPeopleApi } from '@/service'
+
 import Back from '@/components/Back/Index.vue'
 import LeftSidebar from '@/components/LeftSidebar/Index.vue' // 引入左侧边栏组件
 import Header from '@/components/Header/ImpIndex.vue' // 引入头部组件
 import baseInfoImp from '../baseInfoImp/index.vue' // 引入居民户信息组件
 import populationVerfication from '../populationVerfication/index.vue' // 引入人口核定组件
-import houseConfirm from '../houseConfirm/index.vue' // 引入房屋确权组件
+import houseProperty from '../houseProperty/index.vue' // 引入房屋产权组件
 
 import ImitateResettle from '../imitateResettle/index.vue' // 引入模拟安置组件
 import ProduceResettleConfirm from '../resettleConfirm/produce.vue'
@@ -69,7 +74,6 @@ import GraveResettleConfirm from '../resettleConfirm/grave.vue'
 import Agreement from '../agreement/index.vue' // 引入动迁协议组件
 import migrateCard from '../migrateCard/index.vue' // 引入移民建卡组件
 import transResettlement from '../transResettlement/index.vue' // 引入过渡安置组件
-import { LandlordType } from '@/types/sync'
 
 interface PropsType {
   dataInfo: LandlordType
@@ -77,9 +81,51 @@ interface PropsType {
 
 const props = defineProps<PropsType>()
 const tabVal = ref<number>(1)
+const emit = defineEmits(['updateData'])
 
 const switchTab = (item: any) => {
   tabVal.value = item.value
+}
+
+/**
+ * 人口核定 - 删除
+ * @param{Object} data 被删除的行信息
+ * @param{Object} reason 删除原因
+ */
+const deletePopulation = (data: any, reason?: string) => {
+  deleteImpLandlordPeopleApi(props.dataInfo.uid, data.uid, reason)
+    .then((res) => {
+      if (res) {
+        showToast(SUCCESS_MSG)
+        updateData()
+      }
+    })
+    .catch(() => {
+      showToast(ERROR_MSG)
+    })
+}
+
+/**
+ * 房屋产权 - 删除
+ * @param{Object} data 被删除的行信息
+ * @param{Object} reason 删除原因
+ */
+// const deleteHouseProperty = (data: any, reason?: string) => {
+//   deleteImpLandlordHouseApi(props.dataInfo.uid, data.uid, reason)
+//     .then((res) => {
+//       if (res) {
+//         showToast(SUCCESS_MSG)
+//         updateData()
+//       }
+//     })
+//     .catch(() => {
+//       showToast(ERROR_MSG)
+//     })
+// }
+
+// 更新整体数据
+const updateData = () => {
+  emit('updateData', props.dataInfo.uid)
 }
 </script>
 <style lang="scss" scoped>
