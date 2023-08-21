@@ -69,7 +69,6 @@ const demographicList = computed(() => {
 })
 
 const handle = (uid: string) => {
-  console.log(888)
   routerForward('attendto', {
     uid: props.dataInfo.uid,
     type: 3,
