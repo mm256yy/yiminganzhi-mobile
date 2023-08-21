@@ -1,95 +1,103 @@
 <template>
   <!-- 生产用地（实施） -->
   <view class="base-info-wrapper">
-    <view class="title">
-      <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-      择地结果录入
-    </view>
+    <!-- 安置方式 settingWay: 1 农业安置 -->
+    <view v-if="baseInfo.settingWay && baseInfo.settingWay === '1'">
+      <view class="title">
+        <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
+        择地结果录入
+      </view>
 
-    <view class="row">
-      <uni-row>
-        <uni-col :span="24" class="m-b-10">
-          <view class="col">
-            <view class="label">区块：</view>
-            <view class="content">
-              {{ getSettleAddress(formData.settleAddress) }}
-            </view>
-          </view>
-        </uni-col>
-
-        <uni-col :span="24" class="m-b-10">
-          <view class="col">
-            <view class="label">地块编号：</view>
-            <view class="content">
-              <uni-data-select v-model="formData.landNo" :localdata="landNoList" />
-            </view>
-          </view>
-        </uni-col>
-
-        <uni-col :span="24" class="m-b-10">
-          <view class="col">
-            <view class="label">面积：</view>
-            <view class="content">
-              <view :class="['input-wrapper', focusIndex === 1 ? 'focus' : '']">
-                <input
-                  class="input-txt"
-                  placeholder="请输入"
-                  type="number"
-                  v-model="formData.landArea"
-                  @focus="inputFocus(1)"
-                  @blur="inputBlur"
-                />
-                <view class="unit">亩</view>
+      <view class="row">
+        <uni-row>
+          <uni-col :span="24" class="m-b-10">
+            <view class="col">
+              <view class="label">区块：</view>
+              <view class="content">
+                {{ getSettleAddress(formData.settleAddress) }}
               </view>
             </view>
-          </view>
-        </uni-col>
-      </uni-row>
+          </uni-col>
 
-      <uni-row class="m-t-10">
-        <uni-col :span="24">
-          <view class="col">
-            <view class="label">相关凭证：</view>
-            <view class="content">
-              <upload-file
-                v-model="landPicStr"
-                :file-list="landPicStr"
-                :limit="20"
-                show-type="grid"
-                :accepts="['.jpg', '.png']"
-              />
+          <uni-col :span="24" class="m-b-10">
+            <view class="col">
+              <view class="label">地块编号：</view>
+              <view class="content">
+                <uni-data-select v-model="formData.landNo" :localdata="landNoList" />
+              </view>
             </view>
-          </view>
-        </uni-col>
-      </uni-row>
+          </uni-col>
+
+          <uni-col :span="24" class="m-b-10">
+            <view class="col">
+              <view class="label">面积：</view>
+              <view class="content">
+                <view :class="['input-wrapper', focusIndex === 1 ? 'focus' : '']">
+                  <input
+                    class="input-txt"
+                    placeholder="请输入"
+                    type="number"
+                    v-model="formData.landArea"
+                    @focus="inputFocus(1)"
+                    @blur="inputBlur"
+                  />
+                  <view class="unit">亩</view>
+                </view>
+              </view>
+            </view>
+          </uni-col>
+        </uni-row>
+
+        <uni-row class="m-t-10">
+          <uni-col :span="24">
+            <view class="col">
+              <view class="label">相关凭证：</view>
+              <view class="content">
+                <upload-file
+                  v-model="landPicStr"
+                  :file-list="landPicStr"
+                  :limit="20"
+                  show-type="grid"
+                  :accepts="['.jpg', '.png']"
+                />
+              </view>
+            </view>
+          </uni-col>
+        </uni-row>
+      </view>
+
+      <image
+        class="btn submit"
+        src="@/static/images/icon_submit.png"
+        mode="scaleToFill"
+        @click="submit"
+      />
     </view>
 
-    <image
-      class="btn submit"
-      src="@/static/images/icon_submit.png"
-      mode="scaleToFill"
-      @click="submit"
-    />
+    <view class="null-wrapper" v-else>
+      <image class="icon" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
+      <view class="tips">该户未选择农业安置，无需办理生产用地</view>
+    </view>
   </view>
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { resettleArea, apartmentArea } from '../config'
 import { LandlordType } from '@/types/sync'
-import { updateImpLandlordImmigrantLandApi } from '@/service'
+import { updateImpLandlordImmigrantLandApi, getChooseConfigApi } from '@/service'
 import UploadFile from '@/components/UploadFile/index.vue'
 
 interface PropsType {
   baseInfo: LandlordType
   dataInfo: any
-  landNoList: any[]
 }
 
 const props = defineProps<PropsType>()
 const { immigrantSettle } = props.baseInfo
 const emit = defineEmits(['updateData'])
+const landNoList = ref<any[]>([])
 const formData = ref<any>({})
 const landPicStr = ref<string>('[]') // 凭证照片
 
@@ -143,6 +151,28 @@ const getSettleAddress = (data: string) => {
   }
 }
 
+/**
+ * 获取地块编号选项列表
+ * type：1 地块编号，2 宅基地地块，3 储藏室编号，4 车位编号
+ */
+const getLandNoList = () => {
+  getChooseConfigApi().then((res: any) => {
+    let arr: any = []
+    if (res && res.length) {
+      res.map((item: any) => {
+        if (item.type === '1') {
+          arr.push({
+            text: item.name,
+            value: item.id,
+            disable: item.isOccupy === '0' ? false : true // '0' 可选，'1' 已选
+          })
+        }
+      })
+      landNoList.value = [...arr]
+    }
+  })
+}
+
 // 输入框获得焦点事件
 const inputFocus = (index: number) => {
   focusIndex.value = index
@@ -169,6 +199,10 @@ const submit = () => {
       showToast(ERROR_MSG)
     })
 }
+
+onMounted(() => {
+  getLandNoList()
+})
 </script>
 
 <style lang="scss" scoped>
@@ -291,6 +325,28 @@ const submit = () => {
       height: 1rpx;
       margin: 9rpx 0;
       background: #ebebeb;
+    }
+  }
+
+  .null-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    height: calc(100vh - 33rpx - 12rpx - 33rpx - 24rpx - 60rpx - var(--status-bar-height));
+    background-color: #fff;
+
+    .icon {
+      width: 152rpx;
+      height: 92rpx;
+    }
+
+    .tips {
+      margin-top: 17rpx;
+      font-size: 9rpx;
+      line-height: 1;
+      color: #171718;
     }
   }
 

@@ -47,11 +47,18 @@
           <RelocateResettleConfirm v-if="tabVal === 8" :dataInfo="(dataInfo as any)" />
           <GraveResettleConfirm v-if="tabVal === 9" :dataInfo="(dataInfo as any)" />
 
+          <!-- 生产用地 -->
           <product-land
             v-if="tabVal === 10"
             :baseInfo="dataInfo"
             :dataInfo="dataInfo.immigrantLand"
-            :landNoList="landNoList"
+          />
+
+          <!-- 选房择址 -->
+          <choose-house
+            v-if="tabVal === 11"
+            :baseInfo="dataInfo"
+            :dataList="dataInfo.immigrantChooseHouseList"
           />
 
           <!--移民建卡-->
@@ -92,14 +99,16 @@ import ImitateResettle from '../imitateResettle/index.vue' // 引入模拟安置
 import ProduceResettleConfirm from '../resettleConfirm/produce.vue' // 引入生产安置组件
 import RelocateResettleConfirm from '../resettleConfirm/relocate.vue' // 引入搬迁安置组件
 import GraveResettleConfirm from '../resettleConfirm/grave.vue' // 引入坟墓确认组件
+
 import productLand from '../productLand/index.vue' // 引入生产用地组件
+import chooseHouse from '../chooseHouse/index.vue' // 引入选房择址组件
+
 import Agreement from '../agreement/index.vue' // 引入动迁协议组件
 import migrateCard from '../migrateCard/index.vue' // 引入移民建卡组件
 import transResettlement from '../transResettlement/index.vue' // 引入过渡安置组件
 
 interface PropsType {
   dataInfo: LandlordType
-  landNoList: any[]
 }
 
 const props = defineProps<PropsType>()

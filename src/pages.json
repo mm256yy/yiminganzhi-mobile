@@ -394,6 +394,13 @@
 			}
 		},
 		{
+			"name": "chooseHouseEdit",
+			"path": "pages/household/chooseHouse/edit",
+			"style": {
+				"navigationBarTitleText": "选房择址编辑"
+			}
+		},
+		{
 			"name": "attendto",
 			"path": "pages/attendto/index",
 			"style": {
