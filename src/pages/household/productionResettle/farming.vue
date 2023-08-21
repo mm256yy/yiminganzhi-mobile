@@ -117,7 +117,7 @@ const landInfo = computed(() => {
   return land
 })
 
-const archivesUpload = (uid: string) => {
+const archivesUpload = () => {
   routerForward('archives', {
     uid: props.dataInfo.uid,
     type: 10
