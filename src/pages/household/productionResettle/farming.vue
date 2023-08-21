@@ -85,7 +85,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { LandlordType } from '@/types/sync'
 import { routerForward } from '@/utils'
 

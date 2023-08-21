@@ -7,30 +7,30 @@
     <view class="table-wrap">
       <uni-table class="table" ref="table" border stripe emptyText="暂无更多数据">
         <uni-tr>
-          <uni-th>姓名</uni-th>
-          <uni-th>与户主关系</uni-th>
-          <uni-th>性别</uni-th>
-          <uni-th>身份证号</uni-th>
-          <uni-th>户籍册类别</uni-th>
-          <uni-th>人口性质</uni-th>
-          <uni-th>安置方式</uni-th>
-          <uni-th>办理状态</uni-th>
-          <uni-th>办理时间</uni-th>
-          <uni-th>操作</uni-th>
+          <uni-th width="40rpx">姓名</uni-th>
+          <uni-th width="60rpx">与户主关系</uni-th>
+          <uni-th width="32rpx">性别</uni-th>
+          <uni-th width="100rpx">身份证号</uni-th>
+          <uni-th width="60rpx">户籍册类别</uni-th>
+          <uni-th width="60rpx">人口性质</uni-th>
+          <uni-th width="60rpx">安置方式</uni-th>
+          <uni-th width="60rpx">办理状态</uni-th>
+          <uni-th width="60rpx">办理时间</uni-th>
+          <uni-th width="50rpx" align="center">操作</uni-th>
         </uni-tr>
 
         <uni-tr v-for="(item, index) in demographicList" :key="index">
-          <uni-td width="40rpx">{{ item.name }}</uni-td>
-          <uni-td width="54rpx">{{ formatDict(item.relation, 307) }}</uni-td>
-          <uni-td width="32rpx">{{ formatDict(item.sex, 292) }}</uni-td>
-          <uni-td width="100rpx">{{ item.card }}</uni-td>
-          <uni-td width="54rpx">{{ formatDict(item.censusType, 249) }}</uni-td>
-          <uni-td width="46rpx">{{ formatDict(item.populationNature, 363) }}</uni-td>
-          <uni-td width="46rpx">{{ formatDict(item.settingWay, 375) }}</uni-td>
-          <uni-td width="60rpx">
+          <uni-td>{{ item.name }}</uni-td>
+          <uni-td>{{ formatDict(item.relation, 307) }}</uni-td>
+          <uni-td>{{ formatDict(item.sex, 292) }}</uni-td>
+          <uni-td>{{ item.card }}</uni-td>
+          <uni-td>{{ formatDict(item.censusType, 249) }}</uni-td>
+          <uni-td>{{ formatDict(item.populationNature, 363) }}</uni-td>
+          <uni-td>{{ formatDict(item.settingWay, 375) }}</uni-td>
+          <uni-td>
             {{ item.productionStatus === '1' ? '已办理' : '未办理' }}
           </uni-td>
-          <uni-td width="62rpx">
+          <uni-td>
             {{
               item.productionCompleteTime
                 ? dayjs(item.productionCompleteTime).format('YYYY-MM-DD')
@@ -38,7 +38,7 @@
             }}
           </uni-td>
 
-          <uni-td width="46rpx">
+          <uni-td>
             <view class="table-btn">
               <view class="btn primary-btn" @click="handle(item.uid as string)">办理</view>
             </view>
@@ -63,7 +63,9 @@ const props = defineProps<PropsType>()
 
 // 获取人口列表
 const demographicList = computed(() => {
-  return props.dataInfo && props.dataInfo.demographicList ? props.dataInfo.demographicList : []
+  return props.dataInfo && props.dataInfo.demographicList
+    ? props.dataInfo.demographicList.filter((item) => item.settingWay === '3')
+    : []
 })
 
 const handle = (uid: string) => {

@@ -9,6 +9,22 @@
         :itemUid="query.data"
         @submit="submitSuccess"
       />
+
+      <Insure
+        v-if="handleType === 2"
+        :uid="query.uid"
+        :demographicList="dataInfo?.demographicList || []"
+        :itemUid="query.data"
+        @submit="submitSuccess"
+      />
+
+      <FindSelf
+        v-if="handleType === 3"
+        :uid="query.uid"
+        :demographicList="dataInfo?.demographicList || []"
+        :itemUid="query.data"
+        @submit="submitSuccess"
+      />
     </view>
   </Container>
 </template>
@@ -19,9 +35,11 @@ import { computed, ref } from 'vue'
 import Container from '@/components/Container/index.vue'
 import { getImpLandlordItemApi } from '@/service'
 import { routerBack } from '@/utils'
+import { LandlordType } from '@/types/sync'
 
 import Procedures from './procedures.vue'
-import { LandlordType } from '@/types/sync'
+import Insure from './insure.vue'
+import FindSelf from './findself.vue'
 
 /**
  * 1 相关手续办理

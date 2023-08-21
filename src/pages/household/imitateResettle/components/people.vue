@@ -12,7 +12,7 @@
 
       <view class="item">
         <view class="label">性别：</view>
-        <view class="value">{{ item.sex }}</view>
+        <view class="value">{{ formatDict(item.sex, 292) }}</view>
       </view>
 
       <view class="item">
@@ -21,11 +21,11 @@
       </view>
       <view class="item">
         <view class="label">户籍类型：</view>
-        <view class="value">{{ item.censusType }}</view>
+        <view class="value">{{ formatDict(item.censusType, 249) }}</view>
       </view>
       <view class="item">
         <view class="label">人口性质：</view>
-        <view class="value">{{ item.populationNature }}</view>
+        <view class="value">{{ formatDict(item.populationNature, 363) }}</view>
       </view>
 
       <view class="item">
