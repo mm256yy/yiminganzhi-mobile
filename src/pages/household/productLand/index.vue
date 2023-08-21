@@ -77,14 +77,13 @@
 import { ref, watch } from 'vue'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { resettleArea, apartmentArea } from '../config'
-import { ImmigrantLandType } from '@/types/impdataFill'
 import { LandlordType } from '@/types/sync'
 import { updateImpLandlordImmigrantLandApi } from '@/service'
 import UploadFile from '@/components/UploadFile/index.vue'
 
 interface PropsType {
   baseInfo: LandlordType
-  dataInfo: ImmigrantLandType
+  dataInfo: any
   landNoList: any[]
 }
 

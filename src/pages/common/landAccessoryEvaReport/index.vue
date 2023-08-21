@@ -35,11 +35,10 @@
 
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
-import { ImmigrantDocumentationType } from '@/types/impDataFill'
 import UploadFile from '@/components/UploadFile/index.vue'
 
 interface PropsType {
-  dataInfo: ImmigrantDocumentationType
+  dataInfo: any
 }
 
 const props = defineProps<PropsType>()

@@ -19,7 +19,7 @@
             v-if="tabVal === 2"
             :dataList="dataInfo.demographicList"
             :dataInfo="dataInfo"
-            @deletePopulation="deletePopulation"
+            @delete-population="deletePopulation"
           />
 
           <!-- 房屋产权 -->
@@ -29,11 +29,30 @@
             :dataInfo="dataInfo"
           />
 
+          <!-- 房屋/附属物评估报告 -->
+          <house-accessory-eva-report
+            v-if="tabVal === 4"
+            :dataInfo="dataInfo.immigrantDocumentation"
+          />
+
+          <!-- 土地/附着物评估报告 -->
+          <land-accessory-eva-report
+            v-if="tabVal === 5"
+            :dataInfo="dataInfo.immigrantDocumentation"
+          />
+
           <!-- 模拟安置 -->
           <ImitateResettle v-if="tabVal === 6" :dataInfo="(dataInfo as any)" />
           <ProduceResettleConfirm v-if="tabVal === 7" :dataInfo="(dataInfo as any)" />
           <RelocateResettleConfirm v-if="tabVal === 8" :dataInfo="(dataInfo as any)" />
           <GraveResettleConfirm v-if="tabVal === 9" :dataInfo="(dataInfo as any)" />
+
+          <product-land
+            v-if="tabVal === 10"
+            :baseInfo="dataInfo"
+            :dataInfo="dataInfo.immigrantLand"
+            :landNoList="landNoList"
+          />
 
           <!--移民建卡-->
           <migrateCard
@@ -47,15 +66,6 @@
 
           <!-- 动迁协议 -->
           <Agreement v-if="tabVal === 17" />
-
-          <!-- 生产安置 农业安置 -->
-          <Farming v-if="tabVal === 22" :dataInfo="dataInfo" />
-          <!-- 生产安置 养老保险 -->
-          <Insure v-if="tabVal === 23" :dataInfo="dataInfo" />
-          <!-- 生产安置 自谋职业 -->
-          <Findself v-if="tabVal === 24" :dataInfo="dataInfo" />
-          <!-- 相关协议 -->
-          <Procedures v-if="tabVal === 25" :dataInfo="dataInfo" />
         </view>
       </view>
     </view>
@@ -75,22 +85,21 @@ import Header from '@/components/Header/ImpIndex.vue' // 引入头部组件
 import baseInfoImp from '../baseInfoImp/index.vue' // 引入居民户信息组件
 import populationVerfication from '../populationVerfication/index.vue' // 引入人口核定组件
 import houseProperty from '../houseProperty/index.vue' // 引入房屋产权组件
+import houseAccessoryEvaReport from '../../common/houseAccessoryEvaReport/index.vue' // 引入房屋/附属物评估报告组件
+import landAccessoryEvaReport from '../../common/landAccessoryEvaReport/index.vue' // 引入土地/附着物评估报告组件
 
 import ImitateResettle from '../imitateResettle/index.vue' // 引入模拟安置组件
-import ProduceResettleConfirm from '../resettleConfirm/produce.vue'
-import RelocateResettleConfirm from '../resettleConfirm/relocate.vue'
-import GraveResettleConfirm from '../resettleConfirm/grave.vue'
+import ProduceResettleConfirm from '../resettleConfirm/produce.vue' // 引入生产安置组件
+import RelocateResettleConfirm from '../resettleConfirm/relocate.vue' // 引入搬迁安置组件
+import GraveResettleConfirm from '../resettleConfirm/grave.vue' // 引入坟墓确认组件
+import productLand from '../productLand/index.vue' // 引入生产用地组件
 import Agreement from '../agreement/index.vue' // 引入动迁协议组件
 import migrateCard from '../migrateCard/index.vue' // 引入移民建卡组件
 import transResettlement from '../transResettlement/index.vue' // 引入过渡安置组件
 
-import Procedures from '../procedures/index.vue' // 相关协议
-import Farming from '../productionResettle/farming.vue'
-import Insure from '../productionResettle/insure.vue'
-import Findself from '../productionResettle/findself.vue'
-
 interface PropsType {
   dataInfo: LandlordType
+  landNoList: any[]
 }
 
 const props = defineProps<PropsType>()
