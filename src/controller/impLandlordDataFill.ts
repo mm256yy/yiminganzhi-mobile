@@ -112,7 +112,7 @@ class ImpDataFill extends ImpLandlord {
     })
   }
   // 调查对象-人口修改操作
-  updateLandlordPeople(uid: string, data: PopulationType): Promise<boolean | string> {
+  updateLandlordPeople(uid: string, data: Partial<PopulationType>): Promise<boolean | string> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!uid) {
@@ -1623,12 +1623,14 @@ class ImpDataFill extends ImpLandlord {
         }
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
-          landlordItem.immigrantProcedures = landlordItem.immigrantProcedures.map((item) => {
-            if (item.uid === itemUid) {
-              item = { ...item, ...data }
+          landlordItem.immigrantProceduresList = landlordItem.immigrantProceduresList.map(
+            (item) => {
+              if (item.uid === itemUid) {
+                item = { ...item, ...data }
+              }
+              return item
             }
-            return item
-          })
+          )
         } else {
           reject(false)
           console.log('调查对象信息查询失败')

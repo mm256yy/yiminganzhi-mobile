@@ -46,6 +46,15 @@
 
           <!-- 动迁协议 -->
           <Agreement v-if="tabVal === 17" />
+
+          <!-- 生产安置 农业安置 -->
+          <Farming v-if="tabVal === 22" :dataInfo="dataInfo" />
+          <!-- 生产安置 养老保险 -->
+          <Insure v-if="tabVal === 23" :dataInfo="dataInfo" />
+          <!-- 生产安置 自谋职业 -->
+          <Findself v-if="tabVal === 24" :dataInfo="dataInfo" />
+          <!-- 相关协议 -->
+          <Procedures v-if="tabVal === 25" :dataInfo="dataInfo" />
         </view>
       </view>
     </view>
@@ -69,6 +78,12 @@ import GraveResettleConfirm from '../resettleConfirm/grave.vue'
 import Agreement from '../agreement/index.vue' // 引入动迁协议组件
 import migrateCard from '../migrateCard/index.vue' // 引入移民建卡组件
 import transResettlement from '../transResettlement/index.vue' // 引入过渡安置组件
+
+import Procedures from '../procedures/index.vue' // 相关协议
+import Farming from '../productionResettle/farming.vue'
+import Insure from '../productionResettle/insure.vue'
+import Findself from '../productionResettle/findself.vue'
+
 import { LandlordType } from '@/types/sync'
 
 interface PropsType {

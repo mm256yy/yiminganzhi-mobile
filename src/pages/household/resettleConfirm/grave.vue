@@ -63,7 +63,6 @@
         </uni-tr>
       </uni-table>
     </view>
-    <Archives />
   </view>
 </template>
 

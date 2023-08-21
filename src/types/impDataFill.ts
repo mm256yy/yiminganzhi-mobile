@@ -293,7 +293,7 @@ export interface ImmigrantBuildOneselfType {
   [key: string]: any
 }
 
-// 相关手续 immigrantProcedures
+// 相关手续 immigrantProceduresList
 export interface ImmigrantProceduresType {
   isUpdate?: string
   id?: number

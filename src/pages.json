@@ -387,6 +387,13 @@
 			}
 		},
 		{
+			"name": "attendto",
+			"path": "pages/attendto/index",
+			"style": {
+				"navigationBarTitleText": "办理详情"
+			}
+		},
+		{
 			"name": "database",
 			"path": "pages/database/index",
 			"style": {

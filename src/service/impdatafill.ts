@@ -57,7 +57,7 @@ export const updateImpLandlordPeopleBatchApi = (uid: string, data: PopulationTyp
  * @param data 人口信息
  * @returns
  */
-export const updateImpLandlordPeopleApi = (uid: string, data: PopulationType) => {
+export const updateImpLandlordPeopleApi = (uid: string, data: Partial<PopulationType>) => {
   return ImpDataFillController.updateLandlordPeople(uid, data)
 }
 

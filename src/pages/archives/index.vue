@@ -19,6 +19,12 @@
         :immigrant-documentation="immigrantDocumentation"
         @submit="submit"
       />
+
+      <FarmingArchives
+        v-if="archivesType === 10"
+        :immigrant-documentation="immigrantDocumentation"
+        @submit="submit"
+      />
     </view>
   </Container>
 </template>
@@ -34,6 +40,8 @@ import { routerBack } from '@/utils'
 import ProduceArchives from './produceArchives.vue'
 import RelocateArchives from './relocateArchives.vue'
 import GraveArchives from './graveArchives.vue'
+
+import FarmingArchives from './farmingArchives.vue'
 
 /**
  * 1 安置确认 生产安置档案

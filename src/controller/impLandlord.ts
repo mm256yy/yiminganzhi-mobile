@@ -92,8 +92,8 @@ export class ImpLandlord extends Common {
             )
           }
 
-          if (this.isArrayAndNotNull(res.immigrantProcedures)) {
-            res.immigrantProcedures = res.immigrantProcedures.filter(
+          if (this.isArrayAndNotNull(res.immigrantProceduresList)) {
+            res.immigrantProceduresList = res.immigrantProceduresList.filter(
               (item) => item.isDelete !== '1'
             )
           }
@@ -193,9 +193,9 @@ export class ImpLandlord extends Common {
             )
           }
 
-          if (this.isArrayAndNotNull(res.immigrantProcedures)) {
-            res.immigrantProcedures = res.immigrantProcedures.filter(
-              (item) => item.isDelete !== '1'
+          if (this.isArrayAndNotNull(res.immigrantProceduresList)) {
+            res.immigrantProceduresListList = res.immigrantProceduresList.filter(
+              (item: any) => item.isDelete !== '1'
             )
           }
 
