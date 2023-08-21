@@ -41,15 +41,17 @@ function baseRequest(method: MethodType, option: UniApp.RequestOptions) {
 
     delete (data as AnyObject).isLoading
     console.log('接口参数：', data)
+    const realHeader = {
+      ...getHeaderCommonParams(),
+      'content-type': 'application/json; charset=utf-8',
+      ...header
+    }
+    console.log('接口头部信息：', realHeader)
     uni.request({
       url: apiBaseUrl + url,
       method,
       timeout: 150000,
-      header: {
-        ...getHeaderCommonParams(),
-        'content-type': 'application/json; charset=utf-8',
-        ...header
-      },
+      header: realHeader,
       data,
       success: (res: any) => {
         console.log('接口返回 suc', res)
