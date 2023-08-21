@@ -5,7 +5,7 @@
       <Procedures
         v-if="handleType === 1"
         :uid="query.uid"
-        :immigrantProceduresListList="dataInfo?.immigrantProceduresListList || []"
+        :immigrantProceduresList="dataInfo?.immigrantProceduresList || []"
         :itemUid="query.data"
         @submit="submitSuccess"
       />

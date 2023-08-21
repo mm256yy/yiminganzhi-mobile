@@ -194,7 +194,7 @@ export class ImpLandlord extends Common {
           }
 
           if (this.isArrayAndNotNull(res.immigrantProceduresList)) {
-            res.immigrantProceduresListList = res.immigrantProceduresList.filter(
+            res.immigrantProceduresList = res.immigrantProceduresList.filter(
               (item: any) => item.isDelete !== '1'
             )
           }

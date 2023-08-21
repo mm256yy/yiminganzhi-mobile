@@ -46,7 +46,7 @@ import dayjs from 'dayjs'
 interface PropsType {
   uid: string
   itemUid: string
-  immigrantProceduresListList: ImmigrantProceduresType[]
+  immigrantProceduresList: ImmigrantProceduresType[]
 }
 
 const props = defineProps<PropsType>()
@@ -55,7 +55,7 @@ const pic1 = ref<string>('[]')
 const date = ref<string>('')
 
 watch(
-  () => props.immigrantProceduresListList,
+  () => props.immigrantProceduresList,
   (val) => {
     if (val) {
       const procedures = val.find((item) => item.uid === props.itemUid)

@@ -14,7 +14,7 @@
           <uni-th width="120rpx" align="center">操作</uni-th>
         </uni-tr>
 
-        <uni-tr v-for="(item, index) in immigrantProceduresListList" :key="index">
+        <uni-tr v-for="(item, index) in immigrantProceduresList" :key="index">
           <uni-td>{{ index + 1 }}</uni-td>
           <uni-td>{{ item.name }}</uni-td>
           <uni-td>{{
@@ -50,9 +50,9 @@ interface PropsType {
 const props = defineProps<PropsType>()
 
 // 相关手续表
-const immigrantProceduresListList = computed(() => {
-  console.log(props.dataInfo.immigrantProceduresListList, 'list')
-  return props.dataInfo.immigrantProceduresListList || []
+const immigrantProceduresList = computed(() => {
+  console.log(props.dataInfo.immigrantProceduresList, 'list')
+  return props.dataInfo.immigrantProceduresList || []
 })
 
 const handle = (uid: string) => {

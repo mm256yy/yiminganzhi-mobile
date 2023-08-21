@@ -29,7 +29,7 @@
         </uni-col>
         <uni-col :span="12">
           <view class="col">
-            <view class="label">车位编号：</view>
+            <view class="label">地位编号：</view>
             <view class="content"> fsdss </view>
           </view>
         </uni-col>
@@ -92,7 +92,7 @@ import dayjs from 'dayjs'
 interface PropsType {
   uid: string
   itemUid: string
-  immigrantProceduresListList: ImmigrantProceduresType[]
+  immigrantProceduresList: ImmigrantProceduresType[]
 }
 
 const props = defineProps<PropsType>()
@@ -101,7 +101,7 @@ const pic1 = ref<string>('[]')
 const date = ref<string>('')
 
 watch(
-  () => props.immigrantProceduresListList,
+  () => props.immigrantProceduresList,
   (val) => {
     if (val) {
       const procedures = val.find((item) => item.uid === props.itemUid)
