@@ -18,6 +18,7 @@ class Other extends Common {
           resolve(
             type === OtherDataType.PullTime ? result[0].content : JSON.parse(result[0].content)
           )
+          return
         }
         reject(null)
       } catch (error) {

@@ -302,6 +302,14 @@
         </view>
         <image class="arrow-icon" src="@/static/images/home_arrow.png" mode="scaleToFill" />
       </view>
+
+      <view class="other-item" @click="toLink('database')">
+        <view class="inner">
+          <image class="other-icon" src="@/static/images/sync_enter.png" mode="scaleToFill" />
+          <text class="other-tit">数据库</text>
+        </view>
+        <image class="arrow-icon" src="@/static/images/home_arrow.png" mode="scaleToFill" />
+      </view>
     </view>
   </view>
 </template>
