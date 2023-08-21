@@ -44,19 +44,21 @@
 </template>
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { getLandlordListBySearchApi } from '@/service'
+import { getLandlordListBySearchApi, getImpLandlordListBySearchApi } from '@/service'
+import { MainType } from '@/types/common'
 
-const props = defineProps({
-  type: {
-    type: String,
-    default: ''
-  }
-})
+interface PropsType {
+  mainType: MainType
+  type: 'single' | 'multiple'
+  stage: 'survey' | 'implementation'
+}
 
+const props = defineProps<PropsType>()
 const dataList = ref<any>([])
 const name = ref<string>('')
 const emit = defineEmits(['confirmSelect', 'close'])
 const selectedData = ref<any>({})
+const selelctedDataList = ref<any[]>([])
 
 /**
  * 搜索居民户
@@ -66,24 +68,41 @@ const selectedData = ref<any>({})
 const getLandlordListBySearch = (name: string, type: any) => {
   let params = {
     name,
-    type,
+    type: props.mainType,
     page: 1,
     pageSize: 50
   }
-  getLandlordListBySearchApi(params).then((res) => {
-    if (res && res.length > 0) {
-      let arr: any = []
-      res.map((item: any) => {
-        arr.push({
-          id: item.id,
-          label: item.name,
-          value: item.doorNo,
-          checked: item.checked
+  if (props.stage === 'survey') {
+    getLandlordListBySearchApi(params).then((res) => {
+      if (res && res.length > 0) {
+        let arr: any = []
+        res.map((item: any) => {
+          arr.push({
+            id: item.id,
+            label: item.name,
+            value: item.doorNo,
+            checked: item.checked
+          })
         })
-      })
-      dataList.value = [...arr]
-    }
-  })
+        dataList.value = [...arr]
+      }
+    })
+  } else if (props.stage === 'implementation') {
+    getImpLandlordListBySearchApi(params).then((res) => {
+      if (res && res.length > 0) {
+        let arr: any = []
+        res.map((item: any) => {
+          arr.push({
+            id: item.id,
+            label: item.name,
+            value: item.doorNo,
+            checked: item.checked
+          })
+        })
+        dataList.value = [...arr]
+      }
+    })
+  }
 }
 
 /**
@@ -97,14 +116,23 @@ const confirm = (e: any) => {
 
 // 选择
 const select = (data: any, index: any) => {
-  selectedData.value = { ...data }
-  dataList.value.map((item: any, idx: any) => {
-    if (index === idx) {
-      dataList.value[index].checked = true
-    } else {
-      dataList.value[idx].checked = false
-    }
-  })
+  if (props.type === 'single') {
+    selectedData.value = { ...data }
+    dataList.value.map((item: any, idx: any) => {
+      if (index === idx) {
+        dataList.value[index].checked = true
+      } else {
+        dataList.value[idx].checked = false
+      }
+    })
+  } else if (props.type === 'multiple') {
+    selelctedDataList.value.push({ ...data })
+    dataList.value.map((item: any, idx: any) => {
+      if (index === idx) {
+        item.checked = true
+      }
+    })
+  }
 }
 
 // 回退，关闭当前组件
@@ -114,7 +142,11 @@ const close = () => {
 
 // 确认选择
 const confirmSelect = () => {
-  emit('confirmSelect', selectedData.value)
+  if (props.type === 'single') {
+    emit('confirmSelect', selectedData.value)
+  } else if (props.type === 'multiple') {
+    emit('confirmSelect', selelctedDataList.value)
+  }
 }
 </script>
 

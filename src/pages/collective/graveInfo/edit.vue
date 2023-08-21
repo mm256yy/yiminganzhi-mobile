@@ -137,7 +137,9 @@
     <!-- 搜索选择户号 -->
     <search-list
       v-show="showSearch"
-      :type="MainType.PeasantHousehold"
+      :mainType="MainType.PeasantHousehold"
+      type="single"
+      stage="survey"
       @close="close"
       @confirm-select="confirmSelect"
     />

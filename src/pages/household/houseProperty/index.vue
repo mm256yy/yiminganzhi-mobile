@@ -1,6 +1,6 @@
 <template>
   <view class="house-info-wrapper">
-    <!-- 居民户实施 —— 房屋确权 -->
+    <!-- 居民户实施 —— 房屋产权 -->
     <view class="list" v-if="props.dataList && props.dataList.length > 0">
       <view class="list-item" v-for="item in props.dataList" :key="item.id">
         <view class="list-1">
@@ -16,7 +16,7 @@
             /> -->
           </view>
         </view>
-        <view class="list-2">
+        <view class="list-2" @click="toLink('edit', item.uid)">
           <uni-row>
             <uni-col :span="12">
               <view class="col">
@@ -72,19 +72,17 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">房屋性质：</view>
-                <view class="content">共有</view>
-                <!-- <view class="content">
+                <view class="content">
                   {{ formatStr(item.houseNature) }}
-                </view> -->
+                </view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">共有人情况：</view>
-                <view class="content">无说明</view>
-                <!-- <view class="content">
+                <view class="content">
                   {{ formatStr(item.ownersSituation) }}
-                </view> -->
+                </view>
               </view>
             </uni-col>
           </uni-row>
@@ -94,11 +92,11 @@
 
     <view class="null-wrapper" v-else>
       <image class="icon" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
-      <view class="tips">暂无房屋确权信息</view>
+      <view class="tips">暂无房屋信息</view>
       <!-- <view class="tips">请先添加房屋确权信息</view> -->
     </view>
 
-    <!-- <image class="btn add" src="@/static/images/icon_add.png" mode="scaleToFill" /> -->
+    <!-- <image class="btn add" src="@/static/images/icon_add.png" mode="scaleToFill" @click="toLink('add')" /> -->
 
     <!-- 删除确认框 -->
     <!-- <uni-popup
@@ -122,52 +120,34 @@
 
 <script lang="ts" setup>
 // import { ref } from 'vue'
-// import dayjs from 'dayjs'
-import { formatDict, formatStr } from '@/utils'
-// import { MainStage, MainType } from '@/types/common'
+import { formatDict, formatStr, routerForward } from '@/utils'
 // import { showToast } from '@/config'
 
-const props = defineProps({
-  dataList: {
-    type: Array as any,
-    default: () => []
-  },
-  dataInfo: {
-    type: Object as any,
-    default: () => {}
-  }
-})
+interface PropsType {
+  dataList: any[]
+  dataInfo: any
+}
 
+const props = defineProps<PropsType>()
 // const emit = defineEmits(['deleteHouse'])
 // const alertDialog = ref<any>(null)
 // const currentItem = ref<any>({})
 // const reason = ref<string>('') // 删除原因
 
-// const toLink = (type: string, data?: any) => {
-//   const { dataInfo, mainType } = props
-//   const { uid, doorNo, longitude, latitude } = dataInfo
-//   let commonParams = { type, uid, doorNo, longitude, latitude, mainType }
-//   if (type === 'edit') {
-//     let params = {
-//       ...data,
-//       completedTime: data.completedTime
-//         ? dayjs(data.completedTime).format('YYYY-MM')
-//         : data.completedTime,
-//       housePic: fmtPicUrl(data.housePic),
-//       landPic: fmtPicUrl(data.landPic),
-//       otherPic: fmtPicUrl(data.otherPic),
-//       homePic: fmtPicUrl(data.homePic)
-//     }
-//     routerForward('houseInfoEdit', {
-//       params: JSON.stringify(params),
-//       commonParams: JSON.stringify(commonParams)
-//     })
-//   } else if (type === 'add') {
-//     routerForward('houseInfoEdit', {
-//       commonParams: JSON.stringify(commonParams)
-//     })
-//   }
-// }
+const toLink = (type: string, itemUid?: any) => {
+  const { uid, doorNo } = props.dataInfo
+  if (type === 'edit') {
+    let params = { type, uid, doorNo, itemUid }
+    routerForward('housePropertyEdit', {
+      params: JSON.stringify(params)
+    })
+  } else if (type === 'add') {
+    let params = { type, uid, doorNo }
+    routerForward('houseConfirmEdit', {
+      params: JSON.stringify(params)
+    })
+  }
+}
 
 /**
  * 删除当前行数据
