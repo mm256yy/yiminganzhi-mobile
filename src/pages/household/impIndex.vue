@@ -4,7 +4,7 @@
     <image src="@/static/images/common_bg.png" class="head-bg" mode="widthFix" />
     <view class="home-wrap" :style="{ height: `${pageHeight}px` }">
       <view class="home-body">
-        <ImpMain :dataInfo="dataInfo" @update-data="getLandlordDetail" />
+        <ImpMain :dataInfo="dataInfo" :landNoList="landNoList" @update-data="getLandlordDetail" />
       </view>
     </view>
   </view>
@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { getImpLandlordItemApi } from '@/service'
+import { getImpLandlordItemApi, getChooseConfigApi } from '@/service'
 import ImpMain from './components/ImpMain.vue'
 import { onLoad, onShow } from '@dcloudio/uni-app'
 
@@ -21,15 +21,18 @@ const statusBarHeight = sysInfo.statusBarHeight || 0
 const screenHeight = sysInfo.screenHeight
 const pageHeight = screenHeight - statusBarHeight
 const dataInfo = ref<any>({})
+const landNoList = ref<any[]>([])
 
 onShow(() => {
   if (dataInfo.value.uid) {
+    getLandNoList()
     getLandlordDetail(dataInfo.value.uid)
   }
 })
 
 onLoad((option) => {
   if (option && option.uid) {
+    getLandNoList()
     getLandlordDetail(option.uid)
   }
 })
@@ -43,6 +46,17 @@ const getLandlordDetail = (uid: string) => {
     console.log('res:', res)
     dataInfo.value = { ...res }
   })
+}
+
+// 获取地块编号选项列表
+const getLandNoList = () => {
+  getChooseConfigApi()
+    .then((res: any) => {
+      console.log('config-1:', res)
+    })
+    .catch((e) => {
+      console.log('error:', e)
+    })
 }
 </script>
 
