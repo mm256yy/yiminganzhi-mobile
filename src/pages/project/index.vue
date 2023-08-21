@@ -50,8 +50,8 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { getProjectListApi } from '@/service'
 import SyncCompont from '@/components/Sync/Index.vue'
-import { routerBack, StorageKey, getStorage, debounce, setStorage } from '@/utils'
-import { ProjectType, RoleCodeType, MainStage } from '@/types/common'
+import { routerBack, StorageKey, getStorage, debounce } from '@/utils'
+import { ProjectType } from '@/types/common'
 
 const list = ref<any[]>([])
 
@@ -96,60 +96,8 @@ const onChangeProject = debounce((item: ProjectType) => {
   syncCmt.value?.onSync()
 })
 
-/**
- * 判断角色 展示不同的首页
- */
-const getRole = () => {
-  const projectId = getStorage(StorageKey.PROJECTID)
-  const allUserInfo = getStorage(StorageKey.FULLUSERINFO)
-  if (allUserInfo) {
-    const project = allUserInfo.projectUsers.find((x: any) => x.projectId === projectId)
-    const role =
-      project && project.roles && project.roles.length
-        ? project.roles[0].code
-        : RoleCodeType.investigator
-    // 默认用户拥有一个角色 角色选择先不考虑
-    return role
-  }
-  return RoleCodeType.investigator
-}
-
-/**
- * 获取阶段状态
- */
-const getRoleAndStageStatus = () => {
-  let stageStatus: MainStage = MainStage.survey
-  // if (projectItem.value?.status === MainStage.survey) {
-  //   // 项目所处阶段在 实物调查阶段 只能进实物调查流程
-  //   stageStatus = MainStage.survey
-  // }
-
-  // 根据角色判断 进入什么流程
-  const role = getRole()
-  // 项目管理人员	administrators
-  // 实物调查人员	investigator
-  // 移民实施人员	implementation
-  // 资产评估人员	assessor
-  // 实物复核人员 reviewer
-  if (role === RoleCodeType.investigator) {
-    stageStatus = MainStage.survey
-  } else if (role === RoleCodeType.assessor || role === RoleCodeType.implementation) {
-    stageStatus = MainStage.implementation
-  } else if (role === RoleCodeType.reviewer) {
-    stageStatus = MainStage.review
-  } else {
-    stageStatus = projectItem.value ? projectItem.value.status : MainStage.survey
-  }
-  // 角色赋值
-  setStorage(StorageKey.USERROLE, role)
-  // 阶段状态赋值
-  setStorage(StorageKey.STAGESTATUS, stageStatus)
-}
-
 // 同步结束
 const onSyncEnd = () => {
-  // 数据阶段判断
-  getRoleAndStageStatus()
   syncing.value = false
 }
 

@@ -50,7 +50,7 @@ function baseRequest(method: MethodType, option: UniApp.RequestOptions) {
     uni.request({
       url: apiBaseUrl + url,
       method,
-      timeout: 150000,
+      timeout: 300000, // 5️⃣分钟
       header: realHeader,
       data,
       success: (res: any) => {

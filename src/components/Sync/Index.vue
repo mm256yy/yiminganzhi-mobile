@@ -114,7 +114,7 @@
 <script setup lang="ts">
 import { ref, onBeforeUnmount } from 'vue'
 import Upgradation from '@/components/Upgradation/Index.vue'
-import { ProjectType, MainType } from '@/types/common'
+import { ProjectType, MainType, RoleCodeType, MainStage } from '@/types/common'
 import { pullInstance, pushInstance } from '@/sync'
 import { imageUrlAndBase64Map } from '@/config'
 import { getDictObjApi, getImgListApi, getProjectListApi } from '@/service'
@@ -232,6 +232,53 @@ const polling = () => {
   }, 1000)
 }
 
+/**
+ * 判断角色
+ */
+const getRole = () => {
+  const projectId = getStorage(StorageKey.PROJECTID)
+  const allUserInfo = getStorage(StorageKey.FULLUSERINFO)
+  if (allUserInfo) {
+    const project = allUserInfo.projectUsers.find((x: any) => x.projectId === projectId)
+    const role =
+      project && project.roles && project.roles.length
+        ? project.roles[0].code
+        : RoleCodeType.investigator
+    // 默认用户拥有一个角色 角色选择先不考虑
+    return role
+  }
+  return RoleCodeType.investigator
+}
+
+/**
+ * 获取阶段状态
+ */
+const getRoleAndStageStatus = () => {
+  let stageStatus: MainStage = MainStage.survey
+
+  // 根据角色判断 进入什么流程
+  const role = getRole()
+  // 项目管理人员	administrators
+  // 实物调查人员	investigator
+  // 移民实施人员	implementation
+  // 资产评估人员	assessor
+  // 实物复核人员 reviewer
+  const projectInfo = getStorage(StorageKey.PROJECTINFO)
+  if (role === RoleCodeType.investigator) {
+    stageStatus = MainStage.survey
+  } else if (role === RoleCodeType.assessor || role === RoleCodeType.implementation) {
+    stageStatus = MainStage.implementation
+  } else if (role === RoleCodeType.reviewer) {
+    stageStatus = MainStage.review
+  } else {
+    stageStatus = projectInfo ? projectInfo.status : MainStage.survey
+  }
+  // 角色赋值
+  setStorage(StorageKey.USERROLE, role)
+  // 阶段状态赋值
+  setStorage(StorageKey.STAGESTATUS, stageStatus)
+}
+
 // 切换项目 需要处理的逻辑
 const projectSyncHandle = async () => {
   // 重置拉取时间
@@ -245,8 +292,11 @@ const projectSyncHandle = async () => {
   // 换项目之后 需要用新的项目ID 来调用拉取接口
 
   emit('changeProject')
+
   setStorage(StorageKey.PROJECTID, props.projectId)
   setStorage(StorageKey.PROJECTINFO, props.projectItem)
+  // 数据阶段判断
+  getRoleAndStageStatus()
 }
 
 // 普通同步 需要处理的逻辑
