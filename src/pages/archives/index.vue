@@ -2,6 +2,21 @@
   <!-- 所有的档案上传 -->
   <Container title="档案上传">
     <view class="archives-wrap">
+      <HouseVacate
+        v-if="archivesType === 7"
+        :immigrant-documentation="immigrantDocumentation"
+        @submit="submit"
+      />
+      <LandVacate
+        v-if="archivesType === 8"
+        :immigrant-documentation="immigrantDocumentation"
+        @submit="submit"
+      />
+      <TransitionVacate
+        v-if="archivesType === 9"
+        :immigrant-documentation="immigrantDocumentation"
+        @submit="submit"
+      />
       <ProduceArchives
         v-if="archivesType === 1"
         :immigrant-documentation="immigrantDocumentation"
@@ -37,6 +52,9 @@ import { updateImpLandlordDocumentationApi, getImpLandlordItemApi } from '@/serv
 import { ImmigrantDocumentationType } from '@/types/impDataFill'
 import { routerBack } from '@/utils'
 
+import HouseVacate from './houseVacate.vue'
+import LandVacate from './landVacate.vue'
+import TransitionVacate from './transitionVacate.vue'
 import ProduceArchives from './produceArchives.vue'
 import RelocateArchives from './relocateArchives.vue'
 import GraveArchives from './graveArchives.vue'

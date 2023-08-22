@@ -1,32 +1,30 @@
 <template>
   <!-- 安置确认 搬迁安置 -->
   <view class="relocate-wrap">
-    <view class="btn-box-wrap">
-      <view class="btn-box">
-        <view class="btn green-btn">
-          <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
-          <text class="txt">打印报表</text>
-        </view>
-        <view class="btn blue-btn" @click="onImportDataPre">
-          <image class="icon" src="@/static/images/icon_import.png" mode="scaleToFill" />
-          <text class="txt">导入模拟安置数据</text>
-        </view>
+    <view class="btn-box">
+      <view class="btn green-btn">
+        <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
+        <text class="txt">打印报表</text>
+      </view>
+      <view class="btn blue-btn" @click="onImportDataPre">
+        <image class="icon" src="@/static/images/icon_import.png" mode="scaleToFill" />
+        <text class="txt">导入模拟安置数据</text>
+      </view>
 
-        <view class="btn blue-btn" @click="editRelocate">
-          <image class="icon" src="@/static/images/icon_sign_white.png" mode="scaleToFill" />
-          <text class="txt">修改</text>
-        </view>
+      <view class="btn blue-btn" @click="editRelocate">
+        <image class="icon" src="@/static/images/icon_sign_white.png" mode="scaleToFill" />
+        <text class="txt">修改</text>
+      </view>
 
-        <view class="btn blue-btn" @click="archivesUpload">
-          <image class="icon" src="@/static/images/icon_dangan_upload.png" mode="scaleToFill" />
-          <text class="txt">档案上传</text>
-        </view>
+      <view class="btn blue-btn" @click="archivesUpload">
+        <image class="icon" src="@/static/images/icon_dangan_upload.png" mode="scaleToFill" />
+        <text class="txt">档案上传</text>
+      </view>
 
-        <!-- <view class="btn blue-btn">
+      <!-- <view class="btn blue-btn">
           <image class="icon" src="@/static/images/icon_feedback.png" mode="scaleToFill" />
           <text class="txt">问题反馈</text>
         </view> -->
-      </view>
     </view>
 
     <view class="common-head">
@@ -55,7 +53,6 @@
           <uni-td>{{ item.area }}</uni-td>
           <uni-td>{{ item.num }}</uni-td>
           <uni-td>{{ item.houseTypeText }}</uni-td>
-          <uni-td>{{ item.settleRemark }}</uni-td>
         </uni-tr>
       </uni-table>
     </view>
@@ -240,35 +237,6 @@ const immigrantSettleSubmit = async (data: Partial<ImmigrantSettleType>) => {
 </script>
 
 <style lang="scss" scoped>
-.btn-box-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 9rpx 0 0;
-
-  .edit-back {
-    display: flex;
-    height: 23rpx;
-    padding: 0 9rpx;
-    background-color: #3e73ec;
-    border-radius: 23rpx;
-    align-items: center;
-    justify-content: center;
-
-    .icon {
-      width: 9rpx;
-      height: 9rpx;
-      margin-right: 3rpx;
-    }
-
-    .txt {
-      font-size: 9rpx;
-      line-height: 11rpx;
-      color: #ffffff;
-    }
-  }
-}
-
 .btn-box {
   display: flex;
   align-items: center;

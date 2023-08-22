@@ -1,31 +1,29 @@
 <template>
   <view class="produce-wrap">
-    <view class="btn-box-wrap">
-      <view class="btn-box">
-        <view class="btn green-btn">
-          <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
-          <text class="txt">打印报表</text>
-        </view>
-        <view class="btn blue-btn" @click="importPre">
-          <image class="icon" src="@/static/images/icon_import.png" mode="scaleToFill" />
-          <text class="txt">导入模拟安置数据</text>
-        </view>
+    <view class="btn-box">
+      <view class="btn green-btn">
+        <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
+        <text class="txt">打印报表</text>
+      </view>
+      <view class="btn blue-btn" @click="importPre">
+        <image class="icon" src="@/static/images/icon_import.png" mode="scaleToFill" />
+        <text class="txt">导入模拟安置数据</text>
+      </view>
 
-        <view class="btn blue-btn" @click="editProduce">
-          <image class="icon" src="@/static/images/icon_sign_white.png" mode="scaleToFill" />
-          <text class="txt">修改</text>
-        </view>
+      <view class="btn blue-btn" @click="editProduce">
+        <image class="icon" src="@/static/images/icon_sign_white.png" mode="scaleToFill" />
+        <text class="txt">修改</text>
+      </view>
 
-        <view class="btn blue-btn" @click="archivesUpload">
-          <image class="icon" src="@/static/images/icon_dangan_upload.png" mode="scaleToFill" />
-          <text class="txt">档案上传</text>
-        </view>
+      <view class="btn blue-btn" @click="archivesUpload">
+        <image class="icon" src="@/static/images/icon_dangan_upload.png" mode="scaleToFill" />
+        <text class="txt">档案上传</text>
+      </view>
 
-        <!-- <view class="btn blue-btn">
+      <!-- <view class="btn blue-btn">
           <image class="icon" src="@/static/images/icon_feedback.png" mode="scaleToFill" />
           <text class="txt">问题反馈</text>
         </view> -->
-      </view>
     </view>
 
     <view class="common-head">
@@ -33,7 +31,9 @@
       <text>安置信息</text>
     </view>
 
-    <PeopleList :isEdit="false" :demographic-list="demographicList" />
+    <view class="content">
+      <PeopleList :isEdit="false" :demographic-list="demographicList" />
+    </view>
 
     <uni-popup ref="alertDialog" type="dialog">
       <uni-popup-dialog
@@ -120,35 +120,6 @@ const archivesUpload = () => {
 </script>
 
 <style lang="scss" scoped>
-.btn-box-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 9rpx 0 0;
-
-  .edit-back {
-    display: flex;
-    height: 23rpx;
-    padding: 0 9rpx;
-    background-color: #3e73ec;
-    border-radius: 23rpx;
-    align-items: center;
-    justify-content: center;
-
-    .icon {
-      width: 9rpx;
-      height: 9rpx;
-      margin-right: 3rpx;
-    }
-
-    .txt {
-      font-size: 9rpx;
-      line-height: 11rpx;
-      color: #ffffff;
-    }
-  }
-}
-
 .btn-box {
   display: flex;
   align-items: center;
@@ -205,5 +176,9 @@ const archivesUpload = () => {
     height: 10rpx;
     margin-right: 6rpx;
   }
+}
+
+.content {
+  padding-bottom: 20rpx;
 }
 </style>

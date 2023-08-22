@@ -14,6 +14,19 @@
           <!-- 居民户信息 -->
           <base-info-imp v-if="tabVal === 1" :dataInfo="dataInfo" />
 
+          <!-- 生产安置 农业安置 -->
+          <Farming v-if="tabVal === 22" :dataInfo="dataInfo" />
+          <!-- 生产安置 养老保险 -->
+          <Insure v-if="tabVal === 23" :dataInfo="dataInfo" />
+          <!-- 生产安置 自谋职业 -->
+          <Findself v-if="tabVal === 24" :dataInfo="dataInfo" />
+          <!-- 相关协议 -->
+          <Procedures v-if="tabVal === 25" :dataInfo="dataInfo" />
+
+          <HouseVacate v-if="tabVal === 14" :dataInfo="dataInfo" />
+          <LandVacate v-if="tabVal === 15" :dataInfo="dataInfo" />
+          <TransitionVacate v-if="tabVal === 16" :dataInfo="dataInfo" />
+
           <!-- 人口核定 -->
           <population-verfication
             v-if="tabVal === 2"
@@ -69,7 +82,7 @@
           />
 
           <!-- 过渡安置 -->
-          <trans-resettlement v-if="tabVal === 16" :dataInfo="dataInfo" />
+          <!-- <trans-resettlement v-if="tabVal === 16" :dataInfo="dataInfo" /> -->
 
           <!-- 动迁协议 -->
           <Agreement v-if="tabVal === 17" />
@@ -85,6 +98,14 @@ import { LandlordType } from '@/types/sync'
 import { sidebarList } from '../config'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { deleteImpLandlordPeopleApi } from '@/service'
+
+import Procedures from '../procedures/index.vue' // 相关协议
+import Farming from '../productionResettle/farming.vue'
+import Insure from '../productionResettle/insure.vue'
+import Findself from '../productionResettle/findself.vue'
+import HouseVacate from '../vacate/house.vue'
+import LandVacate from '../vacate/land.vue'
+import TransitionVacate from '../vacate/transition.vue'
 
 import Back from '@/components/Back/Index.vue'
 import LeftSidebar from '@/components/LeftSidebar/Index.vue' // 引入左侧边栏组件

@@ -25,6 +25,30 @@
         :itemUid="query.data"
         @submit="submitSuccess"
       />
+
+      <HouseVacate
+        v-if="handleType === 4"
+        :uid="query.uid"
+        :data-info="dataInfo"
+        :immigrantHouseEmpty="dataInfo?.immigrantHouseEmpty"
+        @submit="submitSuccess"
+      />
+
+      <LandVacate
+        v-if="handleType === 5"
+        :uid="query.uid"
+        :data-info="dataInfo"
+        :immigrantLandEmpty="dataInfo?.immigrantLandEmpty"
+        @submit="submitSuccess"
+      />
+
+      <TransitionVacate
+        v-if="handleType === 6"
+        :uid="query.uid"
+        :data-info="dataInfo"
+        :immigrantExcess="dataInfo?.immigrantExcess"
+        @submit="submitSuccess"
+      />
     </view>
   </Container>
 </template>
@@ -40,6 +64,10 @@ import { LandlordType } from '@/types/sync'
 import Procedures from './procedures.vue'
 import Insure from './insure.vue'
 import FindSelf from './findself.vue'
+
+import HouseVacate from './houseVacate.vue'
+import LandVacate from './landVacate.vue'
+import TransitionVacate from './transitionVacate.vue'
 
 /**
  * 1 相关手续办理
@@ -68,7 +96,7 @@ onLoad((option) => {
   }
 })
 // 详情数据
-const dataInfo = ref<LandlordType>()
+const dataInfo = ref<LandlordType | null>(null)
 
 // 档案类型
 const handleType = computed(() => {
