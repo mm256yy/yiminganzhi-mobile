@@ -104,6 +104,13 @@ export class ImpLandlord extends Common {
           res.villageCodeText = districtMap[res.villageCode]
           res.townCodeText = districtMap[res.townCode]
           res.areaCodeText = districtMap[res.areaCode]
+
+          // 选择户型类型
+          res.houseAreaType = res.immigrantSettle ? res.immigrantSettle.houseAreaType : null
+          // 户主的 settingWay
+          res.settingWay =
+            (res.demographicList || []).find((demographic) => demographic.relation === '1')
+              ?.settingWay || ''
           // console.log(res, '业主详情')
           resolve(res)
           return
@@ -205,6 +212,13 @@ export class ImpLandlord extends Common {
           res.villageCodeText = districtMap[res.villageCode]
           res.townCodeText = districtMap[res.townCode]
           res.areaCodeText = districtMap[res.areaCode]
+
+          // 选择户型类型
+          res.houseAreaType = res.immigrantSettle ? res.immigrantSettle.houseAreaType : null
+          // 户主的 settingWay
+          res.settingWay =
+            (res.demographicList || []).find((demographic) => demographic.relation === '1')
+              ?.settingWay || ''
           // console.log(res, '业主详情')
           resolve(res)
           return
