@@ -401,6 +401,41 @@
 			}
 		},
 		{
+			"name": "chooseHouseArchives",
+			"path": "pages/household/chooseHouse/archives",
+			"style": {
+				"navigationBarTitleText": "选房择址档案上传"
+			}
+		},
+		{
+			"name": "graveSiteSelEdit",
+			"path": "pages/household/graveSiteSel/edit",
+			"style": {
+				"navigationBarTitleText": "坟墓择址档案上传"
+			}
+		},
+		{
+			"name": "migrateCardEdit",
+			"path": "pages/household/migrateCard/edit",
+			"style": {
+				"navigationBarTitleText": "移民建卡用户信息编辑"
+			}
+		},
+		{
+			"name": "confirmReward",
+			"path": "pages/household/migrateCard/confirmReward",
+			"style": {
+				"navigationBarTitleText": "移民建卡奖励资费确认"
+			}
+		},
+		{
+			"name": "selfBuildHouseFill",
+			"path": "pages/household/relocatePlacement/selfBuildHouseFill",
+			"style": {
+				"navigationBarTitleText": "自建房填写"
+			}
+		},
+		{
 			"name": "attendto",
 			"path": "pages/attendto/index",
 			"style": {

@@ -8,7 +8,7 @@
           <image class="icon" src="@/static/images/icon_print_white.png" mode="scaleToFill" />
           打印表格
         </view>
-        <view class="btn blue">
+        <view class="btn blue" @click="onArchives">
           <image class="icon" src="@/static/images/icon_upload_white.png" mode="scaleToFill" />
           档案上传
         </view>
@@ -116,7 +116,7 @@
             <uni-row>
               <uni-col :span="12">
                 <view class="col">
-                  <view class="label">幢号-房号：</view>
+                  <view class="label">幢号-室号：</view>
                   <view class="content">
                     {{ dictOption(roomNoList, item.roomNo) }}
                   </view>
@@ -276,6 +276,13 @@ const getHouseConfig = () => {
       })
       roomNoList.value = [...arr]
     }
+  })
+}
+
+// 档案上传
+const onArchives = () => {
+  routerForward('chooseHouseArchives', {
+    uid: props.baseInfo.uid
   })
 }
 

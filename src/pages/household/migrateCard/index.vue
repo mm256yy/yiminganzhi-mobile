@@ -2,11 +2,98 @@
   <view class="migrate-card-wrapper">
     <!-- 居民户实施 —— 移民建卡 -->
     <view class="main">
-      <view class="title-wrap">
-        <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-        家庭基本情况
+      <view class="row-1">
+        <view class="left" />
+        <view class="right">
+          <view class="btn green">
+            <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
+            <text class="txt">打印报表</text>
+          </view>
+          <view class="btn blue" @click="onArchives">
+            <image class="icon" src="@/static/images/icon_upload_white.png" mode="scaleToFill" />
+            档案上传
+          </view>
+          <!-- <view class="btn blue-btn">
+			      <image class="icon" src="@/static/images/icon_feedback.png" mode="scaleToFill" />
+			      <text class="txt">问题反馈</text>
+			    </view> -->
+        </view>
       </view>
-      <view class="row">
+
+      <view class="title-wrap m-t-5">
+        <view class="left">
+          <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
+          家庭基本情况
+        </view>
+        <view class="right" @click="toEdit">编辑</view>
+      </view>
+
+      <uni-row class="m-b-10">
+        <uni-col :span="12">
+          <view class="col">
+            <view class="label">户主姓名：</view>
+            <view class="content">
+              {{ formatStr(dataInfo.name) }}
+            </view>
+          </view>
+        </uni-col>
+        <uni-col :span="12">
+          <view class="col">
+            <view class="label">家庭总人口：</view>
+            <view class="content">
+              {{ formatStr(dataInfo.familyNum) }}
+            </view>
+          </view>
+        </uni-col>
+        <uni-col :span="12">
+          <view class="col">
+            <view class="label">联系方式：</view>
+            <view class="content">
+              {{ formatStr(dataInfo.phone) }}
+            </view>
+          </view>
+        </uni-col>
+        <uni-col :span="12">
+          <view class="col">
+            <view class="label">迁前地址：</view>
+            <view class="content">
+              {{ formatStr(dataInfo.address) }}
+            </view>
+          </view>
+        </uni-col>
+        <uni-col :span="12">
+          <view class="col">
+            <view class="label">安置住址：</view>
+            <view class="content"> {{ formatStr(dataInfo.immigrantSettle?.settleAddress) }} </view>
+          </view>
+        </uni-col>
+        <uni-col :span="12">
+          <view class="col">
+            <view class="label">开户名：</view>
+            <view class="content">
+              {{ formatStr(dataInfo.accountName) }}
+            </view>
+          </view>
+        </uni-col>
+        <uni-col :span="12">
+          <view class="col">
+            <view class="label">开户行：</view>
+            <view class="content">
+              {{ formatStr(dataInfo.bankName) }}
+            </view>
+          </view>
+        </uni-col>
+        <uni-col :span="12">
+          <view class="col">
+            <view class="label">银行账号：</view>
+            <view class="content">
+              {{ formatStr(dataInfo.bankAccount) }}
+            </view>
+          </view>
+        </uni-col>
+      </uni-row>
+
+      <view class="row-2">
         <uni-table border stripe emptyText="暂无更多数据">
           <!-- 表头行 -->
           <uni-tr>
@@ -19,9 +106,9 @@
             <uni-th align="left" width="80rpx" class="uTitle">户籍册类别</uni-th>
           </uni-tr>
           <!-- 表格数据行 -->
-          <uni-tr v-for="(item, index) in props.dataList" :key="index">
+          <uni-tr v-for="(item, index) in dataList" :key="index">
             <uni-td align="left" class="uTd">{{ index + 1 }}</uni-td>
-            <uni-td align="left" class="uTd">{{ item.name }}</uni-td>
+            <uni-td align="left" class="uTd">{{ formatStr(item.name) }}</uni-td>
             <uni-td align="left" class="uTd">{{ formatDict(item.relation, 307) }}</uni-td>
             <uni-td align="left" class="uTd">{{ formatDict(item.sex, 292) }}</uni-td>
             <uni-td align="left" class="uTd">{{ formatStr(item.card) }}</uni-td>
@@ -30,184 +117,38 @@
           </uni-tr>
         </uni-table>
       </view>
-      <view class="title-wrap">
-        <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-        费用补偿情况
+
+      <view class="title-wrap m-t-5">
+        <view class="left">
+          <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
+          费用补偿情况
+        </view>
+        <view class="right confirm" @click="toConfirmReward">奖励费确认</view>
       </view>
-      <view class="expenses-table">
-        <view class="table-header">
-          <view class="td1" />
-          <view class="td2">补偿指标名称</view>
-          <view class="td3">代码</view>
-          <view class="td3">补偿金额</view>
+
+      <view class="row-3">
+        <view class="th">
+          <view class="td td-1">类型</view>
+          <view class="td td-2">指标名称</view>
+          <view class="td td-3">单位</view>
+          <view class="td td-3">数量</view>
+          <view class="td td-3">补偿单价</view>
+          <view class="td td-3">补偿金额</view>
+          <view class="td td-4">备注</view>
         </view>
         <!--补偿费-->
-        <view class="flex-display">
-          <view class="line-span span1"> 补偿费 </view>
-          <view>
-            <view class="expenses-content">
-              <view class="td2">房屋主体补偿费用</view>
-              <view class="td3">01</view>
-              <view class="td3">8,053.32</view>
-            </view>
-            <view class="expenses-content">
-              <view class="td2">房屋装修补偿费</view>
-              <view class="td3">02</view>
-              <view class="td3">7,302.19</view>
-            </view>
-            <view class="expenses-content">
-              <view class="td2">附属物补偿费</view>
-              <view class="td3">03</view>
-              <view class="td3">6,182.22</view>
-            </view>
-            <view class="expenses-content">
-              <view class="td2">零星果木补偿费</view>
-              <view class="td3">04</view>
-              <view class="td3">4,452.32</view>
-            </view>
-            <view class="expenses-content">
-              <view class="td2">地上青苗及附着物补偿费</view>
-              <view class="td3">05</view>
-              <view class="td3">5,514.77</view>
-            </view>
-            <view class="expenses-content">
-              <view class="td2">土地补偿费(到户)</view>
-              <view class="td3">06</view>
-              <view class="td3">7,741.85</view>
-            </view>
-            <view class="expenses-content">
-              <view class="td2">坟墓迁移补偿费</view>
-              <view class="td3">07</view>
-              <view class="td3">9,222.02</view>
-            </view>
-            <view class="expenses-content">
-              <view class="td2">农副业设施设备补偿费</view>
-              <view class="td3">08</view>
-              <view class="td3">7,889.37</view>
-            </view>
-            <view class="expenses-content">
-              <view class="td2">其他补偿费</view>
-              <view class="td3">09</view>
-              <view class="td3">9,217.97</view>
-            </view>
-            <view class="expense-bottom">
-              <view class="td2">补偿费小计</view>
-              <view class="td3">10</view>
-              <view class="td3">3,809.43</view>
-            </view>
+        <view class="tb-content" v-for="(item, index) in tableData" :key="index">
+          <view class="td td-1">{{ getTypeStr(item.type) }}</view>
+          <view class="td td-2">{{ formatStr(item.name) }}</view>
+          <view class="td td-3">{{ formatDict(item.unit, 268) }}</view>
+          <view class="td td-3">{{ formatStr(item.number) }}</view>
+          <view class="td td-3">{{ formatStr(item.price) }}</view>
+          <view class="td td-3">
+            <view v-if="item.isUpdate === '0'">{{ formatStr(item.totalPrice) }}</view>
+            <view v-else-if="item.isUpdate === '1'">{{ computedTotalPrice(item) }}</view>
+            <view v-else-if="item.isUpdate === '2'">{{ getSummaries(item) }}</view>
           </view>
-        </view>
-        <!--补助费-->
-        <view class="flex-display">
-          <view class="line-span span2">补助费</view>
-          <view>
-            <view class="expenses-content">
-              <view class="td2">建房补助费</view>
-              <view class="td3">11</view>
-              <view class="td3">7,379.99</view>
-            </view>
-            <view class="expenses-content">
-              <view class="td2">搬迁补助费</view>
-              <view class="td3">12</view>
-              <view class="td3">8,441.25</view>
-            </view>
-            <view class="expenses-content">
-              <view class="td2">过渡期补助费</view>
-              <view class="td3">13</view>
-              <view class="td3">2,550.56</view>
-            </view>
-            <view class="expenses-content">
-              <view class="td2">临时安置补助费 </view>
-              <view class="td3">14</view>
-              <view class="td3">6,181.67</view>
-            </view>
-            <view class="expenses-content">
-              <view class="td2">分散安置移民基础设施费</view>
-              <view class="td3">15</view>
-              <view class="td3">2,595.03</view>
-            </view>
-            <view class="expenses-content">
-              <view class="td2">其他补助费</view>
-              <view class="td3">16</view>
-              <view class="td3">8,000.70</view>
-            </view>
-            <view class="expense-bottom">
-              <view class="td2">补助费小计</view>
-              <view class="td3">17</view>
-              <view class="td3">7,492.65</view>
-            </view>
-          </view>
-        </view>
-        <!--奖励费-->
-        <view class="expIncentive">
-          <view class="col1">奖励费</view>
-          <view>
-            <view class="flex-display">
-              <view class="col2 field1">签约奖</view>
-              <view>
-                <div class="flex-display">
-                  <view class="col3">网格签约奖</view>
-                  <view class="col4">18</view>
-                  <view class="col4">7,379.99</view>
-                </div>
-                <div class="flex-display">
-                  <view class="col3">按时签约奖</view>
-                  <view class="col4">19</view>
-                  <view class="col4">4,289.54</view>
-                </div>
-                <div class="flex-display">
-                  <view class="col3">其他签约奖</view>
-                  <view class="col4">20</view>
-                  <view class="col4">6,256.30</view>
-                </div>
-              </view>
-            </view>
-            <view class="flex-display">
-              <view class="col2 field2">提前腾空奖</view>
-              <view>
-                <div class="flex-display">
-                  <view class="col3">房屋提前腾空奖</view>
-                  <view class="col4">21</view>
-                  <view class="col4">4,470.44</view>
-                </div>
-                <div class="flex-display">
-                  <view class="col3">青苗提前腾空奖</view>
-                  <view class="col4">22</view>
-                  <view class="col4">1,726.38</view>
-                </div>
-              </view>
-            </view>
-            <view class="flex-display">
-              <view class="col2 field1">建房奖</view>
-              <view>
-                <div class="flex-display">
-                  <view class="col3">启动建房奖励</view>
-                  <view class="col4">23</view>
-                  <view class="col4">7,326.77</view>
-                </div>
-                <div class="flex-display">
-                  <view class="col3">完成建房奖励</view>
-                  <view class="col4">24</view>
-                  <view class="col4">6,517.25</view>
-                </div>
-                <div class="flex-display">
-                  <view class="col3">搬迁入住奖励</view>
-                  <view class="col4">25</view>
-                  <view class="col4">2,660.54</view>
-                </div>
-              </view>
-            </view>
-            <view class="flex-display">
-              <view class="otherField">其他奖励费</view>
-              <view class="col4">26</view>
-              <view class="col4">8,682.00</view>
-            </view>
-            <view class="expense-bottom">
-              <view class="td2">奖励费小计</view>
-              <view class="td3">27</view>
-              <view class="td3">7,325.06</view>
-            </view>
-          </view>
+          <view class="td td-4">{{ formatStr(item.remark) }}</view>
         </view>
       </view>
     </view>
@@ -215,18 +156,114 @@
 </template>
 
 <script lang="ts" setup>
-import { formatDict, formatStr } from '@/utils'
+import { ref } from 'vue'
+import { onShow } from '@dcloudio/uni-app'
+import { formatDict, formatStr, routerForward } from '@/utils'
+import { getCompensationCardConfigApi } from '@/service'
 
-const props = defineProps({
-  dataList: {
-    type: Array as any,
-    default: () => {}
-  },
-  dataInfo: {
-    type: Object as any,
-    default: () => {}
-  }
+interface PropsType {
+  dataInfo: any
+  dataList: any[]
+}
+
+const props = defineProps<PropsType>()
+const tableData = ref<any[]>([])
+
+// 获取移民建卡奖励费列表
+const getCompensationCardConfig = () => {
+  getCompensationCardConfigApi().then((res: any) => {
+    if (res) {
+      tableData.value = res
+    }
+  })
+}
+
+onShow(() => {
+  getCompensationCardConfig()
 })
+
+/**
+ * 获取金额类型
+ * @param type 类型 1 补偿, 2 补助, 3 奖励, 4 其他
+ */
+const getTypeStr = (type: string) => {
+  switch (type) {
+    case '1':
+      return '补偿费'
+      break
+    case '2':
+      return '补助费'
+      break
+    case '3':
+      return '奖励费'
+      break
+    case '4':
+      return '其他费用'
+      break
+    default:
+      return ''
+  }
+}
+
+/**
+ * 计算补偿金额
+ * 补偿金额 = 数量 * 单价
+ * @param row 当前行数据
+ */
+const computedTotalPrice = (row: any) => {
+  if (row.totalPrice) {
+    return Number(row.totalPrice)
+  } else {
+    if (row.number && row.price) {
+      return Number(row.number) * Number(row.price)
+    } else {
+      return 0
+    }
+  }
+}
+
+/**
+ * 获取奖励小计
+ * @param row 当前行信息
+ */
+const getSummaries = (row: any) => {
+  let sums = 0
+  let sumIndex = 0
+  tableData.value.forEach((column, index) => {
+    if (column.name === row.name) {
+      sumIndex = index
+    }
+  })
+  const arr = tableData.value.filter((item, index) => item && index !== sumIndex)
+  sums = arr.reduce((totalPrice, currentItem) => {
+    return totalPrice + computedTotalPrice(currentItem)
+  }, 0)
+  return sums
+}
+
+// 档案上传
+const onArchives = () => {
+  routerForward('archives', {
+    type: 6,
+    uid: props.dataInfo.uid
+  })
+}
+
+// 编辑
+const toEdit = () => {
+  routerForward('migrateCardEdit', {
+    uid: props.dataInfo.uid
+  })
+}
+
+// 奖励资费确认
+const toConfirmReward = () => {
+  const { uid, doorNo } = props.dataInfo
+  let params = { uid, doorNo }
+  routerForward('confirmReward', {
+    params: JSON.stringify(params)
+  })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -235,23 +272,108 @@ const props = defineProps({
   height: calc(100vh - 80rpx - var(--status-bar-height));
   overflow-y: scroll;
 
-  .title-wrap {
+  .row-1 {
     display: flex;
-    width: 100%;
-    padding: 6rpx 0;
-    font-size: 9rpx;
-    color: #171718;
-    box-sizing: border-box;
     align-items: center;
+    margin: 9rpx 0;
+    justify-content: space-between;
 
-    .icon {
-      width: 10rpx;
-      height: 10rpx;
-      margin-right: 10rpx;
+    .right {
+      display: flex;
+      align-items: center;
+
+      .btn {
+        display: flex;
+        height: 23rpx;
+        padding: 0 9rpx;
+        margin-right: 6rpx;
+        font-size: 9rpx;
+        color: #fff;
+        border-radius: 23rpx;
+        box-sizing: border-box;
+        align-items: center;
+        justify-content: center;
+
+        &.green {
+          background-color: #30a952;
+        }
+
+        &.blue {
+          background-color: #3e73ec;
+        }
+
+        .icon {
+          width: 9rpx;
+          height: 9rpx;
+          margin-right: 2rpx;
+        }
+      }
     }
   }
 
-  .row {
+  .title-wrap {
+    display: flex;
+    justify-content: space-between;
+
+    .left {
+      display: flex;
+      width: 100%;
+      padding: 6rpx 0;
+      font-size: 9rpx;
+      color: #171718;
+      box-sizing: border-box;
+      align-items: center;
+
+      .icon {
+        width: 10rpx;
+        height: 10rpx;
+        margin-right: 10rpx;
+      }
+    }
+
+    .right {
+      display: flex;
+      width: 30rpx;
+      height: 18rpx;
+      font-size: 9rpx;
+      line-height: 1;
+      color: #3e73ec;
+      border: 1rpx solid rgba(62, 115, 236, 0.5);
+      border-radius: 3rpx;
+      align-items: center;
+      justify-content: center;
+
+      &.confirm {
+        width: 60rpx;
+      }
+    }
+  }
+
+  .col {
+    display: flex;
+    flex-direction: row;
+
+    .label {
+      width: 90rpx;
+      height: 16rpx;
+      margin-left: 9rpx;
+      font-size: 9rpx;
+      line-height: 16rpx;
+      color: rgba(23, 23, 24, 0.6);
+    }
+
+    .content {
+      font-size: 9rpx;
+      line-height: 16rpx;
+      color: #171718;
+
+      &.blue {
+        color: #3e73ec;
+      }
+    }
+  }
+
+  .row-2 {
     font-size: 10rpx;
 
     .uTable {
@@ -271,10 +393,10 @@ const props = defineProps({
     }
   }
 
-  .expenses-table {
+  .row-3 {
     border: 0.5rpx solid #ebebeb;
 
-    .table-header {
+    .th {
       display: flex;
       height: 28rpx;
       font-size: 10rpx;
@@ -282,240 +404,58 @@ const props = defineProps({
       line-height: 28rpx;
       color: #737374;
       background: #ebebeb;
-    }
 
-    .td1 {
-      width: 63rpx;
-      padding-left: 10rpx;
-      text-align: left;
-      border: 0.5rpx solid #ebebeb;
-    }
-
-    .td2 {
-      width: 282rpx;
-      padding-left: 10rpx;
-      text-align: left;
-      border: 0.5rpx solid #ebebeb;
-    }
-
-    .td3 {
-      width: 88rpx;
-      padding-left: 10rpx;
-      text-align: left;
-      border: 0.5rpx solid #ebebeb;
-    }
-
-    .flex-display {
-      display: flex;
-    }
-
-    .line-span {
-      display: flex;
-      width: 62rpx;
-      font-size: 9rpx;
-      color: #171718;
-      border: 0.5rpx solid #ebebeb;
-      box-sizing: border-box;
-      justify-content: center;
-      align-items: center;
-
-      &.span1 {
-        height: 282rpx;
-      }
-
-      &.span2 {
-        height: 198rpx;
-      }
-
-      &.span3 {
-        height: 282rpx;
-      }
-    }
-
-    .expenses-content {
-      display: flex;
-      font-size: 9rpx;
-      color: #171718;
-
-      .td2 {
-        width: 282rpx;
-        height: 28rpx;
+      .td {
         padding-left: 10rpx;
-        line-height: 28rpx;
+        font-size: 9rpx;
         text-align: left;
         border: 0.5rpx solid #ebebeb;
-      }
 
-      .td3 {
-        width: 88rpx;
+        &.td-1 {
+          width: 53rpx;
+        }
+
+        &.td-2 {
+          width: 100rpx;
+        }
+
+        &.td-3 {
+          width: 56rpx;
+        }
+
+        &.td-4 {
+          width: 143rpx;
+        }
+      }
+    }
+
+    .tb-content {
+      display: table;
+
+      .td {
+        display: table-cell;
         height: 28rpx;
         padding-left: 10rpx;
-        line-height: 28rpx;
-        text-align: left;
-        border: 0.5rpx solid #ebebeb;
-      }
-
-      .expenses-flex {
-        display: flex;
-        height: 28rpx;
         font-size: 9rpx;
         color: #171718;
+        vertical-align: middle;
+        border: 0.5rpx solid #ebebeb;
 
-        .t22 {
-          width: 212rpx;
-          height: 28rpx;
+        &.td-1 {
+          width: 53rpx;
         }
 
-        .td3 {
-          width: 88rpx;
-          height: 28rpx;
-          padding-left: 10rpx;
-          line-height: 28rpx;
-          text-align: left;
-          border: 0.5rpx solid #ebebeb;
-        }
-      }
-
-      .t22 {
-        width: 212rpx;
-        height: 28rpx;
-      }
-
-      .t4 {
-        width: 70rpx;
-        height: 84rpx;
-      }
-
-      .t5 {
-        width: 70rpx;
-        height: 56rpx;
-      }
-
-      .t6 {
-        width: 282rpx;
-        height: 28rpx;
-      }
-    }
-
-    .w-280 {
-      width: 280rpx;
-    }
-
-    .w-90 {
-      width: 90rpx;
-    }
-
-    .w-60 {
-      width: 60rpx;
-    }
-
-    .expense-bottom {
-      display: flex;
-      height: 30rpx;
-      font-size: 9rpx;
-      font-weight: bold;
-      color: #171718;
-      background: #ebebeb;
-      box-sizing: border-box;
-
-      .td2 {
-        width: 282rpx;
-        font-size: 9rpx;
-        line-height: 28rpx;
-        text-align: center;
-        border: 0.5rpx solid #ebebeb;
-      }
-
-      .td3 {
-        width: 88rpx;
-        padding-left: 10rpx;
-        font-size: 9rpx;
-        line-height: 28rpx;
-        text-align: left;
-        border: 0.5rpx solid #ebebeb;
-      }
-    }
-
-    .expIncentive {
-      display: flex;
-      font-size: 9rpx;
-      color: #171718;
-
-      .col1 {
-        display: flex;
-        width: 63rpx;
-        width: 62rpx;
-        height: 282rpx;
-        font-size: 9rpx;
-        color: #171718;
-        border: 0.5rpx solid #ebebeb;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .flex-display {
-        display: flex;
-        align-items: center;
-        text-align: center;
-      }
-
-      .col2 {
-        &.field1 {
-          width: 70rpx;
-          height: 84rpx;
-          padding-left: 10rpx;
-          line-height: 84rpx;
-          text-align: left;
-          border: 0.5rpx solid #ebebeb;
+        &.td-2 {
+          width: 100rpx;
         }
 
-        &.field2 {
-          width: 70rpx;
-          height: 56rpx;
-          padding-left: 10rpx;
-          line-height: 56rpx;
-          text-align: left;
-          border: 0.5rpx solid #ebebeb;
+        &.td-3 {
+          width: 56rpx;
         }
 
-        .field3 {
-          width: 70rpx;
-          height: 84rpx;
-          padding-left: 10rpx;
-          line-height: 84rpx;
-          text-align: left;
-          border: 0.5rpx solid #ebebeb;
+        &.td-4 {
+          width: 143rpx;
         }
-      }
-
-      .otherField {
-        width: 282rpx;
-        height: 28rpx;
-        padding-left: 10rpx;
-        line-height: 28rpx;
-        text-align: center;
-        text-align: left;
-        border: 0.5rpx solid #ebebeb;
-      }
-
-      .col3 {
-        width: 212rpx;
-        height: 28rpx;
-        padding-left: 10rpx;
-        line-height: 28rpx;
-        text-align: center;
-        text-align: left;
-        border: 0.5rpx solid #ebebeb;
-      }
-
-      .col4 {
-        width: 88rpx;
-        height: 28rpx;
-        padding-left: 10rpx;
-        line-height: 28rpx;
-        text-align: center;
-        text-align: left;
-        border: 0.5rpx solid #ebebeb;
       }
     }
   }

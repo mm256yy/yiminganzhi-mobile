@@ -35,6 +35,20 @@
         @submit="submit"
       />
 
+      <!-- 择址确认 —— 坟墓择址档案上传 -->
+      <GraveSiteSelArchives
+        v-if="archivesType === 5"
+        :immigrant-documentation="immigrantDocumentation"
+        @submit="submit"
+      />
+
+      <!-- 移民建卡档案上传 -->
+      <MigrageCardArchives
+        v-if="archivesType === 6"
+        :immigrant-documentation="immigrantDocumentation"
+        @submit="submit"
+      />
+
       <FarmingArchives
         v-if="archivesType === 10"
         :immigrant-documentation="immigrantDocumentation"
@@ -60,6 +74,9 @@ import RelocateArchives from './relocateArchives.vue'
 import GraveArchives from './graveArchives.vue'
 
 import FarmingArchives from './farmingArchives.vue'
+
+import GraveSiteSelArchives from './graveSiteSelArchives.vue' // 引入择址确认 —— 坟墓择址档案上传组件
+import MigrageCardArchives from './migrateCardArchives.vue' // 引入移民建卡档案上传组件
 
 /**
  * 1 安置确认 生产安置档案
