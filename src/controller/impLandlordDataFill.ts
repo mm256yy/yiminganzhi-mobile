@@ -1582,12 +1582,14 @@ class ImpDataFill extends ImpLandlord {
         }
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
-          landlordItem.immigrantBuildOneself = landlordItem.immigrantBuildOneself.map((item) => {
-            if (item.uid === itemUid) {
-              item = { ...item, ...data }
+          landlordItem.immigrantBuildOneselfList = landlordItem.immigrantBuildOneselfList.map(
+            (item) => {
+              if (item.uid === itemUid) {
+                item = { ...item, ...data }
+              }
+              return item
             }
-            return item
-          })
+          )
         } else {
           reject(false)
           console.log('调查对象信息查询失败')

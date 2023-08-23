@@ -277,7 +277,7 @@ export interface ImmigrantExcessType {
   excessAddress: string
 }
 
-// 自建房 immigrantBuildOneself
+// 自建房 immigrantBuildOneselfList
 export interface ImmigrantBuildOneselfType {
   isUpdate?: string
   id?: number

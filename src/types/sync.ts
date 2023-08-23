@@ -147,7 +147,7 @@ export interface LandlordType {
   immigrantHouseEmpty: Partial<ImmigrantHouseEmptyType>
   immigrantLandEmpty: Partial<ImmigrantLandEmptyType>
   immigrantExcess: Partial<ImmigrantExcessType>
-  immigrantBuildOneself: ImmigrantBuildOneselfType[]
+  immigrantBuildOneselfList: ImmigrantBuildOneselfType[]
   immigrantProceduresList: ImmigrantProceduresType[]
 
   simulateDemographic: Partial<SimulateDemographicType>[]
