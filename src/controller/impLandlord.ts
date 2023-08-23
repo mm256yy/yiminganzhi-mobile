@@ -35,7 +35,7 @@ export class ImpLandlord extends Common {
         const graveList = await GraveController.getImpListWithLandlord(res.type, res.doorNo)
         if (res && res.uid) {
           // 赋值坟墓信息
-          res.immigrantGraveList = graveList
+          res.immigrantGraveList = graveList || []
           if (this.isArrayAndNotNull(res.demographicList)) {
             res.demographicList = res.demographicList.filter((item) => item.isDelete !== '1')
           }
@@ -143,7 +143,7 @@ export class ImpLandlord extends Common {
         const graveList = await GraveController.getImpListWithLandlord(res.type, res.doorNo)
         if (res && res.uid) {
           // 赋值坟墓信息
-          res.immigrantGraveList = graveList
+          res.immigrantGraveList = graveList || []
           if (this.isArrayAndNotNull(res.demographicList)) {
             res.demographicList = res.demographicList.filter((item) => item.isDelete !== '1')
           }
