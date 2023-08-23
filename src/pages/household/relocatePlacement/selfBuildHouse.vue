@@ -13,9 +13,9 @@
               <view v-if="item.isComplete === '0'" class="disabled" />
               <image
                 v-if="item.isComplete === '1'"
-                src="@/assets/imgs/icon_finish.png"
-                width="18"
-                height="18"
+                class="icon"
+                src="@/static/images/icon_finished.png"
+                mode="scaleToFill"
               />
               <view v-if="item.isComplete === '2'" class="hollow" />
             </view>
@@ -78,9 +78,13 @@ const onPrint = (data: any) => {}
  * @params{Object} data 当前行信息
  */
 const onFill = (data: any) => {
-  routerForward('selfBuildHouseFill', {
+  let params = {
     uid: props.dataInfo.uid,
-    itemUid: data.uid
+    itemUid: data.uid,
+    isComplete: data.isComplete
+  }
+  routerForward('selfBuildHouseFill', {
+    params: JSON.stringify(params)
   })
 }
 </script>
@@ -109,7 +113,7 @@ const onFill = (data: any) => {
   .progress-wrapper {
     width: 100%;
     height: 100%;
-    padding: 16rpx 16rpx 16rpx 50rpx;
+    padding: 9rpx 9rpx 9rpx 30rpx;
     box-sizing: border-box;
 
     .progress-list {
@@ -123,59 +127,64 @@ const onFill = (data: any) => {
           display: flex;
           flex-direction: column;
           align-items: center;
-          margin-right: 16rpx;
+          margin-right: 8rpx;
 
           .icon-box {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 20rpx;
+            width: 11rpx;
+
+            .icon {
+              width: 11rpx;
+              height: 11rpx;
+            }
 
             .hollow {
-              width: 18rpx;
-              height: 18rpx;
-              border: 1rpx solid #3e73ec;
-              border-radius: 9rpx;
+              width: 6rpx;
+              height: 6rpx;
+              border: 0.5rpx solid #3e73ec;
+              border-radius: 3rpx;
             }
 
             .disabled {
-              width: 18rpx;
-              height: 18rpx;
+              width: 6rpx;
+              height: 6rpx;
               background-color: #ebebeb;
-              border-radius: 9rpx;
+              border-radius: 3rpx;
             }
           }
 
           .line {
-            width: 2rpx;
-            height: 124rpx;
+            width: 1rpx;
+            height: 62rpx;
             background-color: #3e73ec;
 
             &.in-progress {
-              height: 74rpx;
+              height: 49rpx;
             }
 
             &.disabled {
-              height: 74rpx;
+              height: 49rpx;
               background-color: #ebebeb;
             }
 
             &.none {
-              height: 74rpx;
+              height: 49rpx;
               background-color: #fff;
             }
           }
         }
 
         .right {
-          width: 570rpx;
-          padding-bottom: 16rpx;
+          width: 285rpx;
+          padding-bottom: 8rpx;
 
           .content-box {
-            width: 570rpx;
-            padding: 21rpx 16rpx;
-            border: 1rpx solid #ebebeb;
-            border-radius: 4rpx;
+            width: 285rpx;
+            padding: 9rpx 8rpx;
+            border: 0.5rpx solid #ebebeb;
+            border-radius: 2rpx;
             box-sizing: border-box;
 
             &.finish {
@@ -188,7 +197,7 @@ const onFill = (data: any) => {
               justify-content: space-between;
 
               .name {
-                font-size: 16rpx;
+                font-size: 8rpx;
                 color: #171718;
               }
 
@@ -211,13 +220,13 @@ const onFill = (data: any) => {
             }
 
             .status {
-              margin-top: 9rpx;
-              font-size: 14rpx;
+              margin-top: 5rpx;
+              font-size: 8rpx;
               color: #3e73ec;
             }
 
             .time {
-              font-size: 14rpx;
+              font-size: 8rpx;
               color: rgba(19, 19, 19, 0.4);
             }
           }

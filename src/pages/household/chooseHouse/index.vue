@@ -281,8 +281,12 @@ const getHouseConfig = () => {
 
 // 档案上传
 const onArchives = () => {
+  let params = {
+    uid: props.baseInfo.uid,
+    type: immigrantSettle.houseAreaType
+  }
   routerForward('chooseHouseArchives', {
-    uid: props.baseInfo.uid
+    params: JSON.stringify(params)
   })
 }
 

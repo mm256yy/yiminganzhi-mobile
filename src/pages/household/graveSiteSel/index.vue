@@ -1,7 +1,7 @@
 <template>
   <view class="house-info-wrapper">
     <!-- 择址确认 —— 坟墓择址 -->
-    <view class="row">
+    <view class="row" v-if="baseInfo.graveNumber">
       <view class="left" />
       <view class="right">
         <view class="btn blue" @click="onArchives">
@@ -15,7 +15,6 @@
       </view>
     </view>
 
-    <!--  -->
     <view v-if="baseInfo.graveNumber">
       <view class="list" v-if="props.dataList && props.dataList.length > 0">
         <view class="list-item" v-for="item in props.dataList" :key="item.id">

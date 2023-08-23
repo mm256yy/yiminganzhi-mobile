@@ -1,6 +1,6 @@
 <template>
   <view class="form-wrapper">
-    <Back :title="title" needConfirm />
+    <Back title="编辑" needConfirm />
     <view class="main">
       <!-- type: homestead 宅基地，flat 公寓房 -->
       <uni-forms
@@ -10,7 +10,7 @@
         v-if="commonParams.type === 'homestead'"
       >
         <uni-row>
-          <uni-col :span="12">
+          <uni-col :span="24">
             <uni-forms-item
               required
               label="安置区"
@@ -23,7 +23,8 @@
               </view>
             </uni-forms-item>
           </uni-col>
-          <uni-col :span="12">
+
+          <uni-col :span="24">
             <uni-forms-item
               required
               label="类型"
@@ -34,10 +35,8 @@
               <view class="content-txt">宅基地</view>
             </uni-forms-item>
           </uni-col>
-        </uni-row>
 
-        <uni-row>
-          <uni-col :span="12">
+          <uni-col :span="24">
             <uni-forms-item
               required
               label="户型/套型"
@@ -48,7 +47,8 @@
               <view class="content-txt"> {{ formData.area }} </view>
             </uni-forms-item>
           </uni-col>
-          <uni-col :span="12">
+
+          <uni-col :span="24">
             <uni-forms-item
               label="地块编号"
               :label-width="150"
@@ -58,10 +58,8 @@
               <uni-data-select v-model="formData.landNo" :localdata="landNoList" />
             </uni-forms-item>
           </uni-col>
-        </uni-row>
 
-        <uni-row>
-          <uni-col :span="12">
+          <uni-col :span="24">
             <uni-forms-item
               label="摇号顺序号"
               :label-width="150"
@@ -71,7 +69,8 @@
               <uni-easyinput v-model="formData.lotteryOrder" type="number" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
-          <uni-col :span="12">
+
+          <uni-col :span="24">
             <uni-forms-item
               label="择址顺序号"
               :label-width="150"
@@ -86,9 +85,8 @@
 
       <uni-forms class="form" ref="form" :modelValue="formData" v-if="commonParams.type === 'flat'">
         <uni-row>
-          <uni-col :span="12">
+          <uni-col :span="24">
             <uni-forms-item
-              required
               label="安置区"
               :label-width="150"
               label-align="right"
@@ -99,9 +97,9 @@
               </view>
             </uni-forms-item>
           </uni-col>
-          <uni-col :span="12">
+
+          <uni-col :span="24">
             <uni-forms-item
-              required
               label="类型"
               :label-width="150"
               label-align="right"
@@ -110,12 +108,9 @@
               <view class="content-txt">公寓房</view>
             </uni-forms-item>
           </uni-col>
-        </uni-row>
 
-        <uni-row>
-          <uni-col :span="12">
+          <uni-col :span="24">
             <uni-forms-item
-              required
               label="户型/套型"
               :label-width="150"
               label-align="right"
@@ -124,7 +119,8 @@
               <view class="content-txt"> {{ formData.area }} </view>
             </uni-forms-item>
           </uni-col>
-          <uni-col :span="12">
+
+          <uni-col :span="24">
             <uni-forms-item
               label="幢号-房号"
               :label-width="150"
@@ -134,10 +130,8 @@
               <uni-data-select v-model="formData.roomNo" :localdata="roomNoList" />
             </uni-forms-item>
           </uni-col>
-        </uni-row>
 
-        <uni-row>
-          <uni-col :span="12">
+          <uni-col :span="24">
             <uni-forms-item
               label="储藏室编号"
               :label-width="150"
@@ -147,7 +141,8 @@
               <uni-data-select v-model="formData.storeroomNo" :localdata="storeroomNoList" />
             </uni-forms-item>
           </uni-col>
-          <uni-col :span="12">
+
+          <uni-col :span="24">
             <uni-forms-item
               label="车位编号"
               :label-width="150"
@@ -157,10 +152,8 @@
               <uni-data-select v-model="formData.carNo" :localdata="carNoList" />
             </uni-forms-item>
           </uni-col>
-        </uni-row>
 
-        <uni-row>
-          <uni-col :span="12">
+          <uni-col :span="24">
             <uni-forms-item
               label="摇号顺序号"
               :label-width="150"
@@ -170,7 +163,8 @@
               <uni-easyinput v-model="formData.lotteryOrder" type="number" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
-          <uni-col :span="12">
+
+          <uni-col :span="24">
             <uni-forms-item
               label="择房顺序号"
               :label-width="150"
@@ -207,7 +201,6 @@ import {
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
 
-const title = ref<string>('')
 const commonParams = ref<any>({})
 
 // 表单数据
@@ -418,86 +411,6 @@ const submit = () => {
         font-size: 9rpx !important;
       }
 
-      .lg-txt-wrapper {
-        display: flex;
-        flex-direction: column;
-
-        .position {
-          display: flex;
-          width: 200rpx;
-          height: 23rpx;
-          margin-top: 5rpx;
-          background: #ffffff;
-          border: 1px solid #d9d9d9;
-          border-radius: 2rpx;
-          align-items: center;
-          justify-content: center;
-
-          .txt {
-            margin-left: 6rpx;
-            font-size: 9rpx;
-            color: #171718;
-          }
-        }
-      }
-
-      .input-wrapper {
-        display: flex;
-        align-items: center;
-        width: 200rpx;
-        border: 1px solid #d9d9d9;
-        border-radius: 4px;
-
-        &.focus {
-          border-color: rgb(41, 121, 255);
-        }
-
-        &.disabled {
-          background-color: #f5f7fa;
-        }
-
-        .input-txt {
-          width: 168rpx;
-          height: 35px;
-          padding-left: 7rpx;
-          font-size: 9rpx;
-          line-height: 35px;
-          color: #171718;
-        }
-
-        .unit {
-          width: 23rpx;
-          height: 35px;
-          font-size: 9rpx;
-          line-height: 35px;
-          color: #171718;
-          text-align: center;
-          background-color: #f5f7fa;
-          border-left: 1px solid #d9d9d9;
-        }
-      }
-
-      .input-txtarea-wrapper {
-        display: flex;
-        align-items: center;
-        width: 570rpx;
-        border: 1px solid #d9d9d9;
-        border-radius: 4px;
-
-        &.focus {
-          border-color: rgb(41, 121, 255);
-        }
-
-        .input-txtarea {
-          width: 570rpx;
-          height: 70px;
-          padding-left: 7rpx;
-          font-size: 9rpx;
-          line-height: 35px;
-          color: #171718;
-        }
-      }
-
       .picker-wrapper {
         display: flex;
         width: 200rpx;
@@ -519,6 +432,14 @@ const submit = () => {
             color: #999;
           }
         }
+      }
+
+      .content-txt {
+        display: flex;
+        align-items: center;
+        width: 200rpx;
+        height: 25rpx;
+        font-size: 9rpx;
       }
     }
 

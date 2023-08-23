@@ -85,7 +85,7 @@
           <!-- 自建房 -->
           <self-build-house
             v-if="tabVal === 18"
-            :dataList="dataInfo.immigrantBuildOneself"
+            :dataList="dataInfo.immigrantBuildOneselfList"
             :dataInfo="dataInfo"
           />
 
@@ -145,7 +145,7 @@ import LandVacate from '../vacate/land.vue' // 引入腾空过渡 -- 土地腾�
 import TransitionVacate from '../vacate/transition.vue' // 引入腾空过渡 -- 过渡安置组件
 import Agreement from '../agreement/index.vue' // 引入腾空过渡 -- 动迁协议组件
 
-import selfBuildHouse from '../relocatePlacement/selfFindWay.vue' // 引入搬迁安置 -- 自建房组件
+import selfBuildHouse from '../relocatePlacement/selfBuildHouse.vue' // 引入搬迁安置 -- 自建房组件
 import apartment from '../relocatePlacement/apartment.vue' // 引入搬迁安置 -- 公寓房组件
 import centralizedSupport from '../relocatePlacement/centralizedSupport.vue' // 引入搬迁安置 -- 集中供养组件
 import selfFindWay from '../relocatePlacement/selfFindWay.vue' // 引入搬迁安置 -- 自谋出路组件

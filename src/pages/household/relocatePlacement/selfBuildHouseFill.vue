@@ -13,6 +13,7 @@
               name="formData.completeDate"
             >
               <uni-datetime-picker
+                :disabled="commonParams.isComplete === '1'"
                 type="date"
                 placeholder="请选择"
                 v-model="formData.completeDate"
@@ -28,11 +29,12 @@
               name="formData.completePic"
             >
               <uploadFiles
-                :limit="20"
-                show-type="grid"
                 v-model="completePicStr"
                 :file-list="completePicStr"
+                :limit="20"
+                :is-preview="commonParams.isComplete === '1'"
                 :accepts="['.jpg', '.png', '.pdf', '.jpeg']"
+                show-type="grid"
               />
             </uni-forms-item>
           </uni-col>
@@ -40,6 +42,7 @@
       </uni-forms>
 
       <image
+        v-if="commonParams.isComplete !== '1'"
         class="submit-btn"
         src="@/static/images/icon_submit.png"
         mode="scaleToFill"
@@ -55,7 +58,9 @@ import { onLoad } from '@dcloudio/uni-app'
 import dayjs from 'dayjs'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { routerBack } from '@/utils'
-import { getImpLandlordItemApi, updateImpLandlordChooseHouseApi } from '@/service'
+import { getImpLandlordItemApi, updateImpLandlordBuildSelfApi } from '@/service'
+import Back from '@/components/Back/Index.vue'
+import uploadFiles from '@/components/UploadFile/index.vue'
 
 const formData = ref<any>({})
 const commonParams = ref<any>({})
@@ -75,7 +80,7 @@ onLoad((option) => {
 const getLandlordDetail = () => {
   const { uid, itemUid } = commonParams.value
   getImpLandlordItemApi(uid).then((res: any) => {
-    let arr: any = res && res.immigrantBuildOneself ? res.immigrantBuildOneself : []
+    let arr: any = res && res.immigrantBuildOneselfList ? res.immigrantBuildOneselfList : []
     if (arr && arr.length) {
       let obj: any = arr.filter((item: any) => item.uid === itemUid)[0]
       formData.value = {
@@ -89,13 +94,13 @@ const getLandlordDetail = () => {
 
 // 表单提交
 const submit = () => {
-  const { uid } = commonParams.value
+  const { uid, itemUid } = commonParams.value
   const params = {
     ...formData.value,
     completeDate: formData.value.completeDate ? dayjs(formData.value.completeDate) : '',
     completePic: completePicStr.value
   }
-  updateImpLandlordChooseHouseApi(uid, params)
+  updateImpLandlordBuildSelfApi(uid, itemUid, params)
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
