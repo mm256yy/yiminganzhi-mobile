@@ -29,6 +29,7 @@ import {
   SimulateImmigrantSettleType
 } from '@/types/impDataFill'
 import { ImpLandlord } from './impLandlord'
+import { defaultDocumentObj } from './config'
 
 class ImpDataFill extends ImpLandlord {
   constructor() {
@@ -1168,43 +1169,13 @@ class ImpDataFill extends ImpLandlord {
         if (landlordItem) {
           if (landlordItem.immigrantDocumentation) {
             // 存在
-            mergeObj = { ...landlordItem.immigrantDocumentation, ...data }
+            mergeObj = {
+              ...landlordItem.immigrantDocumentation,
+              ...data
+            }
           } else {
             // 不存在
-            const defaultObj = {
-              produceVerifyPic: '[]',
-              produceOtherPic: '[]',
-              relocateVerifyPic: '[]',
-              relocateOtherPic: '[]',
-              graveVerifyPic: '[]',
-              graveOtherPic: '[]',
-              graveChoosePic: '[]',
-              graveChooseOtherPic: '[]',
-              houseEmptyPic: '[]',
-              houseEmptyOtherPic: '[]',
-              landEmptyPic: '[]',
-              landEmptyOtherPic: '[]',
-              excessVerifyPic: '[]',
-              excessAgreementPic: '[]',
-              excessVerifyOtherPic: '[]',
-              buildOneselfPic: '[]',
-              buildOneselfCheckPic: '[]',
-              buildOneselfOtherPic: '[]',
-              flatAgreementPic: '[]',
-              flatMeasurementPic: '[]',
-              flatOtherPic: '[]',
-              agriculturePic: '[]',
-              agricultureOtherPic: '[]',
-              compensationCardPic: '[]',
-              compensationCardOtherPic: '[]',
-              houseEstimatePic: '[]',
-              landEstimatePic: '[]',
-              agreementPic: '[]',
-              agreementOtherPic: '[]',
-              devicePic: '[]',
-              specialPic: '[]'
-            }
-            mergeObj = { ...defaultObj, ...data }
+            mergeObj = { ...defaultDocumentObj, ...data }
           }
           landlordItem.immigrantDocumentation = mergeObj
         } else {

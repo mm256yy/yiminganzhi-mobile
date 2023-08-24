@@ -8,6 +8,7 @@ import { LandlordType } from '@/types/sync'
 import { getStorage, StorageKey } from '@/utils'
 import { LandlordSearchType } from '@/types/common'
 import { GraveController } from './grave'
+import { defaultDocumentObj } from './config'
 
 export class ImpLandlord extends Common {
   public format: string
@@ -34,6 +35,9 @@ export class ImpLandlord extends Common {
         // 获取坟墓信息
         const graveList = await GraveController.getImpListWithLandlord(res.type, res.doorNo)
         if (res && res.uid) {
+          if (!res.immigrantDocumentation) {
+            res.immigrantDocumentation = defaultDocumentObj
+          }
           // 赋值坟墓信息
           res.immigrantGraveList = graveList || []
           if (this.isArrayAndNotNull(res.demographicList)) {
@@ -142,6 +146,9 @@ export class ImpLandlord extends Common {
         // 获取坟墓信息
         const graveList = await GraveController.getImpListWithLandlord(res.type, res.doorNo)
         if (res && res.uid) {
+          if (!res.immigrantDocumentation) {
+            res.immigrantDocumentation = defaultDocumentObj
+          }
           // 赋值坟墓信息
           res.immigrantGraveList = graveList || []
           if (this.isArrayAndNotNull(res.demographicList)) {
