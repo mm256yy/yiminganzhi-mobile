@@ -19,10 +19,10 @@
         </view>
 
         <view class="header-rt">
-          <!-- <view class="btn-item" @click="toLink('project')">
+          <view class="btn-item" @click="toLink('project')">
             <view class="name">项目切换</view>
             <image class="icon" src="@/static/images/project_enter.png" mode="scaleToFill" />
-          </view> -->
+          </view>
           <view v-if="userInfo" class="login-out" @click="loginOutPre">退出登录</view>
         </view>
       </view>
