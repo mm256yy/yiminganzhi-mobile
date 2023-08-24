@@ -90,13 +90,21 @@
           />
 
           <!-- 公寓房 -->
-          <apartment v-if="tabVal === 19" />
+          <apartment
+            v-if="tabVal === 19"
+            :data-list="dataInfo.immigrantChooseHouseList"
+            :dataInfo="dataInfo"
+          />
 
           <!-- 集中供养 -->
-          <centralized-support v-if="tabVal === 20" />
+          <centralized-support
+            v-if="tabVal === 20"
+            :data-list="dataInfo.demographicList"
+            :data-info="dataInfo"
+          />
 
           <!-- 自谋出路 -->
-          <self-find-way v-if="tabVal === 21" />
+          <self-find-way v-if="tabVal === 21" :data-info="dataInfo" />
 
           <!-- 生产安置 农业安置 -->
           <Farming v-if="tabVal === 22" :dataInfo="dataInfo" />

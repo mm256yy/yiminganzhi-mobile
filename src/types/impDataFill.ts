@@ -117,6 +117,7 @@ export interface ImmigrantDocumentationType {
   specialPic: string
   findOneSelfPic: string
   findOneSelfOtherPic: string
+  [key: string]: any
 }
 
 // 模拟安置 搬迁安置

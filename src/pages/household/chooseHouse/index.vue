@@ -144,7 +144,7 @@
               <uni-col :span="12">
                 <view class="col">
                   <view class="label">摇号顺序号：</view>
-                  <view class="content">{{ baseInfo.lotteryOrder }}</view>
+                  <view class="content">{{ formatStr(item.lotteryOrder) }}</view>
                 </view>
               </uni-col>
             </uni-row>

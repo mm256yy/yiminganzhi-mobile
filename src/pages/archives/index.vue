@@ -2,33 +2,21 @@
   <!-- 所有的档案上传 -->
   <Container title="档案上传">
     <view class="archives-wrap">
-      <HouseVacate
-        v-if="archivesType === 7"
-        :immigrant-documentation="immigrantDocumentation"
-        @submit="submit"
-      />
-      <LandVacate
-        v-if="archivesType === 8"
-        :immigrant-documentation="immigrantDocumentation"
-        @submit="submit"
-      />
-      <TransitionVacate
-        v-if="archivesType === 9"
-        :immigrant-documentation="immigrantDocumentation"
-        @submit="submit"
-      />
+      <!-- 安置确认 —— 生产安置档案上传 -->
       <ProduceArchives
         v-if="archivesType === 1"
         :immigrant-documentation="immigrantDocumentation"
         @submit="submit"
       />
 
+      <!-- 安置确认 —— 搬迁安置档案上传 -->
       <RelocateArchives
         v-if="archivesType === 2"
         :immigrant-documentation="immigrantDocumentation"
         @submit="submit"
       />
 
+      <!-- 安置确认 —— 坟墓确认档案上传 -->
       <GraveArchives
         v-if="archivesType === 3"
         :immigrant-documentation="immigrantDocumentation"
@@ -49,8 +37,44 @@
         @submit="submit"
       />
 
-      <FarmingArchives
+      <!-- 腾空过渡 —— 房屋腾空档案上传 -->
+      <HouseVacate
+        v-if="archivesType === 7"
+        :immigrant-documentation="immigrantDocumentation"
+        @submit="submit"
+      />
+
+      <!-- 腾空过渡 —— 土地腾让档案上传 -->
+      <LandVacate
+        v-if="archivesType === 8"
+        :immigrant-documentation="immigrantDocumentation"
+        @submit="submit"
+      />
+
+      <!-- 腾空过渡 —— 过渡安置档案上传 -->
+      <TransitionVacate
+        v-if="archivesType === 9"
+        :immigrant-documentation="immigrantDocumentation"
+        @submit="submit"
+      />
+
+      <!-- 搬迁安置 —— 公寓房档案上传 -->
+      <ApartmentArchives
         v-if="archivesType === 10"
+        :immigrant-documentation="immigrantDocumentation"
+        @submit="submit"
+      />
+
+      <!-- 搬迁安置 —— 自谋出路档案上传 -->
+      <SelfFindWayArchives
+        v-if="archivesType === 11"
+        :immigrant-documentation="immigrantDocumentation"
+        @submit="submit"
+      />
+
+      <!-- 生产安置 —— 农业安置档案上传 -->
+      <FarmingArchives
+        v-if="archivesType === 12"
         :immigrant-documentation="immigrantDocumentation"
         @submit="submit"
       />
@@ -66,17 +90,21 @@ import { updateImpLandlordDocumentationApi, getImpLandlordItemApi } from '@/serv
 import { ImmigrantDocumentationType } from '@/types/impDataFill'
 import { routerBack } from '@/utils'
 
-import HouseVacate from './houseVacate.vue'
-import LandVacate from './landVacate.vue'
-import TransitionVacate from './transitionVacate.vue'
-import ProduceArchives from './produceArchives.vue'
-import RelocateArchives from './relocateArchives.vue'
-import GraveArchives from './graveArchives.vue'
+import ProduceArchives from './produceArchives.vue' // 引入安置确认 —— 生产安置档案上传组件
+import RelocateArchives from './relocateArchives.vue' // 引入安置确认 —— 搬迁安置档案上传组件
+import GraveArchives from './graveArchives.vue' // 引入安置确认 —— 坟墓确认档案上传组件
 
-import FarmingArchives from './farmingArchives.vue'
+import HouseVacate from './houseVacate.vue' // 引入腾空过渡 —— 房屋腾空档案上传组件
+import LandVacate from './landVacate.vue' // 引入腾空过渡 —— 土地腾空档案上传组件
+import TransitionVacate from './transitionVacate.vue' // 引入腾空过渡 —— 过渡安置档案上传组件
 
 import GraveSiteSelArchives from './graveSiteSelArchives.vue' // 引入择址确认 —— 坟墓择址档案上传组件
 import MigrageCardArchives from './migrateCardArchives.vue' // 引入移民建卡档案上传组件
+
+import ApartmentArchives from './apartmentArchives.vue' // 引入搬迁安置 —— 公寓房档案上传组件
+import SelfFindWayArchives from './selfFindWayArchives.vue' // 引入搬迁安置 —— 自谋出路档案上传
+
+import FarmingArchives from './farmingArchives.vue' // 引入生产安置 —— 农业安置档案上传组件
 
 /**
  * 1 安置确认 生产安置档案
@@ -88,10 +116,12 @@ import MigrageCardArchives from './migrateCardArchives.vue' // 引入移民建�
  * 7 腾空过渡 房屋腾空
  * 8 腾空过渡 土地腾空
  * 9 腾空过渡 过渡安置
- * 10 生产安置 农业安置
+ * 10 搬迁安置 公寓房
+ * 11 搬迁安置 自谋出路
+ * 12 生产安置 农业安置
  */
 
-type ArchivesTypes = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10
+type ArchivesTypes = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
 
 interface QueryType {
   uid: string
@@ -102,7 +132,6 @@ const query = ref<any>({})
 onLoad((option) => {
   if (option) {
     query.value = option as QueryType
-    console.log(option, 'query')
     getLandlordDetail()
   }
 })

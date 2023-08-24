@@ -237,11 +237,8 @@ import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
 import UploadFiles from '@/components/UploadFile/index.vue'
 
-const title = ref<string>('')
 const commonParams = ref<any>({})
-
-// 表单数据
-const formData = ref<any[]>([])
+const formData = ref<any[]>([]) // 表单数据
 
 const landNoList = ref<any[]>([]) // 地块编号选项列表
 const storeroomNoList = ref<any[]>([]) // 储藏室编号选项列表
@@ -378,9 +375,9 @@ const isNullChooseHousePic = () => {
 
 // 表单提交
 const submit = () => {
-  const { uid } = commonParams.value
+  const { uid, type } = commonParams.value
   if (!isNullChooseHousePic()) {
-    showToast(`${commonParams.type === 'homestead' ? '请上传择址确认单' : '请上传择房确认单'}`)
+    showToast(`${type === 'homestead' ? '请上传择址确认单' : '请上传择房确认单'}`)
     return
   } else {
     updateImpLandlordChooseHouseBatchApi(uid, formData.value)

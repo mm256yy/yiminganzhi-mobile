@@ -1,6 +1,6 @@
 <template>
   <!-- 所有的办理 -->
-  <Container title="办理详情">
+  <Container :title="getTitle()">
     <view class="archives-wrap">
       <Procedures
         v-if="handleType === 1"
@@ -49,6 +49,18 @@
         :immigrantExcess="dataInfo?.immigrantExcess"
         @submit="submitSuccess"
       />
+
+      <!-- 集中供养办理/查看 -->
+      <CentralizeSupport
+        v-if="handleType === 7"
+        :uid="query.uid"
+        :item-uid="query.itemUid"
+        :status="query.status"
+        @submit="submitSuccess"
+      />
+
+      <!-- 自谋出路办理 -->
+      <SelfFindWay v-if="handleType === 8" :uid="query.uid" @submit="submitSuccess" />
     </view>
   </Container>
 </template>
@@ -69,6 +81,9 @@ import HouseVacate from './houseVacate.vue'
 import LandVacate from './landVacate.vue'
 import TransitionVacate from './transitionVacate.vue'
 
+import CentralizeSupport from './centralizedSupport.vue' // 引入集中供养 —— 办理组件
+import SelfFindWay from './selfFindWay.vue' // 引入自谋出路 —— 办理组件
+
 /**
  * 1 相关手续办理
  * 2 养老保险办理
@@ -76,14 +91,17 @@ import TransitionVacate from './transitionVacate.vue'
  * 4 房屋腾空办理
  * 5 土地腾空办理
  * 6 过渡安置办理
+ * 7 集中供养办理
+ * 8 自谋出路办理
  */
 
-type HandleTypes = 1 | 2 | 3 | 4 | 5 | 6
+type HandleTypes = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
 
 interface QueryType {
   uid: string // 调查对象 uid
-
   type: HandleTypes // 办理类型
+  itemUid?: string // 列表中当前项 ID
+  status?: string // 状态值
   data?: any // 其他参数
 }
 
@@ -91,10 +109,19 @@ const query = ref<any>({})
 onLoad((option) => {
   if (option) {
     query.value = option as QueryType
-    console.log(option, 'query')
     getLandlordDetail()
+    getTitle()
   }
 })
+
+const getTitle = () => {
+  if (query.value?.status && query.value?.status === 'view') {
+    return '办理详情'
+  } else {
+    return '办理'
+  }
+}
+
 // 详情数据
 const dataInfo = ref<LandlordType | null>(null)
 

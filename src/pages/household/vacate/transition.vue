@@ -99,12 +99,11 @@
 
     <view class="handle-status" v-if="excessInfo.isExcess === '1'">
       <image src="@/static/images/icon_submit.png" class="icon" />
-      <view class="txt"
-        >该户过渡安置办理已完成，过渡时间:{{
-          dayjs(excessInfo.excessStartDate).format('YYYY-MM-DD')
-        }}
-        至 {{ dayjs(excessInfo.excessEndDate).format('YYYY-MM-DD') || '-' }}</view
-      >
+      <view class="txt">
+        该户过渡安置办理已完成，过渡时间:
+        {{ dayjs(excessInfo.excessStartDate).format('YYYY-MM-DD') }}
+        至 {{ dayjs(excessInfo.excessEndDate).format('YYYY-MM-DD') || '-' }}
+      </view>
     </view>
   </view>
 </template>

@@ -120,7 +120,7 @@ const landInfo = computed(() => {
 const archivesUpload = () => {
   routerForward('archives', {
     uid: props.dataInfo.uid,
-    type: 10
+    type: 12
   })
 }
 </script>

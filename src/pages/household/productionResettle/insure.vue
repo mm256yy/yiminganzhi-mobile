@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import dayjs from 'dayjs'
 import { LandlordType } from '@/types/sync'
 import { routerForward, formatDict } from '@/utils'

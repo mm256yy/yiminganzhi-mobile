@@ -1,71 +1,89 @@
 <template>
   <view class="self-build-house">
-    <view class="title">
-      <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-      建房进度
-    </view>
+    <view class="main" v-if="getRelocationResettlement">
+      <view class="title">
+        <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
+        建房进度
+      </view>
 
-    <view class="progress-wrapper">
-      <view class="progress-list">
-        <view class="progress-item" v-for="item in dataList" :key="item.name">
-          <view class="left">
-            <view class="icon-box">
-              <view v-if="item.isComplete === '0'" class="disabled" />
-              <image
-                v-if="item.isComplete === '1'"
-                class="icon"
-                src="@/static/images/icon_finished.png"
-                mode="scaleToFill"
-              />
-              <view v-if="item.isComplete === '2'" class="hollow" />
-            </view>
-            <view v-if="item.isComplete === '0' && item.type !== '9'" class="line disabled" />
-            <view v-if="item.isComplete === '1' && item.type !== '9'" class="line" />
-            <view v-if="item.isComplete === '2' && item.type !== '9'" class="line in-progress" />
-            <view v-if="item.type === '9'" class="line none" />
-          </view>
-          <view class="right">
-            <view class="content-box">
-              <view class="content-1">
-                <view class="name">{{ item.name }}</view>
-                <view class="mini-btn" v-if="item.type === '1'" @click="onPrint(item)"> 打印 </view>
-                <view
-                  v-if="item.type !== '1' && item.isComplete !== '1'"
-                  :class="['mini-btn', item.isComplete === '0' ? 'disabled' : '']"
-                  @click="onFill(item)"
-                >
-                  填写
-                </view>
-                <view
-                  v-if="item.type !== '1' && item.isComplete === '1'"
-                  class="mini-btn"
-                  @click="onFill(item)"
-                >
-                  查看
-                </view>
+      <view class="progress-wrapper">
+        <view class="progress-list">
+          <view class="progress-item" v-for="item in dataList" :key="item.name">
+            <view class="left">
+              <view class="icon-box">
+                <view v-if="item.isComplete === '0'" class="disabled" />
+                <image
+                  v-if="item.isComplete === '1'"
+                  class="icon"
+                  src="@/static/images/icon_finished.png"
+                  mode="scaleToFill"
+                />
+                <view v-if="item.isComplete === '2'" class="hollow" />
               </view>
-              <view class="status" v-if="item.isComplete === '1'">已完成</view>
-              <view class="time" v-if="item.isComplete === '1'">
-                {{ dayjs(item.completeDate).format('YYYY-MM-DD') }}
+              <view v-if="item.isComplete === '0' && item.type !== '9'" class="line disabled" />
+              <view v-if="item.isComplete === '1' && item.type !== '9'" class="line" />
+              <view v-if="item.isComplete === '2' && item.type !== '9'" class="line in-progress" />
+              <view v-if="item.type === '9'" class="line none" />
+            </view>
+            <view class="right">
+              <view class="content-box">
+                <view class="content-1">
+                  <view class="name">{{ item.name }}</view>
+                  <view class="mini-btn" v-if="item.type === '1'" @click="onPrint(item)">
+                    打印
+                  </view>
+                  <view
+                    v-if="item.type !== '1' && item.isComplete !== '1'"
+                    :class="['mini-btn', item.isComplete === '0' ? 'disabled' : '']"
+                    @click="onFill(item)"
+                  >
+                    填写
+                  </view>
+                  <view
+                    v-if="item.type !== '1' && item.isComplete === '1'"
+                    class="mini-btn"
+                    @click="onFill(item)"
+                  >
+                    查看
+                  </view>
+                </view>
+                <view class="status" v-if="item.isComplete === '1'">已完成</view>
+                <view class="time" v-if="item.isComplete === '1'">
+                  {{ dayjs(item.completeDate).format('YYYY-MM-DD') }}
+                </view>
               </view>
             </view>
           </view>
         </view>
       </view>
     </view>
+
+    <view class="null-wrapper" v-else>
+      <image class="icon" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
+      <view class="tips">该户未选择宅基地安置</view>
+    </view>
   </view>
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue'
 import dayjs from 'dayjs'
 import { routerForward } from '@/utils'
+import { LandlordType } from '@/types/sync'
+import { HouseType } from '@/types/common'
 
 interface PropsType {
   dataList: any[]
-  dataInfo: any
+  dataInfo: LandlordType
 }
 
 const props = defineProps<PropsType>()
+
+// 搬迁安置方式
+const getRelocationResettlement = computed(() => {
+  const { houseAreaType } = props.dataInfo
+  return houseAreaType === HouseType.homestead
+})
 
 /**
  * 打印
@@ -232,6 +250,28 @@ const onFill = (data: any) => {
           }
         }
       }
+    }
+  }
+
+  .null-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    height: calc(100vh - 33rpx - 12rpx - 33rpx - 24rpx - 60rpx - var(--status-bar-height));
+    background-color: #fff;
+
+    .icon {
+      width: 152rpx;
+      height: 92rpx;
+    }
+
+    .tips {
+      margin-top: 17rpx;
+      font-size: 9rpx;
+      line-height: 1;
+      color: #171718;
     }
   }
 }

@@ -100,11 +100,11 @@ import findSelf from './components/findSelf.vue'
 
 import { LandlordType } from '@/types/sync'
 import { HouseType } from '@/types/common'
-import { SimulateDemographicType } from '@/types/impDataFill'
 import {
   updateImpLandlordSimulateDemographicApi,
   updateImpLandlordSimulateImmigrantSettleApi
 } from '@/service'
+import { SimulateDemographicType } from '@/types/impDataFill'
 
 interface PropsType {
   dataInfo: LandlordType
