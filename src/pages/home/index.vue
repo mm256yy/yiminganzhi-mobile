@@ -44,7 +44,7 @@
       <Implementation
         v-else-if="homeViewType === RoleCodeType.implementation"
         @to-link="toLink"
-        @toParamsLink="toParamsLink"
+        @to-params-link="toParamsLink"
         @login-in="loginIn"
       />
     </view>
@@ -91,9 +91,9 @@ const toLink = (name: string) => {
 }
 
 const toParamsLink = (params: any) => {
-  const { name } = params
+  const { name, type } = params
   routerForward(name, {
-    params: JSON.stringify(params)
+    type
   })
 }
 
@@ -169,7 +169,6 @@ onShow(() => {
   const project = getStorage(StorageKey.PROJECTINFO)
   userInfo.value = user
   projectInfo.value = project
-  console.log(user, 'user')
 })
 </script>
 

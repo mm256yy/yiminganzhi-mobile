@@ -108,3 +108,8 @@ export const getHouseConfigApi = () => {
 export const getCompensationCardConfigApi = () => {
   return OtherController.getOtherWithType(OtherDataType.ImmigrantCompensationCardConfig)
 }
+
+// 获取实施阶段 首页统计信息
+export const getImpHomeCollectApi = () => {
+  return OtherController.getOtherWithType(OtherDataType.ImpHomeCollect)
+}

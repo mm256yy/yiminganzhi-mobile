@@ -94,6 +94,18 @@ class PullData {
       villageNum: 0,
       virutalVillageNum: 0,
 
+      peasantHouseholdLagNum: 0,
+      peasantHouseholdWarnNum: 0,
+
+      companyLagNum: 0,
+      companyWarnNum: 0,
+
+      individualLagNum: 0,
+      individualWarnNum: 0,
+
+      villageLagNum: 0,
+      villageWarnNum: 0,
+
       chooseConfig: [],
       houseConfig: [],
       immigrantCompensationCardConfig: []
@@ -370,7 +382,19 @@ class PullData {
       individualNum,
       villageNum,
       virutalVillageNum,
-      appVersion
+      appVersion,
+
+      peasantHouseholdLagNum,
+      peasantHouseholdWarnNum,
+
+      companyLagNum,
+      companyWarnNum,
+
+      individualLagNum,
+      individualWarnNum,
+
+      villageLagNum,
+      villageWarnNum
     } = result
     // 需要reset
     this.state.deleteRecordList = deleteRecordList
@@ -383,6 +407,18 @@ class PullData {
     this.state.villageNum = villageNum
     this.state.virutalVillageNum = virutalVillageNum
     this.state.upgradation = appVersion
+
+    this.state.peasantHouseholdLagNum = peasantHouseholdLagNum
+    this.state.peasantHouseholdWarnNum = peasantHouseholdWarnNum
+
+    this.state.companyLagNum = companyLagNum
+    this.state.companyWarnNum = companyWarnNum
+
+    this.state.individualLagNum = individualLagNum
+    this.state.individualWarnNum = individualWarnNum
+
+    this.state.villageLagNum = villageLagNum
+    this.state.villageWarnNum = villageWarnNum
 
     // 数据 新增 修改 删除一起进行
     this.pullVillageList().then((res) => {
@@ -886,7 +922,20 @@ class PullData {
         top5Statistic,
         chooseConfig,
         houseConfig,
-        immigrantCompensationCardConfig
+        immigrantCompensationCardConfig,
+
+        peasantHouseholdNum,
+        companyNum,
+        individualNum,
+        villageNum,
+        peasantHouseholdLagNum,
+        peasantHouseholdWarnNum,
+        companyLagNum,
+        companyWarnNum,
+        individualLagNum,
+        individualWarnNum,
+        villageLagNum,
+        villageWarnNum
       } = this.state
       await db.transaction('begin').catch(() => {
         resolve(false)
@@ -944,6 +993,32 @@ class PullData {
         )}','${getCurrentTimeStamp()}'`
         db.insertOrReplaceData(OtherTableName, values, fields)
       }
+
+      // 实施阶段首页统计
+      const fields = "'type','content','updatedDate'"
+      const values = `'${OtherDataType.ImpHomeCollect}','${JSON.stringify({
+        peasantHouseholdNum,
+        peasantHouseholdLagNum,
+        peasantHouseholdWarnNum,
+        peasantHouseholdDoneNum:
+          peasantHouseholdNum - peasantHouseholdLagNum - peasantHouseholdWarnNum,
+
+        companyNum,
+        companyLagNum,
+        companyWarnNum,
+        companyDoneNum: companyNum - companyLagNum - companyWarnNum,
+
+        individualNum,
+        individualLagNum,
+        individualWarnNum,
+        individualDoneNum: individualNum - individualLagNum - individualWarnNum,
+
+        villageNum,
+        villageLagNum,
+        villageWarnNum,
+        villageDoneNum: villageNum - villageLagNum - villageWarnNum
+      })}','${getCurrentTimeStamp()}'`
+      db.insertOrReplaceData(OtherTableName, values, fields)
 
       await db.transaction('commit').catch(() => {
         resolve(false)

@@ -20,64 +20,37 @@
           <view class="enter-title">
             <text class="title-txt">居民户</text>
             <view class="flex">
-              <text class="count-num"> 20 </text>
+              <text class="count-num"> {{ homeCollect.peasantHouseholdNum }} </text>
               <text class="count-unit"> 户 </text>
             </view>
           </view>
         </view>
         <view class="row-field">
-          <view class="field-box" @click.prevent.stop="toLinkParams('homeHoldList', { type: 0 })">
-            <view class="line-1">5</view>
+          <view class="field-box" @click.prevent.stop="toLinkParams('householdList', 0)">
+            <view class="line-1">{{ homeCollect.peasantHouseholdLagNum }}</view>
             <view class="flex">
-              <view
-                style="
-                  width: 4rpx;
-                  height: 4rpx;
-                  margin-top: 4rpx;
-                  margin-right: 4rpx;
-                  background-color: #e43030;
-                  border-radius: 50%;
-                "
-              />
+              <view class="common-dot red" />
               <view class="line-2">严重滞后</view>
             </view>
           </view>
-          <view class="field-box" @click.prevent.stop="toLinkParams('homeHoldList', { type: 1 })">
-            <view class="line-1">5</view>
+          <view class="field-box" @click.prevent.stop="toLinkParams('householdList', 1)">
+            <view class="line-1">{{ homeCollect.peasantHouseholdWarnNum }}</view>
             <view class="flex">
-              <view
-                style="
-                  width: 4rpx;
-                  height: 4rpx;
-                  margin-top: 4rpx;
-                  margin-right: 4rpx;
-                  background-color: #fec44c;
-                  border-radius: 50%;
-                "
-              />
+              <view class="common-dot yellow" />
               <view class="line-2">预警</view>
             </view>
           </view>
-          <view class="field-box" @click.prevent.stop="toLinkParams('homeHoldList', { type: 2 })">
-            <view class="line-1">10</view>
+          <view class="field-box" @click.prevent.stop="toLinkParams('householdList', 2)">
+            <view class="line-1">{{ homeCollect.peasantHouseholdDoneNum }}</view>
             <view class="flex">
-              <view
-                style="
-                  width: 4rpx;
-                  height: 4rpx;
-                  margin-top: 4rpx;
-                  margin-right: 4rpx;
-                  background-color: #30a952;
-                  border-radius: 50%;
-                "
-              />
+              <view class="common-dot green" />
               <view class="line-2">已完成</view>
             </view>
           </view>
         </view>
       </view>
       <!--企业-->
-      <view class="enter-item" @click="toLink('householdList')">
+      <view class="enter-item" @click="toLink('enterpriseList')">
         <view class="title-field">
           <view class="enter-icon">
             <image class="img" src="@/static/images/company_enter.png" />
@@ -85,129 +58,75 @@
           <view class="enter-title">
             <text class="title-txt">企业</text>
             <view class="flex">
-              <text class="count-num"> 5 </text>
+              <text class="count-num"> {{ homeCollect.companyNum }} </text>
               <text class="count-unit"> 家 </text>
             </view>
           </view>
         </view>
         <view class="row-field">
-          <view class="field-box">
-            <view class="line-1">1</view>
+          <view class="field-box" @click.prevent.stop="toLinkParams('enterpriseList', 0)">
+            <view class="line-1">{{ homeCollect.companyLagNum }}</view>
             <view class="flex">
-              <view
-                style="
-                  width: 4rpx;
-                  height: 4rpx;
-                  margin-top: 4rpx;
-                  margin-right: 4rpx;
-                  background-color: #e43030;
-                  border-radius: 50%;
-                "
-              />
+              <view class="common-dot red" />
               <view class="line-2 red">严重滞后</view>
             </view>
           </view>
-          <view class="field-box">
-            <view class="line-1">2</view>
+          <view class="field-box" @click.prevent.stop="toLinkParams('enterpriseList', 1)">
+            <view class="line-1">{{ homeCollect.companyWarnNum }}</view>
             <view class="flex">
-              <view
-                style="
-                  width: 4rpx;
-                  height: 4rpx;
-                  margin-top: 4rpx;
-                  margin-right: 4rpx;
-                  background-color: #fec44c;
-                  border-radius: 50%;
-                "
-              />
+              <view class="common-dot yellow" />
               <view class="line-2">预警</view>
             </view>
           </view>
-          <view class="field-box">
-            <view class="line-1">2</view>
+          <view class="field-box" @click.prevent.stop="toLinkParams('enterpriseList', 2)">
+            <view class="line-1">{{ homeCollect.companyDoneNum }}</view>
             <view class="flex">
-              <view
-                style="
-                  width: 4rpx;
-                  height: 4rpx;
-                  margin-top: 4rpx;
-                  margin-right: 4rpx;
-                  background-color: #30a952;
-                  border-radius: 50%;
-                "
-              />
+              <view class="common-dot green" />
               <view class="line-2">已完成</view>
             </view>
           </view>
         </view>
       </view>
       <!--个体户-->
-      <view class="enter-item" @click="toLink('householdList')">
-        <view class="title-field">
+      <view class="enter-item" @click="toLink('selfPersonList')">
+        <view class="title-field" @click.prevent.stop="toLinkParams('householdList', 0)">
           <view class="enter-icon">
             <image class="img" src="@/static/images/single_enter.png" />
           </view>
           <view class="enter-title">
             <text class="title-txt">个体户</text>
             <view class="flex">
-              <text class="count-num">5</text>
+              <text class="count-num">{{ homeCollect.individualNum }}</text>
               <text class="count-unit"> 户 </text>
             </view>
           </view>
         </view>
         <view class="row-field">
-          <view class="field-box">
-            <view class="line-1">1</view>
+          <view class="field-box" @click.prevent.stop="toLinkParams('selfPersonList', 0)">
+            <view class="line-1">{{ homeCollect.individualLagNum }}</view>
             <view class="flex">
-              <view
-                style="
-                  width: 4rpx;
-                  height: 4rpx;
-                  margin-top: 4rpx;
-                  margin-right: 4rpx;
-                  background-color: #e43030;
-                  border-radius: 50%;
-                "
-              />
+              <view class="common-dot red" />
               <view class="line-2 red">严重滞后</view>
             </view>
           </view>
-          <view class="field-box">
-            <view class="line-1">2</view>
+          <view class="field-box" @click.prevent.stop="toLinkParams('selfPersonList', 1)">
+            <view class="line-1">{{ homeCollect.individualWarnNum }}</view>
             <view class="flex">
-              <view
-                style="
-                  width: 4rpx;
-                  height: 4rpx;
-                  margin-top: 4rpx;
-                  margin-right: 4rpx;
-                  background-color: #fec44c;
-                  border-radius: 50%;
-                "
-              />
+              <view class="common-dot yellow" />
               <view class="line-2">预警</view>
             </view>
           </view>
-          <view class="field-box">
-            <view class="line-1">2</view>
+          <view class="field-box" @click.prevent.stop="toLinkParams('selfPersonList', 2)">
+            <view class="line-1">{{ homeCollect.individualDoneNum }}</view>
             <view class="flex">
-              <view
-                style="
-                  width: 4rpx;
-                  height: 4rpx;
-                  margin-top: 4rpx;
-                  margin-right: 4rpx;
-                  background-color: #30a952;
-                  border-radius: 50%;
-                "
-              />
+              <view class="common-dot green" />
               <view class="line-2">已完成</view>
             </view>
           </view>
         </view>
       </view>
       <!--村集体-->
-      <view class="enter-item" @click="toLink('householdList')">
+      <view class="enter-item" @click="toLink('collectiveList')">
         <view class="title-field">
           <view class="enter-icon">
             <image class="img" src="@/static/images/icon_village.png" />
@@ -215,57 +134,30 @@
           <view class="enter-title">
             <text class="title-txt">村集体</text>
             <view class="flex">
-              <text class="count-num">2</text>
+              <text class="count-num">{{ homeCollect.villageNum }}</text>
               <text class="count-unit">户</text>
             </view>
           </view>
         </view>
         <view class="row-field">
-          <view class="field-box">
-            <view class="line-1">0</view>
+          <view class="field-box" @click.prevent.stop="toLinkParams('collectiveList', 0)">
+            <view class="line-1">{{ homeCollect.villageLagNum }}</view>
             <view class="flex">
-              <view
-                style="
-                  width: 4rpx;
-                  height: 4rpx;
-                  margin-top: 4rpx;
-                  margin-right: 4rpx;
-                  background-color: #e43030;
-                  border-radius: 50%;
-                "
-              />
+              <view class="common-dot red" />
               <view class="line-2 red">严重滞后</view>
             </view>
           </view>
-          <view class="field-box">
-            <view class="line-1">1</view>
+          <view class="field-box" @click.prevent.stop="toLinkParams('collectiveList', 1)">
+            <view class="line-1">{{ homeCollect.villageWarnNum }}</view>
             <view class="flex">
-              <view
-                style="
-                  width: 4rpx;
-                  height: 4rpx;
-                  margin-top: 4rpx;
-                  margin-right: 4rpx;
-                  background-color: #fec44c;
-                  border-radius: 50%;
-                "
-              />
+              <view class="common-dot yellow" />
               <view class="line-2">预警</view>
             </view>
           </view>
-          <view class="field-box">
-            <view class="line-1">1</view>
+          <view class="field-box" @click.prevent.stop="toLinkParams('collectiveList', 2)">
+            <view class="line-1">{{ homeCollect.villageDoneNum }}</view>
             <view class="flex">
-              <view
-                style="
-                  width: 4rpx;
-                  height: 4rpx;
-                  margin-top: 4rpx;
-                  margin-right: 4rpx;
-                  background-color: #30a952;
-                  border-radius: 50%;
-                "
-              />
+              <view class="common-dot green" />
               <view class="line-2">已完成</view>
             </view>
           </view>
@@ -315,29 +207,69 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import { getStorage, StorageKey } from '@/utils'
 import Echart from './WorkGroupChart.vue'
 import MessageNotice from './MessageNotice.vue'
+import { getImpHomeCollectApi } from '@/service'
+
+interface HomeCollectType {
+  peasantHouseholdNum: number
+  peasantHouseholdLagNum: number
+  peasantHouseholdWarnNum: number
+  peasantHouseholdDoneNum: number
+
+  companyNum: number
+  companyLagNum: number
+  companyWarnNum: number
+  companyDoneNum: number
+
+  individualNum: number
+  individualLagNum: number
+  individualWarnNum: number
+  individualDoneNum: number
+
+  villageNum: number
+  villageLagNum: number
+  villageWarnNum: number
+  villageDoneNum: number
+}
 
 const emit = defineEmits(['toLink', 'toParamsLink', 'loginIn'])
 const userInfo = ref<any>(null)
 const projectInfo = ref<any>(null)
+const homeCollect = ref<HomeCollectType>({
+  peasantHouseholdNum: 0,
+  peasantHouseholdLagNum: 0,
+  peasantHouseholdWarnNum: 0,
+  peasantHouseholdDoneNum: 0,
+
+  companyNum: 0,
+  companyLagNum: 0,
+  companyWarnNum: 0,
+  companyDoneNum: 0,
+
+  individualNum: 0,
+  individualLagNum: 0,
+  individualWarnNum: 0,
+  individualDoneNum: 0,
+
+  villageNum: 0,
+  villageLagNum: 0,
+  villageWarnNum: 0,
+  villageDoneNum: 0
+})
 
 const toLink = (name: string) => {
   emit('toLink', name)
 }
 
-const toLinkParams = (name: string, params: any) => {
+const toLinkParams = (name: string, type: number) => {
   emit('toParamsLink', {
     name,
-    ...params
+    type
   })
-}
-
-const loginIn = () => {
-  emit('loginIn')
 }
 
 onShow(() => {
@@ -345,6 +277,15 @@ onShow(() => {
   const project = getStorage(StorageKey.PROJECTINFO)
   userInfo.value = user
   projectInfo.value = project
+})
+
+onMounted(() => {
+  getImpHomeCollectApi().then((res) => {
+    if (res) {
+      console.log(res, 'getImpHomeCollectApi')
+      homeCollect.value = res
+    }
+  })
 })
 </script>
 
@@ -708,5 +649,24 @@ onShow(() => {
 
 .flex {
   display: flex;
+}
+
+.common-dot {
+  width: 4rpx;
+  height: 4rpx;
+  margin: 3rpx 4rpx 0 0;
+  border-radius: 50%;
+
+  &.red {
+    background-color: #e43030;
+  }
+
+  &.yellow {
+    background-color: #fec44c;
+  }
+
+  &.green {
+    background-color: #30a952;
+  }
 }
 </style>

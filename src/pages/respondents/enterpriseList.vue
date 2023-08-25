@@ -28,6 +28,17 @@
         <uni-icons v-if="keyWords" @click="clear" type="clear" color="#999999" size="14rpx" />
       </view>
 
+      <view class="status-panel">
+        <view class="dot" :class="typeColor(sourceType)" />
+        <text class="status-label">{{ typeLabel(sourceType) }}： </text>
+        <text class="check-label"
+          >人口核定：<text class="number" :class="typeColor(sourceType)">2</text> 户</text
+        >
+        <text class="check-label"
+          >安置确认：<text class="number" :class="typeColor(sourceType)">1</text> 户</text
+        >
+      </view>
+
       <view class="respondents-list">
         <scroll-view
           v-if="list && list.length"
@@ -36,7 +47,15 @@
           :enable-flex="true"
           @scrolltolower="loadMore"
         >
-          <view class="scroll">
+          <view class="scroll" v-if="roleType === RoleCodeType.implementation">
+            <ImpListItem
+              v-for="item in list"
+              :data="item"
+              :key="item.uid"
+              @click.stop="editLandlord(item)"
+            />
+          </view>
+          <view class="scroll" v-else>
             <ListItem
               v-for="item in list"
               :data="item"
@@ -93,10 +112,12 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, nextTick, unref, computed } from 'vue'
-import { onShow } from '@dcloudio/uni-app'
+import { onLoad, onShow } from '@dcloudio/uni-app'
 import Container from '@/components/Container/index.vue'
 import NoData from '@/components/NoData/index.vue'
 import ListItem from './listItem.vue'
+// 实施阶段 Item
+import ImpListItem from './impListItem.vue'
 import TreeSelect from '@/components/VillageTreeSelect/index.vue'
 import {
   getLandlordListBySearchApi,
@@ -125,9 +146,17 @@ const isEnd = ref<boolean>(false)
 
 const page = ref<number>(1)
 const pageSize = ref<number>(10)
+const sourceType = ref(0) // 源类型 0 滞后 1 预警 2 已完成
 
 // 角色类型，不同角色跳转不同的页面，默认为实物采集页面
 const roleType = ref<RoleCodeType>(getStorage(StorageKey.USERROLE))
+
+onLoad((options: any) => {
+  if (options) {
+    const type = options.type
+    sourceType.value = +type
+  }
+})
 
 const init = () => {
   page.value = 1
@@ -345,6 +374,16 @@ onMounted(() => {
 onShow(() => {
   init()
 })
+
+// 根据类型获取标签文本值
+const typeLabel = (type: number) => {
+  return type === 0 ? '滞后' : type == 1 ? '预警' : '完成'
+}
+
+// 根据类型获取标签文本颜色
+const typeColor = (type: number) => {
+  return type === 0 ? 'red' : type == 1 ? 'yellow' : 'green'
+}
 </script>
 
 <style lang="scss" scoped>
@@ -404,9 +443,71 @@ onShow(() => {
   margin-top: 7rpx;
 }
 
+.status-panel {
+  flex: none;
+  display: flex;
+  height: 33rpx;
+  margin-top: 9rpx;
+  background: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.88) 100%);
+  border-radius: 5rpx;
+  align-items: center;
+
+  .dot {
+    width: 6rpx;
+    height: 6rpx;
+    margin-left: 20rpx;
+    border: 2px solid rgba(228, 48, 48, 0.1);
+    border-radius: 50%;
+
+    &.red {
+      background: #e43030;
+    }
+
+    &.yellow {
+      background: #fec44c;
+    }
+
+    &.green {
+      background: #30a952;
+    }
+  }
+
+  .status-label {
+    margin-left: 15rpx;
+    font-size: 9rpx;
+    font-weight: 500;
+    color: #171718;
+  }
+
+  .check-label {
+    padding-left: 10rpx;
+    font-size: 9rpx;
+    font-weight: 500;
+    color: rgba(23, 23, 24, 0.6);
+
+    .number {
+      padding: 0 5rpx;
+      font-size: 13rpx;
+      font-weight: bold;
+
+      &.red {
+        color: #e43030;
+      }
+
+      &.yellow {
+        color: #fec44c;
+      }
+
+      &.green {
+        color: #30a952;
+      }
+    }
+  }
+}
+
 .scroll-view {
   width: 100%;
-  height: calc(100vh - var(--status-bar-height) - 33rpx - 18rpx - 6rpx - 10rpx);
+  height: calc(100vh - var(--status-bar-height) - 33rpx - 18rpx - 6rpx - 10rpx - 42rpx);
 }
 
 .scroll {

@@ -4,7 +4,7 @@
       <view class="head-lt">
         <image class="user-icon" src="@/static/images/respondents_tit.png" mode="scaleToFill" />
         <view class="name">{{ props.data.name }}</view>
-        <view class="number">{{ props.data.no }}</view>
+        <view class="number">{{ props.data.showDoorNo }}</view>
       </view>
       <view class="head-rt"> 人口核定滞后 </view>
     </view>
@@ -13,29 +13,50 @@
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">联系方式:</view>
-        <view class="value">18878231231</view>
+        <view class="value">{{ props.data.phone }}</view>
       </view>
-      <view class="cont-item">
-        <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
-        <view class="label">是否财产户:</view>
-        <view class="value"> 否 </view>
-      </view>
-      <view class="cont-item">
-        <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
-        <view class="label">户籍地址:</view>
-        <view class="value">浙江省金华市武义县清溪镇杨村234号</view>
-      </view>
+
+      <template v-if="props.data.type !== MainType.PeasantHousehold">
+        <view class="cont-item">
+          <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
+          <view class="label">所属区域:</view>
+          <view class="value">{{ props.data.areaCodeText }}/{{ props.data.townCodeText }}</view>
+        </view>
+        <view class="cont-item">
+          <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
+          <view class="label">行政村名称:</view>
+          <view class="value">{{ props.data.villageCodeText }}</view>
+        </view>
+      </template>
+      <template v-else>
+        <view class="cont-item">
+          <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
+          <view class="label">是否财产户:</view>
+          <view class="value">
+            {{ dictOption(yesAndNoEnums, props.data.hasPropertyAccount) }}
+          </view>
+        </view>
+        <view class="cont-item">
+          <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
+          <view class="label">户籍地址:</view>
+          <view class="value">{{ props.data.address }}</view>
+        </view>
+      </template>
     </view>
   </view>
 </template>
 
 <script lang="ts" setup>
-const props = defineProps({
-  data: {
-    type: Object as any,
-    default: () => {}
-  }
-})
+import { dictOption } from '@/utils'
+import { LandlordType } from '@/types/sync'
+import { yesAndNoEnums } from '@/config/common'
+import { MainType } from '@/types/common'
+
+interface PropsType {
+  data: LandlordType
+}
+
+const props = defineProps<PropsType>()
 </script>
 
 <style lang="scss" scoped>

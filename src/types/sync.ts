@@ -240,6 +240,18 @@ export interface StateType {
   villageNum: number
   virutalVillageNum: number
 
+  peasantHouseholdLagNum: number
+  peasantHouseholdWarnNum: number
+
+  companyLagNum: number
+  companyWarnNum: number
+
+  individualLagNum: number
+  individualWarnNum: number
+
+  villageLagNum: number
+  villageWarnNum: number
+
   chooseConfig: ChooseConfigType[]
   houseConfig: HouseConfigType[]
   immigrantCompensationCardConfig: ImmigrantCompensationCardConfigType[]
