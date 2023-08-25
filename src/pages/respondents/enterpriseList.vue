@@ -72,7 +72,11 @@
       </view>
     </view>
 
-    <view v-if="roleType !== RoleCodeType.assessor" class="add-box" @click="addLandlord">
+    <view
+      v-if="roleType !== RoleCodeType.assessor && roleType !== RoleCodeType.implementation"
+      class="add-box"
+      @click="addLandlord"
+    >
       <uni-icons type="plusempty" color="#ffffff" size="10rpx" />
     </view>
 
@@ -277,10 +281,10 @@ const routerMap: any = {
 
 // 新增 路由 map
 const addRouterMap: any = {
-  [MainType.Company]: getRouterName(roleType.value)
-  // [MainType.PeasantHousehold]: 'householdInfoEdit',
-  // [MainType.IndividualHousehold]: 'selfBaseInfoEdit',
-  // [MainType.Village]: 'collectiveBaseInfoEdit'
+  [MainType.Village]: 'collectiveBaseInfoEdit',
+  [MainType.PeasantHousehold]: 'householdInfoEdit',
+  [MainType.IndividualHousehold]: 'selfBaseInfoEdit',
+  [MainType.Company]: 'baseInfoEdit'
 }
 
 const addLandlord = () => {

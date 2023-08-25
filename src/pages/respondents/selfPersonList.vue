@@ -73,7 +73,11 @@
     </view>
 
     <!-- roleType: 角色类型，assessor 资产评估用户，资产评估时不能添加新的个体工商户信息 -->
-    <view v-if="roleType !== RoleCodeType.assessor" class="add-box" @click="addLandlord">
+    <view
+      v-if="roleType !== RoleCodeType.assessor && roleType !== RoleCodeType.implementation"
+      class="add-box"
+      @click="addLandlord"
+    >
       <uni-icons type="plusempty" color="#ffffff" size="10rpx" />
     </view>
 
@@ -278,10 +282,10 @@ const routerMap: any = {
 
 // 新增 路由 map
 const addRouterMap: any = {
-  [MainType.IndividualHousehold]: 'selfBaseInfoEdit'
-  // [MainType.PeasantHousehold]: 'householdInfoEdit',
-  // [MainType.Company]: 'baseInfoEdit',
-  // [MainType.Village]: 'collectiveBaseInfoEdit'
+  [MainType.Village]: 'collectiveBaseInfoEdit',
+  [MainType.PeasantHousehold]: 'householdInfoEdit',
+  [MainType.IndividualHousehold]: 'selfBaseInfoEdit',
+  [MainType.Company]: 'baseInfoEdit'
 }
 
 const addLandlord = () => {
