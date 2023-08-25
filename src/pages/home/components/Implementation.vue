@@ -89,7 +89,7 @@
       </view>
       <!--个体户-->
       <view class="enter-item" @click="toLink('selfPersonList')">
-        <view class="title-field" @click.prevent.stop="toLinkParams('householdList', 0)">
+        <view class="title-field">
           <view class="enter-icon">
             <image class="img" src="@/static/images/single_enter.png" />
           </view>
