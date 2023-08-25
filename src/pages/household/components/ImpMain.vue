@@ -12,7 +12,7 @@
 
         <view class="box">
           <!-- 居民户信息 -->
-          <base-info-imp v-if="tabVal === 1" :dataInfo="dataInfo" />
+          <base-info-imp v-if="tabVal === 1" :dataInfo="dataInfo" @update-data="updateData" />
 
           <!-- 人口核定 -->
           <population-verfication
