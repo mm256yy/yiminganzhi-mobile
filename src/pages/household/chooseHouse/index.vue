@@ -174,7 +174,7 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 import { formatStr, routerForward, dictOption } from '@/utils'
-import { apartmentArea, resettleArea } from '../config'
+import { apartmentArea, resettleArea } from '../../common/config'
 import { getChooseConfigApi, getHouseConfigApi } from '@/service'
 
 interface PropsType {

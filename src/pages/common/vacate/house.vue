@@ -1,5 +1,6 @@
 <template>
   <view class="house-wrap">
+    <!-- 房屋腾空 -->
     <view class="btn-box">
       <view class="btn green-btn">
         <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />

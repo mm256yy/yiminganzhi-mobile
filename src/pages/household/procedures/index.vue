@@ -17,12 +17,14 @@
         <uni-tr v-for="(item, index) in immigrantProceduresList" :key="index">
           <uni-td>{{ index + 1 }}</uni-td>
           <uni-td>{{ item.name }}</uni-td>
-          <uni-td>{{
-            item.needHandle === '0' ? '无须办理' : item.isComplete === '1' ? '已办理' : '未办理'
-          }}</uni-td>
-          <uni-td>{{
-            item.completeDate ? dayjs(item.completeDate).format('YYYY-MM-DD') : ''
-          }}</uni-td>
+          <uni-td>
+            {{
+              item.needHandle === '0' ? '无须办理' : item.isComplete === '1' ? '已办理' : '未办理'
+            }}
+          </uni-td>
+          <uni-td>
+            {{ item.completeDate ? dayjs(item.completeDate).format('YYYY-MM-DD') : '' }}
+          </uni-td>
 
           <uni-td>
             <view class="table-btn">
@@ -56,7 +58,6 @@ const immigrantProceduresList = computed(() => {
 })
 
 const handle = (uid: string) => {
-  console.log(888)
   routerForward('attendto', {
     uid: props.dataInfo.uid,
     type: 1,

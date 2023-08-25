@@ -4,7 +4,7 @@
     <Back title="居民户实施" />
 
     <view class="content">
-      <LeftSidebar @switch-tab="switchTab" :dataList="sidebarList" />
+      <LeftSidebar @switch-tab="switchTab" :dataList="householdSidebarList" />
 
       <view class="right">
         <!-- 头部 -->
@@ -42,10 +42,16 @@
           />
 
           <!-- 模拟安置 -->
-          <ImitateResettle v-if="tabVal === 6" :dataInfo="(dataInfo as any)" />
-          <ProduceResettleConfirm v-if="tabVal === 7" :dataInfo="(dataInfo as any)" />
-          <RelocateResettleConfirm v-if="tabVal === 8" :dataInfo="(dataInfo as any)" />
-          <GraveResettleConfirm v-if="tabVal === 9" :dataInfo="(dataInfo as any)" />
+          <imitate-resettle v-if="tabVal === 6" :dataInfo="(dataInfo as any)" />
+
+          <!-- 生产安置 -->
+          <produce-resettle-confirm v-if="tabVal === 7" :dataInfo="(dataInfo as any)" />
+
+          <!-- 搬迁安置 -->
+          <relocate-resettle-confirm v-if="tabVal === 8" :dataInfo="(dataInfo as any)" />
+
+          <!-- 坟墓确认 -->
+          <grave-resettle-confirm v-if="tabVal === 9" :dataInfo="(dataInfo as any)" />
 
           <!-- 生产用地 -->
           <product-land
@@ -69,18 +75,23 @@
           />
 
           <!--移民建卡-->
-          <migrateCard
+          <migrate-card
             v-if="tabVal === 13"
             :dataInfo="dataInfo"
             :dataList="dataInfo.demographicList"
           />
 
-          <HouseVacate v-if="tabVal === 14" :dataInfo="dataInfo" />
-          <LandVacate v-if="tabVal === 15" :dataInfo="dataInfo" />
-          <TransitionVacate v-if="tabVal === 16" :dataInfo="dataInfo" />
+          <!-- 房屋腾空 -->
+          <house-vacate v-if="tabVal === 14" :dataInfo="dataInfo" />
+
+          <!-- 土地腾让 -->
+          <land-vacate v-if="tabVal === 15" :dataInfo="dataInfo" />
+
+          <!-- 过渡安置 -->
+          <transition-vacate v-if="tabVal === 16" :dataInfo="dataInfo" />
 
           <!-- 动迁协议 -->
-          <Agreement v-if="tabVal === 17" />
+          <agreement v-if="tabVal === 17" />
 
           <!-- 自建房 -->
           <self-build-house
@@ -107,13 +118,16 @@
           <self-find-way v-if="tabVal === 21" :data-info="dataInfo" />
 
           <!-- 生产安置 农业安置 -->
-          <Farming v-if="tabVal === 22" :dataInfo="dataInfo" />
+          <farming v-if="tabVal === 22" :dataInfo="dataInfo" />
+
           <!-- 生产安置 养老保险 -->
-          <Insure v-if="tabVal === 23" :dataInfo="dataInfo" />
+          <insure v-if="tabVal === 23" :dataInfo="dataInfo" />
+
           <!-- 生产安置 自谋职业 -->
-          <Findself v-if="tabVal === 24" :dataInfo="dataInfo" />
+          <find-self v-if="tabVal === 24" :dataInfo="dataInfo" />
+
           <!-- 相关协议 -->
-          <Procedures v-if="tabVal === 25" :dataInfo="dataInfo" />
+          <procedures v-if="tabVal === 25" :dataInfo="dataInfo" />
         </view>
       </view>
     </view>
@@ -123,7 +137,7 @@
 import { ref } from 'vue'
 import { MainType } from '@/types/common'
 import { LandlordType } from '@/types/sync'
-import { sidebarList } from '../config'
+import { householdSidebarList } from '../../common/config'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { deleteImpLandlordPeopleApi } from '@/service'
 
@@ -137,31 +151,31 @@ import houseProperty from '../houseProperty/index.vue' // 引入资格认定 -- 
 
 import houseAccessoryEvaReport from '../../common/houseAccessoryEvaReport/index.vue' // 引入资产评估 -- 房屋/附属物评估报告组件
 import landAccessoryEvaReport from '../../common/landAccessoryEvaReport/index.vue' // 引入资产评估 -- 土地/附着物评估报告组件
-import ImitateResettle from '../imitateResettle/index.vue' // 引入资产评估 -- 模拟安置组件
+import imitateResettle from '../imitateResettle/index.vue' // 引入资产评估 -- 模拟安置组件
 
-import ProduceResettleConfirm from '../resettleConfirm/produce.vue' // 引入安置确认 -- 生产安置组件
-import RelocateResettleConfirm from '../resettleConfirm/relocate.vue' // 引入安置确认 -- 搬迁安置组件
-import GraveResettleConfirm from '../resettleConfirm/grave.vue' // 引入安置确认 -- 坟墓确认组件
+import produceResettleConfirm from '../resettleConfirm/produce.vue' // 引入安置确认 -- 生产安置组件
+import relocateResettleConfirm from '../resettleConfirm/relocate.vue' // 引入安置确认 -- 搬迁安置组件
+import graveResettleConfirm from '../resettleConfirm/grave.vue' // 引入安置确认 -- 坟墓确认组件
 
 import productLand from '../productLand/index.vue' // 引入择址确认 -- 生产用地组件
 import chooseHouse from '../chooseHouse/index.vue' // 引入择址确认 -- 选房择址组件
 import graveSiteSel from '../graveSiteSel/index.vue' // 引入择址确认 -- 坟墓择址组件
 import migrateCard from '../migrateCard/index.vue' // 引入择址确认 -- 移民建卡组件
 
-import HouseVacate from '../vacate/house.vue' // 引入腾空过渡 -- 房屋腾空组件
-import LandVacate from '../vacate/land.vue' // 引入腾空过渡 -- 土地腾空组件
-import TransitionVacate from '../vacate/transition.vue' // 引入腾空过渡 -- 过渡安置组件
-import Agreement from '../agreement/index.vue' // 引入腾空过渡 -- 动迁协议组件
+import houseVacate from '../../common/vacate/house.vue' // 引入腾空过渡 -- 房屋腾空组件
+import landVacate from '../../common/vacate/land.vue' // 引入腾空过渡 -- 土地腾让组件
+import transitionVacate from '../../common/vacate/transition.vue' // 引入腾空过渡 -- 过渡安置组件
+import agreement from '../agreement/index.vue' // 引入腾空过渡 -- 动迁协议组件
 
 import selfBuildHouse from '../relocatePlacement/selfBuildHouse.vue' // 引入搬迁安置 -- 自建房组件
 import apartment from '../relocatePlacement/apartment.vue' // 引入搬迁安置 -- 公寓房组件
 import centralizedSupport from '../relocatePlacement/centralizedSupport.vue' // 引入搬迁安置 -- 集中供养组件
 import selfFindWay from '../relocatePlacement/selfFindWay.vue' // 引入搬迁安置 -- 自谋出路组件
 
-import Procedures from '../procedures/index.vue' // 引入生产安置 -- 相关手续
-import Farming from '../productionResettle/farming.vue' // 引入生产安置 -- 农业安置组件
-import Insure from '../productionResettle/insure.vue' // 引入生产安置 -- 养老保险组件
-import Findself from '../productionResettle/findself.vue' // 引入生产安置 -- 自谋职业组件
+import procedures from '../procedures/index.vue' // 引入生产安置 -- 相关手续
+import farming from '../productionResettle/farming.vue' // 引入生产安置 -- 农业安置组件
+import insure from '../productionResettle/insure.vue' // 引入生产安置 -- 养老保险组件
+import findSelf from '../productionResettle/findself.vue' // 引入生产安置 -- 自谋职业组件
 
 interface PropsType {
   dataInfo: LandlordType
