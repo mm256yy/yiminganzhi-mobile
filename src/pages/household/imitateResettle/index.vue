@@ -112,6 +112,7 @@ interface PropsType {
 
 const props = defineProps<PropsType>()
 const areaDetailSubNVue = uni.getSubNVueById('areaDetail')
+const emit = defineEmits(['updateData'])
 
 // 获取人口列表
 const demographicList = computed(() => {
@@ -217,12 +218,12 @@ const houseAreaTypeChange = (item: any) => {
  */
 const productionResettleSubmit = async (data: any) => {
   const res = await updateImpLandlordSimulateDemographicApi(uid.value, data)
-  console.log('生产安置方式更新结果', res)
   if (res) {
     uni.showToast({
       title: '生产安置保存成功!',
       icon: 'success'
     })
+    emit('updateData')
   }
 }
 
@@ -231,13 +232,13 @@ const productionResettleSubmit = async (data: any) => {
  */
 const immigrantSettleSubmit = async (data: any) => {
   const res = await updateImpLandlordSimulateImmigrantSettleApi(uid.value, data)
-  console.log('搬迁安置确认结果', res)
   if (res) {
     uni.showToast({
       title: '搬迁安置保存成功!',
       icon: 'success'
     })
     stepIndex.value += 1
+    emit('updateData')
   }
 }
 

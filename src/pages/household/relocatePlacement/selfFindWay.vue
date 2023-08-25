@@ -93,6 +93,7 @@ const getRelocationResettlement = computed(() => {
   return houseAreaType === HouseType.oneself
 })
 
+// 档案上传
 const onArchives = () => {
   routerForward('archives', {
     uid: props.dataInfo.uid,

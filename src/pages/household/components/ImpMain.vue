@@ -42,22 +42,39 @@
           />
 
           <!-- 模拟安置 -->
-          <imitate-resettle v-if="tabVal === 6" :dataInfo="(dataInfo as any)" />
+          <imitate-resettle
+            v-if="tabVal === 6"
+            :dataInfo="(dataInfo as any)"
+            @update-data="updateData"
+          />
 
           <!-- 生产安置 -->
-          <produce-resettle-confirm v-if="tabVal === 7" :dataInfo="(dataInfo as any)" />
+          <produce-resettle-confirm
+            v-if="tabVal === 7"
+            :dataInfo="(dataInfo as any)"
+            @update-data="updateData"
+          />
 
           <!-- 搬迁安置 -->
-          <relocate-resettle-confirm v-if="tabVal === 8" :dataInfo="(dataInfo as any)" />
+          <relocate-resettle-confirm
+            v-if="tabVal === 8"
+            :dataInfo="(dataInfo as any)"
+            @update-data="updateData"
+          />
 
           <!-- 坟墓确认 -->
-          <grave-resettle-confirm v-if="tabVal === 9" :dataInfo="(dataInfo as any)" />
+          <grave-resettle-confirm
+            v-if="tabVal === 9"
+            :dataInfo="(dataInfo as any)"
+            @update-data="updateData"
+          />
 
           <!-- 生产用地 -->
           <product-land
             v-if="tabVal === 10"
             :baseInfo="dataInfo"
             :dataInfo="dataInfo.immigrantLand"
+            @update-data="updateData"
           />
 
           <!-- 选房择址 -->
@@ -82,13 +99,13 @@
           />
 
           <!-- 房屋腾空 -->
-          <house-vacate v-if="tabVal === 14" :dataInfo="dataInfo" />
+          <house-vacate v-if="tabVal === 14" :dataInfo="dataInfo" @update-data="updateData" />
 
           <!-- 土地腾让 -->
-          <land-vacate v-if="tabVal === 15" :dataInfo="dataInfo" />
+          <land-vacate v-if="tabVal === 15" :dataInfo="dataInfo" @update-data="updateData" />
 
           <!-- 过渡安置 -->
-          <transition-vacate v-if="tabVal === 16" :dataInfo="dataInfo" />
+          <transition-vacate v-if="tabVal === 16" :dataInfo="dataInfo" @update-data="updateData" />
 
           <!-- 动迁协议 -->
           <agreement v-if="tabVal === 17" />
@@ -126,8 +143,8 @@
           <!-- 生产安置 自谋职业 -->
           <find-self v-if="tabVal === 24" :dataInfo="dataInfo" />
 
-          <!-- 相关协议 -->
-          <procedures v-if="tabVal === 25" :dataInfo="dataInfo" />
+          <!-- 相关手续 -->
+          <procedures v-if="tabVal === 25" :dataInfo="dataInfo" @update-data="updateData" />
         </view>
       </view>
     </view>

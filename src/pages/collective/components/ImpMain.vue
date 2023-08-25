@@ -30,7 +30,7 @@
           />
 
           <!-- 房屋腾空 -->
-          <house-vacate v-if="tabVal === 4" :dataInfo="dataInfo" />
+          <house-vacate v-if="tabVal === 4" :dataInfo="dataInfo" @update-data="updateData" />
 
           <!-- 动迁安置协议 -->
           <relocation-agreement v-if="tabVal === 5" />

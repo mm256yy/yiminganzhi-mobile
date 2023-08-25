@@ -1,29 +1,18 @@
 <template>
   <!-- 相关手续（实施） -->
   <view class="procedures-wrapper">
-    <view class="title">
+    <view class="title-wrapper">
       <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
       上传说明：请将上传的图片进行文字命名，图片为 jpg、png 格式且图片大小需小于5M
     </view>
 
-    <view class="row">
-      <uni-row>
-        <uni-col :span="12">
-          <view class="col">
-            <view class="label">凭证：</view>
-            <view class="content">
-              <upload-file
-                v-model="proceduresPicStr"
-                :file-list="proceduresPicStr"
-                :limit="20"
-                show-type="grid"
-                :accepts="['.jpg', '.png']"
-              />
-            </view>
-          </view>
-        </uni-col>
-      </uni-row>
-    </view>
+    <upload-file
+      v-model="proceduresPicStr"
+      :file-list="proceduresPicStr"
+      :limit="20"
+      show-type="list"
+      :accepts="['.jpg', '.png']"
+    />
 
     <image
       class="btn submit"
@@ -85,57 +74,25 @@ const submit = () => {
 <style lang="scss" scoped>
 .procedures-wrapper {
   width: 100%;
+  overflow-y: scroll;
 
-  .title {
+  .title-wrapper {
     display: flex;
+    width: 100%;
     height: 28rpx;
-    margin-bottom: 9rpx;
+    margin-top: 9rpx;
     font-size: 9rpx;
+    font-weight: 500;
     color: #171718;
+    background: #ffffff;
+    border-radius: 5rpx 5rpx 0px 0px;
+    flex-direction: row;
     align-items: center;
-    flex: 1;
-    border-bottom: 1rpx solid #f0f0f0;
 
     .icon {
       width: 10rpx;
       height: 10rpx;
-      margin-left: 6rpx;
-    }
-  }
-
-  .row {
-    padding: 5rpx 12rpx 12rpx 0;
-    box-sizing: border-box;
-
-    .col {
-      display: flex;
-      flex-direction: row;
-
-      .label {
-        width: 90rpx;
-        height: 16rpx;
-        margin-left: 9rpx;
-        font-size: 9rpx;
-        line-height: 16rpx;
-        color: rgba(23, 23, 24, 0.6);
-      }
-
-      .content {
-        font-size: 9rpx;
-        line-height: 16rpx;
-        color: #171718;
-
-        &.blue {
-          color: #3e73ec;
-        }
-      }
-    }
-
-    .line {
-      width: 100%;
-      height: 1rpx;
-      margin: 9rpx 0;
-      background: #ebebeb;
+      margin-right: 6rpx;
     }
   }
 

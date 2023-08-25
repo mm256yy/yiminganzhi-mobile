@@ -95,7 +95,7 @@ interface PropsType {
 }
 
 const props = defineProps<PropsType>()
-const { immigrantSettle } = props.baseInfo
+const { immigrantSettle } = props.baseInfo as any
 const emit = defineEmits(['updateData'])
 const landNoList = ref<any[]>([])
 const formData = ref<any>({})

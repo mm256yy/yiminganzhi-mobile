@@ -63,6 +63,7 @@ interface PropsType {
 
 const props = defineProps<PropsType>()
 const alertDialog = ref<any>(null)
+const emit = defineEmits(['updateData'])
 
 const demographicList = computed(() => {
   return props.dataInfo && props.dataInfo.demographicList ? props.dataInfo.demographicList : []
@@ -87,6 +88,7 @@ const produceSubmit = async (data: PopulationType[]) => {
       title: '保存成功！',
       icon: 'success'
     })
+    emit('updateData')
   }
 }
 

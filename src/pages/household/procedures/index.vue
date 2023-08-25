@@ -50,10 +50,10 @@ interface PropsType {
 }
 
 const props = defineProps<PropsType>()
+const emit = defineEmits(['updateData'])
 
 // 相关手续表
 const immigrantProceduresList = computed(() => {
-  console.log(props.dataInfo.immigrantProceduresList, 'list')
   return props.dataInfo.immigrantProceduresList || []
 })
 
@@ -65,7 +65,6 @@ const handle = (uid: string) => {
   })
 }
 const notHandle = (uid: string) => {
-  console.log(999)
   // 直接更新数据
   updateImpLandlordProceduresApi(props.dataInfo.uid, uid, {
     needHandle: '0', // 是否需要办理01
@@ -75,6 +74,7 @@ const notHandle = (uid: string) => {
       title: '保存成功！',
       icon: 'success'
     })
+    emit('updateData')
   })
 }
 </script>

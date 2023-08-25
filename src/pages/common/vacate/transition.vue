@@ -120,6 +120,7 @@ interface PropsType {
 }
 
 const props = defineProps<PropsType>()
+const emit = defineEmits(['updateData'])
 
 const excessInfo = computed(() => {
   return props.dataInfo.immigrantExcess || {}
@@ -148,6 +149,7 @@ const notHandle = async () => {
       title: '操作成功！',
       icon: 'success'
     })
+    emit('updateData')
   }
 }
 </script>

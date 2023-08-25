@@ -30,7 +30,7 @@
           <create-card v-if="tabVal === 4" />
 
           <!-- 房屋腾空 -->
-          <house-vacate v-if="tabVal === 5" :dataInfo="dataInfo" />
+          <house-vacate v-if="tabVal === 5" :dataInfo="dataInfo" @update-data="updateData" />
 
           <!-- 土地腾让 -->
           <land-vacate v-if="tabVal === 6" :dataInfo="dataInfo" />
@@ -43,6 +43,7 @@
             v-if="tabVal === 8"
             :dataInfo="dataInfo.immigrantDocumentation"
             :uid="dataInfo.uid"
+            @update-data="updateData"
           />
         </view>
       </view>

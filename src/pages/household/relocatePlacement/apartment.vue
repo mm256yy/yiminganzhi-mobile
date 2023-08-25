@@ -143,7 +143,7 @@ const landNoList = ref<any[]>([]) // 地块编号选项列表
 const storeroomNoList = ref<any[]>([]) // 储藏室编号选项列表
 const carNoList = ref<any[]>([]) // 车位号选项列表
 const roomNoList = ref<any[]>([]) // 幢号-房号 选项列表
-const { immigrantSettle } = props.dataInfo
+const { immigrantSettle } = props.dataInfo as any
 
 // 搬迁安置方式
 const getRelocationResettlement = computed(() => {

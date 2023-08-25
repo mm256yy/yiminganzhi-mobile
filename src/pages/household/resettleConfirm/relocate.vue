@@ -96,6 +96,8 @@ const tableData = ref<any[]>([])
 
 const houseType = ref<HouseType>(HouseType.homestead)
 const alertDialog = ref<any>(null)
+const emit = defineEmits(['updateData'])
+
 // 搬迁安置
 const immigrantSettle = computed(() => {
   return props.dataInfo && props.dataInfo.immigrantSettle ? props.dataInfo.immigrantSettle : {}
@@ -225,13 +227,12 @@ const editRelocate = () => {
 
 const immigrantSettleSubmit = async (data: Partial<ImmigrantSettleType>) => {
   const res = await updateImpLandlordRelocateResettleApi(props.dataInfo.uid, data)
-  console.log(res, '保存结果')
   if (res) {
     uni.showToast({
       title: '保存成功！',
       icon: 'success'
     })
-    routerBack()
+    emit('updateData')
   }
 }
 </script>

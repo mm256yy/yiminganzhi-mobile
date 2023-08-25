@@ -30,12 +30,12 @@
       </view> -->
     </view>
 
-    <view class="common-head">
+    <view class="common-head" v-if="dataInfo.type === MainType.PeasantHousehold">
       <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
       <text>家庭情况</text>
     </view>
 
-    <view class="label-value">
+    <view class="label-value" v-if="dataInfo.type === MainType.PeasantHousehold">
       <uni-row>
         <uni-col :span="12">
           <view class="col">
@@ -74,21 +74,20 @@
 
     <view class="handle-status" v-if="!houseEmptyInfo.isHouseEmpty">
       <image src="@/static/images/icon_warning.png" class="icon" />
-      <view class="txt">该户房屋腾空办理未完成</view>
+      <view class="txt">房屋腾空办理未完成</view>
     </view>
 
     <view class="handle-status" v-if="houseEmptyInfo.isHouseEmpty === '0'">
       <image src="@/static/images/icon_null_cont.png" class="null-icon" />
-      <view class="txt">该户无房屋腾空</view>
+      <view class="txt">无房屋腾空</view>
     </view>
 
     <view class="handle-status" v-if="houseEmptyInfo.isHouseEmpty === '1'">
       <image src="@/static/images/icon_submit.png" class="icon" />
-      <view class="txt"
-        >该户房屋腾空办理已完成，腾空日期:{{
-          dayjs(houseEmptyInfo.houseEmptyDate).format('YYYY-MM-DD')
-        }}</view
-      >
+      <view class="txt">
+        房屋腾空办理已完成，腾空日期:
+        {{ dayjs(houseEmptyInfo.houseEmptyDate).format('YYYY-MM-DD') }}
+      </view>
     </view>
   </view>
 </template>
@@ -98,6 +97,7 @@ import { computed } from 'vue'
 import { LandlordType } from '@/types/sync'
 import { updateImpLandlordHouseEmptyApi } from '@/service'
 import { routerForward } from '@/utils'
+import { MainType } from '@/types/common'
 import dayjs from 'dayjs'
 
 interface PropsType {
@@ -105,6 +105,7 @@ interface PropsType {
 }
 
 const props = defineProps<PropsType>()
+const emit = defineEmits(['updateData'])
 
 const houseEmptyInfo = computed(() => {
   return props.dataInfo.immigrantHouseEmpty || {}
@@ -133,6 +134,7 @@ const notHandle = async () => {
       title: '操作成功！',
       icon: 'success'
     })
+    emit('updateData')
   }
 }
 </script>

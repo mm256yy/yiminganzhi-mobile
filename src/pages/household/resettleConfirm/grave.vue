@@ -78,6 +78,7 @@ interface PropsType {
 
 const props = defineProps<PropsType>()
 const loading = ref<boolean>(false)
+const emit = defineEmits(['updateData'])
 
 const tableData = computed(() => {
   return props.dataInfo.immigrantGraveList || []
@@ -104,7 +105,7 @@ const deleteGrave = async (uid: string) => {
       title: '保存成功！',
       icon: 'success'
     })
-    // 更新列表
+    emit('updateData')
   }
 }
 
