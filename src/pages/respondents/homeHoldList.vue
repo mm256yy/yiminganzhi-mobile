@@ -151,9 +151,7 @@ onMounted(() => {
 onLoad((options: any) => {
   if (options) {
     const params = options && JSON.parse(options.params)
-    console.log('onLoad-PK2', params)
     sourceType.value = params.type
-    console.log('onLoad-PK2', sourceType.value)
   }
 })
 

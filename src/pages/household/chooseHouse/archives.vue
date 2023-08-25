@@ -226,7 +226,7 @@
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { routerBack, dictOption, formatStr } from '@/utils'
-import { apartmentArea, resettleArea } from '../config'
+import { apartmentArea, resettleArea } from '../../common/config'
 import {
   getChooseConfigApi,
   getHouseConfigApi,
