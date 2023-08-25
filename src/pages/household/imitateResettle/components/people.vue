@@ -35,9 +35,9 @@
             v-if="props.isEdit"
             class="select-wrap"
             v-model="item.settingWay"
-            :localdata="dict[375]"
+            :localdata="dict[372]"
           />
-          <text v-else>{{ formatDict(item.settingWay, 375) }}</text>
+          <text v-else>{{ formatDict(item.settingWay, 372) }}</text>
         </view>
       </view>
       <view class="item two-col">
@@ -145,10 +145,9 @@ const stepNext = async () => {
 
     .select-wrap {
       width: 94rpx;
-      height: 21rpx;
-      overflow: hidden;
+      height: 23rpx;
+      font-size: 9rpx;
       background: #ffffff;
-      border: 1rpx solid #ebebeb !important;
       border-radius: 2rpx;
     }
 

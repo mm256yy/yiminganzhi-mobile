@@ -4,12 +4,10 @@
       <view class="item">
         <view class="label">宅基地安置人数：</view>
         <view class="value-box">
-          <text class="red">{{ familyNum }}</text
-          >人，其中该户农村移民 ： <text class="red">{{ ruralMigrantNum }}</text
-          >人，非农移民 ：{{ unruralMigrantNum }}人，随迁人口：<text class="red">{{
-            otherNum
-          }}</text
-          >人
+          <text class="red">{{ familyNum }}</text> 人，其中该户农村移民 ：
+          <text class="red">{{ ruralMigrantNum }}</text>
+          人，非农移民 ：{{ unruralMigrantNum }} 人，随迁人口：
+          <text class="red">{{ otherNum }}</text> 人
         </view>
       </view>
 
@@ -163,17 +161,15 @@
           <view class="info-item">
             根据您输入的安置人数：
             <text class="red">{{ familyNum }}</text> 人，选购总面积为：
-            <text class="red">{{ totalArea }}</text
-            >m²
+            <text class="red">{{ totalArea }}</text> m²
           </view>
 
           <view class="info-item">
             选择选定户型为：
             <template v-for="item in areaSize" :key="item.id">
               <template v-if="item.num > 0">
-                <text class="red">{{ item.name }}</text> {{ item.unit
-                }}<text class="red">{{ item.num }}</text
-                >套
+                <text class="red">{{ item.name }}</text> {{ item.unit }}
+                <text class="red">{{ item.num }}</text> 套
                 <text>，</text>
               </template>
             </template>
@@ -181,8 +177,7 @@
 
           <view class="info-item">
             剩余面积： <text class="red">{{ residueArea }}</text> ㎡ 超出面积：
-            <text class="red">{{ exceedArea }}</text
-            >m²
+            <text class="red">{{ exceedArea }}</text> m²
           </view>
 
           <view class="info-item">

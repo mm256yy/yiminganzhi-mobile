@@ -4,10 +4,9 @@
       <view class="item">
         <view class="label">宅基地安置人数：</view>
         <view class="value-box">
-          <text class="red">{{ familyNum }}</text
-          >人，其中该户农村移民 ： <text class="red">{{ ruralMigrantNum }}</text
-          >人，随迁人口：<text class="red">{{ familyNum - ruralMigrantNum }}</text
-          >人
+          <text class="red">{{ familyNum }}</text> 人，其中该户农村移民 ：
+          <text class="red">{{ ruralMigrantNum }}</text> 人，随迁人口：
+          <text class="red">{{ familyNum - ruralMigrantNum }}</text> 人
         </view>
       </view>
 

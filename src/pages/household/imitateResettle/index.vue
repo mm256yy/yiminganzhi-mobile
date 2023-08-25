@@ -33,6 +33,8 @@
             {{ item.text }}
           </view>
         </view>
+
+        <!-- 宅基地安置 -->
         <homestead
           v-if="houseAreaType === HouseType.homestead"
           :baseInfo="props.dataInfo"
@@ -41,6 +43,8 @@
           :fromResettleConfirm="false"
           @submit="immigrantSettleSubmit"
         />
+
+        <!-- 公寓房安置 -->
         <apartment
           v-else-if="houseAreaType === HouseType.flat"
           :baseInfo="props.dataInfo"
@@ -49,6 +53,8 @@
           :fromResettleConfirm="false"
           @submit="immigrantSettleSubmit"
         />
+
+        <!-- 集中供养安置 -->
         <centerSupport
           v-else-if="houseAreaType === HouseType.concentrate"
           :data="demographicList"
@@ -57,6 +63,8 @@
           :fromResettleConfirm="false"
           @submit="immigrantSettleSubmit"
         />
+
+        <!-- 自谋职业安置 -->
         <findSelf
           v-else-if="houseAreaType === HouseType.oneself"
           :data="demographicList"
@@ -99,12 +107,13 @@ import centerSupport from './components/centerSupport.vue'
 import findSelf from './components/findSelf.vue'
 
 import { LandlordType } from '@/types/sync'
+import { SimulateDemographicType } from '@/types/impDataFill'
 import { HouseType } from '@/types/common'
+import { showToast } from '@/config/msg'
 import {
   updateImpLandlordSimulateDemographicApi,
   updateImpLandlordSimulateImmigrantSettleApi
 } from '@/service'
-import { SimulateDemographicType } from '@/types/impDataFill'
 
 interface PropsType {
   dataInfo: LandlordType
@@ -219,10 +228,7 @@ const houseAreaTypeChange = (item: any) => {
 const productionResettleSubmit = async (data: any) => {
   const res = await updateImpLandlordSimulateDemographicApi(uid.value, data)
   if (res) {
-    uni.showToast({
-      title: '生产安置保存成功!',
-      icon: 'success'
-    })
+    showToast('生产安置保存成功!')
     emit('updateData')
   }
 }
@@ -233,10 +239,7 @@ const productionResettleSubmit = async (data: any) => {
 const immigrantSettleSubmit = async (data: any) => {
   const res = await updateImpLandlordSimulateImmigrantSettleApi(uid.value, data)
   if (res) {
-    uni.showToast({
-      title: '搬迁安置保存成功!',
-      icon: 'success'
-    })
+    showToast('搬迁安置保存成功!')
     stepIndex.value += 1
     emit('updateData')
   }
@@ -251,7 +254,6 @@ const areaDetailClose = () => {
 }
 
 onMounted(() => {
-  console.log(areaDetailSubNVue, 'areaDetailSubNVue')
   // 监听关闭子窗口
   uni.$on('areaDetailClose', areaDetailClose)
 })

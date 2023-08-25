@@ -20,7 +20,7 @@
     </view>
 
     <!-- houseAreaType: homestead 宅基地，flat 公寓房 -->
-    <view v-if="immigrantSettle && immigrantSettle.houseAreaType === 'homestead'">
+    <view v-if="houseAreaType === 'homestead'">
       <view class="list" v-if="props.dataList && props.dataList.length > 0">
         <view class="list-item" v-for="item in props.dataList" :key="item.id">
           <view class="list-1">
@@ -85,7 +85,7 @@
       </view>
     </view>
 
-    <view v-if="immigrantSettle && immigrantSettle.houseAreaType === 'flat'">
+    <view v-if="houseAreaType === 'flat'">
       <view class="list" v-if="props.dataList && props.dataList.length > 0">
         <view class="list-item" v-for="item in props.dataList" :key="item.id">
           <view class="list-1">
@@ -187,7 +187,7 @@ const landNoList = ref<any[]>([]) // 地块编号选项列表
 const storeroomNoList = ref<any[]>([]) // 储藏室编号选项列表
 const carNoList = ref<any[]>([]) // 车位号选项列表
 const roomNoList = ref<any[]>([]) // 幢号-房号 选项列表
-const { immigrantSettle } = props.baseInfo as any
+const { houseAreaType } = props.baseInfo as any
 
 /**
  * 获取安置区块
@@ -196,26 +196,22 @@ const { immigrantSettle } = props.baseInfo as any
 const getSettleAddress = (data: string) => {
   if (data) {
     // 选择了公寓房的安置方式
-    if (immigrantSettle) {
-      if (immigrantSettle.houseAreaType === 'flat') {
-        let str = ''
-        apartmentArea.map((item: any) => {
-          if (item.id === data) {
-            str = item.name
-          }
-        })
-        return str
-      } else {
-        let str = ''
-        resettleArea.map((item: any) => {
-          if (item.id === data) {
-            str = item.name
-          }
-        })
-        return str
-      }
-    } else {
-      return ''
+    if (houseAreaType === 'flat') {
+      let str = ''
+      apartmentArea.map((item: any) => {
+        if (item.id === data) {
+          str = item.name
+        }
+      })
+      return str
+    } else if (houseAreaType === 'homestead') {
+      let str = ''
+      resettleArea.map((item: any) => {
+        if (item.id === data) {
+          str = item.name
+        }
+      })
+      return str
     }
   } else {
     return ''
@@ -283,7 +279,7 @@ const getHouseConfig = () => {
 const onArchives = () => {
   let params = {
     uid: props.baseInfo.uid,
-    type: immigrantSettle.houseAreaType
+    type: houseAreaType
   }
   routerForward('chooseHouseArchives', {
     params: JSON.stringify(params)
@@ -291,8 +287,8 @@ const onArchives = () => {
 }
 
 const toLink = (itemUid?: any) => {
-  const { uid, doorNo, immigrantSettle } = props.baseInfo
-  let params = { type: immigrantSettle.houseAreaType, uid, doorNo, itemUid }
+  const { uid, doorNo } = props.baseInfo
+  let params = { type: houseAreaType, uid, doorNo, itemUid }
   routerForward('chooseHouseEdit', {
     params: JSON.stringify(params)
   })
