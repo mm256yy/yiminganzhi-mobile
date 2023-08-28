@@ -95,7 +95,7 @@
 
     <view class="null-wrapper" v-else>
       <image class="icon" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
-      <view class="tips">该用户未选择集中供养</view>
+      <view class="tips">该户未选择集中供养</view>
     </view>
   </view>
 </template>

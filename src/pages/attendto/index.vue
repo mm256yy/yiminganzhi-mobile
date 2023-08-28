@@ -26,6 +26,7 @@
         @submit="submitSuccess"
       />
 
+      <!-- 房屋腾空办理 -->
       <HouseVacate
         v-if="handleType === 4"
         :uid="query.uid"
@@ -34,6 +35,7 @@
         @submit="submitSuccess"
       />
 
+      <!-- 土地腾让办理 -->
       <LandVacate
         v-if="handleType === 5"
         :uid="query.uid"
@@ -42,6 +44,7 @@
         @submit="submitSuccess"
       />
 
+      <!-- 过渡安置办理 -->
       <TransitionVacate
         v-if="handleType === 6"
         :uid="query.uid"
@@ -71,7 +74,6 @@ import { computed, ref } from 'vue'
 import Container from '@/components/Container/index.vue'
 import { getImpLandlordItemApi } from '@/service'
 import { routerBack } from '@/utils'
-import { LandlordType } from '@/types/sync'
 
 import Procedures from './procedures.vue'
 import Insure from './insure.vue'
@@ -123,7 +125,7 @@ const getTitle = () => {
 }
 
 // 详情数据
-const dataInfo = ref<LandlordType | null>(null)
+const dataInfo = ref<any>({})
 
 // 档案类型
 const handleType = computed(() => {
@@ -148,7 +150,9 @@ const submitSuccess = () => {
 
 <style lang="scss" scoped>
 .archives-wrap {
+  width: 100%;
   padding: 6rpx;
-  background-color: #fff;
+  background-color: #e7edfd;
+  box-sizing: border-box;
 }
 </style>
