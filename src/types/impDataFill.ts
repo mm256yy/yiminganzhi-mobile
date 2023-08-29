@@ -251,6 +251,7 @@ export interface ImmigrantHouseEmptyType {
   isHouseEmpty: string
   houseEmptyDate: string
   houseEmptyOpinion: string
+  [key: string]: any
 }
 
 // 土地腾空 immigrantLandEmpty
@@ -264,6 +265,7 @@ export interface ImmigrantLandEmptyType {
   isLandEmpty: string
   landEmptyDate: string
   landEmptyOpinion: string
+  [key: string]: any
 }
 
 // 过渡安置 immigrantExcess
@@ -278,6 +280,7 @@ export interface ImmigrantExcessType {
   excessStartDate: string
   excessEndDate: string
   excessAddress: string
+  [key: string]: any
 }
 
 // 自建房 immigrantBuildOneselfList

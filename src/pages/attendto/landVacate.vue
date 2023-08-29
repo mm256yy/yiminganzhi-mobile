@@ -78,8 +78,8 @@ import { LandlordType } from '@/types/sync'
 
 interface PropsType {
   uid: string
-  dataInfo: LandlordType | null
-  immigrantLandEmpty: Partial<ImmigrantLandEmptyType> | undefined
+  dataInfo: LandlordType
+  immigrantLandEmpty: ImmigrantLandEmptyType
 }
 
 const props = defineProps<PropsType>()

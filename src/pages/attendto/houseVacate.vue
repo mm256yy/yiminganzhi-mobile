@@ -1,22 +1,24 @@
 <template>
-  <view>
-    <view class="common-head">
-      <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-      <text>家庭情况</text>
-    </view>
+  <view class="form-wrapper">
+    <uni-forms class="form" ref="form" :modelValue="formData">
+      <view class="title-wrapper">
+        <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
+        <text>家庭情况</text>
+      </view>
 
-    <view class="label-value">
       <uni-row>
         <uni-col :span="12">
           <view class="col">
             <view class="label">户主姓名：</view>
-            <view class="content">{{ dataInfo?.name }}</view>
+            <view class="content">{{ formatStr(dataInfo?.name) }}</view>
           </view>
         </uni-col>
         <uni-col :span="12">
           <view class="col">
             <view class="label">户内人口：</view>
-            <view class="content"> {{ dataInfo?.demographicList.length }} </view>
+            <view class="content">
+              {{ formatStr(dataInfo?.demographicList.length) }}
+            </view>
           </view>
         </uni-col>
       </uni-row>
@@ -25,40 +27,61 @@
         <uni-col :span="12">
           <view class="col">
             <view class="label">迁出地址：</view>
-            <view class="content">{{ dataInfo?.address }}</view>
+            <view class="content">{{ formatStr(dataInfo?.address) }}</view>
           </view>
         </uni-col>
         <uni-col :span="12">
           <view class="col">
             <view class="label">联系方式：</view>
-            <view class="content"> {{ dataInfo?.phone }} </view>
+            <view class="content">{{ formatStr(dataInfo?.phone) }}</view>
           </view>
         </uni-col>
       </uni-row>
-    </view>
 
-    <view class="common-head">
-      <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-      <text>房屋腾空办理情况</text>
-    </view>
-
-    <view class="arch-box">
-      <view class="arch-item">
-        <view class="arch-label"><text class="red">*</text>完成时间：</view>
-        <view class="arch-value">
-          <uni-datetime-picker type="date" :clear-icon="true" v-model="date" />
-        </view>
+      <view class="title-wrapper">
+        <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
+        <text>房屋腾空办理情况</text>
       </view>
 
-      <view class="arch-item">
-        <view class="arch-label"><text class="red">*</text> 移民户主意见：</view>
-        <view class="arch-value">
-          <view class="ipt-wrap">
-            <input class="ipt" type="text" v-model="text" />
-          </view>
-        </view>
-      </view>
-    </view>
+      <uni-row>
+        <uni-col :span="24">
+          <uni-forms-item
+            required
+            label="完成时间："
+            :label-width="150"
+            label-align="right"
+            name="formData.houseEmptyDate"
+          >
+            <view class="picker-wrapper">
+              <picker mode="date" :value="currentDate" :fields="'date'" @change="bindDateChange">
+                <view :class="['uni-input', formData.houseEmptyDate ? '' : 'select']">
+                  {{ formData.houseEmptyDate ? formData.houseEmptyDate : '请选择' }}
+                </view>
+              </picker>
+            </view>
+          </uni-forms-item>
+        </uni-col>
+      </uni-row>
+
+      <uni-row>
+        <uni-col :span="24">
+          <uni-forms-item
+            required
+            label="移民户主意见："
+            :label-width="150"
+            label-align="right"
+            name="formData.houseEmptyOpinion"
+          >
+            <uni-easyinput
+              v-model="formData.houseEmptyOpinion"
+              type="textarea"
+              :maxlength="50"
+              placeholder="请输入(50字以内)"
+            />
+          </uni-forms-item>
+        </uni-col>
+      </uni-row>
+    </uni-forms>
 
     <image
       class="submit-btn"
@@ -71,170 +94,217 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { ImmigrantHouseEmptyType } from '@/types/impDataFill'
 import { updateImpLandlordHouseEmptyApi } from '@/service'
+import { ImmigrantHouseEmptyType } from '@/types/impDataFill'
+import { formatStr } from '@/utils'
+import { SUCCESS_MSG, showToast } from '@/config/msg'
 import dayjs from 'dayjs'
 import { LandlordType } from '@/types/sync'
 
 interface PropsType {
   uid: string
-  dataInfo: LandlordType | null
-  immigrantHouseEmpty: Partial<ImmigrantHouseEmptyType> | undefined
+  dataInfo: LandlordType
+  immigrantHouseEmpty: ImmigrantHouseEmptyType
 }
 
 const props = defineProps<PropsType>()
+
+const formData = ref<ImmigrantHouseEmptyType>({
+  doorNo: props.dataInfo?.doorNo,
+  status: 'implementation',
+  isHouseEmpty: '',
+  houseEmptyDate: '',
+  houseEmptyOpinion: ''
+})
+
 const emit = defineEmits(['submit'])
-const text = ref<string>('本户房屋已腾空完毕，同意交付给工程建设指挥部处理。')
-const date = ref<string>('')
+
+// 获取年月日
+const getDate = () => {
+  if (formData.value.houseEmptyDate) {
+    return formData.value.houseEmptyDate
+  } else {
+    return `${dayjs().year()}-${dayjs().month() + 1}-${dayjs().date()}`
+  }
+}
+
+const currentDate = ref<any>('')
 
 watch(
   () => props.immigrantHouseEmpty,
-  (val) => {
+  (val: ImmigrantHouseEmptyType) => {
     if (val) {
-      // 基本信息
-      const { houseEmptyOpinion, houseEmptyDate } = val
-
-      if (houseEmptyOpinion) {
-        text.value = houseEmptyOpinion
+      formData.value = {
+        ...val,
+        houseEmptyDate: val.houseEmptyDate
+          ? dayjs(val.houseEmptyDate).format('YYYY-MM-DD')
+          : getDate()
       }
-      if (houseEmptyDate) {
-        date.value = dayjs(houseEmptyDate).format('YYYY-MM-DD')
-      }
+      currentDate.value = val.houseEmptyDate
+        ? dayjs(val.houseEmptyDate).format('YYYY-MM-DD')
+        : getDate()
     }
   },
   { immediate: true, deep: true }
 )
 
+/**
+ *日期选择
+ */
+const bindDateChange = (e: any) => {
+  formData.value.houseEmptyDate = e.detail.value
+}
+
 const submit = async () => {
-  if (!text.value) {
-    uni.showToast({
-      title: '请填写意见',
-      icon: 'none'
-    })
+  if (!formData.value.houseEmptyDate) {
+    showToast('请选择完成时间')
     return
   }
-  if (!date.value) {
-    uni.showToast({
-      title: '请填写时间',
-      icon: 'none'
-    })
+  if (!formData.value.houseEmptyOpinion) {
+    showToast('请填写移民户主意见')
     return
   }
 
   const params: Partial<ImmigrantHouseEmptyType> = {
-    houseEmptyOpinion: text.value,
-    houseEmptyDate: dayjs(date.value).toString(),
+    ...formData.value,
+    houseEmptyDate: formData.value.houseEmptyDate
+      ? dayjs(formData.value.houseEmptyDate).toString()
+      : '',
     isHouseEmpty: '1'
   }
-  console.log(params, '参数')
   const res = await updateImpLandlordHouseEmptyApi(props.uid, params)
   if (res) {
     // 更新相关手续
-    uni.showToast({
-      title: '保存成功！',
-      icon: 'success'
-    })
+    showToast(SUCCESS_MSG)
     emit('submit')
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.common-head {
-  display: flex;
+.form-wrapper {
   width: 100%;
-  height: 28rpx;
-  margin-top: 9rpx;
-  font-size: 9rpx;
-  font-weight: 500;
-  color: #171718;
-  background: #ffffff;
-  border-bottom: 1rpx solid #f0f0f0;
-  border-radius: 5rpx 5rpx 0px 0px;
-  flex-direction: row;
-  align-items: center;
+  height: calc(100vh - 33rpx - 12rpx - var(--status-bar-height));
+  padding: 6rpx;
+  background-color: #fff;
+  border-radius: 2rpx;
+  box-sizing: border-box;
 
-  .icon {
-    width: 10rpx;
-    height: 10rpx;
-    margin-right: 6rpx;
-  }
-}
+  .form {
+    height: calc(100vh - 33rpx - 12rpx - 9rpx - var(--status-bar-height));
+    padding: 0 0 9rpx 0;
+    overflow-y: scroll;
+    background-color: #fff;
+    box-sizing: border-box;
 
-.arch-box {
-  .arch-item {
-    display: flex;
-    padding: 5rpx 12rpx;
-    margin-top: 9rpx;
+    ::v-deep.uni-forms-item__label {
+      font-size: 9rpx !important;
+      color: rgba(23, 23, 24, 0.6) !important;
+    }
 
-    .arch-label {
-      width: 80rpx;
-      font-size: 9rpx;
-      color: #171718;
-      text-align: right;
+    ::v-deep.uni-easyinput__content {
+      width: 200rpx !important;
 
-      .red {
-        color: red;
+      .uni-easyinput__placeholder-class,
+      .uni-input-input {
+        font-size: 9rpx !important;
       }
     }
 
-    .arch-value {
-      flex: 1;
+    ::v-deep.uni-data-tree,
+    ::v-deep.uni-stat__select {
+      flex: 0 auto !important;
+      width: 200rpx !important;
+    }
+
+    ::v-deep.uni-select__input-text {
+      width: 90% !important;
+      font-size: 9rpx !important;
+    }
+
+    ::v-deep.uni-date,
+    ::v-deep.uni-date-editor {
+      width: 200rpx !important;
+    }
+
+    ::v-deep.uni-input-input,
+    ::v-deep.uni-input-placeholder {
+      font-size: 9rpx !important;
+    }
+
+    .title-wrapper {
+      display: flex;
+      width: 100%;
+      height: 28rpx;
+      margin-bottom: 9rpx;
+      font-size: 9rpx;
+      color: #171718;
+      background: #fff;
+      border-bottom: 1rpx solid #f0f0f0;
+      border-radius: 5rpx 5rpx 0px 0px;
+      flex-direction: row;
+      align-items: center;
+
+      .icon {
+        width: 10rpx;
+        height: 10rpx;
+        margin-right: 6rpx;
+      }
+    }
+
+    .col {
       display: flex;
       align-items: center;
-    }
-  }
-}
+      flex-direction: row;
+      height: 23rpx;
 
-.ipt-wrap {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: 23rpx;
-  margin-right: 6rpx;
-  border: 1rpx solid #ebebeb;
-  border-radius: 2rpx;
+      .label {
+        width: 100rpx;
+        height: 23rpx;
+        margin-right: 9rpx;
+        font-size: 9rpx;
+        color: rgba(23, 23, 24, 0.6);
+        text-align: right;
+      }
 
-  .ipt {
-    flex: 1;
-    height: 23rpx;
-    padding: 0 4rpx;
-    font-size: 9rpx;
-    color: #171718;
-  }
-}
-
-.label-value {
-  padding: 5rpx 12rpx 12rpx 0;
-  box-sizing: border-box;
-
-  .col {
-    display: flex;
-    flex-direction: row;
-
-    .label {
-      width: 90rpx;
-      height: 16rpx;
-      margin-left: 9rpx;
-      font-size: 9rpx;
-      line-height: 16rpx;
-      color: rgba(23, 23, 24, 0.6);
+      .content {
+        height: 23rpx;
+        font-size: 9rpx;
+        color: #171718;
+      }
     }
 
-    .content {
+    .picker-wrapper {
+      display: flex;
+      width: 200rpx;
+      height: 23rpx;
+      padding-left: 7rpx;
+      overflow: hidden;
       font-size: 9rpx;
-      line-height: 16rpx;
+      line-height: 23rpx;
       color: #171718;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      border: 1px solid #d9d9d9;
+      border-radius: 4px;
+
+      .uni-input {
+        width: 180rpx;
+
+        &.select {
+          color: #999;
+        }
+      }
     }
   }
-}
 
-.submit-btn {
-  position: fixed;
-  right: 25rpx;
-  bottom: 20rpx;
-  width: 36rpx;
-  height: 36rpx;
-  border-radius: 50%;
+  .submit-btn {
+    position: fixed;
+    right: 25rpx;
+    bottom: 20rpx;
+    width: 36rpx;
+    height: 36rpx;
+    border-radius: 50%;
+  }
 }
 </style>
