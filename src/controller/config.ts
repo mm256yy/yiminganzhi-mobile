@@ -79,5 +79,6 @@ export const defaultFillingObj = {
   agreementStatus: '0',
   deviceStatus: '0',
   specialStatus: '0',
-  disposalMeasuresStatus: '0'
+  disposalMeasuresStatus: '0',
+  selfSeekingStatus: '0'
 }

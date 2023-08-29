@@ -8,7 +8,7 @@ import { LandlordType } from '@/types/sync'
 import { getStorage, StorageKey } from '@/utils'
 import { LandlordSearchType, HouseAreaType } from '@/types/common'
 import { GraveController } from './grave'
-import { defaultDocumentObj } from './config'
+import { defaultDocumentObj, defaultFillingObj } from './config'
 
 export class ImpLandlord extends Common {
   public format: string
@@ -60,7 +60,7 @@ export class ImpLandlord extends Common {
 
     // 判断初始化
     if (!landlordItem.immigrantFilling) {
-      landlordItem.immigrantFilling = {}
+      landlordItem.immigrantFilling = { ...defaultFillingObj }
     }
     // 人口核定完成条件：人口性质设置成功
     if (this.isArrayAndNotNull(demographicList)) {
