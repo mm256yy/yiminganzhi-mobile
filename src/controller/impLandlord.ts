@@ -392,7 +392,10 @@ export class ImpLandlord extends Common {
           }
 
           if (!res.immigrantDocumentation) {
-            res.immigrantDocumentation = defaultDocumentObj
+            res.immigrantDocumentation = { ...defaultDocumentObj }
+          }
+          if (!res.immigrantFilling) {
+            res.immigrantFilling = { ...defaultFillingObj }
           }
 
           const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
@@ -504,7 +507,10 @@ export class ImpLandlord extends Common {
           }
 
           if (!res.immigrantDocumentation) {
-            res.immigrantDocumentation = defaultDocumentObj
+            res.immigrantDocumentation = { ...defaultDocumentObj }
+          }
+          if (!res.immigrantFilling) {
+            res.immigrantFilling = { ...defaultFillingObj }
           }
 
           const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
@@ -610,7 +616,10 @@ export class ImpLandlord extends Common {
 
         if (res && res.uid) {
           if (!res.immigrantDocumentation) {
-            res.immigrantDocumentation = defaultDocumentObj
+            res.immigrantDocumentation = { ...defaultDocumentObj }
+          }
+          if (!res.immigrantFilling) {
+            res.immigrantFilling = { ...defaultFillingObj }
           }
 
           const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
