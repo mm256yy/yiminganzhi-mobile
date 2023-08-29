@@ -56,6 +56,7 @@ import { ref, watch } from 'vue'
 import { showToast } from '@/config/msg'
 import uploadFiles from '@/components/UploadFile/index.vue'
 import { ImmigrantDocumentationType } from '@/types/impDataFill'
+import { fmtPicUrl } from '@/utils'
 
 interface PropsType {
   immigrantDocumentation: Partial<ImmigrantDocumentationType>
@@ -72,15 +73,9 @@ watch(
   (val) => {
     if (val) {
       const { flatAgreementPic, flatMeasurementPic, flatOtherPic } = val
-      if (flatAgreementPic) {
-        flatAgreementPicStr.value = flatAgreementPic
-      }
-      if (flatMeasurementPic) {
-        flatMeasurementPicStr.value = flatMeasurementPic
-      }
-      if (flatOtherPic) {
-        flatOtherPicStr.value = flatOtherPic
-      }
+      flatAgreementPicStr.value = fmtPicUrl(flatAgreementPic)
+      flatMeasurementPicStr.value = fmtPicUrl(flatMeasurementPic)
+      flatOtherPicStr.value = fmtPicUrl(flatOtherPic)
     }
   },
   { immediate: true, deep: true }

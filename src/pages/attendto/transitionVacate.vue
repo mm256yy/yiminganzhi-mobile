@@ -88,7 +88,6 @@
       <uni-row>
         <uni-col :span="24">
           <uni-forms-item
-            required
             label="过渡结束日期："
             :label-width="150"
             label-align="right"
@@ -195,14 +194,10 @@ const submit = async () => {
     showToast('请选择开始日期')
     return
   }
-  if (!formData.value.excessEndDate) {
-    showToast('请选择结束日期')
-    return
-  }
   if (
     formData.value.excessStartDate &&
     formData.value.excessEndDate &&
-    dayjs(formData.value.excessStartDate).valueOf > dayjs(formData.value.excessEndDate).valueOf
+    dayjs(formData.value.excessStartDate).valueOf() > dayjs(formData.value.excessEndDate).valueOf()
   ) {
     showToast('开始日期不得大于结束日期')
     return

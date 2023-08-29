@@ -120,7 +120,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import dayjs from 'dayjs'
-import { formatDict, formatStr } from '@/utils'
+import { formatDict, formatStr, fmtPicUrl } from '@/utils'
 import { SUCCESS_MSG, showToast } from '@/config/msg'
 import { PopulationType } from '@/types/datafill'
 import { updateImpLandlordPeopleApi } from '@/service'
@@ -167,10 +167,7 @@ watch(
         currentDate.value = productionCompleteTime
           ? dayjs(productionCompleteTime).format('YYYY-MM-DD')
           : getDate()
-
-        if (productionPic) {
-          productionPicStr.value = productionPic
-        }
+        productionPicStr.value = fmtPicUrl(productionPic)
       }
     }
   },
@@ -193,7 +190,6 @@ const submit = async () => {
     showToast('请上传相关凭证')
     return
   }
-
   const params: Partial<PopulationType> = {
     ...formData.value,
     uid: props.itemUid,

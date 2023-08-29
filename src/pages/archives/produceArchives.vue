@@ -10,11 +10,11 @@
         <view class="arch-label"><text class="red">*</text> 生产安置确认单：</view>
         <view class="arch-value">
           <uploadFiles
+            v-model="produceVerifyPicStr"
+            :file-list="produceVerifyPicStr"
             :limit="20"
-            show-type="grid"
-            :file-list="pic1"
             :accepts="['.jpg', '.png', '.pdf', '.jpeg']"
-            v-model="pic1"
+            show-type="grid"
           />
         </view>
       </view>
@@ -23,11 +23,11 @@
         <view class="arch-label">其他附件：</view>
         <view class="arch-value">
           <uploadFiles
+            v-model="produceOtherPicStr"
+            :file-list="produceOtherPicStr"
             :limit="20"
-            show-type="grid"
-            :file-list="pic2"
             :accepts="['.jpg', '.png', '.pdf', '.jpeg']"
-            v-model="pic2"
+            show-type="grid"
           />
         </view>
       </view>
@@ -46,6 +46,7 @@
 import { ref, watch } from 'vue'
 import uploadFiles from '@/components/UploadFile/index.vue'
 import { ImmigrantDocumentationType } from '@/types/impDataFill'
+import { fmtPicUrl } from '@/utils'
 
 interface PropsType {
   immigrantDocumentation: Partial<ImmigrantDocumentationType>
@@ -53,27 +54,23 @@ interface PropsType {
 
 const props = defineProps<PropsType>()
 const emit = defineEmits(['submit'])
-const pic1 = ref<string>('[]')
-const pic2 = ref<string>('[]')
+const produceVerifyPicStr = ref<string>('[]')
+const produceOtherPicStr = ref<string>('[]')
 
 watch(
   () => props.immigrantDocumentation,
   (val) => {
     if (val) {
       const { produceVerifyPic, produceOtherPic } = val
-      if (produceVerifyPic) {
-        pic1.value = produceVerifyPic
-      }
-      if (produceOtherPic) {
-        pic2.value = produceOtherPic
-      }
+      produceVerifyPicStr.value = fmtPicUrl(produceVerifyPic)
+      produceOtherPicStr.value = fmtPicUrl(produceOtherPic)
     }
   },
   { immediate: true, deep: true }
 )
 
 const submit = async () => {
-  if (!pic1.value || pic1.value === '[]') {
+  if (!produceVerifyPicStr.value || produceVerifyPicStr.value === '[]') {
     uni.showToast({
       title: '请上传确认单',
       icon: 'none'
@@ -81,8 +78,8 @@ const submit = async () => {
     return
   }
   emit('submit', {
-    produceVerifyPic: pic1.value,
-    produceOtherPic: pic2.value
+    produceVerifyPic: produceVerifyPicStr.value,
+    produceOtherPic: produceOtherPicStr.value
   })
 }
 </script>

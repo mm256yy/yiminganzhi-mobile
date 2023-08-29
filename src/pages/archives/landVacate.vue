@@ -10,11 +10,11 @@
         <view class="arch-label"><text class="red">*</text> 土地腾让确认单：</view>
         <view class="arch-value">
           <uploadFiles
+            v-model="landEmptyPicStr"
+            :file-list="landEmptyPicStr"
             :limit="20"
-            show-type="grid"
-            :file-list="pic1"
             :accepts="['.jpg', '.png', '.pdf', '.jpeg']"
-            v-model="pic1"
+            show-type="grid"
           />
         </view>
       </view>
@@ -23,11 +23,11 @@
         <view class="arch-label">其他附件：</view>
         <view class="arch-value">
           <uploadFiles
+            v-model="landEmptyOtherPicStr"
+            :file-list="landEmptyOtherPicStr"
             :limit="20"
-            show-type="grid"
-            :file-list="pic2"
             :accepts="['.jpg', '.png', '.pdf', '.jpeg']"
-            v-model="pic2"
+            show-type="grid"
           />
         </view>
       </view>
@@ -46,6 +46,7 @@
 import { ref, watch } from 'vue'
 import uploadFiles from '@/components/UploadFile/index.vue'
 import { ImmigrantDocumentationType } from '@/types/impDataFill'
+import { fmtPicUrl } from '@/utils'
 
 interface PropsType {
   immigrantDocumentation: Partial<ImmigrantDocumentationType>
@@ -53,27 +54,23 @@ interface PropsType {
 
 const props = defineProps<PropsType>()
 const emit = defineEmits(['submit'])
-const pic1 = ref<string>('[]')
-const pic2 = ref<string>('[]')
+const landEmptyPicStr = ref<string>('[]')
+const landEmptyOtherPicStr = ref<string>('[]')
 
 watch(
   () => props.immigrantDocumentation,
   (val) => {
     if (val) {
       const { landEmptyPic, landEmptyOtherPic } = val
-      if (landEmptyPic) {
-        pic1.value = landEmptyPic
-      }
-      if (landEmptyOtherPic) {
-        pic2.value = landEmptyOtherPic
-      }
+      landEmptyPicStr.value = fmtPicUrl(landEmptyPic)
+      landEmptyOtherPicStr.value = fmtPicUrl(landEmptyOtherPic)
     }
   },
   { immediate: true, deep: true }
 )
 
 const submit = async () => {
-  if (!pic1.value || pic1.value === '[]') {
+  if (!landEmptyPicStr.value || landEmptyPicStr.value === '[]') {
     uni.showToast({
       title: '请上传确认单',
       icon: 'none'
@@ -81,8 +78,8 @@ const submit = async () => {
     return
   }
   emit('submit', {
-    landEmptyPic: pic1.value,
-    landEmptyOtherPic: pic2.value
+    landEmptyPic: landEmptyPicStr.value,
+    landEmptyOtherPic: landEmptyOtherPicStr.value
   })
 }
 </script>

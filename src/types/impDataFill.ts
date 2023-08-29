@@ -303,14 +303,14 @@ export interface ImmigrantBuildOneselfType {
 export interface ImmigrantProceduresType {
   isUpdate?: string
   id?: number
-  doorNo: string
+  doorNo?: string
   uid?: string
   projectId?: number
   status?: string
   completeDate: string
   completePic: string
-  name: string
-  type: string
+  name?: string
+  type?: string
   needHandle: string
   isComplete: string
   [key: string]: any

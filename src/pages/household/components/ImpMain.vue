@@ -132,7 +132,11 @@
           />
 
           <!-- 自谋出路 -->
-          <self-find-way v-if="tabVal === 21" :data-info="dataInfo" />
+          <self-find-way
+            v-if="tabVal === 21"
+            :data-info="dataInfo"
+            :base-info="dataInfo.immigrantSelfSeeking"
+          />
 
           <!-- 生产安置 农业安置 -->
           <farming v-if="tabVal === 22" :dataInfo="dataInfo" />

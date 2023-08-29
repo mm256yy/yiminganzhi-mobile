@@ -10,11 +10,11 @@
         <view class="arch-label"><text class="red">*</text> 农业安置凭证：</view>
         <view class="arch-value">
           <uploadFiles
+            v-model="agriculturePicStr"
+            :file-list="agriculturePicStr"
             :limit="20"
-            show-type="grid"
-            :file-list="pic1"
             :accepts="['.jpg', '.png', '.pdf', '.jpeg']"
-            v-model="pic1"
+            show-type="grid"
           />
         </view>
       </view>
@@ -23,11 +23,11 @@
         <view class="arch-label">其他附件：</view>
         <view class="arch-value">
           <uploadFiles
+            v-model="agricultureOtherPicStr"
+            :file-list="agricultureOtherPicStr"
             :limit="20"
-            show-type="grid"
-            :file-list="pic2"
             :accepts="['.jpg', '.png', '.pdf', '.jpeg']"
-            v-model="pic2"
+            show-type="grid"
           />
         </view>
       </view>
@@ -46,6 +46,8 @@
 import { ref, watch } from 'vue'
 import uploadFiles from '@/components/UploadFile/index.vue'
 import { ImmigrantDocumentationType } from '@/types/impDataFill'
+import { fmtPicUrl } from '@/utils'
+import { showToast } from '@/config/msg'
 
 interface PropsType {
   immigrantDocumentation: Partial<ImmigrantDocumentationType>
@@ -53,36 +55,29 @@ interface PropsType {
 
 const props = defineProps<PropsType>()
 const emit = defineEmits(['submit'])
-const pic1 = ref<string>('[]')
-const pic2 = ref<string>('[]')
+const agriculturePicStr = ref<string>('[]')
+const agricultureOtherPicStr = ref<string>('[]')
 
 watch(
   () => props.immigrantDocumentation,
   (val) => {
     if (val) {
       const { agriculturePic, agricultureOtherPic } = val
-      if (agriculturePic) {
-        pic1.value = agriculturePic
-      }
-      if (agricultureOtherPic) {
-        pic2.value = agricultureOtherPic
-      }
+      agriculturePicStr.value = fmtPicUrl(agriculturePic)
+      agricultureOtherPicStr.value = fmtPicUrl(agricultureOtherPic)
     }
   },
   { immediate: true, deep: true }
 )
 
 const submit = async () => {
-  if (!pic1.value || pic1.value === '[]') {
-    uni.showToast({
-      title: '请上传确认单',
-      icon: 'none'
-    })
+  if (!agriculturePicStr.value || agriculturePicStr.value === '[]') {
+    showToast('请上传确认单')
     return
   }
   emit('submit', {
-    agriculturePic: pic1.value,
-    agricultureOtherPic: pic2.value
+    agriculturePic: agriculturePicStr.value,
+    agricultureOtherPic: agricultureOtherPicStr.value
   })
 }
 </script>
