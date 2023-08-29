@@ -131,7 +131,7 @@ import { formatStr, routerForward, dictOption } from '@/utils'
 import { apartmentArea, resettleArea } from '../../common/config'
 import { getChooseConfigApi, getHouseConfigApi } from '@/service'
 import { LandlordType } from '@/types/sync'
-import { HouseType } from '@/types/common'
+import { HouseAreaType } from '@/types/common'
 
 interface PropsType {
   dataList: any[]
@@ -148,7 +148,7 @@ const { immigrantSettle } = props.dataInfo as any
 // 搬迁安置方式
 const getRelocationResettlement = computed(() => {
   const { houseAreaType } = props.dataInfo
-  return houseAreaType === HouseType.flat
+  return houseAreaType === HouseAreaType.flat
 })
 
 /**

@@ -151,15 +151,14 @@ const isEnd = ref<boolean>(false)
 
 const page = ref<number>(1)
 const pageSize = ref<number>(10)
-const sourceType = ref(0) // 源类型 0 滞后 1 预警 2 已完成
+const sourceType = ref<string | null>(null) // 源类型 0已完成  1 预警 2 滞后
 
 // 角色类型，不同角色跳转不同的页面，默认为实物采集页面
 const roleType = ref<RoleCodeType>(getStorage(StorageKey.USERROLE))
 
 onLoad((options: any) => {
-  if (options) {
-    const type = options.type
-    sourceType.value = +type
+  if (options && options.type) {
+    sourceType.value = options.type
   }
 })
 
@@ -211,6 +210,9 @@ const getList = () => {
       type: unref(tabType),
       page: page.value,
       pageSize: pageSize.value
+    }
+    if (sourceType.value) {
+      params.warnStatus = sourceType.value
     }
     const realList = villageCode.value.filter((item) => !!item)
     if (realList.length) {
@@ -381,13 +383,13 @@ onShow(() => {
 })
 
 // 根据类型获取标签文本值
-const typeLabel = (type: number) => {
-  return type === 0 ? '滞后' : type == 1 ? '预警' : '完成'
+const typeLabel = (type: string | null) => {
+  return type === '0' ? '滞后' : type == '1' ? '预警' : '完成'
 }
 
 // 根据类型获取标签文本颜色
-const typeColor = (type: number) => {
-  return type === 0 ? 'red' : type == 1 ? 'yellow' : 'green'
+const typeColor = (type: string | null) => {
+  return type === '0' ? 'red' : type == '1' ? 'yellow' : 'green'
 }
 </script>
 

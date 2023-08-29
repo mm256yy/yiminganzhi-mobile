@@ -16,7 +16,7 @@
           </view>
         </view>
         <homestead
-          v-if="houseType === HouseType.homestead"
+          v-if="houseType === HouseAreaType.homestead"
           :baseInfo="(dataInfo as LandlordType)"
           :doorNo="doorNo"
           :immigrantSettle="immigrantSettle"
@@ -24,7 +24,7 @@
           @submit="immigrantSettleSubmit"
         />
         <apartment
-          v-else-if="houseType === HouseType.flat"
+          v-else-if="houseType === HouseAreaType.flat"
           :baseInfo="(dataInfo as LandlordType)"
           :doorNo="doorNo"
           :immigrantSettle="immigrantSettle"
@@ -32,7 +32,7 @@
           @submit="immigrantSettleSubmit"
         />
         <centerSupport
-          v-else-if="houseType === HouseType.concentrate"
+          v-else-if="houseType === HouseAreaType.concentrate"
           :data="demographicList"
           :doorNo="doorNo"
           :immigrantSettle="immigrantSettle"
@@ -40,7 +40,7 @@
           @submit="immigrantSettleSubmit"
         />
         <findSelf
-          v-else-if="houseType === HouseType.oneself"
+          v-else-if="houseType === HouseAreaType.oneself"
           :data="demographicList"
           :doorNo="doorNo"
           :immigrantSettle="immigrantSettle"
@@ -56,7 +56,7 @@
 import { onLoad } from '@dcloudio/uni-app'
 import Container from '@/components/Container/index.vue'
 import { ref } from 'vue'
-import { HouseType } from '@/types/common'
+import { HouseAreaType } from '@/types/common'
 import { PopulationType } from '@/types/datafill'
 import { ImmigrantSettleType } from '@/types/impDataFill'
 import { StorageKey, getStorage } from '@/utils/storage'
@@ -73,7 +73,7 @@ import { LandlordType } from '@/types/sync'
 const uid = ref<string>('')
 const doorNo = ref<string>('')
 const demographicList = ref<PopulationType[]>([])
-const houseType = ref<HouseType>(HouseType.homestead)
+const houseType = ref<HouseAreaType>(HouseAreaType.homestead)
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
 const immigrantSettle = ref<Partial<ImmigrantSettleType>>()
@@ -95,7 +95,7 @@ const filterHouseType = () => {
   if (population && population.populationNature !== '1') {
     console.log(dict[372], 372)
     return dict[372].map((item: any) => {
-      if (item.value === HouseType.homestead) {
+      if (item.value === HouseAreaType.homestead) {
         item.disabled = true
       }
       return item

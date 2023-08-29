@@ -54,7 +54,7 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { HouseType } from '@/types/common'
+import { HouseAreaType } from '@/types/common'
 
 interface PropsType {
   data: any
@@ -80,7 +80,7 @@ const resettlePeopleInfo = computed(() => {
 
 const submitResettle = async () => {
   const params: any = {
-    houseAreaType: HouseType.concentrate,
+    houseAreaType: HouseAreaType.concentrate,
     doorNo: props.doorNo
   }
   if (props.immigrantSettle && props.immigrantSettle.uid) {

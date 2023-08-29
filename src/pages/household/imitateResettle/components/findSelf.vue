@@ -36,7 +36,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { selfResettleData } from '../config'
-import { HouseType } from '@/types/common'
+import { HouseAreaType } from '@/types/common'
 
 interface PropsType {
   data?: any
@@ -54,7 +54,7 @@ const contrastPlans = ref<any>(selfResettleData)
 
 const submitResettle = async () => {
   const params: any = {
-    houseAreaType: HouseType.oneself,
+    houseAreaType: HouseAreaType.oneself,
     doorNo: props.doorNo
   }
   if (props.immigrantSettle && props.immigrantSettle.uid) {

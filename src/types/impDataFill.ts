@@ -312,3 +312,101 @@ export interface ImmigrantProceduresType {
   isComplete: string
   [key: string]: any
 }
+
+// 填报状态
+
+// householdPicStatus	居民户信息完成状态
+// houseMainStatus	房屋主体评估
+// houseRenovationStatus	房屋装修评估
+// appendageStatus	附属物评估
+// treeStatus	果木评估
+// landStatus	土地评估
+// graveStatus	坟墓评估
+// estimateeStatus	评估总状态
+// populationStatus	人口核定状态
+// propertyStatus	产权状态
+// qualificationStatus	资格认定总状态
+// productionArrangementStatus	生产安置状态
+// relocateArrangementStatus	搬迁安置状态
+// graveArrangementStatus	坟墓安置状态
+// arrangementStatus	安置确认总状态
+// landUseStatus	用地状态
+// chooseHouseStatus	择房状态
+// chooseGraveStatus	坟墓择址状态
+// chooseStatus	择址确认总状态
+// cardStatus	移民建卡总状态
+// houseSoarStatus	房屋腾空状态
+// landSoarStatus	土地腾空状态
+// excessStatus	过度安置状态
+// excessSoarStatus	过度腾空总状态
+// buildOneselfStatus	自建房状态
+// flatsStatus	公寓房状态
+// centralizedSupportStatus	集中供养状态
+// relocateArrangementAllStatus	搬迁安置总状态
+// agricultureArrangementStatus	农业安置状态
+// retirementStatus	养老保险状态
+// selfEmploymentStatus	自谋职业状态
+// productionArrangementAllStatus	生产安置总状态
+// proceduresStatus	相关手续总状态
+// agreementStatus	协议总状态
+// deviceStatus	设施设备评估状态
+// specialStatus	小型专项及农副业设施状态
+// disposalMeasuresStatus	集体资产处置办法状态
+export interface ImmigrantFillingType {
+  id?: number
+  doorNo: string
+  uid?: string
+  projectId?: number
+  status?: string
+  householdPicStatus: string
+  houseMainStatus: string
+  houseRenovationStatus: string
+  appendageStatus: string
+  treeStatus: string
+  landStatus: string
+  graveStatus: string
+  estimateeStatus: string
+  populationStatus: string
+  propertyStatus: string
+  qualificationStatus: string
+  productionArrangementStatus: string
+  relocateArrangementStatus: string
+  graveArrangementStatus: string
+  arrangementStatus: string
+  landUseStatus: string
+  chooseHouseStatus: string
+  chooseGraveStatus: string
+  chooseStatus: string
+  cardStatus: string
+  houseSoarStatus: string
+  landSoarStatus: string
+  excessStatus: string
+  excessSoarStatus: string
+  buildOneselfStatus: string
+  flatsStatus: string
+  centralizedSupportStatus: string
+  relocateArrangementAllStatus: string
+  agricultureArrangementStatus: string
+  retirementStatus: string
+  selfEmploymentStatus: string
+  productionArrangementAllStatus: string
+  proceduresStatus: string
+  agreementStatus: string
+  deviceStatus: string
+  specialStatus: string
+  disposalMeasuresStatus: string
+  selfSeekingStatus: string
+  isUpdate?: string
+}
+
+// 自谋出路
+export interface ImmigrantSelfSeekingType {
+  id?: number
+  doorNo?: string
+  uid?: string
+  projectId?: number
+  status?: string
+  selfSeekingDate: string
+  selfSeekingPic: string
+  isUpdate?: string
+}

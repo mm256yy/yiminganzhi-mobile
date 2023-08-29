@@ -4,10 +4,10 @@
 
 import { guid } from '@/utils'
 import {
+  HouseType,
   PopulationType,
   AppendantType,
   TreeType,
-  HouseType,
   EquipmentType,
   FacilitiesType
 } from '@/types/datafill'
@@ -26,10 +26,12 @@ import {
   ImmigrantBuildOneselfType,
   ImmigrantProceduresType,
   SimulateDemographicType,
-  SimulateImmigrantSettleType
+  SimulateImmigrantSettleType,
+  ImmigrantFillingType,
+  ImmigrantSelfSeekingType
 } from '@/types/impDataFill'
 import { ImpLandlord } from './impLandlord'
-import { defaultDocumentObj } from './config'
+import { defaultDocumentObj, defaultFillingObj } from './config'
 
 class ImpDataFill extends ImpLandlord {
   constructor() {
@@ -1178,6 +1180,9 @@ class ImpDataFill extends ImpLandlord {
             mergeObj = { ...defaultDocumentObj, ...data }
           }
           landlordItem.immigrantDocumentation = mergeObj
+          if (!landlordItem.immigrantDocumentation.uid) {
+            landlordItem.immigrantDocumentation.uid = guid()
+          }
         } else {
           reject(false)
           console.log('调查对象信息查询失败')
@@ -1695,6 +1700,96 @@ class ImpDataFill extends ImpLandlord {
         updateRes ? resolve(true) : reject(false)
       } catch (error) {
         console.log(error, 'updateImpLandlordSimulateImmigrantSettle-error')
+        reject(false)
+      }
+    })
+  }
+
+  // 填报状态更新
+  updateImpLandlordImmigrantFilling(
+    uid: string,
+    data: Partial<ImmigrantFillingType>
+  ): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!data || !uid) {
+          reject(false)
+          console.log('uid或数据缺失')
+          return
+        }
+
+        // 拿到详情信息
+        let mergeObj: any = {}
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
+        if (landlordItem) {
+          if (landlordItem.immigrantFilling) {
+            // 存在
+            mergeObj = {
+              ...landlordItem.immigrantFilling,
+              ...data
+            }
+          } else {
+            // 不存在
+            mergeObj = { ...defaultFillingObj, ...data }
+          }
+          landlordItem.immigrantFilling = mergeObj
+          if (!landlordItem.immigrantFilling.uid) {
+            landlordItem.immigrantFilling.uid = guid()
+          }
+        } else {
+          reject(false)
+          console.log('调查对象信息查询失败')
+          return
+        }
+
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'updateImpLandlordImmigrantFilling-error')
+        reject(false)
+      }
+    })
+  }
+
+  // 搬迁安置 自谋出路
+  updateImpLandlordImmigrantSelfSeeking(
+    uid: string,
+    data: Partial<ImmigrantSelfSeekingType>
+  ): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!data || !uid) {
+          reject(false)
+          console.log('uid或数据缺失')
+          return
+        }
+
+        // 拿到详情信息
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
+        if (landlordItem) {
+          if (landlordItem.immigrantSelfSeeking) {
+            // 存在
+            landlordItem.immigrantSelfSeeking = {
+              ...landlordItem.immigrantSelfSeeking,
+              ...data
+            }
+          } else {
+            landlordItem.immigrantSelfSeeking = { ...data }
+          }
+          if (!landlordItem.immigrantSelfSeeking.uid) {
+            landlordItem.immigrantSelfSeeking.uid = guid()
+          }
+        } else {
+          reject(false)
+          console.log('调查对象信息查询失败')
+          return
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'updateImpLandlordImmigrantSelfSeeking-error')
         reject(false)
       }
     })
