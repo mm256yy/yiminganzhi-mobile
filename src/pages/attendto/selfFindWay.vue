@@ -8,7 +8,7 @@
     <view class="row-2">
       <view class="label"> <text class="red">*</text>完成时间： </view>
       <view class="content">
-        <uni-datetime-picker type="date" :clear-icon="true" v-model="form.relocateCompleteTime" />
+        <uni-datetime-picker type="date" :clear-icon="true" v-model="form.selfSeekingDate" />
       </view>
     </view>
 
@@ -16,8 +16,8 @@
       <view class="label"> <text class="red">*</text> 自谋出路凭证： </view>
       <view class="content">
         <uploadFiles
-          v-model="relocatePicStr"
-          :file-list="relocatePicStr"
+          v-model="selfSeekingPicStr"
+          :file-list="selfSeekingPicStr"
           :limit="20"
           :accepts="['.jpg', '.png', '.pdf', '.jpeg']"
           show-type="grid"
@@ -49,7 +49,7 @@ interface PropsType {
 const props = defineProps<PropsType>()
 const form = ref<any>({})
 const emit = defineEmits(['submit'])
-const relocatePicStr = ref<string>('[]')
+const selfSeekingPicStr = ref<string>('[]')
 
 /**
  * 获取业主详情
@@ -63,32 +63,29 @@ const relocatePicStr = ref<string>('[]')
 //       let obj: any = arr.filter((item: any) => item.uid === itemUid)[0]
 //       form.value = {
 //         ...obj,
-//         relocatePic: fmtPicUrl(obj.relocatePic),
-//         relocateCompleteTime: obj.relocateCompleteTime
-//           ? dayjs(obj.relocateCompleteTime).format('YYYY-MM-DD')
+//         selfSeekingPic: fmtPicUrl(obj.selfSeekingPic),
+//         selfSeekingDate: obj.selfSeekingDate
+//           ? dayjs(obj.selfSeekingDate).format('YYYY-MM-DD')
 //           : ''
 //       }
-//       relocatePicStr.value = fmtPicUrl(obj.relocatePic)
+//       selfSeekingPicStr.value = fmtPicUrl(obj.selfSeekingPic)
 //     }
 //   })
 // }
 
 const submit = async () => {
-  if (!relocatePicStr.value || relocatePicStr.value === '[]') {
-    showToast('请上传自谋出路凭证')
-    return
-  } else if (!form.value.relocateCompleteTime) {
+  if (!form.value.selfSeekingDate) {
     showToast('请选择完成时间')
+    return
+  } else if (!selfSeekingPicStr.value || selfSeekingPicStr.value === '[]') {
+    showToast('请上传自谋出路凭证')
     return
   } else {
     const { uid } = props
     const params = {
       ...form.value,
-      relocateStatus: '1',
-      relocatePic: relocatePicStr.value,
-      relocateCompleteTime: form.value.relocateCompleteTime
-        ? dayjs(form.value.relocateCompleteTime)
-        : ''
+      selfSeekingPic: selfSeekingPicStr.value,
+      selfSeekingDate: form.value.selfSeekingDate ? dayjs(form.value.selfSeekingDate) : ''
     }
     updateImpLandlordPeopleApi(uid, params)
       .then((res: any) => {
@@ -110,7 +107,7 @@ const submit = async () => {
 
 <style lang="scss" scoped>
 .centralized-support {
-  height: calc(100vh - 33rpx);
+  height: calc(100vh - 33rpx - 12rpx - var(--status-bar-height));
   padding: 6rpx;
   background-color: #fff;
   border-radius: 2rpx;

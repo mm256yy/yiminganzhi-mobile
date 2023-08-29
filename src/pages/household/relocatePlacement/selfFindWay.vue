@@ -1,17 +1,12 @@
 <template>
-  <view class="farm-wrap">
+  <view class="self-find-way-wrap">
+    <!-- 搬迁安置 —— 自谋出路 -->
     <view class="main" v-if="getRelocationResettlement">
-      <!-- 搬迁安置 —— 自谋出路 -->
       <view class="row-1">
         <view class="btn green-btn" @click="onHandle">
           <image class="icon" src="@/static/images/icon_sign_white.png" mode="scaleToFill" />
           <text class="txt">办理</text>
         </view>
-        <view class="btn blue-btn" @click="onArchives">
-          <image class="icon" src="@/static/images/icon_dangan_upload.png" mode="scaleToFill" />
-          <text class="txt">档案上传</text>
-        </view>
-
         <!-- <view class="btn blue-btn">
 					<image class="icon" src="@/static/images/icon_feedback.png" mode="scaleToFill" />
 					<text class="txt">问题反馈</text>
@@ -20,51 +15,12 @@
 
       <view class="title-wrapper">
         <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-        <text>家庭情况</text>
-      </view>
-
-      <view class="label-value">
-        <uni-row>
-          <uni-col :span="12">
-            <view class="col">
-              <view class="label">户主姓名：</view>
-              <view class="content">{{ dataInfo.name }}</view>
-            </view>
-          </uni-col>
-          <uni-col :span="12">
-            <view class="col">
-              <view class="label">户内人口：</view>
-              <view class="content">
-                {{ dataInfo?.demographicList.length || '-' }}
-              </view>
-            </view>
-          </uni-col>
-        </uni-row>
-
-        <uni-row>
-          <uni-col :span="12">
-            <view class="col">
-              <view class="label">迁出地址：</view>
-              <view class="content">{{ formatStr(dataInfo.settleAddress) }}</view>
-            </view>
-          </uni-col>
-          <uni-col :span="12">
-            <view class="col">
-              <view class="label">联系方式：</view>
-              <view class="content"> {{ formatStr(dataInfo.phone) }} </view>
-            </view>
-          </uni-col>
-        </uni-row>
-      </view>
-
-      <view class="title-wrapper">
-        <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
         <text>自谋出路情况</text>
       </view>
 
       <view class="handle-status">
-        <image class="icon" src="@/static/images/icon_submit.png" />
-        <view class="txt">该户为自谋出路</view>
+        <image class="icon" src="@/static/images/icon_warning.png" />
+        <view class="txt">该户为自谋出路，目前还未办理。</view>
       </view>
     </view>
 
@@ -78,7 +34,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { LandlordType } from '@/types/sync'
-import { routerForward, formatStr } from '@/utils'
+import { routerForward } from '@/utils'
 import { HouseType } from '@/types/common'
 
 interface PropsType {
@@ -93,14 +49,6 @@ const getRelocationResettlement = computed(() => {
   return houseAreaType === HouseType.oneself
 })
 
-// 档案上传
-const onArchives = () => {
-  routerForward('archives', {
-    uid: props.dataInfo.uid,
-    type: 11
-  })
-}
-
 // 办理
 const onHandle = () => {
   routerForward('attendto', {
@@ -111,7 +59,7 @@ const onHandle = () => {
 </script>
 
 <style lang="scss" scoped>
-.farm-wrap {
+.self-find-way-wrap {
   .title-wrapper {
     display: flex;
     width: 100%;

@@ -1,21 +1,24 @@
 <template>
-  <view>
-    <view class="common-head">
-      <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-      <text>基本信息</text>
-    </view>
-    <view class="label-value">
+  <view class="form-wrapper">
+    <uni-forms class="form" ref="form" :modelValue="formData">
+      <view class="title-wrapper">
+        <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
+        <text>基本信息</text>
+      </view>
+
       <uni-row>
         <uni-col :span="12">
           <view class="col">
             <view class="label">姓名：</view>
-            <view class="content">{{ baseInfo.name }}</view>
+            <view class="content">{{ formatStr(formData.name) }}</view>
           </view>
         </uni-col>
         <uni-col :span="12">
           <view class="col">
             <view class="label">与户主关系：</view>
-            <view class="content"> {{ formatDict(baseInfo.relation, 307) }} </view>
+            <view class="content">
+              {{ formatDict(formData.relation, 307) }}
+            </view>
           </view>
         </uni-col>
       </uni-row>
@@ -24,13 +27,13 @@
         <uni-col :span="12">
           <view class="col">
             <view class="label">性别：</view>
-            <view class="content">{{ formatDict(baseInfo.sex, 292) }}</view>
+            <view class="content">{{ formatDict(formData.sex, 292) }}</view>
           </view>
         </uni-col>
         <uni-col :span="12">
           <view class="col">
             <view class="label">身份证号：</view>
-            <view class="content"> {{ baseInfo.card }} </view>
+            <view class="content">{{ formatStr(formData.card) }}</view>
           </view>
         </uni-col>
       </uni-row>
@@ -39,54 +42,71 @@
         <uni-col :span="12">
           <view class="col">
             <view class="label">户籍类别：</view>
-            <view class="content">{{ formatDict(baseInfo.censusType, 249) }}</view>
+            <view class="content">{{ formatDict(formData.censusType, 249) }}</view>
           </view>
         </uni-col>
         <uni-col :span="12">
           <view class="col">
             <view class="label">人口性质：</view>
-            <view class="content">{{ formatDict(baseInfo.populationNature, 363) }}</view>
+            <view class="content">{{ formatDict(formData.populationNature, 363) }}</view>
           </view>
         </uni-col>
       </uni-row>
 
       <uni-row>
-        <uni-col :span="12">
+        <uni-col :span="24">
           <view class="col">
             <view class="label">安置方式：</view>
-            <view class="content">{{ formatDict(baseInfo.settingWay, 375) }}</view>
+            <view class="content">{{ formatDict(formData.settingWay, 375) }}</view>
           </view>
         </uni-col>
-        <uni-col :span="12" />
       </uni-row>
-    </view>
 
-    <view class="common-head">
-      <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-      <text>办理信息</text>
-    </view>
-
-    <view class="arch-box">
-      <view class="arch-item">
-        <view class="arch-label"><text class="red">*</text> 相关凭证：</view>
-        <view class="arch-value">
-          <uploadFiles
-            :limit="20"
-            show-type="grid"
-            :file-list="pic1"
-            :accepts="['.jpg', '.png', '.pdf', '.jpeg']"
-            v-model="pic1"
-          />
-        </view>
+      <view class="title-wrapper">
+        <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
+        <text>办理信息</text>
       </view>
 
-      <view class="arch-item">
-        <view class="arch-label">完成时间：</view>
-        <view class="arch-value">
-          <uni-datetime-picker type="date" :clear-icon="true" v-model="date" />
-        </view>
-      </view>
-    </view>
+      <uni-row>
+        <uni-col :span="24">
+          <uni-forms-item
+            required
+            label="完成时间："
+            :label-width="150"
+            label-align="right"
+            name="formData.productionCompleteTime"
+          >
+            <view class="picker-wrapper">
+              <picker mode="date" :value="currentDate" :fields="'date'" @change="bindDateChange">
+                <view :class="['uni-input', formData.productionCompleteTime ? '' : 'select']">
+                  {{ formData.productionCompleteTime ? formData.productionCompleteTime : '请选择' }}
+                </view>
+              </picker>
+            </view>
+          </uni-forms-item>
+        </uni-col>
+      </uni-row>
+
+      <uni-row>
+        <uni-col :span="24">
+          <uni-forms-item
+            required
+            label="相关凭证："
+            :label-width="150"
+            label-align="right"
+            name="formData.productionPic"
+          >
+            <uploadFiles
+              v-model="productionPicStr"
+              :file-list="productionPicStr"
+              :limit="20"
+              :accepts="['.jpg', '.png', '.pdf', '.jpeg']"
+              show-type="grid"
+            />
+          </uni-forms-item>
+        </uni-col>
+      </uni-row>
+    </uni-forms>
 
     <image
       class="submit-btn"
@@ -99,11 +119,12 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import uploadFiles from '@/components/UploadFile/index.vue'
-import { updateImpLandlordPeopleApi } from '@/service'
 import dayjs from 'dayjs'
-import { formatDict } from '@/utils'
+import { formatDict, formatStr } from '@/utils'
+import { SUCCESS_MSG, showToast } from '@/config/msg'
 import { PopulationType } from '@/types/datafill'
+import { updateImpLandlordPeopleApi } from '@/service'
+import uploadFiles from '@/components/UploadFile/index.vue'
 
 interface PropsType {
   uid: string
@@ -112,10 +133,21 @@ interface PropsType {
 }
 
 const props = defineProps<PropsType>()
+const productionPicStr = ref<string>('[]')
+const formData = ref<Partial<PopulationType>>({})
+
 const emit = defineEmits(['submit'])
-const pic1 = ref<string>('[]')
-const date = ref<string>('')
-const baseInfo = ref<Partial<PopulationType>>({})
+
+// 获取年月日
+const getDate = () => {
+  if (formData.value.productionCompleteTime) {
+    return formData.value.productionCompleteTime
+  } else {
+    return `${dayjs().year()}-${dayjs().month() + 1}-${dayjs().date()}`
+  }
+}
+
+const currentDate = ref<any>('')
 
 watch(
   () => props.demographicList,
@@ -123,15 +155,21 @@ watch(
     if (val) {
       const people = val.find((item: PopulationType) => item.uid === props.itemUid)
       if (people) {
-        // 基本信息
-        baseInfo.value = people
         const { productionPic, productionCompleteTime } = people
+        // 基本信息
+        formData.value = {
+          ...people,
+          productionCompleteTime: productionCompleteTime
+            ? dayjs(productionCompleteTime).format('YYYY-MM-DD')
+            : getDate()
+        }
+
+        currentDate.value = productionCompleteTime
+          ? dayjs(productionCompleteTime).format('YYYY-MM-DD')
+          : getDate()
 
         if (productionPic) {
-          pic1.value = productionPic
-        }
-        if (productionCompleteTime) {
-          date.value = dayjs(productionCompleteTime).format('YYYY-MM-DD')
+          productionPicStr.value = productionPic
         }
       }
     }
@@ -139,119 +177,164 @@ watch(
   { immediate: true, deep: true }
 )
 
+/**
+ *日期选择
+ */
+const bindDateChange = (e: any) => {
+  formData.value.productionCompleteTime = e.detail.value
+}
+
 const submit = async () => {
-  if (!pic1.value || pic1.value === '[]') {
-    uni.showToast({
-      title: '请上传凭证',
-      icon: 'none'
-    })
+  if (!formData.value.productionCompleteTime) {
+    showToast('请选择完成时间')
     return
   }
-  if (!date.value) {
-    uni.showToast({
-      title: '请填写时间',
-      icon: 'none'
-    })
+  if (!productionPicStr.value || productionPicStr.value === '[]') {
+    showToast('请上传相关凭证')
     return
   }
 
-  const params = {
+  const params: Partial<PopulationType> = {
+    ...formData.value,
     uid: props.itemUid,
     productionStatus: '1',
-    productionPic: pic1.value,
-    productionCompleteTime: dayjs(date.value).toString()
+    productionCompleteTime: formData.value.productionCompleteTime
+      ? dayjs(formData.value.productionCompleteTime).toString()
+      : '',
+    productionPic: productionPicStr.value
   }
-  console.log(params, '参数')
   const res = await updateImpLandlordPeopleApi(props.uid, params)
   if (res) {
-    // 更新相关手续
-    uni.showToast({
-      title: '保存成功！',
-      icon: 'success'
-    })
+    showToast(SUCCESS_MSG)
     emit('submit')
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.label-value {
-  padding: 5rpx 12rpx 12rpx 0;
+.form-wrapper {
+  width: 100%;
+  height: calc(100vh - 33rpx - 12rpx - var(--status-bar-height));
+  padding: 6rpx;
+  background-color: #fff;
+  border-radius: 2rpx;
   box-sizing: border-box;
 
-  .col {
-    display: flex;
-    flex-direction: row;
+  .form {
+    height: calc(100vh - 33rpx - 12rpx - 9rpx - var(--status-bar-height));
+    padding: 0 0 9rpx 0;
+    overflow-y: scroll;
+    background-color: #fff;
+    box-sizing: border-box;
 
-    .label {
-      width: 90rpx;
-      height: 16rpx;
-      margin-left: 9rpx;
-      font-size: 9rpx;
-      line-height: 16rpx;
-      color: rgba(23, 23, 24, 0.6);
+    ::v-deep.uni-forms-item__label {
+      font-size: 9rpx !important;
+      color: rgba(23, 23, 24, 0.6) !important;
     }
 
-    .content {
-      font-size: 9rpx;
-      line-height: 16rpx;
-      color: #171718;
-    }
-  }
-}
+    ::v-deep.uni-easyinput__content {
+      width: 200rpx !important;
 
-.common-head {
-  display: flex;
-  width: 100%;
-  height: 28rpx;
-  margin-top: 9rpx;
-  font-size: 9rpx;
-  font-weight: 500;
-  color: #171718;
-  background: #ffffff;
-  border-bottom: 1rpx solid #f0f0f0;
-  border-radius: 5rpx 5rpx 0px 0px;
-  flex-direction: row;
-  align-items: center;
-
-  .icon {
-    width: 10rpx;
-    height: 10rpx;
-    margin-right: 6rpx;
-  }
-}
-
-.arch-box {
-  .arch-item {
-    display: flex;
-    padding: 5rpx 12rpx;
-    margin-top: 9rpx;
-
-    .arch-label {
-      width: 80rpx;
-      font-size: 9rpx;
-      color: #171718;
-      text-align: right;
-
-      .red {
-        color: red;
+      .uni-easyinput__placeholder-class,
+      .uni-input-input {
+        font-size: 9rpx !important;
       }
     }
 
-    .arch-value {
-      flex: 1;
+    ::v-deep.uni-data-tree,
+    ::v-deep.uni-stat__select {
+      flex: 0 auto !important;
+      width: 200rpx !important;
+    }
+
+    ::v-deep.uni-select__input-text {
+      width: 90% !important;
+      font-size: 9rpx !important;
+    }
+
+    ::v-deep.uni-date,
+    ::v-deep.uni-date-editor {
+      width: 200rpx !important;
+    }
+
+    ::v-deep.uni-input-input,
+    ::v-deep.uni-input-placeholder {
+      font-size: 9rpx !important;
+    }
+
+    .title-wrapper {
+      display: flex;
+      width: 100%;
+      height: 28rpx;
+      margin-bottom: 9rpx;
+      font-size: 9rpx;
+      color: #171718;
+      background: #fff;
+      border-bottom: 1rpx solid #f0f0f0;
+      border-radius: 5rpx 5rpx 0px 0px;
+      flex-direction: row;
+      align-items: center;
+
+      .icon {
+        width: 10rpx;
+        height: 10rpx;
+        margin-right: 6rpx;
+      }
+    }
+
+    .col {
       display: flex;
       align-items: center;
+      flex-direction: row;
+      height: 23rpx;
+
+      .label {
+        width: 100rpx;
+        height: 23rpx;
+        margin-right: 9rpx;
+        font-size: 9rpx;
+        color: rgba(23, 23, 24, 0.6);
+        text-align: right;
+      }
+
+      .content {
+        height: 23rpx;
+        font-size: 9rpx;
+        color: #171718;
+      }
+    }
+
+    .picker-wrapper {
+      display: flex;
+      width: 200rpx;
+      height: 23rpx;
+      padding-left: 7rpx;
+      overflow: hidden;
+      font-size: 9rpx;
+      line-height: 23rpx;
+      color: #171718;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      border: 1px solid #d9d9d9;
+      border-radius: 4px;
+
+      .uni-input {
+        width: 180rpx;
+
+        &.select {
+          color: #999;
+        }
+      }
     }
   }
-}
 
-.submit-btn {
-  position: fixed;
-  right: 25rpx;
-  bottom: 20rpx;
-  width: 36rpx;
-  height: 36rpx;
-  border-radius: 50%;
+  .submit-btn {
+    position: fixed;
+    right: 25rpx;
+    bottom: 20rpx;
+    width: 36rpx;
+    height: 36rpx;
+    border-radius: 50%;
+  }
 }
 </style>

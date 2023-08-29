@@ -17,7 +17,7 @@
           <view class="col">
             <view class="label">户内人口：</view>
             <view class="content">
-              {{ formatStr(dataInfo?.demographicList.length) }}
+              {{ formatStr(dataInfo?.demographicList?.length) }}
             </view>
           </view>
         </uni-col>

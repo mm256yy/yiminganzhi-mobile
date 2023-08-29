@@ -35,9 +35,9 @@
             v-if="props.isEdit"
             class="select-wrap"
             v-model="item.settingWay"
-            :localdata="dict[372]"
+            :localdata="dict[375]"
           />
-          <text v-else>{{ formatDict(item.settingWay, 372) }}</text>
+          <text v-else>{{ formatDict(item.settingWay, 375) }}</text>
         </view>
       </view>
       <view class="item two-col">
