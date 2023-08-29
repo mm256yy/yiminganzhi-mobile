@@ -27,7 +27,9 @@ import {
   ImmigrantBuildOneselfType,
   ImmigrantProceduresType,
   SimulateImmigrantSettleType,
-  SimulateDemographicType
+  SimulateDemographicType,
+  ImmigrantFillingType,
+  ImmigrantSelfSeekingType
 } from '@/types/impDataFill'
 
 /**
@@ -634,4 +636,33 @@ export const updateImpLandlordProceduresApi = (
   data: Partial<ImmigrantProceduresType>
 ) => {
   return ImpDataFillController.updateLandlordProcedures(uid, itemUid, data)
+}
+
+// -------
+
+/**
+ * 更新 填报状态
+ * @param uid 调查对象uid
+ * @param data 各阶段填报状态
+ * @returns
+ */
+export const updateImpLandlordImmigrantFillingApi = (
+  uid: string,
+  data: Partial<ImmigrantFillingType>
+) => {
+  return ImpDataFillController.updateImpLandlordImmigrantFilling(uid, data)
+}
+
+// -------
+
+/**
+ * 更新 自谋出路
+ * @param uid 调查对象uid
+ * @param data 自谋出路参数
+ */
+export const updateImpLandlordImmigrantSelfSeekingApi = (
+  uid: string,
+  data: Partial<ImmigrantSelfSeekingType>
+) => {
+  return ImpDataFillController.updateImpLandlordImmigrantSelfSeeking(uid, data)
 }

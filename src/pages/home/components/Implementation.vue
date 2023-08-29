@@ -26,7 +26,7 @@
           </view>
         </view>
         <view class="row-field">
-          <view class="field-box" @click.prevent.stop="toLinkParams('householdList', 0)">
+          <view class="field-box" @click.prevent.stop="toLinkParams('householdList', 2)">
             <view class="line-1">{{ homeCollect.peasantHouseholdLagNum }}</view>
             <view class="flex">
               <view class="common-dot red" />
@@ -40,7 +40,7 @@
               <view class="line-2">预警</view>
             </view>
           </view>
-          <view class="field-box" @click.prevent.stop="toLinkParams('householdList', 2)">
+          <view class="field-box" @click.prevent.stop="toLinkParams('householdList', 0)">
             <view class="line-1">{{ homeCollect.peasantHouseholdDoneNum }}</view>
             <view class="flex">
               <view class="common-dot green" />
@@ -64,7 +64,7 @@
           </view>
         </view>
         <view class="row-field">
-          <view class="field-box" @click.prevent.stop="toLinkParams('enterpriseList', 0)">
+          <view class="field-box" @click.prevent.stop="toLinkParams('enterpriseList', 2)">
             <view class="line-1">{{ homeCollect.companyLagNum }}</view>
             <view class="flex">
               <view class="common-dot red" />
@@ -78,7 +78,7 @@
               <view class="line-2">预警</view>
             </view>
           </view>
-          <view class="field-box" @click.prevent.stop="toLinkParams('enterpriseList', 2)">
+          <view class="field-box" @click.prevent.stop="toLinkParams('enterpriseList', 0)">
             <view class="line-1">{{ homeCollect.companyDoneNum }}</view>
             <view class="flex">
               <view class="common-dot green" />
@@ -102,7 +102,7 @@
           </view>
         </view>
         <view class="row-field">
-          <view class="field-box" @click.prevent.stop="toLinkParams('selfPersonList', 0)">
+          <view class="field-box" @click.prevent.stop="toLinkParams('selfPersonList', 2)">
             <view class="line-1">{{ homeCollect.individualLagNum }}</view>
             <view class="flex">
               <view class="common-dot red" />
@@ -116,7 +116,7 @@
               <view class="line-2">预警</view>
             </view>
           </view>
-          <view class="field-box" @click.prevent.stop="toLinkParams('selfPersonList', 2)">
+          <view class="field-box" @click.prevent.stop="toLinkParams('selfPersonList', 0)">
             <view class="line-1">{{ homeCollect.individualDoneNum }}</view>
             <view class="flex">
               <view class="common-dot green" />
@@ -140,7 +140,7 @@
           </view>
         </view>
         <view class="row-field">
-          <view class="field-box" @click.prevent.stop="toLinkParams('collectiveList', 0)">
+          <view class="field-box" @click.prevent.stop="toLinkParams('collectiveList', 2)">
             <view class="line-1">{{ homeCollect.villageLagNum }}</view>
             <view class="flex">
               <view class="common-dot red" />
@@ -154,7 +154,7 @@
               <view class="line-2">预警</view>
             </view>
           </view>
-          <view class="field-box" @click.prevent.stop="toLinkParams('collectiveList', 2)">
+          <view class="field-box" @click.prevent.stop="toLinkParams('collectiveList', 0)">
             <view class="line-1">{{ homeCollect.villageDoneNum }}</view>
             <view class="flex">
               <view class="common-dot green" />

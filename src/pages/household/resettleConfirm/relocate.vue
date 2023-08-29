@@ -74,7 +74,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue'
 import { LandlordType } from '@/types/sync'
-import { HouseType } from '@/types/common'
+import { HouseAreaType } from '@/types/common'
 import { ImmigrantSettleType } from '@/types/impDataFill'
 import {
   resettleArea,
@@ -94,7 +94,7 @@ const props = defineProps<PropsType>()
 const loading = ref<boolean>(false)
 const tableData = ref<any[]>([])
 
-const houseType = ref<HouseType>(HouseType.homestead)
+const houseType = ref<HouseAreaType>(HouseAreaType.homestead)
 const alertDialog = ref<any>(null)
 const emit = defineEmits(['updateData'])
 
@@ -114,9 +114,9 @@ watch(
   (res) => {
     // 整成数组
     if (!res) return
-    if (res.houseAreaType === HouseType.homestead || res.houseAreaType === HouseType.flat) {
+    if (res.houseAreaType === HouseAreaType.homestead || res.houseAreaType === HouseAreaType.flat) {
       const houseTypeText = resettleHouseType.find((item) => item.value === res.houseAreaType)?.text
-      if (res.houseAreaType === HouseType.homestead) {
+      if (res.houseAreaType === HouseAreaType.homestead) {
         tableData.value = [
           {
             houseTypeText,
@@ -206,7 +206,7 @@ const onImportData = () => {
     doorNo,
     areaType
   }
-  houseType.value = houseAreaType as HouseType
+  houseType.value = houseAreaType as HouseAreaType
   immigrantSettleSubmit(data)
 }
 

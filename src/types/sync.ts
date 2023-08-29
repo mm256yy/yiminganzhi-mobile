@@ -39,7 +39,9 @@ import {
   ImmigrantBuildOneselfType,
   ImmigrantProceduresType,
   SimulateImmigrantSettleType,
-  SimulateDemographicType
+  SimulateDemographicType,
+  ImmigrantFillingType,
+  ImmigrantSelfSeekingType
 } from './impDataFill'
 
 // 农户列表
@@ -152,6 +154,16 @@ export interface LandlordType {
 
   simulateDemographic: Partial<SimulateDemographicType>[]
   simulateImmigrantSettle: Partial<SimulateImmigrantSettleType>
+
+  warnStatus: string // 预警状态 0正常 1预警 2滞后
+  currentProgress: string // 当前进度 1资格认定 2资产评估 3安置确认 4择址确认 5腾空过度 6动迁协议 7搬迁安置 8生产安置 9已完成
+
+  gridmanName: string
+  gridmanId: number
+  gridmanPhone: number
+  householderDoorNo: string
+  immigrantFilling: Partial<ImmigrantFillingType>
+  immigrantSelfSeeking: Partial<ImmigrantSelfSeekingType>
 }
 
 export interface AppVersionDtoType {

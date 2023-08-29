@@ -61,7 +61,7 @@
 
 <script lang="ts" setup>
 import { ref, computed, watch } from 'vue'
-import { HouseType } from '@/types/common'
+import { HouseAreaType } from '@/types/common'
 import { homesteadAreaSize, resettleArea } from '../config'
 import { LandlordType } from '@/types/sync'
 
@@ -129,7 +129,7 @@ const areaSizeArray = computed(() => {
 
 const submitResettle = async () => {
   const params: any = {
-    houseAreaType: HouseType.homestead,
+    houseAreaType: HouseAreaType.homestead,
     doorNo: props.doorNo,
     settleAddress: settleAddress.value,
     areaType: areaType.value

@@ -203,6 +203,7 @@ export interface LandlordSearchType {
   virutalVillageCode?: string
   page?: number
   pageSize?: number
+  warnStatus?: string
 }
 
 // 分页类型
@@ -241,7 +242,7 @@ export enum RoleCodeType {
 }
 
 // 安置方式
-export enum HouseType {
+export enum HouseAreaType {
   homestead = 'homestead',
   flat = 'flat',
   oneself = 'oneself',

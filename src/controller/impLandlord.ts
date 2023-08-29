@@ -6,7 +6,7 @@ import { LandlordTableName, LandlordDDLType, getLandlordSqlValues } from '@/data
 import { Common } from './common'
 import { LandlordType } from '@/types/sync'
 import { getStorage, StorageKey } from '@/utils'
-import { LandlordSearchType } from '@/types/common'
+import { LandlordSearchType, HouseAreaType } from '@/types/common'
 import { GraveController } from './grave'
 import { defaultDocumentObj } from './config'
 
@@ -15,6 +15,294 @@ export class ImpLandlord extends Common {
   constructor() {
     super()
     this.format = 'YYYY-MM-DD HH:mm:ss'
+  }
+  private isNotNullPic(pic: string | undefined) {
+    return pic && pic !== '[]'
+  }
+  // 内部方法 判断填报完成状态
+  private updateImpFillStatus(landlordItem: LandlordType): LandlordType {
+    if (!landlordItem) {
+      return landlordItem
+    }
+
+    const {
+      demographicList,
+      immigrantHouseList,
+      immigrantSettle,
+      immigrantGraveList,
+      immigrantLand,
+      immigrantChooseHouseList,
+      immigrantCompensationCardList,
+      immigrantHouseEmpty,
+      immigrantLandEmpty,
+      immigrantExcess,
+      immigrantBuildOneselfList,
+      immigrantProceduresList,
+      immigrantSelfSeeking
+    } = landlordItem
+    const {
+      produceVerifyPic,
+      relocateVerifyPic,
+      graveVerifyPic,
+      graveChoosePic,
+      agreementPic,
+      compensationCardPic,
+      houseEmptyPic,
+      landEmptyPic,
+      excessVerifyPic,
+      buildOneselfPic,
+      buildOneselfCheckPic,
+      flatAgreementPic,
+      flatMeasurementPic,
+      agriculturePic,
+      collectiveAssetsPic
+    } = landlordItem.immigrantDocumentation
+
+    // 人口核定完成条件：人口性质设置成功
+    if (this.isArrayAndNotNull(demographicList)) {
+      const res = demographicList.find((item) => !item.populationNature)
+      if (!res) {
+        landlordItem.immigrantFilling.populationStatus = '1'
+      }
+    }
+    // 房屋产权完成条件：列表中所有数据的是否合法均已设置完成
+    if (this.isArrayAndNotNull(immigrantHouseList)) {
+      const res = immigrantHouseList.find((item) => item.isCompliance !== '1')
+      if (!res) {
+        landlordItem.immigrantFilling.propertyStatus = '1'
+      }
+    }
+    // 资格认定总状态
+    if (
+      landlordItem.immigrantFilling.populationStatus === '1' &&
+      landlordItem.immigrantFilling.propertyStatus === '1'
+    ) {
+      landlordItem.immigrantFilling.qualificationStatus = '1'
+    }
+
+    // 生产安置：列表所有安置方式设置完成，生产安置确认单上传完成
+    if (this.isArrayAndNotNull(demographicList)) {
+      const res = demographicList.find((item) => !item.settingWay)
+      if (!res && this.isNotNullPic(produceVerifyPic)) {
+        landlordItem.immigrantFilling.productionArrangementStatus = '1'
+      }
+    }
+    // 搬迁安置：填报完成判定条件：安置数据已设置，安置确认单上传完成
+    if (immigrantSettle && immigrantSettle.houseAreaType && this.isNotNullPic(relocateVerifyPic)) {
+      landlordItem.immigrantFilling.relocateArrangementStatus = '1'
+    }
+    // 坟墓安置: 所有数据坟墓处置方式已选择，坟墓安置确认单上传完成
+    if (this.isArrayAndNotNull(immigrantGraveList)) {
+      const res = immigrantGraveList.find((item) => !item.handleWay)
+      if (!res && this.isNotNullPic(graveVerifyPic)) {
+        landlordItem.immigrantFilling.graveArrangementStatus = '1'
+      }
+    } else {
+      landlordItem.immigrantFilling.graveArrangementStatus = '1'
+    }
+    // 生产安置总状态
+    if (
+      landlordItem.immigrantFilling.productionArrangementStatus === '1' &&
+      landlordItem.immigrantFilling.relocateArrangementStatus === '1' &&
+      landlordItem.immigrantFilling.graveArrangementStatus === '1'
+    ) {
+      landlordItem.immigrantFilling.arrangementStatus = '1'
+    }
+
+    // 生产用地：生产安置确认里该户安置方式不是农业安置，文字提示，该节点自动完成
+    if (landlordItem.settingWay !== '1') {
+      landlordItem.immigrantFilling.landUseStatus = '1'
+    } else {
+      // 填写数据后
+      if (immigrantLand && immigrantLand.landNo) {
+        landlordItem.immigrantFilling.landUseStatus = '1'
+      }
+    }
+    // 选房择址：列表中数据的所有字段填写完成  档案上传完成
+    if (immigrantSettle && immigrantSettle.houseAreaType === HouseAreaType.flat) {
+      // 公寓房
+      if (this.isArrayAndNotNull(immigrantChooseHouseList)) {
+        const res = immigrantChooseHouseList.find(
+          (item) => !item.houseNo && !this.isNotNullPic(item.chooseHousePic)
+        )
+        if (!res) {
+          landlordItem.immigrantFilling.chooseHouseStatus = '1'
+        }
+      }
+    } else {
+      landlordItem.immigrantFilling.chooseHouseStatus = '1'
+    }
+
+    // 坟墓择址: 完成条件：无坟墓 或者坟墓编号&&档案 有
+    if (this.isArrayAndNotNull(immigrantGraveList)) {
+      const res = immigrantGraveList.find((item) => !item.graveNo)
+      if (!res && this.isNotNullPic(graveChoosePic)) {
+        landlordItem.immigrantFilling.chooseGraveStatus = '1'
+      }
+    } else {
+      landlordItem.immigrantFilling.chooseGraveStatus = '1'
+    }
+
+    // 择址总状态
+    if (
+      landlordItem.immigrantFilling.landUseStatus === '1' &&
+      landlordItem.immigrantFilling.chooseHouseStatus === '1' &&
+      landlordItem.immigrantFilling.chooseGraveStatus === '1'
+    ) {
+      landlordItem.immigrantFilling.chooseStatus = '1'
+    }
+
+    // 协议总状态
+    if (this.isNotNullPic(agreementPic)) {
+      landlordItem.immigrantFilling.agreementStatus = '1'
+    }
+
+    // 移民建卡
+    if (this.isArrayAndNotNull(immigrantCompensationCardList)) {
+      const res = immigrantCompensationCardList.find((item) => !item.isVerify)
+      if (!res && this.isNotNullPic(compensationCardPic)) {
+        landlordItem.immigrantFilling.cardStatus = '1'
+      }
+    }
+
+    // 房屋腾空
+    if (
+      immigrantHouseEmpty &&
+      immigrantHouseEmpty.isHouseEmpty === '1' &&
+      this.isNotNullPic(houseEmptyPic)
+    ) {
+      landlordItem.immigrantFilling.houseSoarStatus = '1'
+    } else if (immigrantHouseEmpty && immigrantHouseEmpty.isHouseEmpty === '0') {
+      landlordItem.immigrantFilling.houseSoarStatus = '1'
+    }
+
+    // 土地腾空
+    if (
+      immigrantLandEmpty &&
+      immigrantLandEmpty.isLandEmpty === '1' &&
+      this.isNotNullPic(landEmptyPic)
+    ) {
+      landlordItem.immigrantFilling.landSoarStatus = '1'
+    } else if (immigrantLandEmpty && immigrantLandEmpty.isLandEmpty === '0') {
+      landlordItem.immigrantFilling.landSoarStatus = '1'
+    }
+
+    // 过渡安置
+    if (
+      immigrantExcess &&
+      immigrantExcess.isExcess === '1' &&
+      immigrantExcess.excessEndDate &&
+      this.isNotNullPic(excessVerifyPic)
+    ) {
+      landlordItem.immigrantFilling.excessStatus = '1'
+    } else if (immigrantExcess && immigrantExcess.isExcess === '0') {
+      landlordItem.immigrantFilling.excessStatus = '1'
+    }
+
+    // 腾空过渡 总状态
+    if (
+      landlordItem.immigrantFilling.houseSoarStatus === '1' &&
+      landlordItem.immigrantFilling.landSoarStatus === '1' &&
+      landlordItem.immigrantFilling.excessStatus === '1'
+    ) {
+      landlordItem.immigrantFilling.excessSoarStatus = '1'
+    }
+
+    // 搬迁安置：自建房
+    if (this.isArrayAndNotNull(immigrantBuildOneselfList)) {
+      const res = immigrantBuildOneselfList.find((item) => item.isComplete !== '1')
+      if (!res && this.isNotNullPic(buildOneselfPic) && this.isNotNullPic(buildOneselfCheckPic)) {
+        landlordItem.immigrantFilling.buildOneselfStatus = '1'
+      }
+    }
+
+    // 公寓房
+    if (
+      immigrantSettle &&
+      immigrantSettle.houseAreaType === HouseAreaType.flat &&
+      this.isNotNullPic(flatAgreementPic) &&
+      this.isNotNullPic(flatMeasurementPic)
+    ) {
+      landlordItem.immigrantFilling.flatsStatus = '1'
+    }
+
+    // 集中供养
+    if (immigrantSettle && immigrantSettle.houseAreaType === HouseAreaType.concentrate) {
+      const res = demographicList.find((item) => item.relocateStatus !== '1')
+      if (!res) {
+        landlordItem.immigrantFilling.centralizedSupportStatus = '1'
+      }
+    }
+    // 自谋出路
+    if (immigrantSelfSeeking && this.isNotNullPic(immigrantSelfSeeking.selfSeekingPic)) {
+      landlordItem.immigrantFilling.selfSeekingStatus = '1'
+    }
+
+    // 搬迁安置 总状态 四选 1
+    if (
+      landlordItem.immigrantFilling.buildOneselfStatus === '1' ||
+      landlordItem.immigrantFilling.flatsStatus === '1' ||
+      landlordItem.immigrantFilling.centralizedSupportStatus === '1' ||
+      landlordItem.immigrantFilling.selfSeekingStatus === '1'
+    ) {
+      landlordItem.immigrantFilling.relocateArrangementAllStatus = '1'
+    }
+
+    // 农业安置
+    if (this.isNotNullPic(agriculturePic)) {
+      landlordItem.immigrantFilling.agricultureArrangementStatus = '1'
+    }
+
+    // 养老保险
+    if (this.isArrayAndNotNull(demographicList)) {
+      const realList = demographicList.filter((item) => item.settingWay === '2')
+      if (this.isArrayAndNotNull(realList)) {
+        const res = realList.find((item) => item.productionStatus !== '1')
+        if (!res) {
+          landlordItem.immigrantFilling.retirementStatus = '1'
+        }
+      } else {
+        // 无养老保险
+        landlordItem.immigrantFilling.retirementStatus = '1'
+      }
+    }
+    // 自谋职业
+    if (this.isArrayAndNotNull(demographicList)) {
+      const realList = demographicList.filter((item) => item.settingWay === '3')
+      if (this.isArrayAndNotNull(realList)) {
+        const res = realList.find((item) => item.productionStatus !== '1')
+        if (!res) {
+          landlordItem.immigrantFilling.selfEmploymentStatus = '1'
+        }
+      } else {
+        // 无自谋职业
+        landlordItem.immigrantFilling.selfEmploymentStatus = '1'
+      }
+    }
+
+    // 生产安置总状态
+    if (
+      landlordItem.immigrantFilling.agricultureArrangementStatus === '1' &&
+      landlordItem.immigrantFilling.retirementStatus === '1' &&
+      landlordItem.immigrantFilling.selfEmploymentStatus === '1'
+    ) {
+      landlordItem.immigrantFilling.productionArrangementAllStatus = '1'
+    }
+
+    // 相关手续
+    if (this.isArrayAndNotNull(immigrantProceduresList)) {
+      const res = immigrantProceduresList.find((item) => item.isComplete !== '1')
+      if (!res) {
+        landlordItem.immigrantFilling.proceduresStatus = '1'
+      }
+    }
+
+    // 集体资产
+    if (this.isNotNullPic(collectiveAssetsPic)) {
+      landlordItem.immigrantFilling.disposalMeasuresStatus = '1'
+    }
+
+    return landlordItem
   }
 
   // 调查对象-uid查询单个数据-页面使用(除去资产评估的其他实施阶段使用)
@@ -279,9 +567,13 @@ export class ImpLandlord extends Common {
           console.log('核心字段缺失')
           return
         }
+        /**
+         * 更新填报状态
+         */
+        const realData = this.updateImpFillStatus(data)
         // 拿到更新的sql字符串
-        const values = getLandlordSqlValues(data)
-        const sql = `update ${LandlordTableName} set ${values} where uid = '${data.uid}'`
+        const values = getLandlordSqlValues(realData)
+        const sql = `update ${LandlordTableName} set ${values} where uid = '${realData.uid}'`
         const res = await this.db.execteSql([sql])
         if (res && res.code) {
           reject(false)
@@ -341,6 +633,7 @@ export class ImpLandlord extends Common {
           villageCode,
           virutalVillageCode,
           type,
+          warnStatus,
           pageSize = 10,
           page = 1
         } = data || {}
@@ -366,6 +659,9 @@ export class ImpLandlord extends Common {
         }
         if (virutalVillageCode) {
           sql += ` and virutalVillageCode = '${virutalVillageCode}'`
+        }
+        if (warnStatus) {
+          sql += ` and warnStatus = '${warnStatus}'`
         }
         sql += ` order by updatedDate desc limit ${pageSize} offset ${(page - 1) * pageSize}`
         // console.log('sql', sql)

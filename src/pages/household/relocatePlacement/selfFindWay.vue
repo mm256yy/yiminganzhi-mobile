@@ -35,7 +35,7 @@
 import { computed } from 'vue'
 import { LandlordType } from '@/types/sync'
 import { routerForward } from '@/utils'
-import { HouseType } from '@/types/common'
+import { HouseAreaType } from '@/types/common'
 
 interface PropsType {
   dataInfo: LandlordType
@@ -46,7 +46,7 @@ const props = defineProps<PropsType>()
 // 搬迁安置方式
 const getRelocationResettlement = computed(() => {
   const { houseAreaType } = props.dataInfo
-  return houseAreaType === HouseType.oneself
+  return houseAreaType === HouseAreaType.oneself
 })
 
 // 办理

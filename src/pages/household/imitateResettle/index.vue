@@ -36,7 +36,7 @@
 
         <!-- 宅基地安置 -->
         <homestead
-          v-if="houseAreaType === HouseType.homestead"
+          v-if="houseAreaType === HouseAreaType.homestead"
           :baseInfo="props.dataInfo"
           :doorNo="props.dataInfo.doorNo"
           :immigrantSettle="simulateImmigrantSettle"
@@ -46,7 +46,7 @@
 
         <!-- 公寓房安置 -->
         <apartment
-          v-else-if="houseAreaType === HouseType.flat"
+          v-else-if="houseAreaType === HouseAreaType.flat"
           :baseInfo="props.dataInfo"
           :doorNo="props.dataInfo.doorNo"
           :immigrantSettle="simulateImmigrantSettle"
@@ -56,7 +56,7 @@
 
         <!-- 集中供养安置 -->
         <centerSupport
-          v-else-if="houseAreaType === HouseType.concentrate"
+          v-else-if="houseAreaType === HouseAreaType.concentrate"
           :data="demographicList"
           :doorNo="props.dataInfo.doorNo"
           :immigrantSettle="simulateImmigrantSettle"
@@ -66,7 +66,7 @@
 
         <!-- 自谋职业安置 -->
         <findSelf
-          v-else-if="houseAreaType === HouseType.oneself"
+          v-else-if="houseAreaType === HouseAreaType.oneself"
           :data="demographicList"
           :doorNo="props.dataInfo.doorNo"
           :immigrantSettle="simulateImmigrantSettle"
@@ -108,7 +108,7 @@ import findSelf from './components/findSelf.vue'
 
 import { LandlordType } from '@/types/sync'
 import { SimulateDemographicType } from '@/types/impDataFill'
-import { HouseType } from '@/types/common'
+import { HouseAreaType } from '@/types/common'
 import { showToast } from '@/config/msg'
 import {
   updateImpLandlordSimulateDemographicApi,
@@ -170,7 +170,7 @@ const uid = computed<any>(() => {
 })
 
 const descpopup = ref<any>(null)
-const houseAreaType = ref<HouseType>(HouseType.homestead)
+const houseAreaType = ref<HouseAreaType>(HouseAreaType.homestead)
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
 

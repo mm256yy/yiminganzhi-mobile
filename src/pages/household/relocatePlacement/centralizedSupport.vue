@@ -104,7 +104,7 @@
 import { computed } from 'vue'
 import dayjs from 'dayjs'
 import { formatDict, formatStr, routerForward } from '@/utils'
-import { HouseType } from '@/types/common'
+import { HouseAreaType } from '@/types/common'
 
 interface PropsType {
   dataList: any[]
@@ -116,7 +116,7 @@ const props = defineProps<PropsType>()
 // 搬迁安置方式
 const getRelocationResettlement = computed(() => {
   const { houseAreaType } = props.dataInfo
-  return houseAreaType === HouseType.concentrate
+  return houseAreaType === HouseAreaType.concentrate
 })
 
 /**

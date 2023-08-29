@@ -37,3 +37,47 @@ export const defaultDocumentObj = {
   findOneSelfPic: '[]',
   findOneSelfOtherPic: '[]'
 }
+
+/**
+ * 填报状态
+ * 各个小阶段
+ */
+export const defaultFillingObj = {
+  householdPicStatus: '0',
+  houseMainStatus: '0',
+  houseRenovationStatus: '0',
+  appendageStatus: '0',
+  treeStatus: '0',
+  landStatus: '0',
+  graveStatus: '0',
+  estimateeStatus: '0',
+  populationStatus: '0',
+  propertyStatus: '0',
+  qualificationStatus: '0',
+  productionArrangementStatus: '0',
+  relocateArrangementStatus: '0',
+  graveArrangementStatus: '0',
+  arrangementStatus: '0',
+  landUseStatus: '0',
+  chooseHouseStatus: '0',
+  chooseGraveStatus: '0',
+  chooseStatus: '0',
+  cardStatus: '0',
+  houseSoarStatus: '0',
+  landSoarStatus: '0',
+  excessStatus: '0',
+  excessSoarStatus: '0',
+  buildOneselfStatus: '0',
+  flatsStatus: '0',
+  centralizedSupportStatus: '0',
+  relocateArrangementAllStatus: '0',
+  agricultureArrangementStatus: '0',
+  retirementStatus: '0',
+  selfEmploymentStatus: '0',
+  productionArrangementAllStatus: '0',
+  proceduresStatus: '0',
+  agreementStatus: '0',
+  deviceStatus: '0',
+  specialStatus: '0',
+  disposalMeasuresStatus: '0'
+}

@@ -201,7 +201,7 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import { apartmentArea, apartmentAreaSize } from '../config'
 import { showToast } from '@/config'
-import { HouseType } from '@/types/common'
+import { HouseAreaType } from '@/types/common'
 import { LandlordType } from '@/types/sync'
 
 interface PropsType {
@@ -377,7 +377,7 @@ const submitResettle = async () => {
   }
 
   const params: any = {
-    houseAreaType: HouseType.flat,
+    houseAreaType: HouseAreaType.flat,
     doorNo: props.doorNo,
     settleAddress: settleAddress.value,
     typeOneNum,
