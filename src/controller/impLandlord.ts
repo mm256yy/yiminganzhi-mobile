@@ -58,6 +58,10 @@ export class ImpLandlord extends Common {
       collectiveAssetsPic
     } = landlordItem.immigrantDocumentation
 
+    // 判断初始化
+    if (!landlordItem.immigrantFilling) {
+      landlordItem.immigrantFilling = {}
+    }
     // 人口核定完成条件：人口性质设置成功
     if (this.isArrayAndNotNull(demographicList)) {
       const res = demographicList.find((item) => !item.populationNature)
