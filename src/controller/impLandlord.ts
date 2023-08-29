@@ -323,9 +323,6 @@ export class ImpLandlord extends Common {
         // 获取坟墓信息
         const graveList = await GraveController.getImpListWithLandlord(res.type, res.doorNo)
         if (res && res.uid) {
-          if (!res.immigrantDocumentation) {
-            res.immigrantDocumentation = defaultDocumentObj
-          }
           // 赋值坟墓信息
           res.immigrantGraveList = graveList || []
           if (this.isArrayAndNotNull(res.demographicList)) {
@@ -390,6 +387,10 @@ export class ImpLandlord extends Common {
             )
           }
 
+          if (!res.immigrantDocumentation) {
+            res.immigrantDocumentation = defaultDocumentObj
+          }
+
           const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
           // 拿到上级行政区划
           res.virutalVillageCodeText = districtMap[res.virutalVillageCode]
@@ -434,9 +435,6 @@ export class ImpLandlord extends Common {
         // 获取坟墓信息
         const graveList = await GraveController.getImpListWithLandlord(res.type, res.doorNo)
         if (res && res.uid) {
-          if (!res.immigrantDocumentation) {
-            res.immigrantDocumentation = defaultDocumentObj
-          }
           // 赋值坟墓信息
           res.immigrantGraveList = graveList || []
           if (this.isArrayAndNotNull(res.demographicList)) {
@@ -499,6 +497,10 @@ export class ImpLandlord extends Common {
             res.immigrantProceduresList = res.immigrantProceduresList.filter(
               (item: any) => item.isDelete !== '1'
             )
+          }
+
+          if (!res.immigrantDocumentation) {
+            res.immigrantDocumentation = defaultDocumentObj
           }
 
           const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
@@ -603,12 +605,23 @@ export class ImpLandlord extends Common {
         const res: LandlordType = result && result[0] ? JSON.parse(result[0].content) : {}
 
         if (res && res.uid) {
+          if (!res.immigrantDocumentation) {
+            res.immigrantDocumentation = defaultDocumentObj
+          }
+
           const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
           // 拿到上级行政区划
           res.virutalVillageCodeText = districtMap[res.virutalVillageCode]
           res.villageCodeText = districtMap[res.villageCode]
           res.townCodeText = districtMap[res.townCode]
           res.areaCodeText = districtMap[res.areaCode]
+
+          // 选择户型类型
+          res.houseAreaType = res.immigrantSettle ? res.immigrantSettle.houseAreaType : null
+          // 户主的 settingWay
+          res.settingWay =
+            (res.demographicList || []).find((demographic) => demographic.relation === '1')
+              ?.settingWay || ''
           // console.log(res, '业主详情')
           resolve(res)
           return
