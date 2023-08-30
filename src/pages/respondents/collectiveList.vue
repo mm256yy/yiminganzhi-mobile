@@ -28,7 +28,7 @@
         <uni-icons v-if="keyWords" @click="clear" type="clear" color="#999999" size="14rpx" />
       </view>
 
-      <view class="status-panel">
+      <view class="status-panel" v-if="!!sourceType">
         <view class="dot" :class="typeColor(sourceType)" />
         <text class="status-label">{{ typeLabel(sourceType) }}： </text>
         <text class="check-label"
@@ -51,6 +51,7 @@
             <ImpListItem
               v-for="item in list"
               :data="item"
+              :showStatus="!!sourceType"
               :key="item.uid"
               @click.stop="editLandlord(item)"
             />

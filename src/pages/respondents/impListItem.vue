@@ -6,7 +6,14 @@
         <view class="name">{{ props.data.name }}</view>
         <view class="number">{{ props.data.showDoorNo }}</view>
       </view>
-      <view class="head-rt"> 人口核定滞后 </view>
+      <view class="head-rt" v-if="props.showStatus">
+        {{ filterCurrentProgress(props.data.currentProgress) }}
+        {{ filterWarnStatus(props.data.warnStatus) }}
+      </view>
+
+      <template v-else>
+        <view class="head-rt"> 1 / 10 </view>
+      </template>
     </view>
 
     <view class="cont">
@@ -54,9 +61,60 @@ import { MainType } from '@/types/common'
 
 interface PropsType {
   data: LandlordType
+  showStatus: boolean // 是否展示状态
 }
 
 const props = defineProps<PropsType>()
+
+const progressMaps = [
+  {
+    label: '资格认定',
+    value: '1'
+  },
+  {
+    label: '资产评估',
+    value: '2'
+  },
+  {
+    label: '安置确认',
+    value: '3'
+  },
+  {
+    label: '择址确认',
+    value: '4'
+  },
+  {
+    label: '腾空过渡',
+    value: '5'
+  },
+  {
+    label: '动迁协议',
+    value: '6'
+  },
+  {
+    label: '搬迁安置',
+    value: '7'
+  },
+  {
+    label: '生产安置',
+    value: '8'
+  },
+  {
+    label: '已完成',
+    value: '9'
+  }
+]
+
+const filterCurrentProgress = (type: string) => {
+  // 当前进度 1资格认定 2资产评估 3安置确认 4择址确认 5腾空过度 6动迁协议 7搬迁安置 8生产安置 9已完
+  const item = progressMaps.find((item) => item.value === type)
+  return item?.label || ''
+}
+
+const filterWarnStatus = (type: string) => {
+  // 预警状态 0正常 1预警 2滞后
+  return type === '0' ? '正常' : type === '1' ? '预警' : '滞后'
+}
 </script>
 
 <style lang="scss" scoped>
