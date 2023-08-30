@@ -551,6 +551,10 @@ export class ImpLandlord extends Common {
         const landlord = await this.getLandlordByUidNoFilter(data.uid)
         if (landlord) {
           const newData = { ...landlord, ...data }
+          // 居民户信息填报完成
+          if (this.isNotNullPic(newData.householdPic)) {
+            newData.immigrantFilling.householdPicStatus = '1'
+          }
           const values = getLandlordSqlValues(newData)
           const sql = `update ${LandlordTableName} set ${values} where uid = '${newData.uid}'`
           const res = await this.db.execteSql([sql])
