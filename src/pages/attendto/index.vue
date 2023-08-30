@@ -2,6 +2,7 @@
   <!-- 所有的办理 -->
   <Container :title="getTitle()">
     <view class="archives-wrap">
+      <!-- 相关手续办理 -->
       <Procedures
         v-if="handleType === 1"
         :uid="query.uid"
@@ -10,6 +11,7 @@
         @submit="submitSuccess"
       />
 
+      <!-- 养老保险办理 -->
       <Insure
         v-if="handleType === 2"
         :uid="query.uid"
@@ -18,6 +20,7 @@
         @submit="submitSuccess"
       />
 
+      <!-- 自谋职业办理 -->
       <FindSelf
         v-if="handleType === 3"
         :uid="query.uid"
@@ -71,17 +74,18 @@
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
 import { computed, ref } from 'vue'
-import Container from '@/components/Container/index.vue'
 import { getImpLandlordItemApi } from '@/service'
 import { routerBack } from '@/utils'
 
-import Procedures from './procedures.vue'
-import Insure from './insure.vue'
-import FindSelf from './findself.vue'
+import Container from '@/components/Container/index.vue'
 
-import HouseVacate from './houseVacate.vue'
-import LandVacate from './landVacate.vue'
-import TransitionVacate from './transitionVacate.vue'
+import Procedures from './procedures.vue' // 引入相关手续办理组件
+import Insure from './insure.vue' // 引入养老保险办理组件
+import FindSelf from './findself.vue' // 引入自谋职业办理组件
+
+import HouseVacate from './houseVacate.vue' // 引入房屋腾空办理组件
+import LandVacate from './landVacate.vue' // 引入土地腾让办理组件
+import TransitionVacate from './transitionVacate.vue' // 引入过渡安置办理组件
 
 import CentralizeSupport from './centralizedSupport.vue' // 引入集中供养 —— 办理组件
 import SelfFindWay from './selfFindWay.vue' // 引入自谋出路 —— 办理组件
@@ -91,7 +95,7 @@ import SelfFindWay from './selfFindWay.vue' // 引入自谋出路 —— 办理�
  * 2 养老保险办理
  * 3 自谋职业办理
  * 4 房屋腾空办理
- * 5 土地腾空办理
+ * 5 土地腾让办理
  * 6 过渡安置办理
  * 7 集中供养办理
  * 8 自谋出路办理

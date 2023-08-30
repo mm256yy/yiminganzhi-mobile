@@ -9,8 +9,8 @@
             v-model="graveChoosePicStr"
             :file-list="graveChoosePicStr"
             :limit="20"
-            show-type="grid"
             :accepts="['.jpg', '.png', '.pdf', '.jpeg']"
+            show-type="grid"
           />
         </view>
       </view>
@@ -22,8 +22,8 @@
             v-model="graveChooseOtherPicStr"
             :file-list="graveChooseOtherPicStr"
             :limit="20"
-            show-type="grid"
             :accepts="['.jpg', '.png', '.pdf', '.jpeg']"
+            show-type="grid"
           />
         </view>
       </view>
@@ -42,6 +42,7 @@
 import { ref, watch } from 'vue'
 import uploadFiles from '@/components/UploadFile/index.vue'
 import { ImmigrantDocumentationType } from '@/types/impDataFill'
+import { fmtPicUrl } from '@/utils'
 
 interface PropsType {
   immigrantDocumentation: Partial<ImmigrantDocumentationType>
@@ -57,12 +58,8 @@ watch(
   (val) => {
     if (val) {
       const { graveChoosePic, graveChooseOtherPic } = val
-      if (graveChoosePic) {
-        graveChoosePicStr.value = graveChoosePic
-      }
-      if (graveChooseOtherPic) {
-        graveChooseOtherPicStr.value = graveChooseOtherPic
-      }
+      graveChoosePicStr.value = fmtPicUrl(graveChoosePic)
+      graveChooseOtherPicStr.value = fmtPicUrl(graveChooseOtherPic)
     }
   },
   { immediate: true, deep: true }

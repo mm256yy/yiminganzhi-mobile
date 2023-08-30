@@ -12,9 +12,9 @@
           <uploadFiles
             :limit="20"
             show-type="grid"
-            :file-list="pic1"
+            :file-list="houseEmptyPicStr"
             :accepts="['.jpg', '.png', '.pdf', '.jpeg']"
-            v-model="pic1"
+            v-model="houseEmptyPicStr"
           />
         </view>
       </view>
@@ -25,9 +25,9 @@
           <uploadFiles
             :limit="20"
             show-type="grid"
-            :file-list="pic2"
+            :file-list="houseEmptyOtherPicStr"
             :accepts="['.jpg', '.png', '.pdf', '.jpeg']"
-            v-model="pic2"
+            v-model="houseEmptyOtherPicStr"
           />
         </view>
       </view>
@@ -46,6 +46,7 @@
 import { ref, watch } from 'vue'
 import uploadFiles from '@/components/UploadFile/index.vue'
 import { ImmigrantDocumentationType } from '@/types/impDataFill'
+import { fmtPicUrl } from '@/utils'
 
 interface PropsType {
   immigrantDocumentation: Partial<ImmigrantDocumentationType>
@@ -53,27 +54,23 @@ interface PropsType {
 
 const props = defineProps<PropsType>()
 const emit = defineEmits(['submit'])
-const pic1 = ref<string>('[]')
-const pic2 = ref<string>('[]')
+const houseEmptyPicStr = ref<string>('[]')
+const houseEmptyOtherPicStr = ref<string>('[]')
 
 watch(
   () => props.immigrantDocumentation,
   (val) => {
     if (val) {
       const { houseEmptyPic, houseEmptyOtherPic } = val
-      if (houseEmptyPic) {
-        pic1.value = houseEmptyPic
-      }
-      if (houseEmptyOtherPic) {
-        pic2.value = houseEmptyOtherPic
-      }
+      houseEmptyPicStr.value = fmtPicUrl(houseEmptyPic)
+      houseEmptyOtherPicStr.value = fmtPicUrl(houseEmptyOtherPic)
     }
   },
   { immediate: true, deep: true }
 )
 
 const submit = async () => {
-  if (!pic1.value || pic1.value === '[]') {
+  if (!houseEmptyPicStr.value || houseEmptyPicStr.value === '[]') {
     uni.showToast({
       title: '请上传确认单',
       icon: 'none'
@@ -81,8 +78,8 @@ const submit = async () => {
     return
   }
   emit('submit', {
-    houseEmptyPic: pic1.value,
-    houseEmptyOtherPic: pic2.value
+    houseEmptyPic: houseEmptyPicStr.value,
+    houseEmptyOtherPic: houseEmptyOtherPicStr.value
   })
 }
 </script>

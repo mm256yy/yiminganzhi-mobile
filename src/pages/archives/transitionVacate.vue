@@ -10,11 +10,11 @@
         <view class="arch-label"><text class="red">*</text> 过渡安置确认单：</view>
         <view class="arch-value">
           <uploadFiles
+            v-model="excessVerifyPicStr"
+            :file-list="excessVerifyPicStr"
             :limit="20"
-            show-type="grid"
-            :file-list="pic1"
             :accepts="['.jpg', '.png', '.pdf', '.jpeg']"
-            v-model="pic1"
+            show-type="grid"
           />
         </view>
       </view>
@@ -23,11 +23,11 @@
         <view class="arch-label">过渡安置协议：</view>
         <view class="arch-value">
           <uploadFiles
+            v-model="excessVerifyPicStr"
+            :file-list="excessVerifyPicStr"
             :limit="20"
-            show-type="grid"
-            :file-list="pic1"
             :accepts="['.jpg', '.png', '.pdf', '.jpeg']"
-            v-model="pic1"
+            show-type="grid"
           />
         </view>
       </view>
@@ -36,11 +36,11 @@
         <view class="arch-label">其他附件：</view>
         <view class="arch-value">
           <uploadFiles
+            v-model="excessAgreementPicStr"
+            :file-list="excessAgreementPicStr"
             :limit="20"
-            show-type="grid"
-            :file-list="pic2"
             :accepts="['.jpg', '.png', '.pdf', '.jpeg']"
-            v-model="pic2"
+            show-type="grid"
           />
         </view>
       </view>
@@ -59,6 +59,7 @@
 import { ref, watch } from 'vue'
 import uploadFiles from '@/components/UploadFile/index.vue'
 import { ImmigrantDocumentationType } from '@/types/impDataFill'
+import { fmtPicUrl } from '@/utils'
 
 interface PropsType {
   immigrantDocumentation: Partial<ImmigrantDocumentationType>
@@ -66,31 +67,25 @@ interface PropsType {
 
 const props = defineProps<PropsType>()
 const emit = defineEmits(['submit'])
-const pic1 = ref<string>('[]')
-const pic2 = ref<string>('[]')
-const pic3 = ref<string>('[]')
+const excessVerifyPicStr = ref<string>('[]')
+const excessAgreementPicStr = ref<string>('[]')
+const excessVerifyOtherPicStr = ref<string>('[]')
 
 watch(
   () => props.immigrantDocumentation,
   (val) => {
     if (val) {
       const { excessVerifyPic, excessAgreementPic, excessVerifyOtherPic } = val
-      if (excessVerifyPic) {
-        pic1.value = excessVerifyPic
-      }
-      if (excessAgreementPic) {
-        pic2.value = excessAgreementPic
-      }
-      if (excessVerifyOtherPic) {
-        pic3.value = excessVerifyOtherPic
-      }
+      excessVerifyPicStr.value = fmtPicUrl(excessVerifyPic)
+      excessAgreementPicStr.value = fmtPicUrl(excessAgreementPic)
+      excessVerifyOtherPicStr.value = fmtPicUrl(excessVerifyOtherPic)
     }
   },
   { immediate: true, deep: true }
 )
 
 const submit = async () => {
-  if (!pic1.value || pic1.value === '[]') {
+  if (!excessVerifyPicStr.value || excessVerifyPicStr.value === '[]') {
     uni.showToast({
       title: '请上传确认单',
       icon: 'none'
@@ -98,9 +93,9 @@ const submit = async () => {
     return
   }
   emit('submit', {
-    excessVerifyPic: pic1.value,
-    excessAgreementPic: pic2.value,
-    excessVerifyOtherPic: pic3.value
+    excessVerifyPic: excessVerifyPicStr.value,
+    excessAgreementPic: excessAgreementPicStr.value,
+    excessVerifyOtherPic: excessVerifyOtherPicStr.value
   })
 }
 </script>

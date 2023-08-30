@@ -41,6 +41,7 @@
 import { ref, watch } from 'vue'
 import uploadFiles from '@/components/UploadFile/index.vue'
 import { ImmigrantDocumentationType } from '@/types/impDataFill'
+import { fmtPicUrl } from '@/utils'
 
 interface PropsType {
   immigrantDocumentation: Partial<ImmigrantDocumentationType>
@@ -56,12 +57,8 @@ watch(
   (val) => {
     if (val) {
       const { compensationCardPic, compensationCardOtherPic } = val
-      if (compensationCardPic) {
-        compensationCardPicStr.value = compensationCardPic
-      }
-      if (compensationCardOtherPic) {
-        compensationCardOtherPicStr.value = compensationCardOtherPic
-      }
+      compensationCardPicStr.value = fmtPicUrl(compensationCardPic)
+      compensationCardOtherPicStr.value = fmtPicUrl(compensationCardOtherPic)
     }
   },
   { immediate: true, deep: true }
