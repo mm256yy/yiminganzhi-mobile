@@ -54,6 +54,7 @@
 import { ref, computed } from 'vue'
 import { LandlordType } from '@/types/sync'
 import { selfPersonSidebarList } from '../../common/config'
+import { deepClone } from '@/utils'
 
 import Back from '@/components/Back/Index.vue'
 import LeftSidebar from '@/components/LeftSidebar/Index.vue' // 引入左侧边栏组件
@@ -78,7 +79,7 @@ const emit = defineEmits(['updateData'])
 
 const tabList = computed(() => {
   const { immigrantFilling } = props.dataInfo
-  const arr: any = [...selfPersonSidebarList]
+  const arr: any = deepClone(selfPersonSidebarList)
   if (immigrantFilling) {
     // 房屋/附属物评估状态
     if (immigrantFilling.appendageStatus === '1') {
