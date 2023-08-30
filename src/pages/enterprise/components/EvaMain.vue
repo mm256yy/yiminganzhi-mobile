@@ -11,7 +11,7 @@
             <Header
               :dataInfo="dataInfo"
               :type="MainType.Company"
-              :templateType="PrintType.printCompany"
+              :tabVal="tabVal"
               @update-data="updateData"
             />
 

@@ -10,6 +10,12 @@
           /{{ totalFillNumber }}
         </view>
       </view>
+      <view class="list-header-right">
+        <view class="btn-wrapper report" @click="onFilled">
+          <image class="icon" src="@/static/images/icon_report.png" mode="scaleToFill" />
+          <text class="txt">填报完成</text>
+        </view>
+      </view>
     </view>
   </view>
 </template>
@@ -17,6 +23,8 @@
 <script lang="ts">
 import { filterViewDoorNo } from '@/utils'
 import { MainType } from '@/types/common'
+import { updateImpLandlordImmigrantFillingApi } from '@/service'
+import { showToast, SUCCESS_MSG, ERROR_MSG } from '@/config'
 
 export default {
   props: {
@@ -27,6 +35,10 @@ export default {
     type: {
       type: String,
       default: ''
+    },
+    tabVal: {
+      type: Number,
+      default: 0
     }
   },
   computed: {
@@ -122,6 +134,60 @@ export default {
     // 是否为空数组
     isNotNullArray(arr: any) {
       return arr && Array.isArray(arr) && arr.length
+    },
+    // 填报完成
+    onFilled() {
+      const { uid } = this.dataInfo
+      let params = {}
+
+      if (this.tabVal === 1) {
+        params = {
+          houseMainStatus: '1' // 房屋主体评估
+        }
+      } else if (this.tabVal === 2) {
+        params = {
+          houseRenovationStatus: '1' // 房屋装修评估
+        }
+      } else if (this.tabVal === 3) {
+        params = {
+          appendageStatus: '1' // 房屋附属设施评估
+        }
+      } else if (this.tabVal === 4) {
+        params = {
+          treeStatus: '1' // 零星(林)果木评估
+        }
+      } else if (this.tabVal === 5) {
+        params = {
+          landStatus: '1' // 土地基本情况评估
+        }
+      } else if (this.tabVal === 6) {
+        params = {
+          landSeedlingStatus: '1' // 土地青苗及附着物评估
+        }
+      } else if (
+        this.tabVal === 7 ||
+        this.type === MainType.Company ||
+        this.type === MainType.IndividualHousehold
+      ) {
+        params = {
+          deviceStatus: '1' // 设施设备评估
+        }
+      } else if (this.tabVal === 7 && this.type === MainType.Village) {
+        params = {
+          specialStatus: '1' // 农村小型专项及农副业设施评估
+        }
+      }
+
+      updateImpLandlordImmigrantFillingApi(uid, params)
+        .then((res) => {
+          if (res) {
+            showToast(SUCCESS_MSG)
+            this.$emit('updateData')
+          }
+        })
+        .catch(() => {
+          showToast(ERROR_MSG)
+        })
     }
   }
 }

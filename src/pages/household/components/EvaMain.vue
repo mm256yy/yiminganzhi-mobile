@@ -8,7 +8,12 @@
         <view class="list-box">
           <view class="box" v-if="JSON.stringify(props.dataInfo) !== '{}'">
             <!-- 头部 -->
-            <Header :dataInfo="dataInfo" :type="MainType.PeasantHousehold" />
+            <Header
+              :dataInfo="dataInfo"
+              :type="MainType.PeasantHousehold"
+              :tabVal="tabVal"
+              @update-data="updateData"
+            />
 
             <view class="tabs-content">
               <!-- tab 切换 -->
