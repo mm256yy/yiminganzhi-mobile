@@ -531,7 +531,6 @@ export class ImpLandlord extends Common {
           res.settingWay =
             (res.demographicList || []).find((demographic) => demographic.relation === '1')
               ?.settingWay || ''
-          // console.log(res, '业主详情')
 
           // 居民户信息填报完成
           if (this.isNotNullPic(res.householdPic)) {
