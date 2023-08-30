@@ -4,11 +4,11 @@
     <Back title="个体户实施" />
 
     <view class="content">
-      <LeftSidebar @switch-tab="switchTab" :dataList="selfPersonSidebarList" />
+      <LeftSidebar @switch-tab="switchTab" :dataList="tabList" />
 
       <view class="right">
         <!-- 头部 -->
-        <Header :dataInfo="dataInfo" :type="MainType.IndividualHousehold" />
+        <Header :dataInfo="dataInfo" />
 
         <view class="box">
           <!-- 房屋/附属物评估报告 -->
@@ -51,8 +51,7 @@
   </view>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { MainType } from '@/types/common'
+import { ref, computed } from 'vue'
 import { LandlordType } from '@/types/sync'
 import { selfPersonSidebarList } from '../../common/config'
 
@@ -76,6 +75,53 @@ interface PropsType {
 const props = defineProps<PropsType>()
 const tabVal = ref<number>(1)
 const emit = defineEmits(['updateData'])
+
+const tabList = computed(() => {
+  const { immigrantFilling } = props.dataInfo
+  const arr: any = [...selfPersonSidebarList]
+  if (immigrantFilling) {
+    // 房屋/附属物评估状态
+    if (immigrantFilling.appendageStatus === '1') {
+      arr[0].list[0].list[0].filled = true
+    }
+
+    // 土地/附着物评估状态
+    if (immigrantFilling.landStatus === '1') {
+      arr[0].list[0].list[1].filled = true
+    }
+
+    // 设施设备评估状态
+    if (immigrantFilling.deviceStatus === '1') {
+      arr[0].list[0].list[2].filled = true
+    }
+
+    // 个体户建卡状态
+    if (immigrantFilling.cardStatus === '1') {
+      arr[0].list[1].list[0].filled = true
+    }
+
+    // 房屋腾空状态
+    if (immigrantFilling.houseSoarStatus === '1') {
+      arr[0].list[2].list[0].filled = true
+    }
+
+    // 土地腾让状态
+    if (immigrantFilling.landSoarStatus === '1') {
+      arr[0].list[2].list[1].filled = true
+    }
+
+    // 动迁协议状态
+    if (immigrantFilling.agreementStatus === '1') {
+      arr[0].list[3].list[0].filled = true
+    }
+
+    // 相关手续状态
+    if (immigrantFilling.proceduresStatus === '1') {
+      arr[1].list[0].list[0].filled = true
+    }
+  }
+  return [...arr]
+})
 
 const switchTab = (item: any) => {
   tabVal.value = item.value

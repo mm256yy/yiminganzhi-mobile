@@ -4,11 +4,11 @@
     <Back title="居民户实施" />
 
     <view class="content">
-      <LeftSidebar @switch-tab="switchTab" :dataList="householdSidebarList" />
+      <LeftSidebar @switch-tab="switchTab" :dataList="tabList" />
 
       <view class="right">
         <!-- 头部 -->
-        <Header :dataInfo="dataInfo" :type="MainType.PeasantHousehold" />
+        <Header :dataInfo="dataInfo" />
 
         <view class="box">
           <!-- 居民户信息 -->
@@ -20,6 +20,7 @@
             :dataList="dataInfo.demographicList"
             :dataInfo="dataInfo"
             @delete-population="deletePopulation"
+            @update-data="updateData"
           />
 
           <!-- 房屋产权 -->
@@ -27,6 +28,7 @@
             v-if="tabVal === 3"
             :dataList="dataInfo.immigrantHouseList"
             :dataInfo="dataInfo"
+            @update-data="updateData"
           />
 
           <!-- 房屋/附属物评估报告 -->
@@ -155,8 +157,7 @@
   </view>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { MainType } from '@/types/common'
+import { ref, computed } from 'vue'
 import { LandlordType } from '@/types/sync'
 import { householdSidebarList } from '../../common/config'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
@@ -205,6 +206,133 @@ interface PropsType {
 const props = defineProps<PropsType>()
 const tabVal = ref<number>(1)
 const emit = defineEmits(['updateData'])
+
+const tabList = computed(() => {
+  const { immigrantFilling } = props.dataInfo
+  const arr: any = [...householdSidebarList]
+  if (immigrantFilling) {
+    // 居民户信息完成状态
+    if (immigrantFilling.householdPicStatus === '1') {
+      arr[0].list[0].list[0].filled = true
+    }
+
+    // 人口核定状态
+    if (immigrantFilling.populationStatus === '1') {
+      arr[1].list[0].list[0].filled = true
+    }
+
+    // 房屋产权状态
+    if (immigrantFilling.propertyStatus === '1') {
+      arr[1].list[0].list[1].filled = true
+    }
+
+    // 房屋/附属物评估状态
+    if (immigrantFilling.appendageStatus === '1') {
+      arr[1].list[1].list[0].filled = true
+    }
+
+    // 土地/附着物评估状态
+    if (immigrantFilling.landStatus === '1') {
+      arr[1].list[1].list[1].filled = true
+    }
+
+    // 生产安置状态
+    if (immigrantFilling.productionArrangementStatus === '1') {
+      arr[1].list[2].list[0].filled = true
+    }
+
+    // 搬迁安置状态
+    if (immigrantFilling.relocateArrangementStatus === '1') {
+      arr[1].list[2].list[1].filled = true
+    }
+
+    // 坟墓确认状态
+    if (immigrantFilling.graveArrangementStatus === '1') {
+      arr[1].list[2].list[2].filled = true
+    }
+
+    // 生产用地状态
+    if (immigrantFilling.landUseStatus === '1') {
+      arr[1].list[3].list[0].filled = true
+    }
+
+    // 选房择址状态
+    if (immigrantFilling.chooseHouseStatus === '1') {
+      arr[1].list[3].list[1].filled = true
+    }
+
+    // 坟墓择址状态
+    if (immigrantFilling.chooseGraveStatus === '1') {
+      arr[1].list[3].list[2].filled = true
+    }
+
+    // 移民建卡状态
+    if (immigrantFilling.cardStatus === '1') {
+      arr[1].list[4].list[0].filled = true
+    }
+
+    // 房屋腾空状态
+    if (immigrantFilling.houseSoarStatus === '1') {
+      arr[1].list[5].list[0].filled = true
+    }
+
+    // 土地腾让状态
+    if (immigrantFilling.landSoarStatus === '1') {
+      arr[1].list[5].list[1].filled = true
+    }
+
+    // 过渡安置状态
+    if (immigrantFilling.excessStatus === '1') {
+      arr[1].list[5].list[2].filled = true
+    }
+
+    // 动迁协议状态
+    if (immigrantFilling.agreementStatus === '1') {
+      arr[1].list[6].list[0].filled = true
+    }
+
+    // 自建房状态
+    if (immigrantFilling.buildOneselfStatus === '1') {
+      arr[2].list[0].list[0].filled = true
+    }
+
+    // 公寓房状态
+    if (immigrantFilling.flatsStatus === '1') {
+      arr[2].list[0].list[1].filled = true
+    }
+
+    // 集中供养状态
+    if (immigrantFilling.centralizedSupportStatus === '1') {
+      arr[2].list[0].list[2].filled = true
+    }
+
+    // 自谋出路状态
+    if (immigrantFilling.selfSeekingStatus === '1') {
+      arr[2].list[0].list[3].filled = true
+    }
+
+    // 农业安置状态
+    if (immigrantFilling.agricultureArrangementStatus === '1') {
+      arr[2].list[1].list[0].filled = true
+    }
+
+    // 养老保险状态
+    if (immigrantFilling.retirementStatus === '1') {
+      arr[2].list[1].list[1].filled = true
+    }
+
+    // 自谋职业状态
+    if (immigrantFilling.selfEmploymentStatus === '1') {
+      arr[2].list[1].list[2].filled = true
+    }
+
+    // 相关手续状态
+    if (immigrantFilling.proceduresStatus === '1') {
+      arr[2].list[2].list[0].filled = true
+    }
+  }
+  return [...arr]
+})
 
 const switchTab = (item: any) => {
   tabVal.value = item.value

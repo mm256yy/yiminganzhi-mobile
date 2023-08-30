@@ -618,19 +618,12 @@ export const collectiveSidebarList = [
         ]
       },
       {
-        title: '协议签订',
+        title: '',
         filled: false,
         list: [
           {
-            label: '动迁安置协议',
+            label: '动迁协议',
             value: 5,
-            filled: false,
-            iconDef: iconDqxyDef,
-            iconSel: iconDqxySel
-          },
-          {
-            label: '过渡安置协议',
-            value: 6,
             filled: false,
             iconDef: iconDqxyDef,
             iconSel: iconDqxySel
@@ -649,7 +642,7 @@ export const collectiveSidebarList = [
         list: [
           {
             label: '集体资产处置',
-            value: 7,
+            value: 6,
             filled: false,
             iconDef: iconXgsxDef,
             iconSel: iconXgsxSel

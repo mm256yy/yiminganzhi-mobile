@@ -6,7 +6,7 @@
         <view class="account-no">{{ filterViewDoorNoMd(dataInfo) }}</view>
         <view class="fill-number">
           填报进度&nbsp;
-          <text class="green">9</text>
+          <text class="green">{{ fillNumber }}</text>
           /{{ totalFillNumber }}
         </view>
       </view>
@@ -23,65 +23,295 @@ export default {
     dataInfo: {
       type: Object,
       default: () => {}
-    },
-    type: {
-      type: String,
-      default: ''
     }
   },
   computed: {
     totalFillNumber: function () {
-      switch (this.type) {
+      const { type } = this.dataInfo
+      switch (type) {
         case MainType.PeasantHousehold:
-          return 17
+          return 19
           break
         case MainType.Company:
-          return 17
+          return 8
           break
         case MainType.IndividualHousehold:
-          return 17
+          return 8
           break
         case MainType.Village:
-          return 17
+          return 6
           break
         default:
-          return 17
+          return 19
           break
       }
     },
     fillNumber: function () {
+      const { type, immigrantFilling } = this.dataInfo
+      if (!immigrantFilling) {
+        return 0
+      }
       const {
-        demographicList,
-        immigrantHouseList,
-        immigrantEquipmentList,
-        immigrantFacilitiesList,
-        type
-      } = this.dataInfo
+        householdPicStatus,
+        appendageStatus,
+        landStatus,
+        populationStatus,
+        propertyStatus,
+        productionArrangementStatus,
+        relocateArrangementStatus,
+        graveArrangementStatus,
+        landUseStatus,
+        chooseHouseStatus,
+        chooseGraveStatus,
+        cardStatus,
+        houseSoarStatus,
+        landSoarStatus,
+        excessStatus,
+        buildOneselfStatus,
+        flatsStatus,
+        centralizedSupportStatus,
+        selfSeekingStatus,
+        agricultureArrangementStatus,
+        retirementStatus,
+        selfEmploymentStatus,
+        proceduresStatus,
+        agreementStatus,
+        deviceStatus,
+        specialStatus,
+        disposalMeasuresStatus
+      } = immigrantFilling
 
       let fillCount = 0
 
-      // 上报开始校验数据
+      // 居民户
       if (type === MainType.PeasantHousehold) {
-        // 居民户
-        if (this.isNotNullArray(demographicList)) {
+        // 居民户信息完成状态
+        if (householdPicStatus === '1') {
           fillCount++
         }
-        if (this.isNotNullArray(immigrantHouseList)) {
+
+        // 人口核定状态
+        if (populationStatus === '1') {
           fillCount++
         }
-      } else if (type === MainType.IndividualHousehold) {
-        // 个体户
-        if (this.isNotNullArray(immigrantEquipmentList)) {
+
+        // 房屋产权状态
+        if (propertyStatus === '1') {
+          fillCount++
+        }
+
+        // 房屋/附属物评估状态
+        if (appendageStatus === '1') {
+          fillCount++
+        }
+
+        // 土地/附着物评估状态
+        if (landStatus === '1') {
+          fillCount++
+        }
+
+        // 生产安置状态
+        if (productionArrangementStatus === '1') {
+          fillCount++
+        }
+
+        // 搬迁安置状态
+        if (relocateArrangementStatus === '1') {
+          fillCount++
+        }
+
+        // 坟墓确认状态
+        if (graveArrangementStatus === '1') {
+          fillCount++
+        }
+
+        // 生产用地状态
+        if (landUseStatus === '1') {
+          fillCount++
+        }
+
+        // 选房择址状态
+        if (chooseHouseStatus === '1') {
+          fillCount++
+        }
+
+        // 坟墓择址状态
+        if (chooseGraveStatus === '1') {
+          fillCount++
+        }
+
+        // 移民建卡状态
+        if (cardStatus === '1') {
+          fillCount++
+        }
+
+        // 房屋腾空状态
+        if (houseSoarStatus === '1') {
+          fillCount++
+        }
+
+        // 土地腾让状态
+        if (landSoarStatus === '1') {
+          fillCount++
+        }
+
+        // 过渡安置状态
+        if (excessStatus === '1') {
+          fillCount++
+        }
+
+        // 动迁协议状态
+        if (agreementStatus === '1') {
+          fillCount++
+        }
+
+        // 自建房状态
+        if (buildOneselfStatus === '1') {
+          fillCount++
+        }
+
+        // 公寓房状态
+        if (flatsStatus === '1') {
+          fillCount++
+        }
+
+        // 集中供养状态
+        if (centralizedSupportStatus === '1') {
+          fillCount++
+        }
+
+        // 自谋出路状态
+        if (selfSeekingStatus === '1') {
+          fillCount++
+        }
+
+        // 农业安置状态
+        if (agricultureArrangementStatus === '1') {
+          fillCount++
+        }
+
+        // 养老保险状态
+        if (retirementStatus === '1') {
+          fillCount++
+        }
+
+        // 自谋职业状态
+        if (selfEmploymentStatus === '1') {
+          fillCount++
+        }
+
+        // 相关手续状态
+        if (proceduresStatus === '1') {
           fillCount++
         }
       } else if (type === MainType.Company) {
-        // 企业
-        if (this.isNotNullArray(immigrantEquipmentList)) {
+        // 房屋/附属物评估状态
+        if (appendageStatus === '1') {
+          fillCount++
+        }
+
+        // 土地/附着物评估状态
+        if (landStatus === '1') {
+          fillCount++
+        }
+
+        // 设施设备评估状态
+        if (deviceStatus === '1') {
+          fillCount++
+        }
+
+        // 企业建卡状态
+        if (cardStatus === '1') {
+          fillCount++
+        }
+
+        // 房屋腾空状态
+        if (houseSoarStatus === '1') {
+          fillCount++
+        }
+
+        // 土地腾让状态
+        if (landSoarStatus === '1') {
+          fillCount++
+        }
+
+        // 动迁协议状态
+        if (agreementStatus === '1') {
+          fillCount++
+        }
+
+        // 相关手续状态
+        if (proceduresStatus === '1') {
+          fillCount++
+        }
+      } else if (type === MainType.IndividualHousehold) {
+        // 房屋/附属物评估状态
+        if (appendageStatus === '1') {
+          fillCount++
+        }
+
+        // 土地/附着物评估状态
+        if (landStatus === '1') {
+          fillCount++
+        }
+
+        // 设施设备评估状态
+        if (deviceStatus === '1') {
+          fillCount++
+        }
+
+        // 个体户建卡状态
+        if (cardStatus === '1') {
+          fillCount++
+        }
+
+        // 房屋腾空状态
+        if (houseSoarStatus === '1') {
+          fillCount++
+        }
+
+        // 土地腾让状态
+        if (landSoarStatus === '1') {
+          fillCount++
+        }
+
+        // 动迁协议状态
+        if (agreementStatus === '1') {
+          fillCount++
+        }
+
+        // 相关手续状态
+        if (proceduresStatus === '1') {
           fillCount++
         }
       } else if (type === MainType.Village) {
-        // 村集体
-        if (this.isNotNullArray(immigrantFacilitiesList)) {
+        // 房屋/附属物评估状态
+        if (appendageStatus === '1') {
+          fillCount++
+        }
+
+        // 土地/附着物评估状态
+        if (landStatus === '1') {
+          fillCount++
+        }
+
+        // 小型专项及农副业设施评估状态
+        if (specialStatus === '1') {
+          fillCount++
+        }
+
+        // 房屋腾空状态
+        if (houseSoarStatus === '1') {
+          fillCount++
+        }
+
+        // 动迁协议状态
+        if (agreementStatus === '1') {
+          fillCount++
+        }
+
+        // 集体资产处置方法状态
+        if (disposalMeasuresStatus === '1') {
           fillCount++
         }
       }

@@ -4,11 +4,11 @@
     <Back title="村集体实施" />
 
     <view class="content">
-      <LeftSidebar @switch-tab="switchTab" :dataList="collectiveSidebarList" />
+      <LeftSidebar @switch-tab="switchTab" :dataList="tabList" />
 
       <view class="right">
         <!-- 头部 -->
-        <Header :dataInfo="dataInfo" :type="MainType.Village" />
+        <Header :dataInfo="dataInfo" />
 
         <view class="box">
           <!-- 房屋/附属物评估报告 -->
@@ -32,15 +32,12 @@
           <!-- 房屋腾空 -->
           <house-vacate v-if="tabVal === 4" :dataInfo="dataInfo" @update-data="updateData" />
 
-          <!-- 动迁安置协议 -->
+          <!-- 动迁协议 -->
           <relocation-agreement v-if="tabVal === 5" />
-
-          <!-- 过渡安置协议 -->
-          <transition-agreement v-if="tabVal === 6" />
 
           <!-- 集体资产处置方法 -->
           <asset-disposal
-            v-if="tabVal === 7"
+            v-if="tabVal === 6"
             :dataInfo="dataInfo.immigrantDocumentation"
             :uid="dataInfo.uid"
             @update-data="updateData"
@@ -51,8 +48,7 @@
   </view>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { MainType } from '@/types/common'
+import { ref, computed } from 'vue'
 import { LandlordType } from '@/types/sync'
 import { collectiveSidebarList } from '../../common/config'
 
@@ -65,7 +61,6 @@ import landAccessoryEvaReport from '../../common/landAccessoryEvaReport/index.vu
 import specialEquipmentEvaReport from '../specialEquipmentEvaReport/index.vue' // 引入资产评估 -- 农村小型专项设施设备评估报告组件
 import houseVacate from '../../common/vacate/house.vue' // 引入腾空 -- 房屋腾空组件
 import relocationAgreement from '../relocationAgreement/index.vue' // 引入动迁协议组件
-import transitionAgreement from '../transitionAgreement/index.vue' // 引入过渡安置协议组件
 import assetDisposal from '../assetDisposal/index.vue' // 引入集体资产处置方法组件
 
 interface PropsType {
@@ -75,6 +70,43 @@ interface PropsType {
 const props = defineProps<PropsType>()
 const tabVal = ref<number>(1)
 const emit = defineEmits(['updateData'])
+
+const tabList = computed(() => {
+  const { immigrantFilling } = props.dataInfo
+  const arr: any = [...collectiveSidebarList]
+  if (immigrantFilling) {
+    // 房屋/附属物评估状态
+    if (immigrantFilling.appendageStatus === '1') {
+      arr[0].list[0].list[0].filled = true
+    }
+
+    // 土地/附着物评估状态
+    if (immigrantFilling.landStatus === '1') {
+      arr[0].list[0].list[1].filled = true
+    }
+
+    // 小型专项及农副业设施评估状态
+    if (immigrantFilling.specialStatus === '1') {
+      arr[0].list[0].list[2].filled = true
+    }
+
+    // 房屋腾空状态
+    if (immigrantFilling.houseSoarStatus === '1') {
+      arr[0].list[1].list[0].filled = true
+    }
+
+    // 动迁协议状态
+    if (immigrantFilling.agreementStatus === '1') {
+      arr[0].list[2].list[0].filled = true
+    }
+
+    // 集体资产处置方法状态
+    if (immigrantFilling.disposalMeasuresStatus === '1') {
+      arr[1].list[0].list[0].filled = true
+    }
+  }
+  return [...arr]
+})
 
 const switchTab = (item: any) => {
   tabVal.value = item.value

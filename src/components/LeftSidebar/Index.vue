@@ -118,7 +118,7 @@ const switchTab = (item: any) => {
 
           .item-3 {
             display: flex;
-            width: 80rpx;
+            width: 82rpx;
             height: 28rpx;
             margin-bottom: 5rpx;
             font-size: 9rpx;
@@ -139,8 +139,8 @@ const switchTab = (item: any) => {
             }
 
             .icon {
-              width: 12rpx;
-              height: 12rpx;
+              width: 10rpx;
+              height: 10rpx;
               margin-right: 2rpx;
             }
 

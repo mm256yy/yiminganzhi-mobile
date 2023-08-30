@@ -1,20 +1,24 @@
 <template>
   <view class="grave-wrap">
     <view class="btn-box">
-      <view class="btn green-btn">
+      <view class="btn green" @click="onFilled">
+        <image class="icon" src="@/static/images/icon_sign_white.png" mode="scaleToFill" />
+        <text class="txt">填报完成</text>
+      </view>
+      <view class="btn green">
         <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
         <text class="txt">打印报表</text>
       </view>
-      <view class="btn blue-btn" @click="addGrave">
+      <view class="btn blue" @click="addGrave">
         <image class="icon" src="@/static/images/icon_plus.png" mode="scaleToFill" />
         <text class="txt">添加</text>
       </view>
-      <view class="btn blue-btn" @click="archivesUpload">
+      <view class="btn blue" @click="archivesUpload">
         <image class="icon" src="@/static/images/icon_dangan_upload.png" mode="scaleToFill" />
         <text class="txt">档案上传</text>
       </view>
 
-      <!-- <view class="btn blue-btn">
+      <!-- <view class="btn blue">
         <image class="icon" src="@/static/images/icon_feedback.png" mode="scaleToFill" />
         <text class="txt">问题反馈</text>
       </view> -->
@@ -69,8 +73,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { routerForward, formatDict } from '@/utils'
-import { deleteImpLandlordGraveApi } from '@/service'
+import { deleteImpLandlordGraveApi, updateImpLandlordImmigrantFillingApi } from '@/service'
 import { LandlordType } from '@/types/sync'
+import { showToast, SUCCESS_MSG, ERROR_MSG } from '@/config'
 
 interface PropsType {
   dataInfo: LandlordType
@@ -83,6 +88,24 @@ const emit = defineEmits(['updateData'])
 const tableData = computed(() => {
   return props.dataInfo.immigrantGraveList || []
 })
+
+// 填报完成
+const onFilled = () => {
+  const { uid } = props.dataInfo
+  let params = {
+    graveArrangementStatus: '1'
+  }
+  updateImpLandlordImmigrantFillingApi(uid, params)
+    .then((res) => {
+      if (res) {
+        showToast(SUCCESS_MSG)
+        emit('updateData')
+      }
+    })
+    .catch(() => {
+      showToast(ERROR_MSG)
+    })
+}
 
 const addGrave = () => {
   routerForward('graveConfirm', {
@@ -101,10 +124,7 @@ const updateGrave = (uid: string) => {
 const deleteGrave = async (uid: string) => {
   const res = await deleteImpLandlordGraveApi(uid)
   if (res) {
-    uni.showToast({
-      title: '保存成功！',
-      icon: 'success'
-    })
+    showToast(SUCCESS_MSG)
     emit('updateData')
   }
 }
@@ -155,11 +175,11 @@ const archivesUpload = () => {
     align-items: center;
     justify-content: center;
 
-    &.green-btn {
+    &.green {
       background-color: #30a952;
     }
 
-    &.blue-btn {
+    &.blue {
       background: #3e73ec;
     }
 

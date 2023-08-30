@@ -1,6 +1,13 @@
 <template>
   <view class="population-wrapper">
     <!-- 居民户实施 —— 人口核定 -->
+    <view class="btn-wrapper">
+      <view class="btns green" @click="onFilled">
+        <image class="icon" src="@/static/images/icon_sign_white.png" mode="scaleToFill" />
+        <text class="txt">填报完成</text>
+      </view>
+    </view>
+
     <view class="list" v-if="props.dataList && props.dataList.length > 0">
       <view class="list-item" v-for="item in props.dataList" :key="item.id">
         <view class="list-1">
@@ -99,8 +106,9 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
+import { updateImpLandlordImmigrantFillingApi } from '@/service'
 import { formatDict, formatStr, routerForward } from '@/utils'
-import { showToast } from '@/config'
+import { showToast, SUCCESS_MSG, ERROR_MSG } from '@/config'
 
 interface PropsType {
   dataList: any[]
@@ -108,10 +116,28 @@ interface PropsType {
 }
 
 const props = defineProps<PropsType>()
-const emit = defineEmits(['deletePopulation'])
+const emit = defineEmits(['deletePopulation', 'updateData'])
 const alertDialog = ref<any>(null)
 const currentItem = ref<any>({})
 const reason = ref<string>('') // 删除原因
+
+// 填报完成
+const onFilled = () => {
+  const { uid } = props.dataInfo
+  let params = {
+    populationStatus: '1'
+  }
+  updateImpLandlordImmigrantFillingApi(uid, params)
+    .then((res) => {
+      if (res) {
+        showToast(SUCCESS_MSG)
+        emit('updateData')
+      }
+    })
+    .catch(() => {
+      showToast(ERROR_MSG)
+    })
+}
 
 const toLink = (type: string, data?: any) => {
   const { uid, doorNo } = props.dataInfo
@@ -159,6 +185,44 @@ const dialogClose = () => {
 .population-wrapper {
   width: 100%;
   overflow-y: scroll;
+
+  .btn-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin: 6rpx 0;
+
+    .btns {
+      display: flex;
+      height: 23rpx;
+      padding: 0 9rpx;
+      margin-left: 6rpx;
+      background: #3e73ec;
+      border-radius: 23rpx;
+      align-items: center;
+      justify-content: center;
+
+      &.green {
+        background-color: #30a952;
+      }
+
+      &.blue {
+        background: #3e73ec;
+      }
+
+      .icon {
+        width: 9rpx;
+        height: 9rpx;
+        margin-right: 3rpx;
+      }
+
+      .txt {
+        font-size: 9rpx;
+        line-height: 11rpx;
+        color: #ffffff;
+      }
+    }
+  }
 
   .list {
     width: 100%;
