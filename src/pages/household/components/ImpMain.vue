@@ -162,6 +162,7 @@ import { LandlordType } from '@/types/sync'
 import { householdSidebarList } from '../../common/config'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { deleteImpLandlordPeopleApi } from '@/service'
+import { deepClone } from '@/utils'
 
 import Back from '@/components/Back/Index.vue'
 import LeftSidebar from '@/components/LeftSidebar/Index.vue' // 引入左侧边栏组件
@@ -209,7 +210,8 @@ const emit = defineEmits(['updateData'])
 
 const tabList = computed(() => {
   const { immigrantFilling } = props.dataInfo
-  const arr: any = [...householdSidebarList]
+  const arr: any = deepClone(householdSidebarList)
+
   if (immigrantFilling) {
     // 居民户信息完成状态
     if (immigrantFilling.householdPicStatus === '1') {
