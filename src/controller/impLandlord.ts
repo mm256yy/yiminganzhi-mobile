@@ -133,8 +133,6 @@ export class ImpLandlord extends Common {
           landlordItem.immigrantFilling.chooseHouseStatus = '1'
         }
       }
-    } else {
-      landlordItem.immigrantFilling.chooseHouseStatus = '1'
     }
 
     // 坟墓择址: 完成条件：无坟墓 或者坟墓编号&&档案 有
