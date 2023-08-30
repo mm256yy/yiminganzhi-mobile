@@ -412,7 +412,12 @@ export class ImpLandlord extends Common {
             (res.demographicList || []).find((demographic) => demographic.relation === '1')
               ?.settingWay || ''
           // console.log(res, '业主详情')
-          resolve(res)
+
+          // 居民户信息填报完成
+          if (this.isNotNullPic(res.householdPic)) {
+            res.immigrantFilling.householdPicStatus = '1'
+          }
+          resolve(this.updateImpFillStatus(res))
           return
         }
 
@@ -527,7 +532,12 @@ export class ImpLandlord extends Common {
             (res.demographicList || []).find((demographic) => demographic.relation === '1')
               ?.settingWay || ''
           // console.log(res, '业主详情')
-          resolve(res)
+
+          // 居民户信息填报完成
+          if (this.isNotNullPic(res.householdPic)) {
+            res.immigrantFilling.householdPicStatus = '1'
+          }
+          resolve(this.updateImpFillStatus(res))
           return
         }
 
