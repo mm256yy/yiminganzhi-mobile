@@ -426,7 +426,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import { StorageKey, setStorage, getStorage } from '@/utils/storage'
+import { StorageKey, getStorage } from '@/utils/storage'
 import resettleDesc from './resettleDesc.vue'
 // import areaDetail from './areaDetail.vue'
 import planSelect from './planSelect.vue'
@@ -437,7 +437,7 @@ import {
   apartmentAreaSize,
   resettleArea,
   baseInfoDefault
-} from './config'
+} from '@/config'
 import { deepClone, formatDict, guid } from '@/utils'
 import { LandlordType } from '@/types/sync'
 import { updateLandlordPeopleApi } from '@/service'

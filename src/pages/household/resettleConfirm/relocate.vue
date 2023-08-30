@@ -82,7 +82,7 @@ import {
   apartmentArea,
   apartmentAreaSize,
   homesteadAreaSize
-} from '../imitateResettle/config'
+} from '@/config'
 import { updateImpLandlordRelocateResettleApi } from '@/service'
 import { routerBack, routerForward } from '@/utils'
 
@@ -196,18 +196,20 @@ const onImportData = () => {
     doorNo,
     areaType
   } = mockImmigrantSettle.value
-  const data = {
-    houseAreaType,
-    typeOneNum,
-    typeTwoNum,
-    typeThreeNum,
-    typeFourNum,
-    settleAddress,
-    doorNo,
-    areaType
+  if (houseAreaType) {
+    const data = {
+      houseAreaType,
+      typeOneNum,
+      typeTwoNum,
+      typeThreeNum,
+      typeFourNum,
+      settleAddress,
+      doorNo,
+      areaType
+    }
+    houseType.value = houseAreaType as HouseAreaType
+    immigrantSettleSubmit(data as Partial<ImmigrantSettleType>)
   }
-  houseType.value = houseAreaType as HouseAreaType
-  immigrantSettleSubmit(data)
 }
 
 const onClose = () => {

@@ -62,7 +62,7 @@
 <script lang="ts" setup>
 import { ref, computed, watch } from 'vue'
 import { HouseAreaType } from '@/types/common'
-import { homesteadAreaSize, resettleArea } from '../config'
+import { homesteadAreaSize, resettleArea } from '@/config'
 import { LandlordType } from '@/types/sync'
 
 interface PropsType {

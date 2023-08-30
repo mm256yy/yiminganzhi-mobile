@@ -1,3 +1,5 @@
+import { HouseAreaType } from './common'
+
 // 房屋装修 assetHouseFitUpList
 export interface AssetHouseFitUpType {
   isUpdate?: string
@@ -162,7 +164,7 @@ export interface ImmigrantSettleType {
   projectId?: number
   status?: string
   peopleNum: number
-  houseAreaType: string
+  houseAreaType: HouseAreaType
   houseArea: number
   typeOneNum: number
   typeTwoNum: number

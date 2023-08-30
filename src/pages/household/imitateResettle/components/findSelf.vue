@@ -35,7 +35,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { selfResettleData } from '../config'
+import { selfResettleData } from '@/config'
 import { HouseAreaType } from '@/types/common'
 
 interface PropsType {

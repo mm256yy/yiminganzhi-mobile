@@ -199,8 +199,7 @@
 
 <script lang="ts" setup>
 import { ref, computed, onMounted, watch } from 'vue'
-import { apartmentArea, apartmentAreaSize } from '../config'
-import { showToast } from '@/config'
+import { showToast, apartmentArea, apartmentAreaSize } from '@/config'
 import { HouseAreaType } from '@/types/common'
 import { LandlordType } from '@/types/sync'
 

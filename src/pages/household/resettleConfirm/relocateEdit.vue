@@ -7,7 +7,7 @@
           <view class="plan-label">安置方式</view>
           <view
             class="plan-tab-item"
-            v-for="item in filterHouseType()"
+            v-for="item in filterHouseType"
             :class="{ active: houseType === item.value }"
             @click="houseTypeChange(item)"
             :key="item.value"
@@ -55,12 +55,12 @@
 <script setup lang="ts">
 import { onLoad } from '@dcloudio/uni-app'
 import Container from '@/components/Container/index.vue'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { HouseAreaType } from '@/types/common'
 import { PopulationType } from '@/types/datafill'
 import { ImmigrantSettleType } from '@/types/impDataFill'
 import { StorageKey, getStorage } from '@/utils/storage'
-import { resettleHouseType } from '../imitateResettle/config'
+import { resettleHouseType } from '@/config'
 import { getImpLandlordItemApi, updateImpLandlordRelocateResettleApi } from '@/service'
 import { routerBack } from '@/utils'
 
@@ -89,7 +89,7 @@ onLoad((option) => {
 /**
  * 根据户主人口性质过滤安置类型
  */
-const filterHouseType = () => {
+const filterHouseType = computed(() => {
   const population = demographicList.value.find((item) => item.relation === '1')
   // 农村移民
   if (population && population.populationNature !== '1') {
@@ -102,7 +102,7 @@ const filterHouseType = () => {
     })
   }
   return resettleHouseType
-}
+})
 
 // 获取调查对象详情的档案数据
 const getLandlordDetail = async () => {
@@ -112,7 +112,11 @@ const getLandlordDetail = async () => {
       dataInfo.value = res
       demographicList.value = res.demographicList
       doorNo.value = res.doorNo
+      console.log(res.immigrantSettle, 'immigrantSettle')
       immigrantSettle.value = res.immigrantSettle || {}
+      if (res.immigrantSettle.houseAreaType) {
+        houseType.value = res.immigrantSettle.houseAreaType
+      }
     }
   }
 }

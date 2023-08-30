@@ -32,6 +32,8 @@ import {
 } from '@/types/impDataFill'
 import { ImpLandlord } from './impLandlord'
 import { defaultDocumentObj, defaultFillingObj } from './config'
+import { HouseAreaType } from '@/types/common'
+import { homesteadAreaSize, apartmentAreaSize, apartmentArea, resettleArea } from '@/config'
 
 class ImpDataFill extends ImpLandlord {
   constructor() {
@@ -1261,6 +1263,111 @@ class ImpDataFill extends ImpLandlord {
           if (!landlordItem.immigrantSettle.uid) {
             landlordItem.immigrantSettle.uid = guid()
           }
+
+          /**
+           * 给选房择址添加初始数据
+           */
+
+          // 存放选房择址初始值
+          let array: any = []
+          // 选择了 宅基地和公寓房
+          const {
+            houseAreaType,
+            areaType,
+            settleAddress,
+            typeOneNum,
+            typeTwoNum,
+            typeThreeNum,
+            typeFourNum
+          } = landlordItem.immigrantSettle
+          if (houseAreaType === HouseAreaType.homestead || houseAreaType === HouseAreaType.flat) {
+            const houseAreaTypeText = houseAreaType === HouseAreaType.flat ? '公寓房' : '宅基地'
+
+            // 选房择址 默认字段
+            const defaultChooseHouseObj = {
+              lotteryOrder: '',
+              placeOrder: '',
+              eachPieceLand: null,
+              landNo: '',
+              landArea: '',
+              houseNo: '',
+              roomNo: '',
+              storeroomNo: '',
+              lotteryOrderPic: '[]',
+              placeOrderPic: '[]',
+              chooseHousePic: '[]',
+              otherPic: '[]',
+              lotteryOrderVerifyPic: '[]',
+              placeOrderVerifyPic: '[]',
+              carNo: ''
+            }
+            if (houseAreaType === HouseAreaType.homestead) {
+              const obj = {
+                uid: guid(),
+                doorNo: landlordItem.doorNo,
+                settleAddress,
+                settleAddressText: resettleArea.find((item) => item.id === settleAddress)?.name,
+                houseAreaType,
+                houseAreaTypeText,
+                area: homesteadAreaSize.find((item) => item.id === areaType)?.name,
+                ...defaultChooseHouseObj
+              }
+              array = [obj]
+            } else {
+              if (typeOneNum) {
+                array.push({
+                  uid: guid(),
+                  doorNo: landlordItem.doorNo,
+                  settleAddress,
+                  settleAddressText: resettleArea.find((item) => item.id === settleAddress)?.name,
+                  houseAreaType,
+                  houseAreaTypeText,
+                  area: apartmentAreaSize[0].name,
+                  ...defaultChooseHouseObj
+                })
+              }
+              if (typeTwoNum) {
+                array.push({
+                  uid: guid(),
+                  doorNo: landlordItem.doorNo,
+                  settleAddress,
+                  settleAddressText: resettleArea.find((item) => item.id === settleAddress)?.name,
+                  houseAreaType,
+                  houseAreaTypeText,
+                  area: apartmentAreaSize[1].name,
+                  ...defaultChooseHouseObj
+                })
+              }
+              if (typeThreeNum) {
+                array.push({
+                  uid: guid(),
+                  doorNo: landlordItem.doorNo,
+                  settleAddress,
+                  settleAddressText: resettleArea.find((item) => item.id === settleAddress)?.name,
+                  houseAreaType,
+                  houseAreaTypeText,
+                  area: apartmentAreaSize[2].name,
+                  ...defaultChooseHouseObj
+                })
+              }
+              if (typeFourNum) {
+                array.push({
+                  uid: guid(),
+                  doorNo: landlordItem.doorNo,
+                  settleAddress,
+                  settleAddressText: resettleArea.find((item) => item.id === settleAddress)?.name,
+                  houseAreaType,
+                  houseAreaTypeText,
+                  area: apartmentAreaSize[3].name,
+                  ...defaultChooseHouseObj
+                })
+              }
+            }
+          } else {
+            array = []
+          }
+          // 给选房择址 赋值
+          landlordItem.immigrantChooseHouseList = array
         } else {
           reject(false)
           console.log('调查对象信息查询失败')
