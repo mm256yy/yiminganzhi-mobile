@@ -1,7 +1,7 @@
 <template>
   <view class="house-info-wrapper">
     <!-- 择址确认 —— 选房择址 -->
-    <view class="row">
+    <view class="row" v-if="houseAreaType">
       <view class="left" />
       <view class="right">
         <view class="btn green">
@@ -167,6 +167,11 @@
         <image class="icon" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
         <view class="tips">暂无公寓房信息</view>
       </view>
+    </view>
+
+    <view v-if="!houseAreaType" class="null-wrapper">
+      <image class="icon" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
+      <view class="tips">该户未选择公寓房/宅基地安置</view>
     </view>
   </view>
 </template>
