@@ -108,7 +108,8 @@ class PullData {
 
       chooseConfig: [],
       houseConfig: [],
-      immigrantCompensationCardConfig: []
+      immigrantCompensationCardConfig: [],
+      rankDtoList: []
     }
 
     this.districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
@@ -233,7 +234,8 @@ class PullData {
       homeSignTopToday,
       chooseConfig,
       houseConfig,
-      immigrantCompensationCardConfig
+      immigrantCompensationCardConfig,
+      rankDtoList
     } = result
     // 需要reset
     this.state.immigrantIncomeConfigList = immigrantIncomeConfigList
@@ -252,6 +254,7 @@ class PullData {
     this.state.chooseConfig = chooseConfig
     this.state.houseConfig = houseConfig
     this.state.immigrantCompensationCardConfig = immigrantCompensationCardConfig
+    this.state.rankDtoList = rankDtoList
 
     this.pullDict().then((res: boolean) => {
       res && this.count++
@@ -296,6 +299,7 @@ class PullData {
       this.state.chooseConfig = []
       this.state.houseConfig = []
       this.state.immigrantCompensationCardConfig = []
+      this.state.rankDtoList = []
       console.log('拉取: 其他', res)
     })
   }
@@ -923,6 +927,7 @@ class PullData {
         chooseConfig,
         houseConfig,
         immigrantCompensationCardConfig,
+        rankDtoList,
 
         peasantHouseholdNum,
         companyNum,
@@ -1019,6 +1024,14 @@ class PullData {
         villageDoneNum: villageNum - villageLagNum - villageWarnNum
       })}','${getCurrentTimeStamp()}'`
       db.insertOrReplaceData(OtherTableName, values, fields)
+
+      if (rankDtoList && rankDtoList.length) {
+        const fields = "'type','content','updatedDate'"
+        const values = `'${OtherDataType.RankDtoList}','${JSON.stringify(
+          rankDtoList
+        )}','${getCurrentTimeStamp()}'`
+        db.insertOrReplaceData(OtherTableName, values, fields)
+      }
 
       await db.transaction('commit').catch(() => {
         resolve(false)

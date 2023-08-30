@@ -52,7 +52,8 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
-
+import { getOtherItemApi } from '@/service'
+import { OtherDataType } from '@/database'
 import top5_1 from '@/static/images/statistic_top1.png'
 import top5_2 from '@/static/images/statistic_top2.png'
 import top5_3 from '@/static/images/statistic_top3.png'
@@ -72,6 +73,7 @@ interface TabType {
   name: string
 }
 
+const rankList = ref<any[]>([]) // 排行榜列表
 const currentTab = ref(0)
 const statusTab = ref(0)
 
@@ -86,8 +88,7 @@ const tabStatus = ref([
   }
 ])
 
-let tabs = ref<TabType[]>([])
-
+const tabs = ref<TabType[]>([])
 const tabs1 = ref<TabType[]>([
   {
     name: '资格认定',
@@ -114,53 +115,50 @@ const tabs1 = ref<TabType[]>([
 const tabs2 = ref<TabType[]>([
   {
     name: '拆迁安置',
-    id: 0
+    id: 5
   },
   {
     name: '生产安置',
-    id: 1
+    id: 6
   }
 ])
 const echartOptions = ref<OptionsType[]>([])
 
-const getStatisticData = () => {
-  echartOptions.value = [
-    {
-      name: '陈汉林',
-      number: 20,
-      index: 0,
-      progress: 100,
-      img: top5_1
-    },
-    {
-      name: '梁柏林',
-      number: 18,
-      index: 1,
-      progress: 95,
-      img: top5_2
-    },
-    {
-      name: '董化杰',
-      number: 15,
-      index: 2,
-      progress: 80,
-      img: top5_3
-    },
-    {
-      name: '潘永浩',
-      number: 11,
-      index: 3,
-      progress: 60,
-      img: top5_4
-    },
-    {
-      name: '董羽坤',
-      number: 10,
-      index: 4,
-      progress: 55,
-      img: top5_5
+const getImg = (index: number) => {
+  if (index === 0) {
+    return top5_1
+  }
+  if (index === 1) {
+    return top5_2
+  }
+  if (index === 2) {
+    return top5_3
+  }
+  if (index === 3) {
+    return top5_4
+  }
+  if (index === 4) {
+    return top5_5
+  }
+}
+
+const getStatisticData = (id: number) => {
+  let max = 0
+  let arr: any = rankList.value[`${id}`].scheduleRankList || []
+  const top5Array = arr.slice(0, 5)
+  const options = top5Array.map((item: any, index: number) => {
+    if (index === 0) {
+      max = item.number
     }
-  ]
+    return {
+      ...item,
+      index,
+      progress: ((item.number / max) * 100) | 0,
+      img: getImg(index)
+    }
+  })
+
+  echartOptions.value = options
 }
 
 const tabChange = (id: number) => {
@@ -168,16 +166,24 @@ const tabChange = (id: number) => {
     return
   }
   currentTab.value = id
+  getStatisticData(id)
 }
 
 const statusTabChange = (id: number) => {
   statusTab.value = id
-  tabs = statusTab.value === 0 ? tabs1 : tabs2
+  const tabId = id === 0 ? tabs1.value[0].id : tabs2.value[0].id
+  currentTab.value = tabId
+  tabs.value = id === 0 ? tabs1.value : tabs2.value
+  // 切换一级tab 时 二级 tab 赋值 并且需要更新图表数据
+  getStatisticData(tabId)
 }
 
 onMounted(() => {
-  getStatisticData()
-  statusTabChange(0)
+  getOtherItemApi(OtherDataType.RankDtoList).then((res) => {
+    console.log(res, '排行榜')
+    rankList.value = res || []
+    statusTabChange(0)
+  })
 })
 </script>
 

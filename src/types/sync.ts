@@ -267,6 +267,7 @@ export interface StateType {
   chooseConfig: ChooseConfigType[]
   houseConfig: HouseConfigType[]
   immigrantCompensationCardConfig: ImmigrantCompensationCardConfigType[]
+  rankDtoList: any[]
 }
 
 export interface PushStateType {

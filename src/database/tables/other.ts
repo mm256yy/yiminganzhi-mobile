@@ -11,7 +11,8 @@ export enum OtherDataType {
   ChooseConfig = 'chooseConfig', // 	地块等配置
   HouseConfig = 'houseConfig', // 幢号房号配置
   ImmigrantCompensationCardConfig = 'immigrantCompensationCardConfig', // 移民建卡配置
-  ImpHomeCollect = 'impHomeCollect' // 实施阶段首页统计
+  ImpHomeCollect = 'impHomeCollect', // 实施阶段首页统计
+  RankDtoList = 'rankDtoList' // 首页排行榜
 }
 
 export interface OtherDDLType {
