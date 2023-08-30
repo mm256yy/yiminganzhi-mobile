@@ -80,5 +80,6 @@ export const defaultFillingObj = {
   deviceStatus: '0',
   specialStatus: '0',
   disposalMeasuresStatus: '0',
-  selfSeekingStatus: '0'
+  selfSeekingStatus: '0', // 自谋出路
+  landSeedlingStatus: '0' // 土地青苗
 }
