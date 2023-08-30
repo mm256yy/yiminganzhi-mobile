@@ -59,9 +59,8 @@ export class ImpLandlord extends Common {
     } = landlordItem.immigrantDocumentation
 
     // 判断初始化
-    if (!landlordItem.immigrantFilling) {
-      landlordItem.immigrantFilling = { ...defaultFillingObj }
-    }
+    landlordItem.immigrantFilling = { ...defaultFillingObj }
+
     // 人口核定完成条件：人口性质设置成功
     if (this.isArrayAndNotNull(demographicList)) {
       const res = demographicList.find((item) => !item.populationNature)
@@ -123,7 +122,12 @@ export class ImpLandlord extends Common {
       }
     }
     // 选房择址：列表中数据的所有字段填写完成  档案上传完成
-    if (immigrantSettle && immigrantSettle.houseAreaType === HouseAreaType.flat) {
+    if (
+      immigrantSettle &&
+      immigrantSettle.houseAreaType &&
+      (immigrantSettle.houseAreaType === HouseAreaType.homestead ||
+        immigrantSettle.houseAreaType === HouseAreaType.flat)
+    ) {
       // 公寓房
       if (this.isArrayAndNotNull(immigrantChooseHouseList)) {
         const res = immigrantChooseHouseList.find(
@@ -133,6 +137,13 @@ export class ImpLandlord extends Common {
           landlordItem.immigrantFilling.chooseHouseStatus = '1'
         }
       }
+    } else if (
+      immigrantSettle &&
+      immigrantSettle.houseAreaType &&
+      (immigrantSettle.houseAreaType === HouseAreaType.concentrate ||
+        immigrantSettle.houseAreaType === HouseAreaType.oneself)
+    ) {
+      landlordItem.immigrantFilling.chooseHouseStatus = '1'
     }
 
     // 坟墓择址: 完成条件：无坟墓 或者坟墓编号&&档案 有
