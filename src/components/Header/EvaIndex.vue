@@ -10,7 +10,7 @@
           /{{ totalFillNumber }}
         </view>
       </view>
-      <view class="list-header-right">
+      <view class="list-header-right" v-if="tabVal !== 0">
         <view class="btn-wrapper report" @click="onFilled">
           <image class="icon" src="@/static/images/icon_report.png" mode="scaleToFill" />
           <text class="txt">填报完成</text>
