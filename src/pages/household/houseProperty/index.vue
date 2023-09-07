@@ -36,7 +36,7 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">集体土地使用权证：</view>
-                <view class="content">JTTDZ125000</view>
+                <view class="content">{{ formatStr(item.landNo) }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -53,7 +53,7 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">不动产权证：</view>
-                <view class="content">CQZ121222</view>
+                <view class="content">{{ formatStr(item.propertyNo) }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -70,7 +70,7 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">房屋产权人：</view>
-                <view class="content">{{ dataInfo.name }}</view>
+                <view class="content">{{ getPropertyOwner(item.demographicId) }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -86,9 +86,9 @@
             </uni-col>
             <uni-col :span="12">
               <view class="col">
-                <view class="label">共有人情况：</view>
+                <view class="label">共有人：</view>
                 <view class="content">
-                  {{ formatStr(item.ownersSituation) }}
+                  {{ formatStr(item.ownersName) }}
                 </view>
               </view>
             </uni-col>
@@ -172,6 +172,27 @@ const toLink = (type: string, itemUid?: any) => {
     routerForward('houseConfirmEdit', {
       params: JSON.stringify(params)
     })
+  }
+}
+
+/**
+ * 获取房屋产权人
+ * @param id 产权人 id
+ */
+const getPropertyOwner = (demographicId: number) => {
+  const { dataInfo } = props
+  if (dataInfo && dataInfo.demographicList) {
+    if (dataInfo.demographicList.length) {
+      let arr: any = dataInfo.demographicList.filter((item: any) => item.id === demographicId)
+      if (arr && arr.length) {
+        return arr[0].name
+      }
+      return '-'
+    } else {
+      return '-'
+    }
+  } else {
+    return '-'
   }
 }
 
