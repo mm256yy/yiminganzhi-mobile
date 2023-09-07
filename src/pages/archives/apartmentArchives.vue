@@ -1,46 +1,65 @@
 <template>
-  <view class="apartment-archives">
-    <!-- 公寓房档案上传 -->
-    <view class="arch-box">
-      <view class="arch-item">
-        <view class="arch-label">交房协议：</view>
-        <view class="arch-value">
-          <uploadFiles
-            v-model="flatAgreementPicStr"
-            :file-list="flatAgreementPicStr"
-            :limit="20"
-            :accepts="['.jpg', '.png', '.pdf', '.jpeg']"
-            show-type="grid"
-          />
-        </view>
+  <view class="form-wrapper">
+    <uni-forms class="form">
+      <view class="title-wrapper">
+        <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
+        <text>公寓房档案上传</text>
       </view>
 
-      <view class="arch-item">
-        <view class="arch-label"> <text class="red">*</text> 购房测算表： </view>
-        <view class="arch-value">
-          <uploadFiles
-            v-model="flatMeasurementPicStr"
-            :file-list="flatMeasurementPicStr"
-            :limit="20"
-            :accepts="['.jpg', '.png', '.pdf', '.jpeg']"
-            show-type="grid"
-          />
-        </view>
-      </view>
+      <uni-row>
+        <uni-col :span="24">
+          <uni-forms-item
+            label="交房协议："
+            :label-width="150"
+            label-align="right"
+            name="flatAgreementPicStr"
+          >
+            <uploadFiles
+              v-model="flatAgreementPicStr"
+              :file-list="flatAgreementPicStr"
+              :limit="20"
+              :accepts="['.jpg', '.png', '.pdf', '.jpeg']"
+              show-type="grid"
+            />
+          </uni-forms-item>
+        </uni-col>
 
-      <view class="arch-item">
-        <view class="arch-label"> 其他附件：</view>
-        <view class="arch-value">
-          <uploadFiles
-            v-model="flatOtherPicStr"
-            :file-list="flatOtherPicStr"
-            :limit="20"
-            :accepts="['.jpg', '.png', '.pdf', '.jpeg']"
-            show-type="grid"
-          />
-        </view>
-      </view>
-    </view>
+        <uni-col :span="24">
+          <uni-forms-item
+            required
+            label="购房测算表："
+            :label-width="150"
+            label-align="right"
+            name="flatMeasurementPicStr"
+          >
+            <uploadFiles
+              v-model="flatMeasurementPicStr"
+              :file-list="flatMeasurementPicStr"
+              :limit="20"
+              :accepts="['.jpg', '.png', '.pdf', '.jpeg']"
+              show-type="grid"
+            />
+          </uni-forms-item>
+        </uni-col>
+
+        <uni-col :span="24">
+          <uni-forms-item
+            label="其他附件："
+            :label-width="150"
+            label-align="right"
+            name="flatOtherPicStr"
+          >
+            <uploadFiles
+              v-model="flatOtherPicStr"
+              :file-list="flatOtherPicStr"
+              :limit="20"
+              :accepts="['.jpg', '.png', '.pdf', '.jpeg']"
+              show-type="grid"
+            />
+          </uni-forms-item>
+        </uni-col>
+      </uni-row>
+    </uni-forms>
 
     <image
       class="submit-btn"
@@ -96,37 +115,54 @@ const submit = async () => {
 </script>
 
 <style lang="scss" scoped>
-.arch-box {
-  .arch-item {
-    display: flex;
-    padding: 5rpx 12rpx;
-    margin-top: 9rpx;
+.form-wrapper {
+  width: 100%;
+  height: calc(100vh - 33rpx - 12rpx - var(--status-bar-height));
+  padding: 6rpx;
+  background-color: #fff;
+  border-radius: 2rpx;
+  box-sizing: border-box;
 
-    .arch-label {
-      width: 80rpx;
+  .form {
+    height: calc(100vh - 33rpx - 12rpx - 9rpx - var(--status-bar-height));
+    padding: 0 0 9rpx 0;
+    overflow-y: scroll;
+    background-color: #fff;
+    box-sizing: border-box;
+
+    ::v-deep.uni-forms-item__label {
+      font-size: 9rpx !important;
+      color: rgba(23, 23, 24, 0.6) !important;
+    }
+
+    .title-wrapper {
+      display: flex;
+      width: 100%;
+      height: 28rpx;
+      margin-bottom: 9rpx;
       font-size: 9rpx;
       color: #171718;
-      text-align: right;
+      background: #fff;
+      border-bottom: 1rpx solid #f0f0f0;
+      border-radius: 5rpx 5rpx 0px 0px;
+      flex-direction: row;
+      align-items: center;
 
-      .red {
-        color: red;
+      .icon {
+        width: 10rpx;
+        height: 10rpx;
+        margin-right: 6rpx;
       }
     }
-
-    .arch-value {
-      flex: 1;
-      display: flex;
-      align-items: center;
-    }
   }
-}
 
-.submit-btn {
-  position: fixed;
-  right: 25rpx;
-  bottom: 20rpx;
-  width: 36rpx;
-  height: 36rpx;
-  border-radius: 50%;
+  .submit-btn {
+    position: fixed;
+    right: 25rpx;
+    bottom: 20rpx;
+    width: 36rpx;
+    height: 36rpx;
+    border-radius: 50%;
+  }
 }
 </style>

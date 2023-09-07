@@ -161,14 +161,15 @@ const submit = async (data: Partial<ImmigrantDocumentationType>) => {
 
 // 保存成功后
 const submitSuccess = () => {
-  console.log('提交成功逻辑')
   routerBack()
 }
 </script>
 
 <style lang="scss" scoped>
 .archives-wrap {
+  width: 100%;
   padding: 6rpx;
-  background-color: #fff;
+  background-color: #e7edfd;
+  box-sizing: border-box;
 }
 </style>

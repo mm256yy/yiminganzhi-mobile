@@ -16,12 +16,12 @@
       </view> -->
     </view>
 
-    <view class="common-head">
+    <view class="common-head" v-if="hasFarmingResettle">
       <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
       <text>生产用地</text>
     </view>
 
-    <view class="label-value">
+    <view class="label-value" v-if="hasFarmingResettle">
       <uni-row>
         <uni-col :span="12">
           <view class="col">
@@ -63,12 +63,13 @@
       </uni-row>
     </view>
 
-    <view class="common-head">
+    <view class="common-head" v-if="hasFarmingResettle">
       <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
       <text>农业安置办理</text>
     </view>
 
     <view class="handle-status" v-if="!hasFarmingResettle">
+      <image class="icon-null" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
       <view class="txt">该户无农业安置</view>
     </view>
 
@@ -213,7 +214,7 @@ const archivesUpload = () => {
 
   .handle-status {
     display: flex;
-    height: 118rpx;
+    width: 100%;
     padding: 9rpx 0 28rpx;
     flex-direction: column;
     align-items: center;
@@ -222,6 +223,11 @@ const archivesUpload = () => {
     .icon {
       width: 21rpx;
       height: 21rpx;
+    }
+
+    .icon-null {
+      width: 152rpx;
+      height: 92rpx;
     }
 
     .txt {
