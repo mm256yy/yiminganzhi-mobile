@@ -107,9 +107,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
-import { MainType, PrintType } from '@/types/common'
+import { MainType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
-import Header from '@/components/Header/Index.vue'
+import Header from '@/components/Header/EvaIndex.vue'
 import Tabs from '@/components/Tabs/Index.vue'
 import baseInfoEva from '../baseInfoEva/index.vue' // 引入企业信息组件
 import houseSubjectEva from '../../common/houseSubjectEva/index.vue' // 引入房屋主体评估组件
