@@ -71,6 +71,14 @@
         :immigrant-documentation="immigrantDocumentation"
         @submit="submit"
       />
+
+      <!-- 资产评估档案上传 -->
+      <ArchivesEva
+        v-if="archivesType === 12"
+        :type="query.mainTypes"
+        :immigrant-documentation="immigrantDocumentation"
+        @submit="submit"
+      />
     </view>
   </Container>
 </template>
@@ -83,6 +91,8 @@ import { updateImpLandlordDocumentationApi, getImpLandlordItemApi } from '@/serv
 import { ImmigrantDocumentationType } from '@/types/impDataFill'
 import { routerBack } from '@/utils'
 import { showToast, SUCCESS_MSG, ERROR_MSG } from '@/config/msg'
+
+import ArchivesEva from './ArchivesEva.vue' // 引入资产评估档案上传组件
 
 import ProduceArchives from './produceArchives.vue' // 引入安置确认 —— 生产安置档案上传组件
 import RelocateArchives from './relocateArchives.vue' // 引入安置确认 —— 搬迁安置档案上传组件
@@ -98,6 +108,7 @@ import MigrageCardArchives from './migrateCardArchives.vue' // 引入移民建�
 import ApartmentArchives from './apartmentArchives.vue' // 引入搬迁安置 —— 公寓房档案上传组件
 
 import FarmingArchives from './farmingArchives.vue' // 引入生产安置 —— 农业安置档案上传组件
+import { MainType } from '../../types/common'
 
 /**
  * 1 安置确认 生产安置档案
@@ -111,6 +122,7 @@ import FarmingArchives from './farmingArchives.vue' // 引入生产安置 ——
  * 9 腾空过渡 过渡安置
  * 10 搬迁安置 公寓房
  * 11 生产安置 农业安置
+ * 12 资产评估
  */
 
 type ArchivesTypes = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
@@ -118,6 +130,7 @@ type ArchivesTypes = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
 interface QueryType {
   uid: string
   type: ArchivesTypes
+  mainTypes?: MainType
 }
 
 const query = ref<any>({})

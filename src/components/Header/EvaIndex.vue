@@ -11,7 +11,11 @@
         </view>
       </view>
       <view class="list-header-right" v-if="tabVal !== 0">
-        <view class="btn-wrapper report" @click="onFilled">
+        <view class="btn-wrapper green" @click="onDocumentation">
+          <image class="icon" src="@/static/images/icon_dangan_upload.png" mode="scaleToFill" />
+          <text class="txt">档案上传</text>
+        </view>
+        <view class="btn-wrapper blue" @click="onFilled">
           <image class="icon" src="@/static/images/icon_report.png" mode="scaleToFill" />
           <text class="txt">填报完成</text>
         </view>
@@ -21,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import { filterViewDoorNo } from '@/utils'
+import { filterViewDoorNo, routerForward } from '@/utils'
 import { MainType } from '@/types/common'
 import { updateImpLandlordImmigrantFillingApi } from '@/service'
 import { showToast, SUCCESS_MSG, ERROR_MSG } from '@/config'
@@ -134,6 +138,14 @@ export default {
     // 是否为空数组
     isNotNullArray(arr: any) {
       return arr && Array.isArray(arr) && arr.length
+    },
+    // 档案上传
+    onDocumentation() {
+      routerForward('archives', {
+        type: 12,
+        uid: this.dataInfo.uid,
+        mainTypes: this.type
+      })
     },
     // 填报完成
     onFilled() {
@@ -314,17 +326,18 @@ export default {
         justify-content: center;
         width: 68rpx;
         height: 23rpx;
+        margin-left: 5rpx;
         border-radius: 11rpx;
 
         &:active {
           opacity: 0.7;
         }
 
-        &.print {
+        &.green {
           background-color: #30a952;
         }
 
-        &.report {
+        &.blue {
           margin-left: 7rpx;
           background-color: #3e73ec;
         }
