@@ -112,6 +112,7 @@ interface QueryType {
 }
 
 const query = ref<any>({})
+
 onLoad((option) => {
   if (option) {
     query.value = option as QueryType

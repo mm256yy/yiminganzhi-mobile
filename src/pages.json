@@ -367,10 +367,10 @@
 			}
 		},
 		{
-			"name": "graveConfirm",
+			"name": "graveConfirmEdit",
 			"path": "pages/household/resettleConfirm/graveEdit",
 			"style": {
-				"navigationBarTitleText": "坟墓安置编辑"
+				"navigationBarTitleText": "坟墓确认编辑"
 			}
 		},
 		{

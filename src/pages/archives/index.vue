@@ -82,6 +82,7 @@ import Container from '@/components/Container/index.vue'
 import { updateImpLandlordDocumentationApi, getImpLandlordItemApi } from '@/service'
 import { ImmigrantDocumentationType } from '@/types/impDataFill'
 import { routerBack } from '@/utils'
+import { showToast, SUCCESS_MSG, ERROR_MSG } from '@/config/msg'
 
 import ProduceArchives from './produceArchives.vue' // 引入安置确认 —— 生产安置档案上传组件
 import RelocateArchives from './relocateArchives.vue' // 引入安置确认 —— 搬迁安置档案上传组件
@@ -120,6 +121,8 @@ interface QueryType {
 }
 
 const query = ref<any>({})
+const isSubmited = ref<boolean>(false) // 提交状态，防止重复提交
+
 onLoad((option) => {
   if (option) {
     query.value = option as QueryType
@@ -145,23 +148,24 @@ const getLandlordDetail = async () => {
 }
 
 // 更新档案数据
-const submit = async (data: Partial<ImmigrantDocumentationType>) => {
+const submit = (data: Partial<ImmigrantDocumentationType>) => {
   if (!data) {
     return
   }
-  const res = await updateImpLandlordDocumentationApi(query.value.uid, data)
-  if (res) {
-    uni.showToast({
-      title: '保存成功！',
-      icon: 'success'
-    })
-    submitSuccess()
+  if (isSubmited.value) {
+    return
   }
-}
-
-// 保存成功后
-const submitSuccess = () => {
-  routerBack()
+  isSubmited.value = true
+  updateImpLandlordDocumentationApi(query.value.uid, data)
+    .then((res) => {
+      if (res) {
+        showToast(SUCCESS_MSG)
+        routerBack()
+      }
+    })
+    .catch(() => {
+      showToast(ERROR_MSG)
+    })
 }
 </script>
 

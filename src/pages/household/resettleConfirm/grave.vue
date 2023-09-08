@@ -43,21 +43,21 @@
           <uni-th width="38rpx">穴位</uni-th>
           <uni-th width="40rpx">数量</uni-th>
           <uni-th width="52rpx">处理方式</uni-th>
-          <uni-th width="80rpx">备注</uni-th>
           <uni-th width="98rpx">安置公墓/择址地址</uni-th>
+          <uni-th width="80rpx">备注</uni-th>
           <uni-th width="62rpx" align="center">操作</uni-th>
         </uni-tr>
 
         <uni-tr v-for="(item, index) in tableData" :key="index">
           <uni-td>{{ formatDict(item.relation, 307) }}</uni-td>
           <uni-td>{{ formatDict(item.materials, 295) }}</uni-td>
-          <uni-td>{{ item.graveTypeText }}</uni-td>
+          <uni-td>{{ formatDict(item.graveType, 345) }}</uni-td>
           <uni-td>{{ item.number }}</uni-td>
           <uni-td>{{ formatDict(item.handleWay, 238) }}</uni-td>
-          <uni-td>{{ item.remark }}</uni-td>
           <uni-td>
             {{ item.handleWay === '1' ? item.settingAddress : formatDict(item.settingGrave, 377) }}
           </uni-td>
+          <uni-td>{{ item.remark }}</uni-td>
           <uni-td>
             <view class="table-btn">
               <view class="btn primary-btn" @click="updateGrave(item.uid as string)">确认</view>
@@ -110,12 +110,13 @@ const onFilled = () => {
 const addGrave = () => {
   routerForward('graveConfirm', {
     actionType: 'add',
-    uid: ''
+    uid: '',
+    doorNo: props.dataInfo.doorNo
   })
 }
 
 const updateGrave = (uid: string) => {
-  routerForward('graveConfirm', {
+  routerForward('graveConfirmEdit', {
     actionType: 'edit',
     uid
   })

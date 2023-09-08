@@ -58,6 +58,7 @@ import { ref, watch } from 'vue'
 import uploadFiles from '@/components/UploadFile/index.vue'
 import { ImmigrantDocumentationType } from '@/types/impDataFill'
 import { fmtPicUrl } from '@/utils'
+import { showToast } from '@/config/msg'
 
 interface PropsType {
   immigrantDocumentation: Partial<ImmigrantDocumentationType>
@@ -80,14 +81,12 @@ watch(
   { immediate: true, deep: true }
 )
 
-const submit = async () => {
+const submit = () => {
   if (!relocateVerifyPicStr.value || relocateVerifyPicStr.value === '[]') {
-    uni.showToast({
-      title: '请上传确认单',
-      icon: 'none'
-    })
+    showToast('请上传确认单')
     return
   }
+
   emit('submit', {
     relocateVerifyPic: relocateVerifyPicStr.value,
     relocateOtherPic: relocateOtherPicStr.value
