@@ -5,7 +5,7 @@
 import { LandlordTableName, LandlordDDLType, getLandlordSqlValues } from '@/database'
 import { Common } from './common'
 import { LandlordType } from '@/types/sync'
-import { getStorage, StorageKey } from '@/utils'
+import { getStorage, StorageKey, guid } from '@/utils'
 import { LandlordSearchType, HouseAreaType } from '@/types/common'
 import { GraveController } from './grave'
 import { defaultDocumentObj, defaultFillingObj } from './config'
@@ -389,6 +389,13 @@ export class ImpLandlord extends Common {
           }
 
           if (this.isArrayAndNotNull(res.immigrantBuildOneselfList)) {
+            // 增加uid
+            res.immigrantBuildOneselfList = res.immigrantBuildOneselfList.map((item) => {
+              if (!item.uid) {
+                item.uid = guid()
+              }
+              return item
+            })
             res.immigrantBuildOneselfList = res.immigrantBuildOneselfList.filter(
               (item) => item.isDelete !== '1'
             )
@@ -509,6 +516,13 @@ export class ImpLandlord extends Common {
           }
 
           if (this.isArrayAndNotNull(res.immigrantBuildOneselfList)) {
+            // 增加uid
+            res.immigrantBuildOneselfList = res.immigrantBuildOneselfList.map((item) => {
+              if (!item.uid) {
+                item.uid = guid()
+              }
+              return item
+            })
             res.immigrantBuildOneselfList = res.immigrantBuildOneselfList.filter(
               (item) => item.isDelete !== '1'
             )
