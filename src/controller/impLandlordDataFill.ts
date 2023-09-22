@@ -1726,10 +1726,14 @@ class ImpDataFill extends ImpLandlord {
             (item) => item.isComplete === '1'
           )
           if (isCompleteOneIndex !== -1) {
-            const nextItem = landlordItem.immigrantBuildOneselfList[isCompleteOneIndex + 1]
-            if (nextItem) {
-              nextItem.isComplete = '2'
-            }
+            landlordItem.immigrantBuildOneselfList = landlordItem.immigrantBuildOneselfList.map(
+              (item, dex) => {
+                if (dex === isCompleteOneIndex + 1) {
+                  item.isComplete = '2'
+                }
+                return item
+              }
+            )
           }
         } else {
           reject(false)
