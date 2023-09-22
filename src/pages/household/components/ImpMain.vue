@@ -117,6 +117,7 @@
             v-if="tabVal === 18"
             :dataList="dataInfo.immigrantBuildOneselfList"
             :dataInfo="dataInfo"
+            @update-data="updateData"
           />
 
           <!-- 公寓房 -->

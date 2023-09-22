@@ -71,6 +71,8 @@ import dayjs from 'dayjs'
 import { routerForward } from '@/utils'
 import { LandlordType } from '@/types/sync'
 import { HouseAreaType } from '@/types/common'
+import { updateImpLandlordBuildSelfApi } from '@/service'
+import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 
 interface PropsType {
   dataList: any[]
@@ -78,6 +80,7 @@ interface PropsType {
 }
 
 const props = defineProps<PropsType>()
+const emit = defineEmits(['updateData'])
 
 // 搬迁安置方式
 const getRelocationResettlement = computed(() => {
@@ -89,7 +92,24 @@ const getRelocationResettlement = computed(() => {
  * 打印
  * @params{Object} data 当前行信息
  */
-const onPrint = (data: any) => {}
+const onPrint = (data: any) => {
+  const params = {
+    ...data,
+    isComplete: '1',
+    completeDate: dayjs(new Date()),
+    completePicStr: '[]'
+  }
+  updateImpLandlordBuildSelfApi(props.dataInfo.uid, data.uid, params)
+    .then((res) => {
+      if (res) {
+        showToast(SUCCESS_MSG)
+        emit('updateData')
+      }
+    })
+    .catch(() => {
+      showToast(ERROR_MSG)
+    })
+}
 
 /**
  * 填写
