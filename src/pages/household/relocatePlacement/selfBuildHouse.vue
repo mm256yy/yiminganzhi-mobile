@@ -117,7 +117,7 @@ const onPrint = (data: any) => {
  * @params{Object} data 当前行信息
  */
 const onFill = (data: any) => {
-  if (data.isComplete === '2') {
+  if (data.isComplete !== '0') {
     const { uid, doorNo } = props.dataInfo
     let params = {
       uid,
