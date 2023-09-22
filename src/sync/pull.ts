@@ -36,7 +36,7 @@ import {
   getPullLandlordListApi
 } from './api'
 import { StateType, ImgItemType, LandlordWithPageType } from '@/types/sync'
-import { getCurrentTimeStamp, getStorage, setStorage, StorageKey } from '@/utils'
+import { getCurrentTimeStamp, getStorage, setStorage, StorageKey, guid } from '@/utils'
 import dayjs from 'dayjs'
 import { pathToBase64 } from 'image-tools'
 
@@ -677,6 +677,15 @@ class PullData {
           resolve(false)
         })
         list.forEach((item) => {
+          if (this.isArrayAndNotNull(item.immigrantBuildOneselfList)) {
+            // 自建房增加uid
+            item.immigrantBuildOneselfList = item.immigrantBuildOneselfList.map((ytem) => {
+              if (!ytem.uid) {
+                ytem.uid = guid()
+              }
+              return ytem
+            })
+          }
           const values = getLandlordValues(item, 'default')
           db.insertOrReplaceData(LandlordTableName, values, landlordFields).catch((err) => {
             console.log(err, '插入业主')
