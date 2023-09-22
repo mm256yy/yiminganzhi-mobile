@@ -1721,6 +1721,16 @@ class ImpDataFill extends ImpLandlord {
               return item
             }
           )
+          // isComplete = '1'的下一个 需要更新 为 '2'
+          const isCompleteOneIndex = landlordItem.immigrantBuildOneselfList.findIndex(
+            (item) => item.isComplete === '1'
+          )
+          if (isCompleteOneIndex !== -1) {
+            const nextItem = landlordItem.immigrantBuildOneselfList[isCompleteOneIndex + 1]
+            if (nextItem) {
+              nextItem.isComplete = '2'
+            }
+          }
         } else {
           reject(false)
           console.log('调查对象信息查询失败')
