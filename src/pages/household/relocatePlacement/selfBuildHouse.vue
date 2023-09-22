@@ -116,14 +116,16 @@ const onPrint = (data: any) => {
  * @params{Object} data 当前行信息
  */
 const onFill = (data: any) => {
-  let params = {
-    uid: props.dataInfo.uid,
-    itemUid: data.uid,
-    isComplete: data.isComplete
+  if (data.isComplete === '2') {
+    let params = {
+      uid: props.dataInfo.uid,
+      itemUid: data.uid,
+      isComplete: data.isComplete
+    }
+    routerForward('selfBuildHouseFill', {
+      params: JSON.stringify(params)
+    })
   }
-  routerForward('selfBuildHouseFill', {
-    params: JSON.stringify(params)
-  })
 }
 </script>
 
