@@ -1722,9 +1722,12 @@ class ImpDataFill extends ImpLandlord {
             }
           )
           // isComplete = '1'的下一个 需要更新 为 '2'
-          const isCompleteOneIndex = landlordItem.immigrantBuildOneselfList.findIndex(
-            (item) => item.isComplete === '1'
-          )
+          let isCompleteOneIndex = -1
+          landlordItem.immigrantBuildOneselfList.forEach((item, index) => {
+            if (item.isComplete === '1') {
+              isCompleteOneIndex = index
+            }
+          })
           if (isCompleteOneIndex !== -1) {
             landlordItem.immigrantBuildOneselfList = landlordItem.immigrantBuildOneselfList.map(
               (item, dex) => {
