@@ -131,7 +131,7 @@ const submit = async () => {
   }
   const params = {
     ...formData.value,
-    completeDate: formData.value.completeDate ? dayjs(formData.value.completeDate).toString() : '',
+    completeDate: formData.value.completeDate ? dayjs(formData.value.completeDate) : '',
     completePic: completePicStr.value,
     needHandle: '1', // 是否需要办理：0 不需要，1 需要
     isComplete: '1'

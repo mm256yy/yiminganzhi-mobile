@@ -1,4 +1,5 @@
 import { HouseAreaType } from './common'
+import dayjs from 'dayjs'
 
 // 房屋装修 assetHouseFitUpList
 export interface AssetHouseFitUpType {
@@ -251,7 +252,7 @@ export interface ImmigrantHouseEmptyType {
   projectId?: number
   status?: string
   isHouseEmpty: string
-  houseEmptyDate: string
+  houseEmptyDate: string | dayjs.Dayjs
   houseEmptyOpinion: string
   [key: string]: any
 }
@@ -265,7 +266,7 @@ export interface ImmigrantLandEmptyType {
   projectId?: number
   status?: string
   isLandEmpty: string
-  landEmptyDate: string
+  landEmptyDate: string | dayjs.Dayjs
   landEmptyOpinion: string
   [key: string]: any
 }
@@ -279,8 +280,8 @@ export interface ImmigrantExcessType {
   projectId?: number
   status?: string
   isExcess: string
-  excessStartDate: string
-  excessEndDate: string
+  excessStartDate: string | dayjs.Dayjs
+  excessEndDate: string | dayjs.Dayjs
   excessAddress: string
   [key: string]: any
 }
@@ -309,7 +310,7 @@ export interface ImmigrantProceduresType {
   uid?: string
   projectId?: number
   status?: string
-  completeDate: string
+  completeDate: string | dayjs.Dayjs
   completePic: string
   name?: string
   type?: string

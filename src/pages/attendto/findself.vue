@@ -195,7 +195,7 @@ const submit = async () => {
     uid: props.itemUid,
     productionStatus: '1',
     productionCompleteTime: formData.value.productionCompleteTime
-      ? dayjs(formData.value.productionCompleteTime).toString()
+      ? dayjs(formData.value.productionCompleteTime)
       : '',
     productionPic: productionPicStr.value
   }

@@ -204,12 +204,8 @@ const submit = async () => {
   }
   const params: Partial<ImmigrantExcessType> = {
     ...formData.value,
-    excessStartDate: formData.value.excessStartDate
-      ? dayjs(formData.value.excessStartDate).toString()
-      : '',
-    excessEndDate: formData.value.excessEndDate
-      ? dayjs(formData.value.excessEndDate).toString()
-      : '',
+    excessStartDate: formData.value.excessStartDate ? dayjs(formData.value.excessStartDate) : '',
+    excessEndDate: formData.value.excessEndDate ? dayjs(formData.value.excessEndDate) : '',
     isExcess: '1'
   }
   const res = await updateImpLandlordExcessApi(props.uid, params)

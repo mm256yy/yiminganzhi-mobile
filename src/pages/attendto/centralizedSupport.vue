@@ -199,7 +199,7 @@ const bindDateChange = (e: any) => {
   formData.value.relocateCompleteTime = e.detail.value
 }
 
-const submit = async () => {
+const submit = () => {
   if (!relocatePicStr.value || relocatePicStr.value === '[]') {
     showToast('请上传集中供养凭证')
     return

@@ -134,7 +134,7 @@ const props = defineProps<PropsType>()
 
 const formData = ref<Partial<PopulationType>>({})
 const productionPicStr = ref<string>('')
-const currentDate = ref<string>('')
+const currentDate = ref<any>('')
 const emit = defineEmits(['submit'])
 
 // 获取年月日

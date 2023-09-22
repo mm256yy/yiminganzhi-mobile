@@ -1,3 +1,5 @@
+import dayjs from 'dayjs'
+
 // 人口列表
 export interface PopulationType {
   id?: number
@@ -81,7 +83,7 @@ export interface PopulationType {
   settingRemark?: string
   productionStatus?: string
   relocateStatus?: string
-  productionCompleteTime?: string
+  productionCompleteTime?: string | dayjs.Dayjs
   relocateCompleteTime?: string
   productionPic?: string
   relocatePic?: string

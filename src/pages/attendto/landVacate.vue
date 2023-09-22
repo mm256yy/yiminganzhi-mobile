@@ -165,9 +165,7 @@ const submit = async () => {
 
   const params: Partial<ImmigrantLandEmptyType> = {
     ...formData.value,
-    landEmptyDate: formData.value.landEmptyDate
-      ? dayjs(formData.value.landEmptyDate).toString()
-      : '',
+    landEmptyDate: formData.value.landEmptyDate ? dayjs(formData.value.landEmptyDate) : '',
     isLandEmpty: '1'
   }
   const res = await updateImpLandlordLandEmptyApi(props.uid, params)
