@@ -95,9 +95,10 @@ const getRelocationResettlement = computed(() => {
 const onPrint = (data: any) => {
   const params = {
     ...data,
+    doorNo: props.dataInfo.doorNo,
     isComplete: '1',
     completeDate: dayjs(new Date()),
-    completePicStr: '[]'
+    completePic: '[]'
   }
   updateImpLandlordBuildSelfApi(props.dataInfo.uid, data.uid, params)
     .then((res) => {
@@ -117,8 +118,10 @@ const onPrint = (data: any) => {
  */
 const onFill = (data: any) => {
   if (data.isComplete === '2') {
+    const { uid, doorNo } = props.dataInfo
     let params = {
-      uid: props.dataInfo.uid,
+      uid,
+      doorNo,
       itemUid: data.uid,
       isComplete: data.isComplete
     }

@@ -94,9 +94,11 @@ const getLandlordDetail = () => {
 
 // 表单提交
 const submit = () => {
-  const { uid, itemUid } = commonParams.value
+  const { uid, itemUid, doorNo } = commonParams.value
   const params = {
     ...formData.value,
+    doorNo,
+    isComplete: '1',
     completeDate: formData.value.completeDate ? dayjs(formData.value.completeDate) : '',
     completePic: completePicStr.value
   }
