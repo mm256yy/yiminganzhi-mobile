@@ -583,6 +583,8 @@ export class ImpLandlord extends Common {
         const landlord = await this.getLandlordByUidNoFilter(data.uid)
         if (landlord) {
           const newData = { ...landlord, ...data }
+          // 更新了
+          newData.isUpdate = '1'
           // 居民户信息填报完成
           if (this.isNotNullPic(newData.householdPic)) {
             newData.immigrantFilling.householdPicStatus = '1'

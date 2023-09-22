@@ -52,6 +52,8 @@ class ImpDataFill extends ImpLandlord {
         const itemUid = guid()
         data.uid = itemUid
         data.isDelete = '0'
+        // 更新了
+        data.isUpdate = '1'
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           if (!landlordItem.demographicList) {
@@ -100,6 +102,7 @@ class ImpDataFill extends ImpLandlord {
               item.uid = itemUid
               item.isDelete = '0'
             }
+            item.isUpdate = '1'
             return item
           })
         } else {
@@ -130,6 +133,8 @@ class ImpDataFill extends ImpLandlord {
           landlordItem.demographicList = landlordItem.demographicList.map((item) => {
             if (item.uid === data.uid) {
               item = { ...item, ...data }
+              // 更新了
+              item.isUpdate = '1'
             }
             return item
           })
@@ -167,6 +172,7 @@ class ImpDataFill extends ImpLandlord {
           landlordItem.demographicList = landlordItem.demographicList.map((item) => {
             if (item.uid === itemUid) {
               item.deleteReason = deleteReason || ''
+              item.isUpdate = '1'
               item.isDelete = '1'
             }
             return item
@@ -198,6 +204,7 @@ class ImpDataFill extends ImpLandlord {
         const itemUid = guid()
         data.uid = itemUid
         data.isDelete = '0'
+        data.isUpdate = '1'
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           if (!landlordItem.immigrantAppendantList) {
@@ -240,6 +247,7 @@ class ImpDataFill extends ImpLandlord {
               item.uid = itemUid
               item.isDelete = '0'
             }
+            item.isUpdate = '1'
             return item
           })
         } else {
@@ -270,6 +278,7 @@ class ImpDataFill extends ImpLandlord {
           landlordItem.immigrantAppendantList = landlordItem.immigrantAppendantList.map((item) => {
             if (item.uid === data.uid) {
               item = { ...item, ...data }
+              item.isUpdate = '1'
             }
             return item
           })
@@ -303,6 +312,7 @@ class ImpDataFill extends ImpLandlord {
             if (item.uid === itemUid) {
               item.deleteReason = deleteReason || ''
               item.isDelete = '1'
+              item.isUpdate = '1'
             }
             return item
           })
@@ -333,6 +343,7 @@ class ImpDataFill extends ImpLandlord {
         const itemUid = guid()
         data.uid = itemUid
         data.isDelete = '0'
+        data.isUpdate = '1'
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           if (!landlordItem.immigrantTreeList) {
@@ -376,6 +387,7 @@ class ImpDataFill extends ImpLandlord {
               item.uid = itemUid
               item.isDelete = '0'
             }
+            item.isUpdate = '1'
             return item
           })
         } else {
@@ -406,6 +418,7 @@ class ImpDataFill extends ImpLandlord {
           landlordItem.immigrantTreeList = landlordItem.immigrantTreeList.map((item) => {
             if (item.uid === data.uid) {
               item = { ...item, ...data }
+              item.isUpdate = '1'
             }
             return item
           })
@@ -438,6 +451,7 @@ class ImpDataFill extends ImpLandlord {
             if (item.uid === itemUid) {
               item.deleteReason = deleteReason || ''
               item.isDelete = '1'
+              item.isUpdate = '1'
             }
             return item
           })
@@ -468,6 +482,7 @@ class ImpDataFill extends ImpLandlord {
         const itemUid = guid()
         data.uid = itemUid
         data.isDelete = '0'
+        data.isUpdate = '1'
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           if (!landlordItem.immigrantHouseList) {
@@ -502,6 +517,7 @@ class ImpDataFill extends ImpLandlord {
           landlordItem.immigrantHouseList = landlordItem.immigrantHouseList.map((item) => {
             if (item.uid === data.uid) {
               item = { ...item, ...data }
+              item.isUpdate = '1'
             }
             return item
           })
@@ -534,6 +550,7 @@ class ImpDataFill extends ImpLandlord {
             if (item.uid === itemUid) {
               item.deleteReason = deleteReason || ''
               item.isDelete = '1'
+              item.isUpdate = '1'
             }
             return item
           })
@@ -564,6 +581,7 @@ class ImpDataFill extends ImpLandlord {
         const itemUid = guid()
         data.uid = itemUid
         data.isDelete = '0'
+        data.isUpdate = '1'
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           if (!landlordItem.assetHouseFitUpList) {
@@ -606,6 +624,7 @@ class ImpDataFill extends ImpLandlord {
               item.uid = itemUid
               item.isDelete = '0'
             }
+            item.isUpdate = '1'
             return item
           })
         } else {
@@ -636,6 +655,7 @@ class ImpDataFill extends ImpLandlord {
           landlordItem.assetHouseFitUpList = landlordItem.assetHouseFitUpList.map((item) => {
             if (item.uid === data.uid) {
               item = { ...item, ...data }
+              item.isUpdate = '1'
             }
             return item
           })
@@ -668,6 +688,7 @@ class ImpDataFill extends ImpLandlord {
             if (item.uid === itemUid) {
               item.deleteReason = deleteReason || ''
               item.isDelete = '1'
+              item.isUpdate = '1'
             }
             return item
           })
@@ -698,6 +719,7 @@ class ImpDataFill extends ImpLandlord {
         const itemUid = guid()
         data.uid = itemUid
         data.isDelete = '0'
+        data.isUpdate = '1'
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           if (!landlordItem.immigrantEquipmentList) {
@@ -732,6 +754,7 @@ class ImpDataFill extends ImpLandlord {
           landlordItem.immigrantEquipmentList = landlordItem.immigrantEquipmentList.map((item) => {
             if (item.uid === data.uid) {
               item = { ...item, ...data }
+              item.isUpdate = '1'
             }
             return item
           })
@@ -764,6 +787,7 @@ class ImpDataFill extends ImpLandlord {
             if (item.uid === itemUid) {
               item.deleteReason = deleteReason || ''
               item.isDelete = '1'
+              item.isUpdate = '1'
             }
             return item
           })
@@ -794,6 +818,7 @@ class ImpDataFill extends ImpLandlord {
         const itemUid = guid()
         data.uid = itemUid
         data.isDelete = '0'
+        data.isUpdate = '1'
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           if (!landlordItem.immigrantFacilitiesList) {
@@ -829,6 +854,7 @@ class ImpDataFill extends ImpLandlord {
             (item) => {
               if (item.uid === data.uid) {
                 item = { ...item, ...data }
+                item.isUpdate = '1'
               }
               return item
             }
@@ -863,6 +889,7 @@ class ImpDataFill extends ImpLandlord {
               if (item.uid === itemUid) {
                 item.deleteReason = deleteReason || ''
                 item.isDelete = '1'
+                item.isUpdate = '1'
               }
               return item
             }
@@ -894,6 +921,7 @@ class ImpDataFill extends ImpLandlord {
         const itemUid = guid()
         data.uid = itemUid
         data.isDelete = '0'
+        data.isUpdate = '1'
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           if (!landlordItem.assetLandList) {
@@ -936,6 +964,7 @@ class ImpDataFill extends ImpLandlord {
               item.uid = itemUid
               item.isDelete = '0'
             }
+            item.isUpdate = '1'
             return item
           })
         } else {
@@ -966,6 +995,7 @@ class ImpDataFill extends ImpLandlord {
           landlordItem.assetLandList = landlordItem.assetLandList.map((item) => {
             if (item.uid === data.uid) {
               item = { ...item, ...data }
+              item.isUpdate = '1'
             }
             return item
           })
@@ -998,6 +1028,7 @@ class ImpDataFill extends ImpLandlord {
             if (item.uid === itemUid) {
               item.deleteReason = deleteReason || ''
               item.isDelete = '1'
+              item.isUpdate = '1'
             }
             return item
           })
@@ -1028,6 +1059,7 @@ class ImpDataFill extends ImpLandlord {
         const itemUid = guid()
         data.uid = itemUid
         data.isDelete = '0'
+        data.isUpdate = '1'
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           if (!landlordItem.assetAppendantList) {
@@ -1070,6 +1102,7 @@ class ImpDataFill extends ImpLandlord {
               item.uid = itemUid
               item.isDelete = '0'
             }
+            item.isUpdate = '1'
             return item
           })
         } else {
@@ -1100,6 +1133,7 @@ class ImpDataFill extends ImpLandlord {
           landlordItem.assetAppendantList = landlordItem.assetAppendantList.map((item) => {
             if (item.uid === data.uid) {
               item = { ...item, ...data }
+              item.isUpdate = '1'
             }
             return item
           })
@@ -1136,6 +1170,7 @@ class ImpDataFill extends ImpLandlord {
             if (item.uid === itemUid) {
               item.deleteReason = deleteReason || ''
               item.isDelete = '1'
+              item.isUpdate = '1'
             }
             return item
           })
@@ -1177,9 +1212,11 @@ class ImpDataFill extends ImpLandlord {
               ...landlordItem.immigrantDocumentation,
               ...data
             }
+            mergeObj.isUpdate = '1'
           } else {
             // 不存在
             mergeObj = { ...defaultDocumentObj, ...data }
+            mergeObj.isUpdate = '1'
           }
           landlordItem.immigrantDocumentation = mergeObj
           if (!landlordItem.immigrantDocumentation.uid) {
@@ -1223,6 +1260,7 @@ class ImpDataFill extends ImpLandlord {
           if (!landlordItem.immigrantLand.uid) {
             landlordItem.immigrantLand.uid = guid()
           }
+          landlordItem.immigrantLand.isUpdate = '1'
         } else {
           reject(false)
           console.log('调查对象信息查询失败')
@@ -1263,6 +1301,7 @@ class ImpDataFill extends ImpLandlord {
           if (!landlordItem.immigrantSettle.uid) {
             landlordItem.immigrantSettle.uid = guid()
           }
+          landlordItem.immigrantSettle.isUpdate = '1'
 
           /**
            * 给选房择址添加初始数据
@@ -1405,6 +1444,8 @@ class ImpDataFill extends ImpLandlord {
           if (!landlordItem.immigrantHouseEmpty.uid) {
             landlordItem.immigrantHouseEmpty.uid = guid()
           }
+
+          landlordItem.immigrantHouseEmpty.isUpdate = '1'
         } else {
           reject(false)
           console.log('调查对象信息查询失败')
@@ -1442,6 +1483,7 @@ class ImpDataFill extends ImpLandlord {
           if (!landlordItem.immigrantLandEmpty.uid) {
             landlordItem.immigrantLandEmpty.uid = guid()
           }
+          landlordItem.immigrantLandEmpty.isUpdate = '1'
         } else {
           reject(false)
           console.log('调查对象信息查询失败')
@@ -1479,6 +1521,7 @@ class ImpDataFill extends ImpLandlord {
           if (!landlordItem.immigrantExcess.uid) {
             landlordItem.immigrantExcess.uid = guid()
           }
+          landlordItem.immigrantExcess.isUpdate = '1'
         } else {
           reject(false)
           console.log('调查对象信息查询失败')
@@ -1516,6 +1559,7 @@ class ImpDataFill extends ImpLandlord {
               item.uid = itemUid
               item.isDelete = '0'
             }
+            item.isUpdate = '1'
             return item
           })
         } else {
@@ -1548,6 +1592,7 @@ class ImpDataFill extends ImpLandlord {
             (item) => {
               if (item.uid === data.uid) {
                 item = { ...item, ...data }
+                item.isUpdate = '1'
               }
               return item
             }
@@ -1592,6 +1637,7 @@ class ImpDataFill extends ImpLandlord {
               item.uid = itemUid
               item.isDelete = '0'
             }
+            item.isUpdate = '1'
             return item
           })
         } else {
@@ -1627,6 +1673,7 @@ class ImpDataFill extends ImpLandlord {
             landlordItem.immigrantCompensationCardList.map((item) => {
               if (item.uid === data.uid) {
                 item = { ...item, ...data }
+                item.isUpdate = '1'
               }
               return item
             })
@@ -1669,6 +1716,7 @@ class ImpDataFill extends ImpLandlord {
             (item) => {
               if (item.uid === itemUid) {
                 item = { ...item, ...data }
+                item.isUpdate = '1'
               }
               return item
             }
@@ -1712,6 +1760,7 @@ class ImpDataFill extends ImpLandlord {
             (item) => {
               if (item.uid === itemUid) {
                 item = { ...item, ...data }
+                item.isUpdate = '1'
               }
               return item
             }
@@ -1843,6 +1892,7 @@ class ImpDataFill extends ImpLandlord {
           if (!landlordItem.immigrantFilling.uid) {
             landlordItem.immigrantFilling.uid = guid()
           }
+          landlordItem.immigrantFilling.isUpdate = '1'
         } else {
           reject(false)
           console.log('调查对象信息查询失败')
@@ -1887,6 +1937,7 @@ class ImpDataFill extends ImpLandlord {
           if (!landlordItem.immigrantSelfSeeking.uid) {
             landlordItem.immigrantSelfSeeking.uid = guid()
           }
+          landlordItem.immigrantSelfSeeking.isUpdate = '1'
         } else {
           reject(false)
           console.log('调查对象信息查询失败')
