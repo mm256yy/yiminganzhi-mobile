@@ -61,7 +61,7 @@ import uploadFile from './upload-files.vue'
 import { batchUploadImgApi, deleteImgApi } from '@/service'
 import { networkCheck } from '@/utils'
 import defaultImg from '@/static/images/icon_null_data.png'
-import { imageUrlAndBase64Map, hideLoading } from '@/config'
+import { imageUrlAndBase64Map } from '@/config'
 
 interface PropsType {
   showType: 'grid' | 'list'
@@ -95,7 +95,6 @@ watch(
   (val) => {
     if (val) {
       const fileList = JSON.parse(val)
-      // console.log(imageUrlAndBase64Map, 'imageUrlAndBase64Map')
       if (fileList && fileList.length) {
         // 拿到图片map
         const list = fileList.map((item: any) => {
@@ -167,7 +166,7 @@ const chooseFiles = () => {
     success(res) {
       const paths = Array.isArray(res.tempFilePaths) ? res.tempFilePaths : [res.tempFilePaths]
       batchUploadImgApi(paths).then((res) => {
-        // console.log(res, '图片上传结果')
+        // res 图片上传结果
         if (res && res.length) {
           const files = res.map((item) => {
             const name = item.path?.split('/').pop() || ''
@@ -189,7 +188,6 @@ const chooseFiles = () => {
           })
           // 新增的图片
           filesList.value = [...filesList.value, ...files]
-          // console.log(imageUrlAndBase64Map, 'imageUrlAndBase64Map')
           updateFilesList()
         }
       })
@@ -200,7 +198,6 @@ const chooseFiles = () => {
 const delFile = async (index: number) => {
   const deleteImg = filesList.value.splice(index, 1)
   // 删除本地图片
-  // console.log(deleteImg, 'deleteImg')
   if (deleteImg && deleteImg.length) {
     const deleteItem = deleteImg[0]
     await deleteImgApi(deleteItem ? deleteItem.url : '')
@@ -220,7 +217,7 @@ const updateFilesList = () => {
   })
   const str = JSON.stringify(result)
   emit('updateFileList', str)
-  // console.log(str, '更改后的')
+  // 更改后的 str
   emit('update:modelValue', str)
 }
 
