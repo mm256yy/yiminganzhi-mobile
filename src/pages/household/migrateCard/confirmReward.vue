@@ -86,9 +86,8 @@ onLoad((option) => {
 // 获取移民建卡奖励费列表
 const getCompensationCardConfig = () => {
   getCompensationCardConfigApi().then((res: any) => {
-    if (res) {
-      // console.log('res:', res)
-      dataList.value = res
+    if (res && res.length) {
+      dataList.value = res.filter((item: any) => item.type === '3')
     }
   })
 }
