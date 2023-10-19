@@ -11,7 +11,7 @@
           <image class="icon" src="@/static/images/icon_sign_white.png" mode="scaleToFill" />
           签字
         </view>
-        <view class="btn blue">
+        <view class="btn blue" @click="onArchives">
           <image class="icon" src="@/static/images/icon_upload_white.png" mode="scaleToFill" />
           档案上传
         </view>
@@ -23,7 +23,24 @@
   </view>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { LandlordType } from '@/types/sync'
+import { routerForward } from '@/utils'
+
+interface PropsType {
+  dataInfo: LandlordType
+}
+
+const props = defineProps<PropsType>()
+
+// 档案上传
+const onArchives = () => {
+  routerForward('archives', {
+    uid: props.dataInfo.uid,
+    type: 13
+  })
+}
+</script>
 
 <style lang="scss" scoped>
 .agreement-wrap {

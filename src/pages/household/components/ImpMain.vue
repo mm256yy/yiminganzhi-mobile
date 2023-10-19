@@ -110,7 +110,7 @@
           <transition-vacate v-if="tabVal === 16" :dataInfo="dataInfo" @update-data="updateData" />
 
           <!-- 动迁协议 -->
-          <agreement v-if="tabVal === 17" />
+          <agreement v-if="tabVal === 17" :dataInfo="dataInfo" />
 
           <!-- 自建房 -->
           <self-build-house
