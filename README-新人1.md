@@ -94,6 +94,14 @@
 
 这两个版本号必须一致，否则打包出来的 APP 会有问题
 
+不定时升级版本，升级之后需要通知其他开发去更新依赖和下载新版的 HBuilderX
+
+#### 编译器版本升级
+
+- 升级到最新版本 npx @dcloudio/uvm@latest
+
+- 升级到指定版本 npx @dcloudio/uvm@latest 3.2.0
+
 ### 原生插件
 
 打印插件：收费 0 元 线上用 YanYu-PrintPDF: https://ext.dcloud.net.cn/plugin?id=1633
