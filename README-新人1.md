@@ -8,6 +8,16 @@
 - vue-cli 全局安装
   - `npm install -g @vue/cli@4`
 
+### VsCode 插件推荐
+
+- Eslint
+- Git History
+- TypeScript Vue Plugin
+- JavaScript and TypeScipt Nightly
+- Volar
+- Stylelint
+- Prettier
+
 ### 开发前阅读
 
 本项目是通过 vue-cli 命令行安装，不同于使用 HBuilderX 下载的模版，具体可以参考官方文档
