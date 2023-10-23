@@ -108,7 +108,7 @@ const onFilled = () => {
 }
 
 const addGrave = () => {
-  routerForward('graveConfirm', {
+  routerForward('graveConfirmEdit', {
     actionType: 'add',
     uid: '',
     doorNo: props.dataInfo.doorNo

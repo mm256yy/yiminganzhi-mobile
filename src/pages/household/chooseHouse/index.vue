@@ -1,7 +1,7 @@
 <template>
   <view class="house-info-wrapper">
     <!-- 择址确认 —— 选房择址 -->
-    <view class="row" v-if="houseAreaType">
+    <view class="row" v-if="houseAreaType === 'homestead' || houseAreaType === 'flat'">
       <view class="left" />
       <view class="right">
         <view class="btn green">
@@ -85,7 +85,7 @@
       </view>
     </view>
 
-    <view v-if="houseAreaType === 'flat'">
+    <view v-else-if="houseAreaType === 'flat'">
       <view class="list" v-if="props.dataList && props.dataList.length > 0">
         <view class="list-item" v-for="item in props.dataList" :key="item.id">
           <view class="list-1">
@@ -169,9 +169,9 @@
       </view>
     </view>
 
-    <view v-if="!houseAreaType" class="null-wrapper">
+    <view v-else class="null-wrapper">
       <image class="icon" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
-      <view class="tips">该户未选择公寓房/宅基地安置</view>
+      <view class="tips">该户未选择公寓房/宅基地安置，无须选房择址</view>
     </view>
   </view>
 </template>

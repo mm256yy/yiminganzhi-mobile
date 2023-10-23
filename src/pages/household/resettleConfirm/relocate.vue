@@ -39,7 +39,7 @@
         :loading="loading"
         border
         stripe
-        emptyText="暂无更多数据"
+        :emptyText="emptyText || '暂无更多数据'"
       >
         <uni-tr>
           <uni-th>安置区域</uni-th>
@@ -93,6 +93,7 @@ interface PropsType {
 const props = defineProps<PropsType>()
 const loading = ref<boolean>(false)
 const tableData = ref<any[]>([])
+const emptyText = ref<string>('')
 
 const houseType = ref<HouseAreaType>(HouseAreaType.homestead)
 const alertDialog = ref<any>(null)
@@ -162,6 +163,12 @@ watch(
         tableData.value = array
       }
     } else {
+      if (res.houseAreaType === HouseAreaType.concentrate) {
+        emptyText.value = '该户选择集中供养'
+      }
+      if (res.houseAreaType === HouseAreaType.oneself) {
+        emptyText.value = '该户选择自谋职业'
+      }
       tableData.value = []
     }
   },

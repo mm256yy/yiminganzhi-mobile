@@ -1,6 +1,7 @@
 <template>
   <view class="databse-wrap">
     <view :style="{ height: `${statusBarHeight}px` }" />
+    <view class="back-btn" @click="back">返回列表</view>
     <uni-section class="box" title="数据库列表" type="line" padding>
       <swiper class="swiper" :indicator-dots="true">
         <swiper-item>
@@ -23,7 +24,7 @@
 import { ref } from 'vue'
 import { pullInstance } from '@/sync'
 // import { getBaseDataApi, getConfigDataApi, getCollectApi, getMainTreeApi } from '@/sync/api'
-import { routerForward } from '@/utils'
+import { routerForward, routerBack } from '@/utils'
 
 const currentTable = ref<string>('')
 const list = ref<any[]>([])
@@ -56,6 +57,10 @@ const getTables = async () => {
 }
 
 getTables()
+
+const back = () => {
+  routerBack()
+}
 </script>
 
 <style lang="scss">
@@ -97,5 +102,21 @@ getTables()
 
 .swiper {
   height: calc(100vh - 64px);
+}
+
+.back-btn {
+  width: 80rpx;
+  height: 30rpx;
+  margin: 0 auto;
+  font-size: 9rpx;
+  line-height: 30rpx;
+  color: #fff;
+  text-align: center;
+  background-color: #007aff;
+  border-radius: 5rpx;
+
+  &:active {
+    opacity: 0.5;
+  }
 }
 </style>

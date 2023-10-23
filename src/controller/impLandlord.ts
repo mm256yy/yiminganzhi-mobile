@@ -425,6 +425,8 @@ export class ImpLandlord extends Common {
           // 居民户信息填报完成
           if (this.isNotNullPic(res.householdPic)) {
             res.immigrantFilling.householdPicStatus = '1'
+          } else {
+            res.immigrantFilling.householdPicStatus = '0'
           }
           resolve(this.updateImpFillStatus(res))
           return
@@ -544,6 +546,8 @@ export class ImpLandlord extends Common {
           // 居民户信息填报完成
           if (this.isNotNullPic(res.householdPic)) {
             res.immigrantFilling.householdPicStatus = '1'
+          } else {
+            res.immigrantFilling.householdPicStatus = '0'
           }
           resolve(this.updateImpFillStatus(res))
           return
@@ -574,6 +578,8 @@ export class ImpLandlord extends Common {
           // 居民户信息填报完成
           if (this.isNotNullPic(newData.householdPic)) {
             newData.immigrantFilling.householdPicStatus = '1'
+          } else {
+            newData.immigrantFilling.householdPicStatus = '0'
           }
           const values = getLandlordSqlValues(newData)
           const sql = `update ${LandlordTableName} set ${values} where uid = '${newData.uid}'`

@@ -80,7 +80,7 @@
       <uni-row class="m-t-10">
         <uni-col :span="12">
           <view class="col">
-            <view class="label">户主照片：</view>
+            <view class="label"><text class="star">*</text>户主照片：</view>
             <view class="content">
               <upload-file
                 v-model="householdPicStr"
@@ -214,6 +214,10 @@ watch(
 )
 
 const submit = () => {
+  if (householdPicStr.value === '[]') {
+    showToast('户主照片必传')
+    return
+  }
   const params: any = {
     ...props.dataInfo,
     householdPic: householdPicStr.value,
@@ -270,6 +274,10 @@ const submit = () => {
         font-size: 9rpx;
         line-height: 16rpx;
         color: rgba(23, 23, 24, 0.6);
+
+        .star {
+          color: red;
+        }
       }
 
       .content {

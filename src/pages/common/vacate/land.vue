@@ -85,7 +85,11 @@
       <image src="@/static/images/icon_submit.png" class="icon" />
       <view class="txt">
         土地腾让办理已完成，腾空日期:
-        {{ dayjs(landEmptyInfo.landEmptyDate).format('YYYY-MM-DD') }}
+        {{
+          landEmptyInfo.landEmptyDate
+            ? dayjs(landEmptyInfo.landEmptyDate).format('YYYY-MM-DD')
+            : '-'
+        }}
       </view>
     </view>
   </view>

@@ -6,8 +6,8 @@
         <view class="account-no">{{ filterViewDoorNoMd(dataInfo) }}</view>
         <view class="fill-number">
           填报进度&nbsp;
-          <text class="green">{{ fillNumber }}</text>
-          /{{ totalFillNumber }}
+          <text class="green">{{ getProgressText.count }}</text>
+          /{{ getProgressText.total }}
         </view>
       </view>
     </view>
@@ -316,6 +316,130 @@ export default {
         }
       }
       return fillCount
+    },
+    getProgressText: function () {
+      let count = 0
+      let total = 0
+      if (!this.dataInfo) {
+        return {
+          count,
+          total
+        }
+      }
+      const { type, immigrantFilling } = this.dataInfo
+      if (type === MainType.PeasantHousehold) {
+        // 居民户信息
+        if (immigrantFilling.householdPicStatus === '1') {
+          count++
+        }
+        // 资格认定
+        if (immigrantFilling.qualificationStatus === '1') {
+          count++
+        }
+        // 资产评估
+        if (immigrantFilling.estimateeStatus === '1') {
+          count++
+        }
+        // 安置确认
+        if (immigrantFilling.arrangementStatus === '1') {
+          count++
+        }
+        // 择址确认
+        if (immigrantFilling.chooseStatus === '1') {
+          count++
+        }
+        // 协议
+        if (immigrantFilling.agreementStatus === '1') {
+          count++
+        }
+        // 移民剪卡
+        if (immigrantFilling.cardStatus === '1') {
+          count++
+        }
+        // 腾空
+        if (immigrantFilling.excessSoarStatus === '1') {
+          count++
+        }
+        // 搬迁安置
+        if (immigrantFilling.relocateArrangementAllStatus === '1') {
+          count++
+        }
+        // 生产安置
+        if (immigrantFilling.productionArrangementAllStatus === '1') {
+          count++
+        }
+        // 相关手续
+        if (immigrantFilling.proceduresStatus === '1') {
+          count++
+        }
+        total = 11
+      } else if (type === MainType.Company) {
+        // 资产评估
+        if (immigrantFilling.estimateeStatus === '1') {
+          count++
+        }
+        // 协议
+        if (immigrantFilling.agreementStatus === '1') {
+          count++
+        }
+        // 移民剪卡
+        if (immigrantFilling.cardStatus === '1') {
+          count++
+        }
+        // 腾空
+        if (immigrantFilling.excessSoarStatus === '1') {
+          count++
+        }
+        // 相关手续
+        if (immigrantFilling.proceduresStatus === '1') {
+          count++
+        }
+        total = 5
+      } else if (type === MainType.IndividualHousehold) {
+        // 资产评估
+        if (immigrantFilling.estimateeStatus === '1') {
+          count++
+        }
+        // 协议
+        if (immigrantFilling.agreementStatus === '1') {
+          count++
+        }
+        // 移民剪卡
+        if (immigrantFilling.cardStatus === '1') {
+          count++
+        }
+        // 腾空
+        if (immigrantFilling.excessSoarStatus === '1') {
+          count++
+        }
+        // 相关手续
+        if (immigrantFilling.proceduresStatus === '1') {
+          count++
+        }
+        total = 5
+      } else if (type === MainType.Village) {
+        // 资产评估
+        if (immigrantFilling.estimateeStatus === '1') {
+          count++
+        }
+        // 协议
+        if (immigrantFilling.agreementStatus === '1') {
+          count++
+        }
+        // 移民剪卡
+        if (immigrantFilling.cardStatus === '1') {
+          count++
+        }
+        // 集体资产
+        if (immigrantFilling.disposalMeasuresStatus === '1') {
+          count++
+        }
+        total = 4
+      }
+      return {
+        count,
+        total
+      }
     }
   },
   watch: {

@@ -86,7 +86,11 @@
       <image src="@/static/images/icon_submit.png" class="icon" />
       <view class="txt">
         房屋腾空办理已完成，腾空日期:
-        {{ dayjs(houseEmptyInfo.houseEmptyDate).format('YYYY-MM-DD') }}
+        {{
+          houseEmptyInfo.houseEmptyDate
+            ? dayjs(houseEmptyInfo.houseEmptyDate).format('YYYY-MM-DD')
+            : '-'
+        }}
       </view>
     </view>
   </view>

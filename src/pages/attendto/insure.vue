@@ -192,7 +192,7 @@ const submit = async () => {
     productionStatus: '1',
     productionPic: productionPicStr.value,
     productionCompleteTime: formData.value.productionCompleteTime
-      ? dayjs(formData.value.productionCompleteTime).toString()
+      ? dayjs(formData.value.productionCompleteTime)
       : ''
   }
   const res = await updateImpLandlordPeopleApi(props.uid, params)

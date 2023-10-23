@@ -20,7 +20,7 @@
     </view>
     <view class="search-list" v-if="dataList && dataList.length > 0">
       <view class="search-item" v-for="(item, index) in dataList" :key="index">
-        <view class="content" @click="select(item, index)">
+        <view class="content" @click="select(index)">
           <view class="left">
             <view class="label">{{ item.label }}</view>
             <view class="value">{{ item.value }}</view>
@@ -57,8 +57,6 @@ const props = defineProps<PropsType>()
 const dataList = ref<any>([])
 const name = ref<string>('')
 const emit = defineEmits(['confirmSelect', 'close'])
-const selectedData = ref<any>({})
-const selelctedDataList = ref<any[]>([])
 
 /**
  * 搜索居民户
@@ -111,25 +109,25 @@ const getLandlordListBySearch = (name: string, type: any) => {
  */
 const confirm = (e: any) => {
   name.value = e.detail.value
+  console.log(e.detail.value, 'ipt')
+  dataList.value = []
   getLandlordListBySearch(name.value, props.type)
 }
 
 // 选择
-const select = (data: any, index: any) => {
+const select = (index: any) => {
   if (props.type === 'single') {
-    selectedData.value = { ...data }
     dataList.value.map((item: any, idx: any) => {
       if (index === idx) {
-        dataList.value[index].checked = true
+        item.checked = !item.checked
       } else {
-        dataList.value[idx].checked = false
+        item.checked = false
       }
     })
   } else if (props.type === 'multiple') {
-    selelctedDataList.value.push({ ...data })
     dataList.value.map((item: any, idx: any) => {
       if (index === idx) {
-        item.checked = true
+        item.checked = !item.checked
       }
     })
   }
@@ -143,9 +141,25 @@ const close = () => {
 // 确认选择
 const confirmSelect = () => {
   if (props.type === 'single') {
-    emit('confirmSelect', selectedData.value)
+    const selectedData = dataList.value.find((item: any) => item.checked)
+    if (!selectedData) {
+      uni.showToast({
+        title: '请选择',
+        icon: 'none'
+      })
+      return
+    }
+    emit('confirmSelect', selectedData)
   } else if (props.type === 'multiple') {
-    emit('confirmSelect', selelctedDataList.value)
+    const selelctedDataList = dataList.value.filter((item: any) => item.checked)
+    if (!selelctedDataList || !selelctedDataList.length) {
+      uni.showToast({
+        title: '请选择',
+        icon: 'none'
+      })
+      return
+    }
+    emit('confirmSelect', selelctedDataList)
   }
 }
 </script>

@@ -121,11 +121,20 @@
               label-align="right"
               name="formData.ownersSituation"
             >
-              <view
-                :class="['name-wrapper', formData.ownersName ? 'isSelected' : '']"
-                @click="selectName"
-              >
-                {{ formData.ownersName ? formData.ownersName : '请选择' }}
+              <view class="flex-center">
+                <view
+                  :class="['name-wrapper', formData.ownersName ? 'isSelected' : '']"
+                  @click="selectName"
+                >
+                  {{ formData.ownersName ? formData.ownersName : '请选择' }}
+                </view>
+                <view @click="resetOwnersName">
+                  <image
+                    class="icon_img"
+                    src="@/static/images/icon_delete_mini.png"
+                    mode="scaleToFill"
+                  />
+                </view>
               </view>
             </uni-forms-item>
           </uni-col>
@@ -407,6 +416,11 @@ const confirmSelect = (data: any) => {
   close()
 }
 
+const resetOwnersName = () => {
+  formData.value.ownersSituation = ''
+  formData.value.ownersName = ''
+}
+
 // 表单提交
 const submit = () => {
   const { uid, doorNo, type } = commonParams.value
@@ -532,6 +546,11 @@ const submit = () => {
         font-size: 9rpx !important;
       }
 
+      .flex-center {
+        display: flex;
+        align-items: center;
+      }
+
       .name-wrapper {
         width: 200rpx;
         height: 23rpx;
@@ -545,6 +564,12 @@ const submit = () => {
         &.isSelected {
           color: #171718;
         }
+      }
+
+      .icon_img {
+        width: 23rpx;
+        height: 23rpx;
+        margin-left: 4rpx;
       }
 
       .input-wrapper {

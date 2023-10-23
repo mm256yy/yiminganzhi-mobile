@@ -41,7 +41,7 @@
           <view class="col">
             <view class="label">家庭总人口：</view>
             <view class="content">
-              {{ formatStr(dataInfo.familyNum) }}
+              {{ formatStr(dataInfo.demographicList.length) }}
             </view>
           </view>
         </uni-col>
