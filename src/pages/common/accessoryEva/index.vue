@@ -22,7 +22,7 @@
               <view class="col">
                 <view class="label">规格：</view>
                 <view class="content">
-                  {{ formatStr(item.size) }}
+                  {{ formatDict(item.size, 267) }}
                 </view>
               </view>
             </uni-col>
@@ -30,7 +30,7 @@
               <view class="col">
                 <view class="label">折率：</view>
                 <view class="content">
-                  {{ formatStr(item.discountRate, '%') }}
+                  {{ formatStr(item.discountRate) }}
                 </view>
               </view>
             </uni-col>
@@ -41,7 +41,7 @@
               <view class="col">
                 <view class="label">单位：</view>
                 <view class="content">
-                  {{ formatStr(item.unit) }}
+                  {{ formatDict(item.unit, 268) }}
                 </view>
               </view>
             </uni-col>
@@ -108,7 +108,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { formatStr, routerForward } from '@/utils'
+import { formatStr, routerForward, formatDict } from '@/utils'
 import { showToast } from '@/config'
 
 const props = defineProps({

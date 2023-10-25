@@ -25,10 +25,11 @@
 </template>
 
 <script lang="ts">
-import { filterViewDoorNo, routerForward } from '@/utils'
+import { filterViewDoorNo, routerForward, getStorage, StorageKey } from '@/utils'
 import { MainType } from '@/types/common'
 import { updateImpLandlordImmigrantFillingApi } from '@/service'
 import { showToast, SUCCESS_MSG, ERROR_MSG } from '@/config'
+import { RoleCodeType } from '@/types/common'
 
 export default {
   props: {
@@ -47,18 +48,19 @@ export default {
   },
   computed: {
     totalFillNumber: function () {
+      const role: RoleCodeType = getStorage(StorageKey.USERROLE)
       switch (this.type) {
         case MainType.PeasantHousehold:
-          return 7
+          return role === RoleCodeType.assessor ? 5 : 3
           break
         case MainType.Company:
-          return 8
+          return role === RoleCodeType.assessor ? 6 : 3
           break
         case MainType.IndividualHousehold:
-          return 8
+          return role === RoleCodeType.assessor ? 6 : 3
           break
         case MainType.Village:
-          return 8
+          return role === RoleCodeType.assessor ? 6 : 3
           break
         default:
           return 8
@@ -66,57 +68,57 @@ export default {
       }
     },
     fillNumber: function () {
+      const { immigrantFilling, type } = this.dataInfo
       const {
-        immigrantHouseList,
-        assetHouseFitUpList,
-        immigrantAppendantList,
-        immigrantTreeList,
-        assetLandList,
-        assetAppendantList,
-        immigrantGraveList,
-        immigrantEquipmentList,
-        immigrantFacilitiesList,
-        type
-      } = this.dataInfo
+        houseMainStatus,
+        houseRenovationStatus,
+        appendageStatus,
+        treeStatus,
 
+        landStatus,
+        landSeedlingStatus,
+
+        deviceStatus,
+        specialStatus
+      } = immigrantFilling
+
+      const role: RoleCodeType = getStorage(StorageKey.USERROLE)
       let fillCount = 1
-      if (this.isNotNullArray(immigrantHouseList)) {
-        fillCount++
-      }
-      if (this.isNotNullArray(assetHouseFitUpList)) {
-        fillCount++
-      }
-      if (this.isNotNullArray(immigrantAppendantList)) {
-        fillCount++
-      }
-      if (this.isNotNullArray(immigrantTreeList)) {
-        fillCount++
-      }
-      if (this.isNotNullArray(assetLandList)) {
-        fillCount++
-      }
-      if (this.isNotNullArray(assetAppendantList)) {
-        fillCount++
-      }
-      // 上报开始校验数据
-      if (type === MainType.PeasantHousehold) {
-        // 居民户
-        if (this.isNotNullArray(immigrantGraveList)) {
+
+      if (role === RoleCodeType.assessor) {
+        // 资产评估-房屋角色
+        if (houseMainStatus === '1') {
           fillCount++
         }
-      } else if (type === MainType.IndividualHousehold) {
-        // 个体户
-        if (this.isNotNullArray(immigrantEquipmentList)) {
+        if (houseRenovationStatus === '1') {
           fillCount++
         }
-      } else if (type === MainType.Company) {
-        // 企业
-        if (this.isNotNullArray(immigrantEquipmentList)) {
+        if (appendageStatus === '1') {
           fillCount++
         }
-      } else if (type === MainType.Village) {
-        // 村集体
-        if (this.isNotNullArray(immigrantFacilitiesList)) {
+        if (treeStatus === '1') {
+          fillCount++
+        }
+
+        if (type === MainType.IndividualHousehold || type === MainType.Company) {
+          // 个体户 企业
+          if (deviceStatus === '1') {
+            fillCount++
+          }
+        }
+
+        if (type === MainType.Village) {
+          // 村集体
+          if (specialStatus === '1') {
+            fillCount++
+          }
+        }
+      } else {
+        // 资产评估-土地角色
+        if (landStatus === '1') {
+          fillCount++
+        }
+        if (landSeedlingStatus === '1') {
           fillCount++
         }
       }
@@ -177,9 +179,8 @@ export default {
           landSeedlingStatus: '1' // 土地青苗及附着物评估
         }
       } else if (
-        this.tabVal === 7 ||
-        this.type === MainType.Company ||
-        this.type === MainType.IndividualHousehold
+        this.tabVal === 7 &&
+        (this.type === MainType.Company || this.type === MainType.IndividualHousehold)
       ) {
         params = {
           deviceStatus: '1' // 设施设备评估

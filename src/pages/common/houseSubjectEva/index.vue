@@ -64,6 +64,16 @@
               </view>
             </uni-col>
           </uni-row>
+
+          <uni-row>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">补偿金额：</view>
+                <view class="content">{{ formatStr(item.compensationAmount) }}</view>
+              </view>
+            </uni-col>
+            <uni-col :span="12" />
+          </uni-row>
         </view>
       </view>
     </view>

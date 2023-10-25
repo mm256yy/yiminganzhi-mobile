@@ -11,7 +11,7 @@
               label-align="right"
               name="formData.relation"
             >
-              <view class="content-txt">
+              <view class="value">
                 {{ formatDict(formData.relation, 307) }}
               </view>
             </uni-forms-item>
@@ -23,7 +23,7 @@
               label-align="right"
               name="formData.materials"
             >
-              <view class="content-txt">
+              <view class="value">
                 {{ formatDict(formData.materials, 295) }}
               </view>
             </uni-forms-item>
@@ -38,7 +38,7 @@
               label-align="right"
               name="formData.graveType"
             >
-              <view class="content-txt">
+              <view class="value">
                 {{ formatDict(formData.graveType, 345) }}
               </view>
             </uni-forms-item>
@@ -50,7 +50,7 @@
               label-align="right"
               name="formData.number"
             >
-              <view class="content-txt">
+              <view class="value">
                 {{ formatStr(formData.number) }}
               </view>
             </uni-forms-item>
@@ -65,7 +65,7 @@
               label-align="right"
               name="formData.handleWay"
             >
-              <view class="content-txt">
+              <view class="value">
                 {{ formatDict(formData.handleWay, 238) }}
               </view>
             </uni-forms-item>
@@ -77,15 +77,13 @@
               label-align="right"
               name="formData.handleWay"
             >
-              <view class="content-txt" v-if="formData.handleWay === '1'">
-                {{ formatStr(formData.settingGrave) }}
+              <view class="value">
+                {{
+                  formData.handleWay === '1'
+                    ? formData.settingAddress
+                    : formatDict(formData.settingGrave, 377)
+                }}
               </view>
-              <uni-easyinput
-                v-if="formData.handleWay === '2'"
-                v-model="formData.settingAddress"
-                type="text"
-                placeholder="请输入"
-              />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -367,6 +365,12 @@ const submit = () => {
       height: 36rpx;
       border-radius: 50%;
     }
+  }
+
+  .value {
+    display: flex;
+    height: 100%;
+    align-items: center;
   }
 }
 </style>

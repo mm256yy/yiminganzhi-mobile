@@ -25,7 +25,7 @@
                 v-touch:swipe.right="touchRight"
               >
                 <!-- 基本信息 -->
-                <base-info-eva v-if="tabVal === 0" :dataInfo="dataInfo.company" />
+                <base-info-eva v-if="tabVal === 0" :dataInfo="dataInfo" />
 
                 <!-- 房屋主体评估 -->
                 <house-subject-eva
@@ -107,7 +107,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
-import { MainType } from '@/types/common'
+import { MainType, RoleCodeType } from '@/types/common'
+import { getStorage, StorageKey } from '@/utils'
 import Back from '@/components/Back/Index.vue'
 import Header from '@/components/Header/EvaIndex.vue'
 import Tabs from '@/components/Tabs/Index.vue'
@@ -145,6 +146,7 @@ import iconSeedlingsDef from '@/static/images/icon_seedlings_default.png' // 引
 import iconSeedlingsSel from '@/static/images/icon_seedlings_select.png' // 引入土地青苗及附着物评估选中 icon
 import iconEquipmentDef from '@/static/images/icon_equipment_default.png' // 引入设施设备评估默认 icon
 import iconEquipmentSel from '@/static/images/icon_equipment_select.png' // 引入设施设备评估选中 icon
+import { LandlordType } from '@/types/sync'
 
 interface PropsType {
   dataInfo: any
@@ -155,15 +157,56 @@ const props = withDefaults(defineProps<PropsType>(), {
 })
 
 const tabsList = computed(() => {
-  const {
-    immigrantHouseList,
-    assetHouseFitUpList,
-    immigrantAppendantList,
-    immigrantTreeList,
-    assetLandList,
-    assetAppendantList,
-    immigrantEquipmentList
-  } = props.dataInfo
+  const { immigrantFilling } = props.dataInfo as LandlordType
+  const role: RoleCodeType = getStorage(StorageKey.USERROLE)
+  if (role === RoleCodeType.assessor) {
+    return [
+      {
+        label: '基本信息',
+        value: 0,
+        filled: true,
+        defIcon: iconBaseDef,
+        selIcon: iconBaseSel
+      },
+      {
+        label: '房屋主体评估',
+        value: 1,
+        filled: immigrantFilling.houseMainStatus === '1',
+        defIcon: iconHouseDef,
+        selIcon: iconHouseSel
+      },
+      {
+        label: '房屋装修评估',
+        value: 2,
+        filled: immigrantFilling.houseRenovationStatus === '1',
+        defIcon: iconDecorationDef,
+        selIcon: iconDecorationSel
+      },
+      {
+        label: '附属设施评估',
+        value: 3,
+        filled: immigrantFilling.appendageStatus === '1',
+        defIcon: iconAccessoryDef,
+        selIcon: iconAccessorySel
+      },
+      {
+        label: '零星(林)果木评估',
+        value: 4,
+        filled: immigrantFilling.treeStatus === '1',
+        defIcon: iconTreeDef,
+        selIcon: iconTreeSel
+      },
+
+      {
+        label: '设施设备评估',
+        value: 7,
+        filled: immigrantFilling.deviceStatus === '1',
+        defIcon: iconEquipmentDef,
+        selIcon: iconEquipmentSel
+      }
+    ]
+  }
+
   return [
     {
       label: '基本信息',
@@ -173,53 +216,18 @@ const tabsList = computed(() => {
       selIcon: iconBaseSel
     },
     {
-      label: '房屋主体评估',
-      value: 1,
-      filled: isNotNullArray(immigrantHouseList),
-      defIcon: iconHouseDef,
-      selIcon: iconHouseSel
-    },
-    {
-      label: '房屋装修评估',
-      value: 2,
-      filled: isNotNullArray(assetHouseFitUpList),
-      defIcon: iconDecorationDef,
-      selIcon: iconDecorationSel
-    },
-    {
-      label: '附属设施评估',
-      value: 3,
-      filled: isNotNullArray(immigrantAppendantList),
-      defIcon: iconAccessoryDef,
-      selIcon: iconAccessorySel
-    },
-    {
-      label: '零星(林)果木评估',
-      value: 4,
-      filled: isNotNullArray(immigrantTreeList),
-      defIcon: iconTreeDef,
-      selIcon: iconTreeSel
-    },
-    {
       label: '土地基本情况评估',
       value: 5,
-      filled: isNotNullArray(assetLandList),
+      filled: immigrantFilling.landStatus === '1',
       defIcon: iconLandDef,
       selIcon: iconLandSel
     },
     {
       label: '土地青苗及附着物评估',
       value: 6,
-      filled: isNotNullArray(assetAppendantList),
+      filled: immigrantFilling.landSeedlingStatus === '1',
       defIcon: iconSeedlingsDef,
       selIcon: iconSeedlingsSel
-    },
-    {
-      label: '设施设备评估',
-      value: 7,
-      filled: isNotNullArray(immigrantEquipmentList),
-      defIcon: iconEquipmentDef,
-      selIcon: iconEquipmentSel
     }
   ]
 })

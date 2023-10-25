@@ -7,80 +7,84 @@
       </view>
 
       <uni-row>
-        <uni-col :span="24">
-          <uni-forms-item
-            required
-            label="房屋评估报告："
-            :label-width="150"
-            label-align="right"
-            name="houseEstimatePicStr"
-          >
-            <uploadFiles
-              v-model="houseEstimatePicStr"
-              :file-list="houseEstimatePicStr"
-              :limit="20"
-              :accepts="['.jpg', '.png', '.pdf', '.jpeg']"
-              show-type="grid"
-            />
-          </uni-forms-item>
-        </uni-col>
+        <template v-if="role === RoleCodeType.assessor">
+          <uni-col :span="24">
+            <uni-forms-item
+              required
+              label="房屋评估报告："
+              :label-width="150"
+              label-align="right"
+              name="houseEstimatePicStr"
+            >
+              <uploadFiles
+                v-model="houseEstimatePicStr"
+                :file-list="houseEstimatePicStr"
+                :limit="20"
+                :accepts="['.jpg', '.png', '.pdf', '.jpeg']"
+                show-type="grid"
+              />
+            </uni-forms-item>
+          </uni-col>
 
-        <uni-col :span="24">
-          <uni-forms-item
-            required
-            label="土地评估报告："
-            :label-width="150"
-            label-align="right"
-            name="landEstimatePicStr"
+          <uni-col
+            v-if="type === MainType.Company || type === MainType.IndividualHousehold"
+            :span="24"
           >
-            <uploadFiles
-              v-model="landEstimatePicStr"
-              :file-list="landEstimatePicStr"
-              :limit="20"
-              :accepts="['.jpg', '.png', '.pdf', '.jpeg']"
-              show-type="grid"
-            />
-          </uni-forms-item>
-        </uni-col>
+            <uni-forms-item
+              required
+              label="设施设备评估报告："
+              :label-width="150"
+              label-align="right"
+              name="devicePicStr"
+            >
+              <uploadFiles
+                v-model="devicePicStr"
+                :file-list="devicePicStr"
+                :limit="20"
+                :accepts="['.jpg', '.png', '.pdf', '.jpeg']"
+                show-type="grid"
+              />
+            </uni-forms-item>
+          </uni-col>
 
-        <uni-col
-          v-if="type === MainType.Company || type === MainType.IndividualHousehold"
-          :span="24"
-        >
-          <uni-forms-item
-            required
-            label="设施设备评估报告："
-            :label-width="150"
-            label-align="right"
-            name="devicePicStr"
-          >
-            <uploadFiles
-              v-model="devicePicStr"
-              :file-list="devicePicStr"
-              :limit="20"
-              :accepts="['.jpg', '.png', '.pdf', '.jpeg']"
-              show-type="grid"
-            />
-          </uni-forms-item>
-        </uni-col>
+          <uni-col v-if="type === MainType.Village" :span="24">
+            <uni-forms-item
+              required
+              label="农村小型专项设施评估报告："
+              :label-width="150"
+              label-align="right"
+              name="specialPicStr"
+            >
+              <uploadFiles
+                v-model="specialPicStr"
+                :file-list="specialPicStr"
+                :limit="20"
+                :accepts="['.jpg', '.png', '.pdf', '.jpeg']"
+                show-type="grid"
+              />
+            </uni-forms-item>
+          </uni-col>
+        </template>
 
-        <uni-col v-if="type === MainType.Village" :span="24">
-          <uni-forms-item
-            required
-            label="农村小型专项设施评估报告："
-            :label-width="150"
-            label-align="right"
-            name="specialPicStr"
-          >
-            <uploadFiles
-              v-model="specialPicStr"
-              :file-list="specialPicStr"
-              :limit="20"
-              :accepts="['.jpg', '.png', '.pdf', '.jpeg']"
-              show-type="grid"
-            />
-          </uni-forms-item>
-        </uni-col>
+        <template v-else-if="role === RoleCodeType.assessorland">
+          <uni-col :span="24">
+            <uni-forms-item
+              required
+              label="土地评估报告："
+              :label-width="150"
+              label-align="right"
+              name="landEstimatePicStr"
+            >
+              <uploadFiles
+                v-model="landEstimatePicStr"
+                :file-list="landEstimatePicStr"
+                :limit="20"
+                :accepts="['.jpg', '.png', '.pdf', '.jpeg']"
+                show-type="grid"
+              />
+            </uni-forms-item>
+          </uni-col>
+        </template>
       </uni-row>
     </uni-forms>
 
@@ -94,12 +98,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { showToast } from '@/config/msg'
 import uploadFiles from '@/components/UploadFile/index.vue'
 import { ImmigrantDocumentationType } from '@/types/impDataFill'
-import { fmtPicUrl } from '@/utils'
-import { MainType } from '@/types/common'
+import { fmtPicUrl, getStorage, StorageKey } from '@/utils'
+import { MainType, RoleCodeType } from '@/types/common'
 
 interface PropsType {
   type: string
@@ -112,6 +116,7 @@ const houseEstimatePicStr = ref<string>('[]') // 房屋评估报告
 const landEstimatePicStr = ref<string>('[]') // 土地评估报告
 const devicePicStr = ref<string>('[]') // 设施设备评估报告
 const specialPicStr = ref<string>('[]') // 农村小型专项设施评估报告
+const role = ref<RoleCodeType>(RoleCodeType.assessor)
 
 watch(
   () => props.immigrantDocumentation,
@@ -127,29 +132,41 @@ watch(
   { immediate: true, deep: true }
 )
 
+onMounted(() => {
+  role.value = getStorage(StorageKey.USERROLE)
+})
+
 const submit = async () => {
   const { type } = props
-  if (!houseEstimatePicStr.value || houseEstimatePicStr.value === '[]') {
-    showToast('请上传房屋评估报告')
-    return
-  } else if (!landEstimatePicStr.value || landEstimatePicStr.value === '[]') {
-    showToast('请上传土地评估报告')
-    return
-  } else if (
-    (!devicePicStr.value || devicePicStr.value === '[]') &&
-    (type === MainType.Company || type === MainType.IndividualHousehold)
-  ) {
-    showToast('请上传设施设备评估报告')
-    return
-  } else if ((!specialPicStr.value || specialPicStr.value === '[]') && type === MainType.Village) {
-    showToast('请上传农村小型专项设施评估报告')
-    return
-  } else {
-    emit('submit', {
+  if (role.value === RoleCodeType.assessor) {
+    if (!houseEstimatePicStr.value || houseEstimatePicStr.value === '[]') {
+      showToast('请上传房屋评估报告')
+      return
+    }
+    if (
+      (!devicePicStr.value || devicePicStr.value === '[]') &&
+      (type === MainType.Company || type === MainType.IndividualHousehold)
+    ) {
+      showToast('请上传设施设备评估报告')
+      return
+    }
+    if ((!specialPicStr.value || specialPicStr.value === '[]') && type === MainType.Village) {
+      showToast('请上传农村小型专项设施评估报告')
+      return
+    }
+    const params = {
       houseEstimatePic: houseEstimatePicStr.value,
-      landEstimatePic: landEstimatePicStr.value,
       devicePic: devicePicStr.value,
       specialPic: specialPicStr.value
+    }
+    emit('submit', params)
+  } else {
+    if (!landEstimatePicStr.value || landEstimatePicStr.value === '[]') {
+      showToast('请上传土地评估报告')
+      return
+    }
+    emit('submit', {
+      landEstimatePic: landEstimatePicStr.value
     })
   }
 }

@@ -2,9 +2,9 @@
   <view class="box-wrapper">
     <view class="search">
       <view class="search-input">
-        <input type="text" placeholder="请输入户号、联系方式" />
+        <input type="text" placeholder="请输入户号、名称、联系方式" v-model.trim="seachName" />
       </view>
-      <view class="search-btn">
+      <view class="search-btn" @click="onSearch">
         <image class="search-icon" src="@/static/images/icon_search_white.png" mode="aspectFit" />
         <text class="search-txt">查询</text>
       </view>
@@ -209,7 +209,7 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
-import { getStorage, StorageKey } from '@/utils'
+import { getStorage, StorageKey, routerForward } from '@/utils'
 import Echart from './WorkGroupChart.vue'
 import MessageNotice from './MessageNotice.vue'
 import { getImpHomeCollectApi } from '@/service'
@@ -260,6 +260,16 @@ const homeCollect = ref<HomeCollectType>({
   villageWarnNum: 0,
   villageDoneNum: 0
 })
+
+const seachName = ref<string>('')
+
+const onSearch = () => {
+  if (seachName.value) {
+    routerForward('householdList', {
+      name: seachName.value
+    })
+  }
+}
 
 const toLink = (name: string) => {
   emit('toLink', name)

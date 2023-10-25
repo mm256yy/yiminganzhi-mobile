@@ -370,6 +370,7 @@ export interface ImmigrantFillingType {
   appendageStatus: string
   treeStatus: string
   landStatus: string
+  landSeedlingStatus: string
   graveStatus: string
   estimateeStatus: string
   populationStatus: string

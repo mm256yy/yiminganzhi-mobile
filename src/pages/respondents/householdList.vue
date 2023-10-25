@@ -56,6 +56,18 @@
               @click.stop="editLandlord(item)"
             />
           </view>
+          <view
+            class="scroll"
+            v-else-if="roleType === RoleCodeType.assessor || roleType === RoleCodeType.assessorland"
+          >
+            <EvaListItem
+              v-for="item in list"
+              :data="item"
+              :key="item.uid"
+              @click.stop="editLandlord(item)"
+              @delete="deleteLandlord(item)"
+            />
+          </view>
           <view class="scroll" v-else>
             <ListItem
               v-for="item in list"
@@ -75,7 +87,11 @@
 
     <!-- roleType: 角色类型，assessor 资产评估用户，资产评估时不能添加新的居民户信息 -->
     <view
-      v-if="roleType !== RoleCodeType.assessor && roleType !== RoleCodeType.implementation"
+      v-if="
+        roleType !== RoleCodeType.assessor &&
+        roleType !== RoleCodeType.assessorland &&
+        roleType !== RoleCodeType.implementation
+      "
       class="add-box"
       @click="addLandlord"
     >
@@ -124,6 +140,7 @@ import NoData from '@/components/NoData/index.vue'
 import ListItem from './listItem.vue'
 // 实施阶段 Item
 import ImpListItem from './impListItem.vue'
+import EvaListItem from './evaListItem.vue'
 import NaturalVillageTreeSelect from '@/components/NaturalVillageTreeSelect/index.vue'
 import {
   getLandlordListBySearchApi,
@@ -160,6 +177,9 @@ const roleType = ref<RoleCodeType>(getStorage(StorageKey.USERROLE))
 onLoad((options: any) => {
   if (options && options.type) {
     sourceType.value = options.type
+  }
+  if (options && options.name) {
+    keyWords.value = options.name
   }
 })
 
@@ -268,7 +288,7 @@ const loadMore = () => {
 const getRouterName = (roleType: string) => {
   if (roleType === RoleCodeType.investigator) {
     return 'household'
-  } else if (roleType === RoleCodeType.assessor) {
+  } else if (roleType === RoleCodeType.assessor || roleType === RoleCodeType.assessorland) {
     return 'householdEva'
   } else if (roleType === RoleCodeType.implementation) {
     return 'householdImp'
@@ -382,7 +402,8 @@ onMounted(() => {
   getTreeData()
 })
 
-onShow(() => {
+onShow((options) => {
+  console.log(options, 'show options')
   init()
 })
 

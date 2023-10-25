@@ -234,11 +234,12 @@ export interface Top5Type {
 
 // 角色代码
 export enum RoleCodeType {
-  administrators = 'administrators',
-  investigator = 'investigator',
-  implementation = 'implementation',
-  assessor = 'assessor',
-  reviewer = 'reviewer'
+  administrators = 'administrators', // 项目管理员
+  investigator = 'investigator', // 实物调查员
+  implementation = 'implementation', // 移民实施员
+  assessor = 'assessor', // 资产评估-房屋
+  reviewer = 'reviewer', // 实物复核员
+  assessorland = 'assessorland' // 资产评估-土地
 }
 
 // 安置方式

@@ -36,7 +36,9 @@
       />
       <!-- 资产评估的首页 -->
       <Assessor
-        v-else-if="homeViewType === RoleCodeType.assessor"
+        v-else-if="
+          homeViewType === RoleCodeType.assessor || homeViewType === RoleCodeType.assessorland
+        "
         @to-link="toLink"
         @login-in="loginIn"
       />

@@ -1,7 +1,7 @@
 <template>
   <!-- 村集体基本信息（评估） -->
   <view class="base-info-wrapper">
-    <view class="list" v-if="props.dataInfo">
+    <view class="list">
       <view class="list-item">
         <view class="list-1">
           <view class="left">
@@ -60,13 +60,68 @@
               </view>
             </uni-col>
           </uni-row>
+
+          <uni-row>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">房屋主体评估合计：</view>
+                <view class="content">0</view>
+              </view>
+            </uni-col>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">房屋装修评估合计：</view>
+                <view class="content">0</view>
+              </view>
+            </uni-col>
+          </uni-row>
+
+          <uni-row>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">房屋附属设施评估合计：</view>
+                <view class="content">0</view>
+              </view>
+            </uni-col>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">零星(林)果木评估合计：</view>
+                <view class="content">0</view>
+              </view>
+            </uni-col>
+          </uni-row>
+
+          <uni-row>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">土地基本情况评估合计：</view>
+                <view class="content">0</view>
+              </view>
+            </uni-col>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">土地青苗及附着物评估合计：</view>
+                <view class="content">0</view>
+              </view>
+            </uni-col>
+          </uni-row>
+
+          <uni-row>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">坟墓评估合计：</view>
+                <view class="content">0</view>
+              </view>
+            </uni-col>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">资产评估合计：</view>
+                <view class="content">0</view>
+              </view>
+            </uni-col>
+          </uni-row>
         </view>
       </view>
-    </view>
-
-    <view class="null-wrapper" v-else>
-      <image class="icon" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
-      <view class="tips">暂无信息</view>
     </view>
   </view>
 </template>
@@ -136,7 +191,7 @@ const props = defineProps({
           flex-direction: row;
 
           .label {
-            width: 56rpx;
+            width: 120rpx;
             height: 16rpx;
             margin-left: 9rpx;
             font-size: 9rpx;

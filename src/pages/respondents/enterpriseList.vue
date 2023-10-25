@@ -56,6 +56,18 @@
               @click.stop="editLandlord(item)"
             />
           </view>
+          <view
+            class="scroll"
+            v-else-if="roleType === RoleCodeType.assessor || roleType === RoleCodeType.assessorland"
+          >
+            <EvaListItem
+              v-for="item in list"
+              :data="item"
+              :key="item.uid"
+              @click.stop="editLandlord(item)"
+              @delete="deleteLandlord(item)"
+            />
+          </view>
           <view class="scroll" v-else>
             <ListItem
               v-for="item in list"
@@ -74,7 +86,11 @@
     </view>
 
     <view
-      v-if="roleType !== RoleCodeType.assessor && roleType !== RoleCodeType.implementation"
+      v-if="
+        roleType !== RoleCodeType.assessor &&
+        roleType !== RoleCodeType.assessorland &&
+        roleType !== RoleCodeType.implementation
+      "
       class="add-box"
       @click="addLandlord"
     >
@@ -123,6 +139,7 @@ import NoData from '@/components/NoData/index.vue'
 import ListItem from './listItem.vue'
 // 实施阶段 Item
 import ImpListItem from './impListItem.vue'
+import EvaListItem from './evaListItem.vue'
 import TreeSelect from '@/components/VillageTreeSelect/index.vue'
 import {
   getLandlordListBySearchApi,
@@ -265,7 +282,7 @@ const loadMore = () => {
 const getRouterName = (roleType: string) => {
   if (roleType === RoleCodeType.investigator) {
     return 'enterprise'
-  } else if (roleType === RoleCodeType.assessor) {
+  } else if (roleType === RoleCodeType.assessor || roleType === RoleCodeType.assessorland) {
     return 'enterpriseEva'
   } else if (roleType === RoleCodeType.implementation) {
     return 'enterpriseImp'

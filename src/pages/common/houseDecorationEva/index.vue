@@ -32,7 +32,7 @@
               <view class="col">
                 <view class="label">折率：</view>
                 <view class="content">
-                  {{ formatStr(item.discountRate, '%') }}
+                  {{ formatStr(item.discountRate) }}
                 </view>
               </view>
             </uni-col>

@@ -5,7 +5,7 @@
       <text>养老保险</text>
     </view>
     <view class="table-wrap">
-      <uni-table class="table" ref="table" border stripe emptyText="暂无更多数据">
+      <uni-table class="table" ref="table" border stripe emptyText="该户无养老保险">
         <uni-tr>
           <uni-th width="40rpx">姓名</uni-th>
           <uni-th width="60rpx">与户主关系</uni-th>

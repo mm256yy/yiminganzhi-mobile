@@ -79,7 +79,7 @@ export default {
         deviceStatus,
         specialStatus,
         disposalMeasuresStatus
-      } = immigrantFilling
+      } = immigrantFilling || {}
 
       let fillCount = 0
 
@@ -326,7 +326,7 @@ export default {
           total
         }
       }
-      const { type, immigrantFilling } = this.dataInfo
+      const { type, immigrantFilling = {} } = this.dataInfo
       if (type === MainType.PeasantHousehold) {
         // 居民户信息
         if (immigrantFilling.householdPicStatus === '1') {

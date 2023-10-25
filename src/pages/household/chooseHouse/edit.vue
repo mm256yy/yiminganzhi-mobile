@@ -287,7 +287,7 @@ const getChooseConfig = () => {
     let arr3: any = []
     if (res && res.length) {
       res.map((item: any) => {
-        if (item.type === '1') {
+        if (item.type === '2') {
           arr1.push({
             text: item.name,
             value: item.id,

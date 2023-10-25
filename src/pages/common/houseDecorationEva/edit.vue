@@ -156,6 +156,7 @@
             >
               <uni-easyinput
                 v-model="formData.discountRate"
+                @input="inputChange"
                 :disabled="formData.isFixedPrice === '1'"
                 type="number"
                 placeholder="请输入"
@@ -248,7 +249,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { routerBack, getStorage, StorageKey } from '@/utils'
 import {
@@ -286,6 +287,15 @@ const dict = getStorage(StorageKey.DICT)
 // 获得焦点的输入框下标
 const focusIndex = ref<number>(-1)
 
+const inputChange = (value: any) => {
+  if (value) {
+    console.log(value, 'val')
+    var price = value.toString().replace(/(?<=\.[0-9]{2})\d+/, '')
+    nextTick(() => {
+      formData.value.discountRate = price
+    })
+  }
+}
 /**
  * 获取业主详情
  * @param(object) uid

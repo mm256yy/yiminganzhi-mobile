@@ -1,6 +1,6 @@
 <template>
   <view class="form-wrapper">
-    <Back title="添加坟墓" needConfirm />
+    <Back :title="query.actionType === 'edit' ? '确认坟墓' : '添加坟墓'" needConfirm />
     <view class="main">
       <uni-forms class="form" ref="form" :modelValue="formData">
         <uni-row>
@@ -11,7 +11,7 @@
               label-align="right"
               name="formData.relation"
             >
-              <view v-if="query.actionType === 'edit'">
+              <view v-if="query.actionType === 'edit'" class="value">
                 {{ formatDict(formData.relation, 307) }}
               </view>
               <uni-data-select v-else v-model="formData.relation" :localdata="dict[307]" />
@@ -25,7 +25,7 @@
               label-align="right"
               name="formData.materials"
             >
-              <view v-if="query.actionType === 'edit'">
+              <view v-if="query.actionType === 'edit'" class="value">
                 {{ formatDict(formData.materials, 295) }}
               </view>
               <uni-data-select v-else v-model="formData.materials" :localdata="dict[295]" />
@@ -41,7 +41,7 @@
               label-align="right"
               name="formData.graveType"
             >
-              <view v-if="query.actionType === 'edit'">
+              <view v-if="query.actionType === 'edit'" class="value">
                 {{ formatDict(formData.graveType, 345) }}
               </view>
               <uni-data-select v-else v-model="formData.graveType" :localdata="dict[345]" />
@@ -55,7 +55,7 @@
               label-align="right"
               name="formData.number"
             >
-              <view v-if="query.actionType === 'edit'">
+              <view v-if="query.actionType === 'edit'" class="value">
                 {{ formData.number }}
               </view>
               <uni-easyinput
@@ -299,6 +299,12 @@ const submit = async () => {
       height: 36rpx;
       border-radius: 50%;
     }
+  }
+
+  .value {
+    display: flex;
+    height: 100%;
+    align-items: center;
   }
 }
 </style>

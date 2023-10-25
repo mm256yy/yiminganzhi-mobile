@@ -114,7 +114,12 @@
               label-align="right"
               name="formData.discountRate"
             >
-              <uni-easyinput v-model="formData.discountRate" type="number" placeholder="请输入" />
+              <uni-easyinput
+                v-model="formData.discountRate"
+                @input="inputChange"
+                type="number"
+                placeholder="请输入"
+              />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -196,7 +201,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { routerBack, getStorage, StorageKey } from '@/utils'
 import { addImpLandlordTreeApi, updateImpLandlordTreeApi, getEvaLandlordItemApi } from '@/service'
@@ -229,6 +234,15 @@ const dict = getStorage(StorageKey.DICT)
 // 获得焦点的输入框下标
 const focusIndex = ref<number>(-1)
 
+const inputChange = (value: any) => {
+  if (value) {
+    console.log(value, 'val')
+    var price = value.toString().replace(/(?<=\.[0-9]{2})\d+/, '')
+    nextTick(() => {
+      formData.value.discountRate = price
+    })
+  }
+}
 /**
  * 获取业主详情
  * @param(object) uid

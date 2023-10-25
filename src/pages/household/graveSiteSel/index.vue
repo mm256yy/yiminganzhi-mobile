@@ -15,92 +15,86 @@
       </view>
     </view>
 
-    <view v-if="baseInfo.graveNumber">
-      <view class="list" v-if="props.dataList && props.dataList.length > 0">
-        <view class="list-item" v-for="item in props.dataList" :key="item.id">
-          <view class="list-1">
-            <view class="left">
-              <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-              与登记人关系：{{ formatDict(item.relation, 307) }}
-            </view>
-            <view class="right" />
+    <view class="list" v-if="props.dataList && props.dataList.length > 0">
+      <view class="list-item" v-for="item in props.dataList" :key="item.id">
+        <view class="list-1">
+          <view class="left">
+            <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
+            与登记人关系：{{ formatDict(item.relation, 307) }}
           </view>
-          <view class="list-2" @click="toLink(item.uid)">
-            <uni-row>
-              <uni-col :span="12">
-                <view class="col">
-                  <view class="label">材料：</view>
-                  <view class="content">
-                    {{ formatDict(item.materials, 295) }}
-                  </view>
-                </view>
-              </uni-col>
-              <uni-col :span="12">
-                <view class="col">
-                  <view class="label">穴位：</view>
-                  <view class="content">{{ formatDict(item.graveType, 345) }}</view>
-                </view>
-              </uni-col>
-            </uni-row>
-
-            <uni-row>
-              <uni-col :span="12">
-                <view class="col">
-                  <view class="label">数量：</view>
-                  <view class="content">
-                    {{ formatStr(item.number, '（座）') }}
-                  </view>
-                </view>
-              </uni-col>
-              <uni-col :span="12">
-                <view class="col">
-                  <view class="label">处理方式：</view>
-                  <view class="content">{{ formatDict(item.handleWay, 238) }}</view>
-                </view>
-              </uni-col>
-            </uni-row>
-
-            <uni-row>
-              <uni-col :span="12">
-                <view class="col">
-                  <view class="label">安置公墓/择址地址：</view>
-                  <view class="content">
-                    <!-- handleWay 处理方式，1 择址地址 2 安置公墓 -->
-                    {{
-                      item.handleWay === '1'
-                        ? formatStr(item.settingAddress)
-                        : formatStr(item.settingGrave)
-                    }}
-                  </view>
-                </view>
-              </uni-col>
-              <uni-col :span="12">
-                <view class="col">
-                  <view class="label">编号：</view>
-                  <view class="content">
-                    {{ formatStr(item.graveNo) }}
-                  </view>
-                </view>
-              </uni-col>
-            </uni-row>
-
-            <uni-row>
-              <uni-col :span="24">
-                <view class="col">
-                  <view class="label">备注：</view>
-                  <view class="content">
-                    {{ formatStr(item.remark) }}
-                  </view>
-                </view>
-              </uni-col>
-            </uni-row>
-          </view>
+          <view class="right" />
         </view>
-      </view>
+        <view class="list-2" @click="toLink(item.uid)">
+          <uni-row>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">材料：</view>
+                <view class="content">
+                  {{ formatDict(item.materials, 295) }}
+                </view>
+              </view>
+            </uni-col>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">穴位：</view>
+                <view class="content">{{ formatDict(item.graveType, 345) }}</view>
+              </view>
+            </uni-col>
+          </uni-row>
 
-      <view class="null-wrapper" v-else>
-        <image class="icon" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
-        <view class="tips">暂无坟墓信息</view>
+          <uni-row>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">数量：</view>
+                <view class="content">
+                  {{ formatStr(item.number, '（座）') }}
+                </view>
+              </view>
+            </uni-col>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">处理方式：</view>
+                <view class="content">{{ formatDict(item.handleWay, 238) }}</view>
+              </view>
+            </uni-col>
+          </uni-row>
+
+          <uni-row>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">安置公墓/择址地址：</view>
+                <view class="content">
+                  <!-- handleWay 处理方式，1 择址地址 2 安置公墓 -->
+
+                  {{
+                    item.handleWay === '1'
+                      ? item.settingAddress
+                      : formatDict(item.settingGrave, 377)
+                  }}
+                </view>
+              </view>
+            </uni-col>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">编号：</view>
+                <view class="content">
+                  {{ formatStr(item.graveNo) }}
+                </view>
+              </view>
+            </uni-col>
+          </uni-row>
+
+          <uni-row>
+            <uni-col :span="24">
+              <view class="col">
+                <view class="label">备注：</view>
+                <view class="content">
+                  {{ formatStr(item.remark) }}
+                </view>
+              </view>
+            </uni-col>
+          </uni-row>
+        </view>
       </view>
     </view>
 

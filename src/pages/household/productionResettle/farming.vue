@@ -25,23 +25,8 @@
       <uni-row>
         <uni-col :span="12">
           <view class="col">
-            <view class="label">摇号顺序号：</view>
-            <view class="content">{{ landInfo.lotteryOrder }}</view>
-          </view>
-        </uni-col>
-        <uni-col :span="12">
-          <view class="col">
-            <view class="label">择地顺序号：</view>
-            <view class="content"> {{ landInfo.placeOrder }} </view>
-          </view>
-        </uni-col>
-      </uni-row>
-
-      <uni-row>
-        <uni-col :span="12">
-          <view class="col">
             <view class="label">区块：</view>
-            <view class="content">{{ landInfo.settleAddress }}</view>
+            <view class="content">{{ getSettleAddressText(landInfo.settleAddress) }}</view>
           </view>
         </uni-col>
         <uni-col :span="12">
@@ -89,6 +74,7 @@
 import { computed, onMounted } from 'vue'
 import { LandlordType } from '@/types/sync'
 import { routerForward } from '@/utils'
+import { apartmentArea, resettleArea } from '@/pages/common/config'
 
 interface PropsType {
   dataInfo: LandlordType
@@ -123,6 +109,14 @@ const archivesUpload = () => {
     uid: props.dataInfo.uid,
     type: 11
   })
+}
+
+const getSettleAddressText = (settleAddress?: string) => {
+  if (settleAddress) return '-'
+  return (
+    resettleArea.find((item) => item.id === settleAddress)?.name ||
+    apartmentArea.find((item) => item.id === settleAddress)?.name
+  )
 }
 </script>
 

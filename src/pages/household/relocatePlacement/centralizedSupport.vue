@@ -78,7 +78,11 @@
                 <view class="col">
                   <view class="label">完成时间：</view>
                   <view class="content">
-                    {{ dayjs(item.relocateCompleteTime).format('YYYY-MM-DD') }}
+                    {{
+                      item.relocateCompleteTime
+                        ? dayjs(item.relocateCompleteTime).format('YYYY-MM-DD')
+                        : '-'
+                    }}
                   </view>
                 </view>
               </uni-col>
