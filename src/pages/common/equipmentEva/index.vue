@@ -25,7 +25,7 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">成新率：</view>
-                <view class="content">{{ formatStr(item.newnessRate, '%') }}</view>
+                <view class="content">{{ formatStr(item.newnessRate) }}</view>
               </view>
             </uni-col>
           </uni-row>
