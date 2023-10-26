@@ -48,7 +48,7 @@
         <uni-col :span="12">
           <view class="col">
             <view class="label">人口性质：</view>
-            <view class="content">{{ formatDict(formData.populationNature, 363) }}</view>
+            <view class="content">{{ formatDict(formData.populationNature, 263) }}</view>
           </view>
         </uni-col>
       </uni-row>
@@ -154,6 +154,7 @@ watch(
   (val) => {
     if (val) {
       const people = val.find((item: PopulationType) => item.uid === props.itemUid)
+      console.log(people, 'people')
       if (people) {
         const { productionPic, productionCompleteTime } = people
         // 基本信息

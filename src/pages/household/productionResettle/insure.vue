@@ -25,7 +25,7 @@
           <uni-td>{{ formatDict(item.sex, 292) }}</uni-td>
           <uni-td>{{ item.card }}</uni-td>
           <uni-td>{{ formatDict(item.censusType, 249) }}</uni-td>
-          <uni-td>{{ formatDict(item.populationNature, 363) }}</uni-td>
+          <uni-td>{{ formatDict(item.populationNature, 263) }}</uni-td>
           <uni-td>{{ formatDict(item.settingWay, 375) }}</uni-td>
           <uni-td>
             {{ item.productionStatus === '1' ? '已办理' : '未办理' }}
@@ -63,6 +63,7 @@ const props = defineProps<PropsType>()
 
 // 获取人口列表
 const demographicList = computed(() => {
+  console.log(props.dataInfo.demographicList, 'list')
   return props.dataInfo && props.dataInfo.demographicList
     ? props.dataInfo.demographicList.filter((item) => item.settingWay === '2')
     : []

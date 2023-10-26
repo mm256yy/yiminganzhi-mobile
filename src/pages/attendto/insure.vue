@@ -46,7 +46,7 @@
         <uni-col :span="12">
           <view class="col">
             <view class="label">人口性质：</view>
-            <view class="content">{{ formatDict(formData.populationNature, 363) }}</view>
+            <view class="content">{{ formatDict(formData.populationNature, 263) }}</view>
           </view>
         </uni-col>
       </uni-row>

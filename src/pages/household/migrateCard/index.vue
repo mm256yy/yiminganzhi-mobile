@@ -112,7 +112,7 @@
             <uni-td align="left" class="uTd">{{ formatDict(item.relation, 307) }}</uni-td>
             <uni-td align="left" class="uTd">{{ formatDict(item.sex, 292) }}</uni-td>
             <uni-td align="left" class="uTd">{{ formatStr(item.card) }}</uni-td>
-            <uni-td align="left" class="uTd">{{ formatDict(item.populationType, 244) }}</uni-td>
+            <uni-td align="left" class="uTd">{{ formatDict(item.populationNature, 263) }}</uni-td>
             <uni-td align="left" class="uTd">{{ formatDict(item.censusType, 249) }}</uni-td>
           </uni-tr>
         </uni-table>

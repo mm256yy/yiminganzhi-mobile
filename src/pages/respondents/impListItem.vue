@@ -118,7 +118,7 @@ const filterWarnStatus = (type: string) => {
 
 const getProgressText = (data: LandlordType) => {
   if (!data) return ''
-  const { type, immigrantFilling } = data
+  const { type, immigrantFilling = {} } = data
   let count = 0
   let total = 0
   if (type === MainType.PeasantHousehold) {

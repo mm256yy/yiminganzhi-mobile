@@ -109,7 +109,8 @@ class PullData {
       chooseConfig: [],
       houseConfig: [],
       immigrantCompensationCardConfig: [],
-      rankDtoList: []
+      rankDtoList: [],
+      feedbackDtoList: []
     }
 
     this.districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
@@ -235,7 +236,8 @@ class PullData {
       chooseConfig,
       houseConfig,
       immigrantCompensationCardConfig,
-      rankDtoList
+      rankDtoList,
+      feedbackDtoList
     } = result
     // 需要reset
     this.state.immigrantIncomeConfigList = immigrantIncomeConfigList
@@ -255,6 +257,7 @@ class PullData {
     this.state.houseConfig = houseConfig
     this.state.immigrantCompensationCardConfig = immigrantCompensationCardConfig
     this.state.rankDtoList = rankDtoList
+    this.state.feedbackDtoList = feedbackDtoList
 
     this.pullDict().then((res: boolean) => {
       res && this.count++
@@ -300,6 +303,7 @@ class PullData {
       this.state.houseConfig = []
       this.state.immigrantCompensationCardConfig = []
       this.state.rankDtoList = []
+      this.state.feedbackDtoList = []
       console.log('拉取: 其他', res)
     })
   }
@@ -937,6 +941,7 @@ class PullData {
         houseConfig,
         immigrantCompensationCardConfig,
         rankDtoList,
+        feedbackDtoList,
 
         peasantHouseholdNum,
         companyNum,
@@ -1034,10 +1039,20 @@ class PullData {
       })}','${getCurrentTimeStamp()}'`
       db.insertOrReplaceData(OtherTableName, values, fields)
 
+      // 排行榜
       if (rankDtoList && rankDtoList.length) {
         const fields = "'type','content','updatedDate'"
         const values = `'${OtherDataType.RankDtoList}','${JSON.stringify(
           rankDtoList
+        )}','${getCurrentTimeStamp()}'`
+        db.insertOrReplaceData(OtherTableName, values, fields)
+      }
+
+      // 问题反馈
+      if (feedbackDtoList && feedbackDtoList.length) {
+        const fields = "'type','content','updatedDate'"
+        const values = `'${OtherDataType.FeedbackDtoList}','${JSON.stringify(
+          feedbackDtoList
         )}','${getCurrentTimeStamp()}'`
         db.insertOrReplaceData(OtherTableName, values, fields)
       }

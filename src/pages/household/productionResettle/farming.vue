@@ -87,7 +87,7 @@ const farmingResettleStatus = computed(() => {
   // 安置状态
   const arch = props.dataInfo.immigrantDocumentation || {}
   const { agriculturePic } = arch
-  return !!agriculturePic
+  return agriculturePic && agriculturePic !== '[]'
 })
 
 // 是否有农业安置

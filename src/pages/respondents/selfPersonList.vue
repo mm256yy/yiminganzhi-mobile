@@ -32,10 +32,8 @@
         <view class="dot" :class="typeColor(sourceType)" />
         <text class="status-label">{{ typeLabel(sourceType) }}： </text>
         <text class="check-label"
-          >人口核定：<text class="number" :class="typeColor(sourceType)">2</text> 户</text
-        >
-        <text class="check-label"
-          >安置确认：<text class="number" :class="typeColor(sourceType)">1</text> 户</text
+          >人口核定：<text class="number" :class="typeColor(sourceType)">{{ statusCount }}</text>
+          户</text
         >
       </view>
 
@@ -170,6 +168,7 @@ const isEnd = ref<boolean>(false)
 const page = ref<number>(1)
 const pageSize = ref<number>(10)
 const sourceType = ref<string | null>(null) // 源类型 0已完成  1 预警 2 滞后
+const statusCount = ref<number>(0)
 
 // 角色类型，不同角色跳转不同的页面，默认为实物采集页面
 const roleType = ref<RoleCodeType>(getStorage(StorageKey.USERROLE))
@@ -178,6 +177,7 @@ onLoad((options: any) => {
   if (options && options.type) {
     sourceType.value = options.type
   }
+  statusCount.value = options.count || 0
 })
 
 const init = () => {
@@ -402,12 +402,12 @@ onShow(() => {
 
 // 根据类型获取标签文本值
 const typeLabel = (type: string | null) => {
-  return type === '0' ? '滞后' : type == '1' ? '预警' : '完成'
+  return type === '2' ? '滞后' : type == '1' ? '预警' : '完成'
 }
 
 // 根据类型获取标签文本颜色
 const typeColor = (type: string | null) => {
-  return type === '0' ? 'red' : type == '1' ? 'yellow' : 'green'
+  return type === '2' ? 'red' : type == '1' ? 'yellow' : 'green'
 }
 </script>
 

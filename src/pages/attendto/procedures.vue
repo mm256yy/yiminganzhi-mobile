@@ -84,15 +84,6 @@ const completePicStr = ref<string>('[]')
 const currentDate = ref<any>('')
 const emit = defineEmits(['submit'])
 
-// 获取年月日
-const getDate = () => {
-  if (formData.value.productionCompleteTime) {
-    return formData.value.productionCompleteTime
-  } else {
-    return `${dayjs().year()}-${dayjs().month() + 1}-${dayjs().date()}`
-  }
-}
-
 watch(
   () => props.immigrantProceduresList,
   (val) => {
@@ -100,12 +91,7 @@ watch(
       const procedures = val.find((item) => item.uid === props.itemUid)
       if (procedures) {
         const { completePic, completeDate } = procedures
-        formData.value = {
-          ...procedures,
-          completeDate: completeDate ? dayjs(completeDate).format('YYYY-MM-DD') : getDate()
-        }
-
-        currentDate.value = completeDate ? dayjs(completeDate).format('YYYY-MM-DD') : getDate()
+        currentDate.value = completeDate ? dayjs(completeDate).format('YYYY-MM-DD') : ''
         completePicStr.value = fmtPicUrl(completePic)
       }
     }
@@ -130,7 +116,6 @@ const submit = async () => {
     return
   }
   const params = {
-    ...formData.value,
     completeDate: formData.value.completeDate ? dayjs(formData.value.completeDate) : '',
     completePic: completePicStr.value,
     needHandle: '1', // 是否需要办理：0 不需要，1 需要

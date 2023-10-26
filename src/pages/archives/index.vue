@@ -79,10 +79,16 @@
         :immigrant-documentation="immigrantDocumentation"
         @submit="submit"
       />
-
+      <!-- 协议档案 -->
       <AgreementArchives
         v-if="archivesType === 13"
-        :type="query.mainTypes"
+        :immigrant-documentation="immigrantDocumentation"
+        @submit="submit"
+      />
+
+      <!-- 自建房 -->
+      <SelfBuildHouseArchives
+        v-if="archivesType === 14"
         :immigrant-documentation="immigrantDocumentation"
         @submit="submit"
       />
@@ -117,6 +123,7 @@ import ApartmentArchives from './apartmentArchives.vue' // 引入搬迁安置 �
 import FarmingArchives from './farmingArchives.vue' // 引入生产安置 —— 农业安置档案上传组件
 
 import AgreementArchives from './agreementArchives.vue' // 协议
+import SelfBuildHouseArchives from './selfBuildHouseArchives.vue' // 自建房
 
 import { MainType } from '../../types/common'
 
@@ -134,9 +141,10 @@ import { MainType } from '../../types/common'
  * 11 生产安置 农业安置
  * 12 资产评估
  * 13 协议
+ * 14 自建房
  */
 
-type ArchivesTypes = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13
+type ArchivesTypes = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14
 
 interface QueryType {
   uid: string

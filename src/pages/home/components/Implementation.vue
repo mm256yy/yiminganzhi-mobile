@@ -26,21 +26,36 @@
           </view>
         </view>
         <view class="row-field">
-          <view class="field-box" @click.prevent.stop="toLinkParams('householdList', 2)">
+          <view
+            class="field-box"
+            @click.prevent.stop="
+              toLinkParams('householdList', '2', homeCollect.peasantHouseholdLagNum)
+            "
+          >
             <view class="line-1">{{ homeCollect.peasantHouseholdLagNum }}</view>
             <view class="flex">
               <view class="common-dot red" />
               <view class="line-2">严重滞后</view>
             </view>
           </view>
-          <view class="field-box" @click.prevent.stop="toLinkParams('householdList', 1)">
+          <view
+            class="field-box"
+            @click.prevent.stop="
+              toLinkParams('householdList', '1', homeCollect.peasantHouseholdWarnNum)
+            "
+          >
             <view class="line-1">{{ homeCollect.peasantHouseholdWarnNum }}</view>
             <view class="flex">
               <view class="common-dot yellow" />
               <view class="line-2">预警</view>
             </view>
           </view>
-          <view class="field-box" @click.prevent.stop="toLinkParams('householdList', 0)">
+          <view
+            class="field-box"
+            @click.prevent.stop="
+              toLinkParams('householdList', '0', homeCollect.peasantHouseholdDoneNum)
+            "
+          >
             <view class="line-1">{{ homeCollect.peasantHouseholdDoneNum }}</view>
             <view class="flex">
               <view class="common-dot green" />
@@ -64,21 +79,30 @@
           </view>
         </view>
         <view class="row-field">
-          <view class="field-box" @click.prevent.stop="toLinkParams('enterpriseList', 2)">
+          <view
+            class="field-box"
+            @click.prevent.stop="toLinkParams('enterpriseList', '2', homeCollect.companyLagNum)"
+          >
             <view class="line-1">{{ homeCollect.companyLagNum }}</view>
             <view class="flex">
               <view class="common-dot red" />
               <view class="line-2 red">严重滞后</view>
             </view>
           </view>
-          <view class="field-box" @click.prevent.stop="toLinkParams('enterpriseList', 1)">
+          <view
+            class="field-box"
+            @click.prevent.stop="toLinkParams('enterpriseList', '1', homeCollect.companyWarnNum)"
+          >
             <view class="line-1">{{ homeCollect.companyWarnNum }}</view>
             <view class="flex">
               <view class="common-dot yellow" />
               <view class="line-2">预警</view>
             </view>
           </view>
-          <view class="field-box" @click.prevent.stop="toLinkParams('enterpriseList', 0)">
+          <view
+            class="field-box"
+            @click.prevent.stop="toLinkParams('enterpriseList', '0', homeCollect.companyDoneNum)"
+          >
             <view class="line-1">{{ homeCollect.companyDoneNum }}</view>
             <view class="flex">
               <view class="common-dot green" />
@@ -102,21 +126,30 @@
           </view>
         </view>
         <view class="row-field">
-          <view class="field-box" @click.prevent.stop="toLinkParams('selfPersonList', 2)">
+          <view
+            class="field-box"
+            @click.prevent.stop="toLinkParams('selfPersonList', '2', homeCollect.individualLagNum)"
+          >
             <view class="line-1">{{ homeCollect.individualLagNum }}</view>
             <view class="flex">
               <view class="common-dot red" />
               <view class="line-2 red">严重滞后</view>
             </view>
           </view>
-          <view class="field-box" @click.prevent.stop="toLinkParams('selfPersonList', 1)">
+          <view
+            class="field-box"
+            @click.prevent.stop="toLinkParams('selfPersonList', '1', homeCollect.individualWarnNum)"
+          >
             <view class="line-1">{{ homeCollect.individualWarnNum }}</view>
             <view class="flex">
               <view class="common-dot yellow" />
               <view class="line-2">预警</view>
             </view>
           </view>
-          <view class="field-box" @click.prevent.stop="toLinkParams('selfPersonList', 0)">
+          <view
+            class="field-box"
+            @click.prevent.stop="toLinkParams('selfPersonList', '0', homeCollect.individualDoneNum)"
+          >
             <view class="line-1">{{ homeCollect.individualDoneNum }}</view>
             <view class="flex">
               <view class="common-dot green" />
@@ -140,21 +173,30 @@
           </view>
         </view>
         <view class="row-field">
-          <view class="field-box" @click.prevent.stop="toLinkParams('collectiveList', 2)">
+          <view
+            class="field-box"
+            @click.prevent.stop="toLinkParams('collectiveList', '2', homeCollect.villageLagNum)"
+          >
             <view class="line-1">{{ homeCollect.villageLagNum }}</view>
             <view class="flex">
               <view class="common-dot red" />
               <view class="line-2 red">严重滞后</view>
             </view>
           </view>
-          <view class="field-box" @click.prevent.stop="toLinkParams('collectiveList', 1)">
+          <view
+            class="field-box"
+            @click.prevent.stop="toLinkParams('collectiveList', '1', homeCollect.villageWarnNum)"
+          >
             <view class="line-1">{{ homeCollect.villageWarnNum }}</view>
             <view class="flex">
               <view class="common-dot yellow" />
               <view class="line-2">预警</view>
             </view>
           </view>
-          <view class="field-box" @click.prevent.stop="toLinkParams('collectiveList', 0)">
+          <view
+            class="field-box"
+            @click.prevent.stop="toLinkParams('collectiveList', '0', homeCollect.villageDoneNum)"
+          >
             <view class="line-1">{{ homeCollect.villageDoneNum }}</view>
             <view class="flex">
               <view class="common-dot green" />
@@ -275,10 +317,11 @@ const toLink = (name: string) => {
   emit('toLink', name)
 }
 
-const toLinkParams = (name: string, type: number) => {
+const toLinkParams = (name: string, type: string, count: number) => {
   emit('toParamsLink', {
     name,
-    type
+    type,
+    count
   })
 }
 
@@ -293,7 +336,7 @@ onMounted(() => {
   getImpHomeCollectApi().then((res) => {
     if (res) {
       console.log(res, 'getImpHomeCollectApi')
-      homeCollect.value = res
+      homeCollect.value = { ...homeCollect.value, ...res }
     }
   })
 })

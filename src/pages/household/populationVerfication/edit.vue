@@ -268,7 +268,7 @@ const submit = () => {
   if (!formData.value.addReason && type === 'add') {
     showToast('请输入新增原因')
     return
-  } else if (!formData.value.populationNature) {
+  } else if (!formData.value.populationNature && formData.value.addReason !== '3') {
     showToast('请选择人口性质')
     return
   } else if (!formData.value.name && type === 'edit' && formData.value.addReason !== '3') {
@@ -304,6 +304,9 @@ const submit = () => {
     showToast('请上传户口本照片')
     return
   } else {
+    if (formData.value.addReason === '3') {
+      params.name = '增计人口'
+    }
     if (type === 'add') {
       addImpLandlordPeopleApi(uid, params)
         .then((res) => {

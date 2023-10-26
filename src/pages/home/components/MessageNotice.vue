@@ -49,24 +49,20 @@
       <div v-else class="list-wrapper">
         <view class="top-title">
           <view>
+            <text class="title-index">序号</text>
             <text class="title-content">内容</text>
           </view>
           <text class="time">提交时间</text>
         </view>
         <view class="list">
-          <view class="item-title">
+          <view class="item-title" v-for="(item, index) in feedbackList" :key="index">
             <view>
-              <text class="item-index">1</text>
-              <text class="item-content">您有5还有居民已严重滞后，请推进实施工作</text>
+              <text class="item-index">{{ index + 1 }}</text>
+              <text class="item-content">{{ item.remark }}</text>
             </view>
-            <text class="item-time">2023-05-11</text>
-          </view>
-          <view class="item-title">
-            <view>
-              <text class="item-index">2</text>
-              <text class="item-content">您有2户居民未开始填报，请推进实施工作</text>
-            </view>
-            <text class="item-time">2023-05-11</text>
+            <text class="item-time">{{
+              item.createdDate ? dayjs(item.createdDate).format('YYYY-MM-DD') : '-'
+            }}</text>
           </view>
         </view>
       </div>
@@ -75,10 +71,14 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { getOtherItemApi } from '@/service'
+import { OtherDataType } from '@/database'
+import dayjs from 'dayjs'
 
 const currentTab = ref(0)
-let menuIndex = ref(0)
+let menuIndex = ref(1)
+const feedbackList = ref<any[]>([])
 
 const tabChange = (id: number) => {
   if (currentTab.value === id) {
@@ -90,6 +90,16 @@ const tabChange = (id: number) => {
 const handleItemClick = (index: number) => {
   menuIndex.value = index
 }
+
+// 消息反馈列表
+const getFeedbackList = async () => {
+  const res = await getOtherItemApi(OtherDataType.FeedbackDtoList)
+  feedbackList.value = res || []
+}
+
+onMounted(() => {
+  getFeedbackList()
+})
 </script>
 
 <style lang="scss" scoped>
@@ -230,9 +240,12 @@ const handleItemClick = (index: number) => {
       width: 154rpx;
       height: 26rpx;
       padding-left: 18rpx;
+      overflow: hidden;
       font-weight: 500;
       color: #131313;
       text-align: left;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .item-time {

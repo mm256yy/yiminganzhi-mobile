@@ -361,7 +361,7 @@ const getLandlordDetail = () => {
         landPic: fmtPicUrl(obj.landPic),
         homePic: fmtPicUrl(obj.homePic),
         otherPic: fmtPicUrl(obj.otherPic),
-        otherProofPic: fmtPicUrl(formData.value.otherProofPic)
+        otherProofPic: fmtPicUrl(obj.otherProofPic)
       }
     }
 

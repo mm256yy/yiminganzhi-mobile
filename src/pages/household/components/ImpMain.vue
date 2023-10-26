@@ -210,7 +210,7 @@ const tabVal = ref<number>(1)
 const emit = defineEmits(['updateData'])
 
 const tabList = computed(() => {
-  const { immigrantFilling } = props.dataInfo
+  const { immigrantFilling = {} } = props.dataInfo
   const arr: any = deepClone(householdSidebarList)
 
   if (immigrantFilling) {

@@ -30,7 +30,7 @@
           </view>
           <view class="item">
             <view class="label">人口性质：</view>
-            <view class="value">{{ formatDict(item.populationNature, 363) }}</view>
+            <view class="value">{{ formatDict(item.populationNature, 263) }}</view>
           </view>
           <view class="item">
             <view class="label">生产用地补偿：</view>

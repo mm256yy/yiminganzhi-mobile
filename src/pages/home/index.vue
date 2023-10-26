@@ -93,9 +93,10 @@ const toLink = (name: string) => {
 }
 
 const toParamsLink = (params: any) => {
-  const { name, type } = params
+  const { name, type, count } = params
   routerForward(name, {
-    type
+    type,
+    count
   })
 }
 
