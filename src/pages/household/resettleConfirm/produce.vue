@@ -70,7 +70,9 @@ const demographicList = computed(() => {
 })
 
 const mockDemographicList = computed(() => {
-  return props.dataInfo && props.dataInfo.simulateDemographic
+  return props.dataInfo &&
+    props.dataInfo.simulateDemographic &&
+    props.dataInfo.simulateDemographic.length
     ? props.dataInfo.simulateDemographic
     : []
 })

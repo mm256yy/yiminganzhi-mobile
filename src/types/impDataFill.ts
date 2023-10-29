@@ -241,6 +241,12 @@ export interface ImmigrantCompensationCardType {
   isVerify: string
   type: string
   [key: string]: any
+
+  grantStatus: string // 0 未放款 1 已放款[...]
+  grantTime: string // 发放时间[...]
+  grantUser: number // 发放人[...]
+  isSum: string // 是否合计[...]
+  funSubjectId: string
 }
 
 // 房屋腾空 immigrantHouseEmpty

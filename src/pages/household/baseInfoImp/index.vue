@@ -145,11 +145,11 @@
     </view>
 
     <view class="row">
-      <uni-row>
+      <uni-row v-for="(item, index) in grantList" :key="index">
         <uni-col :span="12">
           <view class="col">
             <view class="label">拨付资金：</view>
-            <view class="content">搬迁生活费</view>
+            <view class="content">{{ item.name }}</view>
           </view>
         </uni-col>
         <uni-col :span="12">
@@ -171,7 +171,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { formatStr, dictOption, formatDict } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { locationTypes, yesAndNoEnums } from '@/config/common'
@@ -236,6 +236,17 @@ const submit = () => {
       showToast(ERROR_MSG)
     })
 }
+
+const grantList = computed(() => {
+  if (
+    !props.dataInfo ||
+    !props.dataInfo.immigrantCompensationCardList ||
+    !props.dataInfo.immigrantCompensationCardList.length
+  ) {
+    return []
+  }
+  return props.dataInfo.immigrantCompensationCardList.filter((item) => item.grantStatus === '1')
+})
 </script>
 
 <style lang="scss" scoped>

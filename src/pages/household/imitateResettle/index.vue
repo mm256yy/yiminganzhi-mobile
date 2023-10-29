@@ -130,7 +130,9 @@ const demographicList = computed(() => {
 
 // 获取模拟安置 生产安置信息
 const simulateDemographic = computed(() => {
-  return props.dataInfo && props.dataInfo.simulateDemographic
+  return props.dataInfo &&
+    props.dataInfo.simulateDemographic &&
+    props.dataInfo.simulateDemographic.length
     ? props.dataInfo.simulateDemographic
     : demographicList.value.map((item) => {
         const {
