@@ -247,6 +247,14 @@ const grantList = computed(() => {
   }
   return props.dataInfo.immigrantCompensationCardList.filter((item) => item.grantStatus === '1')
 })
+
+watch(
+  () => householdPicStr.value,
+  (val) => {
+    console.log(val, 'va')
+  },
+  { immediate: true, deep: true }
+)
 </script>
 
 <style lang="scss" scoped>

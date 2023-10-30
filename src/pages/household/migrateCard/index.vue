@@ -64,7 +64,9 @@
         <uni-col :span="12">
           <view class="col">
             <view class="label">安置住址：</view>
-            <view class="content"> {{ formatStr(dataInfo.immigrantSettle?.settleAddress) }} </view>
+            <view class="content">
+              {{ getSettleAddressText(dataInfo.immigrantSettle?.settleAddress) }}
+            </view>
           </view>
         </uni-col>
         <uni-col :span="12">
@@ -160,6 +162,7 @@ import { ref } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import { formatDict, formatStr, routerForward } from '@/utils'
 import { getCompensationCardConfigApi } from '@/service'
+import { apartmentArea, resettleArea } from '@/pages/common/config'
 
 interface PropsType {
   dataInfo: any
@@ -182,6 +185,13 @@ onShow(() => {
   getCompensationCardConfig()
 })
 
+const getSettleAddressText = (settleAddress?: string) => {
+  if (settleAddress) return '-'
+  return (
+    resettleArea.find((item) => item.id === settleAddress)?.name ||
+    apartmentArea.find((item) => item.id === settleAddress)?.name
+  )
+}
 /**
  * 获取金额类型
  * @param type 类型 1 补偿, 2 补助, 3 奖励, 4 其他

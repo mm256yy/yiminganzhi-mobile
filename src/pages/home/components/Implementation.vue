@@ -571,6 +571,7 @@ onMounted(() => {
               padding-top: 3rpx;
               font-size: 12rpx;
               font-weight: 400;
+              line-height: 12rpx;
               color: #171718;
             }
 

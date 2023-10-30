@@ -216,7 +216,7 @@ onMounted(() => {
 }
 
 .list {
-  max-height: 60rpx;
+  height: 113rpx;
   overflow-y: auto;
   background: #ffffff;
 

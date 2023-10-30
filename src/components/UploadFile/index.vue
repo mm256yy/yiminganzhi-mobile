@@ -59,7 +59,7 @@ import { ref, watch, onMounted } from 'vue'
 import uploadImage from './upload-image.vue'
 import uploadFile from './upload-files.vue'
 import { batchUploadImgApi, deleteImgApi } from '@/service'
-import { networkCheck } from '@/utils'
+import { deepClone, networkCheck } from '@/utils'
 import defaultImg from '@/static/images/icon_null_data.png'
 import { imageUrlAndBase64Map } from '@/config'
 
@@ -158,6 +158,7 @@ const choose = () => {
 }
 
 const chooseFiles = () => {
+  const list = deepClone(filesList.value)
   // 选择图片文件
   uni.chooseImage({
     count: props.limit,
@@ -187,7 +188,7 @@ const chooseFiles = () => {
             }
           })
           // 新增的图片
-          filesList.value = [...filesList.value, ...files]
+          filesList.value = [...list, ...files]
           updateFilesList()
         }
       })
@@ -197,12 +198,12 @@ const chooseFiles = () => {
 
 const delFile = async (index: number) => {
   const deleteImg = filesList.value.splice(index, 1)
+  updateFilesList()
   // 删除本地图片
   if (deleteImg && deleteImg.length) {
     const deleteItem = deleteImg[0]
     await deleteImgApi(deleteItem ? deleteItem.url : '')
   }
-  updateFilesList()
 }
 
 const childUpdateFilesList = (list: any) => {

@@ -125,7 +125,9 @@ const emit = defineEmits(['updateData'])
 
 // 获取人口列表
 const demographicList = computed(() => {
-  return props.dataInfo && props.dataInfo.demographicList ? props.dataInfo.demographicList : []
+  return props.dataInfo && props.dataInfo.demographicList
+    ? props.dataInfo.demographicList.filter((item) => item.name !== '增计人口')
+    : []
 })
 
 // 获取模拟安置 生产安置信息
