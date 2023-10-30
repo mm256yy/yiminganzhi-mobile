@@ -128,7 +128,7 @@
 <script lang="ts" setup>
 import { ref, onMounted, computed } from 'vue'
 import { formatStr, routerForward, dictOption } from '@/utils'
-import { apartmentArea, resettleArea } from '../../common/config'
+import { apartmentArea, resettleArea } from '@/config'
 import { getChooseConfigApi, getHouseConfigApi } from '@/service'
 import { LandlordType } from '@/types/sync'
 import { HouseAreaType } from '@/types/common'

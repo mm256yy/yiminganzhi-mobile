@@ -72,7 +72,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { LandlordType } from '@/types/sync'
 import { HouseAreaType } from '@/types/common'
 import { ImmigrantSettleType } from '@/types/impDataFill'

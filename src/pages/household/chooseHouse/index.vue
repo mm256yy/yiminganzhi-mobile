@@ -177,9 +177,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { formatStr, routerForward, dictOption } from '@/utils'
-import { apartmentArea, resettleArea } from '../../common/config'
+import { apartmentArea, resettleArea } from '@/config'
 import { getChooseConfigApi, getHouseConfigApi } from '@/service'
 
 interface PropsType {
@@ -192,7 +192,9 @@ const landNoList = ref<any[]>([]) // 地块编号选项列表
 const storeroomNoList = ref<any[]>([]) // 储藏室编号选项列表
 const carNoList = ref<any[]>([]) // 车位号选项列表
 const roomNoList = ref<any[]>([]) // 幢号-房号 选项列表
-const { houseAreaType } = props.baseInfo as any
+const houseAreaType = computed(() => {
+  return props.dataList && props.dataList[0] && props.dataList[0].houseAreaType
+})
 
 /**
  * 获取安置区块
@@ -201,7 +203,7 @@ const { houseAreaType } = props.baseInfo as any
 const getSettleAddress = (data: string) => {
   if (data) {
     // 选择了公寓房的安置方式
-    if (houseAreaType === 'flat') {
+    if (houseAreaType.value === 'flat') {
       let str = ''
       apartmentArea.map((item: any) => {
         if (item.id === data) {
@@ -209,7 +211,7 @@ const getSettleAddress = (data: string) => {
         }
       })
       return str
-    } else if (houseAreaType === 'homestead') {
+    } else if (houseAreaType.value === 'homestead') {
       let str = ''
       resettleArea.map((item: any) => {
         if (item.id === data) {
@@ -284,7 +286,7 @@ const getHouseConfig = () => {
 const onArchives = () => {
   let params = {
     uid: props.baseInfo.uid,
-    type: houseAreaType
+    type: houseAreaType.value
   }
   routerForward('chooseHouseArchives', {
     params: JSON.stringify(params)
@@ -293,7 +295,7 @@ const onArchives = () => {
 
 const toLink = (itemUid?: any) => {
   const { uid, doorNo } = props.baseInfo
-  let params = { type: houseAreaType, uid, doorNo, itemUid }
+  let params = { type: houseAreaType.value, uid, doorNo, itemUid }
   routerForward('chooseHouseEdit', {
     params: JSON.stringify(params)
   })

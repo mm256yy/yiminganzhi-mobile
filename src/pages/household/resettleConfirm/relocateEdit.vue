@@ -90,7 +90,9 @@ onLoad((option) => {
  * 根据户主人口性质过滤安置类型
  */
 const filterHouseType = computed(() => {
-  const population = demographicList.value.find((item) => item.relation === '1')
+  const population = demographicList.value
+    ? demographicList.value.find((item) => item.relation === '1')
+    : null
   // 农村移民
   if (population && population.populationNature !== '1') {
     console.log(dict[372], 372)

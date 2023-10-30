@@ -105,27 +105,27 @@ export const baseInfoDefault: {
 export const resettleArea = [
   {
     id: '1',
-    name: '曙光安置区'
+    name: '棠村安置区'
   },
   {
     id: '2',
-    name: '镜岭集镇安置区'
+    name: '麻家田安置区'
+  },
+  {
+    id: '3',
+    name: '东坪安置区'
   }
 ]
 
 // 公寓安置地块
 export const apartmentArea = [
   {
-    id: '3',
-    name: '棠村安置区'
+    id: '1',
+    name: '曙光安置区'
   },
   {
-    id: '4',
-    name: '麻家田安置区'
-  },
-  {
-    id: '5',
-    name: '东坪安置区'
+    id: '2',
+    name: '镜岭集镇安置区'
   }
 ]
 

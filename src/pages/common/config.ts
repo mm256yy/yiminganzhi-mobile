@@ -78,34 +78,6 @@ import iconXgsxSel from '@/static/images/icon_xgsx_sel.png' // 引入相关手�
 export const compatibleOldSystems = () =>
   (getStorage(StorageKey.PROJECTINFO) || {}).reservoirCode === 'fxsk'
 
-// 宅基地安置区块
-export const resettleArea = [
-  {
-    id: '1',
-    name: '棠村安置区'
-  },
-  {
-    id: '2',
-    name: '麻家田安置区'
-  },
-  {
-    id: '3',
-    name: '东坪安置区'
-  }
-]
-
-// 公寓安置地块
-export const apartmentArea = [
-  {
-    id: '1',
-    name: '曙光安置区'
-  },
-  {
-    id: '2',
-    name: '镜岭集镇安置区'
-  }
-]
-
 // 居民户移民实施左侧边栏选项列表
 export const householdSidebarList = [
   {

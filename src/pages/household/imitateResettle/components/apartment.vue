@@ -34,7 +34,7 @@
         </view>
       </view>
 
-      <view class="item">
+      <view class="item" v-if="!fromResettleConfirm && tableData && tableData.length">
         <view class="label flex-start"> 推荐方案： </view>
         <view class="value-box">
           <view class="plan-table-wrap">
@@ -248,14 +248,14 @@ const apartmentPlaceChange = (id: string) => {
 // 获取方案
 const getPlans = async () => {
   const res = []
-  const num = (familyNum.value * 40) / 70 + 1
+  const num = Math.round((familyNum.value * 40) / 70) + 1
   const item = {
     type: 2, // 1 最大面积 2最多套数 3省钱[...]
     typeOneNum: num, // 75数量（公寓）[...]
     typeTwoNum: 0, // 95数量（公寓）[...]
     typeThreeNum: 0, // 115数量（公寓）[...]
     typeFourNum: 0, // 135数量（公寓）[...]
-    preorderAmount: num * Math.random() * 2000, // 预购金[...]
+    preorderAmount: Math.round(num * Math.random() * 2000), // 预购金[...]
     compensationAmount: 0, // 补偿金[...]
     differenceAmount: 0, // 差额[...]
     areaTotal: num * 70, // 总面积[...]
@@ -264,14 +264,14 @@ const getPlans = async () => {
   }
   res.push(item)
 
-  const bigNum = (familyNum.value * 40) / 130 + 1
+  const bigNum = Math.round((familyNum.value * 40) / 130) + 1
   const item2 = {
     type: 1, // 1 最大面积 2最多套数 3省钱[...]
     typeOneNum: 0, // 75数量（公寓）[...]
     typeTwoNum: 0, // 95数量（公寓）[...]
     typeThreeNum: 0, // 115数量（公寓）[...]
     typeFourNum: bigNum, // 135数量（公寓）[...]
-    preorderAmount: bigNum * Math.random() * 2000, // 预购金[...]
+    preorderAmount: Math.round(bigNum * Math.random() * 2000), // 预购金[...]
     compensationAmount: 0, // 补偿金[...]
     differenceAmount: 0, // 差额[...]
     areaTotal: bigNum * 130, // 总面积[...]
@@ -280,7 +280,7 @@ const getPlans = async () => {
   }
   res.push(item2)
 
-  const sengQianNum = (familyNum.value * 40) / 70 - 1
+  const sengQianNum = Math.round((familyNum.value * 40) / 70) - 1
   const item3 = {
     type: 3, // 1 最大面积 2最多套数 3省钱[...]
     typeOneNum: sengQianNum, // 75数量（公寓）[...]

@@ -84,7 +84,7 @@
 <script lang="ts" setup>
 import { ref, watch, onMounted } from 'vue'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
-import { resettleArea, apartmentArea } from '../../common/config'
+import { resettleArea, apartmentArea } from '@/config'
 import { LandlordType } from '@/types/sync'
 import { updateImpLandlordImmigrantLandApi, getChooseConfigApi } from '@/service'
 import UploadFile from '@/components/UploadFile/index.vue'

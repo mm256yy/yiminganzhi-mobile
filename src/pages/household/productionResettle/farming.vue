@@ -74,7 +74,7 @@
 import { computed, onMounted } from 'vue'
 import { LandlordType } from '@/types/sync'
 import { routerForward } from '@/utils'
-import { apartmentArea, resettleArea } from '@/pages/common/config'
+import { apartmentArea, resettleArea } from '@/config'
 
 interface PropsType {
   dataInfo: LandlordType
@@ -112,7 +112,7 @@ const archivesUpload = () => {
 }
 
 const getSettleAddressText = (settleAddress?: string) => {
-  if (settleAddress) return '-'
+  if (!settleAddress) return '-'
   return (
     resettleArea.find((item) => item.id === settleAddress)?.name ||
     apartmentArea.find((item) => item.id === settleAddress)?.name

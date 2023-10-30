@@ -162,7 +162,7 @@ import { ref } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import { formatDict, formatStr, routerForward } from '@/utils'
 import { getCompensationCardConfigApi } from '@/service'
-import { apartmentArea, resettleArea } from '@/pages/common/config'
+import { apartmentArea, resettleArea } from '@/config'
 
 interface PropsType {
   dataInfo: any
@@ -186,7 +186,8 @@ onShow(() => {
 })
 
 const getSettleAddressText = (settleAddress?: string) => {
-  if (settleAddress) return '-'
+  console.log(settleAddress, 'settleAddress')
+  if (!settleAddress) return '-'
   return (
     resettleArea.find((item) => item.id === settleAddress)?.name ||
     apartmentArea.find((item) => item.id === settleAddress)?.name
