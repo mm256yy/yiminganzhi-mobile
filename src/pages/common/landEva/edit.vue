@@ -174,7 +174,8 @@
                   class="input-txt"
                   placeholder="请输入"
                   type="number"
-                  v-model="formData.valuationAmount"
+                  disabled
+                  :value="countPrice"
                   @focus="inputFocus(4)"
                   @blur="inputBlur"
                 />
@@ -238,7 +239,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { routerBack, getStorage, StorageKey } from '@/utils'
 import {
@@ -316,9 +317,19 @@ const inputBlur = () => {
   focusIndex.value = -1
 }
 
+// 计算评估价格
+const countPrice = computed(() => {
+  const { valuationPrice, landArea } = formData.value
+  if (valuationPrice && landArea) {
+    return (valuationPrice * landArea).toFixed(2)
+  }
+  return '0'
+})
+
 // 表单提交
 const submit = () => {
   const { uid, doorNo, type } = commonParams.value
+  formData.value.valuationAmount = countPrice.value
   const params = {
     doorNo,
     ...formData.value

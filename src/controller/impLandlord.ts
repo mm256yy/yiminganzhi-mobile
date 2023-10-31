@@ -214,11 +214,17 @@ export class ImpLandlord extends Common {
 
     // 坟墓择址: 完成条件：无坟墓 或者坟墓编号&&档案 有
     if (this.isArrayAndNotNull(immigrantGraveList)) {
-      const res = immigrantGraveList.find((item) => !item.graveNo)
-      if (!res && this.isNotNullPic(graveChoosePic)) {
-        landlordItem.immigrantFilling.chooseGraveStatus = '1'
-      } else {
+      const res1 = immigrantGraveList.find((item) => !item.handleWay)
+      const res2 = immigrantGraveList.find((item) => !item.graveNo)
+      if (res1) {
+        // 安置确认 坟墓没有确认
         landlordItem.immigrantFilling.chooseGraveStatus = '0'
+      } else {
+        if (!res2 && this.isNotNullPic(graveChoosePic)) {
+          landlordItem.immigrantFilling.chooseGraveStatus = '1'
+        } else {
+          landlordItem.immigrantFilling.chooseGraveStatus = '0'
+        }
       }
     } else {
       landlordItem.immigrantFilling.chooseGraveStatus = '1'
@@ -304,13 +310,19 @@ export class ImpLandlord extends Common {
     }
 
     // 搬迁安置：自建房
-    if (this.isArrayAndNotNull(immigrantBuildOneselfList)) {
-      const res = immigrantBuildOneselfList.find((item) => item.isComplete !== '1')
-      if (!res && this.isNotNullPic(buildOneselfPic) && this.isNotNullPic(buildOneselfCheckPic)) {
-        landlordItem.immigrantFilling.buildOneselfStatus = '1'
+    if (immigrantSettle && immigrantSettle.houseAreaType === HouseAreaType.homestead) {
+      if (this.isArrayAndNotNull(immigrantBuildOneselfList)) {
+        const res = immigrantBuildOneselfList.find((item) => item.isComplete !== '1')
+        if (!res && this.isNotNullPic(buildOneselfPic) && this.isNotNullPic(buildOneselfCheckPic)) {
+          landlordItem.immigrantFilling.buildOneselfStatus = '1'
+        } else {
+          landlordItem.immigrantFilling.buildOneselfStatus = '0'
+        }
       } else {
         landlordItem.immigrantFilling.buildOneselfStatus = '0'
       }
+    } else {
+      landlordItem.immigrantFilling.buildOneselfStatus = '0'
     }
 
     // 公寓房
@@ -333,10 +345,16 @@ export class ImpLandlord extends Common {
       } else {
         landlordItem.immigrantFilling.centralizedSupportStatus = '0'
       }
+    } else {
+      landlordItem.immigrantFilling.centralizedSupportStatus = '0'
     }
     // 自谋出路
-    if (immigrantSelfSeeking && this.isNotNullPic(immigrantSelfSeeking.selfSeekingPic)) {
-      landlordItem.immigrantFilling.selfSeekingStatus = '1'
+    if (immigrantSettle && immigrantSettle.houseAreaType === HouseAreaType.oneself) {
+      if (immigrantSelfSeeking && this.isNotNullPic(immigrantSelfSeeking.selfSeekingPic)) {
+        landlordItem.immigrantFilling.selfSeekingStatus = '1'
+      } else {
+        landlordItem.immigrantFilling.selfSeekingStatus = '0'
+      }
     } else {
       landlordItem.immigrantFilling.selfSeekingStatus = '0'
     }
@@ -354,40 +372,60 @@ export class ImpLandlord extends Common {
     }
 
     // 农业安置
-    if (this.isNotNullPic(agriculturePic)) {
-      landlordItem.immigrantFilling.agricultureArrangementStatus = '1'
-    } else {
-      landlordItem.immigrantFilling.agricultureArrangementStatus = '0'
+    if (this.isArrayAndNotNull(demographicList)) {
+      const res = demographicList.find((item) => !item.settingWay)
+      if (res) {
+        // 安置确认 没有选择
+        landlordItem.immigrantFilling.agricultureArrangementStatus = '0'
+      } else {
+        if (this.isNotNullPic(agriculturePic)) {
+          landlordItem.immigrantFilling.agricultureArrangementStatus = '1'
+        } else {
+          landlordItem.immigrantFilling.agricultureArrangementStatus = '0'
+        }
+      }
     }
 
     // 养老保险
     if (this.isArrayAndNotNull(demographicList)) {
-      const realList = demographicList.filter((item) => item.settingWay === '2')
-      if (this.isArrayAndNotNull(realList)) {
-        const res = realList.find((item) => item.productionStatus !== '1')
-        if (!res) {
-          landlordItem.immigrantFilling.retirementStatus = '1'
-        } else {
-          landlordItem.immigrantFilling.retirementStatus = '0'
-        }
+      const res = demographicList.find((item) => !item.settingWay)
+      if (res) {
+        // 安置确认 没有选择
+        landlordItem.immigrantFilling.retirementStatus = '0'
       } else {
-        // 无养老保险
-        landlordItem.immigrantFilling.retirementStatus = '1'
+        const realList = demographicList.filter((item) => item.settingWay === '2')
+        if (this.isArrayAndNotNull(realList)) {
+          const res = realList.find((item) => item.productionStatus !== '1')
+          if (!res) {
+            landlordItem.immigrantFilling.retirementStatus = '1'
+          } else {
+            landlordItem.immigrantFilling.retirementStatus = '0'
+          }
+        } else {
+          // 无养老保险
+          landlordItem.immigrantFilling.retirementStatus = '1'
+        }
       }
     }
     // 自谋职业
     if (this.isArrayAndNotNull(demographicList)) {
-      const realList = demographicList.filter((item) => item.settingWay === '3')
-      if (this.isArrayAndNotNull(realList)) {
-        const res = realList.find((item) => item.productionStatus !== '1')
-        if (!res) {
-          landlordItem.immigrantFilling.selfEmploymentStatus = '1'
-        } else {
-          landlordItem.immigrantFilling.selfEmploymentStatus = '0'
-        }
+      const res = demographicList.find((item) => !item.settingWay)
+      if (res) {
+        // 安置确认 没有选择
+        landlordItem.immigrantFilling.selfEmploymentStatus = '0'
       } else {
-        // 无自谋职业
-        landlordItem.immigrantFilling.selfEmploymentStatus = '1'
+        const realList = demographicList.filter((item) => item.settingWay === '3')
+        if (this.isArrayAndNotNull(realList)) {
+          const res = realList.find((item) => item.productionStatus !== '1')
+          if (!res) {
+            landlordItem.immigrantFilling.selfEmploymentStatus = '1'
+          } else {
+            landlordItem.immigrantFilling.selfEmploymentStatus = '0'
+          }
+        } else {
+          // 无自谋职业
+          landlordItem.immigrantFilling.selfEmploymentStatus = '1'
+        }
       }
     }
 

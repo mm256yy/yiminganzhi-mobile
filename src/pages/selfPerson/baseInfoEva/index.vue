@@ -72,13 +72,13 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">房屋主体评估合计：</view>
-                <view class="content">0</view>
+                <view class="content">{{ totalPriceObj.houseTotalAmount }}</view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">房屋装修评估合计：</view>
-                <view class="content">0</view>
+                <view class="content">{{ totalPriceObj.fitUpTotalAmount }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -87,13 +87,13 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">房屋附属设施评估合计：</view>
-                <view class="content">0</view>
+                <view class="content">{{ totalPriceObj.appendantTotalAmount }}</view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">零星(林)果木评估合计：</view>
-                <view class="content">0</view>
+                <view class="content">{{ totalPriceObj.treeTotalAmount }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -102,13 +102,13 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">土地基本情况评估合计：</view>
-                <view class="content">0</view>
+                <view class="content">{{ totalPriceObj.landTotalAmount }}</view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">土地青苗及附着物评估合计：</view>
-                <view class="content">0</view>
+                <view class="content">{{ totalPriceObj.assetAppendantTotalAmount }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -116,14 +116,14 @@
           <uni-row>
             <uni-col :span="12">
               <view class="col">
-                <view class="label">坟墓评估合计：</view>
-                <view class="content">0</view>
+                <view class="label">设施设备评估合计：</view>
+                <view class="content">{{ totalPriceObj.equipmentTotalAmount }}</view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">资产评估合计：</view>
-                <view class="content">0</view>
+                <view class="content">{{ totalPriceObj.totalAmount }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -134,6 +134,7 @@
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue'
 import { LandlordType } from '@/types/sync'
 import { formatStr, formatDict } from '@/utils'
 
@@ -142,6 +143,110 @@ interface PropsType {
 }
 
 const props = defineProps<PropsType>()
+
+// 房屋主体评估合计
+const totalPriceObj = computed(() => {
+  const obj = {
+    houseTotalAmount: 0,
+    fitUpTotalAmount: 0,
+    appendantTotalAmount: 0,
+    treeTotalAmount: 0,
+    landTotalAmount: 0,
+    assetAppendantTotalAmount: 0,
+
+    equipmentTotalAmount: 0,
+    specialTotalAmount: 0,
+
+    totalAmount: 0
+  }
+  if (props.dataInfo) {
+    const {
+      immigrantHouseList,
+      assetHouseFitUpList,
+      immigrantAppendantList,
+      immigrantTreeList,
+      assetLandList,
+      assetAppendantList,
+      immigrantEquipmentList
+    } = props.dataInfo
+    // 房屋主体
+    if (immigrantHouseList && immigrantHouseList.length) {
+      immigrantHouseList.forEach((item: any) => {
+        if (item.compensationAmount > 0) {
+          obj.houseTotalAmount += +item.compensationAmount
+        }
+      })
+    }
+    // 房屋装修
+    if (assetHouseFitUpList && assetHouseFitUpList.length) {
+      assetHouseFitUpList.forEach((item: any) => {
+        if (item.compensationAmount > 0) {
+          obj.fitUpTotalAmount += +item.compensationAmount
+        }
+      })
+    }
+    // 附属物
+    if (immigrantAppendantList && immigrantAppendantList.length) {
+      immigrantAppendantList.forEach((item: any) => {
+        if (item.compensationAmount > 0) {
+          obj.appendantTotalAmount += +item.compensationAmount
+        }
+      })
+    }
+    // 零星果木
+    if (immigrantTreeList && immigrantTreeList.length) {
+      immigrantTreeList.forEach((item: any) => {
+        if (item.compensationAmount > 0) {
+          obj.treeTotalAmount += +item.compensationAmount
+        }
+      })
+    }
+    // 土地
+    if (assetLandList && assetLandList.length) {
+      assetLandList.forEach((item: any) => {
+        if (item.compensationAmount > 0) {
+          obj.landTotalAmount += +item.compensationAmount
+        }
+      })
+    }
+    // 土地青苗
+    if (assetAppendantList && assetAppendantList.length) {
+      assetAppendantList.forEach((item: any) => {
+        if (item.compensationAmount > 0) {
+          obj.assetAppendantTotalAmount += +item.compensationAmount
+        }
+      })
+    }
+    // 设施设备
+    if (immigrantEquipmentList && immigrantEquipmentList.length) {
+      immigrantEquipmentList.forEach((item: any) => {
+        if (item.compensationAmount > 0) {
+          obj.equipmentTotalAmount += +item.compensationAmount
+        }
+      })
+    }
+
+    obj.houseTotalAmount = +obj.houseTotalAmount.toFixed(2)
+    obj.fitUpTotalAmount = +obj.fitUpTotalAmount.toFixed(2)
+    obj.appendantTotalAmount = +obj.appendantTotalAmount.toFixed(2)
+    obj.treeTotalAmount = +obj.treeTotalAmount.toFixed(2)
+    obj.landTotalAmount = +obj.landTotalAmount.toFixed(2)
+    obj.assetAppendantTotalAmount = +obj.assetAppendantTotalAmount.toFixed(2)
+    obj.equipmentTotalAmount = +obj.equipmentTotalAmount.toFixed(2)
+
+    obj.totalAmount = +(
+      obj.houseTotalAmount +
+      obj.fitUpTotalAmount +
+      obj.appendantTotalAmount +
+      obj.treeTotalAmount +
+      obj.landTotalAmount +
+      obj.assetAppendantTotalAmount +
+      obj.equipmentTotalAmount
+    ).toFixed(2)
+  }
+
+  return obj
+})
 </script>
 
 <style lang="scss" scoped>
