@@ -78,6 +78,16 @@ https://zdwp.coding.net/p/migrate/d/migrate-mobile/git
 
   > 项目切换页面和数据同步页面复用此逻辑
 
+- 同步涉及相关`java`接口
+
+  ```
+  https://r7r-ai.zdwp.net/swagger-ui/index.html#/pad 接口
+  ```
+
+- 推送注意事项
+
+  实物调查阶段：数据是真删除 pad 数据使用字段 isPadDelete 标记，推送时方便统计需要删除的数据，并告知 Java 端真删除移民实施阶段：数据是假删除 pad 端和 java 端 使用字段 isDelete 标记
+
 - 同步原则
 
 先推再拉，遇到两个人修改一个用户的数据的情况 是 后推的覆盖先推的
