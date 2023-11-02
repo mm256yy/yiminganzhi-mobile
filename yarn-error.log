@@ -1,0 +1,136 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\yarn\bin\yarn.js
+
+PATH: 
+  C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\TortoiseSVN\bin;C:\Program Files\Git\cmd;C:\Program Files\node.js，;%NVM_HOME%;%NVM_SYMLINK%;C:\Users\wu\AppData\Local\Microsoft\WindowsApps;C:\Users\wu\AppData\Local\Programs\Microsoft VS Code\bin;D:\QQGameTempest\Hall.57938\;C:\Users\wu\AppData\Roaming\nvm;C:\Program Files\nodejs
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  18.12.0
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: ENOENT: no such file or directory, copyfile 'C:\Users\wu\AppData\Local\Yarn\Cache\v6\npm-globals-13.23.0-ef31673c926a0976e1f61dab4dca57e0c0a8af02-integrity\node_modules\globals\globals.json' -> 'D:\rongdu\migrate-mobile\node_modules\@eslint\eslintrc\node_modules\globals\globals.json'
+
+npm manifest: 
+  {
+    "name": "migrate-mobile",
+    "version": "1.0.0",
+    "scripts": {
+      "dev:app": "uni -p app",
+      "dev:app-android": "uni -p app-android",
+      "dev:app-ios": "uni -p app-ios",
+      "dev:custom": "uni -p",
+      "dev:h5": "uni",
+      "dev:h5:ssr": "uni --ssr",
+      "dev:mp-alipay": "uni -p mp-alipay",
+      "dev:mp-baidu": "uni -p mp-baidu",
+      "dev:mp-kuaishou": "uni -p mp-kuaishou",
+      "dev:mp-lark": "uni -p mp-lark",
+      "dev:mp-qq": "uni -p mp-qq",
+      "dev:mp-toutiao": "uni -p mp-toutiao",
+      "dev:mp-weixin": "uni -p mp-weixin",
+      "dev:quickapp-webview": "uni -p quickapp-webview",
+      "dev:quickapp-webview-huawei": "uni -p quickapp-webview-huawei",
+      "dev:quickapp-webview-union": "uni -p quickapp-webview-union",
+      "build:app": "uni build -p app",
+      "build:app-android": "uni build -p app-android",
+      "build:app-ios": "uni build -p app-ios",
+      "build:custom": "uni build -p",
+      "build:h5": "uni build",
+      "build:h5:ssr": "uni build --ssr",
+      "build:mp-alipay": "uni build -p mp-alipay",
+      "build:mp-baidu": "uni build -p mp-baidu",
+      "build:mp-kuaishou": "uni build -p mp-kuaishou",
+      "build:mp-lark": "uni build -p mp-lark",
+      "build:mp-qq": "uni build -p mp-qq",
+      "build:mp-toutiao": "uni build -p mp-toutiao",
+      "build:mp-weixin": "uni build -p mp-weixin",
+      "build:quickapp-webview": "uni build -p quickapp-webview",
+      "build:quickapp-webview-huawei": "uni build -p quickapp-webview-huawei",
+      "build:quickapp-webview-union": "uni build -p quickapp-webview-union",
+      "preinstall": "npx only-allow yarn",
+      "ts:check": "vue-tsc --noEmit --skipLibCheck",
+      "clean": "npx rimraf node_modules",
+      "prepare": "husky install",
+      "lint:eslint": "eslint --fix --ext .js,.ts,.vue ./src",
+      "lint:format": "prettier --write --loglevel warn \"src/**/*.{js,ts,json,tsx,css,scss,vue,html,md}\"",
+      "lint:style": "stylelint --fix \"**/*.{vue,less,postcss,css,scss}\" --cache --cache-location node_modules/.cache/stylelint/",
+      "lint:lint-staged": "lint-staged -c ./.husky/lintstagedrc.js"
+    },
+    "dependencies": {
+      "@dcloudio/uni-app": "3.0.0-3071120230427001",
+      "@dcloudio/uni-app-plus": "3.0.0-3071120230427001",
+      "@dcloudio/uni-components": "3.0.0-3071120230427001",
+      "@dcloudio/uni-h5": "3.0.0-3071120230427001",
+      "@dcloudio/uni-mp-alipay": "3.0.0-3071120230427001",
+      "@dcloudio/uni-mp-baidu": "3.0.0-3071120230427001",
+      "@dcloudio/uni-mp-jd": "3.0.0-3071120230427001",
+      "@dcloudio/uni-mp-kuaishou": "3.0.0-3071120230427001",
+      "@dcloudio/uni-mp-lark": "3.0.0-3071120230427001",
+      "@dcloudio/uni-mp-qq": "3.0.0-3071120230427001",
+      "@dcloudio/uni-mp-toutiao": "3.0.0-3071120230427001",
+      "@dcloudio/uni-mp-weixin": "3.0.0-3071120230427001",
+      "@dcloudio/uni-quickapp-webview": "3.0.0-3071120230427001",
+      "@dcloudio/uni-ui": "^1.4.26",
+      "dayjs": "^1.11.7",
+      "image-tools": "^1.4.0",
+      "vue": "^3.2.45",
+      "vue-i18n": "^9.1.9",
+      "vue3-touch-events": "^4.1.2"
+    },
+    "devDependencies": {
+      "@commitlint/cli": "^17.3.0",
+      "@commitlint/config-conventional": "^17.3.0",
+      "@dcloudio/types": "^3.3.2",
+      "@dcloudio/uni-automator": "3.0.0-3071120230427001",
+      "@dcloudio/uni-cli-shared": "3.0.0-3071120230427001",
+      "@dcloudio/uni-stacktracey": "3.0.0-3071120230427001",
+      "@dcloudio/vite-plugin-uni": "3.0.0-3071120230427001",
+      "@types/uni-app": "^1.4.4",
+      "@typescript-eslint/eslint-plugin": "^5.38.1",
+      "@typescript-eslint/parser": "^5.38.1",
+      "@uni-helper/uni-app-types": "^0.3.2",
+      "@uni-helper/uni-ui-types": "^0.3.3",
+      "autoprefixer": "^10.4.12",
+      "eslint": "^8.24.0",
+      "eslint-config-prettier": "^8.5.0",
+      "eslint-define-config": "^1.7.0",
+      "eslint-plugin-prettier": "^4.2.1",
+      "eslint-plugin-vue": "^9.5.1",
+      "husky": "^8.0.0",
+      "lint-staged": "^13.0.3",
+      "only-allow": "^1.1.1",
+      "postcss": "^8.4.16",
+      "postcss-html": "^1.5.0",
+      "postcss-scss": "^4.0.5",
+      "prettier": "^2.7.1",
+      "rimraf": "^3.0.2",
+      "rollup": "^2.79.1",
+      "sass": "^1.56.1",
+      "stylelint": "^14.13.0",
+      "stylelint-config-html": "^1.1.0",
+      "stylelint-config-prettier": "^9.0.3",
+      "stylelint-config-recommended": "^9.0.0",
+      "stylelint-config-standard": "^28.0.0",
+      "stylelint-order": "^5.0.0",
+      "stylelint-scss": "^4.3.0",
+      "terser": "^5.16.3",
+      "typescript": "^4.9.5",
+      "vite": "4.1.4",
+      "vue-tsc": "^1.0.24"
+    },
+    "engines": {
+      "node": ">=16.16.0"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
