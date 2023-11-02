@@ -320,7 +320,7 @@ const defaultSyncHandle = async () => {
 // 同步
 const onSync = async () => {
   uni.showLoading({
-    title: '正在同步中...',
+    title: '正在同步中....',
     mask: true
   })
   const res = await networkCheck()
