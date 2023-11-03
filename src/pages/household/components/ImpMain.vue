@@ -212,7 +212,7 @@ const emit = defineEmits(['updateData'])
 const tabList = computed(() => {
   const { immigrantFilling = {} } = props.dataInfo
   const arr: any = deepClone(householdSidebarList)
-
+  console.log(immigrantFilling, '什么状态')
   if (immigrantFilling) {
     // 居民户信息完成状态
     if (immigrantFilling.householdPicStatus === '1') {
@@ -266,6 +266,7 @@ const tabList = computed(() => {
 
     // 坟墓择址状态
     if (immigrantFilling.chooseGraveStatus === '1') {
+      console.log('测试状态问题')
       arr[1].list[3].list[2].filled = true
     }
 

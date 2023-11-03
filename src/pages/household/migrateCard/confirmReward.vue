@@ -16,8 +16,20 @@
         <!-- 表格数据行 -->
         <uni-tr v-for="(item, index) in dataList" :key="index">
           <uni-td align="left" class="u-td">{{ item.name }}</uni-td>
-          <uni-td align="left" class="u-td">{{ formatDict(item.unit, 268) }}</uni-td>
-          <uni-td align="left" class="u-td">{{ formatStr(item.number) }}</uni-td>
+          <!-- <uni-td align="left" class="u-td">{{ formatDict(item.unit, 268) }}</uni-td> -->
+          <uni-td align="left" class="u-td">{{ item.unit }}</uni-td>
+          <uni-td align="left" class="u-td">
+            <input
+              v-if="item.isUpdate === '1' && item.isVerify !== '1'"
+              class="input-txt"
+              v-model="item.number"
+              placeholder="请输入"
+            />
+            <view v-if="item.isUpdate === '1' && item.isVerify === '1'">{{
+              formatStr(item.number)
+            }}</view>
+            <!-- <view v-if="!item.number"> - </view> -->
+          </uni-td>
           <uni-td align="left" class="u-td">
             <input
               v-if="item.isUpdate === '1' && item.isVerify !== '1'"
@@ -88,6 +100,7 @@ const getCompensationCardConfig = () => {
   getCompensationCardConfigApi().then((res: any) => {
     if (res && res.length) {
       dataList.value = res.filter((item: any) => item.type === '3')
+      console.log(dataList.value, '奖励费列表')
     }
   })
 }
@@ -142,6 +155,7 @@ const onSave = (data: any, isVerify: string) => {
   updateImpLandlordCompensationCardApi(uid, params)
     .then((res) => {
       if (res) {
+        console.log(res, '查看奖励费res')
         showToast(SUCCESS_MSG)
         getCompensationCardConfig()
       }

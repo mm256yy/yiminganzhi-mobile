@@ -216,9 +216,10 @@ export class ImpLandlord extends Common {
     if (this.isArrayAndNotNull(immigrantGraveList)) {
       const res1 = immigrantGraveList.find((item) => !item.handleWay)
       const res2 = immigrantGraveList.find((item) => !item.graveNo)
+      console.log(res1, res2, '查看坟墓信息')
       if (res1) {
         // 安置确认 坟墓没有确认
-        landlordItem.immigrantFilling.chooseGraveStatus = '0'
+        landlordItem.immigrantFilling.chooseGraveStatus = '1'
       } else {
         if (!res2 && this.isNotNullPic(graveChoosePic)) {
           landlordItem.immigrantFilling.chooseGraveStatus = '1'
@@ -753,6 +754,8 @@ export class ImpLandlord extends Common {
         const realData = this.updateImpFillStatus(data)
         // 拿到更新的sql字符串
         const values = getLandlordSqlValues(realData)
+        console.log('values', values)
+
         const sql = `update ${LandlordTableName} set ${values} where uid = '${realData.uid}'`
         const res = await this.db.execteSql([sql])
         if (res && res.code) {

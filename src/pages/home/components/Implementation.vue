@@ -59,7 +59,7 @@
             <view class="line-1">{{ homeCollect.peasantHouseholdDoneNum }}</view>
             <view class="flex">
               <view class="common-dot green" />
-              <view class="line-2">已完成</view>
+              <view class="line-2">正常</view>
             </view>
           </view>
         </view>
@@ -106,7 +106,7 @@
             <view class="line-1">{{ homeCollect.companyDoneNum }}</view>
             <view class="flex">
               <view class="common-dot green" />
-              <view class="line-2">已完成</view>
+              <view class="line-2">正常</view>
             </view>
           </view>
         </view>
@@ -153,7 +153,7 @@
             <view class="line-1">{{ homeCollect.individualDoneNum }}</view>
             <view class="flex">
               <view class="common-dot green" />
-              <view class="line-2">已完成</view>
+              <view class="line-2">正常</view>
             </view>
           </view>
         </view>
@@ -200,7 +200,7 @@
             <view class="line-1">{{ homeCollect.villageDoneNum }}</view>
             <view class="flex">
               <view class="common-dot green" />
-              <view class="line-2">已完成</view>
+              <view class="line-2">正常</view>
             </view>
           </view>
         </view>

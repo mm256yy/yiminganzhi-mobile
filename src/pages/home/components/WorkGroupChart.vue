@@ -157,7 +157,7 @@ const getStatisticData = (id: number) => {
       img: getImg(index)
     }
   })
-
+  console.log(options, '测试动迁阶段数据')
   echartOptions.value = options
 }
 

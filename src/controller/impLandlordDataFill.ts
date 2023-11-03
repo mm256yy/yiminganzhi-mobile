@@ -1683,6 +1683,8 @@ class ImpDataFill extends ImpLandlord {
           return
         }
         // 更新数据
+        console.log('用户表', landlordItem)
+
         const updateRes = await this.updateLandlord(landlordItem)
         updateRes ? resolve(true) : reject(false)
       } catch (error) {
