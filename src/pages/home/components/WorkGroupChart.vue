@@ -41,7 +41,7 @@
             </view>
 
             <view class="echart-item-rt">
-              <text class="txt">{{ item.number }}户</text>
+              <text class="txt">{{ item.completeNumber }}户</text>
             </view>
           </view>
         </view>
@@ -66,6 +66,7 @@ interface OptionsType {
   index?: number
   progress?: number
   img?: string
+  completeNumber?: string
 }
 
 interface TabType {
