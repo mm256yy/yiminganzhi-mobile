@@ -18,7 +18,7 @@ import dayjs from 'dayjs'
 import { pushDataApi } from './api'
 import { env, getHeaderCommonParams } from '@/config'
 import { StorageKey, getStorage, setStorage } from '@/utils'
-
+import { guid } from '@/utils'
 class PushData {
   public db: any
   public state: PushStateType
@@ -64,7 +64,9 @@ class PushData {
                   immigrantHouseList,
                   immigrantTreeList,
                   immigrantEquipmentList,
-                  immigrantFacilitiesList
+                  immigrantFacilitiesList,
+                  immigrantDocumentation,
+                  immigrantFilling
                 } = landlordItem
 
                 if (demographicList && demographicList.length) {
@@ -85,11 +87,19 @@ class PushData {
                   )
                 }
 
-                // if (immigrantManagementList && immigrantManagementList.length) {
-                //   landlordItem.immigrantManagementList = immigrantManagementList.filter(
-                //     (item) => item.isPadDelete !== '1'
-                //   )
-                // }
+                if (immigrantDocumentation) {
+                  const newObj: any = {}
+                  for (const i in immigrantDocumentation) {
+                    if (immigrantDocumentation[i] != '[]') {
+                      newObj[i] = immigrantDocumentation[i]
+                    }
+                  }
+                  if (JSON.stringify(newObj) == '{}') {
+                    landlordItem.immigrantDocumentation = null
+                  }
+
+                  console.log('immigrantDocumentation', landlordItem.immigrantDocumentation)
+                }
                 if (immigrantEquipmentList && immigrantEquipmentList.length) {
                   landlordItem.immigrantEquipmentList = immigrantEquipmentList.filter(
                     (item) => item.isPadDelete !== '1'
@@ -100,11 +110,18 @@ class PushData {
                     (item) => item.isPadDelete !== '1'
                   )
                 }
+                if (immigrantFilling) {
+                  if (!immigrantFilling.uid) {
+                    immigrantFilling.uid = guid()
+                  }
+                }
 
                 return landlordItem
               })
             }
             this.state.peasantHouseholdPushDtoList = list
+
+            console.error('推送-获取业主列表成功', list)
             resolve(list)
           })
           .catch((err) => {

@@ -141,7 +141,7 @@ export interface LandlordType {
   assetHouseFitUpList: AssetHouseFitUpType[]
   assetLandList: AssetLandType[]
   assetAppendantList: AssetAppendantType[]
-  immigrantDocumentation: Partial<ImmigrantDocumentationType>
+  immigrantDocumentation: any
   immigrantSettle: Partial<ImmigrantSettleType>
   immigrantLand: Partial<ImmigrantLandType>
   immigrantChooseHouseList: ImmigrantChooseHouseType[]

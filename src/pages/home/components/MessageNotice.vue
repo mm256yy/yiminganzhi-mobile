@@ -94,6 +94,8 @@ const handleItemClick = (index: number) => {
 // 消息反馈列表
 const getFeedbackList = async () => {
   const res = await getOtherItemApi(OtherDataType.FeedbackDtoList)
+  console.log('消息反馈列表', res)
+
   feedbackList.value = res || []
 }
 

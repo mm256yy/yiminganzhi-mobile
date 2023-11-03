@@ -249,6 +249,7 @@ const getList = () => {
     const res = await getLandlordListBySearchApi(params).catch(() => {
       isLoading.value = false
     })
+    console.log('对象', res)
 
     isLoading.value = false
     if (res && res.length) {
@@ -269,6 +270,7 @@ const getList = () => {
       isEnd.value = true
     }
   })
+  console.log('居民户列表', list.value)
 }
 
 const loadMore = () => {
