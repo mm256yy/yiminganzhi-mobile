@@ -16,7 +16,7 @@
           @click="handleItemClick(1)"
         >
           <image src="@/static/images/icon_feed.png" class="icon" />
-          <view>消息反馈</view>
+          <view>信息反馈</view>
         </view>
       </view>
       <!--消息通知-->
@@ -96,7 +96,11 @@ const getFeedbackList = async () => {
   const res = await getOtherItemApi(OtherDataType.FeedbackDtoList)
   console.log('消息反馈列表', res)
 
+  res.sort(function (a: any, b: any) {
+    return b.createdDate < a.createdDate ? -1 : 1
+  })
   feedbackList.value = res || []
+  console.log(feedbackList.value, '测试数据')
 }
 
 onMounted(() => {
