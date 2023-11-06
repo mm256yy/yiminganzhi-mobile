@@ -216,21 +216,32 @@ export class ImpLandlord extends Common {
     if (this.isArrayAndNotNull(immigrantGraveList)) {
       const res1 = immigrantGraveList.find((item) => !item.handleWay)
       const res2 = immigrantGraveList.find((item) => !item.graveNo)
-      console.log(res1, res2, '查看坟墓信息')
-      if (res1) {
-        // 安置确认 坟墓没有确认
+      console.log(this.isArrayAndNotNull(immigrantGraveList), res1, res2, '查看坟墓信息')
+      // if (res1) {
+      //   // 安置确认 坟墓没有确认
+      //   landlordItem.immigrantFilling.chooseGraveStatus = '0'
+      // } else {
+      if (res2 && this.isNotNullPic(graveChoosePic)) {
         landlordItem.immigrantFilling.chooseGraveStatus = '1'
       } else {
-        if (!res2 && this.isNotNullPic(graveChoosePic)) {
-          landlordItem.immigrantFilling.chooseGraveStatus = '1'
-        } else {
-          landlordItem.immigrantFilling.chooseGraveStatus = '0'
-        }
+        landlordItem.immigrantFilling.chooseGraveStatus = '0'
       }
+      // }
     } else {
       landlordItem.immigrantFilling.chooseGraveStatus = '1'
     }
-
+    // // 房屋腾空
+    // if (
+    //   immigrantHouseEmpty &&
+    //   immigrantHouseEmpty.isHouseEmpty === '1' &&
+    //   this.isNotNullPic(houseEmptyPic)
+    // ) {
+    //   landlordItem.immigrantFilling.houseSoarStatus = '1'
+    // } else if (immigrantHouseEmpty && immigrantHouseEmpty.isHouseEmpty === '0') {
+    //   landlordItem.immigrantFilling.houseSoarStatus = '1'
+    // } else {
+    //   landlordItem.immigrantFilling.houseSoarStatus = '0'
+    // }
     // 择址总状态
     if (
       landlordItem.immigrantFilling.landUseStatus === '1' &&
@@ -754,10 +765,11 @@ export class ImpLandlord extends Common {
         const realData = this.updateImpFillStatus(data)
         // 拿到更新的sql字符串
         const values = getLandlordSqlValues(realData)
-        console.log('values', values)
+        // console.log('values', values,'realData',realData)
 
         const sql = `update ${LandlordTableName} set ${values} where uid = '${realData.uid}'`
         const res = await this.db.execteSql([sql])
+        console.log('成功', res)
         if (res && res.code) {
           reject(false)
           return

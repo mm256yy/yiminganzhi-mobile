@@ -63,13 +63,6 @@
               @click="onSave(item, '0')"
               >保存</view
             >
-            <view
-              v-if="item.isVerify !== '1' && item.unit"
-              type="mini-btn primary"
-              size="mini"
-              @click="onSave(item, '1')"
-              >确认</view
-            >
           </uni-td>
         </uni-tr>
       </uni-table>
@@ -82,7 +75,11 @@ import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { formatStr, formatDict } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
-import { updateImpLandlordCompensationCardApi, getCompensationCardConfigApi } from '@/service'
+import {
+  updateImpLandlordCompensationCardApi,
+  getCompensationCardConfigApi,
+  getLandlordItemApi
+} from '@/service'
 import Back from '@/components/Back/Index.vue'
 
 const dataList = ref<any[]>([])
@@ -96,15 +93,27 @@ onLoad((option) => {
 })
 
 // 获取移民建卡奖励费列表
-const getCompensationCardConfig = () => {
-  getCompensationCardConfigApi().then((res: any) => {
-    if (res && res.length) {
-      dataList.value = res.filter((item: any) => item.type === '3')
-      console.log(dataList.value, '奖励费列表')
-    }
-  })
-}
+const getCompensationCardConfig = async () => {
+  let res = await getCompensationCardConfigApi()
+  if (res) {
+    console.log('获取移民建卡奖励费列表', res)
 
+    // tableData.value = res
+    let data: any = await getLandlordItemApi(commonParams.value.uid)
+    console.log(data)
+
+    data.immigrantCompensationCardList.forEach((item: any) => {
+      let index = res.findIndex((e: any) => e.id == item.id)
+      if (index > -1) {
+        res[index] = item
+      } else {
+        res.push(item)
+      }
+    })
+    dataList.value = res.filter((item: any) => item.type === '3')
+    console.log('合并', dataList.value, res, data.immigrantCompensationCardList)
+  }
+}
 /**
  * 计算补偿金额
  * 补偿金额 = 数量 * 单价

@@ -143,7 +143,6 @@
       <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
       居民户支付情况
     </view>
-
     <view class="row">
       <uni-row v-for="(item, index) in grantList" :key="index">
         <uni-col :span="12">
@@ -155,7 +154,7 @@
         <uni-col :span="12">
           <view class="col">
             <view class="label">发放状态：</view>
-            <view class="content blue">已发放</view>
+            <view class="content blue">{{ item.grantStatus == 1 ? '已发放' : '未发放' }}</view>
           </view>
         </uni-col>
       </uni-row>
@@ -237,7 +236,7 @@ const submit = () => {
     })
 }
 
-const grantList = computed(() => {
+const grantList: any = computed(() => {
   if (
     !props.dataInfo ||
     !props.dataInfo.immigrantCompensationCardList ||
@@ -245,7 +244,7 @@ const grantList = computed(() => {
   ) {
     return []
   }
-  return props.dataInfo.immigrantCompensationCardList.filter((item) => item.grantStatus === '1')
+  return props.dataInfo.immigrantCompensationCardList.filter((item) => item.grantStatus == '0')
 })
 
 watch(
