@@ -754,10 +754,11 @@ export class ImpLandlord extends Common {
         const realData = this.updateImpFillStatus(data)
         // 拿到更新的sql字符串
         const values = getLandlordSqlValues(realData)
-        console.log('values', values)
+        // console.log('values', values,'realData',realData)
 
         const sql = `update ${LandlordTableName} set ${values} where uid = '${realData.uid}'`
         const res = await this.db.execteSql([sql])
+        console.log('成功', res)
         if (res && res.code) {
           reject(false)
           return

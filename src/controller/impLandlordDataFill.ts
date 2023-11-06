@@ -1669,22 +1669,26 @@ class ImpDataFill extends ImpLandlord {
         }
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
-          landlordItem.immigrantCompensationCardList =
-            landlordItem.immigrantCompensationCardList.map((item) => {
-              if (item.uid === data.uid) {
-                item = { ...item, ...data }
-                item.isUpdate = '1'
-              }
-              return item
-            })
+          if (landlordItem.immigrantCompensationCardList.length > 0) {
+            const index = landlordItem.immigrantCompensationCardList.findIndex(
+              (e: any) => e.id == data.id
+            )
+            if (index > -1) {
+              landlordItem.immigrantCompensationCardList[index] = data
+            } else {
+              landlordItem.immigrantCompensationCardList.push(data)
+            }
+          } else {
+            landlordItem.immigrantCompensationCardList.push({ ...data, isUpdate: '1' })
+          }
         } else {
           reject(false)
           console.log('调查对象信息查询失败')
           return
         }
         // 更新数据
-        console.log('用户表', landlordItem)
-
+        console.log('用户表', landlordItem.immigrantCompensationCardList)
+        console.log('更新表', data)
         const updateRes = await this.updateLandlord(landlordItem)
         updateRes ? resolve(true) : reject(false)
       } catch (error) {

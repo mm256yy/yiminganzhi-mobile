@@ -163,7 +163,7 @@ import { onShow } from '@dcloudio/uni-app'
 import { formatDict, formatStr, routerForward } from '@/utils'
 import { getCompensationCardConfigApi } from '@/service'
 import { apartmentArea, resettleArea } from '@/config'
-
+import { getLandlordItemApi } from '@/service'
 interface PropsType {
   dataInfo: any
   dataList: any[]
@@ -173,12 +173,25 @@ const props = defineProps<PropsType>()
 const tableData = ref<any[]>([])
 
 // 获取移民建卡奖励费列表
-const getCompensationCardConfig = () => {
-  getCompensationCardConfigApi().then((res: any) => {
-    if (res) {
-      tableData.value = res
-    }
-  })
+const getCompensationCardConfig = async () => {
+  let res = await getCompensationCardConfigApi()
+  if (res) {
+    console.log('获取移民建卡奖励费列表', res)
+
+    // tableData.value = res
+    let data: any = await getLandlordItemApi(props.dataInfo.uid)
+
+    data.immigrantCompensationCardList.forEach((item: any) => {
+      let index = res.findIndex((e: any) => e.id == item.id)
+      if (index > -1) {
+        res[index] = item
+      } else {
+        res.push(item)
+      }
+    })
+    tableData.value = res
+    console.log('合并', tableData.value, res, data.immigrantCompensationCardList)
+  }
 }
 
 onShow(() => {
