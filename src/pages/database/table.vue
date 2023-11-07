@@ -49,7 +49,14 @@ const getJsonData = async () => {
       tableName.value === 'other' ||
       tableName.value === 'image'
     ) {
-      jsonData.value = res
+      if (tableName.value === 'other') {
+        jsonData.value = (res || []).map((item: any) => {
+          item.content = JSON.parse(item.content)
+          return item
+        })
+      } else {
+        jsonData.value = res
+      }
     } else {
       jsonData.value = (res || []).map((item: any) => {
         return JSON.parse(item.content)

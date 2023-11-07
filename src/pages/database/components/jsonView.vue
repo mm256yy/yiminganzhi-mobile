@@ -3,8 +3,8 @@
     <text v-if="!!parentKey"
       ><text class="json-preview-key">"{{ parentKey }}"</text> :
     </text>
-    <text class="symbol">{</text>
-    <view class="json-preview-object-block">
+    <text class="symbol" @click="checks(parentKey)">{</text>
+    <view class="json-preview-object-block" v-if="check.indexOf(parentKey) > -1">
       <view v-for="(item, index) in jsonValue" :key="index">
         <text v-if="typeof item.value === 'string'">
           <text class="json-preview-key" @click="checks(index)">"{{ item.key }}"</text> :
@@ -37,8 +37,8 @@
     <text v-if="!!parentKey"
       ><text class="json-preview-key">"{{ parentKey }}"</text> :
     </text>
-    <text class="symbol">[</text>
-    <view class="json-preview-object-block">
+    <text class="symbol" @click="checks(parentKey)">[</text>
+    <view class="json-preview-object-block" v-if="check.indexOf(parentKey) > -1">
       <view v-for="(item, index) in jsonValue" :key="index">
         <text v-if="typeof item === 'string'">
           <text class="json-preview-string-value">"{{ item }}"</text>
