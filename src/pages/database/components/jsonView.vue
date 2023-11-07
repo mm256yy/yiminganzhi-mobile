@@ -7,17 +7,23 @@
     <view class="json-preview-object-block">
       <view v-for="(item, index) in jsonValue" :key="index">
         <text v-if="typeof item.value === 'string'">
-          <text class="json-preview-key">"{{ item.key }}"</text> :
-          <text class="json-preview-string-value">"{{ item.value }}"</text>
+          <text class="json-preview-key" @click="checks(index)">"{{ item.key }}"</text> :
+          <text class="json-preview-string-value" v-if="check.indexOf(index) > -1"
+            >"{{ item.value }}"</text
+          >
         </text>
         <text v-if="typeof item.value === 'number'">
-          <text class="json-preview-key">"{{ item.key }}"</text> :
-          <text class="json-preview-number-value">{{ item.value }}</text
+          <text class="json-preview-key" @click="checks(index)">"{{ item.key }}"</text> :
+          <text class="json-preview-number-value" v-if="check.indexOf(index) > -1">{{
+            item.value
+          }}</text
           ><text v-if="index != jsonValue.length - 1" />
         </text>
         <text v-if="typeof item.value === 'boolean'">
-          <text class="json-preview-key">"{{ item.key }}"</text> :
-          <text class="json-preview-bol-value">{{ item.value }}</text>
+          <text class="json-preview-key" @click="checks(index)">"{{ item.key }}"</text> :
+          <text class="json-preview-bol-value" v-if="check.indexOf(index) > -1">{{
+            item.value
+          }}</text>
         </text>
         <text v-if="typeof item.value === 'object'">
           <json-preview :parent-key="item.key" :model-value="item.value" />
@@ -53,7 +59,7 @@
   </text>
 </template>
 <script lang="ts">
-import { computed, defineComponent, reactive, toRefs } from 'vue'
+import { computed, defineComponent, reactive, toRefs, ref } from 'vue'
 
 export default defineComponent({
   name: 'JsonPreview',
@@ -105,8 +111,18 @@ export default defineComponent({
         return !(props.modelValue instanceof Array)
       })
     })
+    let check: any = ref([])
+    let checks = (e: any) => {
+      if (check.value.indexOf(e) > -1) {
+        check.value.splice(check.value.indexOf(e), 1)
+      } else {
+        check.value.push(e)
+      }
+    }
     return {
-      ...toRefs(state)
+      ...toRefs(state),
+      check,
+      checks
     }
   }
 })
