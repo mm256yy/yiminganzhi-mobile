@@ -2,92 +2,13 @@
   <view>
     <view class="search">
       <view class="search-input">
-        <input type="text" placeholder="请输入户号、名称、联系方式" />
+        <input type="text" placeholder="请输入户号、名称、联系方式" v-model.trim="seachName" />
       </view>
-      <view class="search-btn">
+      <view class="search-btn" @click="onSearch">
         <image class="search-icon" src="@/static/images/icon_search_white.png" mode="aspectFit" />
         <text class="search-txt">查询</text>
       </view>
     </view>
-    <!-- <view class="admin-collect">
-      <view v-if="userInfo" class="admin">
-        <view class="avater-box" v-if="userInfo.avatar">
-          <image class="avater" :src="userInfo.avatar" mode="scaleToFill" />
-        </view>
-        <image v-else class="avater-box" src="@/static/images/avater.png" mode="scaleToFill" />
-
-        <view class="info">
-          <view class="name">{{ userInfo.userName || userInfo.username }}</view>
-          <view class="desc">{{ userInfo.phone }}</view>
-        </view>
-      </view>
-      <view  class="admin" @click="loginIn">
-        <image class="avater-box" src="@/static/images/avater.png" mode="scaleToFill" />
-
-        <view class="info">
-          <view class="name">请登录</view>
-        </view>
-      </view>
-      <view />
-    </view> -->
-    <!-- 
-    <view class="main-enter">
-      <view class="enter-item" @click="toLink('householdList')">
-        <view class="inner">
-          <view class="top">
-            <image class="enter-icon" src="@/static/images/company_enter.png" mode="scaleToFill" />
-            <view class="enter-name">居民户1</view>
-          </view>
-
-          <view class="enter-common">
-            <text class="txt">资产评估</text>
-            <image class="arrow" src="@/static/images/home_arrow_lite.png" mode="scaleToFill" />
-          </view>
-        </view>
-      </view>
-
-      <view class="enter-item" @click="toLink('enterpriseList')">
-        <view class="inner">
-          <view class="top">
-            <image class="enter-icon" src="@/static/images/company_enter.png" mode="scaleToFill" />
-            <view class="enter-name">企业</view>
-          </view>
-
-          <view class="enter-common">
-            <text class="txt">资产评估</text>
-            <image class="arrow" src="@/static/images/home_arrow_lite.png" mode="scaleToFill" />
-          </view>
-        </view>
-      </view>
-
-      <view class="enter-item" @click="toLink('selfPersonList')">
-        <view class="inner">
-          <view class="top">
-            <image class="enter-icon" src="@/static/images/single_enter.png" mode="scaleToFill" />
-            <view class="enter-name">个体户</view>
-          </view>
-
-          <view class="enter-common">
-            <text class="txt">资产评估</text>
-            <image class="arrow" src="@/static/images/home_arrow_lite.png" mode="scaleToFill" />
-          </view>
-        </view>
-      </view>
-
-      <view class="enter-item" @click="toLink('collectiveList')">
-        <view class="inner">
-          <view class="top">
-            <image class="enter-icon" src="@/static/images/jt_enter.png" mode="scaleToFill" />
-            <view class="enter-name">村集体</view>
-          </view>
-
-          <view class="enter-common">
-            <text class="txt">资产评估</text>
-            <image class="arrow" src="@/static/images/home_arrow_lite.png" mode="scaleToFill" />
-          </view>
-        </view>
-      </view>
-    </view> -->
     <!-- 具体内容 -->
     <view class="main-enter">
       <!--居民区-->
@@ -99,7 +20,7 @@
           <view class="enter-title">
             <text class="title-txt">居民户</text>
             <view class="flex">
-              <text class="count-num"> 1</text>
+              <text class="count-num"> {{ homeCollect.peasantHouseholdNum }}</text>
               <text class="count-unit"> 户 </text>
             </view>
           </view>
@@ -109,21 +30,21 @@
             <view class="line-1">1</view>
             <view class="flex">
               <view class="common-dot red" />
-              <view class="line-2">未完成</view>
+              <view class="line-2">已评估</view>
             </view>
           </view>
           <view class="field-box">
             <view class="line-1">2</view>
             <view class="flex">
               <view class="common-dot yellow" />
-              <view class="line-2">已完成</view>
+              <view class="line-2">未评估</view>
             </view>
           </view>
           <view class="field-box">
             <view class="line-1">3</view>
             <view class="flex">
               <view class="common-dot green" />
-              <view class="line-2">我的</view>
+              <view class="line-2">我的评估</view>
             </view>
           </view>
         </view>
@@ -137,7 +58,7 @@
           <view class="enter-title">
             <text class="title-txt">企业</text>
             <view class="flex">
-              <text class="count-num"> 1</text>
+              <text class="count-num"> {{ homeCollect.companyNum }} </text>
               <text class="count-unit"> 家 </text>
             </view>
           </view>
@@ -147,21 +68,21 @@
             <view class="line-1">1</view>
             <view class="flex">
               <view class="common-dot red" />
-              <view class="line-2 red">未完成</view>
+              <view class="line-2 red">已评估</view>
             </view>
           </view>
           <view class="field-box">
             <view class="line-1">1</view>
             <view class="flex">
               <view class="common-dot yellow" />
-              <view class="line-2">已完成</view>
+              <view class="line-2">未评估</view>
             </view>
           </view>
           <view class="field-box">
             <view class="line-1">1</view>
             <view class="flex">
               <view class="common-dot green" />
-              <view class="line-2">我的</view>
+              <view class="line-2">我的评估</view>
             </view>
           </view>
         </view>
@@ -175,7 +96,7 @@
           <view class="enter-title">
             <text class="title-txt">个体户</text>
             <view class="flex">
-              <text class="count-num">1</text>
+              <text class="count-num">{{ homeCollect.individualNum }}</text>
               <text class="count-unit"> 户 </text>
             </view>
           </view>
@@ -185,21 +106,21 @@
             <view class="line-1">1</view>
             <view class="flex">
               <view class="common-dot red" />
-              <view class="line-2 red">未完成</view>
+              <view class="line-2 red">已评估</view>
             </view>
           </view>
           <view class="field-box">
             <view class="line-1">1</view>
             <view class="flex">
               <view class="common-dot yellow" />
-              <view class="line-2">已完成</view>
+              <view class="line-2">未评估</view>
             </view>
           </view>
           <view class="field-box">
             <view class="line-1">1</view>
             <view class="flex">
               <view class="common-dot green" />
-              <view class="line-2">我的</view>
+              <view class="line-2">我的评估</view>
             </view>
           </view>
         </view>
@@ -213,7 +134,7 @@
           <view class="enter-title">
             <text class="title-txt">村集体</text>
             <view class="flex">
-              <text class="count-num">1</text>
+              <text class="count-num">{{ homeCollect.villageNum }}</text>
               <text class="count-unit">户</text>
             </view>
           </view>
@@ -223,21 +144,21 @@
             <view class="line-1">1</view>
             <view class="flex">
               <view class="common-dot red" />
-              <view class="line-2 red">未完成</view>
+              <view class="line-2 red">已评估</view>
             </view>
           </view>
           <view class="field-box">
             <view class="line-1">1</view>
             <view class="flex">
               <view class="common-dot yellow" />
-              <view class="line-2">已完成</view>
+              <view class="line-2">未评估</view>
             </view>
           </view>
           <view class="field-box">
             <view class="line-1">1</view>
             <view class="flex">
               <view class="common-dot green" />
-              <view class="line-2">我的</view>
+              <view class="line-2">我的评估</view>
             </view>
           </view>
         </view>
@@ -286,16 +207,67 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
-import { getStorage, StorageKey } from '@/utils'
+import { getStorage, StorageKey, routerForward } from '@/utils'
 import Echart from './GroupTopFive.vue'
 import MessageNotice from './MessageNoticeFive.vue'
+import { getImpHomeCollectApi } from '@/service'
 
 const emit = defineEmits(['toLink', 'loginIn'])
 const userInfo = ref<any>(null)
 const projectInfo = ref<any>(null)
+interface HomeCollectType {
+  peasantHouseholdNum: number
+  peasantHouseholdLagNum: number
+  peasantHouseholdWarnNum: number
+  peasantHouseholdDoneNum: number
 
+  companyNum: number
+  companyLagNum: number
+  companyWarnNum: number
+  companyDoneNum: number
+
+  individualNum: number
+  individualLagNum: number
+  individualWarnNum: number
+  individualDoneNum: number
+
+  villageNum: number
+  villageLagNum: number
+  villageWarnNum: number
+  villageDoneNum: number
+}
+const homeCollect = ref<HomeCollectType>({
+  peasantHouseholdNum: 0,
+  peasantHouseholdLagNum: 0,
+  peasantHouseholdWarnNum: 0,
+  peasantHouseholdDoneNum: 0,
+
+  companyNum: 0,
+  companyLagNum: 0,
+  companyWarnNum: 0,
+  companyDoneNum: 0,
+
+  individualNum: 0,
+  individualLagNum: 0,
+  individualWarnNum: 0,
+  individualDoneNum: 0,
+
+  villageNum: 0,
+  villageLagNum: 0,
+  villageWarnNum: 0,
+  villageDoneNum: 0
+})
+const seachName = ref<string>('')
+
+const onSearch = () => {
+  if (seachName.value) {
+    routerForward('householdList', {
+      name: seachName.value
+    })
+  }
+}
 const toLink = (name: string) => {
   emit('toLink', name)
 }
@@ -309,6 +281,14 @@ onShow(() => {
   const project = getStorage(StorageKey.PROJECTINFO)
   userInfo.value = user
   projectInfo.value = project
+})
+onMounted(() => {
+  getImpHomeCollectApi().then((res) => {
+    if (res) {
+      console.log(res, 'getImpHomeCollectApi')
+      homeCollect.value = { ...homeCollect.value, ...res }
+    }
+  })
 })
 </script>
 
