@@ -1,6 +1,15 @@
 <template>
   <view>
-    <view class="admin-collect">
+    <view class="search">
+      <view class="search-input">
+        <input type="text" placeholder="请输入户号、名称、联系方式" />
+      </view>
+      <view class="search-btn">
+        <image class="search-icon" src="@/static/images/icon_search_white.png" mode="aspectFit" />
+        <text class="search-txt">查询</text>
+      </view>
+    </view>
+    <!-- <view class="admin-collect">
       <view v-if="userInfo" class="admin">
         <view class="avater-box" v-if="userInfo.avatar">
           <image class="avater" :src="userInfo.avatar" mode="scaleToFill" />
@@ -12,7 +21,7 @@
           <view class="desc">{{ userInfo.phone }}</view>
         </view>
       </view>
-      <view v-else class="admin" @click="loginIn">
+      <view  class="admin" @click="loginIn">
         <image class="avater-box" src="@/static/images/avater.png" mode="scaleToFill" />
 
         <view class="info">
@@ -20,14 +29,14 @@
         </view>
       </view>
       <view />
-    </view>
-
+    </view> -->
+    <!-- 
     <view class="main-enter">
       <view class="enter-item" @click="toLink('householdList')">
         <view class="inner">
           <view class="top">
             <image class="enter-icon" src="@/static/images/company_enter.png" mode="scaleToFill" />
-            <view class="enter-name">居民户</view>
+            <view class="enter-name">居民户1</view>
           </view>
 
           <view class="enter-common">
@@ -78,8 +87,167 @@
           </view>
         </view>
       </view>
+    </view> -->
+    <!-- 具体内容 -->
+    <view class="main-enter">
+      <!--居民区-->
+      <view class="enter-item">
+        <view class="title-field" @click="toLink('householdList')">
+          <view class="enter-icon">
+            <image class="img" src="@/static/images/icon_resident.png" />
+          </view>
+          <view class="enter-title">
+            <text class="title-txt">居民户</text>
+            <view class="flex">
+              <text class="count-num"> 1</text>
+              <text class="count-unit"> 户 </text>
+            </view>
+          </view>
+        </view>
+        <view class="row-field">
+          <view class="field-box">
+            <view class="line-1">1</view>
+            <view class="flex">
+              <view class="common-dot red" />
+              <view class="line-2">未完成</view>
+            </view>
+          </view>
+          <view class="field-box">
+            <view class="line-1">2</view>
+            <view class="flex">
+              <view class="common-dot yellow" />
+              <view class="line-2">已完成</view>
+            </view>
+          </view>
+          <view class="field-box">
+            <view class="line-1">3</view>
+            <view class="flex">
+              <view class="common-dot green" />
+              <view class="line-2">我的</view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <!--企业-->
+      <view class="enter-item" @click="toLink('enterpriseList')">
+        <view class="title-field">
+          <view class="enter-icon">
+            <image class="img" src="@/static/images/company_enter.png" />
+          </view>
+          <view class="enter-title">
+            <text class="title-txt">企业</text>
+            <view class="flex">
+              <text class="count-num"> 1</text>
+              <text class="count-unit"> 家 </text>
+            </view>
+          </view>
+        </view>
+        <view class="row-field">
+          <view class="field-box">
+            <view class="line-1">1</view>
+            <view class="flex">
+              <view class="common-dot red" />
+              <view class="line-2 red">未完成</view>
+            </view>
+          </view>
+          <view class="field-box">
+            <view class="line-1">1</view>
+            <view class="flex">
+              <view class="common-dot yellow" />
+              <view class="line-2">已完成</view>
+            </view>
+          </view>
+          <view class="field-box">
+            <view class="line-1">1</view>
+            <view class="flex">
+              <view class="common-dot green" />
+              <view class="line-2">我的</view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <!--个体户-->
+      <view class="enter-item" @click="toLink('selfPersonList')">
+        <view class="title-field">
+          <view class="enter-icon">
+            <image class="img" src="@/static/images/single_enter.png" />
+          </view>
+          <view class="enter-title">
+            <text class="title-txt">个体户</text>
+            <view class="flex">
+              <text class="count-num">1</text>
+              <text class="count-unit"> 户 </text>
+            </view>
+          </view>
+        </view>
+        <view class="row-field">
+          <view class="field-box">
+            <view class="line-1">1</view>
+            <view class="flex">
+              <view class="common-dot red" />
+              <view class="line-2 red">未完成</view>
+            </view>
+          </view>
+          <view class="field-box">
+            <view class="line-1">1</view>
+            <view class="flex">
+              <view class="common-dot yellow" />
+              <view class="line-2">已完成</view>
+            </view>
+          </view>
+          <view class="field-box">
+            <view class="line-1">1</view>
+            <view class="flex">
+              <view class="common-dot green" />
+              <view class="line-2">我的</view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <!--村集体-->
+      <view class="enter-item" @click="toLink('collectiveList')">
+        <view class="title-field">
+          <view class="enter-icon">
+            <image class="img" src="@/static/images/icon_village.png" />
+          </view>
+          <view class="enter-title">
+            <text class="title-txt">村集体</text>
+            <view class="flex">
+              <text class="count-num">1</text>
+              <text class="count-unit">户</text>
+            </view>
+          </view>
+        </view>
+        <view class="row-field">
+          <view class="field-box">
+            <view class="line-1">1</view>
+            <view class="flex">
+              <view class="common-dot red" />
+              <view class="line-2 red">未完成</view>
+            </view>
+          </view>
+          <view class="field-box">
+            <view class="line-1">1</view>
+            <view class="flex">
+              <view class="common-dot yellow" />
+              <view class="line-2">已完成</view>
+            </view>
+          </view>
+          <view class="field-box">
+            <view class="line-1">1</view>
+            <view class="flex">
+              <view class="common-dot green" />
+              <view class="line-2">我的</view>
+            </view>
+          </view>
+        </view>
+      </view>
     </view>
 
+    <view class="group">
+      <view class="work"><Echart /></view>
+      <view class="message"><MessageNotice /></view>
+    </view>
     <view class="other-enter">
       <view class="other-item" @click="toLink('sync')">
         <view class="inner">
@@ -121,6 +289,8 @@
 import { ref } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import { getStorage, StorageKey } from '@/utils'
+import Echart from './GroupTopFive.vue'
+import MessageNotice from './MessageNoticeFive.vue'
 
 const emit = defineEmits(['toLink', 'loginIn'])
 const userInfo = ref<any>(null)
@@ -225,69 +395,193 @@ onShow(() => {
   }
 }
 
-.main-enter {
+.search {
   display: flex;
-  flex-direction: row;
-  width: 750rpx;
+  width: 375rpx;
+  height: 28rpx;
+  margin: 0 auto;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 5rpx;
   justify-content: center;
 
-  .enter-item {
-    display: flex;
-    width: 117rpx;
-    height: 141rpx;
-    margin-right: 6rpx;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
-    border-radius: 11rpx;
-    box-shadow: 0rpx 0rpx 12rpx 0rpx rgba(0, 0, 0, 0.08);
-    align-items: center;
-    justify-content: center;
+  .search-input {
+    width: 315rpx;
+    height: 28rpx;
+    padding-left: 12rpx;
+    line-height: 28rpx;
+    text-align: left;
+    border-radius: 5rpx 0 0 5rpx;
 
-    .inner {
+    input {
+      height: 28rpx;
+      font-size: 10rpx;
+      line-height: 28rpx;
+      color: rgba(19, 19, 19, 0.4);
+    }
+  }
+
+  .search-btn {
+    display: flex;
+    width: 60rpx;
+    height: 28rpx;
+    overflow: hidden;
+    background: linear-gradient(270deg, #ffb11a 0%, #ff9432 100%);
+    border-radius: 0 5rpx 5rpx 0;
+    justify-content: center;
+    align-items: center;
+
+    .search-icon {
+      width: 14rpx;
+      height: 14rpx;
+    }
+
+    .search-txt {
+      margin-left: 5rpx;
+      font-size: 9rpx;
+      font-weight: 400;
+      color: #f7f8fa;
+    }
+  }
+}
+
+.main-enter {
+  display: flex;
+  width: 750rpx;
+  justify-content: space-between;
+  padding: 12rpx;
+  border-radius: 11rpx;
+
+  .enter-item {
+    width: 176rpx;
+    height: 96rpx;
+    padding: 12rpx 6rpx 7rpx 6rpx;
+    background: linear-gradient(180deg, #deebf6 0%, #ffffff 100%);
+    border-radius: 11rpx;
+
+    .title-field {
       display: flex;
-      width: 115rpx;
-      height: 139rpx;
-      padding: 28rpx 12rpx 12rpx 22rpx;
-      background: linear-gradient(180deg, #deebf6 0%, #ffffff 100%);
-      border-radius: 11rpx;
-      flex-direction: column;
+
+      .enter-icon {
+        width: 48rpx;
+        height: 48rpx;
+
+        .img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      .enter-title {
+        margin-top: -21rpx;
+        margin-left: 8rpx;
+
+        .title-txt {
+          font-size: 9rpx;
+          font-weight: 500;
+          color: #333333;
+        }
+
+        .count-num {
+          margin-bottom: 5rpx;
+          font-size: 16rpx;
+          font-weight: bold;
+          color: #171718;
+        }
+
+        .count-unit {
+          margin-top: 6rpx;
+          margin-left: 6rpx;
+          font-size: 9rpx;
+          color: #131313;
+        }
+      }
+    }
+
+    .row-field {
+      display: flex;
+      font-size: 8rpx;
       justify-content: space-between;
+
+      .field-box {
+        display: flex;
+        width: 50rpx;
+        height: 32rpx;
+        padding-top: 4rpx;
+        background: linear-gradient(180deg, #ffffff 0%, #e9f5ff 100%);
+        border-radius: 5rpx;
+        flex-direction: column;
+        align-items: center;
+
+        .row-field {
+          display: flex;
+          font-size: 8rpx;
+
+          .field-box {
+            display: flex;
+            padding-top: 5rpx;
+            background: linear-gradient(180deg, #ffffff 0%, #e9f5ff 100%);
+            border-radius: 5rpx;
+            flex-direction: column;
+            align-items: center;
+
+            .line-1 {
+              padding-top: 3rpx;
+              font-size: 12rpx;
+              font-weight: 400;
+              line-height: 12rpx;
+              color: #171718;
+            }
+
+            .flex {
+              display: flex;
+
+              .dot-red {
+                width: 8rpx;
+                height: 8rpx;
+                background-color: #e43030;
+                border-radius: 50%;
+              }
+
+              .dot-yellow {
+                width: 8rpx;
+                height: 8rpx;
+                background-color: #fec44c;
+              }
+
+              .dot-green {
+                width: 8rpx;
+                height: 8rpx;
+                background-color: #30a952;
+              }
+            }
+
+            .line-2 {
+              padding-top: 3rpx;
+              font-size: 8rpx;
+              font-weight: 500;
+              color: rgba(23, 23, 24, 0.6);
+            }
+          }
+        }
+
+        .line-1 {
+          font-size: 12rpx;
+          font-weight: 400;
+          color: #171718;
+        }
+
+        .line-2 {
+          font-size: 8rpx;
+          font-weight: 500;
+          color: rgba(23, 23, 24, 0.6);
+        }
+      }
     }
 
     .top {
       display: flex;
       flex-direction: column;
-    }
-
-    .enter-icon {
-      width: 33rpx;
-      height: 33rpx;
-      transform: scale(1.2);
-    }
-
-    .enter-name {
-      margin-top: 5rpx;
-      font-size: 13rpx;
-      font-weight: 600;
-      line-height: 18rpx;
-      color: #171718;
-    }
-
-    .enter-common {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-
-      .txt {
-        margin-right: 2rpx;
-        font-size: 8rpx;
-        line-height: 12rpx;
-        color: #171718;
-      }
-
-      .arrow {
-        width: 9rpx;
-        height: 9rpx;
-      }
     }
 
     &:last-child {
@@ -345,6 +639,46 @@ onShow(() => {
     &:last-child {
       margin-right: 0rpx;
     }
+  }
+}
+
+.common-dot {
+  width: 4rpx;
+  height: 4rpx;
+  margin: 3rpx 4rpx 0 0;
+  border-radius: 50%;
+
+  &.red {
+    background-color: #e43030;
+  }
+
+  &.yellow {
+    background-color: #fec44c;
+  }
+
+  &.green {
+    background-color: #30a952;
+  }
+}
+
+.flex {
+  display: flex;
+}
+
+.group {
+  display: flex;
+  height: 142rpx;
+  padding: 0 12rpx;
+  align-items: center;
+  margin-top: 15rpx;
+
+  .work {
+    width: 457rpx;
+    margin-left: 4rpx;
+  }
+
+  .message {
+    width: 263rpx;
   }
 }
 </style>
