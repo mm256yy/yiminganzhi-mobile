@@ -1,6 +1,6 @@
 <template>
   <view class="migrate-card-wrapper">
-    <!-- 居民户实施 —— 个体户建卡（移民实施阶段） -->
+    <!-- 居民户实施 —— 企业建卡（移民实施阶段） -->
     <view class="main">
       <view class="row-1">
         <view class="left" />
@@ -23,7 +23,7 @@
       <view class="title-wrap m-t-5">
         <view class="left">
           <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-          家庭基本情况
+          个体工商户账户信息
         </view>
         <view class="right" @click="toEdit">编辑</view>
       </view>
@@ -31,7 +31,7 @@
       <uni-row class="m-b-10">
         <uni-col :span="12">
           <view class="col">
-            <view class="label">户主姓名：</view>
+            <view class="label">迁前厂址：</view>
             <view class="content">
               {{ formatStr(dataInfo.name) }}
             </view>
@@ -39,7 +39,7 @@
         </uni-col>
         <uni-col :span="12">
           <view class="col">
-            <view class="label">家庭总人口：</view>
+            <view class="label">安置厂址：</view>
             <view class="content">
               {{ formatStr(dataInfo.demographicList.length) }}
             </view>
@@ -47,7 +47,7 @@
         </uni-col>
         <uni-col :span="12">
           <view class="col">
-            <view class="label">联系方式：</view>
+            <view class="label">企业总人口数：</view>
             <view class="content">
               {{ formatStr(dataInfo.phone) }}
             </view>
@@ -55,7 +55,7 @@
         </uni-col>
         <uni-col :span="12">
           <view class="col">
-            <view class="label">迁前地址：</view>
+            <view class="label">开户名：</view>
             <view class="content">
               {{ formatStr(dataInfo.address) }}
             </view>
@@ -63,13 +63,13 @@
         </uni-col>
         <uni-col :span="12">
           <view class="col">
-            <view class="label">安置住址：</view>
+            <view class="label">开户行：</view>
             <view class="content">
               {{ getSettleAddressText(dataInfo.immigrantSettle?.settleAddress) }}
             </view>
           </view>
         </uni-col>
-        <uni-col :span="12">
+        <!-- <uni-col :span="12">
           <view class="col">
             <view class="label">开户名：</view>
             <view class="content">
@@ -84,7 +84,7 @@
               {{ formatStr(dataInfo.bankName) }}
             </view>
           </view>
-        </uni-col>
+        </uni-col> -->
         <uni-col :span="12">
           <view class="col">
             <view class="label">银行账号：</view>
@@ -94,32 +94,78 @@
           </view>
         </uni-col>
       </uni-row>
-
-      <view class="row-2">
-        <uni-table border stripe emptyText="暂无更多数据">
-          <!-- 表头行 -->
-          <uni-tr>
-            <uni-th align="left" width="40rpx" class="uTitle">序号</uni-th>
-            <uni-th align="left" width="60rpx" class="uTitle">姓名</uni-th>
-            <uni-th align="left" width="70rpx" class="uTitle">与户主关系</uni-th>
-            <uni-th align="left" width="50rpx" class="uTitle">性别</uni-th>
-            <uni-th align="left" width="140rpx" class="uTitle">身份证号</uni-th>
-            <uni-th align="left" width="80rpx" class="uTitle">人口性质</uni-th>
-            <uni-th align="left" width="80rpx" class="uTitle">户籍册类别</uni-th>
-          </uni-tr>
-          <!-- 表格数据行 -->
-          <uni-tr v-for="(item, index) in dataList" :key="index">
-            <uni-td align="left" class="uTd">{{ index + 1 }}</uni-td>
-            <uni-td align="left" class="uTd">{{ formatStr(item.name) }}</uni-td>
-            <uni-td align="left" class="uTd">{{ formatDict(item.relation, 307) }}</uni-td>
-            <uni-td align="left" class="uTd">{{ formatDict(item.sex, 292) }}</uni-td>
-            <uni-td align="left" class="uTd">{{ formatStr(item.card) }}</uni-td>
-            <uni-td align="left" class="uTd">{{ formatDict(item.populationNature, 263) }}</uni-td>
-            <uni-td align="left" class="uTd">{{ formatDict(item.censusType, 249) }}</uni-td>
-          </uni-tr>
-        </uni-table>
+      <view class="title-wrap m-t-5">
+        <view class="left">
+          <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
+          工商、税务登记信息
+        </view>
       </view>
-
+      <uni-row class="m-b-10">
+        <uni-col :span="12">
+          <view class="col">
+            <view class="label">营业执照编号：</view>
+            <view class="content">
+              {{ formatStr(dataInfo.name) }}
+            </view>
+          </view>
+        </uni-col>
+        <uni-col :span="12">
+          <view class="col">
+            <view class="label">税务登记编号：</view>
+            <view class="content">
+              {{ formatStr(dataInfo.demographicList.length) }}
+            </view>
+          </view>
+        </uni-col>
+        <uni-col :span="12">
+          <view class="col">
+            <view class="label">注册资金（万元）：</view>
+            <view class="content">
+              {{ formatStr(dataInfo.phone) }}
+            </view>
+          </view>
+        </uni-col>
+        <uni-col :span="12">
+          <view class="col">
+            <view class="label">登记注册类型：</view>
+            <view class="content">
+              {{ formatStr(dataInfo.address) }}
+            </view>
+          </view>
+        </uni-col>
+        <uni-col :span="12">
+          <view class="col">
+            <view class="label">成立日期：</view>
+            <view class="content">
+              {{ getSettleAddressText(dataInfo.immigrantSettle?.settleAddress) }}
+            </view>
+          </view>
+        </uni-col>
+        <!-- <uni-col :span="12">
+          <view class="col">
+            <view class="label">开户名：</view>
+            <view class="content">
+              {{ formatStr(dataInfo.accountName) }}
+            </view>
+          </view>
+        </uni-col>
+        <uni-col :span="12">
+          <view class="col">
+            <view class="label">开户行：</view>
+            <view class="content">
+              {{ formatStr(dataInfo.bankName) }}
+            </view>
+          </view>
+        </uni-col> -->
+        <uni-col :span="12">
+          <view class="col">
+            <view class="label">经营范围：</view>
+            <view class="content">
+              {{ formatStr(dataInfo.bankAccount) }}
+            </view>
+          </view>
+        </uni-col>
+      </uni-row>
       <view class="title-wrap m-t-5">
         <view class="left">
           <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
