@@ -27,7 +27,11 @@
           <equipment-eva-report v-if="tabVal === 3" :dataInfo="dataInfo.immigrantEquipmentList" />
 
           <!-- 个体户建卡 -->
-          <create-card v-if="tabVal === 4" />
+          <create-card
+            v-if="tabVal === 4"
+            :dataInfo="dataInfo"
+            :dataList="dataInfo.demographicList"
+          />
 
           <!-- 房屋腾空 -->
           <house-vacate v-if="tabVal === 5" :dataInfo="dataInfo" @update-data="updateData" />
