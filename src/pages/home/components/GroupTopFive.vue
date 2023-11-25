@@ -109,7 +109,8 @@ const getImg = (index: number) => {
 }
 
 const getStatisticDataRequest = async () => {
-  const data: Top5Type = await getStatisticApi(OtherDataType.Top5)
+  console.log('11111111111111111')
+  const data: any = await getStatisticApi(OtherDataType.PgTop)
   statisticData.value = data
   console.log(data, 'data')
   getStatisticData()

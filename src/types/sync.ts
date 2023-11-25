@@ -269,6 +269,7 @@ export interface StateType {
   immigrantCompensationCardConfig: ImmigrantCompensationCardConfigType[]
   rankDtoList: any[]
   feedbackDtoList: any[]
+  pgTop: any[]
 }
 
 export interface PushStateType {

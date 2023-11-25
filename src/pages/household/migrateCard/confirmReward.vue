@@ -54,15 +54,24 @@
             />
             <view v-if="item.isUpdate === '1' && item.isVerify === '1'">{{ item.remark }}</view>
           </uni-td>
-          <uni-td align="left" class="u-td">
-            <view
-              v-if="item.isVerify !== '1' && item.unit"
-              class="mini-btn m-r-5"
-              type="primary"
-              size="mini"
-              @click="onSave(item, '0')"
-              >保存</view
-            >
+          <uni-td class="u-td">
+            <view style="display: flex; align-items: center; justify-content: center">
+              <view
+                v-if="item.isVerify !== '1' && item.unit"
+                class="mini-btn m-r-5"
+                type="primary"
+                size="mini"
+                @click="onSave(item, '0')"
+                >保存
+              </view>
+              <view
+                v-if="item.isVerify !== '1' && item.unit"
+                type="mini-btn primary"
+                size="mini"
+                @click="onSave(item, '1')"
+                >确认
+              </view>
+            </view>
           </uni-td>
         </uni-tr>
       </uni-table>
@@ -100,17 +109,19 @@ const getCompensationCardConfig = async () => {
 
     // tableData.value = res
     let data: any = await getLandlordItemApi(commonParams.value.uid)
-    console.log(data)
+    console.log(data, '测试dada数据')
 
     data.immigrantCompensationCardList.forEach((item: any) => {
-      let index = res.findIndex((e: any) => e.id == item.id)
+      let index = res.findIndex((e: any) => e.name == item.name)
       if (index > -1) {
         res[index] = item
       } else {
         res.push(item)
       }
     })
-    dataList.value = res.filter((item: any) => item.type === '3')
+    dataList.value = res.filter(
+      (item: any) => item.isUpdate == '1' && item.phType == 'PeasantHousehold'
+    )
     console.log('合并', dataList.value, res, data.immigrantCompensationCardList)
   }
 }
@@ -156,6 +167,7 @@ const getSummaries = (row: any) => {
  */
 const onSave = (data: any, isVerify: string) => {
   const { doorNo, uid } = commonParams.value
+  console.log(uid, '当前数据')
   let params = {
     ...data,
     doorNo,

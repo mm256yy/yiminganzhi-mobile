@@ -1661,6 +1661,7 @@ class ImpDataFill extends ImpLandlord {
     data: ImmigrantCompensationCardType
   ): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
+      console.log(uid, data, 'uid测试')
       try {
         if (!uid) {
           reject(false)
@@ -1668,6 +1669,7 @@ class ImpDataFill extends ImpLandlord {
           return
         }
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
+        console.log(landlordItem, '更新的数据')
         if (landlordItem) {
           if (landlordItem.immigrantCompensationCardList.length > 0) {
             const index = landlordItem.immigrantCompensationCardList.findIndex(
@@ -1676,6 +1678,7 @@ class ImpDataFill extends ImpLandlord {
             if (index > -1) {
               landlordItem.immigrantCompensationCardList[index] = data
             } else {
+              console.log(landlordItem.immigrantCompensationCardList, data, '筛查的数据')
               landlordItem.immigrantCompensationCardList.push(data)
             }
           } else {

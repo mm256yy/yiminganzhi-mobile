@@ -110,7 +110,8 @@ class PullData {
       houseConfig: [],
       immigrantCompensationCardConfig: [],
       rankDtoList: [],
-      feedbackDtoList: []
+      feedbackDtoList: [],
+      pgTop: []
     }
 
     this.districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
@@ -237,6 +238,7 @@ class PullData {
       houseConfig,
       immigrantCompensationCardConfig,
       rankDtoList,
+      pgTop,
       feedbackDtoList
     } = result
     // 需要reset
@@ -257,6 +259,7 @@ class PullData {
     this.state.houseConfig = houseConfig
     this.state.immigrantCompensationCardConfig = immigrantCompensationCardConfig
     this.state.rankDtoList = rankDtoList
+    this.state.pgTop = pgTop
     this.state.feedbackDtoList = feedbackDtoList
 
     this.pullDict().then((res: boolean) => {
@@ -303,6 +306,7 @@ class PullData {
       this.state.houseConfig = []
       this.state.immigrantCompensationCardConfig = []
       this.state.rankDtoList = []
+      this.state.pgTop = []
       this.state.feedbackDtoList = []
       console.log('拉取: 其他', res)
     })
@@ -941,6 +945,7 @@ class PullData {
         houseConfig,
         immigrantCompensationCardConfig,
         rankDtoList,
+        pgTop,
         feedbackDtoList,
 
         peasantHouseholdNum,
@@ -1047,7 +1052,15 @@ class PullData {
         )}','${getCurrentTimeStamp()}'`
         db.insertOrReplaceData(OtherTableName, values, fields)
       }
-
+      //TOP5首页排行榜
+      if (pgTop && pgTop.length) {
+        const fields = "'type','content','updatedDate'"
+        const values = `'${OtherDataType.PgTop}','${JSON.stringify(
+          pgTop
+        )}','${getCurrentTimeStamp()}'`
+        console.log(values, '测试TOP5首页排行榜')
+        db.insertOrReplaceData(OtherTableName, values, fields)
+      }
       // 问题反馈
       if (feedbackDtoList && feedbackDtoList.length) {
         const fields = "'type','content','updatedDate'"

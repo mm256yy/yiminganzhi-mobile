@@ -13,7 +13,8 @@ export enum OtherDataType {
   ImmigrantCompensationCardConfig = 'immigrantCompensationCardConfig', // 移民建卡配置
   ImpHomeCollect = 'impHomeCollect', // 实施阶段首页统计
   RankDtoList = 'rankDtoList', // 首页排行榜
-  FeedbackDtoList = 'feedbackDtoList' // 问题反馈
+  FeedbackDtoList = 'feedbackDtoList', // 问题反馈
+  PgTop = 'pgTop' //TOP5首页排行榜
 }
 
 export interface OtherDDLType {

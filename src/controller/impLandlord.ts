@@ -764,8 +764,9 @@ export class ImpLandlord extends Common {
          */
         const realData = this.updateImpFillStatus(data)
         // 拿到更新的sql字符串
+        console.log(realData, '测试数据库字段是否正确')
         const values = getLandlordSqlValues(realData)
-        // console.log('values', values,'realData',realData)
+        // console.log('values', values, 'realData', realData)
 
         const sql = `update ${LandlordTableName} set ${values} where uid = '${realData.uid}'`
         const res = await this.db.execteSql([sql])

@@ -180,16 +180,17 @@ const getCompensationCardConfig = async () => {
 
     // tableData.value = res
     let data: any = await getLandlordItemApi(props.dataInfo.uid)
-
+    console.log(data, '测试dada数据')
     data.immigrantCompensationCardList.forEach((item: any) => {
-      let index = res.findIndex((e: any) => e.id == item.id)
+      let index = res.findIndex((e: any) => e.name == item.name)
       if (index > -1) {
         res[index] = item
       } else {
         res.push(item)
       }
     })
-    tableData.value = res
+
+    tableData.value = res.filter((item: any) => item.phType == 'PeasantHousehold')
     console.log('合并', tableData.value, res, data.immigrantCompensationCardList)
   }
 }

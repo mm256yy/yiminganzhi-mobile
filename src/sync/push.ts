@@ -66,7 +66,8 @@ class PushData {
                   immigrantEquipmentList,
                   immigrantFacilitiesList,
                   immigrantDocumentation,
-                  immigrantFilling
+                  immigrantFilling,
+                  immigrantCompensationCardList
                 } = landlordItem
 
                 if (demographicList && demographicList.length) {
@@ -115,7 +116,13 @@ class PushData {
                     immigrantFilling.uid = guid()
                   }
                 }
-
+                if (immigrantCompensationCardList) {
+                  immigrantCompensationCardList.forEach((item) => {
+                    if (!item.uid) {
+                      item.uid = guid()
+                    }
+                  })
+                }
                 return landlordItem
               })
             }

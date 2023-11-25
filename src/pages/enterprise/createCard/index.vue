@@ -33,7 +33,7 @@
           <view class="col">
             <view class="label">迁前厂址：</view>
             <view class="content">
-              {{ formatStr(dataInfo.name) }}
+              {{ formatStr(dataInfo.beforeAddress) }}
             </view>
           </view>
         </uni-col>
@@ -41,7 +41,7 @@
           <view class="col">
             <view class="label">安置厂址：</view>
             <view class="content">
-              {{ formatStr(dataInfo.demographicList.length) }}
+              {{ formatStr(dataInfo.afterAddress) }}
             </view>
           </view>
         </uni-col>
@@ -49,7 +49,7 @@
           <view class="col">
             <view class="label">企业总人口数：</view>
             <view class="content">
-              {{ formatStr(dataInfo.phone) }}
+              {{ formatStr(dataInfo.peopleNumber) }}
             </view>
           </view>
         </uni-col>
@@ -57,7 +57,7 @@
           <view class="col">
             <view class="label">开户名：</view>
             <view class="content">
-              {{ formatStr(dataInfo.address) }}
+              {{ formatStr(dataInfo.accountName) }}
             </view>
           </view>
         </uni-col>
@@ -65,7 +65,7 @@
           <view class="col">
             <view class="label">开户行：</view>
             <view class="content">
-              {{ getSettleAddressText(dataInfo.immigrantSettle?.settleAddress) }}
+              {{ formatStr(dataInfo.bankName) }}
             </view>
           </view>
         </uni-col>
@@ -90,6 +90,7 @@
             <view class="label">营业执照编号：</view>
             <view class="content">
               {{ formatStr(dataInfo.name) }}
+              <!-- 未知 暂无字段 -->
             </view>
           </view>
         </uni-col>
@@ -97,7 +98,7 @@
           <view class="col">
             <view class="label">税务登记编号：</view>
             <view class="content">
-              {{ formatStr(dataInfo.demographicList.length) }}
+              {{ formatStr(dataInfo.company?.taxLicenceNo) }}
             </view>
           </view>
         </uni-col>
@@ -105,7 +106,7 @@
           <view class="col">
             <view class="label">注册资金（万元）：</view>
             <view class="content">
-              {{ formatStr(dataInfo.phone) }}
+              {{ formatStr(dataInfo.company?.registeredAmount) }}
             </view>
           </view>
         </uni-col>
@@ -113,7 +114,7 @@
           <view class="col">
             <view class="label">登记注册类型：</view>
             <view class="content">
-              {{ formatStr(dataInfo.address) }}
+              {{ formatStr(dataInfo.company?.registerType) }}
             </view>
           </view>
         </uni-col>
@@ -121,7 +122,7 @@
           <view class="col">
             <view class="label">成立日期：</view>
             <view class="content">
-              {{ getSettleAddressText(dataInfo.immigrantSettle?.settleAddress) }}
+              {{ dayjs(dataInfo.company?.establishDate).format('YYYY-MM-YY') }}
             </view>
           </view>
         </uni-col>
@@ -129,7 +130,7 @@
           <view class="col">
             <view class="label">经营范围：</view>
             <view class="content">
-              {{ formatStr(dataInfo.bankAccount) }}
+              {{ formatStr(dataInfo.company?.natureBusiness) }}
             </view>
           </view>
         </uni-col>
@@ -173,6 +174,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
+import dayjs from 'dayjs'
 import { onShow } from '@dcloudio/uni-app'
 import { formatDict, formatStr, routerForward } from '@/utils'
 import { getCompensationCardConfigApi } from '@/service'
@@ -194,16 +196,17 @@ const getCompensationCardConfig = async () => {
 
     // tableData.value = res
     let data: any = await getLandlordItemApi(props.dataInfo.uid)
-
+    console.log(data, '测试dada数据')
     data.immigrantCompensationCardList.forEach((item: any) => {
-      let index = res.findIndex((e: any) => e.id == item.id)
+      let index = res.findIndex((e: any) => e.name == item.name)
       if (index > -1) {
         res[index] = item
       } else {
         res.push(item)
       }
     })
-    tableData.value = res
+
+    tableData.value = res.filter((item: any) => item.phType == 'Company')
     console.log('合并', tableData.value, res, data.immigrantCompensationCardList)
   }
 }
@@ -298,7 +301,7 @@ const toEdit = () => {
 const toConfirmReward = () => {
   const { uid, doorNo } = props.dataInfo
   let params = { uid, doorNo }
-  routerForward('confirmReward', {
+  routerForward('enterconfirmReward', {
     params: JSON.stringify(params)
   })
 }

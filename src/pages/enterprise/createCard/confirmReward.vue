@@ -19,31 +19,39 @@
           <!-- <uni-td align="left" class="u-td">{{ formatDict(item.unit, 268) }}</uni-td> -->
           <uni-td align="left" class="u-td">{{ item.unit }}</uni-td>
           <uni-td align="left" class="u-td">
-            <input
+            <!-- <input
               v-if="item.isUpdate === '1' && item.isVerify !== '1'"
               class="input-txt"
               v-model="item.number"
               placeholder="请输入"
-            />
-            <view v-if="item.isUpdate === '1' && item.isVerify === '1'">{{
+            /> -->
+            <!-- <view v-if="item.isUpdate === '1' && item.isVerify === '1'">{{
               formatStr(item.number)
-            }}</view>
+            }}</view> -->
+            {{ formatStr(item.number) }}
             <!-- <view v-if="!item.number"> - </view> -->
+          </uni-td>
+          <uni-td align="left" class="u-td">
+            <!-- <input
+              v-if="item.isUpdate === '1' && item.isVerify !== '1'"
+              class="input-txt"
+              v-model="item.price"
+              placeholder="请输入"
+            /> -->
+            <!-- <view v-if="item.isUpdate === '1' && item.isVerify === '1'">{{ item.price }}</view>
+            <view v-if="item.isUpdate !== '1'"> - </view> -->
+            {{ item.price }}
           </uni-td>
           <uni-td align="left" class="u-td">
             <input
               v-if="item.isUpdate === '1' && item.isVerify !== '1'"
               class="input-txt"
-              v-model="item.price"
+              v-model="item.totalPrice"
               placeholder="请输入"
             />
-            <view v-if="item.isUpdate === '1' && item.isVerify === '1'">{{ item.price }}</view>
-            <view v-if="item.isUpdate !== '1'"> - </view>
-          </uni-td>
-          <uni-td align="left" class="u-td">
-            <view v-if="item.isUpdate === '0'">{{ item.totalPrice }}</view>
+            <!-- <view v-if="item.isUpdate === '0'">{{ item.totalPrice }}</view>
             <view v-else-if="item.isUpdate === '1'">{{ computedTotalPrice(item) }}</view>
-            <view v-else-if="item.isUpdate === '2'"> {{ getSummaries(item) }} </view>
+            <view v-else-if="item.isUpdate === '2'"> {{ getSummaries(item) }} </view> -->
           </uni-td>
           <uni-td align="left" class="u-td">
             <input
@@ -55,14 +63,24 @@
             <view v-if="item.isUpdate === '1' && item.isVerify === '1'">{{ item.remark }}</view>
           </uni-td>
           <uni-td align="left" class="u-td">
-            <view
-              v-if="item.isVerify !== '1' && item.unit"
-              class="mini-btn m-r-5"
-              type="primary"
-              size="mini"
-              @click="onSave(item, '0')"
-              >保存</view
-            >
+            <!-- v-if="item.isVerify !== '1' && item.unit" -->
+            <view style="display: flex; align-items: center; justify-content: center">
+              <view
+                v-if="item.isVerify !== '1'"
+                class="mini-btn m-r-5"
+                type="primary"
+                size="mini"
+                @click="onSave(item, '0')"
+                >保存</view
+              >
+              <view
+                v-if="item.isVerify !== '1'"
+                type="mini-btn primary"
+                size="mini"
+                @click="onSave(item, '1')"
+                >确认
+              </view>
+            </view>
           </uni-td>
         </uni-tr>
       </uni-table>
@@ -100,17 +118,18 @@ const getCompensationCardConfig = async () => {
 
     // tableData.value = res
     let data: any = await getLandlordItemApi(commonParams.value.uid)
-    console.log(data)
+    console.log(data, '测试dada数据')
 
     data.immigrantCompensationCardList.forEach((item: any) => {
-      let index = res.findIndex((e: any) => e.id == item.id)
+      let index = res.findIndex((e: any) => e.name == item.name && e.phType == item.phType)
       if (index > -1) {
         res[index] = item
       } else {
         res.push(item)
       }
     })
-    dataList.value = res.filter((item: any) => item.type === '3')
+    // res.filter((item) => item.phType == 'Company')
+    dataList.value = res.filter((item: any) => item.isUpdate == '1' && item.phType == 'Company')
     console.log('合并', dataList.value, res, data.immigrantCompensationCardList)
   }
 }

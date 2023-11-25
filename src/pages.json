@@ -423,6 +423,20 @@
 			}
 		},
 		{
+			"name": "selfconfirmReward",
+			"path": "pages/selfPerson/createCard/confirmReward",
+			"style": {
+				"navigationBarTitleText": "移民建卡奖励资费确认"
+			}
+		},
+		{
+			"name": "enterconfirmReward",
+			"path": "pages/enterprise/createCard/confirmReward",
+			"style": {
+				"navigationBarTitleText": "移民建卡奖励资费确认"
+			}
+		},
+		{
 			"name": "selfBuildHouseFill",
 			"path": "pages/household/relocatePlacement/selfBuildHouseFill",
 			"style": {
