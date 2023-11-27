@@ -113,3 +113,8 @@ export const getCompensationCardConfigApi = () => {
 export const getImpHomeCollectApi = () => {
   return OtherController.getOtherWithType(OtherDataType.ImpHomeCollect)
 }
+
+// 获取资产评估-首页统计信息
+export const getImpHomeCollectDtoApi = () => {
+  return OtherController.getOtherWithType(OtherDataType.EvaluatorStatisticsDto)
+}

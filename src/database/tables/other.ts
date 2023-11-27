@@ -14,7 +14,8 @@ export enum OtherDataType {
   ImpHomeCollect = 'impHomeCollect', // 实施阶段首页统计
   RankDtoList = 'rankDtoList', // 首页排行榜
   FeedbackDtoList = 'feedbackDtoList', // 问题反馈
-  PgTop = 'pgTop' //TOP5首页排行榜
+  PgTop = 'pgTop', //TOP5首页排行榜
+  EvaluatorStatisticsDto = 'evaluatorStatisticsDto' //资产评估首页
 }
 
 export interface OtherDDLType {

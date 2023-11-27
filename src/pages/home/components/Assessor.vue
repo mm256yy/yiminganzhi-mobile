@@ -20,28 +20,28 @@
           <view class="enter-title">
             <text class="title-txt">居民户</text>
             <view class="flex">
-              <text class="count-num"> {{ homeCollect.peasantHouseholdNum }}</text>
+              <text class="count-num"> {{ homeCollect.peasantCount }}</text>
               <text class="count-unit"> 户 </text>
             </view>
           </view>
         </view>
         <view class="row-field">
           <view class="field-box">
-            <view class="line-1">1</view>
+            <view class="line-1">{{ homeCollect.peasantCompleteCount }}</view>
             <view class="flex">
               <view class="common-dot red" />
               <view class="line-2">已评估</view>
             </view>
           </view>
           <view class="field-box">
-            <view class="line-1">2</view>
+            <view class="line-1">{{ homeCollect.peasantUncompletedCount }}</view>
             <view class="flex">
               <view class="common-dot yellow" />
               <view class="line-2">未评估</view>
             </view>
           </view>
           <view class="field-box">
-            <view class="line-1">3</view>
+            <view class="line-1">{{ homeCollect.peasantMyCompleteCount }}</view>
             <view class="flex">
               <view class="common-dot green" />
               <view class="line-2">我的评估</view>
@@ -58,28 +58,28 @@
           <view class="enter-title">
             <text class="title-txt">企业</text>
             <view class="flex">
-              <text class="count-num"> {{ homeCollect.companyNum }} </text>
+              <text class="count-num"> {{ homeCollect.companyCount }} </text>
               <text class="count-unit"> 家 </text>
             </view>
           </view>
         </view>
         <view class="row-field">
           <view class="field-box">
-            <view class="line-1">1</view>
+            <view class="line-1">{{ homeCollect.companyCompleteCount }}</view>
             <view class="flex">
               <view class="common-dot red" />
               <view class="line-2 red">已评估</view>
             </view>
           </view>
           <view class="field-box">
-            <view class="line-1">1</view>
+            <view class="line-1">{{ homeCollect.companyUncompletedCount }}</view>
             <view class="flex">
               <view class="common-dot yellow" />
               <view class="line-2">未评估</view>
             </view>
           </view>
           <view class="field-box">
-            <view class="line-1">1</view>
+            <view class="line-1">{{ homeCollect.companyMyCompleteCount }}</view>
             <view class="flex">
               <view class="common-dot green" />
               <view class="line-2">我的评估</view>
@@ -96,28 +96,28 @@
           <view class="enter-title">
             <text class="title-txt">个体户</text>
             <view class="flex">
-              <text class="count-num">{{ homeCollect.individualNum }}</text>
+              <text class="count-num">{{ homeCollect.individualCount }}</text>
               <text class="count-unit"> 户 </text>
             </view>
           </view>
         </view>
         <view class="row-field">
           <view class="field-box">
-            <view class="line-1">1</view>
+            <view class="line-1">{{ homeCollect.individualCompleteCount }}</view>
             <view class="flex">
               <view class="common-dot red" />
               <view class="line-2 red">已评估</view>
             </view>
           </view>
           <view class="field-box">
-            <view class="line-1">1</view>
+            <view class="line-1">{{ homeCollect.individualUncompletedCount }}</view>
             <view class="flex">
               <view class="common-dot yellow" />
               <view class="line-2">未评估</view>
             </view>
           </view>
           <view class="field-box">
-            <view class="line-1">1</view>
+            <view class="line-1">{{ homeCollect.individualMyCompleteCount }}</view>
             <view class="flex">
               <view class="common-dot green" />
               <view class="line-2">我的评估</view>
@@ -134,28 +134,28 @@
           <view class="enter-title">
             <text class="title-txt">村集体</text>
             <view class="flex">
-              <text class="count-num">{{ homeCollect.villageNum }}</text>
+              <text class="count-num">{{ homeCollect.villageCount }}</text>
               <text class="count-unit">户</text>
             </view>
           </view>
         </view>
         <view class="row-field">
           <view class="field-box">
-            <view class="line-1">1</view>
+            <view class="line-1">{{ homeCollect.villageCompleteCount }}</view>
             <view class="flex">
               <view class="common-dot red" />
               <view class="line-2 red">已评估</view>
             </view>
           </view>
           <view class="field-box">
-            <view class="line-1">1</view>
+            <view class="line-1">{{ homeCollect.villageUncompletedCount }}</view>
             <view class="flex">
               <view class="common-dot yellow" />
               <view class="line-2">未评估</view>
             </view>
           </view>
           <view class="field-box">
-            <view class="line-1">1</view>
+            <view class="line-1">{{ homeCollect.villageMyCompleteCount }}</view>
             <view class="flex">
               <view class="common-dot green" />
               <view class="line-2">我的评估</view>
@@ -212,52 +212,46 @@ import { onShow } from '@dcloudio/uni-app'
 import { getStorage, StorageKey, routerForward } from '@/utils'
 import Echart from './GroupTopFive.vue'
 import MessageNotice from './MessageNoticeFive.vue'
-import { getImpHomeCollectApi } from '@/service'
+import { getImpHomeCollectDtoApi } from '@/service'
 
 const emit = defineEmits(['toLink', 'loginIn'])
 const userInfo = ref<any>(null)
 const projectInfo = ref<any>(null)
 interface HomeCollectType {
-  peasantHouseholdNum: number
-  peasantHouseholdLagNum: number
-  peasantHouseholdWarnNum: number
-  peasantHouseholdDoneNum: number
-
-  companyNum: number
-  companyLagNum: number
-  companyWarnNum: number
-  companyDoneNum: number
-
-  individualNum: number
-  individualLagNum: number
-  individualWarnNum: number
-  individualDoneNum: number
-
-  villageNum: number
-  villageLagNum: number
-  villageWarnNum: number
-  villageDoneNum: number
+  peasantCount: number
+  peasantCompleteCount: number
+  peasantMyCompleteCount: number
+  peasantUncompletedCount: number
+  companyCount: number
+  companyCompleteCount: number
+  companyMyCompleteCount: number
+  companyUncompletedCount: number
+  individualCount: number
+  individualCompleteCount: number
+  individualMyCompleteCount: number
+  individualUncompletedCount: number
+  villageCount: number
+  villageCompleteCount: number
+  villageMyCompleteCount: number
+  villageUncompletedCount: number
 }
 const homeCollect = ref<HomeCollectType>({
-  peasantHouseholdNum: 0,
-  peasantHouseholdLagNum: 0,
-  peasantHouseholdWarnNum: 0,
-  peasantHouseholdDoneNum: 0,
-
-  companyNum: 0,
-  companyLagNum: 0,
-  companyWarnNum: 0,
-  companyDoneNum: 0,
-
-  individualNum: 0,
-  individualLagNum: 0,
-  individualWarnNum: 0,
-  individualDoneNum: 0,
-
-  villageNum: 0,
-  villageLagNum: 0,
-  villageWarnNum: 0,
-  villageDoneNum: 0
+  peasantCount: 0,
+  peasantCompleteCount: 0,
+  peasantMyCompleteCount: 0,
+  peasantUncompletedCount: 0,
+  companyCount: 0,
+  companyCompleteCount: 0,
+  companyMyCompleteCount: 0,
+  companyUncompletedCount: 0,
+  individualCount: 0,
+  individualCompleteCount: 0,
+  individualMyCompleteCount: 0,
+  individualUncompletedCount: 0,
+  villageCount: 0,
+  villageCompleteCount: 0,
+  villageMyCompleteCount: 0,
+  villageUncompletedCount: 0
 })
 const seachName = ref<string>('')
 
@@ -283,9 +277,8 @@ onShow(() => {
   projectInfo.value = project
 })
 onMounted(() => {
-  getImpHomeCollectApi().then((res) => {
+  getImpHomeCollectDtoApi().then((res) => {
     if (res) {
-      console.log(res, 'getImpHomeCollectApi')
       homeCollect.value = { ...homeCollect.value, ...res }
     }
   })

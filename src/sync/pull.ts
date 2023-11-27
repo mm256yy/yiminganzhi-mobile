@@ -111,7 +111,8 @@ class PullData {
       immigrantCompensationCardConfig: [],
       rankDtoList: [],
       feedbackDtoList: [],
-      pgTop: []
+      pgTop: [],
+      evaluatorStatisticsDto: null
     }
 
     this.districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
@@ -406,7 +407,8 @@ class PullData {
       individualWarnNum,
 
       villageLagNum,
-      villageWarnNum
+      villageWarnNum,
+      evaluatorStatisticsDto
     } = result
     // 需要reset
     this.state.deleteRecordList = deleteRecordList
@@ -431,7 +433,7 @@ class PullData {
 
     this.state.villageLagNum = villageLagNum
     this.state.villageWarnNum = villageWarnNum
-
+    this.state.evaluatorStatisticsDto = evaluatorStatisticsDto
     // 数据 新增 修改 删除一起进行
     this.pullVillageList().then((res) => {
       res && this.count++
@@ -959,7 +961,8 @@ class PullData {
         individualLagNum,
         individualWarnNum,
         villageLagNum,
-        villageWarnNum
+        villageWarnNum,
+        evaluatorStatisticsDto
       } = this.state
       await db.transaction('begin').catch(() => {
         resolve(false)
@@ -1043,7 +1046,15 @@ class PullData {
         villageDoneNum: villageNum - villageLagNum - villageWarnNum
       })}','${getCurrentTimeStamp()}'`
       db.insertOrReplaceData(OtherTableName, values, fields)
-
+      //资产评估统计首页
+      if (evaluatorStatisticsDto) {
+        const fields = "'type','content','updatedDate'"
+        const values = `'${OtherDataType.EvaluatorStatisticsDto}','${JSON.stringify(
+          evaluatorStatisticsDto
+        )}','${getCurrentTimeStamp()}'`
+        console.log(values, '测试资产评估统计首页')
+        db.insertOrReplaceData(OtherTableName, values, fields)
+      }
       // 排行榜
       if (rankDtoList && rankDtoList.length) {
         const fields = "'type','content','updatedDate'"

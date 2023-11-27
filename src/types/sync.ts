@@ -270,6 +270,7 @@ export interface StateType {
   rankDtoList: any[]
   feedbackDtoList: any[]
   pgTop: any[]
+  evaluatorStatisticsDto: any
 }
 
 export interface PushStateType {

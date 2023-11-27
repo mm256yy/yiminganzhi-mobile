@@ -122,7 +122,11 @@
           <view class="col">
             <view class="label">成立日期：</view>
             <view class="content">
-              {{ dayjs(dataInfo.company?.establishDate).format('YYYY-MM-YY') }}
+              {{
+                dataInfo.company?.establishDate
+                  ? dayjs(dataInfo.company?.establishDate).format('YYYY-MM-YY')
+                  : '-'
+              }}
             </view>
           </view>
         </uni-col>

@@ -18,22 +18,23 @@
       </view> -->
 
       <view class="echart-wrap">
-        <!-- v-for="item in echartOptions" :key="item.index" -->
-        <view class="echart-item">
-          <view class="echart-item-lt">
-            <!-- <image class="top-img" :src="item.img" mode="scaleToFill" /> -->
-            <!-- <text class="user-name">{{ item.name }}</text> -->
-            <text class="user-name">测试数据</text>
-          </view>
+        <view v-for="item in echartOptions" :key="item.index">
+          <view class="echart-item">
+            <view class="echart-item-lt">
+              <!-- <image class="top-img" :src="item.img" mode="scaleToFill" /> -->
+              <text class="user-name">{{ item.userName }}</text>
+              <!-- <text class="user-name">测试数据</text> -->
+            </view>
 
-          <view class="echart-item-ct">
-            <!-- <view class="progress" :style="{ width: `${item.progress}%` }" /> -->
-            <view class="progress" style="width: 30%" />
-          </view>
+            <view class="echart-item-ct">
+              <view class="progress" :style="{ width: `${item.countComplete}%` }" />
+              <!-- <view class="progress" style="width: 30%" /> -->
+            </view>
 
-          <view class="echart-item-rt">
-            <!-- <text class="txt">{{ item.number }}户</text> -->
-            <text class="txt">123户</text>
+            <view class="echart-item-rt">
+              <text class="txt">{{ item.countComplete }}户</text>
+              <!-- <text class="txt">123户</text> -->
+            </view>
           </view>
         </view>
       </view>
@@ -54,11 +55,14 @@ import top5_5 from '@/static/images/statistic_top5.png'
 import { OtherDataType } from '@/database'
 
 interface OptionsType {
-  name: string
-  number: number
-  index?: number
-  progress?: number
-  img?: string
+  // name: string
+  // number: number
+  // index?: number
+  // progress?: number
+  // img?: string
+  userName?: string
+  countComplete?: number
+  index?: any
 }
 
 // const currentTab = ref(0)
@@ -111,40 +115,40 @@ const getImg = (index: number) => {
 const getStatisticDataRequest = async () => {
   console.log('11111111111111111')
   const data: any = await getStatisticApi(OtherDataType.PgTop)
-  statisticData.value = data
+  echartOptions.value = data
   console.log(data, 'data')
-  getStatisticData()
+  // getStatisticData()
 }
 
-const getStatisticData = (id?: number) => {
-  let max = 0
-  let arr: any = []
-  if (id) {
-    arr =
-      id === 1
-        ? statisticData.value?.homeReportTopToday
-        : id === 2
-        ? statisticData.value?.homeSignTop
-        : statisticData.value?.homeSignTopToday
-  } else {
-    arr = statisticData.value?.homeReportTop
-  }
-  const top5Array = arr.slice(0, 5)
-  const options = top5Array.map((item: Top5ItemType, index: number) => {
-    if (index === 0) {
-      max = item.number
-    }
-    return {
-      ...item,
-      index,
-      progress: ((item.number / max) * 100) | 0,
-      img: getImg(index)
-    }
-  })
+// const getStatisticData = (id?: number) => {
+//   let max = 0
+//   let arr: any = []
+//   if (id) {
+//     arr =
+//       id === 1
+//         ? statisticData.value?.homeReportTopToday
+//         : id === 2
+//         ? statisticData.value?.homeSignTop
+//         : statisticData.value?.homeSignTopToday
+//   } else {
+//     arr = statisticData.value?.homeReportTop
+//   }
+//   const top5Array = arr.slice(0, 5)
+//   const options = top5Array.map((item: Top5ItemType, index: number) => {
+//     if (index === 0) {
+//       max = item.number
+//     }
+//     return {
+//       ...item,
+//       index,
+//       progress: ((item.number / max) * 100) | 0,
+//       img: getImg(index)
+//     }
+//   })
 
-  echartOptions.value = options
-  console.log(echartOptions.value, '测试工作组TOP5')
-}
+//   echartOptions.value = options
+//   console.log(echartOptions.value, '测试工作组TOP5')
+// }
 
 // const tabChange = (id: number) => {
 //   if (currentTab.value === id) {
@@ -254,7 +258,7 @@ onMounted(() => {
       }
 
       .user-name {
-        width: 32rpx; // 32
+        width: 65rpx; // 32
         overflow: hidden;
         font-size: 8rpx;
         font-weight: 400;

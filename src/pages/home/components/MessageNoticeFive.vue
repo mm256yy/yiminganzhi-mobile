@@ -56,13 +56,17 @@
         </view>
         <view class="list">
           <view class="item-title" v-for="(item, index) in feedbackList" :key="index">
-            <view>
+            <!-- <view>
               <text class="item-index">{{ index + 1 }}</text>
               <text class="item-content">{{ item.remark }}</text>
-            </view>
-            <text class="item-time">{{
+            </view> -->
+            <text class="item-content">{{ item.householder }}</text>
+            <text class="item-content">{{ item.typeText }}</text>
+            <text class="item-content">{{ item.remark }}</text>
+            <text class="item-content">{{
               item.createdDate ? dayjs(item.createdDate).format('YYYY-MM-DD') : '-'
             }}</text>
+            <text class="item-content">{{ item.statusText }}</text>
           </view>
         </view>
       </div>
