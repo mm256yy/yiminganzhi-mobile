@@ -292,7 +292,7 @@ const onArchives = () => {
 
 // 编辑
 const toEdit = () => {
-  routerForward('migrateCardEdit', {
+  routerForward('selfmigrateCardEdit', {
     uid: props.dataInfo.uid
   })
 }

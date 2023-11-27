@@ -296,7 +296,7 @@ const onArchives = () => {
 
 // 编辑
 const toEdit = () => {
-  routerForward('migrateCardEdit', {
+  routerForward('entermigrateCardEdit', {
     uid: props.dataInfo.uid
   })
 }

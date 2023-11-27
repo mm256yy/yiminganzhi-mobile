@@ -6,6 +6,36 @@
         <uni-row>
           <uni-col :span="24">
             <uni-forms-item
+              label="迁前厂址"
+              :label-width="150"
+              label-align="right"
+              name="formData.beforeAddress"
+            >
+              <uni-easyinput v-model="formData.beforeAddress" type="text" placeholder="请输入" />
+            </uni-forms-item>
+          </uni-col>
+          <uni-col :span="24">
+            <uni-forms-item
+              label="安置厂址"
+              :label-width="150"
+              label-align="right"
+              name="formData.afterAddress"
+            >
+              <uni-easyinput v-model="formData.afterAddress" type="text" placeholder="请输入" />
+            </uni-forms-item>
+          </uni-col>
+          <uni-col :span="24">
+            <uni-forms-item
+              label="企业总人口数"
+              :label-width="150"
+              label-align="right"
+              name="formData.peopleNumber"
+            >
+              <uni-easyinput v-model="formData.peopleNumber" type="text" placeholder="请输入" />
+            </uni-forms-item>
+          </uni-col>
+          <uni-col :span="24">
+            <uni-forms-item
               label="开户名"
               :label-width="150"
               label-align="right"

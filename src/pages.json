@@ -416,6 +416,20 @@
 			}
 		},
 		{
+			"name": "selfmigrateCardEdit",
+			"path": "pages/selfPerson/createCard/edit",
+			"style": {
+				"navigationBarTitleText": "移民建卡用户信息编辑"
+			}
+		},
+		{
+			"name": "entermigrateCardEdit",
+			"path": "pages/enterprise/createCard/edit",
+			"style": {
+				"navigationBarTitleText": "移民建卡用户信息编辑"
+			}
+		},
+		{
 			"name": "confirmReward",
 			"path": "pages/household/migrateCard/confirmReward",
 			"style": {
