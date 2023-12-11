@@ -329,6 +329,7 @@ class PullData {
     getPullLandlordListApi(lastId)
       .then((res: LandlordWithPageType) => {
         if (res) {
+          console.log('接口: 调查对象数据', res)
           const { peasantHouseholdPushDtoList, lastId, pullTime } = res
           if (peasantHouseholdPushDtoList && peasantHouseholdPushDtoList.length) {
             // 需要合并数据

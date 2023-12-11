@@ -97,6 +97,8 @@ const onFilled = () => {
   }
   updateImpLandlordImmigrantFillingApi(uid, params)
     .then((res) => {
+      console.log(res, 'bbq')
+
       if (res) {
         showToast(SUCCESS_MSG)
         emit('updateData')

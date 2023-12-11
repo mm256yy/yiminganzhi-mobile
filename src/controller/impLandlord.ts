@@ -42,6 +42,7 @@ export class ImpLandlord extends Common {
       immigrantFilling,
       type
     } = landlordItem
+    console.log(landlordItem, '数据')
     const {
       produceVerifyPic,
       relocateVerifyPic,
@@ -153,15 +154,20 @@ export class ImpLandlord extends Common {
       landlordItem.immigrantFilling.relocateArrangementStatus = '0'
     }
     // 坟墓安置: 所有数据坟墓处置方式已选择，坟墓安置确认单上传完成
-    if (this.isArrayAndNotNull(immigrantGraveList)) {
-      const res = immigrantGraveList.find((item) => !item.handleWay)
-      if (!res && this.isNotNullPic(graveVerifyPic)) {
-        landlordItem.immigrantFilling.graveArrangementStatus = '1'
+    if (landlordItem.immigrantFilling.graveArrangementStatus == '1') {
+      landlordItem.immigrantFilling.graveArrangementStatus = '1'
+    } else {
+      if (this.isArrayAndNotNull(immigrantGraveList)) {
+        const res = immigrantGraveList.find((item) => !item.handleWay)
+        console.log(res, this.isNotNullPic(graveVerifyPic), '测试坟墓')
+        if (res && this.isNotNullPic(graveVerifyPic)) {
+          landlordItem.immigrantFilling.graveArrangementStatus = '1'
+        } else {
+          landlordItem.immigrantFilling.graveArrangementStatus = '0'
+        }
       } else {
         landlordItem.immigrantFilling.graveArrangementStatus = '0'
       }
-    } else {
-      landlordItem.immigrantFilling.graveArrangementStatus = '1'
     }
     // 生产安置总状态
     if (
@@ -500,6 +506,7 @@ export class ImpLandlord extends Common {
         if (res && res.uid) {
           // 赋值坟墓信息
           res.immigrantGraveList = graveList || []
+          console.log('res坟墓信息', res.immigrantGraveList)
           if (this.isArrayAndNotNull(res.demographicList)) {
             res.demographicList = res.demographicList.filter((item) => item.isDelete !== '1')
           }
@@ -762,8 +769,10 @@ export class ImpLandlord extends Common {
         /**
          * 更新填报状态
          */
+        console.log(data, '测试接口数据')
         const realData = this.updateImpFillStatus(data)
         // 拿到更新的sql字符串
+
         console.log(realData, '测试数据库字段是否正确')
         const values = getLandlordSqlValues(realData)
         // console.log('values', values, 'realData', realData)

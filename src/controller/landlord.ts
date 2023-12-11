@@ -374,7 +374,7 @@ export class Landlord extends Common {
           '0'
         )
         const res: LandlordType = result && result[0] ? JSON.parse(result[0].content) : {}
-
+        console.log(res, '居民户列表1111')
         // 获取坟墓信息
         const graveList = await GraveController.getListWithLandlord(res.type, res.doorNo)
         if (res && res.uid) {

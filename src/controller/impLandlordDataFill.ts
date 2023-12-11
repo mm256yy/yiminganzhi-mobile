@@ -1926,6 +1926,7 @@ class ImpDataFill extends ImpLandlord {
         }
 
         // 更新数据
+        console.log(landlordItem, '测试填报完成接口')
         const updateRes = await this.updateLandlord(landlordItem)
         updateRes ? resolve(true) : reject(false)
       } catch (error) {
