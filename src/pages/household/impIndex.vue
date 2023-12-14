@@ -40,7 +40,7 @@ onLoad((option) => {
  */
 const getLandlordDetail = (uid: string) => {
   getImpLandlordItemApi(uid).then((res: any) => {
-    console.log('res:', res)
+    console.log('bbq:', res)
     dataInfo.value = { ...res }
   })
 }

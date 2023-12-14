@@ -264,6 +264,8 @@ const getRoleAndStageStatus = () => {
   // 资产评估人员	assessor assessorland
   // 实物复核人员 reviewer
   const projectInfo = getStorage(StorageKey.PROJECTINFO)
+  console.log('role', role)
+
   if (role === RoleCodeType.investigator) {
     stageStatus = MainStage.survey
   } else if (

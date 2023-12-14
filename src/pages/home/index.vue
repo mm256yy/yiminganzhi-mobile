@@ -10,9 +10,9 @@
           <view class="status" v-if="projectInfo">
             {{
               homeViewType === RoleCodeType.investigator
-                ? projectInfo.status && projectInfo.status === 'review'
-                  ? '（实物复核）'
-                  : '（实物采集）'
+                ? '（实物采集）'
+                : homeViewType === RoleCodeType.reviewer
+                ? '（实物复核）'
                 : '（移民实施）'
             }}
           </view>
@@ -30,7 +30,7 @@
       <!-- 根据不同的角色 展示不同的视图 -->
       <!-- 实物调查的首页 -->
       <Investigator
-        v-if="homeViewType === RoleCodeType.investigator"
+        v-if="homeViewType === RoleCodeType.investigator || homeViewType === RoleCodeType.reviewer"
         @to-link="toLink"
         @login-in="loginIn"
       />
@@ -158,6 +158,8 @@ const getImageObj = async () => {
 onBeforeMount(() => {
   // 不同角色展示不同的首页视图
   const role = getStorage(StorageKey.USERROLE)
+  console.log(role, 'role')
+
   homeViewType.value = role
 })
 

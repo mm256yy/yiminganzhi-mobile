@@ -46,7 +46,7 @@ function baseRequest(method: MethodType, option: UniApp.RequestOptions) {
       'content-type': 'application/json; charset=utf-8',
       ...header
     }
-    console.log('接口头部信息：', realHeader)
+    console.log('接口头部信息：', realHeader, 'api', url)
     uni.request({
       url: apiBaseUrl + url,
       method,
@@ -74,7 +74,7 @@ function baseRequest(method: MethodType, option: UniApp.RequestOptions) {
         }
       },
       fail: (err) => {
-        console.log('接口返回 err：', err)
+        console.log('接口返回 err：', err, '接口头部信息：', realHeader, 'api', url)
         rejectHandle(
           {
             code: -1,
