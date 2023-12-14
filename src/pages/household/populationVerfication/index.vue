@@ -1,7 +1,7 @@
 <template>
   <view class="population-wrapper">
     <!-- 居民户实施 —— 人口核定 -->
-    <view class="btn-wrapper">
+    <view class="btn-wrapper" v-if="props.dataInfo.immigrantFilling.populationStatus == '0'">
       <view class="btns green" @click="onFilled">
         <image class="icon" src="@/static/images/icon_sign_white.png" mode="scaleToFill" />
         <text class="txt">填报完成</text>
@@ -124,6 +124,7 @@ const reason = ref<string>('') // 删除原因
 // 填报完成
 const onFilled = () => {
   const { uid } = props.dataInfo
+  console.log(props.dataInfo, '测试dataInfo')
   let params = {
     populationStatus: '1'
   }

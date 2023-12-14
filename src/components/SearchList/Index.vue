@@ -8,7 +8,7 @@
         <label class="right" @click="confirmSelect">确定</label>
       </view>
     </view>
-    <view class="search-input">
+    <!-- <view class="search-input">
       <input
         class="input-txt"
         v-model="name"
@@ -17,6 +17,17 @@
         placeholder="请输入"
         @confirm="confirm"
       />
+      <div>1</div>
+    </view> -->
+    <view class="search">
+      <view class="search-input">
+        <!-- <input type="text" placeholder="请输入户号、名称、联系方式" v-model.trim="seachName" /> -->
+        <input v-model="name" type="text" :confirm-type="'search'" placeholder="请输入" />
+      </view>
+      <view class="search-btn" @click="confirm">
+        <image class="search-icon" src="@/static/images/icon_search_white.png" mode="aspectFit" />
+        <text class="search-txt">查询</text>
+      </view>
     </view>
     <view class="search-list" v-if="dataList && dataList.length > 0">
       <view class="search-item" v-for="(item, index) in dataList" :key="index">
@@ -108,8 +119,8 @@ const getLandlordListBySearch = (name: string, type: any) => {
  * @param{Object} e
  */
 const confirm = (e: any) => {
-  name.value = e.detail.value
-  console.log(e.detail.value, 'ipt')
+  // name.value = e.detail.value
+  // console.log(e.detail.value, 'ipt')
   dataList.value = []
   getLandlordListBySearch(name.value, props.type)
 }
@@ -215,25 +226,76 @@ const confirmSelect = () => {
     }
   }
 
-  .search-input {
-    width: calc(100% - 30rpx);
-    height: 30rpx;
-    padding: 0 7rpx;
-    margin: 0 auto;
-    background-color: #fff;
-    border-radius: 5rpx;
-    box-sizing: border-box;
+  // .search-input {
+  //   width: calc(100% - 100rpx);
+  //   height: 30rpx;
+  //   padding: 0 7rpx;
+  //   margin: 0 auto;
+  //   background-color: #fff;
+  //   border-radius: 5rpx;
+  //   box-sizing: border-box;
+  //   display:flex;
+  //   ::v-deep.uni-input-input,
+  //   ::v-deep.uni-input-placeholder {
+  //     font-size: 9rpx !important;
+  //   }
 
-    ::v-deep.uni-input-input,
-    ::v-deep.uni-input-placeholder {
-      font-size: 9rpx !important;
+  //   .input-txt {
+  //     height: 30rpx;
+  //     font-size: 9rpx;
+  //     line-height: 30rpx;
+  //     color: #171718;
+  //   }
+  // }
+  .search {
+    display: flex;
+    width: 675rpx;
+    height: 28rpx;
+    margin: 0 auto;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 5rpx;
+    justify-content: center;
+
+    .search-input {
+      width: 675rpx;
+      height: 28rpx;
+      padding-left: 12rpx;
+      line-height: 28rpx;
+      text-align: left;
+      border-radius: 5rpx 0 0 5rpx;
+
+      input {
+        width: 600rpx;
+        height: 28rpx;
+        font-size: 10rpx;
+        line-height: 28rpx;
+        color: rgba(19, 19, 19, 0.4);
+      }
     }
 
-    .input-txt {
-      height: 30rpx;
-      font-size: 9rpx;
-      line-height: 30rpx;
-      color: #171718;
+    .search-btn {
+      display: flex;
+      width: 60rpx;
+      height: 28rpx;
+      overflow: hidden;
+      // background: linear-gradient(270deg, #ffb11a 0%, #ff9432 100%);
+      background: #0c64eb;
+      border-radius: 0 5rpx 5rpx 0;
+      justify-content: center;
+      align-items: center;
+
+      .search-icon {
+        width: 14rpx;
+        height: 14rpx;
+      }
+
+      .search-txt {
+        margin-left: 5rpx;
+        font-size: 9rpx;
+        font-weight: 400;
+        color: #f7f8fa;
+      }
     }
   }
 

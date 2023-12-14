@@ -79,6 +79,12 @@ watch(
   (val) => {
     if (val) {
       tableData.value = val
+      // val.forEach((item,index) => {
+      //   if(item.name=='人口增计'){
+      //      val.splice(index,1)
+      //      tableData.value = val
+      //   }
+      // })
     }
   },
   { immediate: true, deep: true }

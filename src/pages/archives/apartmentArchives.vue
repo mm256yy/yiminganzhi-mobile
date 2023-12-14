@@ -26,7 +26,6 @@
 
         <uni-col :span="24">
           <uni-forms-item
-            required
             label="购房测算表："
             :label-width="150"
             label-align="right"

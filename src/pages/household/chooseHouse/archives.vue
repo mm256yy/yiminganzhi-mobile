@@ -159,7 +159,7 @@
 
             <uni-col :span="12">
               <uni-forms-item
-                :label="item.houseAreaType === 'housestead' ? '择址顺序号凭证' : '择房顺序号凭证'"
+                :label="commonParams.type === 'homestead' ? '择址顺序号凭证' : '择房顺序号凭证'"
                 :label-width="150"
                 label-align="right"
                 name="settleAddress"
@@ -177,7 +177,7 @@
             <uni-col :span="12">
               <uni-forms-item
                 required
-                :label="item.houseAreaType === 'housestead' ? '择址确认单' : '择房确认单'"
+                :label="commonParams.type === 'homestead' ? '择址确认单' : '择房确认单'"
                 :label-width="150"
                 label-align="right"
                 name="settleAddress"

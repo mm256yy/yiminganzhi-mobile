@@ -139,7 +139,20 @@ export const householdSidebarList = [
             filled: false,
             iconDef: iconTdfzwDef,
             iconSel: iconTdfzwSel
-          },
+          }
+          // {
+          //   label: '模拟安置',
+          //   value: 6,
+          //   filled: false,
+          //   iconDef: iconMnazDef,
+          //   iconSel: iconMnazSel
+          // }
+        ]
+      },
+      {
+        title: '',
+        filled: false,
+        list: [
           {
             label: '模拟安置',
             value: 6,
@@ -217,6 +230,19 @@ export const householdSidebarList = [
         ]
       },
       {
+        title: '',
+        filled: false,
+        list: [
+          {
+            label: '动迁协议',
+            value: 17,
+            filled: false,
+            iconDef: iconDqxyDef,
+            iconSel: iconDqxySel
+          }
+        ]
+      },
+      {
         title: '腾空过渡',
         filled: false,
         list: [
@@ -242,20 +268,20 @@ export const householdSidebarList = [
             iconSel: iconGdazSel
           }
         ]
-      },
-      {
-        title: '',
-        filled: false,
-        list: [
-          {
-            label: '动迁协议',
-            value: 17,
-            filled: false,
-            iconDef: iconDqxyDef,
-            iconSel: iconDqxySel
-          }
-        ]
       }
+      // {
+      //   title: '',
+      //   filled: false,
+      //   list: [
+      //     {
+      //       label: '动迁协议',
+      //       value: 17,
+      //       filled: false,
+      //       iconDef: iconDqxyDef,
+      //       iconSel: iconDqxySel
+      //     }
+      //   ]
+      // }
     ]
   },
   {
@@ -605,7 +631,7 @@ export const collectiveSidebarList = [
     ]
   },
   {
-    title: '安置阶段',
+    title: '',
     filled: false,
     list: [
       {

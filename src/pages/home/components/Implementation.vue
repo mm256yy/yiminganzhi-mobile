@@ -228,7 +228,7 @@
         </view>
         <image class="arrow-icon" src="@/static/images/home_arrow.png" mode="scaleToFill" />
       </view>
-
+      <!-- v-if="roleType=='investigator'&&roleType == 'assessor' && roleType == 'assessorland'" -->
       <view class="other-item" @click="toLink('work')">
         <view class="inner">
           <image class="other-icon" src="@/static/images/work_enter.png" mode="scaleToFill" />
@@ -255,7 +255,7 @@ import { getStorage, StorageKey, routerForward } from '@/utils'
 import Echart from './WorkGroupChart.vue'
 import MessageNotice from './MessageNotice.vue'
 import { getImpHomeCollectApi } from '@/service'
-
+import { RoleCodeType } from '@/types/common'
 interface HomeCollectType {
   peasantHouseholdNum: number
   peasantHouseholdLagNum: number
@@ -277,7 +277,7 @@ interface HomeCollectType {
   villageWarnNum: number
   villageDoneNum: number
 }
-
+const roleType = ref<RoleCodeType>(getStorage(StorageKey.USERROLE))
 const emit = defineEmits(['toLink', 'toParamsLink', 'loginIn'])
 const userInfo = ref<any>(null)
 const projectInfo = ref<any>(null)
