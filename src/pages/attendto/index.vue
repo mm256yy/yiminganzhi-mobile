@@ -143,6 +143,7 @@ const getLandlordDetail = async () => {
     const res = await getImpLandlordItemApi(query.value.uid)
     if (res) {
       dataInfo.value = res
+      console.log(dataInfo.value, '档案上传数据显示')
     }
   }
 }

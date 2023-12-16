@@ -271,34 +271,32 @@ const submit = () => {
   } else if (!formData.value.populationNature && formData.value.addReason !== '3') {
     showToast('请选择人口性质')
     return
-  } else if (!formData.value.name && type === 'edit' && formData.value.addReason !== '3') {
+  } else if (!formData.value.name && formData.value.addReason !== '3') {
     showToast('请输入姓名')
     return
-  } else if (!formData.value.sex && type === 'edit' && formData.value.addReason !== '3') {
+  } else if (!formData.value.sex && formData.value.addReason !== '3') {
     showToast('请选择性别')
     return
-  } else if (!formData.value.card && type === 'edit' && formData.value.addReason !== '3') {
+  } else if (!formData.value.card && formData.value.addReason !== '3') {
     showToast('请输入身份证号')
     return
-  } else if (!formData.value.relation && type === 'edit' && formData.value.addReason !== '3') {
+  } else if (!formData.value.relation && formData.value.addReason !== '3') {
     showToast('请选择与户主关系')
     return
-  } else if (!formData.value.marital && type === 'edit' && formData.value.addReason !== '3') {
+  } else if (!formData.value.marital && formData.value.addReason !== '3') {
     showToast('请选择婚姻状况')
     return
-  } else if (!formData.value.censusType && type === 'edit' && formData.value.addReason !== '3') {
+  } else if (!formData.value.censusType && formData.value.addReason !== '3') {
     showToast('请选择户籍类别')
     return
   } else if (
     (!formData.value.cardPic || formData.value.cardPic === '[]') &&
-    type === 'edit' &&
     formData.value.addReason !== '3'
   ) {
     showToast('请上传身份证照片')
     return
   } else if (
     (!formData.value.householdPic || formData.value.householdPic === '[]') &&
-    type === 'edit' &&
     formData.value.addReason !== '3'
   ) {
     showToast('请上传户口本照片')

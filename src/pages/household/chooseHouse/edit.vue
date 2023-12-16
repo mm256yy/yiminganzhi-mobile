@@ -340,6 +340,7 @@ const submit = () => {
     doorNo,
     ...formData.value
   }
+  console.log(params, '测试提交数据')
   updateImpLandlordChooseHouseApi(uid, params)
     .then((res) => {
       if (res) {

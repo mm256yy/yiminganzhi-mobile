@@ -65,7 +65,11 @@
               <view class="col">
                 <view class="label">人口性质：</view>
                 <view class="content">
-                  {{ formatDict(item.populationNature, 263) }}
+                  {{
+                    formatStr(item.name) == '增计人口'
+                      ? '增计人口'
+                      : formatDict(item.populationNature, 263)
+                  }}
                 </view>
               </view>
             </uni-col>

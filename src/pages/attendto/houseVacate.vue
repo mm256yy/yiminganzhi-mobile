@@ -67,7 +67,7 @@
         <uni-col :span="24">
           <uni-forms-item
             required
-            label="移民户主意见2："
+            :label="dataInfo?.type == 'Village' ? '村集体意见' : '移民户主意见'"
             :label-width="150"
             label-align="right"
             name="formData.houseEmptyOpinion"
