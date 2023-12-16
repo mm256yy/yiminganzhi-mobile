@@ -344,6 +344,12 @@ export class ImpLandlord extends Common {
         const res = immigrantBuildOneselfList.find((item) => item.isComplete !== '1')
         if (!res && this.isNotNullPic(buildOneselfPic) && this.isNotNullPic(buildOneselfCheckPic)) {
           landlordItem.immigrantFilling.buildOneselfStatus = '1'
+          console.log(
+            landlordItem.immigrantFilling.buildOneselfStatus,
+            immigrantSettle,
+            immigrantSettle.houseAreaType === HouseAreaType.homestead,
+            '测试111'
+          )
         } else {
           landlordItem.immigrantFilling.buildOneselfStatus = '0'
         }
@@ -387,7 +393,24 @@ export class ImpLandlord extends Common {
     } else {
       landlordItem.immigrantFilling.selfSeekingStatus = '0'
     }
-
+    // 搬迁安置联动问题
+    if (immigrantSettle && immigrantSettle.houseAreaType === HouseAreaType.homestead) {
+      landlordItem.immigrantFilling.flatsStatus = '1'
+      landlordItem.immigrantFilling.centralizedSupportStatus = '1'
+      landlordItem.immigrantFilling.selfSeekingStatus = '1'
+    } else if (immigrantSettle && immigrantSettle.houseAreaType === HouseAreaType.flat) {
+      landlordItem.immigrantFilling.buildOneselfStatus = '1'
+      landlordItem.immigrantFilling.centralizedSupportStatus = '1'
+      landlordItem.immigrantFilling.selfSeekingStatus = '1'
+    } else if (immigrantSettle && immigrantSettle.houseAreaType === HouseAreaType.concentrate) {
+      landlordItem.immigrantFilling.flatsStatus = '1'
+      landlordItem.immigrantFilling.buildOneselfStatus = '1'
+      landlordItem.immigrantFilling.selfSeekingStatus = '1'
+    } else if (immigrantSettle && immigrantSettle.houseAreaType === HouseAreaType.oneself) {
+      landlordItem.immigrantFilling.flatsStatus = '1'
+      landlordItem.immigrantFilling.centralizedSupportStatus = '1'
+      landlordItem.immigrantFilling.buildOneselfStatus = '1'
+    }
     // 搬迁安置 总状态 四选 1
     if (
       landlordItem.immigrantFilling.buildOneselfStatus === '1' ||

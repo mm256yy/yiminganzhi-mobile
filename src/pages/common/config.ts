@@ -42,8 +42,8 @@ import iconYmjkSel from '@/static/images/icon_ymjk_sel.png' // 引入移民建�
 import iconFwtkDef from '@/static/images/icon_fwtk_def.png' // 引入房屋腾空默认 icon
 import iconFwtkSel from '@/static/images/icon_fwtk_sel.png' // 引入房屋腾空选中时 icon
 
-import iconTdtkDef from '@/static/images/icon_Tdtk_def.png' // 引入土地腾让默认 icon
-import iconTdtkSel from '@/static/images/icon_Tdtk_sel.png' // 引入土地腾让选中时 icon
+import iconTdtkDef from '@/static/images/icon_tdtk_def.png' // 引入土地腾让默认 icon
+import iconTdtkSel from '@/static/images/icon_tdtk_sel.png' // 引入土地腾让选中时 icon
 
 import iconGdazDef from '@/static/images/icon_gdaz_def.png' // 引入过渡安置默认 icon
 import iconGdazSel from '@/static/images/icon_gdaz_sel.png' // 引入过渡安置选中时 icon
