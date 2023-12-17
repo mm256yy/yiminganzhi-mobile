@@ -353,6 +353,20 @@
 			}
 		},
 		{
+			"name": "pdf",
+			"path": "pages/archives/pdf",
+			"style": {
+				"navigationBarTitleText": "pdf预览"
+			}
+		},
+			{
+			"name": "pdfqianm",
+			"path": "pages/archives/pdfQianm",
+			"style": {
+				"navigationBarTitleText": "pdfqianm"
+			}
+		},
+		{
 			"name": "populationVerficationEdit",
 			"path": "pages/household/populationVerfication/edit",
 			"style": {
