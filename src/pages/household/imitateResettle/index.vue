@@ -126,7 +126,7 @@ const emit = defineEmits(['updateData'])
 // .filter((item) => item.name !== '增计人口')
 // 获取人口列表
 const demographicList = computed(() => {
-  return props.dataInfo && props.dataInfo.demographicList ? props.dataInfo.demographicList : []
+  return props.dataInfo && props.dataInfo.demographicList ? props.dataInfo.demographicList: []
 })
 
 // props.dataInfo &&
@@ -136,7 +136,11 @@ const demographicList = computed(() => {
 //     :
 // 获取模拟安置 生产安置信息
 const simulateDemographic = computed(() => {
-  return demographicList.value.map((item) => {
+  return props.dataInfo &&
+    props.dataInfo.simulateDemographic &&
+    props.dataInfo.simulateDemographic.length
+    ? props.dataInfo.simulateDemographic
+    :demographicList.value.map((item) => {
     const {
       id: demographicId,
       name,
