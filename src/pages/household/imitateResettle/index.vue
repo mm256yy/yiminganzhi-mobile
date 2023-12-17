@@ -78,7 +78,7 @@
       <view class="step-cont-item" v-else-if="stepIndex === 2">
         <people
           :is-edit="true"
-          :demographicList="(simulateDemographic as SimulateDemographicType[])"
+          :demographicList="(simulateDemographic as any[])"
           @submit="productionResettleSubmit"
         />
       </view>
@@ -123,43 +123,43 @@ const props = defineProps<PropsType>()
 const areaDetailSubNVue = uni.getSubNVueById('areaDetail')
 const emit = defineEmits(['updateData'])
 
+// .filter((item) => item.name !== '增计人口')
 // 获取人口列表
 const demographicList = computed(() => {
-  return props.dataInfo && props.dataInfo.demographicList
-    ? props.dataInfo.demographicList.filter((item) => item.name !== '增计人口')
-    : []
+  return props.dataInfo && props.dataInfo.demographicList ? props.dataInfo.demographicList : []
 })
 
+// props.dataInfo &&
+// props.dataInfo.simulateDemographic &&
+//     props.dataInfo.simulateDemographic.length
+//     ? props.dataInfo.simulateDemographic
+//     :
 // 获取模拟安置 生产安置信息
 const simulateDemographic = computed(() => {
-  return props.dataInfo &&
-    props.dataInfo.simulateDemographic &&
-    props.dataInfo.simulateDemographic.length
-    ? props.dataInfo.simulateDemographic
-    : demographicList.value.map((item) => {
-        const {
-          id: demographicId,
-          name,
-          sex,
-          relation,
-          card,
-          censusType,
-          populationNature,
-          settingWay,
-          settingRemark
-        } = item
-        return {
-          demographicId,
-          name,
-          sex,
-          relation,
-          card,
-          censusType,
-          populationNature,
-          settingWay,
-          settingRemark
-        }
-      })
+  return demographicList.value.map((item) => {
+    const {
+      id: demographicId,
+      name,
+      sex,
+      relation,
+      card,
+      censusType,
+      populationNature,
+      settingWay,
+      settingRemark
+    } = item
+    return {
+      demographicId,
+      name,
+      sex,
+      relation,
+      card,
+      censusType,
+      populationNature,
+      settingWay,
+      settingRemark
+    }
+  })
 })
 
 // 获取模拟安置 搬迁安置信息
