@@ -46,14 +46,14 @@
         class="picker-btn-wrapper"
         @click="choose"
       >
-        <image class="icon" src="@/static/images/icon_photo.png" mode="scaleToFill" />上传照片
+        <image class="icon" src="@/static/images/icon_photo.png" mode="scaleToFill" />{{getUploadTxt}}
       </view>
     </view>
     <view v-if="props.filesList.length === 0 && !props.isPreview" class="file-picker__box">
       <view class="file-picker__box-content is-add" @click="choose">
         <slot>
           <view class="picker-btn-wrapper m-0">
-            <image class="icon" src="@/static/images/icon_photo.png" mode="scaleToFill" />上传照片
+            <image class="icon" src="@/static/images/icon_photo.png" mode="scaleToFill" />{{getUploadTxt}}
           </view>
         </slot>
       </view>
@@ -62,7 +62,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onBeforeMount } from 'vue'
+import { ref, onBeforeMount,computed } from 'vue'
 import { networkCheck } from '@/utils'
 import defaultImg from '@/static/images/icon_null_data.png'
 
@@ -70,6 +70,7 @@ interface PropsType {
   filesList: any[]
   limit: number
   isPreview?: boolean
+  uploadType?:number
 }
 
 const netWork = ref<boolean>(true)
@@ -91,6 +92,14 @@ const save = (item: any) => {
   item.isEdit = false
   emit('updateFileList', [...props.filesList])
 }
+
+const getUploadTxt=computed(()=>{
+  if(props.uploadType){
+    return props.uploadType===1?'上传身份证正面':props.uploadType===2?'上传身份证背面':'上传照片'
+  }else{
+    return '上传照片'
+  }
+})
 
 const editFileName = (item: any) => {
   item.isEdit = true

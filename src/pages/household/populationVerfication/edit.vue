@@ -128,10 +128,30 @@
               name="formData.cardPic"
             >
               <upload-file
-                v-model="formData.cardPic"
+                v-model="formData.idCardPics1"
                 :file-list="formData.cardPic"
-                :limit="2"
+                :limit="1"
+                :uploadType="1"
                 show-type="list"
+                :accepts="['.jpg', '.png']"
+              />
+            </uni-forms-item>
+          </uni-col>
+
+          <uni-col :span="24">
+            <uni-forms-item
+              required
+              label="身份证照片"
+              :label-width="150"
+              label-align="right"
+              name="formData.cardPic"
+            >
+              <upload-file
+                v-model="formData.idCardPics2"
+                :file-list="formData.cardPic"
+                :limit="1"
+                show-type="list"
+                :uploadType="2"
                 :accepts="['.jpg', '.png']"
               />
             </uni-forms-item>
@@ -229,10 +249,13 @@ const formData = ref<any>({
   relation: '', // 与户主关系
   marital: '', // 婚姻状况
   censusType: '', // 户籍册类别
+  idCardPics1:'',  // 身份证正面照片
+  idCardPics2:'',// 身份证背面照片
   cardPic: '[]', // 身份证照片
   householdPic: '[]', // 户口本照片
   otherPic: '[]' // 其他照片
 })
+
 
 /**
  * 获取业主详情
@@ -257,10 +280,11 @@ const getLandlordDetail = () => {
 // 表单提交
 const submit = () => {
   const { uid, doorNo, type } = commonParams.value
+  const combinList=formData.value.idCardPics1.concat(formData.value.idCardPics2.value)
   const params = {
     doorNo,
     ...formData.value,
-    cardPic: fmtPicUrl(formData.value.cardPic),
+    cardPic: fmtPicUrl(combinList),
     householdPic: fmtPicUrl(formData.value.householdPic),
     otherPic: fmtPicUrl(formData.value.otherPic)
   }

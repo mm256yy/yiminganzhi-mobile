@@ -29,6 +29,7 @@
       :files-list="filesList"
       :limit="limit"
       :is-preview="isPreview"
+      :uploadType="uploadType"
       @choose="choose"
       @del-file="delFile"
       @prview-image="prviewImage"
@@ -72,6 +73,7 @@ interface PropsType {
   title?: string
   isPreview?: boolean
   notCompress?: boolean
+  uploadType?:number
 }
 
 interface FileItemType {
