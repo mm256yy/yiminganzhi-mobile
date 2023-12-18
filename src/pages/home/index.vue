@@ -5,48 +5,32 @@
       <view class="home-header">
         <view class="header-lt">
           <image class="logo" src="@/static/images/logo.png" />
-          <view class="project" v-if="roleType == RoleCodeType.investigator"
-            >移民安置综合管理服务平台V{{ appVersion }}</view
-          >
+          <view class="project" v-if="roleType == RoleCodeType.investigator">移民安置综合管理服务平台V{{ appVersion }}</view>
           <!-- &nbsp;-&nbsp; -->
-          <view
-            class="project"
-            v-if="
-              (projectInfo && roleType == RoleCodeType.assessor) ||
-              roleType == RoleCodeType.assessorland ||
-              roleType == RoleCodeType.implementation
-            "
-          >
-            {{ `${projectInfo.name}` }}</view
-          >
-          <view
-            class="status"
-            v-if="
-              (projectInfo && roleType == RoleCodeType.assessor) ||
-              roleType == RoleCodeType.assessorland ||
-              roleType == RoleCodeType.implementation
-            "
-          >
+          <view class="project" v-if="(projectInfo && roleType == RoleCodeType.assessor) ||
+            roleType == RoleCodeType.assessorland ||
+            roleType == RoleCodeType.implementation
+            ">
+            {{ `${projectInfo?.name}` }}</view>
+          <view class="status" v-if="(projectInfo && roleType == RoleCodeType.assessor) ||
+            roleType == RoleCodeType.assessorland ||
+            roleType == RoleCodeType.implementation
+            ">
             {{
               homeViewType === RoleCodeType.investigator
-                ? projectInfo.status && projectInfo.status === 'review'
-                  ? '（实物复核）'
-                  : '（实物采集）'
-                : '（移民实施）'
+              ? projectInfo.status && projectInfo.status === 'review'
+                ? '（实物复核）'
+                : '（实物采集）'
+              : '（移民实施）'
             }}
           </view>
         </view>
 
         <view class="header-rt">
-          <view
-            class="btn-item"
-            @click="toLink('project')"
-            v-if="
-              roleType != RoleCodeType.implementation &&
+          <view class="btn-item" @click="toLink('project')" v-if="roleType != RoleCodeType.implementation &&
               roleType != RoleCodeType.assessor &&
               roleType != RoleCodeType.assessorland
-            "
-          >
+              ">
             <view class="name">项目切换</view>
             <image class="icon" src="@/static/images/project_enter.png" mode="scaleToFill" />
           </view>
@@ -59,55 +43,27 @@
 
       <!-- 根据不同的角色 展示不同的视图 -->
       <!-- 实物调查的首页 -->
-      <Investigator
-        v-if="homeViewType === RoleCodeType.investigator"
-        @to-link="toLink"
-        @login-in="loginIn"
-      />
+      <Investigator v-if="homeViewType === RoleCodeType.investigator" @to-link="toLink" @login-in="loginIn" />
       <!-- 资产评估的首页 -->
-      <Assessor
-        v-else-if="
-          homeViewType === RoleCodeType.assessor || homeViewType === RoleCodeType.assessorland
-        "
-        @to-link="toLink"
-        @login-in="loginIn"
-      />
+      <Assessor v-else-if="homeViewType === RoleCodeType.assessor || homeViewType === RoleCodeType.assessorland
+        " @to-link="toLink" @login-in="loginIn" />
       <!-- 移民实施人员的首页 -->
-      <Implementation
-        v-else-if="homeViewType === RoleCodeType.implementation"
-        @to-link="toLink"
-        @to-params-link="toParamsLink"
-        @login-in="loginIn"
-      />
+      <Implementation v-else-if="homeViewType === RoleCodeType.implementation" @to-link="toLink"
+        @to-params-link="toParamsLink" @login-in="loginIn" />
 
-      <view v-if="homeViewType === RoleCodeType.implementation" class="sync-time"
-        >{{ lastConfirmTime }}
+      <view v-if="homeViewType === RoleCodeType.implementation" class="sync-time">{{ lastConfirmTime }}
       </view>
     </view>
 
     <uni-popup ref="alertDialog" type="dialog">
-      <uni-popup-dialog
-        type="warn"
-        cancelText="取消"
-        confirmText="确认"
-        title="确认退出？"
-        content="将清除本地所有数据(包含未同步数据)"
-        @confirm="dialogConfirm"
-        @close="dialogClose"
-      />
+      <uni-popup-dialog type="warn" cancelText="取消" confirmText="确认" title="确认退出？" content="将清除本地所有数据(包含未同步数据)"
+        @confirm="dialogConfirm" @close="dialogClose" />
     </uni-popup>
 
     <!-- 同步数据确认弹窗-->
     <uni-popup ref="confirmDialog" type="dialog">
-      <uni-popup-dialog
-        type="warn"
-        cancelText="取消"
-        confirmText="确认"
-        :title="lastConfirmTime"
-        content="是否确认同步数据？"
-        @confirm="confirmSync"
-        @close="closeConfirmDialog"
-      />
+      <uni-popup-dialog type="warn" cancelText="取消" confirmText="确认" :title="lastConfirmTime" content="是否确认同步数据？"
+        @confirm="confirmSync" @close="closeConfirmDialog" />
     </uni-popup>
 
     <SyncCompont ref="syncCmt" from="sync" />
@@ -152,9 +108,10 @@ const toLink = (name: string) => {
   if (name === 'sync') {
     if (homeViewType.value === RoleCodeType.implementation) {
       openConfirmDialog()
+      console.log('123');
+      return
     }
   }
-
   routerForward(name)
 }
 
@@ -307,7 +264,7 @@ onShow(() => {
 
     .sync-time {
       position: absolute;
-      bottom: 26rpx;
+      bottom: 5%;
       left: 10rpx;
       font-size: 10rpx;
     }
