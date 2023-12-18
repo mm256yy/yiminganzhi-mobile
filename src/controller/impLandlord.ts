@@ -120,14 +120,14 @@ export class ImpLandlord extends Common {
     //   }
     // }
     // 房屋产权完成条件：列表中所有数据的是否合法均已设置完成
-    if (this.isArrayAndNotNull(immigrantHouseList)) {
-      const res = immigrantHouseList.find((item) => item.isCompliance !== '1')
-      if (!res) {
-        landlordItem.immigrantFilling.propertyStatus = '1'
-      } else {
-        landlordItem.immigrantFilling.propertyStatus = '0'
-      }
-    }
+    // if (this.isArrayAndNotNull(immigrantHouseList)) {
+    //   const res = immigrantHouseList.find((item) => item.isCompliance !== '1')
+    //   if (!res) {
+    //     landlordItem.immigrantFilling.propertyStatus = '1'
+    //   } else {
+    //     landlordItem.immigrantFilling.propertyStatus = '0'
+    //   }
+    // }
     // 资格认定总状态
     if (
       landlordItem.immigrantFilling.populationStatus === '1' &&
