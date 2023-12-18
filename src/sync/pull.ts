@@ -112,7 +112,8 @@ class PullData {
       rankDtoList: [],
       feedbackDtoList: [],
       pgTop: [],
-      evaluatorStatisticsDto: null
+      evaluatorStatisticsDto: null,
+      settleAddressList:[]
     }
 
     this.districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
@@ -240,7 +241,8 @@ class PullData {
       immigrantCompensationCardConfig,
       rankDtoList,
       pgTop,
-      feedbackDtoList
+      feedbackDtoList,
+      settleAddressList
     } = result
     // 需要reset
     this.state.immigrantIncomeConfigList = immigrantIncomeConfigList
@@ -262,7 +264,7 @@ class PullData {
     this.state.rankDtoList = rankDtoList
     this.state.pgTop = pgTop
     this.state.feedbackDtoList = feedbackDtoList
-
+    this.state.settleAddressList=settleAddressList
     this.pullDict().then((res: boolean) => {
       res && this.count++
       // 重置 释放缓存
@@ -309,6 +311,7 @@ class PullData {
       this.state.rankDtoList = []
       this.state.pgTop = []
       this.state.feedbackDtoList = []
+      this.state.settleAddressList=[]
       console.log('拉取: 其他', res)
     })
   }
@@ -950,7 +953,7 @@ class PullData {
         rankDtoList,
         pgTop,
         feedbackDtoList,
-
+        settleAddressList,
         peasantHouseholdNum,
         companyNum,
         individualNum,
@@ -1081,7 +1084,14 @@ class PullData {
         )}','${getCurrentTimeStamp()}'`
         db.insertOrReplaceData(OtherTableName, values, fields)
       }
-
+     //安置地详情
+     if (settleAddressList && settleAddressList.length) {
+      const fields = "'type','content','updatedDate'"
+      const values = `'${OtherDataType.settleAddressList}','${JSON.stringify(
+        settleAddressList
+      )}','${getCurrentTimeStamp()}'`
+      db.insertOrReplaceData(OtherTableName, values, fields)
+    }
       await db.transaction('commit').catch(() => {
         resolve(false)
       })

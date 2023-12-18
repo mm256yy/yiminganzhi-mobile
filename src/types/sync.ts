@@ -271,6 +271,7 @@ export interface StateType {
   feedbackDtoList: any[]
   pgTop: any[]
   evaluatorStatisticsDto: any
+  settleAddressList:any[]
 }
 
 export interface PushStateType {

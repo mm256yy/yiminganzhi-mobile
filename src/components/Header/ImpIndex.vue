@@ -3,7 +3,8 @@
     <view class="list-header-rt">
       <view class="list-header-left">
         <view class="name">{{ dataInfo.name }}</view>
-        <view class="account-no">{{ filterViewDoorNoMd(dataInfo) }}</view>
+        <view class="account-no">{{ dataInfo.showDoorNo  }}</view>
+        <!-- {{ props.data.showDoorNo }} -->
         <view class="fill-number">
           填报进度&nbsp;
           <text class="green">{{ getProgressText.count }}</text>
