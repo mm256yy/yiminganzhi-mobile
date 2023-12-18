@@ -4,19 +4,12 @@
       <slot></slot>
     </view>
     <view v-if="props.filesList.length > 0" class="uni-file-picker__lists is-text-box">
-      <view
-        class="uni-file-picker__lists-box"
-        v-for="(item, index) in props.filesList"
-        :key="index"
-      >
+      <view class="uni-file-picker__lists-box" v-for="(item, index) in props.filesList" :key="index">
         <view class="uni-file-picker__item">
           <view class="files__image is-text-image">
             <image
-              class="header-image"
-              :src="filterImgSrc(item)"
-              mode="aspectFit"
-              @click.stop="prviewImage(item, index)"
-            />
+class="header-image" :src="filterImgSrc(item)" mode="aspectFit"
+              @click.stop="prviewImage(item, index)" />
           </view>
           <view v-if="!item.isEdit" class="files__name">{{ item.name }}</view>
           <view v-if="item.isEdit && !props.isPreview" class="files__name rename-input">
@@ -26,34 +19,23 @@
           </view>
           <view v-if="!item.isEdit && !props.isPreview" class="icon-edit-box icon-files">
             <image
-              class="icon_img"
-              src="@/static/images/icon_edit_mini.png"
-              mode="scaleToFill"
-              @click.stop="editFileName(item)"
-            />
+class="icon_img" src="@/static/images/icon_edit_mini.png" mode="scaleToFill"
+              @click.stop="editFileName(item)" />
           </view>
-          <view
-            v-if="!item.isEdit && !props.isPreview"
-            class="icon-del-box icon-files"
-            @click="delFile(index)"
-          >
+          <view v-if="!item.isEdit && !props.isPreview" class="icon-del-box icon-files" @click="delFile(index)">
             <image class="icon_img" src="@/static/images/icon_delete_mini.png" mode="scaleToFill" />
           </view>
         </view>
       </view>
-      <view
-        v-if="props.filesList.length < props.limit && !props.isPreview"
-        class="picker-btn-wrapper"
-        @click="choose"
-      >
-        <image class="icon" src="@/static/images/icon_photo.png" mode="scaleToFill" />{{getUploadTxt}}
+      <view v-if="props.filesList.length < props.limit && !props.isPreview" class="picker-btn-wrapper" @click="choose">
+        <image class="icon" src="@/static/images/icon_photo.png" mode="scaleToFill" />{{ getUploadNextTxt() }}
       </view>
     </view>
     <view v-if="props.filesList.length === 0 && !props.isPreview" class="file-picker__box">
       <view class="file-picker__box-content is-add" @click="choose">
         <slot>
           <view class="picker-btn-wrapper m-0">
-            <image class="icon" src="@/static/images/icon_photo.png" mode="scaleToFill" />{{getUploadTxt}}
+            <image class="icon" src="@/static/images/icon_photo.png" mode="scaleToFill" />{{ getUploadPreTxt() }}
           </view>
         </slot>
       </view>
@@ -62,7 +44,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onBeforeMount,computed } from 'vue'
+import { ref, onBeforeMount} from 'vue'
 import { networkCheck } from '@/utils'
 import defaultImg from '@/static/images/icon_null_data.png'
 
@@ -70,7 +52,7 @@ interface PropsType {
   filesList: any[]
   limit: number
   isPreview?: boolean
-  uploadType?:number
+  uploadType?: string
 }
 
 const netWork = ref<boolean>(true)
@@ -93,13 +75,14 @@ const save = (item: any) => {
   emit('updateFileList', [...props.filesList])
 }
 
-const getUploadTxt=computed(()=>{
-  if(props.uploadType){
-    return props.uploadType===1?'上传身份证正面':props.uploadType===2?'上传身份证背面':'上传照片'
-  }else{
-    return '上传照片'
-  }
-})
+const getUploadPreTxt = () => {
+  return props.uploadType === 'IdCard' ? '上传身份证正面' : '上传照片'
+}
+
+
+const getUploadNextTxt = () => {
+  return props.uploadType === 'IdCard' ? '上传身份证背面' : '上传照片'
+}
 
 const editFileName = (item: any) => {
   item.isEdit = true
