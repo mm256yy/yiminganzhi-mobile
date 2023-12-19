@@ -175,8 +175,6 @@ const submit = () => {
     otherPic: fmtPicUrl(formData.value.otherPic)
   }
 
-  console.log('PL', params.cardPic);
-
   if (!formData.value.addReason && type === 'add') {
     showToast('请输入新增原因')
     return

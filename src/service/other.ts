@@ -93,7 +93,8 @@ export const getStatisticApi = (type: OtherDataType) => {
 
 // 获取安置点详情
 export const getResettleDetail = (type: OtherDataType) => {
-  return OtherController.getOtherWithType(type)
+  const result=OtherController.getOtherWithType(type)
+  return result
 }
 
 /**

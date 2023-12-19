@@ -3,12 +3,12 @@
  */
 
 // 默认 dev 环境
-const apiEnv: ApiEnv = 'prod'
+const apiEnv: ApiEnv = 'local'
 
 const envMap = {
   // local: {
   //   apiBaseUrl: 'http://192.168.1.104:8880',
-  //   apiBasePath: '/api'
+  //   apiBasePath: '/api' 
   // },
   local: {
     apiBaseUrl: 'http://192.168.1.119:8880',

@@ -16,19 +16,13 @@
           <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
           <text class="txt">打印表格</text>
         </view>
-        <view
-          v-if="!dataInfo.signStatus || dataInfo.signStatus === 'UnSign'"
-          class="btn-wrapper report"
-          @click="tableSign"
-        >
+        <view v-if="!dataInfo.signStatus || dataInfo.signStatus === 'UnSign'" class="btn-wrapper report"
+          @click="tableSign">
           <image class="icon" src="@/static/images/qianzi_icon.png" mode="scaleToFill" />
           <text class="txt">报表签字</text>
         </view>
-        <view
-          v-if="!dataInfo.reportStatus || dataInfo.reportStatus === 'UnReport'"
-          class="btn-wrapper report"
-          @click="reportDataCheck"
-        >
+        <view v-if="!dataInfo.reportStatus || dataInfo.reportStatus === 'UnReport'" class="btn-wrapper report"
+          @click="reportDataCheck">
           <image class="icon" src="@/static/images/icon_report.png" mode="scaleToFill" />
           <text class="txt">填报完成</text>
         </view>
@@ -70,18 +64,9 @@
             <view v-for="(item, index) in fileList" :key="item.uid" class="file-item">
               <view class="name">{{ item.name }}</view>
               <view class="btns">
-                <image
-                  class="icon"
-                  src="@/static/images/icon_view_file.png"
-                  mode="scaleToFill"
-                  @click.stop="prviewImage(item)"
-                />
-                <image
-                  class="icon"
-                  src="@/static/images/print.png"
-                  mode="scaleToFill"
-                  @click.stop="printImage(item)"
-                />
+                <image class="icon" src="@/static/images/icon_view_file.png" mode="scaleToFill"
+                  @click.stop="prviewImage(item)" />
+                <image class="icon" src="@/static/images/print.png" mode="scaleToFill" @click.stop="printImage(item)" />
               </view>
             </view>
           </view>
@@ -90,6 +75,12 @@
           <view class="btn cancel" @click="close('print')">取消</view>
         </view>
       </view>
+    </uni-popup>
+
+    <!--报表签字二次确认-->
+    <uni-popup ref="signConfirmRef" type="dialog">
+      <uni-popup-dialog type="warn" cancelText="取消" confirmText="确认" title="提示" content="是否确认报表签字？" @confirm="signConfirm"
+        @close="closeSignConfirm" />
     </uni-popup>
   </view>
 </template>
@@ -133,7 +124,7 @@ export default {
   props: {
     dataInfo: {
       type: Object,
-      default: () => {}
+      default: () => { }
     },
     showPrint: {
       type: Boolean,
@@ -267,19 +258,30 @@ export default {
     isNotNullArray(arr: any) {
       return arr && Array.isArray(arr) && arr.length
     },
-
-    // 报表签字
-    tableSign() {
+    openSignConfirm() {
+      const ref = this.$refs.signConfirmRef as any
+      ref.open()
+    },
+    signConfirm() {
       signDataApi(this.dataInfo.uid)
         .then((res) => {
           if (res) {
             showToast(SUCCESS_MSG)
+            this.closeSignConfirm()
             this.$emit('updateData')
           }
         })
         .catch(() => {
           showToast(ERROR_MSG)
         })
+    },
+    closeSignConfirm() {
+      const ref = this.$refs.signConfirmRef as any
+      ref.close()
+    },
+    // 报表签字
+    tableSign() {
+      this.openSignConfirm()
     },
     // 数据上报校验
     reportDataCheck() {
@@ -292,14 +294,13 @@ export default {
         .then((res: any) => {
           if (res) {
             this.tipsList = res
-            ;(this.$refs.reportDataPopup as any)?.open()
+              ; (this.$refs.reportDataPopup as any)?.open()
           }
         })
         .catch((e) => {
           showToast(ERROR_MSG)
         })
     },
-
     // 数据上报
     reportData() {
       let query = {
@@ -346,7 +347,7 @@ export default {
     // 打印文件/图片
     printFile() {
       this.getPrintList(this.templateType as PrintType)
-      ;(this.$refs.printPopup as any)?.open()
+        ; (this.$refs.printPopup as any)?.open()
     },
 
     // 确认 数据上报/打印
@@ -497,11 +498,11 @@ export default {
     // 关闭弹窗
     close(type: string) {
       if (type === 'report') {
-        ;(this.$refs.reportDataPopup as any)?.close()
+        ; (this.$refs.reportDataPopup as any)?.close()
       } else if (type === 'print') {
         // 关闭打印弹窗 清理掉缓存的业主信息
         this.options.landlords = []
-        ;(this.$refs.printPopup as any)?.close()
+          ; (this.$refs.printPopup as any)?.close()
       }
     }
   }

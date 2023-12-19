@@ -4,140 +4,23 @@
       <view class="title">
         <text class="title">安置点详情</text>
       </view>
-      <image
-        class="close"
-        @click="close"
-        src="@/static/images/resettle_close.png"
-        mode="scaleToFill"
-      />
+      <image class="close" @click="close" src="@/static/images/resettle_close.png" mode="scaleToFill" />
     </view>
 
-    <view class="area-box">
+    <view class="area-box" v-loading="loading">
       <view class="tabs">
-        <view
-          class="tab-item"
-          :class="{ active: tabId === item.id }"
-          v-for="item in tabs"
-          :key="item.id"
-          @click="tabChange(item.id)"
-        >
-          <text class="txt">{{ item.name }}</text>
+        <view class="tab-item" :class="{ active: tabId === item.id }" v-for="item in tabs" :key="item.id"
+          @click="tabChange(item.id)">
+          <text class="txt" :style="{ 'color': tabId === item.id ? '#3e73ec' : '#333' }">{{ item.name }}</text>
         </view>
       </view>
 
-      <view class="tabs-cont">
-        <view v-if="tabId === 1" class="tab-cont-item">
-          <view class="common-head">
-            <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-            <text class="txt">A地块基本信息</text>
-          </view>
-
-          <view class="base-info">
-            <view class="base-column">
-              <view class="info-item">
-                <view class="label"><text class="txt">小区名称：</text></view>
-                <view class="value"><text class="txt">太阳小区</text></view>
-              </view>
-              <view class="info-item">
-                <view class="label"><text class="txt">结构类型：</text></view>
-                <view class="value"><text class="txt">钢架</text></view>
-              </view>
-              <view class="info-item">
-                <view class="label"><text class="txt">用地面积(㎡)：</text></view>
-                <view class="value"><text class="txt">20,020</text></view>
-              </view>
-              <view class="info-item">
-                <view class="label"><text class="txt">地理位置：</text></view>
-                <view class="value"><text class="txt">浙江省龙游县石乡大力山村白岩25号</text></view>
-              </view>
-            </view>
-
-            <view class="base-column">
-              <view class="info-item">
-                <view class="label"><text class="txt">绿化率：</text></view>
-                <view class="value"><text class="txt">25%</text></view>
-              </view>
-              <view class="info-item">
-                <view class="label"><text class="txt">建筑密度：</text></view>
-                <view class="value"><text class="txt">12%</text></view>
-              </view>
-              <view class="info-item">
-                <view class="label"><text class="txt">建筑面积（㎡）：</text></view>
-                <view class="value"><text class="txt">13,500</text></view>
-              </view>
-            </view>
-          </view>
-
-          <view class="common-head">
-            <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-            <text class="txt">周边配套</text>
-          </view>
-
-          <view class="periphery">
-            <view class="periphery-item">
-              <view class="label"><text class="txt">交通：</text></view>
-              <view class="value"><text class="txt">直接连接市区和机场1号线，7号线</text></view>
-            </view>
-
-            <view class="periphery-item">
-              <view class="label"><text class="txt">商业：</text></view>
-              <view class="value"><text class="txt">位于市区，各种商业配套齐全</text></view>
-            </view>
-
-            <view class="periphery-item">
-              <view class="label"><text class="txt">教育：</text></view>
-              <view class="value"
-                ><text class="txt">周边有幼儿园、小学、初中、高中，教育配套齐全</text></view
-              >
-            </view>
-
-            <view class="periphery-item">
-              <view class="label"><text class="txt">医院：</text></view>
-              <view class="value"><text class="txt">镇中心医院</text></view>
-            </view>
-          </view>
-
-          <view class="common-head">
-            <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-            <text class="txt">地图</text>
-          </view>
-
-          <view class="map-cont">
-            <map class="map" longitude="120.17327222279103" latitude="30.235643678475068"></map>
-          </view>
-
-          <view class="common-head">
-            <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-            <text class="txt">户型图</text>
-          </view>
-
-          <view class="house-pic">
-            <view class="house-info">
-              <view class="house-info-item">
-                <view class="tit"><text class="txt">4室2厅</text></view>
-                <view class="txt"><text class="txt">底层(共24层）</text></view>
-              </view>
-
-              <view class="house-info-item">
-                <view class="tit"><text class="txt">65㎡</text></view>
-                <view class="txt"><text class="txt">精装修</text></view>
-              </view>
-
-              <view class="house-info-item">
-                <view class="tit"><text class="txt">南北朝向</text></view>
-                <view class="txt"><text class="txt">2023年竣工</text></view>
-              </view>
-            </view>
-
-            <view class="pic-img-box">
-              <image
-                class="pic-img"
-                src="@/static/images/resettle_house_pic.png"
-                mode="scaleToFill"
-              />
-            </view>
-          </view>
-        </view>
+      <view>
+        <LocationDetail v-if="tabId === 0" :item="dataList[0]" />
+        <LocationDetail v-if="tabId === 1" :item="dataList[1]" />
+        <LocationDetail v-if="tabId === 2" :item="dataList[2]" />
+        <LocationDetail v-if="tabId === 3" :item="dataList[3]" />
+        <LocationDetail v-if="tabId === 4" :item="dataList[4]" />
       </view>
     </view>
   </view>
@@ -145,30 +28,35 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { OtherDataType } from '@/database';
+import { getResettleDetail } from '@/service'
+import LocationDetail from '@/pages/household/components/LocationDetail.vue'
+import type { LocationType } from '@/types/datafill'
 
-const tabId = ref(1)
-const tabs = ref<any[]>([
-  {
-    id: 1,
-    name: '曙光安置区'
-  },
-  {
-    id: 2,
-    name: '东坪安置区'
-  },
-  {
-    id: 3,
-    name: '镜岭集镇安置区'
-  },
-  {
-    id: 4,
-    name: '家田安置区'
-  },
-  {
-    id: 5,
-    name: '棠村安置区'
+const tabId = ref(0)
+const tabs = ref<any[]>([])
+const dataList = ref<LocationType[]>([])
+const loading = ref<boolean>(false)
+
+const getDataRequest = async () => {
+  loading.value = true
+  try {
+    const data = await getResettleDetail(OtherDataType.settleAddressList)
+    dataList.value = data
+    tabs.value = data.map((item, index) => {
+      return {
+        id: index,
+        name: item.name
+      }
+    })
+    loading.value = false
+  } catch (error) {
+    loading.value = false
+    console.log('error', error);
   }
-])
+}
+
+getDataRequest()
 
 const tabChange = (id: any) => {
   tabId.value = id
@@ -235,10 +123,12 @@ const close = () => {
       .txt {
         font-size: 9rpx;
         font-weight: 500;
-        color: rgba(23, 23, 24, 0.6);
+        color: #333;
       }
+
       &.active {
         border-bottom: 2rpx solid #3e73ec;
+
         .txt {
           color: #3e73ec;
         }
@@ -298,6 +188,7 @@ const close = () => {
   .periphery {
     display: flex;
     flex-direction: column;
+
     .periphery-item {
       display: flex;
       flex-direction: row;
@@ -309,6 +200,7 @@ const close = () => {
         display: flex;
         flex-direction: row;
         width: 28rpx;
+
         .txt {
           font-size: 9rpx;
           color: rgba(19, 19, 19, 0.4);
@@ -343,6 +235,7 @@ const close = () => {
   .house-pic {
     display: flex;
     flex-direction: column;
+
     .house-info {
       display: flex;
       flex-direction: row;
@@ -405,6 +298,7 @@ const close = () => {
     height: 10rpx;
     margin-right: 6rpx;
   }
+
   .txt {
     font-size: 9rpx;
     font-weight: 500;
