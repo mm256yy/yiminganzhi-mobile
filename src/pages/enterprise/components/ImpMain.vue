@@ -1,7 +1,7 @@
 <template>
   <view class="main-wrap">
     <!-- 移民实施阶段 —— 企业实施 -->
-    <Back title="企业实施" />
+        <Back title="企业实施" />
 
     <view class="content">
       <LeftSidebar @switch-tab="switchTab" :dataList="tabList" />

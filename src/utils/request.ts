@@ -74,6 +74,8 @@ function baseRequest(method: MethodType, option: UniApp.RequestOptions) {
         }
       },
       fail: (err) => {
+        console.log('接口返回 err：', err);
+        
         console.log('接口返回 err：', err, '接口头部信息：', realHeader, 'api', url)
         rejectHandle(
           {
