@@ -51,7 +51,7 @@ onMounted(() => {
  */
 const getLandlordDetail = (uid: string) => {
   getEvaLandlordItemApi(uid).then((res: any) => {
-    console.log('res:', res)
+    console.log('资产评估res:', res)
     dataInfo.value = { ...res }
   })
 }

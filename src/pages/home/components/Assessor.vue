@@ -12,8 +12,8 @@
     <!-- 具体内容 -->
     <view class="main-enter">
       <!--居民区-->
-      <view class="enter-item">
-        <view class="title-field" @click="toLink('householdList')">
+      <view class="enter-item" @click="toLink('householdList')">
+        <view class="title-field">
           <view class="enter-icon">
             <image class="img" src="@/static/images/icon_resident.png" />
           </view>

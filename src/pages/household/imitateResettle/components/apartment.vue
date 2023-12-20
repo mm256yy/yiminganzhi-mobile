@@ -375,13 +375,13 @@ const selectPlan = (type: string) => {
 // 补偿补助明细
 const viewSubsidyClick = (id: string) => {
   console.log(id, 'id')
-  toLink('amountEstimation', { type: 2 })
+  toLink('amountEstimation', { type: 1 })
 }
 
 // 购房金额明细
 const viewBuyHouseClick = (id: string) => {
   console.log(id, 'id')
-  toLink('amountEstimation', { type: 1 })
+  toLink('amountEstimation', { type: 2 })
 }
 
 // 提交

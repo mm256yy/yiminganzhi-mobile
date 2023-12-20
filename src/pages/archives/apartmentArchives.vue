@@ -100,16 +100,16 @@ watch(
 )
 
 const submit = async () => {
-  if (!flatMeasurementPicStr.value || flatMeasurementPicStr.value === '[]') {
-    showToast('请上传购房测算表')
-    return
-  } else {
+  // if (!flatMeasurementPicStr.value || flatMeasurementPicStr.value === '[]') {
+  //   showToast('请上传购房测算表')
+  //   return
+  // } else {
     emit('submit', {
       flatAgreementPic: flatAgreementPicStr.value,
       flatMeasurementPic: flatMeasurementPicStr.value,
       flatOtherPic: flatOtherPicStr.value
     })
-  }
+  // }
 }
 </script>
 

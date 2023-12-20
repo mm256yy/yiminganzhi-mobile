@@ -1,5 +1,5 @@
 <template>
-  <view class="form-wrapper">
+  <view class="form-wrapper" @click="handleClick">
     <Back :title="title" needConfirm />
     <view class="main">
       <uni-forms class="form" ref="form" :modelValue="formData">
@@ -119,6 +119,7 @@
                 :list="dict[306]"
                 label-key="text"
                 value-key="value"
+                ref="childSelect"
               />
             </uni-forms-item>
           </uni-col>
@@ -361,7 +362,7 @@ const occupationOptions = ref<any>([])
 const selectValue = ref<any>([])
 const selectLabel = ref<any>([])
 const selectedData = ref<string>('')
-
+const childSelect=ref<any>()
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
 
@@ -423,6 +424,9 @@ const confirmSelect = (currentSelect: any[], label: any[]) => {
   showSelect.value = false
 }
 
+const handleClick=() => {
+  childSelect.value.showType()
+}
 // 表单提交
 const submit = () => {
   const params = {

@@ -25,7 +25,7 @@
                 v-touch:swipe.right="touchRight"
               >
                 <!-- 居民户信息 -->
-                <base-info-eva v-if="tabVal === 0" :dataInfo="dataInfo" />
+                <base-info-eva v-if="tabVal ==0" :dataInfo="dataInfo" />
 
                 <!-- 房屋主体评估 -->
                 <house-subject-eva
