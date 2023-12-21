@@ -435,7 +435,8 @@ export default {
           success: function (res) {
             console.log('打开文档成功')
           },
-          fail: () => {
+          fail: (err) => {
+            console.log(err,'出错了')
             this.getPrintErrorResult()
           }
         })
@@ -456,6 +457,7 @@ export default {
       // console.log('result:', result)
       // 拿到打印结果
       const base64Str = result[0][0]
+      console.log(base64Str,'测试base')
       if (!base64Str) {
         uni.hideLoading()
         showToast('生成pdf失败')
@@ -487,7 +489,53 @@ export default {
           console.log(filePath, 'filePath')
           // printpdfModule.deleteFile("test.pdf");
           uni.hideLoading()
-          this.actionPdf(filePath)
+          plus.android.requestPermissions(['android.permission.WRITE_EXTERNAL_STORAGE'], function(e) {
+						if (e.deniedAlways.length > 0) { //权限被永久拒绝
+							// 弹出提示框解释为何需要读写手机储存权限，引导用户打开设置页面开启
+							uni.showModal({
+								title: '存储权限',
+								content: '您拒绝了存储权限，请去设置-应用开启存储权限。',
+								success: function(res) {
+									if (res.confirm) {
+										// console.log('用户点击确定');
+                    
+									} else if (res.cancel) {
+										// console.log('用户点击取消');
+									}
+								}
+							});
+						}
+						if (e.deniedPresent.length > 0) { //权限被临时拒绝
+							// 弹出提示框解释为何需要读写手机储存权限，可再次调用plus.android.requestPermissions申请权限
+							plus.android.requestPermissions(['android.permission.WRITE_EXTERNAL_STORAGE'])
+							// console.log('666666666 ' + e.deniedPresent.toString());
+						}
+            console.log(e,'e是啥?')
+						if (e.granted.length > 0) { //权限被允许
+							//调用依赖获取读写手机储存权限的代码
+              if (this.actionType === 'preview') {
+        // 预览
+        uni.openDocument({
+          filePath: filePath,
+          showMenu: true,
+          success: function (res) {
+            console.log('打开文档成功')
+          },
+          fail: (err) => {
+            console.log(err,'出错了')
+            this.getPrintErrorResult()
+          }
+        })
+      } else {
+        // 打印pdf 将临时路径转化成绝对路径
+        const path = plus.io.convertLocalFileSystemURL(filePath)
+        YanYuprintPdf.managerPrint(path)
+      }
+					
+						}
+					}, function(e) {
+						// console.log('R12133313221' + JSON.stringify(e));
+					});
         })
         .catch((err: any) => {
           this.getPrintErrorResult()
@@ -525,6 +573,7 @@ export default {
           templateIds,
           type
         } = newValue
+        console.log(newValue,'数据信息')
         if (!landlords || !landlords.length) {
           console.log('landlords数据为空')
           return

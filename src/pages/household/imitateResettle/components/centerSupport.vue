@@ -38,11 +38,19 @@
 
       <view class="common-head">
         <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-        <text>家庭情况</text>
+        <text>集中供养</text>
       </view>
 
       <view class="info-text"> 该户选择集中供养 </view>
-
+      <uni-col :span="12">
+            <uni-forms-item
+              label="养老院:"
+              label-align="right"
+              name='beadhouselist.beadhouse'
+            >
+              <uni-data-select  v-model="beadhouselist.beadhouse" :localdata="dict[416]" />
+            </uni-forms-item>
+      </uni-col>
       <view class="btn-wrap">
         <view class="btn" @click="submitResettle">{{
           fromResettleConfirm ? '确定' : '确定，进入下一步'
@@ -53,19 +61,22 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed,ref } from 'vue'
 import { HouseAreaType } from '@/types/common'
-
+import { getStorage, StorageKey } from '@/utils'
 interface PropsType {
   data: any
   doorNo: string
   immigrantSettle: any
   fromResettleConfirm?: boolean
 }
-
+// 获取数据字典
+const dict = getStorage(StorageKey.DICT)
 const emit = defineEmits(['submit'])
 const props = defineProps<PropsType>()
-
+const beadhouselist = ref<any>({
+  beadhouse:""
+})
 const resettlePeopleInfo = computed(() => {
   let householder: any = null
   if (props.data && props.data.length) {
