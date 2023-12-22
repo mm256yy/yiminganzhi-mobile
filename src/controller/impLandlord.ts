@@ -341,8 +341,9 @@ export class ImpLandlord extends Common {
     // 搬迁安置：自建房
     if (immigrantSettle && immigrantSettle.houseAreaType === HouseAreaType.homestead) {
       if (this.isArrayAndNotNull(immigrantBuildOneselfList)) {
-        const res = immigrantBuildOneselfList.find((item) => item.isComplete !== '1')
-        if (!res && this.isNotNullPic(buildOneselfPic) && this.isNotNullPic(buildOneselfCheckPic)) {
+        // const res = immigrantBuildOneselfList.find((item) => item.isComplete !== '1')
+        console.log( this.isNotNullPic(buildOneselfPic),this.isNotNullPic(buildOneselfCheckPic), '查看自建房信息')
+        if ( this.isNotNullPic(buildOneselfPic) && this.isNotNullPic(buildOneselfCheckPic)) {
           landlordItem.immigrantFilling.buildOneselfStatus = '1'
           console.log(
             landlordItem.immigrantFilling.buildOneselfStatus,
@@ -430,10 +431,16 @@ export class ImpLandlord extends Common {
         // 安置确认 没有选择
         landlordItem.immigrantFilling.agricultureArrangementStatus = '0'
       } else {
-        if (this.isNotNullPic(agriculturePic)) {
+        const realList = demographicList.filter((item) => item.settingWay === '1')
+        if (this.isArrayAndNotNull(realList)) {
+          if (this.isNotNullPic(agriculturePic)) {
+            landlordItem.immigrantFilling.agricultureArrangementStatus = '1'
+          } else {
+            landlordItem.immigrantFilling.agricultureArrangementStatus = '0'
+          }
+        }else{
+          // 无农业安置
           landlordItem.immigrantFilling.agricultureArrangementStatus = '1'
-        } else {
-          landlordItem.immigrantFilling.agricultureArrangementStatus = '0'
         }
       }
     }

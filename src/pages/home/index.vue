@@ -7,14 +7,16 @@
           <image class="logo" src="@/static/images/logo.png" />
           <view class="project" v-if="roleType == RoleCodeType.investigator">移民安置综合管理服务平台V{{ appVersion }}</view>
           <!-- &nbsp;-&nbsp; -->
-          <view class="project" v-if="(projectInfo && roleType == RoleCodeType.assessor) ||
+          <view
+class="project" v-if="(projectInfo && roleType == RoleCodeType.assessor) ||
             roleType == RoleCodeType.assessorland ||
-            roleType == RoleCodeType.implementation
+            roleType == RoleCodeType.implementation||homeViewType === RoleCodeType.implementleader
             ">
             {{ `${projectInfo?.name}` }}</view>
-          <view class="status" v-if="(projectInfo && roleType == RoleCodeType.assessor) ||
+          <view
+class="status" v-if="(projectInfo && roleType == RoleCodeType.assessor) ||
             roleType == RoleCodeType.assessorland ||
-            roleType == RoleCodeType.implementation
+            roleType == RoleCodeType.implementation||homeViewType === RoleCodeType.implementleader
             ">
             {{
               homeViewType === RoleCodeType.investigator
@@ -27,9 +29,10 @@
         </view>
 
         <view class="header-rt">
-          <view class="btn-item" @click="toLink('project')" v-if="roleType != RoleCodeType.implementation &&
+          <view
+class="btn-item" @click="toLink('project')" v-if="roleType != RoleCodeType.implementation &&
               roleType != RoleCodeType.assessor &&
-              roleType != RoleCodeType.assessorland
+              roleType != RoleCodeType.assessorland&&roleType != RoleCodeType.implementleader
               ">
             <view class="name">项目切换</view>
             <image class="icon" src="@/static/images/project_enter.png" mode="scaleToFill" />
@@ -45,24 +48,28 @@
       <!-- 实物调查的首页 -->
       <Investigator v-if="homeViewType === RoleCodeType.investigator" @to-link="toLink" @login-in="loginIn" />
       <!-- 资产评估的首页 -->
-      <Assessor v-else-if="homeViewType === RoleCodeType.assessor || homeViewType === RoleCodeType.assessorland
+      <Assessor
+v-else-if="homeViewType === RoleCodeType.assessor || homeViewType === RoleCodeType.assessorland
         " @to-link="toLink" @login-in="loginIn" />
       <!-- 移民实施人员的首页 -->
-      <Implementation v-else-if="homeViewType === RoleCodeType.implementation" @to-link="toLink"
+      <Implementation
+v-else-if="homeViewType === RoleCodeType.implementation||homeViewType === RoleCodeType.implementleader" @to-link="toLink"
         @to-params-link="toParamsLink" @login-in="loginIn" />
 
-      <view v-if="homeViewType === RoleCodeType.implementation" class="sync-time">{{ lastConfirmTime }}
+      <view v-if="homeViewType === RoleCodeType.implementation||homeViewType === RoleCodeType.implementleader" class="sync-time">{{ lastConfirmTime }}
       </view>
     </view>
 
     <uni-popup ref="alertDialog" type="dialog">
-      <uni-popup-dialog type="warn" cancelText="取消" confirmText="确认" title="确认退出？" content="将清除本地所有数据(包含未同步数据)"
+      <uni-popup-dialog
+type="warn" cancelText="取消" confirmText="确认" title="确认退出？" content="将清除本地所有数据(包含未同步数据)"
         @confirm="dialogConfirm" @close="dialogClose" />
     </uni-popup>
 
     <!-- 同步数据确认弹窗-->
     <uni-popup ref="confirmDialog" type="dialog">
-      <uni-popup-dialog type="warn" cancelText="取消" confirmText="确认" :title="lastConfirmTime" content="是否确认同步数据？"
+      <uni-popup-dialog
+type="warn" cancelText="取消" confirmText="确认" :title="lastConfirmTime" content="是否确认同步数据？"
         @confirm="confirmSync" @close="closeConfirmDialog" />
     </uni-popup>
 
@@ -216,6 +223,7 @@ const getImageObj = async () => {
 onBeforeMount(() => {
   // 不同角色展示不同的首页视图
   const role = getStorage(StorageKey.USERROLE)
+  console.log(role,'目前是什么角色')
   homeViewType.value = role
 })
 

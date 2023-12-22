@@ -239,7 +239,8 @@ export enum RoleCodeType {
   implementation = 'implementation', // 移民实施员
   assessor = 'assessor', // 资产评估-房屋
   reviewer = 'reviewer', // 实物复核员
-  assessorland = 'assessorland' // 资产评估-土地
+  assessorland = 'assessorland', // 资产评估-土地
+  implementleader='implementleader' //实施组长
 }
 
 // 安置方式

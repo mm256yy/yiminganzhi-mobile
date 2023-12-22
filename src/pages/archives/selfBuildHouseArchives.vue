@@ -101,14 +101,14 @@ watch(
 )
 
 const submit = async () => {
-  if (!buildOneselfPic.value || buildOneselfPic.value === '[]') {
-    showToast('请上传自建房告知单')
-    return
-  }
-  if (!buildOneselfCheckPic.value || buildOneselfCheckPic.value === '[]') {
-    showToast('请上传自建房验收告知单')
-    return
-  }
+  // if (!buildOneselfPic.value || buildOneselfPic.value === '[]') {
+  //   showToast('请上传自建房告知单')
+  //   return
+  // }
+  // if (!buildOneselfCheckPic.value || buildOneselfCheckPic.value === '[]') {
+  //   showToast('请上传自建房验收告知单')
+  //   return
+  // }
   emit('submit', {
     buildOneselfPic: buildOneselfPic.value,
     buildOneselfCheckPic: buildOneselfCheckPic.value,
