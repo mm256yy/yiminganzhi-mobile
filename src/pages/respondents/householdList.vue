@@ -58,7 +58,7 @@
             v-else-if="roleType === RoleCodeType.assessor || roleType === RoleCodeType.assessorland"
           >
             <EvaListItem
-              v-for="item in list"
+              v-for="item in listAll"
               :data="item"
               :key="item.uid"
               @click.stop="editLandlord(item)"
@@ -67,7 +67,7 @@
           </view>
           <view class="scroll" v-else>
             <ListItem
-              v-for="item in list"
+              v-for="item in listAll"
               :data="item"
               :key="item.uid"
               @click.stop="editLandlord(item)"
@@ -143,7 +143,8 @@ import {
   getLandlordListBySearchApi,
   getVillageTreeWithoutNullApi,
   deleteLandlordApi,
-  getLandlordItemApi
+  getLandlordItemApi,
+  getLandlordListBySearchApiTwo,
 } from '@/service'
 import { LandlordType } from '@/types/sync'
 import { LandlordSearchType, MainType, RoleCodeType } from '@/types/common'
@@ -152,6 +153,7 @@ import { routerForward, getStorage, StorageKey } from '@/utils'
 const tabType = ref<MainType>(MainType.PeasantHousehold)
 const showVillageSelect = ref<boolean>(false)
 const list = ref<LandlordType[]>([])
+const listAll = ref<LandlordType[]>([])
 const keyWords = ref<string>('')
 const villageCode = ref<string[]>([])
 const treeData = ref<any>([])
@@ -189,6 +191,7 @@ const init = () => {
   tipsList.value = []
   confirmMsg.value = ''
   getList()
+  getListAll()
 }
 
 const clear = () => {
@@ -214,6 +217,7 @@ const villageConfirm = (code: string[], tit: string[]) => {
 
 const getTreeData = async () => {
   const res = await getVillageTreeWithoutNullApi(MainType.PeasantHousehold)
+   console.log('res----------------------',res)
   treeData.value = res || []
 }
 
@@ -246,11 +250,10 @@ const getList = () => {
         params.virutalVillageCode = unref(villageCode)[3] || ''
       }
     }
-    const res = await getLandlordListBySearchApi(params).catch(() => {
+    const res = await getLandlordListBySearchApiTwo(params).catch(() => {
       isLoading.value = false
     })
-    console.log('对象', res)
-
+    console.log('对象===========================1', res)
     isLoading.value = false
     if (res && res.length) {
       if (page.value === 1) {
@@ -272,7 +275,54 @@ const getList = () => {
   })
   console.log('居民户列表', list.value)
 }
-
+const getListAll = () => {
+  nextTick(async () => {
+    isLoading.value = true
+    const params: LandlordSearchType = {
+      name: unref(keyWords),
+      type: unref(tabType),
+      page: page.value,
+      pageSize: pageSize.value
+    }
+    if (sourceType.value) {
+      params.warnStatus = sourceType.value
+    }
+    const realList = villageCode.value.filter((item) => !!item)
+    if (realList.length) {
+      if (realList.length === 1) {
+        params.areaCode = unref(villageCode)[0] || ''
+      } else if (realList.length === 2) {
+        params.townCode = unref(villageCode)[1] || ''
+      } else if (realList.length === 3) {
+        params.villageCode = unref(villageCode)[2] || ''
+      } else if (realList.length === 4) {
+        params.virutalVillageCode = unref(villageCode)[3] || ''
+      }
+    }
+    const res = await getLandlordListBySearchApi(params).catch(() => {
+      isLoading.value = false
+    })
+    isLoading.value = false
+    if (res && res.length) {
+      if (page.value === 1) {
+        listAll.value = res || []
+      } else {
+        listAll.value = listAll.value.concat(res)
+      }
+      if (res.length < pageSize.value) {
+        isEnd.value = true
+      } else {
+        page.value = page.value + 1
+      }
+    } else {
+      if (page.value === 1) {
+        listAll.value = []
+      }
+      isEnd.value = true
+    }
+  })
+  console.log('居民户列表listAll', listAll.value)
+}
 const loadMore = () => {
   if (isEnd.value || isLoading.value) {
     return

@@ -11,6 +11,7 @@ import {
   VillageDDL,
   AppendantDDL,
   LandlordTableName,
+  LandlordHasStatusTableName,
   DictionariesTableName,
   FamilyIncomeTableName,
   ResettlementTableName,
@@ -26,7 +27,10 @@ import {
   GraveDDL,
   GraveTableName,
   getLandlordValues,
-  landlordFields
+  landlordFields,
+  getLandlordHasStatusValues,
+  LandlordHasStatusDDL,
+  landlordHasStatusFields
 } from '@/database/index'
 import {
   getProjectDataApi,
@@ -112,7 +116,9 @@ class PullData {
       rankDtoList: [],
       feedbackDtoList: [],
       pgTop: [],
-      evaluatorStatisticsDto: null
+      evaluatorStatisticsDto: null,
+      settleAddressList:[],
+	  peasantHouseholdDtoList: []
     }
 
     this.districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
@@ -240,7 +246,8 @@ class PullData {
       immigrantCompensationCardConfig,
       rankDtoList,
       pgTop,
-      feedbackDtoList
+      feedbackDtoList,
+      settleAddressList
     } = result
     // 需要reset
     this.state.immigrantIncomeConfigList = immigrantIncomeConfigList
@@ -262,7 +269,7 @@ class PullData {
     this.state.rankDtoList = rankDtoList
     this.state.pgTop = pgTop
     this.state.feedbackDtoList = feedbackDtoList
-
+    this.state.settleAddressList=settleAddressList
     this.pullDict().then((res: boolean) => {
       res && this.count++
       // 重置 释放缓存
@@ -309,6 +316,7 @@ class PullData {
       this.state.rankDtoList = []
       this.state.pgTop = []
       this.state.feedbackDtoList = []
+      this.state.settleAddressList=[]
       console.log('拉取: 其他', res)
     })
   }
@@ -329,6 +337,7 @@ class PullData {
     getPullLandlordListApi(lastId)
       .then((res: LandlordWithPageType) => {
         if (res) {
+          console.log('接口: 调查对象数据', res)
           const { peasantHouseholdPushDtoList, lastId, pullTime } = res
           if (peasantHouseholdPushDtoList && peasantHouseholdPushDtoList.length) {
             // 需要合并数据
@@ -385,6 +394,7 @@ class PullData {
       this.maxCount = -1
       return
     }
+	// peasantHouseholdDtoList lqh新加
     const {
       deleteRecordList,
       villageList,
@@ -408,7 +418,8 @@ class PullData {
 
       villageLagNum,
       villageWarnNum,
-      evaluatorStatisticsDto
+      evaluatorStatisticsDto,
+	  peasantHouseholdDtoList
     } = result
     // 需要reset
     this.state.deleteRecordList = deleteRecordList
@@ -434,6 +445,7 @@ class PullData {
     this.state.villageLagNum = villageLagNum
     this.state.villageWarnNum = villageWarnNum
     this.state.evaluatorStatisticsDto = evaluatorStatisticsDto
+	this.state.peasantHouseholdDtoList = peasantHouseholdDtoList
     // 数据 新增 修改 删除一起进行
     this.pullVillageList().then((res) => {
       res && this.count++
@@ -481,12 +493,14 @@ class PullData {
   }
 
   public createTable() {
+	  console.log("==创建表===========开始====")
     // 创建表
     return new Promise((resolve, reject) => {
       Promise.all([
         db.createTableWithDDL(ProjectDDL),
         db.createTableWithDDL(DictionariesDDL),
         db.createTableWithDDL(LandlordDDL),
+		db.createTableWithDDL(LandlordHasStatusDDL),
         db.createTableWithDDL(ResettlementDDL),
         db.createTableWithDDL(FamilyIncomeDDL),
         db.createTableWithDDL(CollectDDL),
@@ -518,6 +532,7 @@ class PullData {
         db.dropTable(ProjectTableName),
         db.dropTable(DictionariesTableName),
         db.dropTable(LandlordTableName),
+		db.dropTable(LandlordHasStatusTableName),
         db.dropTable(ResettlementTableName),
         db.dropTable(FamilyIncomeTableName),
         db.dropTable(CollectTableName),
@@ -676,11 +691,10 @@ class PullData {
     })
   }
 
-  /** 居民户 */
+  /** 居民户  包括带状态（滞后或者预警状态）的居民户*/
   private pullLandlord(): Promise<boolean> {
     return new Promise(async (resolve) => {
-      const { peasantHouseholdPushDtoList: list } = this.state
-
+      const { peasantHouseholdPushDtoList: list,peasantHouseholdDtoList: listTwo} = this.state
       if (this.isArrayAndNotNull(list)) {
         // 开启事务
         await db.transaction('begin').catch(() => {
@@ -700,6 +714,7 @@ class PullData {
           db.insertOrReplaceData(LandlordTableName, values, landlordFields).catch((err) => {
             console.log(err, '插入业主')
           })
+
         })
         await db.transaction('commit').catch(() => {
           resolve(false)
@@ -709,6 +724,29 @@ class PullData {
         // 数据为空 不需要拉取
         resolve(true)
       }
+
+
+	  if (this.isArrayAndNotNull(listTwo)) {
+	    // 开启事务
+	    await db.transaction('begin').catch(() => {
+	      resolve(false)
+	    })
+	 console.log("===========listTwo=============",listTwo)
+	  	listTwo.forEach((item) => {
+	  		  const values = getLandlordHasStatusValues(item, 'default')
+	  		  db.insertOrReplaceData(LandlordHasStatusTableName, values, landlordHasStatusFields).catch((err) => {
+	  		    console.log(err, '插入业主带状态')
+	  		  })
+
+	  		})
+			await db.transaction('commit').catch(() => {
+			  resolve(false)
+			})
+	    resolve(true)
+	  } else {
+	    // 数据为空 不需要拉取
+	    resolve(true)
+	  }
     })
   }
 
@@ -729,6 +767,11 @@ class PullData {
             // 删除自然村数据
             db.deleteTableData(VillageTableName, 'uid', item.deleteId)
           }
+		  if (item.type === 'peasantHouseholdDtoList') {
+		    // 删除居民户数据
+		    db.deleteTableData(LandlordHasStatusTableName, 'uid', item.deleteId)
+		  }
+
         })
 
         await db.transaction('commit').catch(() => {
@@ -949,7 +992,7 @@ class PullData {
         rankDtoList,
         pgTop,
         feedbackDtoList,
-
+        settleAddressList,
         peasantHouseholdNum,
         companyNum,
         individualNum,
@@ -1080,7 +1123,14 @@ class PullData {
         )}','${getCurrentTimeStamp()}'`
         db.insertOrReplaceData(OtherTableName, values, fields)
       }
-
+     //安置地详情
+     if (settleAddressList && settleAddressList.length) {
+      const fields = "'type','content','updatedDate'"
+      const values = `'${OtherDataType.settleAddressList}','${JSON.stringify(
+        settleAddressList
+      )}','${getCurrentTimeStamp()}'`
+      db.insertOrReplaceData(OtherTableName, values, fields)
+    }
       await db.transaction('commit').catch(() => {
         resolve(false)
       })

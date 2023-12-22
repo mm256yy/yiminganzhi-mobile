@@ -12,7 +12,7 @@
 
       <view class="btn blue-btn" @click="editProduce">
         <image class="icon" src="@/static/images/icon_sign_white.png" mode="scaleToFill" />
-        <text class="txt">修改</text>
+        <text class="txt">编辑</text>
       </view>
 
       <view class="btn blue-btn" @click="archivesUpload">
@@ -65,10 +65,9 @@ const props = defineProps<PropsType>()
 const alertDialog = ref<any>(null)
 const emit = defineEmits(['updateData'])
 
+// .filter((item) => item.name !== '增计人口')
 const demographicList = computed(() => {
-  return props.dataInfo && props.dataInfo.demographicList
-    ? props.dataInfo.demographicList.filter((item) => item.name !== '增计人口')
-    : []
+  return props.dataInfo && props.dataInfo.demographicList ? props.dataInfo.demographicList.filter((item) => item.name !== '增计人口'): []
 })
 
 const mockDemographicList = computed(() => {

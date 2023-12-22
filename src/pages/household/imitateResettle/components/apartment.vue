@@ -202,6 +202,7 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { showToast, apartmentArea, apartmentAreaSize } from '@/config'
 import { HouseAreaType } from '@/types/common'
 import { LandlordType } from '@/types/sync'
+import { routerForward } from '@/utils'
 
 interface PropsType {
   doorNo: string
@@ -214,9 +215,6 @@ const emit = defineEmits(['submit'])
 const props = defineProps<PropsType>()
 const settleAddress = ref<string>('1')
 const areaSize = ref<any[]>(apartmentAreaSize)
-
-const pricePup = ref(false)
-const buyHousePup = ref(false)
 
 // 方案数据
 const tableData = ref<any>([])
@@ -299,6 +297,10 @@ const getPlans = async () => {
   tableData.value = res
 }
 
+const toLink = (name: string, params: any) => {
+  routerForward(name, params)
+}
+
 onMounted(() => {
   if (!props.fromResettleConfirm) {
     getPlans()
@@ -373,13 +375,13 @@ const selectPlan = (type: string) => {
 // 补偿补助明细
 const viewSubsidyClick = (id: string) => {
   console.log(id, 'id')
-  pricePup.value = true
+  toLink('amountEstimation', { type: 1 })
 }
 
 // 购房金额明细
 const viewBuyHouseClick = (id: string) => {
   console.log(id, 'id')
-  buyHousePup.value = true
+  toLink('amountEstimation', { type: 2 })
 }
 
 // 提交

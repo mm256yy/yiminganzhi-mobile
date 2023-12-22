@@ -1,6 +1,6 @@
 <template>
   <!-- 生产用地（实施） -->
-  <view class="base-info-wrapper">
+  <view class="base-info-wrapper"  @click="handleClick">
     <!-- 安置方式 settingWay: 1 农业安置 -->
     <view v-if="baseInfo.settingWay && baseInfo.settingWay === '1'">
       <view class="title">
@@ -24,6 +24,14 @@
               <view class="label">地块编号：</view>
               <view class="content">
                 <uni-data-select v-model="formData.landNo" :localdata="landNoList" />
+                <!-- <muti-select
+                v-model="formData.landNo"
+                :value="formData.landNo"
+                :list="landNoList"
+                label-key="text"
+                value-key="value"
+                ref="childSelect"
+              /> -->
               </view>
             </view>
           </uni-col>
@@ -88,7 +96,7 @@ import { resettleArea, apartmentArea } from '@/config'
 import { LandlordType } from '@/types/sync'
 import { updateImpLandlordImmigrantLandApi, getChooseConfigApi } from '@/service'
 import UploadFile from '@/components/UploadFile/index.vue'
-
+import MutiSelect from '@/components/MutiSelect/Index.vue'
 interface PropsType {
   baseInfo: LandlordType
   dataInfo: any
@@ -100,7 +108,7 @@ const emit = defineEmits(['updateData'])
 const landNoList = ref<any[]>([])
 const formData = ref<any>({})
 const landPicStr = ref<string>('[]') // 凭证照片
-
+const childSelect=ref<any>()
 // 获得焦点的输入框下标
 const focusIndex = ref<number>(-1)
 
@@ -169,6 +177,7 @@ const getLandNoList = () => {
         }
       })
       landNoList.value = [...arr]
+      console.log(landNoList.value,'测试下拉数据')
     }
   })
 }
@@ -199,7 +208,9 @@ const submit = () => {
       showToast(ERROR_MSG)
     })
 }
-
+const handleClick=() => {
+  childSelect.value.showType()
+}
 onMounted(() => {
   getLandNoList()
 })

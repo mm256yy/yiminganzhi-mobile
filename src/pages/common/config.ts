@@ -42,8 +42,8 @@ import iconYmjkSel from '@/static/images/icon_ymjk_sel.png' // 引入移民建�
 import iconFwtkDef from '@/static/images/icon_fwtk_def.png' // 引入房屋腾空默认 icon
 import iconFwtkSel from '@/static/images/icon_fwtk_sel.png' // 引入房屋腾空选中时 icon
 
-import iconTdtkDef from '@/static/images/icon_Tdtk_def.png' // 引入土地腾让默认 icon
-import iconTdtkSel from '@/static/images/icon_Tdtk_sel.png' // 引入土地腾让选中时 icon
+import iconTdtkDef from '@/static/images/icon_tdtk_def.png' // 引入土地腾让默认 icon
+import iconTdtkSel from '@/static/images/icon_tdtk_sel.png' // 引入土地腾让选中时 icon
 
 import iconGdazDef from '@/static/images/icon_gdaz_def.png' // 引入过渡安置默认 icon
 import iconGdazSel from '@/static/images/icon_gdaz_sel.png' // 引入过渡安置选中时 icon
@@ -139,7 +139,20 @@ export const householdSidebarList = [
             filled: false,
             iconDef: iconTdfzwDef,
             iconSel: iconTdfzwSel
-          },
+          }
+          // {
+          //   label: '模拟安置',
+          //   value: 6,
+          //   filled: false,
+          //   iconDef: iconMnazDef,
+          //   iconSel: iconMnazSel
+          // }
+        ]
+      },
+      {
+        title: '',
+        filled: false,
+        list: [
           {
             label: '模拟安置',
             value: 6,
@@ -217,6 +230,19 @@ export const householdSidebarList = [
         ]
       },
       {
+        title: '',
+        filled: false,
+        list: [
+          {
+            label: '动迁协议',
+            value: 17,
+            filled: false,
+            iconDef: iconDqxyDef,
+            iconSel: iconDqxySel
+          }
+        ]
+      },
+      {
         title: '腾空过渡',
         filled: false,
         list: [
@@ -242,20 +268,20 @@ export const householdSidebarList = [
             iconSel: iconGdazSel
           }
         ]
-      },
-      {
-        title: '',
-        filled: false,
-        list: [
-          {
-            label: '动迁协议',
-            value: 17,
-            filled: false,
-            iconDef: iconDqxyDef,
-            iconSel: iconDqxySel
-          }
-        ]
       }
+      // {
+      //   title: '',
+      //   filled: false,
+      //   list: [
+      //     {
+      //       label: '动迁协议',
+      //       value: 17,
+      //       filled: false,
+      //       iconDef: iconDqxyDef,
+      //       iconSel: iconDqxySel
+      //     }
+      //   ]
+      // }
     ]
   },
   {
@@ -605,7 +631,7 @@ export const collectiveSidebarList = [
     ]
   },
   {
-    title: '安置阶段',
+    title: '',
     filled: false,
     list: [
       {

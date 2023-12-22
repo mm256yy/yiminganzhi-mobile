@@ -90,6 +90,7 @@ const props = defineProps<PropsType>()
 const emit = defineEmits(['onClose', 'onConfirm'])
 
 const currentTown = ref<any>([])
+// const currentTownNew = ref<any>([])
 const currentVillage = ref<any>([])
 const currentNatural = ref<any[]>([])
 const currentSelect = ref<string[]>([])
@@ -187,6 +188,14 @@ const reset = () => {
   currentSelect.value = []
   otherCode.value = ''
   emit('onConfirm', currentSelect.value, title.value, otherCode.value)
+}
+
+function options(options: any, arg1: { code: any; }) {
+	throw new Error('Function not implemented.');
+}
+
+function find(options: (options: any, arg1: { code: any; }) => void, arg1: { code: any; }) {
+	throw new Error('Function not implemented.');
 }
 </script>
 <style lang="scss" scoped>

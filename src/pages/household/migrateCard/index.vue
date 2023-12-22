@@ -5,7 +5,7 @@
       <view class="row-1">
         <view class="left" />
         <view class="right">
-          <view class="btn green">
+          <view class="btn green" @click="handleClick" >
             <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
             <text class="txt">打印报表</text>
           </view>
@@ -273,7 +273,12 @@ const onArchives = () => {
     uid: props.dataInfo.uid
   })
 }
-
+const handleClick = () => {
+    routerForward('pdf', {
+    type: 6,
+    dataInfo: props.dataInfo.uid
+  })
+}
 // 编辑
 const toEdit = () => {
   routerForward('migrateCardEdit', {

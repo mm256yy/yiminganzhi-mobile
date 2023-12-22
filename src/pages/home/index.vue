@@ -5,23 +5,37 @@
       <view class="home-header">
         <view class="header-lt">
           <image class="logo" src="@/static/images/logo.png" />
-          <view class="project">移民安置综合管理服务平台V{{ appVersion }}</view>
-          <view class="project" v-if="projectInfo">&nbsp;-&nbsp;{{ `${projectInfo.name}` }}</view>
-          <view class="status" v-if="projectInfo">
+          <view class="project" v-if="roleType == RoleCodeType.investigator">移民安置综合管理服务平台V{{ appVersion }}</view>
+          <!-- &nbsp;-&nbsp; -->
+          <view class="project" v-if="(projectInfo && roleType == RoleCodeType.assessor) ||
+            roleType == RoleCodeType.assessorland ||
+            roleType == RoleCodeType.implementation
+            ">
+            {{ `${projectInfo?.name}` }}</view>
+          <view class="status" v-if="(projectInfo && roleType == RoleCodeType.assessor) ||
+            roleType == RoleCodeType.assessorland ||
+            roleType == RoleCodeType.implementation
+            ">
             {{
               homeViewType === RoleCodeType.investigator
-                ? projectInfo.status && projectInfo.status === 'review'
-                  ? '（实物复核）'
-                  : '（实物采集）'
-                : '（移民实施）'
+              ? projectInfo.status && projectInfo.status === 'review'
+                ? '（实物复核）'
+                : '（实物采集）'
+              : '（移民实施）'
             }}
           </view>
         </view>
 
         <view class="header-rt">
-          <view class="btn-item" @click="toLink('project')">
+          <view class="btn-item" @click="toLink('project')" v-if="roleType != RoleCodeType.implementation &&
+              roleType != RoleCodeType.assessor &&
+              roleType != RoleCodeType.assessorland
+              ">
             <view class="name">项目切换</view>
             <image class="icon" src="@/static/images/project_enter.png" mode="scaleToFill" />
+          </view>
+          <view v-else class="user-name">
+            {{ getStorage(StorageKey.USERINFO).username }}
           </view>
           <view v-if="userInfo" class="login-out" @click="loginOutPre">退出登录</view>
         </view>
@@ -29,59 +43,60 @@
 
       <!-- 根据不同的角色 展示不同的视图 -->
       <!-- 实物调查的首页 -->
-      <Investigator
-        v-if="homeViewType === RoleCodeType.investigator"
-        @to-link="toLink"
-        @login-in="loginIn"
-      />
+      <Investigator v-if="homeViewType === RoleCodeType.investigator" @to-link="toLink" @login-in="loginIn" />
       <!-- 资产评估的首页 -->
-      <Assessor
-        v-else-if="
-          homeViewType === RoleCodeType.assessor || homeViewType === RoleCodeType.assessorland
-        "
-        @to-link="toLink"
-        @login-in="loginIn"
-      />
+      <Assessor v-else-if="homeViewType === RoleCodeType.assessor || homeViewType === RoleCodeType.assessorland
+        " @to-link="toLink" @login-in="loginIn" />
       <!-- 移民实施人员的首页 -->
-      <Implementation
-        v-else-if="homeViewType === RoleCodeType.implementation"
-        @to-link="toLink"
-        @to-params-link="toParamsLink"
-        @login-in="loginIn"
-      />
+      <Implementation v-else-if="homeViewType === RoleCodeType.implementation" @to-link="toLink"
+        @to-params-link="toParamsLink" @login-in="loginIn" />
+
+      <view v-if="homeViewType === RoleCodeType.implementation" class="sync-time">{{ lastConfirmTime }}
+      </view>
     </view>
 
     <uni-popup ref="alertDialog" type="dialog">
-      <uni-popup-dialog
-        type="warn"
-        cancelText="取消"
-        confirmText="确认"
-        title="确认退出？"
-        content="将清除本地所有数据(包含未同步数据)"
-        @confirm="dialogConfirm"
-        @close="dialogClose"
-      />
+      <uni-popup-dialog type="warn" cancelText="取消" confirmText="确认" title="确认退出？" content="将清除本地所有数据(包含未同步数据)"
+        @confirm="dialogConfirm" @close="dialogClose" />
     </uni-popup>
+
+    <!-- 同步数据确认弹窗-->
+    <uni-popup ref="confirmDialog" type="dialog">
+      <uni-popup-dialog type="warn" cancelText="取消" confirmText="确认" :title="lastConfirmTime" content="是否确认同步数据？"
+        @confirm="confirmSync" @close="closeConfirmDialog" />
+    </uni-popup>
+
+    <SyncCompont ref="syncCmt" from="sync" />
   </view>
 </template>
 
 <script lang="ts" setup>
-import { onBeforeMount, onMounted, ref } from 'vue'
+import { onBeforeMount, onMounted, ref, onBeforeUnmount } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
-import { getStorage, routerForward, resetCache, StorageKey } from '@/utils'
+import { getStorage, routerForward, resetCache, StorageKey, debounce } from '@/utils'
 import { loginOutApi } from './api'
-import { getImgListApi } from '@/service'
+import { getImgListApi, getOtherItemApi } from '@/service'
 import { pullInstance } from '@/sync'
 import { RoleCodeType } from '@/types/common'
 import { imageUrlAndBase64Map } from '@/config'
 import Assessor from './components/Assessor.vue'
 import Investigator from './components/Investigator.vue'
 import Implementation from './components/Implementation.vue'
+import { OtherDataType } from '@/database'
+import dayjs from 'dayjs'
+import SyncCompont from '@/components/Sync/Index.vue'
 
+const roleType = ref<RoleCodeType>(getStorage(StorageKey.USERROLE))
 const userInfo = ref<any>(null)
 const projectInfo = ref<any>(null)
 const alertDialog = ref<any>(null)
 const appVersion = ref<string>('')
+const confirmDialog = ref<any>(null)
+const pullTime = ref<string>('')
+const syncing = ref<boolean>(false)
+const syncCmt = ref()
+const lastConfirmTime = ref('')
+
 /**
  * 首页视图类型
  * 不同角色不同的首页内容
@@ -89,6 +104,14 @@ const appVersion = ref<string>('')
 const homeViewType = ref<RoleCodeType>(RoleCodeType.investigator)
 
 const toLink = (name: string) => {
+  // 判断是否为数据同步
+  if (name === 'sync') {
+    if (homeViewType.value === RoleCodeType.implementation) {
+      openConfirmDialog()
+      console.log('123');
+      return
+    }
+  }
   routerForward(name)
 }
 
@@ -114,6 +137,41 @@ const dialogConfirm = () => {
 
 const dialogClose = () => {
   alertDialog.value.close()
+}
+
+const openConfirmDialog = () => {
+  confirmDialog.value?.open()
+}
+
+const closeConfirmDialog = () => {
+  confirmDialog.value?.close()
+}
+
+// 处理数据同步
+const onSyncHandle = debounce(() => {
+  if (syncing.value) {
+    return
+  }
+  syncing.value = true
+  syncCmt.value?.onSync()
+})
+
+// 同步结束
+const onSyncEnd = () => {
+  syncing.value = false
+}
+
+// 确认同步
+const confirmSync = () => {
+  closeConfirmDialog()
+  onSyncHandle()
+}
+
+const getPullTime = async () => {
+  const time: string = await getOtherItemApi(OtherDataType.PullTime)
+  pullTime.value = time ? dayjs(Number(time)).format('YYYY-MM-DD HH:mm:ss') : ''
+  lastConfirmTime.value = `上次同步时间：${pullTime.value}`
+  console.log(pullTime.value)
 }
 
 const loginOut = () => {
@@ -161,10 +219,17 @@ onBeforeMount(() => {
   homeViewType.value = role
 })
 
+onBeforeUnmount(() => {
+  uni.$off('SyncEnd', onSyncEnd)
+})
+
 onMounted(() => {
   getImageObj()
+  getPullTime()
   const systemInfo = uni.getSystemInfoSync()
   appVersion.value = systemInfo.appWgtVersion || '1.0.0'
+  console.log(getStorage(StorageKey.USERINFO), '测试用户名')
+  uni.$on('SyncEnd', onSyncEnd)
 })
 
 onShow(() => {
@@ -196,6 +261,13 @@ onShow(() => {
     z-index: 1;
     padding: var(--status-bar-height) 0 20rpx;
     overflow: scroll;
+
+    .sync-time {
+      position: absolute;
+      bottom: 5%;
+      left: 10rpx;
+      font-size: 10rpx;
+    }
   }
 
   .home-header {
@@ -258,6 +330,11 @@ onShow(() => {
           font-weight: 500;
           color: #fff;
         }
+      }
+
+      .user-name {
+        font-size: 12rpx;
+        color: #ffffff;
       }
 
       .login-out {

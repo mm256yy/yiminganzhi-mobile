@@ -454,3 +454,31 @@ export interface UpdateLogType {
   doorNo: string
   reason?: string
 }
+
+export interface LocationType{
+  createdBy: null,
+  createdDate: null,
+  lastModifiedBy: string,
+  lastModifiedDate: any,
+  id: number,
+  projectId: number,
+  type: number,
+  name: string,
+  residential: string,
+  structure: string,
+  landSpace: any,
+  floorSpace: any,
+  greeningRate: any,
+  buildingDensity: any,
+  address: string,
+  traffic: string,
+  business: string,
+  education: string,
+  hospital: string,
+  pic: any[],
+  longitude: any
+  latitude: any
+  isProductionLand: number
+  code: any
+  [key: string]: any
+}

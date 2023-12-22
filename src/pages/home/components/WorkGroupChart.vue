@@ -115,7 +115,7 @@ const tabs1 = ref<TabType[]>([
 
 const tabs2 = ref<TabType[]>([
   {
-    name: '拆迁安置',
+    name: '搬迁安置',
     id: 5
   },
   {
@@ -147,6 +147,9 @@ const getStatisticData = (id: number) => {
   let max = 0
   let arr: any = rankList.value[`${id}`].scheduleRankList || []
   const top5Array = arr.slice(0, 5)
+  top5Array.sort(function (a: any, b: any) {
+    return a.number < b.number ? 1 : -1
+  })
   const options = top5Array.map((item: any, index: number) => {
     if (index === 0) {
       max = item.number

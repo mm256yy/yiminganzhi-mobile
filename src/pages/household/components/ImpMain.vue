@@ -241,59 +241,62 @@ const tabList = computed(() => {
 
     // 生产安置状态
     if (immigrantFilling.productionArrangementStatus === '1') {
-      arr[1].list[2].list[0].filled = true
+      arr[1].list[3].list[0].filled = true
     }
 
     // 搬迁安置状态
     if (immigrantFilling.relocateArrangementStatus === '1') {
-      arr[1].list[2].list[1].filled = true
+      arr[1].list[3].list[1].filled = true
     }
 
     // 坟墓确认状态
     if (immigrantFilling.graveArrangementStatus === '1') {
-      arr[1].list[2].list[2].filled = true
+      arr[1].list[3].list[2].filled = true
     }
 
     // 生产用地状态
     if (immigrantFilling.landUseStatus === '1') {
-      arr[1].list[3].list[0].filled = true
+      arr[1].list[4].list[0].filled = true
     }
 
     // 选房择址状态
     if (immigrantFilling.chooseHouseStatus === '1') {
-      arr[1].list[3].list[1].filled = true
+      arr[1].list[4].list[1].filled = true
     }
 
     // 坟墓择址状态
     if (immigrantFilling.chooseGraveStatus === '1') {
       console.log('测试状态问题')
-      arr[1].list[3].list[2].filled = true
+      arr[1].list[4].list[2].filled = true
     }
 
     // 移民建卡状态
     if (immigrantFilling.cardStatus === '1') {
-      arr[1].list[4].list[0].filled = true
-    }
-
-    // 房屋腾空状态
-    if (immigrantFilling.houseSoarStatus === '1') {
       arr[1].list[5].list[0].filled = true
     }
-
-    // 土地腾让状态
-    if (immigrantFilling.landSoarStatus === '1') {
-      arr[1].list[5].list[1].filled = true
-    }
-
-    // 过渡安置状态
-    if (immigrantFilling.excessStatus === '1') {
-      arr[1].list[5].list[2].filled = true
-    }
-
     // 动迁协议状态
     if (immigrantFilling.agreementStatus === '1') {
       arr[1].list[6].list[0].filled = true
     }
+    // 房屋腾空状态
+    if (immigrantFilling.houseSoarStatus === '1') {
+      arr[1].list[7].list[0].filled = true
+    }
+
+    // 土地腾让状态
+    if (immigrantFilling.landSoarStatus === '1') {
+      arr[1].list[7].list[1].filled = true
+    }
+
+    // 过渡安置状态
+    if (immigrantFilling.excessStatus === '1') {
+      arr[1].list[7].list[2].filled = true
+    }
+
+    // // 动迁协议状态
+    // if (immigrantFilling.agreementStatus === '1') {
+    //   arr[1].list[6].list[0].filled = true
+    // }
 
     // 自建房状态
     if (immigrantFilling.buildOneselfStatus === '1') {

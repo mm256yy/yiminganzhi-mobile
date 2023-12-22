@@ -165,7 +165,108 @@ export interface LandlordType {
   immigrantFilling: Partial<ImmigrantFillingType>
   immigrantSelfSeeking: Partial<ImmigrantSelfSeekingType>
 }
+// 农户列表 含有状态
+export interface LandlordHasStatusType {
+  // 以下两个字段 为了更好的组成树加上的
+  // parentCode = 居民户virutalVillageCode || 其他villageCode
+  // code = id
+  uid: string
+  id: number
+  name: string
+  type: string
+  sex: string
+  card: string
+  doorNo: string
+  villageCode: string
+  virutalVillageCode: string
+  address: string
+  projectId: string
+  longitude: string
+  latitude: string
+  phone: string
+  locationType: string
+  locationTypeText: string
+  stageName: string
+  lagAddDataStatus: string
+  warnAddDataStatus: string
+  warnStatus: string // 预警状态 0正常 1预警 2滞后
+  stage: string
+  padStatus: string
+  isPadDelete: string
+  // 人口
+  demographicList: PopulationType[]
+  // 附属物
+  immigrantAppendantList: AppendantType[]
+  // 果木
+  immigrantTreeList: TreeType[]
+  // 坟墓
+  immigrantGraveList: GraveType[]
+  // 房屋
+  immigrantHouseList: HouseType[]
+  // 安置意愿
+  immigrantWill: WillType
+  // 家庭收入
+  immigrantIncomeList: FamilyIncomeType[]
+  // 附件
+  immigrantFile: ImmigrantFileType
 
+  // 企业营收
+  immigrantManagementList: ManagementType[]
+  // 企业设备
+  immigrantEquipmentList: EquipmentType[]
+  // 农村小型专项及农副业设施信息
+  immigrantFacilitiesList: FacilitiesType[]
+  // 个体户 / 公司 扩展字段
+  company: CompanyType
+  cityCodeText?: string
+
+  isUpdate?: string
+  showDoorNo: string
+  fillStatus: string
+  signUser: number
+  initialVillageCode: string
+  status: string
+  settingWay: string
+  buildingForm: string
+  accountName: string
+  bankName: string
+  bankAccount: string
+  accountRemark: string
+  householdPic: string
+  familyPic: string
+  housePic: string
+  resettlePic: string
+  implementFillStatus: string
+  implementEscalationStatus: string
+  disposalMeasuresPic: string
+
+  updateLogList: UpdateLogType[]
+  assetHouseFitUpList: AssetHouseFitUpType[]
+  assetLandList: AssetLandType[]
+  assetAppendantList: AssetAppendantType[]
+  immigrantDocumentation: any
+  immigrantSettle: Partial<ImmigrantSettleType>
+  immigrantLand: Partial<ImmigrantLandType>
+  immigrantChooseHouseList: ImmigrantChooseHouseType[]
+  immigrantCompensationCardList: ImmigrantCompensationCardType[]
+  immigrantHouseEmpty: Partial<ImmigrantHouseEmptyType>
+  immigrantLandEmpty: Partial<ImmigrantLandEmptyType>
+  immigrantExcess: Partial<ImmigrantExcessType>
+  immigrantBuildOneselfList: ImmigrantBuildOneselfType[]
+  immigrantProceduresList: ImmigrantProceduresType[]
+
+  simulateDemographic: Partial<SimulateDemographicType>[]
+  simulateImmigrantSettle: Partial<SimulateImmigrantSettleType>
+
+  currentProgress: string // 当前进度 1资格认定 2资产评估 3安置确认 4择址确认 5腾空过度 6动迁协议 7搬迁安置 8生产安置 9已完成
+
+  gridmanName: string
+  gridmanId: number
+  gridmanPhone: number
+  householderDoorNo: string
+  immigrantFilling: Partial<ImmigrantFillingType>
+  immigrantSelfSeeking: Partial<ImmigrantSelfSeekingType>
+}
 export interface AppVersionDtoType {
   id: number
   appId: string // 应用id 前端提供
@@ -271,6 +372,8 @@ export interface StateType {
   feedbackDtoList: any[]
   pgTop: any[]
   evaluatorStatisticsDto: any
+  settleAddressList:any[]
+  peasantHouseholdDtoList: LandlordHasStatusType[]
 }
 
 export interface PushStateType {

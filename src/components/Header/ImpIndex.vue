@@ -3,7 +3,8 @@
     <view class="list-header-rt">
       <view class="list-header-left">
         <view class="name">{{ dataInfo.name }}</view>
-        <view class="account-no">{{ filterViewDoorNoMd(dataInfo) }}</view>
+        <view class="account-no">{{ dataInfo.showDoorNo  }}</view>
+        <!-- {{ props.data.showDoorNo }} -->
         <view class="fill-number">
           填报进度&nbsp;
           <text class="green">{{ getProgressText.count }}</text>
@@ -48,6 +49,8 @@ export default {
     },
     fillNumber: function () {
       const { type, immigrantFilling } = this.dataInfo
+      console.log(type);
+
       if (!immigrantFilling) {
         return 0
       }
@@ -375,7 +378,7 @@ export default {
         total = 11
       } else if (type === MainType.Company) {
         // 资产评估
-        if (immigrantFilling.estimateeStatus === '1') {
+        if (immigrantFilling.appendageStatus === '1' && immigrantFilling.landStatus === '1' && immigrantFilling.deviceStatus === '1') {
           count++
         }
         // 协议
@@ -387,7 +390,7 @@ export default {
           count++
         }
         // 腾空
-        if (immigrantFilling.excessSoarStatus === '1') {
+        if (immigrantFilling.houseSoarStatus === '1' && immigrantFilling.landSoarStatus === '1') {
           count++
         }
         // 相关手续
@@ -397,7 +400,7 @@ export default {
         total = 5
       } else if (type === MainType.IndividualHousehold) {
         // 资产评估
-        if (immigrantFilling.estimateeStatus === '1') {
+        if (immigrantFilling.appendageStatus === '1' && immigrantFilling.landStatus === '1' && immigrantFilling.deviceStatus === '1') {
           count++
         }
         // 协议
@@ -409,7 +412,7 @@ export default {
           count++
         }
         // 腾空
-        if (immigrantFilling.excessSoarStatus === '1') {
+        if (immigrantFilling.houseSoarStatus === '1' && immigrantFilling.landSoarStatus === '1') {
           count++
         }
         // 相关手续
@@ -419,7 +422,7 @@ export default {
         total = 5
       } else if (type === MainType.Village) {
         // 资产评估
-        if (immigrantFilling.estimateeStatus === '1') {
+        if (immigrantFilling.appendageStatus === '1' && immigrantFilling.landStatus === '1' && immigrantFilling.deviceStatus === '1') {
           count++
         }
         // 协议
@@ -427,7 +430,7 @@ export default {
           count++
         }
         // 移民剪卡
-        if (immigrantFilling.cardStatus === '1') {
+        if (immigrantFilling.houseSoarStatus === '1') {
           count++
         }
         // 集体资产

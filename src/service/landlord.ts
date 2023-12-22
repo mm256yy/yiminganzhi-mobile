@@ -54,6 +54,9 @@ export const getSubmitListApi = (data: LandlordQuery) => {
 export const getLandlordListBySearchApi = (data?: LandlordSearchType) => {
   return LandlordController.getLandlordListBySearch(data)
 }
+export const getLandlordListBySearchApiTwo = (data?: LandlordSearchType) => {
+  return LandlordController.getLandlordListBySearchTwo(data)
+}
 
 // 首页统计信息
 export const getHomeCollectionApi = () => {

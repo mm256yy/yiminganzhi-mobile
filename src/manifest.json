@@ -1,40 +1,40 @@
 {
-    "name" : "移民调查",
-    "appid" : "__UNI__7FD06C8",
-    "description" : "浙江省水利水电勘测设计院移民安置综合管理服务平台",
-    "versionName" : "2.1.2",
-    "versionCode" : 1,
-    "transformPx" : false,
-    "app-plus" : {
-        "webView" : {
-            "x5" : {
-                "timeOut" : 5000,
-                "showTipsWithoutWifi" : false,
-                "allowDownloadWithoutWiFi" : true
+    "name": "移民调查",
+    "appid": "__UNI__7FD06C8",
+    "description": "浙江省水利水电勘测设计院移民安置综合管理服务平台",
+    "versionName": "2.1.2",
+    "versionCode": 1,
+    "transformPx": false,
+    "app-plus": {
+        "webView": {
+            "x5": {
+                "timeOut": 5000,
+                "showTipsWithoutWifi": false,
+                "allowDownloadWithoutWiFi": true
             },
-            "minUserAgentVersion" : "64.0.3282.116"
+            "minUserAgentVersion": "64.0.3282.116"
         },
-        "usingComponents" : true,
-        "nvueCompiler" : "uni-app",
-        "nvueStyleCompiler" : "uni-app",
-        "compilerVersion" : 3,
-        "splashscreen" : {
-            "alwaysShowBeforeRender" : true,
-            "waiting" : false,
-            "autoclose" : true,
-            "delay" : 0
+        "usingComponents": true,
+        "nvueCompiler": "uni-app",
+        "nvueStyleCompiler": "uni-app",
+        "compilerVersion": 3,
+        "splashscreen": {
+            "alwaysShowBeforeRender": true,
+            "waiting": false,
+            "autoclose": true,
+            "delay": 0
         },
-        "modules" : {
-            "Maps" : {},
-            "Bluetooth" : {},
-            "Geolocation" : {},
-            "SQLite" : {},
-            "Webview-x5" : {},
-            "Camera" : {}
+        "modules": {
+            "Maps": {},
+            "Bluetooth": {},
+            "Geolocation": {},
+            "SQLite": {},
+            "Webview-x5": {},
+            "Camera": {}
         },
-        "distribute" : {
-            "android" : {
-                "permissions" : [
+        "distribute": {
+            "android": {
+                "permissions": [
                     "<uses-feature android:name=\"android.hardware.camera\"/>",
                     "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>",
                     "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>",
@@ -61,130 +61,139 @@
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>",
                     "<uses-permission android:name=\"android.permission.BLUETOOTH\"/>"
                 ],
-                "abiFilters" : [ "armeabi", "armeabi-v7a", "x86", "mips" ],
-                "minSdkVersion" : 21,
-                "autoSdkPermissions" : true
+                "abiFilters": [
+                    "armeabi",
+                    "armeabi-v7a",
+                    "x86",
+                    "mips"
+                ],
+                "minSdkVersion": 21,
+                "autoSdkPermissions": true
             },
-            "ios" : {
-                "dSYMs" : false,
-                "idfa" : false
+            "ios": {
+                "dSYMs": false,
+                "idfa": false
             },
-            "sdkConfigs" : {
-                "maps" : {
-                    "amap" : {
-                        "appkey_ios" : "''",
-                        "appkey_android" : "b5037d342fe4818fb295cd92614d6646"
+            "sdkConfigs": {
+                "maps": {
+                    "amap": {
+                        "appkey_ios": "''",
+                        "appkey_android": "b5037d342fe4818fb295cd92614d6646"
                     }
                 },
-                "ad" : {},
-                "geolocation" : {
-                    "amap" : {
-                        "__platform__" : [ "android" ],
-                        "appkey_android" : "b5037d342fe4818fb295cd92614d6646"
+                "ad": {},
+                "geolocation": {
+                    "amap": {
+                        "__platform__": [
+                            "android"
+                        ],
+                        "appkey_android": "b5037d342fe4818fb295cd92614d6646"
                     },
-                    "system" : {
-                        "__platform__" : [ "android" ]
+                    "system": {
+                        "__platform__": [
+                            "android"
+                        ]
                     }
                 }
             },
-            "icons" : {
-                "android" : {
-                    "hdpi" : "unpackage/res/icons/72x72.png",
-                    "xhdpi" : "unpackage/res/icons/96x96.png",
-                    "xxhdpi" : "unpackage/res/icons/144x144.png",
-                    "xxxhdpi" : "unpackage/res/icons/192x192.png"
+            "icons": {
+                "android": {
+                    "hdpi": "unpackage/res/icons/72x72.png",
+                    "xhdpi": "unpackage/res/icons/96x96.png",
+                    "xxhdpi": "unpackage/res/icons/144x144.png",
+                    "xxxhdpi": "unpackage/res/icons/192x192.png"
                 },
-                "ios" : {
-                    "appstore" : "unpackage/res/icons/1024x1024.png",
-                    "ipad" : {
-                        "app" : "unpackage/res/icons/76x76.png",
-                        "app@2x" : "unpackage/res/icons/152x152.png",
-                        "notification" : "unpackage/res/icons/20x20.png",
-                        "notification@2x" : "unpackage/res/icons/40x40.png",
-                        "proapp@2x" : "unpackage/res/icons/167x167.png",
-                        "settings" : "unpackage/res/icons/29x29.png",
-                        "settings@2x" : "unpackage/res/icons/58x58.png",
-                        "spotlight" : "unpackage/res/icons/40x40.png",
-                        "spotlight@2x" : "unpackage/res/icons/80x80.png"
+                "ios": {
+                    "appstore": "unpackage/res/icons/1024x1024.png",
+                    "ipad": {
+                        "app": "unpackage/res/icons/76x76.png",
+                        "app@2x": "unpackage/res/icons/152x152.png",
+                        "notification": "unpackage/res/icons/20x20.png",
+                        "notification@2x": "unpackage/res/icons/40x40.png",
+                        "proapp@2x": "unpackage/res/icons/167x167.png",
+                        "settings": "unpackage/res/icons/29x29.png",
+                        "settings@2x": "unpackage/res/icons/58x58.png",
+                        "spotlight": "unpackage/res/icons/40x40.png",
+                        "spotlight@2x": "unpackage/res/icons/80x80.png"
                     },
-                    "iphone" : {
-                        "app@2x" : "unpackage/res/icons/120x120.png",
-                        "app@3x" : "unpackage/res/icons/180x180.png",
-                        "notification@2x" : "unpackage/res/icons/40x40.png",
-                        "notification@3x" : "unpackage/res/icons/60x60.png",
-                        "settings@2x" : "unpackage/res/icons/58x58.png",
-                        "settings@3x" : "unpackage/res/icons/87x87.png",
-                        "spotlight@2x" : "unpackage/res/icons/80x80.png",
-                        "spotlight@3x" : "unpackage/res/icons/120x120.png"
+                    "iphone": {
+                        "app@2x": "unpackage/res/icons/120x120.png",
+                        "app@3x": "unpackage/res/icons/180x180.png",
+                        "notification@2x": "unpackage/res/icons/40x40.png",
+                        "notification@3x": "unpackage/res/icons/60x60.png",
+                        "settings@2x": "unpackage/res/icons/58x58.png",
+                        "settings@3x": "unpackage/res/icons/87x87.png",
+                        "spotlight@2x": "unpackage/res/icons/80x80.png",
+                        "spotlight@3x": "unpackage/res/icons/120x120.png"
                     }
                 }
             },
-            "splashscreen" : {
-                "useOriginalMsgbox" : true
+            "splashscreen": {
+                "useOriginalMsgbox": true
             }
         },
-        "nativePlugins" : {
-            "YanYu-PrintPDF" : {
-                "__plugin_info__" : {
-                    "name" : "调用Android本地服务，实现打印pdf文件",
-                    "description" : "调用系统打印服务，实现打印本地PDF功能（现仅支持本地绝对路径）。",
-                    "platforms" : "Android",
-                    "url" : "https://ext.dcloud.net.cn/plugin?id=1633",
-                    "android_package_name" : "io.dcloud.migrate",
-                    "ios_bundle_id" : "",
-                    "isCloud" : true,
-                    "bought" : 1,
-                    "pid" : "1633",
-                    "parameters" : {}
+        "nativePlugins": {
+            "YanYu-PrintPDF": {
+                "__plugin_info__": {
+                    "name": "调用Android本地服务，实现打印pdf文件",
+                    "description": "调用系统打印服务，实现打印本地PDF功能（现仅支持本地绝对路径）。",
+                    "platforms": "Android",
+                    "url": "https://ext.dcloud.net.cn/plugin?id=1633",
+                    "android_package_name": "io.dcloud.migrate",
+                    "ios_bundle_id": "",
+                    "isCloud": true,
+                    "bought": 1,
+                    "pid": "1633",
+                    "parameters": {}
                 }
             },
-            "da-comgps" : {
-                "__plugin_info__" : {
-                    "name" : "原生GPS定位信息获取",
-                    "description" : "调用原生GPS获取位置信息精准定位",
-                    "platforms" : "Android",
-                    "url" : "https://ext.dcloud.net.cn/plugin?id=7772",
-                    "android_package_name" : "io.dcloud.migrate",
-                    "ios_bundle_id" : "",
-                    "isCloud" : true,
-                    "bought" : 1,
-                    "pid" : "7772",
-                    "parameters" : {}
+            "da-comgps": {
+                "__plugin_info__": {
+                    "name": "原生GPS定位信息获取",
+                    "description": "调用原生GPS获取位置信息精准定位",
+                    "platforms": "Android",
+                    "url": "https://ext.dcloud.net.cn/plugin?id=7772",
+                    "android_package_name": "io.dcloud.migrate",
+                    "ios_bundle_id": "",
+                    "isCloud": true,
+                    "bought": 1,
+                    "pid": "7772",
+                    "parameters": {}
                 }
             }
         }
     },
-    "quickapp" : {},
-    "mp-weixin" : {
-        "appid" : "",
-        "setting" : {
-            "urlCheck" : false
+    "quickapp": {},
+    "mp-weixin": {
+        "appid": "",
+        "setting": {
+            "urlCheck": false
         },
-        "usingComponents" : true
+        "usingComponents": true
     },
-    "mp-alipay" : {
-        "usingComponents" : true
+    "mp-alipay": {
+        "usingComponents": true
     },
-    "mp-baidu" : {
-        "usingComponents" : true
+    "mp-baidu": {
+        "usingComponents": true
     },
-    "mp-toutiao" : {
-        "usingComponents" : true
+    "mp-toutiao": {
+        "usingComponents": true
     },
-    "uniStatistics" : {
-        "enable" : false
+    "uniStatistics": {
+        "enable": false
     },
-    "vueVersion" : "3",
-    "h5" : {
-        "sdkConfigs" : {
-            "maps" : {
-                "amap" : {
-                    "key" : "03c4dfe4dfd3853495a07b622889d05d",
-                    "securityJsCode" : "9c839bda4167eb7eb123821a3e9aee5c",
-                    "serviceHost" : ""
+    "vueVersion": "3",
+    "h5": {
+        "sdkConfigs": {
+            "maps": {
+                "amap": {
+                    "key": "03c4dfe4dfd3853495a07b622889d05d",
+                    "securityJsCode": "9c839bda4167eb7eb123821a3e9aee5c",
+                    "serviceHost": ""
                 }
             }
         }
     },
-    "fallbackLocale" : "zh-Hans"
+    "fallbackLocale": "zh-Hans"
 }

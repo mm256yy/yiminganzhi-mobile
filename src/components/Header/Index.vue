@@ -16,19 +16,13 @@
           <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
           <text class="txt">打印表格</text>
         </view>
-        <view
-          v-if="!dataInfo.signStatus || dataInfo.signStatus === 'UnSign'"
-          class="btn-wrapper report"
-          @click="tableSign"
-        >
+        <view v-if="!dataInfo.signStatus || dataInfo.signStatus === 'UnSign'" class="btn-wrapper report"
+          @click="tableSign">
           <image class="icon" src="@/static/images/qianzi_icon.png" mode="scaleToFill" />
           <text class="txt">报表签字</text>
         </view>
-        <view
-          v-if="!dataInfo.reportStatus || dataInfo.reportStatus === 'UnReport'"
-          class="btn-wrapper report"
-          @click="reportDataCheck"
-        >
+        <view v-if="!dataInfo.reportStatus || dataInfo.reportStatus === 'UnReport'" class="btn-wrapper report"
+          @click="reportDataCheck">
           <image class="icon" src="@/static/images/icon_report.png" mode="scaleToFill" />
           <text class="txt">填报完成</text>
         </view>
@@ -70,18 +64,9 @@
             <view v-for="(item, index) in fileList" :key="item.uid" class="file-item">
               <view class="name">{{ item.name }}</view>
               <view class="btns">
-                <image
-                  class="icon"
-                  src="@/static/images/icon_view_file.png"
-                  mode="scaleToFill"
-                  @click.stop="prviewImage(item)"
-                />
-                <image
-                  class="icon"
-                  src="@/static/images/print.png"
-                  mode="scaleToFill"
-                  @click.stop="printImage(item)"
-                />
+                <image class="icon" src="@/static/images/icon_view_file.png" mode="scaleToFill"
+                  @click.stop="prviewImage(item)" />
+                <image class="icon" src="@/static/images/print.png" mode="scaleToFill" @click.stop="printImage(item)" />
               </view>
             </view>
           </view>
@@ -90,6 +75,12 @@
           <view class="btn cancel" @click="close('print')">取消</view>
         </view>
       </view>
+    </uni-popup>
+
+    <!--报表签字二次确认-->
+    <uni-popup ref="signConfirmRef" type="dialog">
+      <uni-popup-dialog type="warn" cancelText="取消" confirmText="确认" title="提示" content="是否确认报表签字？" @confirm="signConfirm"
+        @close="closeSignConfirm" />
     </uni-popup>
   </view>
 </template>
@@ -133,7 +124,7 @@ export default {
   props: {
     dataInfo: {
       type: Object,
-      default: () => {}
+      default: () => { }
     },
     showPrint: {
       type: Boolean,
@@ -267,19 +258,30 @@ export default {
     isNotNullArray(arr: any) {
       return arr && Array.isArray(arr) && arr.length
     },
-
-    // 报表签字
-    tableSign() {
+    openSignConfirm() {
+      const ref = this.$refs.signConfirmRef as any
+      ref.open()
+    },
+    signConfirm() {
       signDataApi(this.dataInfo.uid)
         .then((res) => {
           if (res) {
             showToast(SUCCESS_MSG)
+            this.closeSignConfirm()
             this.$emit('updateData')
           }
         })
         .catch(() => {
           showToast(ERROR_MSG)
         })
+    },
+    closeSignConfirm() {
+      const ref = this.$refs.signConfirmRef as any
+      ref.close()
+    },
+    // 报表签字
+    tableSign() {
+      this.openSignConfirm()
     },
     // 数据上报校验
     reportDataCheck() {
@@ -292,14 +294,13 @@ export default {
         .then((res: any) => {
           if (res) {
             this.tipsList = res
-            ;(this.$refs.reportDataPopup as any)?.open()
+              ; (this.$refs.reportDataPopup as any)?.open()
           }
         })
         .catch((e) => {
           showToast(ERROR_MSG)
         })
     },
-
     // 数据上报
     reportData() {
       let query = {
@@ -346,7 +347,7 @@ export default {
     // 打印文件/图片
     printFile() {
       this.getPrintList(this.templateType as PrintType)
-      ;(this.$refs.printPopup as any)?.open()
+        ; (this.$refs.printPopup as any)?.open()
     },
 
     // 确认 数据上报/打印
@@ -434,7 +435,8 @@ export default {
           success: function (res) {
             console.log('打开文档成功')
           },
-          fail: () => {
+          fail: (err) => {
+            console.log(err,'出错了')
             this.getPrintErrorResult()
           }
         })
@@ -455,6 +457,7 @@ export default {
       // console.log('result:', result)
       // 拿到打印结果
       const base64Str = result[0][0]
+      console.log(base64Str,'测试base')
       if (!base64Str) {
         uni.hideLoading()
         showToast('生成pdf失败')
@@ -486,7 +489,54 @@ export default {
           console.log(filePath, 'filePath')
           // printpdfModule.deleteFile("test.pdf");
           uni.hideLoading()
-          this.actionPdf(filePath)
+          let that = this
+          plus.android.requestPermissions(['android.permission.WRITE_EXTERNAL_STORAGE'], function (e) {
+            if (e.deniedAlways.length > 0) { //权限被永久拒绝
+              // 弹出提示框解释为何需要读写手机储存权限，引导用户打开设置页面开启
+              uni.showModal({
+                title: '存储权限',
+                content: '您拒绝了存储权限，请去设置-应用开启存储权限。',
+                success: function (res) {
+                  if (res.confirm) {
+                    // console.log('用户点击确定');
+
+                  } else if (res.cancel) {
+                    // console.log('用户点击取消');
+                  }
+                }
+              });
+            }
+            if (e.deniedPresent.length > 0) { //权限被临时拒绝
+              // 弹出提示框解释为何需要读写手机储存权限，可再次调用plus.android.requestPermissions申请权限
+              plus.android.requestPermissions(['android.permission.WRITE_EXTERNAL_STORAGE'])
+              // console.log('666666666 ' + e.deniedPresent.toString());
+            }
+            console.log(e, 'e是啥?')
+            if (e.granted.length > 0) { //权限被允许
+              //调用依赖获取读写手机储存权限的代码
+              if (that.actionType === 'preview') {
+                // 预览
+                uni.openDocument({
+                  filePath: filePath,
+                  showMenu: true,
+                  success: function (res) {
+                    console.log('打开文档成功')
+                  },
+                  fail: (err) => {
+                    console.log(err, '出错了')
+                    that.getPrintErrorResult()
+          }
+        })
+      } else {
+        // 打印pdf 将临时路径转化成绝对路径
+        const path = plus.io.convertLocalFileSystemURL(filePath)
+        YanYuprintPdf.managerPrint(path)
+      }
+					
+						}
+					}, function(e) {
+						// console.log('R12133313221' + JSON.stringify(e));
+					});
         })
         .catch((err: any) => {
           this.getPrintErrorResult()
@@ -497,11 +547,11 @@ export default {
     // 关闭弹窗
     close(type: string) {
       if (type === 'report') {
-        ;(this.$refs.reportDataPopup as any)?.close()
+        ; (this.$refs.reportDataPopup as any)?.close()
       } else if (type === 'print') {
         // 关闭打印弹窗 清理掉缓存的业主信息
         this.options.landlords = []
-        ;(this.$refs.printPopup as any)?.close()
+          ; (this.$refs.printPopup as any)?.close()
       }
     }
   }
@@ -524,6 +574,7 @@ export default {
           templateIds,
           type
         } = newValue
+        console.log(newValue,'数据信息')
         if (!landlords || !landlords.length) {
           console.log('landlords数据为空')
           return

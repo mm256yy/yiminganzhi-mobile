@@ -1319,6 +1319,7 @@ class ImpDataFill extends ImpLandlord {
             typeThreeNum,
             typeFourNum
           } = landlordItem.immigrantSettle
+          console.log(landlordItem.immigrantSettle,'测试这是什么')
           if (houseAreaType === HouseAreaType.homestead || houseAreaType === HouseAreaType.flat) {
             const houseAreaTypeText = houseAreaType === HouseAreaType.flat ? '公寓房' : '宅基地'
 
@@ -1354,6 +1355,7 @@ class ImpDataFill extends ImpLandlord {
               array = [obj]
             } else {
               if (typeOneNum) {
+                for(let i=0;i<typeOneNum;i++){
                 array.push({
                   uid: guid(),
                   doorNo: landlordItem.doorNo,
@@ -1365,19 +1367,23 @@ class ImpDataFill extends ImpLandlord {
                   ...defaultChooseHouseObj
                 })
               }
+              }
               if (typeTwoNum) {
-                array.push({
-                  uid: guid(),
-                  doorNo: landlordItem.doorNo,
-                  settleAddress,
-                  settleAddressText: apartmentArea.find((item) => item.id === settleAddress)?.name,
-                  houseAreaType,
-                  houseAreaTypeText,
-                  area: apartmentAreaSize[1].name,
-                  ...defaultChooseHouseObj
-                })
+                for(let i=0;i<typeTwoNum;i++){
+                  array.push({
+                    uid: guid(),
+                    doorNo: landlordItem.doorNo,
+                    settleAddress,
+                    settleAddressText: apartmentArea.find((item) => item.id === settleAddress)?.name,
+                    houseAreaType,
+                    houseAreaTypeText,
+                    area: apartmentAreaSize[1].name,
+                    ...defaultChooseHouseObj
+                  })
+                }
               }
               if (typeThreeNum) {
+                for(let i=0;i<typeThreeNum;i++){
                 array.push({
                   uid: guid(),
                   doorNo: landlordItem.doorNo,
@@ -1389,7 +1395,9 @@ class ImpDataFill extends ImpLandlord {
                   ...defaultChooseHouseObj
                 })
               }
+              }
               if (typeFourNum) {
+                for(let i=0;i<typeFourNum;i++){
                 array.push({
                   uid: guid(),
                   doorNo: landlordItem.doorNo,
@@ -1400,6 +1408,7 @@ class ImpDataFill extends ImpLandlord {
                   area: apartmentAreaSize[3].name,
                   ...defaultChooseHouseObj
                 })
+              }
               }
             }
           } else {
@@ -1926,6 +1935,7 @@ class ImpDataFill extends ImpLandlord {
         }
 
         // 更新数据
+        console.log(landlordItem, '测试填报完成接口')
         const updateRes = await this.updateLandlord(landlordItem)
         updateRes ? resolve(true) : reject(false)
       } catch (error) {

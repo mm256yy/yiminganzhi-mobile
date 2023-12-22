@@ -5,6 +5,7 @@
       <view class="head-lt">
         <image class="user-icon" src="@/static/images/respondents_tit.png" mode="scaleToFill" />
         <view class="name">{{ props.data.name }}</view>
+        <view class="number">{{ props.data.showDoorNo }}</view>
       </view>
       <view class="head-rt">
         <view class="status" :class="[filled ? 'success' : '']"
@@ -41,7 +42,7 @@
       </view>
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
-        <view class="label">行政村名称:</view>
+        <view class="label">行政村名称1:</view>
         <view class="value">{{ props.data.villageCodeText }}</view>
       </view>
       <view class="cont-item" v-if="props.data.type === MainType.PeasantHousehold">
@@ -109,7 +110,7 @@ const deleteItem = () => {
     .head-lt {
       display: flex;
       align-items: center;
-      flex-direction: row;
+      // flex-direction: row;
 
       .user-icon {
         width: 19rpx;
@@ -118,7 +119,7 @@ const deleteItem = () => {
       }
 
       .name {
-        width: 220rpx;
+        // width: 220rpx;
         margin-right: 6rpx;
         overflow: hidden;
         font-size: 12rpx;
@@ -127,6 +128,11 @@ const deleteItem = () => {
         text-overflow: ellipsis;
         word-break: keep-all;
         white-space: nowrap;
+      }
+      .number {
+        font-size: 10rpx;
+        font-weight: 500;
+        color: #0a54ff;
       }
     }
 

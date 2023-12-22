@@ -77,19 +77,26 @@
               label-align="right"
               name="formData.handleWay"
             >
-              <view class="value">
+              <!-- 自行择质：1,公募：2 -->
+              <view class="value" v-if="formData.handleWay == '2'">
                 {{
                   formData.handleWay === '1'
                     ? formData.settingAddress
                     : formatDict(formData.settingGrave, 377)
                 }}
               </view>
+              <uni-easyinput
+                v-else
+                v-model="formData.settingAddress"
+                type="text"
+                placeholder="请输入"
+              />
             </uni-forms-item>
           </uni-col>
         </uni-row>
 
         <uni-row>
-          <uni-col :span="12">
+          <uni-col :span="12" v-if="formData.handleWay == '1' ? false : true">
             <uni-forms-item
               label="编号"
               :label-width="150"

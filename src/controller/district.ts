@@ -14,7 +14,7 @@ class District extends Common {
     return new Promise(async (resolve, reject) => {
       try {
         const array: DistrictType[] = []
-        const sql = `select * from ${DistrictTableName}`
+        const sql = `select * from ${DistrictTableName} `
         const list: DistrictDDLType[] = await this.db.selectSql(sql)
         if (list && Array.isArray(list)) {
           list.forEach((item) => {

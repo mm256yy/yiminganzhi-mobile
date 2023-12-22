@@ -10,6 +10,7 @@
           <uni-th align="left" width="70rpx" class="u-title">数量</uni-th>
           <uni-th align="left" width="50rpx" class="u-title">补偿单价</uni-th>
           <uni-th align="left" width="140rpx" class="u-title">补偿金额</uni-th>
+          <uni-th align="left" width="80rpx" class="u-title">确认状态</uni-th>
           <uni-th align="left" width="80rpx" class="u-title">备注</uni-th>
           <uni-th align="left" width="80rpx" class="u-title">操作</uni-th>
         </uni-tr>
@@ -43,38 +44,27 @@
             {{ item.price }}
           </uni-td>
           <uni-td align="left" class="u-td">
-            <input
-              v-if="item.isUpdate === '1' && item.isVerify !== '1'"
-              class="input-txt"
-              v-model="item.totalPrice"
-              placeholder="请输入"
-            />
+            <input v-if="flag" class="input-txt" v-model="item.totalPrice" placeholder="请输入" />
             <!-- <view v-if="item.isUpdate === '0'">{{ item.totalPrice }}</view>
             <view v-else-if="item.isUpdate === '1'">{{ computedTotalPrice(item) }}</view>
             <view v-else-if="item.isUpdate === '2'"> {{ getSummaries(item) }} </view> -->
+            <view v-if="!flag">{{ item.totalPrice }}</view>
           </uni-td>
+          <uni-td align="left" class="u-td">{{
+            item.isVerify == '0' ? '未确认' : item.isVerify == '1' ? '已确认' : '-'
+          }}</uni-td>
           <uni-td align="left" class="u-td">
-            <input
-              v-if="item.isUpdate === '1' && item.isVerify !== '1'"
-              class="input-txt"
-              v-model="item.remark"
-              placeholder="请输入"
-            />
-            <view v-if="item.isUpdate === '1' && item.isVerify === '1'">{{ item.remark }}</view>
+            <input v-if="flag" class="input-txt" v-model="item.remark" placeholder="请输入" />
+            <view v-if="!flag">{{ item.remark }}</view>
           </uni-td>
-          <uni-td align="left" class="u-td">
+          <uni-td class="u-td">
             <view style="display: flex; align-items: center; justify-content: center">
+              <!-- v-if="item.isVerify !== '1' && item.unit" -->
+              <view size="mini" @click="onSave(item, '0')">编辑 </view>
               <view
-                v-if="item.isVerify !== '1'"
-                class="mini-btn m-r-5"
-                type="primary"
-                size="mini"
-                @click="onSave(item, '0')"
-                >保存</view
-              >
-              <view
-                v-if="item.isVerify !== '1'"
                 type="mini-btn primary"
+                class="mini-btn m-r-5"
+                style="margin-left: 10rpx"
                 size="mini"
                 @click="onSave(item, '1')"
                 >确认
@@ -98,6 +88,7 @@ import {
   getLandlordItemApi
 } from '@/service'
 import Back from '@/components/Back/Index.vue'
+const flag = ref(false)
 
 const dataList = ref<any[]>([])
 const commonParams = ref<any>({})
@@ -173,7 +164,12 @@ const getSummaries = (row: any) => {
  * 保存/确认
  * @param data 当前行数据
  */
-const onSave = (data: any, isVerify: string) => {
+const onSave = (data: any, isVerify: any) => {
+  if (isVerify == 0) {
+    flag.value = true
+  } else if (isVerify == 1) {
+    flag.value = false
+  }
   const { doorNo, uid } = commonParams.value
   let params = {
     ...data,

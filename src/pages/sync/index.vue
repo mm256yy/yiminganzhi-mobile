@@ -5,8 +5,8 @@
       <view class="back-box" @click="onBack">
         <uni-icons type="back" color="#ffffff" size="14rpx" />
       </view>
-
-      <text class="tit">数据同步V{{ appVersion }}</text>
+      <!-- V{{ appVersion }} -->
+      <text class="tit">数据同步</text>
       <text />
     </view>
 
@@ -269,6 +269,7 @@ const getPullTime = async () => {
 
 const getData = async () => {
   const res = await getCollectListApi()
+  console.log(res, '同步数据查看')
   if (res && res.length) {
     peopleList.value = res.filter((item) => item.type === MainType.PeasantHousehold)
     individualHouseholdList.value = res.filter((item) => item.type === MainType.IndividualHousehold)

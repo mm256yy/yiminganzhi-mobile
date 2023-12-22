@@ -35,7 +35,7 @@ export default {
   props: {
     dataInfo: {
       type: Object,
-      default: () => {}
+      default: () => { }
     },
     type: {
       type: String,
@@ -74,10 +74,8 @@ export default {
         houseRenovationStatus,
         appendageStatus,
         treeStatus,
-
         landStatus,
         landSeedlingStatus,
-
         deviceStatus,
         specialStatus
       } = immigrantFilling

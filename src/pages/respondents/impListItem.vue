@@ -6,8 +6,8 @@
         <view class="name">{{ props.data.name }}</view>
         <view class="number">{{ props.data.showDoorNo }}</view>
       </view>
-      <view class="head-rt" v-if="props.showStatus">
-        {{ filterCurrentProgress(props.data.currentProgress) }}
+      <view :class="typeColor(props.data.warnStatus)" v-if="props.showStatus">
+        {{ filterCurrentProgress(props.data.stage) }}
         {{ filterWarnStatus(props.data.warnStatus) }}
       </view>
 
@@ -110,10 +110,13 @@ const filterCurrentProgress = (type: string) => {
   const item = progressMaps.find((item) => item.value === type)
   return item?.label || ''
 }
-
+// 根据类型获取标签文本颜色
+const typeColor = (type: string | null) => {
+  return type === '0' ||type === null ||type === '' ||type === 'null' ? 'head-rtg':'head-rt'
+}
 const filterWarnStatus = (type: string) => {
   // 预警状态 0正常 1预警 2滞后
-  return type === '0' ? '正常' : type === '1' ? '预警' : '滞后'
+  return type === '0' ||type === null ||type === '' ||type === 'null' ? '正常' : type === '1' ? '预警' : '滞后'
 }
 
 const getProgressText = (data: LandlordType) => {
@@ -313,6 +316,17 @@ const getProgressText = (data: LandlordType) => {
       background: #fff1f1;
       border-radius: 14rpx;
     }
+	.head-rtg {
+	  width: 54rpx;
+	  height: 14rpx;
+	  font-size: 7rpx;
+	  font-weight: 400;
+	  line-height: 14rpx;
+	  color: #FFFFFF;
+	  text-align: center;
+	  background: #00a400;
+	  border-radius: 14rpx;
+	}
   }
 
   .cont {

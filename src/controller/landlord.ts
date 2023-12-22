@@ -7,7 +7,9 @@ import {
   LandlordDDLType,
   getLandlordSqlValues,
   landlordFields,
-  getLandlordValues
+  getLandlordValues,
+  LandlordHasStatusTableName,
+  LandlordHasStatusDDLType
 } from '@/database'
 import { Common } from './common'
 import { LandlordType } from '@/types/sync'
@@ -374,7 +376,7 @@ export class Landlord extends Common {
           '0'
         )
         const res: LandlordType = result && result[0] ? JSON.parse(result[0].content) : {}
-
+        console.log(res, '居民户列表1111')
         // 获取坟墓信息
         const graveList = await GraveController.getListWithLandlord(res.type, res.doorNo)
         if (res && res.uid) {
@@ -742,7 +744,79 @@ export class Landlord extends Common {
       }
     })
   }
-
+ // 业主列表-根据行政村 和 名称 查询列表
+  getLandlordListBySearchTwo(data?: LandlordSearchType): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const {
+          name,
+          areaCode,
+          townCode,
+          villageCode,
+		  warnStatus,
+          virutalVillageCode,
+          type,
+          pageSize = 10,
+          page = 1
+        } = data || {}
+        const array: LandlordType[] = []
+        let sql = `select * from ${LandlordHasStatusTableName} where 1=1`
+        if (type) {
+           sql += ` and type = '${type}'`
+        }
+        if (name) {
+          sql += ` and (name like '%${name}%' or doorNo like '%${name.slice(
+            name.length - 6 < 0 ? 0 : name.length - 6,
+            name.length
+          )}%' or content like '%${name}%')`
+        }
+        if (areaCode) {
+          sql += ` and areaCode = '${areaCode}'`
+        }
+        if (townCode) {
+          sql += ` and townCode = '${townCode}'`
+        }
+        if (villageCode) {
+          sql += ` and villageCode = '${villageCode}'`
+        }
+        if (virutalVillageCode) {
+          sql += ` and virutalVillageCode = '${virutalVillageCode}'`
+        }
+		if (warnStatus && warnStatus =='0') {
+		     sql += ` and   (stage is  null or stage ='' or stage ='null') `
+		}else if(warnStatus && warnStatus =='2'){
+			sql += ` and   (stage is not null and stage !='' and stage !='null' and lagAddDataStatus is not null  and lagAddDataStatus !='' and lagAddDataStatus !='null') `
+		}else if(warnStatus && warnStatus =='1'){
+			sql += ` and   (stage is not null and stage !='' and stage !='null' and warnAddDataStatus is not null  and warnAddDataStatus !='' and warnAddDataStatus !='null')   `
+		}
+        sql += ` order by updatedDate desc limit ${pageSize} offset ${(page - 1) * pageSize}`
+        const list: LandlordHasStatusDDLType[] = await this.db.selectSql(sql)
+        /* if (this.isArrayAndNotNull(list)) {
+			list.forEach((item) => {
+			  const landlord = JSON.parse(item.type)
+			  array.push(landlord)
+			})
+          const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
+          // 拿到上级行政区划
+          array.forEach((item) => {
+            // townCode: string
+            // villageCode: string
+            // virutalVillageCode: string
+            // areaCode: string
+            // 331102001201 行政村
+            item.virutalVillageCodeText = districtMap[item.virutalVillageCode]
+            item.villageCodeText = districtMap[item.villageCode]
+            item.townCodeText = districtMap[item.townCode]
+            item.areaCodeText = districtMap[item.areaCode]
+          })
+        } */
+        resolve(list)
+      } catch (error) {
+        console.log(error, 'getLandlordListBySearch-error')
+        reject([])
+      }
+    })
+  }
   // 获取首页统计数据
   getHomeCollection(): Promise<any> {
     return new Promise(async (resolve, reject) => {

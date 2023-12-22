@@ -67,7 +67,7 @@
         <uni-col :span="24">
           <uni-forms-item
             required
-            label="移民户主意见："
+            :label="dataInfo?.type == 'Village' ? '村集体意见' : '移民户主意见'"
             :label-width="150"
             label-align="right"
             name="formData.houseEmptyOpinion"
@@ -116,7 +116,6 @@ const formData = ref<ImmigrantHouseEmptyType>({
   houseEmptyDate: '',
   houseEmptyOpinion: ''
 })
-
 const emit = defineEmits(['submit'])
 
 // 获取年月日

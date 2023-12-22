@@ -114,7 +114,18 @@
         </uni-row>
 
         <uni-row>
-          <uni-col :span="24">
+          <uni-col :span="12">
+            <uni-forms-item
+              required
+              label="是否合法"
+              :label-width="150"
+              label-align="right"
+              name="formData.isCompliance"
+            >
+              <uni-data-select v-model="formData.isCompliance" :localdata="dict[371]" />
+            </uni-forms-item>
+          </uni-col>
+          <uni-col :span="12">
             <uni-forms-item
               label="共有人"
               :label-width="150"
@@ -209,17 +220,6 @@
         </uni-row>
 
         <uni-row>
-          <uni-col :span="12">
-            <uni-forms-item
-              required
-              label="是否合法"
-              :label-width="150"
-              label-align="right"
-              name="formData.isCompliance"
-            >
-              <uni-data-select v-model="formData.isCompliance" :localdata="dict[371]" />
-            </uni-forms-item>
-          </uni-col>
           <uni-col :span="12">
             <uni-forms-item
               label="集体土地使用权证"
@@ -368,10 +368,12 @@ const getLandlordDetail = () => {
     if (demographicArr && demographicArr.length) {
       let arr: any = []
       demographicArr.map((item: any) => {
-        arr.push({
-          text: item.name,
-          value: item.id
-        })
+        if (item.name != '增计人口') {
+          arr.push({
+            text: item.name,
+            value: item.id
+          })
+        }
       })
       demographicList.value = [...arr]
     }

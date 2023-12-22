@@ -4,16 +4,8 @@
       <text class="file-title">{{ title }}</text>
       <text class="file-count">{{ filesList.length }}/{{ limit }}</text>
     </view> -->
-    <upload-image
-      v-if="showType === 'grid'"
-      :files-list="filesList"
-      :limit="limit"
-      :is-preview="isPreview"
-      @upload-files="updateFilesList"
-      @choose="choose"
-      @del-file="delFile"
-      @prview-image="prviewImage"
-    >
+    <upload-image v-if="showType === 'grid'" :files-list="filesList" :limit="limit" :is-preview="isPreview"
+      @upload-files="updateFilesList" @choose="choose" @del-file="delFile" @prview-image="prviewImage">
       <slot>
         <view>
           <view class="is-add">
@@ -24,16 +16,9 @@
         </view>
       </slot>
     </upload-image>
-    <upload-file
-      v-if="showType !== 'grid'"
-      :files-list="filesList"
-      :limit="limit"
-      :is-preview="isPreview"
-      @choose="choose"
-      @del-file="delFile"
-      @prview-image="prviewImage"
-      @update-file-list="childUpdateFilesList"
-    >
+    <upload-file v-if="showType !== 'grid'" :files-list="filesList" :limit="limit" :is-preview="isPreview"
+      :uploadType="uploadType" @choose="choose" @del-file="delFile" @prview-image="prviewImage"
+      @update-file-list="childUpdateFilesList">
       <slot></slot>
     </upload-file>
 
@@ -72,6 +57,7 @@ interface PropsType {
   title?: string
   isPreview?: boolean
   notCompress?: boolean
+  uploadType?: string
 }
 
 interface FileItemType {

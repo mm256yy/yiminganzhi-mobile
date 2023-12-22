@@ -9,18 +9,9 @@
       <text class="right-btn" />
     </view>
     <view class="map-content">
-      <map
-        id="map"
-        class="map"
-        :enable-satellite="true"
-        :enable-overlooking="true"
-        :latitude="centerLocation.latitude"
-        :longitude="centerLocation.longitude"
-        :polygons="polygons"
-        :markers="markers"
-        :scale="14"
-        @markertap="markerTap"
-      ></map>
+      <map id="map" class="map" :enable-satellite="true" :enable-overlooking="true" :latitude="centerLocation.latitude"
+        :longitude="centerLocation.longitude" :polygons="polygons" :markers="markers" :scale="14"
+        @markertap="markerTap"></map>
     </view>
     <map-info v-if="show" :data-info="dataInfo" @close="close" />
   </view>
@@ -58,8 +49,8 @@ const polygons = ref<any>([])
 const markers = ref<any[]>([]) // 标记点集合
 // 初始地图坐标
 const centerLocation = ref<LocationType>({
-	longitude:120.153576, 
-	latitude: 30.287459
+  longitude: 120.153576,
+  latitude: 30.287459
 })
 
 // 计算区域中心经纬度，若没有中心经纬度，默认为杭州经、纬度
@@ -92,10 +83,10 @@ const genArr = (arr: any) => {
   let newArr: any = []
   if (arr && arr.length > 0) {
     arr.map((item: any) => {
-			newArr.push({
-				longitude: Number(item[0]),
-				latitude: Number(item[1])
-			})
+      newArr.push({
+        longitude: Number(item[0]),
+        latitude: Number(item[1])
+      })
     })
     return newArr
   } else {
@@ -135,20 +126,20 @@ const initCoordinateData = (obj: any) => {
  * 水库淹没处理范围 BM(1) #FF0000
  */
 const renderColor = (obj: any) => {
-	if (obj) {
-		if (obj.BM === '1') {
-			return '#FF0000'
-		} else if (obj.BM === '2') {
-			return '#00aa00'
-		} else if (obj.BM === '3') {
-			return '#C24BC6'
-		} else if (obj.BM === '4') {
-			return '#0055ff'
-		} else {
-			return '#FF0000'
-		}
-	}
-	return '#FF0000'
+  if (obj) {
+    if (obj.BM === '1') {
+      return '#FF0000'
+    } else if (obj.BM === '2') {
+      return '#00aa00'
+    } else if (obj.BM === '3') {
+      return '#C24BC6'
+    } else if (obj.BM === '4') {
+      return '#0055ff'
+    } else {
+      return '#FF0000'
+    }
+  }
+  return '#FF0000'
 }
 
 onMounted(() => {
@@ -162,6 +153,7 @@ const getVillageList = async () => {
   if (res && res.length) {
     let markerArr: any = []
     res.map((item: any) => {
+      11112333
       if (item.latitude && item.longitude && item.areaCodeText) {
         markerArr.push({
           id: `${item.uid}@@${MainType.Village}`,
@@ -343,6 +335,7 @@ onReady(() => {
       font-weight: 600;
       color: #ffffff;
     }
+
     .right-btn {
       font-size: 12rpx;
       color: #ffffff;
@@ -355,6 +348,7 @@ onReady(() => {
     flex-direction: column;
     width: 750rpx;
   }
+
   // 默认撑满
   .map {
     flex: 1;
@@ -368,6 +362,7 @@ onReady(() => {
     ::v-deep.amap-copyright {
       display: none !important;
     }
+
     /* #endif */
   }
 }

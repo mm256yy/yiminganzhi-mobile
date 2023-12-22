@@ -103,6 +103,12 @@ const showModal = () => {
   showSelector.value = !showSelector.value
 }
 
+const showType=()=>{
+  showSelector.value=false
+}
+defineExpose({
+  showType
+	})
 watch(
   () => props.list,
   (val: any) => {

@@ -228,8 +228,7 @@
         </view>
         <image class="arrow-icon" src="@/static/images/home_arrow.png" mode="scaleToFill" />
       </view>
-
-      <view class="other-item" @click="toLink('work')">
+      <view v-if="showWork" class="other-item" @click="toLink('work')">
         <view class="inner">
           <image class="other-icon" src="@/static/images/work_enter.png" mode="scaleToFill" />
           <text class="other-tit">我的工作</text>
@@ -249,12 +248,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted,computed } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import { getStorage, StorageKey, routerForward } from '@/utils'
 import Echart from './WorkGroupChart.vue'
 import MessageNotice from './MessageNotice.vue'
 import { getImpHomeCollectApi } from '@/service'
+import { RoleCodeType } from '@/types/common'
 
 interface HomeCollectType {
   peasantHouseholdNum: number
@@ -277,7 +277,7 @@ interface HomeCollectType {
   villageWarnNum: number
   villageDoneNum: number
 }
-
+const roleType = ref<RoleCodeType>(getStorage(StorageKey.USERROLE))
 const emit = defineEmits(['toLink', 'toParamsLink', 'loginIn'])
 const userInfo = ref<any>(null)
 const projectInfo = ref<any>(null)
@@ -304,6 +304,15 @@ const homeCollect = ref<HomeCollectType>({
 })
 
 const seachName = ref<string>('')
+const pullTime = ref<string>('')                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+const syncing = ref<boolean>(false)
+
+const syncCmt = ref()
+const roles=['investigator','assessor','assessorland']
+
+const showWork=computed(()=>{
+  return roles.includes(roleType.value)
+})
 
 const onSearch = () => {
   if (seachName.value) {

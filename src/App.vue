@@ -16,6 +16,7 @@ onLaunch(() => {
 
   // 启动时 需要校验token是否过期
   const token = getStorage(StorageKey.TOKEN)
+  console.log(token,'token是啥')
   const loginTime = getStorage(StorageKey.LOGINTIME)
   const now = new Date().getTime()
   const expirationTime = 365 * 24 * 60 * 60 * 1000

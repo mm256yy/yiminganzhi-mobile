@@ -144,7 +144,8 @@ import {
   getLandlordListBySearchApi,
   getVillageTreeApi,
   deleteLandlordApi,
-  getLandlordItemApi
+  getLandlordItemApi,
+   getLandlordListBySearchApiTwo
 } from '@/service'
 import { LandlordType } from '@/types/sync'
 import { LandlordSearchType, MainType, RoleCodeType } from '@/types/common'
@@ -242,7 +243,7 @@ const getList = () => {
         params.villageCode = unref(villageCode)[2] || ''
       }
     }
-    const res = await getLandlordListBySearchApi(params).catch(() => {
+    const res = await getLandlordListBySearchApiTwo(params).catch(() => {
       isLoading.value = false
     })
 

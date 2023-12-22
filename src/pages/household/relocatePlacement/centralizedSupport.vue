@@ -57,12 +57,12 @@
             </uni-row>
 
             <uni-row>
-              <uni-col :span="12">
+              <!-- <uni-col :span="12">
                 <view class="col">
                   <view class="label">安置方式：</view>
                   <view class="content">{{ formatDict(item.settingWay, 321) }}</view>
                 </view>
-              </uni-col>
+              </uni-col> -->
               <uni-col :span="12">
                 <view class="col">
                   <view class="label">办理状态：</view>

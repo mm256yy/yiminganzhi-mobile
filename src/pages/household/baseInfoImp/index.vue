@@ -1,9 +1,14 @@
 <template>
   <!-- 居民户信息（实施） -->
   <view class="base-info-wrapper">
-    <view class="title">
-      <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-      家庭情况
+    <view class="title" style="display: flex; justify-content: space-between">
+      <view>
+        <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
+        家庭情况
+      </view>
+      <view v-if="dataInfo.householderDoorNo != null">
+        关联企业/个体户:{{ dataInfo.householderDoorNo }}
+      </view>
     </view>
 
     <view class="row">
@@ -34,8 +39,8 @@
         </uni-col>
         <uni-col :span="12">
           <view class="col">
-            <view class="label">所属网格：</view>
-            <view class="content">XXX</view>
+            <view class="label">所属网格员：</view>
+            <view class="content">{{ formatStr(dataInfo.gridmanName) }}</view>
           </view>
         </uni-col>
       </uni-row>
