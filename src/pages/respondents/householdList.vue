@@ -44,7 +44,7 @@
           :enable-flex="true"
           @scrolltolower="loadMore"
         >
-          <view class="scroll" v-if="roleType === RoleCodeType.implementation">
+          <view class="scroll" v-if="roleType === RoleCodeType.implementation||roleType === RoleCodeType.implementleader">
             <ImpListItem
               v-for="item in list"
               :data="item"
@@ -87,7 +87,8 @@
       v-if="
         roleType !== RoleCodeType.assessor &&
         roleType !== RoleCodeType.assessorland &&
-        roleType !== RoleCodeType.implementation
+        roleType !== RoleCodeType.implementation&&
+        roleType !== RoleCodeType.implementleader
       "
       class="add-box"
       @click="addLandlord"
@@ -341,7 +342,7 @@ const getRouterName = (roleType: string) => {
     return 'household'
   } else if (roleType === RoleCodeType.assessor || roleType === RoleCodeType.assessorland) {
     return 'householdEva'
-  } else if (roleType === RoleCodeType.implementation) {
+  } else if (roleType === RoleCodeType.implementation||roleType === RoleCodeType.implementleader) {
     return 'householdImp'
   } else {
     return 'household'
