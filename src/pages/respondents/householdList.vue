@@ -58,7 +58,7 @@
             v-else-if="roleType === RoleCodeType.assessor || roleType === RoleCodeType.assessorland"
           >
             <EvaListItem
-              v-for="item in listAll"
+              v-for="item in list"
               :data="item"
               :key="item.uid"
               @click.stop="editLandlord(item)"
@@ -67,7 +67,7 @@
           </view>
           <view class="scroll" v-else>
             <ListItem
-              v-for="item in listAll"
+              v-for="item in list"
               :data="item"
               :key="item.uid"
               @click.stop="editLandlord(item)"
@@ -251,7 +251,7 @@ const getList = () => {
         params.virutalVillageCode = unref(villageCode)[3] || ''
       }
     }
-    const res = await getLandlordListBySearchApiTwo(params).catch(() => {
+    const res = await getLandlordListBySearchApi(params).catch(() => {
       isLoading.value = false
     })
     console.log('对象===========================1', res)

@@ -117,12 +117,8 @@ class PullData {
       feedbackDtoList: [],
       pgTop: [],
       evaluatorStatisticsDto: null,
-<<<<<<< HEAD
       settleAddressList:[],
 	  peasantHouseholdDtoList: []
-=======
-      settleAddressList:[]
->>>>>>> ae7d1950576afead31003ed246e100763dfc4a62
     }
 
     this.districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
