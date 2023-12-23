@@ -11,9 +11,9 @@
         <view class="status" :class="[filled ? 'success' : '']"
           ><text class="circle" />{{ filled ? '已填报' : '未填报' }}</view
         >
-        <view class="edit-box" @click.stop="deleteItem">
+        <!-- <view class="edit-box" @click.stop="deleteItem">
           <image class="remove-icon" src="@/static/images/remove.png" mode="scaleToFill" />
-        </view>
+        </view> -->
       </view>
     </view>
 
@@ -73,9 +73,9 @@ const filled = computed(() => {
     props.data && props.data.immigrantFilling && props.data.immigrantFilling.estimateeStatus === '1'
   )
 })
-const deleteItem = () => {
-  emit('delete')
-}
+// const deleteItem = () => {
+//   emit('delete')
+// }
 </script>
 
 <style lang="scss" scoped>

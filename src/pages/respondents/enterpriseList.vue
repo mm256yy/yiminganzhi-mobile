@@ -143,7 +143,7 @@ import {
   getVillageTreeApi,
   deleteLandlordApi,
   getLandlordItemApi,
-  getLandlordListBySearchApiTwo,
+  // getLandlordListBySearchApiTwo,
 } from '@/service'
 import { LandlordType } from '@/types/sync'
 import { LandlordSearchType, MainType, RoleCodeType } from '@/types/common'
@@ -241,9 +241,10 @@ const getList = () => {
         params.villageCode = unref(villageCode)[2] || ''
       }
     }
-    const res = await getLandlordListBySearchApiTwo(params).catch(() => {
+    const res = await getLandlordListBySearchApi(params).catch(() => {
       isLoading.value = false
     })
+    console.log(res,'企业res是什么')
     isLoading.value = false
     if (res && res.length) {
       if (page.value === 1) {

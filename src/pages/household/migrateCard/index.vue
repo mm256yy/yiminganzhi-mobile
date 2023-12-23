@@ -142,7 +142,8 @@
         <view class="tb-content" v-for="(item, index) in tableData" :key="index">
           <view class="td td-1">{{ getTypeStr(item.type) }}</view>
           <view class="td td-2">{{ formatStr(item.name) }}</view>
-          <view class="td td-3">{{ formatDict(item.unit, 268) }}</view>
+          <!-- formatDict(item.unit, 268) -->
+          <view class="td td-3">{{item.unit }}</view>
           <view class="td td-3">{{ formatStr(item.number) }}</view>
           <view class="td td-3">{{ formatStr(item.price) }}</view>
           <view class="td td-3">
