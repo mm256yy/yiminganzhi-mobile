@@ -1,23 +1,26 @@
 <template>
   <view class="grave-wrap">
     <view class="btn-box">
-      <view class="btn green" @click="onFilled">
-        <image class="icon" src="@/static/images/icon_sign_white.png" mode="scaleToFill" />
-        <text class="txt">填报完成</text>
+      <view>
+        <view class="btn blue" @click="addGrave">
+          <image class="icon" src="@/static/images/icon_plus.png" mode="scaleToFill" />
+          <text class="txt">添加</text>
+        </view>
       </view>
-      <view class="btn green">
-        <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
-        <text class="txt">打印报表</text>
+      <view style="display:flex">
+        <view class="btn green" @click="onFilled">
+          <image class="icon" src="@/static/images/icon_sign_white.png" mode="scaleToFill" />
+          <text class="txt">填报完成</text>
+        </view>
+        <view class="btn green">
+          <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
+          <text class="txt">打印报表</text>
+        </view>
+        <view class="btn blue" @click="archivesUpload">
+          <image class="icon" src="@/static/images/icon_dangan_upload.png" mode="scaleToFill" />
+          <text class="txt">档案上传</text>
+        </view>
       </view>
-      <view class="btn blue" @click="addGrave">
-        <image class="icon" src="@/static/images/icon_plus.png" mode="scaleToFill" />
-        <text class="txt">添加</text>
-      </view>
-      <view class="btn blue" @click="archivesUpload">
-        <image class="icon" src="@/static/images/icon_dangan_upload.png" mode="scaleToFill" />
-        <text class="txt">档案上传</text>
-      </view>
-
       <!-- <view class="btn blue">
         <image class="icon" src="@/static/images/icon_feedback.png" mode="scaleToFill" />
         <text class="txt">问题反馈</text>
@@ -166,7 +169,8 @@ const archivesUpload = () => {
 .btn-box {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  // justify-content: flex-end;
+  justify-content: space-between;
   padding: 9rpx 0;
 
   .btn {

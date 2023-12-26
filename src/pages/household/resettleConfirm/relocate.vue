@@ -2,10 +2,7 @@
   <!-- 安置确认 搬迁安置 -->
   <view class="relocate-wrap">
     <view class="btn-box">
-      <view class="btn green-btn">
-        <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
-        <text class="txt">打印报表</text>
-      </view>
+     <view style="display: flex;">
       <view class="btn blue-btn" @click="onImportDataPre">
         <image class="icon" src="@/static/images/icon_import.png" mode="scaleToFill" />
         <text class="txt">导入模拟安置数据</text>
@@ -15,11 +12,17 @@
         <image class="icon" src="@/static/images/icon_sign_white.png" mode="scaleToFill" />
         <text class="txt">编辑</text>
       </view>
-
+     </view>
+     <view style="display: flex;">
+      <view class="btn green-btn">
+        <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
+        <text class="txt">打印报表</text>
+      </view>
       <view class="btn blue-btn" @click="archivesUpload">
         <image class="icon" src="@/static/images/icon_dangan_upload.png" mode="scaleToFill" />
         <text class="txt">档案上传</text>
       </view>
+     </view>
 
       <!-- <view class="btn blue-btn">
           <image class="icon" src="@/static/images/icon_feedback.png" mode="scaleToFill" />
@@ -250,7 +253,7 @@ const immigrantSettleSubmit = async (data: Partial<ImmigrantSettleType>) => {
 .btn-box {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
 
   .btn {
     display: flex;

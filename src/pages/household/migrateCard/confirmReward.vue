@@ -88,6 +88,13 @@ onLoad((option) => {
 const getCompensationCardConfig = async () => {
   let res = await getCompensationCardConfigApi()
   if (res) {
+    // res.forEach((item:any)=>{
+    //   if(item.unit=='人'&&item.type=='3'&&!item.hasOwnProperty('isVerify')){
+    //     item.number=res.demographicList.length
+    //   }else if(item.unit=='项'&&item.type=='3'&&!item.hasOwnProperty('isVerify')){
+    //     item.number=1
+    //   }
+    // })
     console.log('获取移民建卡奖励费列表', res)
 
     // tableData.value = res
@@ -105,6 +112,13 @@ const getCompensationCardConfig = async () => {
     dataList.value = res.filter(
       (item: any) => item.isUpdate == '1' && item.phType == 'PeasantHousehold'
     )
+    dataList.value.forEach((item:any)=>{
+      if(item.unit=='人'&&item.type=='3'&&!item.hasOwnProperty('isVerify')){
+        item.number=data.demographicList.length
+      }else if(item.unit=='项'&&item.type=='3'&&!item.hasOwnProperty('isVerify')){
+        item.number=1
+      }
+    })
     console.log('合并', dataList.value, res, data.immigrantCompensationCardList)
   }
 }

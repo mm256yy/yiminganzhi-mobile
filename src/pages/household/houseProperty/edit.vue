@@ -92,12 +92,13 @@
           <uni-col :span="12">
             <uni-forms-item
               required
-              label="房屋性质"
+              label="房屋来源"
               :label-width="150"
               label-align="right"
               name="formData.houseNature"
             >
-              <uni-easyinput v-model="formData.houseNature" type="text" placeholder="请输入" />
+              <!-- <uni-easyinput v-model="formData.houseNature" type="text" placeholder="请输入" /> -->
+              <uni-data-select v-model="formData.houseNature" :localdata="dict[304]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">

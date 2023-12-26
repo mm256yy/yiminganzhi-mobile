@@ -2,7 +2,18 @@
   <view class="house-wrap">
     <!-- 土地腾让 -->
     <view class="btn-box">
-      <view class="btn green-btn">
+      <view>
+        <view
+        class="btn blue-btn"
+        @click="handle"
+        v-if="!landEmptyInfo.isLandEmpty || landEmptyInfo.isLandEmpty === '1'"
+      >
+        <image class="icon" src="@/static/images/icon_sign_white.png" mode="scaleToFill" />
+        <text class="txt">办理</text>
+      </view> 
+      </view>
+      <view style="display:flex">
+              <view class="btn green-btn">
         <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
         <text class="txt">打印报表</text>
       </view>
@@ -11,17 +22,18 @@
         <image class="icon" src="@/static/images/icon_dangan_upload.png" mode="scaleToFill" />
         <text class="txt">档案上传</text>
       </view>
-      <view
+      <!-- <view
         class="btn blue-btn"
         @click="handle"
         v-if="!landEmptyInfo.isLandEmpty || landEmptyInfo.isLandEmpty === '1'"
       >
         <image class="icon" src="@/static/images/icon_sign_white.png" mode="scaleToFill" />
         <text class="txt">办理</text>
-      </view>
+      </view> -->
       <view class="btn blue-btn" @click="notHandle" v-if="!landEmptyInfo.isLandEmpty">
         <image class="icon" src="@/static/images/icon_not_handle.png" mode="scaleToFill" />
         <text class="txt">无需办理</text>
+      </view>
       </view>
 
       <!-- <view class="btn blue-btn">
@@ -168,7 +180,7 @@ const notHandle = async () => {
   .btn-box {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content:space-between;
     padding: 9rpx 0;
 
     .btn {

@@ -3,7 +3,13 @@
     <!-- 居民户实施 —— 移民建卡 -->
     <view class="main">
       <view class="row-1">
-        <view class="left" />
+        <view class="right">
+          <view class="btn blue" @click="toConfirmReward">
+            <!-- <image class="icon" src="@/static/images/icon_upload_white.png" mode="scaleToFill" /> -->
+            <image class="icon" src="@/static/images/icon_sign_white.png" mode="scaleToFill" />
+            <text class="txt">奖励费确认</text>
+          </view>
+        </view>
         <view class="right">
           <view class="btn green" @click="handleClick" >
             <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
@@ -125,7 +131,7 @@
           <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
           费用补偿情况
         </view>
-        <view class="right confirm" @click="toConfirmReward">奖励费确认</view>
+        <!-- <view class="right confirm" @click="toConfirmReward">奖励费确认</view> -->
       </view>
 
       <view class="row-3">
@@ -192,7 +198,14 @@ const getCompensationCardConfig = async () => {
     })
 
     tableData.value = res.filter((item: any) => item.phType == 'PeasantHousehold')
-    console.log('合并', tableData.value, res, data.immigrantCompensationCardList)
+    tableData.value.forEach((item:any)=>{
+      if(item.unit=='人'&&item.type=='3'&&!item.hasOwnProperty('isVerify')){
+        item.number=data.demographicList.length
+      }else if(item.unit=='项'&&item.type=='3'&&!item.hasOwnProperty('isVerify')){
+        item.number=1
+      }
+    })
+    console.log(tableData.value,'测试table数据',)
   }
 }
 
@@ -285,6 +298,7 @@ const toEdit = () => {
   routerForward('migrateCardEdit', {
     uid: props.dataInfo.uid
   })
+  console.log(props.dataInfo,props.dataList,'移民建卡传入数据')
 }
 
 // 奖励资费确认

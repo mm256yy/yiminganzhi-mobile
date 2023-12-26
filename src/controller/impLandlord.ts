@@ -414,9 +414,9 @@ export class ImpLandlord extends Common {
     }
     // 搬迁安置 总状态 四选 1
     if (
-      landlordItem.immigrantFilling.buildOneselfStatus === '1' ||
-      landlordItem.immigrantFilling.flatsStatus === '1' ||
-      landlordItem.immigrantFilling.centralizedSupportStatus === '1' ||
+      landlordItem.immigrantFilling.buildOneselfStatus === '1' &&
+      landlordItem.immigrantFilling.flatsStatus === '1' &&
+      landlordItem.immigrantFilling.centralizedSupportStatus === '1' &&
       landlordItem.immigrantFilling.selfSeekingStatus === '1'
     ) {
       landlordItem.immigrantFilling.relocateArrangementAllStatus = '1'

@@ -23,15 +23,15 @@
             <view class="col">
               <view class="label">地块编号：</view>
               <view class="content">
-                <uni-data-select v-model="formData.landNo" :localdata="landNoList" />
-                <!-- <muti-select
+                <!-- <uni-data-select v-model="formData.landNo" :localdata="landNoList" /> -->
+                <muti-select
                 v-model="formData.landNo"
                 :value="formData.landNo"
                 :list="landNoList"
                 label-key="text"
                 value-key="value"
                 ref="childSelect"
-              /> -->
+              />
               </view>
             </view>
           </uni-col>

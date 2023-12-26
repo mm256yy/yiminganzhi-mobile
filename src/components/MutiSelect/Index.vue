@@ -84,7 +84,7 @@ const select = (index: number) => {
 }
 
 // 获取选择的值
-const getSelectedData = () => {
+const getSelectedData = () => { 
   let labelArr: any = []
   let valueArr: any = []
   let selectedData = dataList.value.filter((item: any) => item.checked)
@@ -113,11 +113,13 @@ watch(
   () => props.list,
   (val: any) => {
     if (val && val.length > 0) {
+      console.log(props.list,'测试下拉数据')
       val.map((item: any, index: number) => {
         dataList.value.push({
           ...item,
           checked: false
         })
+        console.log( dataList.value,'push数据')
         if (props.value) {
           let arr = props.value.split(',')
           arr.map((val: any) => {
