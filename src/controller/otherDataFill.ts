@@ -24,10 +24,10 @@ class FeedbackDto extends Common {
         // data.uid = uid
         const list = await OtherController.getOtherWithType(OtherDataType.FeedbackDtoList)
         list.push(data)
-        const fields = `'type','content','updatedDate'`
-        const values = `'${OtherDataType.FeedbackDtoList}','${JSON.stringify(
+        // const fields = `'type','content','updatedDate'`
+        const values = `content='${JSON.stringify(
           list
-        )}','${getCurrentTimeStamp()}'`
+        )}',updatedDate='${getCurrentTimeStamp()}'`
         // const res = await this.db.insertTableData(OtherTableName, values, fields)
         const res = await this.db.updateTableData(OtherTableName, values, 'type', OtherDataType.FeedbackDtoList)
         if (res && res.code) {
