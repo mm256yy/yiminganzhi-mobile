@@ -117,8 +117,8 @@ class PullData {
       feedbackDtoList: [],
       pgTop: [],
       evaluatorStatisticsDto: null,
-      settleAddressList:[],
-	  peasantHouseholdDtoList: []
+      settleAddressList: [],
+      peasantHouseholdDtoList: [],
     }
 
     this.districtMap = getStorage(StorageKey.DISTRICTMAP) || {}

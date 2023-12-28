@@ -30,6 +30,7 @@ export const OtherTableName = 'other'
 
 export const OtherDDL = `
 create table if not exists ${OtherTableName} (
+  'id' INTEGER PRIMARY KEY AUTOINCREMENT,
   'content' text,
   'type' text PRIMARY KEY,
   'updatedDate' text DEFAULT NULL

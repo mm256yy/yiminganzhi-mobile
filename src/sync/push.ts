@@ -36,7 +36,8 @@ class PushData {
       deleteRecordList: [],
       pullTime: '',
       villageList: [],
-      immigrantGraveList: []
+      immigrantGraveList: [],
+      feedbackDtoList:[]
     }
   }
 
@@ -46,7 +47,8 @@ class PushData {
       deleteRecordList: [],
       pullTime: '',
       villageList: [],
-      immigrantGraveList: []
+      immigrantGraveList: [],
+      feedbackDtoList:[]
     }
   }
 
@@ -191,6 +193,7 @@ class PushData {
         db.selectTableData(OtherTableName, 'type', OtherDataType.PullTime)
           .then((res: any) => {
             this.state.pullTime = res.content
+             console.error('推送-时间数据', res.content)
             resolve(Number(res.content) || '')
           })
           .catch(() => {
@@ -199,6 +202,26 @@ class PushData {
       } catch (error) {
         reject('')
         console.log(error, 'getPullTime')
+      }
+    })
+  }
+
+// 单独推送FeedbackDtoList问题反馈数据
+   getFeedbackDtoList() {
+    return new Promise((resolve, reject) => {
+      try {
+        db.selectTableData(OtherTableName, 'type', OtherDataType.FeedbackDtoList)
+          .then((res: any) => {
+            this.state.feedbackDtoList = res.content
+             console.error('推送-问题反馈数据', res.content)
+            resolve(res.content)
+          })
+          .catch(() => {
+            reject('')
+          })
+      } catch (error) {
+        reject('')
+        console.log(error, 'getFeedbackDtoList')
       }
     })
   }
@@ -428,7 +451,8 @@ class PushData {
           this.getModifyVillageList(),
           this.getDeleteRecordList(),
           this.getPullTime(),
-          this.getModifyGraveList()
+          this.getModifyGraveList(),
+          this.getFeedbackDtoList()
         ])
           .then(() => {
             /**
@@ -443,21 +467,23 @@ class PushData {
               deleteRecordList,
               pullTime,
               villageList,
-              immigrantGraveList
+              immigrantGraveList,
+              feedbackDtoList
             } = this.state
             console.info('推送数据-业主列表:', peasantHouseholdPushDtoList)
             console.info('推送数据-自然村列表:', villageList)
             console.info('推送数据-删除列表:', deleteRecordList)
             console.info('推送数据-拉取时间:', pullTime)
             console.info('推送数据-坟墓列表:', immigrantGraveList)
-
+            console.info('推送数据-其他表之问题反馈', feedbackDtoList)
             pushDataApi({
               peasantHouseholdPushDtoList,
               deleteRecordList,
               pullTime,
               villageList,
               immigrantGraveList,
-              pushStatus
+              pushStatus,
+              feedbackDtoList,
             })
               .then((res) => {
                 console.log('推送: 接口suc:', res)

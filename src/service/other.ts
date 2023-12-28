@@ -11,7 +11,8 @@ import {
   DictionariesController,
   ResettlementController,
   PrintController,
-  ImageController
+  ImageController,
+  FeedbackDtoListController
 } from '@/controller'
 import { OtherDataType } from '@/database'
 import { MainType, PrintType } from '@/types/common'
@@ -64,6 +65,16 @@ export const getDictObjApi = () => {
 // 获取other
 export const getOtherItemApi = (type: OtherDataType) => {
   return OtherController.getOtherWithType(type)
+}
+
+// 新增问题反馈
+export const addOtherItemApi = (data: any) => {
+  return FeedbackDtoListController.addFeedbackDtoList(data)
+}
+
+// 修改问题反馈
+export const updateOtherItemApi = (data: any) => {
+  return FeedbackDtoListController.updateFeedbackDtoList(data)
 }
 
 // 获取图片列表 [{url: xxxx, base64: ''}]

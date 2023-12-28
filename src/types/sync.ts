@@ -373,10 +373,7 @@ export interface StateType {
   pgTop: any[]
   evaluatorStatisticsDto: any
   settleAddressList:any[]
-<<<<<<< HEAD
   peasantHouseholdDtoList: LandlordHasStatusType[]
-=======
->>>>>>> ae7d1950576afead31003ed246e100763dfc4a62
 }
 
 export interface PushStateType {
@@ -386,6 +383,7 @@ export interface PushStateType {
   villageList: VillageType[]
   immigrantGraveList: GraveType[]
   pushStatus?: 'pushEnd' | 'syncEnd'
+  feedbackDtoList?: any[]
 }
 
 export interface ImgItemType {
