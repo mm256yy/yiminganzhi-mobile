@@ -15,18 +15,18 @@
           <uni-th align="left" width="80rpx" class="u-title">操作</uni-th>
         </uni-tr>
         <!-- 表格数据行 -->
-        <uni-tr v-for="(item, index) in dataList" :key="index">
+        <uni-tr v-for="(item, index) in dataList" :key="index" @click="handleClick(item,index)">
           <uni-td align="left" class="u-td">{{ item.name }}</uni-td>
-          <!-- <uni-td align="left" class="u-td">{{ formatDict(item.unit, 268) }}</uni-td> -->
           <uni-td align="left" class="u-td">{{ item.unit }}</uni-td>
-          <uni-td align="left" class="u-td">
-            <input v-if="flag" class="input-txt" v-model="item.number" placeholder="请输入" />
-            <view v-if="!flag">{{ formatStr(item.number) }}</view>
-            <!-- <view v-if="!item.number"> - </view> -->
+          <!-- 数量 -->
+          <uni-td align="left" class="u-td">      
+            <input v-if="item.isUpdate == '0'" class="input-txt" v-model="item.number" placeholder="请输入" />
+            <view v-if="item.isUpdate == '1'">{{ formatStr(item.number) }}</view>
           </uni-td>
+          <!-- 补偿单价 -->
           <uni-td align="left" class="u-td">
-            <input v-if="flag" class="input-txt" v-model="item.price" placeholder="请输入" />
-            <view v-if="!flag">{{ item.price }}</view>
+            <input v-if="item.isUpdate == '0'" class="input-txt" v-model="item.price" placeholder="请输入" />
+            <view v-if="item.isUpdate == '1'">{{ item.price }}</view>
             <view v-if="item.isUpdate !== '1'"> - </view>
           </uni-td>
           <uni-td align="left" class="u-td">
@@ -37,9 +37,10 @@
           <uni-td align="left" class="u-td">{{
             item.isVerify == '0' ? '未确认' : item.isVerify == '1' ? '已确认' : '-'
           }}</uni-td>
+          <!-- 备注 -->
           <uni-td align="left" class="u-td">
-            <input v-if="flag" class="input-txt" v-model="item.remark" placeholder="请输入" />
-            <view v-if="!flag">{{ item.remark }}</view>
+            <input v-if="item.isUpdate === '0'" class="input-txt" v-model="item.remark" placeholder="请输入" />
+            <view v-if="item.isUpdate === '1'">{{ item.remark }}</view>
           </uni-td>
           <uni-td class="u-td">
             <view style="display: flex; align-items: center; justify-content: center">
@@ -158,11 +159,15 @@ const getSummaries = (row: any) => {
   return sums
 }
 
+const handleClick = (item: any,index:any) => {
+  item.isUpdate = '0'
+}
 /**
  * 保存/确认
  * @param data 当前行数据
  */
 const onSave = (data: any, isVerify: any) => {
+  handleClick()
   if (isVerify == 0) {
     flag.value = true
   } else if (isVerify == 1) {

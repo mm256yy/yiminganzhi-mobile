@@ -5,6 +5,9 @@
 import { OtherTableName, OtherDataType } from '@/database'
 import { Common } from './common'
 import { getCurrentTimeStamp, guid } from '@/utils'
+import {
+  OtherController,
+} from '@/controller'
 class FeedbackDto extends Common {
   constructor() {
     super()
@@ -17,13 +20,16 @@ class FeedbackDto extends Common {
         if (!data) {
           reject(false)
         }
-        const uid = guid()
-        data.uid = uid
-        const fields = `'id','type','content','updatedDate'`
-        const values = `'${uid}','${OtherDataType.FeedbackDtoList}','${JSON.stringify(
-          data
+        // const uid = guid()
+        // data.uid = uid
+        const list = await OtherController.getOtherWithType(OtherDataType.FeedbackDtoList)
+        list.push(data)
+        const fields = `'type','content','updatedDate'`
+        const values = `'${OtherDataType.FeedbackDtoList}','${JSON.stringify(
+          list
         )}','${getCurrentTimeStamp()}'`
-        const res = await this.db.insertTableData(OtherTableName, values, fields)
+        // const res = await this.db.insertTableData(OtherTableName, values, fields)
+        const res = await this.db.updateTableData(OtherTableName, values, 'type', OtherDataType.FeedbackDtoList)
         if (res && res.code) {
           reject(false)
         }
