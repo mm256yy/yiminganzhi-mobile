@@ -10,14 +10,14 @@
           <image src="@/static/images/icon_notice.png" class="icon" />
           <view>消息通知</view>
         </view>
-        <view
+        <!-- <view
           class="echart-title"
           :class="[menuIndex === 1 ? 'active' : '']"
           @click="handleItemClick(1)"
         >
           <image src="@/static/images/icon_feed.png" class="icon" />
           <view>问题反馈</view>
-        </view>
+        </view> -->
       </view>
       <!--消息通知-->
       <div v-if="menuIndex === 0" class="list-wrapper">
@@ -81,7 +81,7 @@ import { OtherDataType } from '@/database'
 import dayjs from 'dayjs'
 
 const currentTab = ref(0)
-let menuIndex = ref(1)
+let menuIndex = ref(0)
 const feedbackList = ref<any[]>([])
 
 const tabChange = (id: number) => {

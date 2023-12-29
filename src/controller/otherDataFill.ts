@@ -20,15 +20,15 @@ class FeedbackDto extends Common {
         if (!data) {
           reject(false)
         }
-        // const uid = guid()
-        // data.uid = uid
+        const uid = guid()
+        const createdDate=getCurrentTimeStamp()
+        data.uid = uid
+        data.createdDate=createdDate
         const list = await OtherController.getOtherWithType(OtherDataType.FeedbackDtoList)
         list.push(data)
-        // const fields = `'type','content','updatedDate'`
         const values = `content='${JSON.stringify(
           list
         )}',updatedDate='${getCurrentTimeStamp()}'`
-        // const res = await this.db.insertTableData(OtherTableName, values, fields)
         const res = await this.db.updateTableData(OtherTableName, values, 'type', OtherDataType.FeedbackDtoList)
         if (res && res.code) {
           reject(false)
@@ -41,16 +41,28 @@ class FeedbackDto extends Common {
     })
   }
 
-  // 问题反馈修改
+  // 问题反馈中意见评论新增
   updateFeedbackDtoList(data:any): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
-        if (!data) {
+        if (!data.uid) {
           reject(false)
         }
-        const values = `type = '${OtherDataType.FeedbackDtoList}',',content = '${JSON.stringify(data)}',updatedDate = '${getCurrentTimeStamp()}'`
-        const sql = `update ${OtherTableName} set ${values} where id = '${data.uid}'`
-        const res = await this.db.execteSql([sql])
+        const createdDate=getCurrentTimeStamp()
+        data.createdDate=createdDate
+        const list = await OtherController.getOtherWithType(OtherDataType.FeedbackDtoList)
+        list.forEach((item:any) => {
+          if (item.uid === data.uid) {
+              if (item.hasOwnProperty('feedbackMessageList')) {
+            item.feedbackMessageList = []
+            item.feedbackMessageList.push(data)
+            }
+          }
+        })
+        const values = `content='${JSON.stringify(
+          list
+        )}',updatedDate='${getCurrentTimeStamp()}'`
+        const res = await this.db.updateTableData(OtherTableName, values, 'type', OtherDataType.FeedbackDtoList)
         if (res && res.code) {
           reject(false)
         }

@@ -250,15 +250,15 @@ const getTypeStr = (type: string) => {
  * @param row 当前行数据
  */
 const computedTotalPrice = (row: any) => {
-  if (row.totalPrice) {
-    return Number(row.totalPrice)
-  } else {
+  // if (row.totalPrice) {
+  //   return Number(row.totalPrice)
+  // } else {
     if (row.number && row.price) {
       return Number(row.number) * Number(row.price)
     } else {
       return 0
     }
-  }
+  // }
 }
 
 /**
