@@ -240,7 +240,7 @@ export enum RoleCodeType {
   assessor = 'assessor', // 资产评估-房屋
   reviewer = 'reviewer', // 实物复核员
   assessorland = 'assessorland', // 资产评估-土地
-  implementleader='implementleader' //实施组长
+  implementleader = 'implementleader' //实施组长
 }
 
 // 安置方式
@@ -249,4 +249,39 @@ export enum HouseAreaType {
   flat = 'flat',
   oneself = 'oneself',
   concentrate = 'concentrate'
+}
+
+// 信息填报反馈
+export interface FeedbackMessage {
+  id: string
+  feedbackId: string
+  remark: string
+  title: string
+  status: string
+  createdDate: any
+  creater: string
+}
+
+
+// 信息填报
+export interface CommentType {
+  id: string,
+  projectId: string,
+  doorNo: string,
+  householder: string,
+  type: string,
+  typeText: string,
+  remark: string,
+  status: string,
+  statusText: string,
+  reader: any,
+  feedbackPic: any,
+  readerId: any,
+  createdDate: any,
+  creater: string,
+  createdBy: string,
+  isSelf: any,
+  uid: string,
+  feedbackMessageList: any,
+  [key: string]: any
 }

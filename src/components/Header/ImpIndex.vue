@@ -3,12 +3,17 @@
     <view class="list-header-rt">
       <view class="list-header-left">
         <view class="name">{{ dataInfo.name }}</view>
-        <view class="account-no">{{ dataInfo.showDoorNo  }}</view>
-        <!-- {{ props.data.showDoorNo }} -->
+        <view class="account-no">{{ dataInfo.showDoorNo }}</view>
         <view class="fill-number">
           填报进度&nbsp;
           <text class="green">{{ getProgressText.count }}</text>
           /{{ getProgressText.total }}
+        </view>
+      </view>
+      <view class="list-header-right">
+        <view class="btn blue-btn" @click="infoFeedback">
+          <image class="icon" src="@/static/images/icon_dqxy_sel.png" mode="scaleToFill" />
+          <text class="txt">信息反馈</text>
         </view>
       </view>
     </view>
@@ -18,12 +23,13 @@
 <script lang="ts">
 import { filterViewDoorNo } from '@/utils'
 import { MainType } from '@/types/common'
+import { routerForward } from '@/utils'
 
 export default {
   props: {
     dataInfo: {
       type: Object,
-      default: () => {}
+      default: () => { }
     }
   },
   computed: {
@@ -460,6 +466,14 @@ export default {
     // 是否为空数组
     isNotNullArray(arr: any) {
       return arr && Array.isArray(arr) && arr.length
+    },
+    // 信息反馈
+    infoFeedback() {
+      const { name, type } = this.dataInfo
+      routerForward('feedback', {
+        name,
+        type
+      })
     }
   }
 }
@@ -767,6 +781,33 @@ export default {
       color: #fff;
       background: #3e73ec;
     }
+  }
+}
+
+.btn {
+  display: flex;
+  height: 23rpx;
+  padding: 0 9rpx;
+  margin-left: 6rpx;
+  background: #3e73ec;
+  border-radius: 23rpx;
+  align-items: center;
+  justify-content: center;
+
+  &.blue-btn {
+    background: #3e73ec;
+  }
+
+  .icon {
+    width: 9rpx;
+    height: 9rpx;
+    margin-right: 3rpx;
+  }
+
+  .txt {
+    font-size: 9rpx;
+    line-height: 11rpx;
+    color: #ffffff;
   }
 }
 </style>

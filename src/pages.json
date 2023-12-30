@@ -324,6 +324,27 @@
 			}
 		},
 		{
+			"name": "feedback",
+			"path": "pages/feedback/index",
+			"style": {
+				"navigationBarTitleText": "信息反馈"
+			}
+		},
+		{
+			"name": "feedbackDetail",
+			"path": "pages/feedback/detail",
+			"style": {
+				"navigationBarTitleText": "信息反馈详情"
+			}
+		},
+		{
+			"name": "fillComments",
+			"path": "pages/feedback/fillComments",
+			"style": {
+				"navigationBarTitleText": "填写意见"
+			}
+		},
+		{
 			"name": "amountEstimation",
 			"path": "pages/household/amountEstimation/index",
 			"style": {
@@ -556,8 +577,8 @@
 				"query": ""
 			},
 			{
-				"name": "amountEstimation",
-				"path": "pages/household/amountEstimation/index",
+				"name": "信息反馈详情",
+				"path": "pages/feedback/detail",
 				"query": ""
 			}
 		]

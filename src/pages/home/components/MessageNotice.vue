@@ -2,19 +2,11 @@
   <view class="statistic">
     <view class="inner">
       <view class="title-region">
-        <view
-          class="echart-title"
-          :class="[menuIndex === 0 ? 'active' : '']"
-          @click="handleItemClick(0)"
-        >
+        <view class="echart-title" :class="[menuIndex === 0 ? 'active' : '']" @click="handleItemClick(0)">
           <image src="@/static/images/icon_notice.png" class="icon" />
           <view>消息通知</view>
         </view>
-        <view
-          class="echart-title"
-          :class="[menuIndex === 1 ? 'active' : '']"
-          @click="handleItemClick(1)"
-        >
+        <view class="echart-title" :class="[menuIndex === 1 ? 'active' : '']" @click="handleItemClick(1)">
           <image src="@/static/images/icon_feed.png" class="icon" />
           <view>信息反馈</view>
         </view>
@@ -55,7 +47,7 @@
           <text class="time">提交时间</text>
         </view>
         <view class="list">
-          <view class="item-title" v-for="(item, index) in feedbackList" :key="index">
+          <view class="item-title" v-for="(item, index) in feedbackList" :key="index" @click="toTarget(item)">
             <view>
               <text class="item-index">{{ index + 1 }}</text>
               <text class="item-content">{{ item.remark }}</text>
@@ -75,17 +67,11 @@ import { onMounted, ref } from 'vue'
 import { getOtherItemApi } from '@/service'
 import { OtherDataType } from '@/database'
 import dayjs from 'dayjs'
+import { onShow } from '@dcloudio/uni-app';
+import { routerForward } from '@/utils'
 
-const currentTab = ref(0)
 let menuIndex = ref(1)
 const feedbackList = ref<any[]>([])
-
-const tabChange = (id: number) => {
-  if (currentTab.value === id) {
-    return
-  }
-  currentTab.value = id
-}
 
 const handleItemClick = (index: number) => {
   menuIndex.value = index
@@ -94,13 +80,26 @@ const handleItemClick = (index: number) => {
 // 消息反馈列表
 const getFeedbackList = async () => {
   const res = await getOtherItemApi(OtherDataType.FeedbackDtoList)
-  console.log('消息反馈列表', res)
-
-  // res.sort(function (a: any, b: any) {
-  //   return b.createdDate < a.createdDate ? -1 : 1
-  // })
   feedbackList.value = res || []
-  console.log(feedbackList.value, '测试数据')
+}
+
+onShow(() => {
+  // 注册事件监听器
+  uni.$on('customRefresh', () => {
+    getFeedbackList()
+  });
+})
+
+const toTarget = (item: any) => {
+  const list = JSON.stringify(item.feedbackMessageList)
+  const params = {
+    ...item,
+    list
+  }
+
+  routerForward('feedbackDetail', {
+    ...params
+  })
 }
 
 onMounted(() => {
