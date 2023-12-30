@@ -264,10 +264,16 @@ const getRoleAndStageStatus = () => {
   // 资产评估人员	assessor assessorland
   // 实物复核人员 reviewer
   const projectInfo = getStorage(StorageKey.PROJECTINFO)
+  console.log(projectInfo.status,'当前阶段')
   console.log('role', role)
 
   if (role === RoleCodeType.investigator) {
-    stageStatus = MainStage.survey
+    if(projectInfo.status=='survey'){
+      stageStatus = MainStage.survey
+    }else if(projectInfo.status=='review'){
+      stageStatus = MainStage.review
+    }
+    // stageStatus = MainStage.survey
   } else if (
     role === RoleCodeType.assessor ||
     role === RoleCodeType.assessorland ||

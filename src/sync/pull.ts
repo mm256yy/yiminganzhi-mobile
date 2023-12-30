@@ -711,6 +711,7 @@ class PullData {
             })
           }
           const values = getLandlordValues(item, 'default')
+          console.log(values,'企业数据')
           db.insertOrReplaceData(LandlordTableName, values, landlordFields).catch((err) => {
             console.log(err, '插入业主')
           })
