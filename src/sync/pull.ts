@@ -43,7 +43,10 @@ import { StateType, ImgItemType, LandlordWithPageType } from '@/types/sync'
 import { getCurrentTimeStamp, getStorage, setStorage, StorageKey, guid } from '@/utils'
 import dayjs from 'dayjs'
 import { pathToBase64 } from 'image-tools'
-
+import {
+  getLandlordListBySearchApi,
+  // getLandlordListBySearchApiTwo,
+} from '@/service'
 // 最大拉取时间 10 分钟
 const baseMaxCount = 600
 class PullData {
@@ -159,6 +162,7 @@ class PullData {
       this.maxCount = baseMaxCount
       this.pullError = null
       // 优先拉取项目
+
       const res = await this.pullProjectData()
       if (res) {
         this.pull()
@@ -269,7 +273,7 @@ class PullData {
     this.state.rankDtoList = rankDtoList
     this.state.pgTop = pgTop
     this.state.feedbackDtoList = feedbackDtoList
-    this.state.settleAddressList=settleAddressList
+    this.state.settleAddressList = settleAddressList
     this.pullDict().then((res: boolean) => {
       res && this.count++
       // 重置 释放缓存
@@ -316,7 +320,7 @@ class PullData {
       this.state.rankDtoList = []
       this.state.pgTop = []
       this.state.feedbackDtoList = []
-      this.state.settleAddressList=[]
+      this.state.settleAddressList = []
       console.log('拉取: 其他', res)
     })
   }
@@ -394,7 +398,7 @@ class PullData {
       this.maxCount = -1
       return
     }
-	// peasantHouseholdDtoList lqh新加
+    // peasantHouseholdDtoList lqh新加
     const {
       deleteRecordList,
       villageList,
@@ -419,7 +423,7 @@ class PullData {
       villageLagNum,
       villageWarnNum,
       evaluatorStatisticsDto,
-	  peasantHouseholdDtoList
+      peasantHouseholdDtoList
     } = result
     // 需要reset
     this.state.deleteRecordList = deleteRecordList
@@ -445,7 +449,7 @@ class PullData {
     this.state.villageLagNum = villageLagNum
     this.state.villageWarnNum = villageWarnNum
     this.state.evaluatorStatisticsDto = evaluatorStatisticsDto
-	this.state.peasantHouseholdDtoList = peasantHouseholdDtoList
+    this.state.peasantHouseholdDtoList = peasantHouseholdDtoList
     // 数据 新增 修改 删除一起进行
     this.pullVillageList().then((res) => {
       res && this.count++
@@ -493,14 +497,14 @@ class PullData {
   }
 
   public createTable() {
-	  console.log("==创建表===========开始====")
+    console.log("==创建表===========开始====")
     // 创建表
     return new Promise((resolve, reject) => {
       Promise.all([
         db.createTableWithDDL(ProjectDDL),
         db.createTableWithDDL(DictionariesDDL),
         db.createTableWithDDL(LandlordDDL),
-		db.createTableWithDDL(LandlordHasStatusDDL),
+        db.createTableWithDDL(LandlordHasStatusDDL),
         db.createTableWithDDL(ResettlementDDL),
         db.createTableWithDDL(FamilyIncomeDDL),
         db.createTableWithDDL(CollectDDL),
@@ -532,7 +536,7 @@ class PullData {
         db.dropTable(ProjectTableName),
         db.dropTable(DictionariesTableName),
         db.dropTable(LandlordTableName),
-		db.dropTable(LandlordHasStatusTableName),
+        db.dropTable(LandlordHasStatusTableName),
         db.dropTable(ResettlementTableName),
         db.dropTable(FamilyIncomeTableName),
         db.dropTable(CollectTableName),
@@ -630,11 +634,10 @@ class PullData {
           // isPadDelete: '0' | '1'
           const fields =
             "'uid','registrantId','registrantDoorNo','villageId','villageDoorNo','content','updatedDate','isPadDelete','padStatus'"
-          const values = `'${item.uid}','${item.registrantId}','${item.registrantDoorNo}','${
-            item.villageId
-          }','${item.villageDoorNo}','${JSON.stringify(
-            item
-          )}','${getCurrentTimeStamp()}','0','default'`
+          const values = `'${item.uid}','${item.registrantId}','${item.registrantDoorNo}','${item.villageId
+            }','${item.villageDoorNo}','${JSON.stringify(
+              item
+            )}','${getCurrentTimeStamp()}','0','default'`
           db.insertOrReplaceData(GraveTableName, values, fields).catch((err) => {
             console.log(err, '插入坟墓')
           })
@@ -669,7 +672,7 @@ class PullData {
                       imgUrls.push(imgItem.url)
                     }
                   })
-                } catch (err) {}
+                } catch (err) { }
               }
             })
           }
@@ -694,7 +697,8 @@ class PullData {
   /** 居民户  包括带状态（滞后或者预警状态）的居民户*/
   private pullLandlord(): Promise<boolean> {
     return new Promise(async (resolve) => {
-      const { peasantHouseholdPushDtoList: list,peasantHouseholdDtoList: listTwo} = this.state
+      const { peasantHouseholdPushDtoList: list, peasantHouseholdDtoList: listTwo } = this.state
+      console.log("===========listTwo=============", listTwo, list)
       if (this.isArrayAndNotNull(list)) {
         // 开启事务
         await db.transaction('begin').catch(() => {
@@ -711,7 +715,7 @@ class PullData {
             })
           }
           const values = getLandlordValues(item, 'default')
-          console.log(values,'企业数据')
+          console.log(values, '企业数据')
           db.insertOrReplaceData(LandlordTableName, values, landlordFields).catch((err) => {
             console.log(err, '插入业主')
           })
@@ -727,27 +731,41 @@ class PullData {
       }
 
 
-	  if (this.isArrayAndNotNull(listTwo)) {
-	    // 开启事务
-	    await db.transaction('begin').catch(() => {
-	      resolve(false)
-	    })
-	 console.log("===========listTwo=============",listTwo)
-	  	listTwo.forEach((item) => {
-	  		  const values = getLandlordHasStatusValues(item, 'default')
-	  		  db.insertOrReplaceData(LandlordHasStatusTableName, values, landlordHasStatusFields).catch((err) => {
-	  		    console.log(err, '插入业主带状态')
-	  		  })
+      if (this.isArrayAndNotNull(listTwo)) {
+        // 开启事务
+        await db.transaction('begin').catch(() => {
+          resolve(false)
+        })
+        const res = await getLandlordListBySearchApi()
+        console.log("===========listTwo=============", listTwo, res, list)
+        res.forEach((key: any) => {
+          let m = false
+          listTwo.forEach((item) => {
+            if (key.id == item.id) {
+              m=true
+            }
+          })
+          if (!m) {
+            db.deleteTableData(LandlordTableName, 'id', key.id).catch((err) => {
+            console.log(err, '删除业主')
+          })
+          }
+        })
+        listTwo.forEach((item) => {
+          const values = getLandlordHasStatusValues(item, 'default')
+          db.insertOrReplaceData(LandlordHasStatusTableName, values, landlordHasStatusFields).catch((err) => {
+            console.log(err, '插入业主带状态')
+          })
 
-	  		})
-			await db.transaction('commit').catch(() => {
-			  resolve(false)
-			})
-	    resolve(true)
-	  } else {
-	    // 数据为空 不需要拉取
-	    resolve(true)
-	  }
+        })
+        await db.transaction('commit').catch(() => {
+          resolve(false)
+        })
+        resolve(true)
+      } else {
+        // 数据为空 不需要拉取
+        resolve(true)
+      }
     })
   }
 
@@ -768,10 +786,10 @@ class PullData {
             // 删除自然村数据
             db.deleteTableData(VillageTableName, 'uid', item.deleteId)
           }
-		  if (item.type === 'peasantHouseholdDtoList') {
-		    // 删除居民户数据
-		    db.deleteTableData(LandlordHasStatusTableName, 'uid', item.deleteId)
-		  }
+          if (item.type === 'peasantHouseholdDtoList') {
+            // 删除居民户数据
+            db.deleteTableData(LandlordHasStatusTableName, 'uid', item.deleteId)
+          }
 
         })
 
@@ -825,9 +843,8 @@ class PullData {
           this.districtMap[item.code] = item.name
           const fields =
             "'uid','isPadDelete','padStatus','parentCode','name','content','updatedDate'"
-          const values = `'${item.uid}','0','default','${item.parentCode}','${
-            item.name
-          }','${JSON.stringify(item)}','${getCurrentTimeStamp()}'`
+          const values = `'${item.uid}','0','default','${item.parentCode}','${item.name
+            }','${JSON.stringify(item)}','${getCurrentTimeStamp()}'`
           db.insertOrReplaceData(VillageTableName, values, fields).catch((err) => {
             console.log(err, 'err village')
           })
@@ -1124,14 +1141,14 @@ class PullData {
         )}','${getCurrentTimeStamp()}'`
         db.insertOrReplaceData(OtherTableName, values, fields)
       }
-     //安置地详情
-     if (settleAddressList && settleAddressList.length) {
-      const fields = "'type','content','updatedDate'"
-      const values = `'${OtherDataType.settleAddressList}','${JSON.stringify(
-        settleAddressList
-      )}','${getCurrentTimeStamp()}'`
-      db.insertOrReplaceData(OtherTableName, values, fields)
-    }
+      //安置地详情
+      if (settleAddressList && settleAddressList.length) {
+        const fields = "'type','content','updatedDate'"
+        const values = `'${OtherDataType.settleAddressList}','${JSON.stringify(
+          settleAddressList
+        )}','${getCurrentTimeStamp()}'`
+        db.insertOrReplaceData(OtherTableName, values, fields)
+      }
       await db.transaction('commit').catch(() => {
         resolve(false)
       })
@@ -1152,9 +1169,8 @@ class PullData {
       imgArray.forEach((item) => {
         // status状态为1 不需要上传
         const fields = `'status','base64','path','url','updatedDate'`
-        const values = `'1','${item.base64 || ''}','${item.path}','${
-          item.url
-        }','${dayjs().valueOf()}'`
+        const values = `'1','${item.base64 || ''}','${item.path}','${item.url
+          }','${dayjs().valueOf()}'`
         this.db.insertTableData(ImageTableName, values, fields).catch((err: any) => {
           console.log(err, '更新img err')
         })
