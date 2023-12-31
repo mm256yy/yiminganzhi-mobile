@@ -350,7 +350,7 @@
         </uni-row>
 
         <uni-row>
-          <uni-col :span="24">
+          <uni-col :span="12">
             <uni-forms-item
               label="经营范围"
               :label-width="170"
@@ -364,6 +364,21 @@
               />
             </uni-forms-item>
           </uni-col>
+		  <uni-col :span="12">
+		    <uni-forms-item
+		      required
+		      label="企业类别"
+		      :label-width="170"
+		      label-align="right"
+		      name="formData.villageCode"
+		    >
+		      <village-select-form-item
+		        v-model:areaCode="formData.areaCode"
+		        v-model:townCode="formData.townCode"
+		        v-model:villageCode="formData.villageCode"
+		      />
+		    </uni-forms-item>
+		  </uni-col>
         </uni-row>
 
         <view class="title-wrapper">
