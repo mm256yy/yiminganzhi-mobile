@@ -34,7 +34,7 @@
           <uni-col :span="8" :push="1">
             <view class="item-field">
               <span class="item-label">提交时间：</span>
-              <span>{{ query?.createdDate ? dayjs(query?.createdDate).format('YYYY-MM-DD') : '--' }}</span>
+              <span>{{ query?.createdDate ? dayjs(Number(query?.createdDate)).format('YYYY-MM-DD') : '--' }}</span>
             </view>
           </uni-col>
         </uni-row>
@@ -97,6 +97,7 @@ const list = ref<any[]>([])
 onLoad((option) => {
   if (option) {
     query.value = option as CommentType
+    console.log('qery', query.value)
     list.value = JSON.parse(query.value.list)
   }
 })
