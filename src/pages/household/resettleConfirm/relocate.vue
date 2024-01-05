@@ -75,20 +75,35 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch,onMounted } from 'vue'
 import { LandlordType } from '@/types/sync'
 import { HouseAreaType } from '@/types/common'
 import { ImmigrantSettleType } from '@/types/impDataFill'
 import {
-  resettleArea,
   resettleHouseType,
-  apartmentArea,
   apartmentAreaSize,
   homesteadAreaSize
 } from '@/config'
 import { updateImpLandlordRelocateResettleApi } from '@/service'
 import { routerBack, routerForward } from '@/utils'
+import { getResettleDetail } from '@/service'
+import { OtherDataType } from '@/database';
+// import type { LocationType } from '@/types/datafill'
 
+const resettleArea = ref<any>([])
+const apartmentArea = ref<any>([])
+
+const getDataRequest = async () => {
+  try {
+    const data1 = await getResettleDetail(OtherDataType.settleAddressList)
+    const data2= await getResettleDetail(OtherDataType.settleAddressList)
+     resettleArea.value=data1.filter((item) => item.type === '1')
+     apartmentArea.value=data2.filter((item) => item.type === '2')
+     console.log(resettleArea.value,'接口数据')
+  } catch (error) {
+    console.log('error', error);
+  }
+}
 interface PropsType {
   dataInfo: LandlordType
 }
@@ -101,6 +116,8 @@ const emptyText = ref<string>('')
 const houseType = ref<HouseAreaType>(HouseAreaType.homestead)
 const alertDialog = ref<any>(null)
 const emit = defineEmits(['updateData'])
+
+
 
 // 搬迁安置
 const immigrantSettle = computed(() => {
@@ -117,14 +134,16 @@ watch(
   () => immigrantSettle.value,
   (res) => {
     // 整成数组
+    console.log(res,'res是什么')
     if (!res) return
+    console.log(resettleArea.value,res.settleAddress,'测试数据')
     if (res.houseAreaType === HouseAreaType.homestead || res.houseAreaType === HouseAreaType.flat) {
       const houseTypeText = resettleHouseType.find((item) => item.value === res.houseAreaType)?.text
       if (res.houseAreaType === HouseAreaType.homestead) {
         tableData.value = [
           {
             houseTypeText,
-            settleAddressText: resettleArea.find((item) => item.id === res.settleAddress)?.name,
+            settleAddressText: resettleArea.value.find((item) => item.id === res.settleAddress)?.name,
             area: homesteadAreaSize.find((item) => item.id === res.areaType)?.name,
             num: 1
           }
@@ -134,7 +153,7 @@ watch(
         if (res.typeOneNum) {
           array.push({
             houseTypeText,
-            settleAddressText: apartmentArea.find((item) => item.id === res.settleAddress)?.name,
+            settleAddressText: apartmentArea.value.find((item) => item.id === res.settleAddress)?.name,
             area: apartmentAreaSize[0].name,
             num: res.typeOneNum
           })
@@ -142,7 +161,7 @@ watch(
         if (res.typeTwoNum) {
           array.push({
             houseTypeText,
-            settleAddressText: apartmentArea.find((item) => item.id === res.settleAddress)?.name,
+            settleAddressText: apartmentArea.value.find((item) => item.id === res.settleAddress)?.name,
             area: apartmentAreaSize[1].name,
             num: res.typeTwoNum
           })
@@ -150,7 +169,7 @@ watch(
         if (res.typeThreeNum) {
           array.push({
             houseTypeText,
-            settleAddressText: apartmentArea.find((item) => item.id === res.settleAddress)?.name,
+            settleAddressText: apartmentArea.value.find((item) => item.id === res.settleAddress)?.name,
             area: apartmentAreaSize[2].name,
             num: res.typeThreeNum
           })
@@ -158,7 +177,7 @@ watch(
         if (res.typeFourNum) {
           array.push({
             houseTypeText,
-            settleAddressText: apartmentArea.find((item) => item.id === res.settleAddress)?.name,
+            settleAddressText: apartmentArea.value.find((item) => item.id === res.settleAddress)?.name,
             area: apartmentAreaSize[3].name,
             num: res.typeFourNum
           })
@@ -247,6 +266,10 @@ const immigrantSettleSubmit = async (data: Partial<ImmigrantSettleType>) => {
     emit('updateData')
   }
 }
+
+onMounted(() => {
+  getDataRequest()
+})
 </script>
 
 <style lang="scss" scoped>

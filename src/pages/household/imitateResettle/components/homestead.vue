@@ -13,7 +13,7 @@
       <view class="item">
         <view class="label flex-start">选择地块：</view>
         <view class="value-box">
-          <view class="flex-row">
+          <view class="flex-row" style="flex-wrap: wrap;">
             <view
               class="area-item"
               :class="{ active: settleAddress === item.id }"
@@ -60,16 +60,16 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch,onMounted } from 'vue'
 import { HouseAreaType } from '@/types/common'
-import { homesteadAreaSize, resettleArea } from '@/config'
+import { homesteadAreaSize } from '@/config'
 import { LandlordType } from '@/types/sync'
-
 interface PropsType {
   baseInfo: LandlordType
   doorNo: string
   immigrantSettle: any
   fromResettleConfirm?: boolean
+  dataList:any
 }
 
 const emit = defineEmits(['submit'])
@@ -98,6 +98,11 @@ const otherNum = computed(() => {
   return familyNum.value - ruralMigrantNum.value - unruralMigrantNum.value
 })
 
+const resettleArea = computed(() => {
+  const { dataList } = props
+  const areaList = dataList.filter((item) => item.type === '1')
+  return areaList
+})
 watch(
   () => props.immigrantSettle,
   (val) => {
@@ -250,7 +255,7 @@ const homesteadPlaceChange = (id: string) => {
     display: flex;
     width: 107rpx;
     height: 33rpx;
-    margin-right: 14rpx;
+    margin: 0 14rpx 12rpx 0;
     font-size: 9rpx;
     font-weight: 500;
     color: #171718;

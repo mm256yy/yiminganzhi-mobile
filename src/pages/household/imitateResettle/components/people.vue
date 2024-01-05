@@ -35,7 +35,7 @@
             v-if="props.isEdit"
             class="select-wrap"
             v-model="item.settingWay"
-            :localdata="dict[375]"
+            :localdata="landNoList"
           />
           <text v-else>{{ formatDict(item.settingWay, 375) }}</text>
         </view>
@@ -56,23 +56,39 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { ref, watch,onMounted } from 'vue'
 import { formatDict, getStorage, StorageKey } from '@/utils'
 import { PopulationType } from '@/types/datafill'
 import { showToast } from '@/config'
 import { SimulateDemographicType } from '@/types/impDataFill'
+import { getResettleDetail } from '@/service'
+import { OtherDataType } from '@/database';
+import type { LocationType } from '@/types/datafill'
 
+const dataLists = ref<LocationType[]>([])
+const getDataRequest = async () => {
+  try {
+    const data = await getResettleDetail(OtherDataType.settleAddressList)
+    dataLists.value=data
+  } catch (error) {
+    console.log('error', error);
+  }
+}
 interface PropsType {
   isEdit: boolean
   demographicList: PopulationType[] | SimulateDemographicType[]
+  immigrantSettle: any
+  dataList:any
 }
 
 const emit = defineEmits(['submit'])
 const props = defineProps<PropsType>()
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
-
+const landNoList = ref<any[]>([])
+landNoList.value=dict[375]
 const tableData = ref<any[]>([])
+const data = ref<any[]>([])
 
 watch(
   () => props.demographicList,
@@ -85,7 +101,19 @@ watch(
       //      tableData.value = val
       //   }
       // })
-      console.log(tableData.value, '111111111111111111111')
+    }
+  },
+  { immediate: true, deep: true }
+)
+watch(
+  () => props.immigrantSettle,
+  (val) => {
+    if (val) {
+      const data=dataLists.value.filter((item) => item.id == props.immigrantSettle.settleAddress)
+      if(data[0].isProductionLand==2){
+        landNoList.value=dict[375].filter((item) => item.value!= 1)
+        console.log( landNoList.value,'字典数据222')
+      }
     }
   },
   { immediate: true, deep: true }
@@ -108,6 +136,9 @@ const stepNext = async () => {
   })
   emit('submit', data)
 }
+onMounted(() => {
+  getDataRequest()
+})
 </script>
 
 <style lang="scss" scoped>
@@ -202,4 +233,5 @@ const stepNext = async () => {
 ::v-deep.uni-input-placeholder {
   font-size: 9rpx !important;
 }
+
 </style>

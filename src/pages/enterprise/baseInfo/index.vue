@@ -228,10 +228,16 @@
           </uni-row>
 
           <uni-row>
-            <uni-col :span="24">
+            <uni-col :span="12">
               <view class="col">
                 <view class="label">经营范围：</view>
                 <view class="content">{{ formatStr(props.dataInfo.natureBusiness) }}</view>
+              </view>
+            </uni-col>
+             <uni-col :span="12">
+              <view class="col">
+                <view class="label">企业类别：</view>
+                <view class="content">{{ formatDict(props.dataInfo.type, 379) }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -241,7 +247,7 @@
       <view class="list-item">
         <view class="list-1">
           <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-          <view class="title">企业资产信息</view>
+          <view class="title">企业资产信息2</view>
         </view>
         <view class="list-2">
           <uni-row>

@@ -125,6 +125,10 @@ const getStatisticData = (id?: number) => {
     arr = statisticData.value?.homeReportTop
   }
   const top5Array = arr.slice(0, 5)
+  top5Array.sort(function (a: any, b: any) {
+    return a.number < b.number ? 1 : -1
+  })
+  console.log(top5Array,'top5Array测试')
   const options = top5Array.map((item: Top5ItemType, index: number) => {
     if (index === 0) {
       max = item.number

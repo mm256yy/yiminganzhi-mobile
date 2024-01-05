@@ -177,6 +177,12 @@ const serach = () => {
   getSubmitListApi(params).then((res) => {
     allTableData.value = res
     tableData.value = res.filter((item) => item.type === tabType.value)
+  }).catch((err) => {
+    console.log(err,'报错啦')
+    uni.showToast({
+      title: err.message,
+      icon: 'none'
+    })
   })
 }
 

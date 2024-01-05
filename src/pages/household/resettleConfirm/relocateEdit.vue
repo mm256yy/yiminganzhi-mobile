@@ -21,6 +21,7 @@
           :doorNo="doorNo"
           :immigrantSettle="immigrantSettle"
           :fromResettleConfirm="true"
+          :dataList="dataList"
           @submit="immigrantSettleSubmit"
         />
         <apartment
@@ -29,6 +30,7 @@
           :doorNo="doorNo"
           :immigrantSettle="immigrantSettle"
           :fromResettleConfirm="true"
+          :dataList="dataList"
           @submit="immigrantSettleSubmit"
         />
         <centerSupport
@@ -55,7 +57,7 @@
 <script setup lang="ts">
 import { onLoad } from '@dcloudio/uni-app'
 import Container from '@/components/Container/index.vue'
-import { computed, ref } from 'vue'
+import { computed, ref,onMounted } from 'vue'
 import { HouseAreaType } from '@/types/common'
 import { PopulationType } from '@/types/datafill'
 import { ImmigrantSettleType } from '@/types/impDataFill'
@@ -69,7 +71,19 @@ import apartment from '../imitateResettle/components/apartment.vue'
 import centerSupport from '../imitateResettle/components/centerSupport.vue'
 import findSelf from '../imitateResettle/components/findSelf.vue'
 import { LandlordType } from '@/types/sync'
+import { getResettleDetail } from '@/service'
+import { OtherDataType } from '@/database';
+import type { LocationType } from '@/types/datafill'
 
+const dataList = ref<LocationType[]>([])
+const getDataRequest = async () => {
+  try {
+    const data = await getResettleDetail(OtherDataType.settleAddressList)
+    dataList.value=data
+  } catch (error) {
+    console.log('error', error);
+  }
+}
 const uid = ref<string>('')
 const doorNo = ref<string>('')
 const demographicList = ref<PopulationType[]>([])
@@ -138,6 +152,9 @@ const immigrantSettleSubmit = async (data: Partial<ImmigrantSettleType>) => {
     routerBack()
   }
 }
+onMounted(() => {
+  getDataRequest()
+})
 </script>
 
 <style lang="scss" scoped>

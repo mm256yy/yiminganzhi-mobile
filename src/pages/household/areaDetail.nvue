@@ -9,7 +9,8 @@
 
     <view class="area-box" v-loading="loading">
       <view class="tabs">
-        <view class="tab-item" :class="{ active: tabId === item.id }" v-for="item in tabs" :key="item.id"
+        <view
+class="tab-item" :class="{ active: tabId === item.id }" v-for="item in tabs" :key="item.id"
           @click="tabChange(item.id)">
           <text class="txt" :style="{ 'color': tabId === item.id ? '#3e73ec' : '#333' }">{{ item.name }}</text>
         </view>
@@ -43,6 +44,7 @@ const getDataRequest = async () => {
   try {
     const data = await getResettleDetail(OtherDataType.settleAddressList)
     dataList.value = data
+    console.log('data数据', dataList.value)
     tabs.value = data.map((item, index) => {
       return {
         id: index,

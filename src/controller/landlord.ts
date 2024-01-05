@@ -169,20 +169,22 @@ export class Landlord extends Common {
           reject([])
           return
         }
+        console.log(data, 'data')
         const { name, timeArray, userId } = data
         const array: LandlordType[] = []
-        let sql = `select * from ${LandlordTableName} where isPadDelete = '0'`
+        let sql = `select * from ${LandlordTableName} where reportUser = '${userId}'`
         if (name) {
           sql += ` and name like '%${name}%'`
         }
         if (timeArray && timeArray.length) {
           sql += ` and reportDate Between '${timeArray[0]}' and '${timeArray[1]}'`
         }
-        if (userId) {
-          sql += ` and reportUser = '${userId}' order by updatedDate desc`
-        }
-        // console.log(sql, 'sql 语句')
+        // if (userId) {
+        //   sql += ` and reportUser = '${userId}' order by updatedDate desc`
+        // }
+        console.log(sql, 'sql 语句')
         const list: LandlordDDLType[] = await this.db.selectSql(sql)
+        console.log(list, 'getSubmitList-list')
         if (this.isArrayAndNotNull(list)) {
           list.forEach((item) => {
             const landlord = JSON.parse(item.content)
@@ -838,6 +840,9 @@ export class Landlord extends Common {
         const res: LandlordDDLType[] = await this.db.selectSql(sql)
         const sql2 = `select count(reportStatus != 'ReportSucceed' or null) as noReport from ${LandlordTableName}`
         const res2: LandlordDDLType[] = await this.db.selectSql(sql2)
+        const sql3 = `select * from ${LandlordTableName} where reportUser = '${reportUser}'`
+        const res3: LandlordDDLType[] = await this.db.selectSql(sql3)
+        console.log(res, res2, res3, '哈哈')
         const obj = res ? res[0] : {}
         const obj2 = res2 ? res2[0] : {}
         resolve({ ...obj, ...obj2 })

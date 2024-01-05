@@ -148,16 +148,16 @@ const getStatisticData = (id: number) => {
   let arr: any = rankList.value[`${id}`].scheduleRankList || []
   const top5Array = arr.slice(0, 5)
   top5Array.sort(function (a: any, b: any) {
-    return a.number < b.number ? 1 : -1
+    return a.completeNumber < b.completeNumber ? 1 : -1
   })
   const options = top5Array.map((item: any, index: number) => {
     if (index === 0) {
-      max = item.number
+      max = item.completeNumber
     }
     return {
       ...item,
       index,
-      progress: ((item.number / max) * 100) | 0,
+      progress: ((item.completeNumber / max) * 100) | 0,
       img: getImg(index)
     }
   })

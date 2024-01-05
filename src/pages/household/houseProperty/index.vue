@@ -80,7 +80,7 @@
               <view class="col">
                 <view class="label">房屋性质：</view>
                 <view class="content">
-                  {{ formatStr(item.houseNature) }}
+                  {{formatDict(item.houseNature, 304) }} 
                 </view>
               </view>
             </uni-col>

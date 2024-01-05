@@ -41,6 +41,7 @@
           :doorNo="props.dataInfo.doorNo"
           :immigrantSettle="simulateImmigrantSettle"
           :fromResettleConfirm="false"
+          :dataList="dataList"
           @submit="immigrantSettleSubmit"
         />
 
@@ -51,6 +52,7 @@
           :doorNo="props.dataInfo.doorNo"
           :immigrantSettle="simulateImmigrantSettle"
           :fromResettleConfirm="false"
+          :dataList="dataList"
           @submit="immigrantSettleSubmit"
         />
 
@@ -79,6 +81,8 @@
         <people
           :is-edit="true"
           :demographicList="(simulateDemographic as any[])"
+          :immigrantSettle="simulateImmigrantSettle"
+          :dataList="dataList"
           @submit="productionResettleSubmit"
         />
       </view>
@@ -114,7 +118,19 @@ import {
   updateImpLandlordSimulateDemographicApi,
   updateImpLandlordSimulateImmigrantSettleApi
 } from '@/service'
+import { getResettleDetail } from '@/service'
+import { OtherDataType } from '@/database';
+import type { LocationType } from '@/types/datafill'
 
+const dataList = ref<LocationType[]>([])
+const getDataRequest = async () => {
+  try {
+    const data = await getResettleDetail(OtherDataType.settleAddressList)
+    dataList.value=data
+  } catch (error) {
+    console.log('error', error);
+  }
+}
 interface PropsType {
   dataInfo: LandlordType
 }
@@ -168,6 +184,7 @@ const simulateDemographic = computed(() => {
 
 // 获取模拟安置 搬迁安置信息
 const simulateImmigrantSettle = computed(() => {
+  console.log(props.dataInfo,'搬迁安置信息')
   return props.dataInfo && props.dataInfo.simulateImmigrantSettle
     ? props.dataInfo.simulateImmigrantSettle
     : {}
@@ -245,6 +262,7 @@ const productionResettleSubmit = async (data: any) => {
  * 搬迁安置确认
  */
 const immigrantSettleSubmit = async (data: any) => {
+  console.log(data,'传过来的数据是啥?')
   const res = await updateImpLandlordSimulateImmigrantSettleApi(uid.value, data)
   if (res) {
     showToast('搬迁安置保存成功!')
@@ -264,6 +282,7 @@ const areaDetailClose = () => {
 onMounted(() => {
   // 监听关闭子窗口
   uni.$on('areaDetailClose', areaDetailClose)
+  getDataRequest()
 })
 
 onBeforeUnmount(() => {

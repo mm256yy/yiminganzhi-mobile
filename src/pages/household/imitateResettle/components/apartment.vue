@@ -14,7 +14,7 @@
       <view class="item">
         <view class="label">选择地块：</view>
         <view class="value-box">
-          <view class="flex-row">
+          <view class="flex-row" style="flex-wrap: wrap;">
             <view
               class="area-item"
               :class="{ active: settleAddress === item.id }"
@@ -199,7 +199,7 @@
 
 <script lang="ts" setup>
 import { ref, computed, onMounted, watch } from 'vue'
-import { showToast, apartmentArea, apartmentAreaSize } from '@/config'
+import { showToast, apartmentAreaSize } from '@/config'
 import { HouseAreaType } from '@/types/common'
 import { LandlordType } from '@/types/sync'
 import { routerForward } from '@/utils'
@@ -209,6 +209,7 @@ interface PropsType {
   baseInfo: LandlordType
   immigrantSettle: any
   fromResettleConfirm?: boolean
+  dataList:any
 }
 
 const emit = defineEmits(['submit'])
@@ -243,6 +244,11 @@ const apartmentPlaceChange = (id: string) => {
   settleAddress.value = id
 }
 
+const apartmentArea=computed(() => {
+  const { dataList } = props
+  const apartment = dataList.filter((item) => item.type === '2')
+  return apartment
+})
 // 获取方案
 const getPlans = async () => {
   const res = []
@@ -535,7 +541,7 @@ const submitResettle = async () => {
     display: flex;
     width: 107rpx;
     height: 33rpx;
-    margin-right: 14rpx;
+    margin: 0 14rpx 12rpx 0;
     font-size: 9rpx;
     font-weight: 500;
     color: #171718;

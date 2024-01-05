@@ -365,8 +365,7 @@ export class ImpLandlord extends Common {
     if (
       immigrantSettle &&
       immigrantSettle.houseAreaType === HouseAreaType.flat &&
-      this.isNotNullPic(flatAgreementPic) &&
-      this.isNotNullPic(flatMeasurementPic)
+      this.isNotNullPic(flatAgreementPic)
     ) {
       landlordItem.immigrantFilling.flatsStatus = '1'
     } else {

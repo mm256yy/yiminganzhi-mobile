@@ -128,6 +128,7 @@
         </view>
         <image class="arrow-icon" src="@/static/images/home_arrow.png" mode="scaleToFill" />
       </view>
+      
     </view>
 
     <view class="other-enter self">
