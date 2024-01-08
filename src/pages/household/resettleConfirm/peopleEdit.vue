@@ -6,7 +6,7 @@
         <text>安置信息</text>
       </view>
 
-      <PeopleList :isEdit="true" :demographic-list="demographicList" @submit="produceSubmit" />
+      <PeopleList :isEdit="true" :demographic-list="demographicList" @submit="produceSubmit" :immigrantSettle="immigrantSettle"/>
     </view>
   </Container>
 </template>
@@ -22,10 +22,13 @@ import { routerBack } from '@/utils'
 
 const demographicList = ref<PopulationType[]>([])
 const uid = ref<string>('')
+const immigrantSettle=ref<any>()
 
 onLoad((option) => {
   if (option && option.uid) {
     uid.value = option.uid
+    immigrantSettle.value=JSON.parse(option.immigrantSettle)
+    console.log(option.immigrantSettle,'测试编辑数据')
     getLandlordDetail()
   }
 })

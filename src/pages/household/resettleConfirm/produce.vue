@@ -80,10 +80,16 @@ const mockDemographicList = computed(() => {
     ? props.dataInfo.simulateDemographic
     : []
 })
+// 搬迁安置
+const immigrantSettle = computed(() => {
+  return props.dataInfo && props.dataInfo.immigrantSettle ? props.dataInfo.immigrantSettle : {}
+})
 
 const editProduce = () => {
+  console.log( immigrantSettle.value,'测试编辑')
   routerForward('peopleConfirm', {
-    uid: props.dataInfo.uid
+    uid: props.dataInfo.uid,
+    immigrantSettle: JSON.stringify(immigrantSettle.value),
   })
 }
 

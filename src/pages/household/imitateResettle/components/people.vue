@@ -109,7 +109,11 @@ watch(
   () => props.immigrantSettle,
   (val) => {
     if (val) {
+      getDataRequest()
+      console.log(props.immigrantSettle,'测试选择的东西')
+      console.log(dataLists.value,'数据字典')
       const data=dataLists.value.filter((item) => item.id == props.immigrantSettle.settleAddress)
+      console.log(data,'选择的东西')
       if(data[0].isProductionLand==2){
         landNoList.value=dict[375].filter((item) => item.value!= 1)
         console.log( landNoList.value,'字典数据222')
@@ -138,6 +142,7 @@ const stepNext = async () => {
 }
 onMounted(() => {
   getDataRequest()
+  console.log(333333)
 })
 </script>
 

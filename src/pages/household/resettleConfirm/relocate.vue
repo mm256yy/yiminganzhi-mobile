@@ -75,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch,onMounted } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { LandlordType } from '@/types/sync'
 import { HouseAreaType } from '@/types/common'
 import { ImmigrantSettleType } from '@/types/impDataFill'
@@ -96,10 +96,14 @@ const apartmentArea = ref<any>([])
 const getDataRequest = async () => {
   try {
     const data1 = await getResettleDetail(OtherDataType.settleAddressList)
-    const data2= await getResettleDetail(OtherDataType.settleAddressList)
-     resettleArea.value=data1.filter((item) => item.type === '1')
-     apartmentArea.value=data2.filter((item) => item.type === '2')
-     console.log(resettleArea.value,'接口数据')
+    const result1=data1.filter((item) => item.type === '1')
+    const result2=data1.filter((item) => item.type === '2')
+    resettleArea.value=result1
+    apartmentArea.value=result2
+     console.log(result1,'接口数据1')
+     console.log(result2,'接口数据2')
+     console.log(resettleArea.value,'接口数据3')
+     console.log(apartmentArea.value,'接口数据4')
   } catch (error) {
     console.log('error', error);
   }
@@ -136,7 +140,9 @@ watch(
     // 整成数组
     console.log(res,'res是什么')
     if (!res) return
-    console.log(resettleArea.value,res.settleAddress,'测试数据')
+    getDataRequest()
+    console.log(resettleArea.value,'测试数据1')
+    console.log(apartmentArea.value,'测试数据2')
     if (res.houseAreaType === HouseAreaType.homestead || res.houseAreaType === HouseAreaType.flat) {
       const houseTypeText = resettleHouseType.find((item) => item.value === res.houseAreaType)?.text
       if (res.houseAreaType === HouseAreaType.homestead) {
@@ -267,9 +273,9 @@ const immigrantSettleSubmit = async (data: Partial<ImmigrantSettleType>) => {
   }
 }
 
-onMounted(() => {
-  getDataRequest()
-})
+// onMounted(() => {
+//   getDataRequest()
+// })
 </script>
 
 <style lang="scss" scoped>
