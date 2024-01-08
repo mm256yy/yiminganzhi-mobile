@@ -2,27 +2,27 @@
   <!-- 安置确认 搬迁安置 -->
   <view class="relocate-wrap">
     <view class="btn-box">
-     <view style="display: flex;">
-      <view class="btn blue-btn" @click="onImportDataPre">
-        <image class="icon" src="@/static/images/icon_import.png" mode="scaleToFill" />
-        <text class="txt">导入模拟安置数据</text>
-      </view>
+      <view style="display: flex;">
+        <view class="btn blue-btn" @click="onImportDataPre">
+          <image class="icon" src="@/static/images/icon_import.png" mode="scaleToFill" />
+          <text class="txt">导入模拟安置数据</text>
+        </view>
 
-      <view class="btn blue-btn" @click="editRelocate">
-        <image class="icon" src="@/static/images/icon_sign_white.png" mode="scaleToFill" />
-        <text class="txt">编辑</text>
+        <view class="btn blue-btn" @click="editRelocate">
+          <image class="icon" src="@/static/images/icon_sign_white.png" mode="scaleToFill" />
+          <text class="txt">编辑</text>
+        </view>
       </view>
-     </view>
-     <view style="display: flex;">
-      <view class="btn green-btn">
-        <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
-        <text class="txt">打印报表</text>
+      <view style="display: flex;">
+        <view class="btn green-btn">
+          <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
+          <text class="txt">打印报表</text>
+        </view>
+        <view class="btn blue-btn" @click="archivesUpload">
+          <image class="icon" src="@/static/images/icon_dangan_upload.png" mode="scaleToFill" />
+          <text class="txt">档案上传</text>
+        </view>
       </view>
-      <view class="btn blue-btn" @click="archivesUpload">
-        <image class="icon" src="@/static/images/icon_dangan_upload.png" mode="scaleToFill" />
-        <text class="txt">档案上传</text>
-      </view>
-     </view>
 
       <!-- <view class="btn blue-btn">
           <image class="icon" src="@/static/images/icon_feedback.png" mode="scaleToFill" />
@@ -36,14 +36,7 @@
     </view>
 
     <view class="table-wrap">
-      <uni-table
-        class="table"
-        ref="table"
-        :loading="loading"
-        border
-        stripe
-        :emptyText="emptyText || '暂无更多数据'"
-      >
+      <uni-table class="table" ref="table" :loading="loading" border stripe :emptyText="emptyText || '暂无更多数据'">
         <uni-tr>
           <uni-th>安置区域</uni-th>
           <uni-th>户型</uni-th>
@@ -61,15 +54,8 @@
     </view>
 
     <uni-popup ref="alertDialog" type="dialog">
-      <uni-popup-dialog
-        type="warn"
-        cancelText="取消"
-        confirmText="确认"
-        title="请确认是否导入？"
-        content="导入模拟数据后，列表中的安置方式将被覆盖"
-        @confirm="onConfirm"
-        @close="onClose"
-      />
+      <uni-popup-dialog type="warn" cancelText="取消" confirmText="确认" title="请确认是否导入？" content="导入模拟数据后，列表中的安置方式将被覆盖"
+        @confirm="onConfirm" @close="onClose" />
     </uni-popup>
   </view>
 </template>
@@ -93,56 +79,17 @@ import { OtherDataType } from '@/database';
 const resettleArea = ref<any>([])
 const apartmentArea = ref<any>([])
 
-const getDataRequest = async () => {
+const getDataRequest = async (res: any) => {
   try {
     const data1 = await getResettleDetail(OtherDataType.settleAddressList)
-    const result1=data1.filter((item) => item.type === '1')
-    const result2=data1.filter((item) => item.type === '2')
-    resettleArea.value=result1
-    apartmentArea.value=result2
-     console.log(result1,'接口数据1')
-     console.log(result2,'接口数据2')
-     console.log(resettleArea.value,'接口数据3')
-     console.log(apartmentArea.value,'接口数据4')
-  } catch (error) {
-    console.log('error', error);
-  }
-}
-interface PropsType {
-  dataInfo: LandlordType
-}
-
-const props = defineProps<PropsType>()
-const loading = ref<boolean>(false)
-const tableData = ref<any[]>([])
-const emptyText = ref<string>('')
-
-const houseType = ref<HouseAreaType>(HouseAreaType.homestead)
-const alertDialog = ref<any>(null)
-const emit = defineEmits(['updateData'])
-
-
-
-// 搬迁安置
-const immigrantSettle = computed(() => {
-  return props.dataInfo && props.dataInfo.immigrantSettle ? props.dataInfo.immigrantSettle : {}
-})
-// 模拟数据
-const mockImmigrantSettle = computed(() => {
-  return props.dataInfo && props.dataInfo.simulateImmigrantSettle
-    ? props.dataInfo.simulateImmigrantSettle
-    : {}
-})
-
-watch(
-  () => immigrantSettle.value,
-  (res) => {
-    // 整成数组
-    console.log(res,'res是什么')
-    if (!res) return
-    getDataRequest()
-    console.log(resettleArea.value,'测试数据1')
-    console.log(apartmentArea.value,'测试数据2')
+    const result1 = data1.filter((item) => item.type === '1')
+    const result2 = data1.filter((item) => item.type === '2')
+    resettleArea.value = result1
+    apartmentArea.value = result2
+    console.log(result1, '接口数据1')
+    console.log(result2, '接口数据2')
+    console.log(resettleArea.value, '接口数据3')
+    console.log(apartmentArea.value, '接口数据4')
     if (res.houseAreaType === HouseAreaType.homestead || res.houseAreaType === HouseAreaType.flat) {
       const houseTypeText = resettleHouseType.find((item) => item.value === res.houseAreaType)?.text
       if (res.houseAreaType === HouseAreaType.homestead) {
@@ -199,6 +146,43 @@ watch(
       }
       tableData.value = []
     }
+  } catch (error) {
+    console.log('error', error);
+  }
+}
+interface PropsType {
+  dataInfo: LandlordType
+}
+
+const props = defineProps<PropsType>()
+const loading = ref<boolean>(false)
+const tableData = ref<any[]>([])
+const emptyText = ref<string>('')
+
+const houseType = ref<HouseAreaType>(HouseAreaType.homestead)
+const alertDialog = ref<any>(null)
+const emit = defineEmits(['updateData'])
+
+
+
+// 搬迁安置
+const immigrantSettle = computed(() => {
+  return props.dataInfo && props.dataInfo.immigrantSettle ? props.dataInfo.immigrantSettle : {}
+})
+// 模拟数据
+const mockImmigrantSettle = computed(() => {
+  return props.dataInfo && props.dataInfo.simulateImmigrantSettle
+    ? props.dataInfo.simulateImmigrantSettle
+    : {}
+})
+
+watch(
+  () => immigrantSettle.value,
+  (res) => {
+    // 整成数组
+    console.log(res, 'res是什么')
+    if (!res) return
+    getDataRequest(res)
   },
   {
     deep: true,
