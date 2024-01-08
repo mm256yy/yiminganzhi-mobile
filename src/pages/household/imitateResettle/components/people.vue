@@ -68,8 +68,18 @@ import type { LocationType } from '@/types/datafill'
 const dataLists = ref<LocationType[]>([])
 const getDataRequest = async () => {
   try {
-    const data = await getResettleDetail(OtherDataType.settleAddressList)
-    dataLists.value=data
+    const datas = await getResettleDetail(OtherDataType.settleAddressList)
+    dataLists.value=datas
+    console.log(props.immigrantSettle.settleAddress,'测试选择的东西')
+    console.log(dataLists.value,'数据字典')
+    const data=dataLists.value.filter((item) => item.id == props.immigrantSettle.settleAddress)
+    console.log(data,'选择的东西')
+    if(data[0].isProductionLand==2){
+        landNoList.value=dict[375].filter((item) => item.value!= 1)
+        console.log( landNoList.value,'字典数据222')
+      }else{
+        landNoList.value=dict[375]
+      }
   } catch (error) {
     console.log('error', error);
   }
@@ -109,15 +119,8 @@ watch(
   () => props.immigrantSettle,
   (val) => {
     if (val) {
+      console.log(val,'测试选择前面的数据')
       getDataRequest()
-      console.log(props.immigrantSettle,'测试选择的东西')
-      console.log(dataLists.value,'数据字典')
-      const data=dataLists.value.filter((item) => item.id == props.immigrantSettle.settleAddress)
-      console.log(data,'选择的东西')
-      if(data[0].isProductionLand==2){
-        landNoList.value=dict[375].filter((item) => item.value!= 1)
-        console.log( landNoList.value,'字典数据222')
-      }
     }
   },
   { immediate: true, deep: true }

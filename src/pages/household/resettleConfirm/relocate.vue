@@ -54,7 +54,8 @@
     </view>
 
     <uni-popup ref="alertDialog" type="dialog">
-      <uni-popup-dialog type="warn" cancelText="取消" confirmText="确认" title="请确认是否导入？" content="导入模拟数据后，列表中的安置方式将被覆盖"
+      <uni-popup-dialog
+type="warn" cancelText="取消" confirmText="确认" title="请确认是否导入？" content="导入模拟数据后，列表中的安置方式将被覆盖"
         @confirm="onConfirm" @close="onClose" />
     </uni-popup>
   </view>
@@ -162,7 +163,11 @@ const emptyText = ref<string>('')
 const houseType = ref<HouseAreaType>(HouseAreaType.homestead)
 const alertDialog = ref<any>(null)
 const emit = defineEmits(['updateData'])
+const dataType = ref<any>()
 
+// const demographicList = computed(() => {
+//   return props.dataInfo && props.dataInfo.demographicList ? props.dataInfo.demographicList.filter((item) => item.name !== '增计人口'): []
+// })
 
 
 // 搬迁安置
@@ -175,7 +180,6 @@ const mockImmigrantSettle = computed(() => {
     ? props.dataInfo.simulateImmigrantSettle
     : {}
 })
-
 watch(
   () => immigrantSettle.value,
   (res) => {
@@ -189,6 +193,22 @@ watch(
     immediate: true
   }
 )
+
+// watch(
+//   () => demographicList.value,
+//   (res) => {
+//     // 整成数组
+//     console.log(res, 'res11是什么')
+//     if (!res) return
+//         dataType.value=res.filter((item) => item.relation == '1')
+//   console.log(dataType.value[0].settingWay,'传递的数据')
+//   },
+//   {
+//     deep: true,
+//     immediate: true
+//   }
+// )
+
 
 const archivesUpload = () => {
   routerForward('archives', {

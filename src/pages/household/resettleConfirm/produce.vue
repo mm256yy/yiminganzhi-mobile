@@ -80,20 +80,41 @@ const mockDemographicList = computed(() => {
     ? props.dataInfo.simulateDemographic
     : []
 })
+
+// 模拟安置导入的安置方式等数据
+const mockImmigrantSettle = computed(() => {
+  return props.dataInfo && props.dataInfo.simulateImmigrantSettle
+    ? props.dataInfo.simulateImmigrantSettle
+    : {}
+})
 // 搬迁安置
-const immigrantSettle = computed(() => {
+const immigarntSettle = computed(() => {
   return props.dataInfo && props.dataInfo.immigrantSettle ? props.dataInfo.immigrantSettle : {}
 })
 
+// watch(
+//   () => immigrantSettle.value,
+//   (res) => {
+//     // 整成数组
+//     console.log(res, 'res是什么')
+//     if (!res) return
+//     // getDataRequest(res)
+//   },
+//   {
+//     deep: true,
+//     immediate: true
+//   }
+// )
 const editProduce = () => {
-  console.log( immigrantSettle.value,'测试编辑')
+  console.log( props.dataInfo.immigrantSettle,'测试编辑')
   routerForward('peopleConfirm', {
     uid: props.dataInfo.uid,
-    immigrantSettle: JSON.stringify(immigrantSettle.value),
+    immigrantSettle: JSON.stringify(props.dataInfo.simulateImmigrantSettle),
   })
 }
 
 const produceSubmit = async (data: PopulationType[]) => {
+  console.log(data,'保存的是啥？')
   const res = await updateImpLandlordPeopleBatchApi(props.dataInfo.uid, data)
   if (res) {
     uni.showToast({
@@ -110,6 +131,8 @@ const importPre = () => {
 
 // 导入模拟安置
 const dialogConfirm = () => {
+  console.log(mockDemographicList.value,'模拟数据1')
+    console.log( mockImmigrantSettle.value,'测试模拟')
   const data = demographicList.value.map((item) => {
     const current = mockDemographicList.value.find((mockItem) => mockItem.demographicId === item.id)
     if (current) {

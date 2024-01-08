@@ -22,6 +22,7 @@
           :immigrantSettle="immigrantSettle"
           :fromResettleConfirm="true"
           :dataList="dataList"
+          :data="demographicList"
           @submit="immigrantSettleSubmit"
         />
         <apartment
@@ -31,6 +32,7 @@
           :immigrantSettle="immigrantSettle"
           :fromResettleConfirm="true"
           :dataList="dataList"
+          :data="demographicList"
           @submit="immigrantSettleSubmit"
         />
         <centerSupport

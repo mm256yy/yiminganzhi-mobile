@@ -70,6 +70,7 @@ interface PropsType {
   immigrantSettle: any
   fromResettleConfirm?: boolean
   dataList:any
+  data:any
 }
 
 const emit = defineEmits(['submit'])
@@ -99,9 +100,20 @@ const otherNum = computed(() => {
 })
 
 const resettleArea = computed(() => {
-  const { dataList } = props
-  const areaList = dataList.filter((item) => item.type === '1')
+  const { dataList,data } = props
+  if(!data){
+      const areaList = dataList.filter((item) => item.type === '1')
+      return areaList
+  }else{
+    const datas=data.filter((item) => item.relation === '1')
+  if(datas[0].settingWay=='1'){
+  const areaList = dataList.filter((item) => item.type === '1'&&item.isProductionLand==='1')
   return areaList
+  }else{
+  const areaList = dataList.filter((item) => item.type === '1'&&item.isProductionLand==='2')
+  return areaList
+  }
+}
 })
 watch(
   () => props.immigrantSettle,
@@ -117,7 +129,18 @@ watch(
     immediate: true
   }
 )
-
+watch(
+  () => props.data,
+  (val) => {
+    if (val) {
+       console.log(val,'测试数据')
+    }
+  },
+  {
+    deep: true,
+    immediate: true
+  }
+)
 const areaSizeArray = computed(() => {
   const len = familyNum.value
   const sizeArray = homesteadAreaSize.map((item) => {
