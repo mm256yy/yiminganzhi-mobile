@@ -64,7 +64,7 @@ const dataList = ref<any>([])
 const showSelector = ref<boolean>(false)
 const modelValue = ref<string>('')
 const modelLabel = ref<string>('')
-
+const arrs=ref<any>([])
 const emit = defineEmits(['update:modelValue'])
 
 // 获取label
@@ -126,10 +126,16 @@ watch(
             if (getValueKeyValue(item) === val) {
               dataList.value[index].checked = true
             }
+            if(item.value==val){
+              arrs.value.push(item.text)
+              modelValue.value=arrs.value.toString()
+            }
           })
         }
       })
-      getSelectedData()
+      // getSelectedData()
+      //  modelValue.value =props.value
+                    // modelValue.value.push(getValueKeyValue(item) )
     }
   },
   {

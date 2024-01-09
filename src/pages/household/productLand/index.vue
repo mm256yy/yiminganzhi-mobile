@@ -14,7 +14,7 @@
             <view class="col">
               <view class="label">区块：</view>
               <view class="content">
-                {{ getSettleAddress(formData.settleAddress) }}
+                {{ getSettleAddress(immigrantSettle.settleAddress) }}
               </view>
             </view>
           </uni-col>
@@ -92,7 +92,7 @@
 <script lang="ts" setup>
 import { ref, watch, onMounted } from 'vue'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
-import { resettleArea, apartmentArea } from '@/config'
+// import { resettleArea, apartmentArea } from '@/config'
 import { LandlordType } from '@/types/sync'
 import { updateImpLandlordImmigrantLandApi, getChooseConfigApi } from '@/service'
 import UploadFile from '@/components/UploadFile/index.vue'
@@ -111,12 +111,28 @@ const landPicStr = ref<string>('[]') // 凭证照片
 const childSelect=ref<any>()
 // 获得焦点的输入框下标
 const focusIndex = ref<number>(-1)
+import { getResettleDetail } from '@/service'
+import { OtherDataType } from '@/database';
+import type { LocationType } from '@/types/datafill'
 
+const dataLists = ref<LocationType[]>([])
+const getDataRequest = async () => {
+  try {
+    const datas = await getResettleDetail(OtherDataType.settleAddressList)
+    dataLists.value=datas
+    // resettleArea.value=dataLists.value.filter((item) => item.id == props.immigrantSettle.settleAddress)
+  } catch (error) {
+    console.log('error', error);
+  }
+}
 watch(
   () => props.dataInfo,
   (val) => {
     if (val) {
       formData.value = { ...val }
+      // formData.value.landNo='111,222,333'
+      console.log(val,'测试数据1')
+      console.log(props.baseInfo.immigrantSettle,'测试数据2')
       const { landPic } = formData.value
       if (landPic) {
         landPicStr.value = landPic
@@ -134,23 +150,26 @@ const getSettleAddress = (data: string) => {
   if (data) {
     // 选择了公寓房的安置方式
     if (immigrantSettle) {
-      if (immigrantSettle.houseAreaType === 'flat') {
-        let str = ''
-        apartmentArea.map((item: any) => {
-          if (item.id === data) {
-            str = item.name
-          }
-        })
-        return str
-      } else {
-        let str = ''
-        resettleArea.map((item: any) => {
-          if (item.id === data) {
-            str = item.name
-          }
-        })
-        return str
-      }
+      // if (immigrantSettle.houseAreaType === 'flat') {
+      //   let str = ''
+      //   apartmentArea.map((item: any) => {
+      //     if (item.id === data) {
+      //       str = item.name
+      //     }
+      //   })
+      //   return str
+      // } else {
+      //   let str = ''
+      //   resettleArea.map((item: any) => {
+      //     if (item.id === data) {
+      //       str = item.name
+      //     }
+      //   })
+      //   return str
+      // }
+      const str=dataLists.value.filter((item:any) => item.id == data)
+      console.log(str,'测试数据')
+      return str[0].name
     } else {
       return ''
     }
@@ -176,7 +195,10 @@ const getLandNoList = () => {
           })
         }
       })
-      landNoList.value = [...arr]
+      const arrList=[...arr]
+      landNoList.value = arrList.filter((item: any) => {
+        return item.disable === false
+      })
       console.log(landNoList.value,'测试下拉数据')
     }
   })
@@ -193,6 +215,7 @@ const inputBlur = () => {
 }
 
 const submit = () => {
+  // formData.value.landNo = formData.value.landNo.split(',')
   const params: any = {
     ...formData.value,
     landPic: landPicStr.value
@@ -213,6 +236,7 @@ const handleClick=() => {
 }
 onMounted(() => {
   getLandNoList()
+  getDataRequest()
 })
 </script>
 
