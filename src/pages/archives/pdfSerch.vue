@@ -68,8 +68,8 @@
               <td align="left" class="uTd">{{ getSettleAddress(item) }}</td>
               <td align="left" class="uTd">{{ formatStr(item.area) }} </td>
               <td align="left" class="uTd">{{ item.roomNo }}</td>
-              <td align="left" class="uTd"> {{ item.storeroomNo }}</td>
-              <td align="left" class="uTd">{{ item.carNo }}</td>
+              <td align="left" class="uTd"> {{ dictOption(storeroomNoList, item.storeroomNo) }}</td>
+              <td align="left" class="uTd">{{ dictOption(carNoList, item.carNo) }}</td>
             </tr>
             <tr style="height: 100px;">
               <td colspan="3">
@@ -80,6 +80,90 @@
 
               </td>
               <td colspan="3">联系移民干部(签名)：</td>
+            </tr>
+          </table>
+        </view>
+      </div>
+      <div v-if="id == 3"
+        style="width: 100%;border: 1px solid #000000;display: flex;flex-direction: column;padding: 10px; ">
+        <h1 style="font-size: 24px; text-align: center">选址确认单</h1>
+        <div style="display: flex;justify-content: space-between;">
+          <div style="font-size: 16px;">
+            {{
+              `${baseInfo.areaCodeText} ${baseInfo.townCodeText} ${baseInfo.villageCodeText} ${baseInfo.name} 户号
+                        ${baseInfo.showDoorNo} `
+            }}</div>
+          <div style="font-size: 16px;">{{ dayjs(new Date()).format('YYYY年MM月DD日') }}</div>
+        </div>
+        <view class="row-2">
+          <table style="width: 100%" border="1" cellspacing="0" cellpadding="0">
+            <!-- 表头行 -->
+            <tr>
+              <th align="left" class="uTitle">序号</th>
+              <th align="left" class="uTitle">区块</th>
+              <th align="left" class="uTitle">类型</th>
+              <th align="left" class="uTitle">地块编号</th>
+              <th align="left" class="uTitle">备注</th>
+            </tr>
+            <!-- 表格数据行 -->
+            <tr v-for="(item, index) in dataList" :key="index">
+              <td align="left" class="uTd">{{ index + 1 }}</td>
+              <td align="left" class="uTd">{{ getSettleAddress(item) }}</td>
+              <td align="left" class="uTd">{{ formatStr(item.area) }} </td>
+              <td align="left" class="uTd">{{ dictOption(landNoList, item.landNo) }}</td>
+              <td align="left" class="uTd"></td>
+            </tr>
+            <tr style="height: 100px;">
+              <td colspan="3">
+                <div style="display: flex;justify-content: space-between;align-items: center;">
+                  <div>户主代表或收委托人(签名)：</div>
+                  <img id='signatureImg' class="signatureImg" :src='path' v-if="path" />
+                </div>
+
+              </td>
+              <td colspan="2">联系移民干部(签名)：</td>
+            </tr>
+          </table>
+        </view>
+      </div>
+      <div v-if="id == 4"
+        style="width: 100%;border: 1px solid #000000;display: flex;flex-direction: column;padding: 10px; ">
+        <h1 style="font-size: 24px; text-align: center">搬迁安置确认单</h1>
+        <div style="display: flex;justify-content: space-between;">
+          <div style="font-size: 16px;">
+            {{
+              `${baseInfo.areaCodeText} ${baseInfo.townCodeText} ${baseInfo.villageCodeText} ${baseInfo.name} 户号
+                        ${baseInfo.showDoorNo} `
+            }}</div>
+          <div style="font-size: 16px;">{{ dayjs(new Date()).format('YYYY年MM月DD日') }}</div>
+        </div>
+        <view class="row-2">
+          <table style="width: 100%" border="1" cellspacing="0" cellpadding="0">
+            <!-- 表头行 -->
+            <tr>
+              <th align="left" class="uTitle">序号</th>
+              <th align="left" class="uTitle">区块</th>
+              <th align="left" class="uTitle">类型</th>
+              <th align="left" class="uTitle">户型/套型</th>
+              <th align="left" class="uTitle">备注</th>
+            </tr>
+            <!-- 表格数据行 -->
+            <tr v-for="(item, index) in dataList" :key="index">
+              <td align="left" class="uTd">{{ index + 1 }}</td>
+              <td align="left" class="uTd">{{ item.settleAddressText }}</td>
+              <td align="left" class="uTd">{{ item.houseTypeText }} </td>
+              <td align="left" class="uTd">{{ item.area }}</td>
+              <td align="left" class="uTd"></td>
+            </tr>
+            <tr style="height: 100px;">
+              <td colspan="3">
+                <div style="display: flex;justify-content: space-between;align-items: center;">
+                  <div>户主代表或收委托人(签名)：</div>
+                  <img id='signatureImg' class="signatureImg" :src='path' v-if="path" />
+                </div>
+
+              </td>
+              <td colspan="2">联系移民干部(签名)：</td>
             </tr>
           </table>
         </view>
@@ -383,9 +467,9 @@ function getLocalFilePath(path) {
   }
   return '_www/' + path
 }
-import { routerForward, formatStr, formatDict } from '@/utils'
+import { routerForward, formatStr, formatDict, dictOption } from '@/utils'
 import { onLoad, onShow } from '@dcloudio/uni-app'
-import { getImpLandlordItemApi, getCompensationCardConfigApi, getLandlordItemApi } from '@/service'
+import { getImpLandlordItemApi, getCompensationCardConfigApi, getLandlordItemApi, getChooseConfigApi } from '@/service'
 import { apartmentArea, resettleArea } from '@/config'
 import dayjs from 'dayjs'
 export default {
@@ -403,7 +487,11 @@ export default {
       resettleArea,
       baseInfo: {},
       dayjs,
-      id: 0
+      id: 0,
+      landNoList: [],
+      storeroomNoList: [],
+      carNoList: [],
+      dictOption
     }
   },
   onLoad(option) {
@@ -412,6 +500,12 @@ export default {
     console.log(JSON.parse(option.dataInfo));
     this.dataList = JSON.parse(option.data);
     this.baseInfo = JSON.parse(option.dataInfo)
+    if (this.dataList[0].houseAreaType == 'flat' || this.dataList[0].houseAreaType == 'homestead') {
+      this.getChooseConfig()
+      if (this.dataList[0].houseAreaType == 'homestead') {
+        this.id = 3
+      }
+    }
 
   },
   onShow() {
@@ -509,6 +603,39 @@ export default {
       } else {
         return ''
       }
+    },
+    getChooseConfig() {
+      getChooseConfigApi().then((res) => {
+        let arr1 = []
+        let arr2 = []
+        let arr3 = []
+        if (res && res.length) {
+          res.map((item) => {
+            if (item.type === '2') {
+              arr1.push({
+                text: item.name,
+                value: item.id,
+                disable: item.isOccupy === '0' ? false : true // '0' 可选，'1' 已选
+              })
+            } else if (item.type === '3') {
+              arr2.push({
+                text: item.name,
+                value: item.id,
+                disable: item.isOccupy === '0' ? false : true // '0' 可选，'1' 已选
+              })
+            } else if (item.type === '4') {
+              arr2.push({
+                text: item.name,
+                value: item.id,
+                disable: item.isOccupy === '0' ? false : true // '0' 可选，'1' 已选
+              })
+            }
+          })
+          this.landNoList = [...arr1]
+          this.storeroomNoList = [...arr2]
+          this.carNoList = [...arr3]
+        }
+      })
     }
 
   },

@@ -14,7 +14,7 @@
         </view>
       </view>
       <view style="display: flex;">
-        <view class="btn green-btn">
+        <view class="btn green-btn" @click="handleClick">
           <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
           <text class="txt">打印报表</text>
         </view>
@@ -54,8 +54,7 @@
     </view>
 
     <uni-popup ref="alertDialog" type="dialog">
-      <uni-popup-dialog
-type="warn" cancelText="取消" confirmText="确认" title="请确认是否导入？" content="导入模拟数据后，列表中的安置方式将被覆盖"
+      <uni-popup-dialog type="warn" cancelText="取消" confirmText="确认" title="请确认是否导入？" content="导入模拟数据后，列表中的安置方式将被覆盖"
         @confirm="onConfirm" @close="onClose" />
     </uni-popup>
   </view>
@@ -193,7 +192,13 @@ watch(
     immediate: true
   }
 )
-
+const handleClick = () => {
+  routerForward('pdfSerch', {
+    data: JSON.stringify(tableData.value),
+    dataInfo: JSON.stringify(props.dataInfo),
+    id: 4
+  })
+}
 // watch(
 //   () => demographicList.value,
 //   (res) => {
