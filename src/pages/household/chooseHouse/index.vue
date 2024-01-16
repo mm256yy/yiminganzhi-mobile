@@ -4,7 +4,7 @@
     <view class="row" v-if="houseAreaType === 'homestead' || houseAreaType === 'flat'">
       <view class="left" />
       <view class="right">
-        <view class="btn green">
+        <view class="btn green" @click="handleClick">
           <image class="icon" src="@/static/images/icon_print_white.png" mode="scaleToFill" />
           打印表格
         </view>
@@ -300,7 +300,13 @@ const toLink = (itemUid?: any) => {
     params: JSON.stringify(params)
   })
 }
-
+const handleClick = () => {
+  routerForward('pdfSerch', {
+    data: JSON.stringify(props.dataList),
+    dataInfo: JSON.stringify(props.baseInfo),
+    id: 2
+  })
+}
 onMounted(() => {
   getChooseConfig()
   getHouseConfig()

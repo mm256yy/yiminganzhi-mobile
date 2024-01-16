@@ -3,12 +3,10 @@
 		<div class="report-text" id="printReport" style="display: flex;">
 			<div style="width: 50%;border: 1px solid #000000;display: flex;flex-direction: column;">
 				<h1 style="font-size: 24px; text-align: center">移民协议补偿登记卡</h1>
-				<div
-style="
-            display: flex;
+				<div style="display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
-            margin: 20px 0 20px 0;
+            padding: 20px 0 20px 0;
           ">
 					<div style="width: 30%">
 						<span style="font-weight: bold;font-size: 12px">户主姓名:</span>
@@ -98,7 +96,7 @@ style="
 						</tr>
 					</table>
 				</view>
-				<div style="border: 1px solid #000000;font-size: 12px;display: flex;align-items: center;flex: 1;">
+				<div style="border: 1px solid #000000;font-size: 12px;display: flex;align-items: center;flex:1">
 					<div>制发单位（盖章）：</div>
 				</div>
 			</div>
@@ -422,27 +420,27 @@ function pathToBase64(path) {
 	})
 }
 function getLocalFilePath(path) {
-    if (path.indexOf('_www') === 0 || path.indexOf('_doc') === 0 || path.indexOf('_documents') === 0 || path.indexOf('_downloads') === 0) {
-        return path
-    }
-    if (path.indexOf('file://') === 0) {
-        return path
-    }
-    if (path.indexOf('/storage/emulated/0/') === 0) {
-        return path
-    }
-    if (path.indexOf('/') === 0) {
-        var localFilePath = plus.io.convertAbsoluteFileSystem(path)
-        if (localFilePath !== path) {
-            return localFilePath
-        } else {
-            path = path.substr(1)
-        }
-    }
-    return '_www/' + path
+	if (path.indexOf('_www') === 0 || path.indexOf('_doc') === 0 || path.indexOf('_documents') === 0 || path.indexOf('_downloads') === 0) {
+		return path
+	}
+	if (path.indexOf('file://') === 0) {
+		return path
+	}
+	if (path.indexOf('/storage/emulated/0/') === 0) {
+		return path
+	}
+	if (path.indexOf('/') === 0) {
+		var localFilePath = plus.io.convertAbsoluteFileSystem(path)
+		if (localFilePath !== path) {
+			return localFilePath
+		} else {
+			path = path.substr(1)
+		}
+	}
+	return '_www/' + path
 }
 import { routerForward, formatStr, formatDict } from '@/utils'
-import { onLoad } from '@dcloudio/uni-app'
+import { onLoad, onShow } from '@dcloudio/uni-app'
 import { getImpLandlordItemApi, getCompensationCardConfigApi, getLandlordItemApi } from '@/service'
 import { apartmentArea, resettleArea } from '@/config'
 export default {
@@ -462,24 +460,28 @@ export default {
 	},
 	onLoad(option) {
 		console.log(option);
-		if (option.path) {
-			pathToBase64(option.path).then(base64 => {
-				console.log("转换成功==>",base64)
-				this.path = base64;
-			})
-				.catch(error => {
-					console.error("转换失败==>", error)
-				})
-
-
-			// this.path = option.path
-			// console.log(option.path, this.path);
-		}
 		if (option.dataInfo) {
 			this.uid = option.dataInfo
 			this.getLandlordDetail(option.dataInfo)
 			this.getCompensationCardConfig(option.dataInfo)
 		}
+	},
+	onShow() {
+		let that = this
+		uni.$on('id', function (data) {  //接受参数到ID,随意取名
+			that.uid = data.dataInfo  //用此页面的参数来存储
+			that.getLandlordDetail(data.dataInfo)
+			that.getCompensationCardConfig(data.dataInfo)
+			if (data.path) {
+				pathToBase64(data.path).then(base64 => {
+					console.log("转换成功==>", base64)
+					that.path = base64;
+				})
+					.catch(error => {
+						console.error("转换失败==>", error)
+					})
+			}
+		})
 	},
 	methods: {
 		savePDF(base64) {
@@ -546,8 +548,8 @@ export default {
 		getSettleAddressText(settleAddress) {
 			if (!settleAddress) return '-'
 			return (
-				tihs.resettleArea.find((item) => item.id === settleAddress)?.name ||
-				tihs.apartmentArea.find((item) => item.id === settleAddress)?.name
+				this.resettleArea.find((item) => item.id === settleAddress)?.name ||
+				this.apartmentArea.find((item) => item.id === settleAddress)?.name
 			)
 		},
 		getTypeStr(type) {
@@ -716,11 +718,15 @@ export default {
 	};
 </script>
 <style scoped lang="scss" >
+.content {
+	height: 100%;
+}
+
 .report-text {
+	box-sizing: border-box;
 	width: 300mm;
-	height: 190mm;
+	height: 100%;
 	padding: 20px;
-	border: 1px solid black;
 }
 
 .col {

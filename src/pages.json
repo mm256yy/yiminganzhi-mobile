@@ -383,7 +383,14 @@
 			"name": "pdf",
 			"path": "pages/archives/pdf",
 			"style": {
-				"navigationBarTitleText": "pdf预览"
+				"navigationBarTitleText": "pdf预览-移民建卡"
+			}
+		},
+			{
+			"name": "pdfSerch",
+			"path": "pages/archives/pdfSerch",
+			"style": {
+				"navigationBarTitleText": "pdf预览-生产安置"
 			}
 		},
 		{

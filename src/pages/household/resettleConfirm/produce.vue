@@ -1,28 +1,28 @@
 <template>
   <view class="produce-wrap">
     <view class="btn-box">
-     <view style="display: flex;">
-      <view class="btn blue-btn" @click="importPre">
-        <image class="icon" src="@/static/images/icon_import.png" mode="scaleToFill" />
-        <text class="txt">导入模拟安置数据</text>
-      </view>
+      <view style="display: flex;">
+        <view class="btn blue-btn" @click="importPre">
+          <image class="icon" src="@/static/images/icon_import.png" mode="scaleToFill" />
+          <text class="txt">导入模拟安置数据</text>
+        </view>
 
-      <view class="btn blue-btn" @click="editProduce">
-        <image class="icon" src="@/static/images/icon_sign_white.png" mode="scaleToFill" />
-        <text class="txt">编辑</text>
+        <view class="btn blue-btn" @click="editProduce">
+          <image class="icon" src="@/static/images/icon_sign_white.png" mode="scaleToFill" />
+          <text class="txt">编辑</text>
+        </view>
       </view>
-     </view>
-     <view style="display: flex;">
-      <view class="btn green-btn">
-        <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
-        <text class="txt">打印报表</text>
-      </view>
+      <view style="display: flex;" @click="handleClick">
+        <view class="btn green-btn">
+          <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
+          <text class="txt">打印报表</text>
+        </view>
 
-      <view class="btn blue-btn" @click="archivesUpload">
-        <image class="icon" src="@/static/images/icon_dangan_upload.png" mode="scaleToFill" />
-        <text class="txt">档案上传</text>
+        <view class="btn blue-btn" @click="archivesUpload">
+          <image class="icon" src="@/static/images/icon_dangan_upload.png" mode="scaleToFill" />
+          <text class="txt">档案上传</text>
+        </view>
       </view>
-     </view>
       <!-- <view class="btn blue-btn">
           <image class="icon" src="@/static/images/icon_feedback.png" mode="scaleToFill" />
           <text class="txt">问题反馈</text>
@@ -39,15 +39,8 @@
     </view>
 
     <uni-popup ref="alertDialog" type="dialog">
-      <uni-popup-dialog
-        type="warn"
-        cancelText="取消"
-        confirmText="确认"
-        title="请确认是否导入？"
-        content="导入模拟数据后，列表中的安置方式将被覆盖"
-        @confirm="dialogConfirm"
-        @close="dialogClose"
-      />
+      <uni-popup-dialog type="warn" cancelText="取消" confirmText="确认" title="请确认是否导入？" content="导入模拟数据后，列表中的安置方式将被覆盖"
+        @confirm="dialogConfirm" @close="dialogClose" />
     </uni-popup>
   </view>
 </template>
@@ -70,7 +63,7 @@ const emit = defineEmits(['updateData'])
 
 // .filter((item) => item.name !== '增计人口')
 const demographicList = computed(() => {
-  return props.dataInfo && props.dataInfo.demographicList ? props.dataInfo.demographicList.filter((item) => item.name !== '增计人口'): []
+  return props.dataInfo && props.dataInfo.demographicList ? props.dataInfo.demographicList.filter((item) => item.name !== '增计人口') : []
 })
 
 const mockDemographicList = computed(() => {
@@ -106,7 +99,7 @@ const immigarntSettle = computed(() => {
 //   }
 // )
 const editProduce = () => {
-  console.log( props.dataInfo.immigrantSettle,'测试编辑')
+  console.log(props.dataInfo.immigrantSettle, '测试编辑')
   routerForward('peopleConfirm', {
     uid: props.dataInfo.uid,
     immigrantSettle: JSON.stringify(props.dataInfo.simulateImmigrantSettle),
@@ -114,7 +107,7 @@ const editProduce = () => {
 }
 
 const produceSubmit = async (data: PopulationType[]) => {
-  console.log(data,'保存的是啥？')
+  console.log(data, '保存的是啥？')
   const res = await updateImpLandlordPeopleBatchApi(props.dataInfo.uid, data)
   if (res) {
     uni.showToast({
@@ -131,8 +124,8 @@ const importPre = () => {
 
 // 导入模拟安置
 const dialogConfirm = () => {
-  console.log(mockDemographicList.value,'模拟数据1')
-    console.log( mockImmigrantSettle.value,'测试模拟')
+  console.log(mockDemographicList.value, '模拟数据1')
+  console.log(mockImmigrantSettle.value, '测试模拟')
   const data = demographicList.value.map((item) => {
     const current = mockDemographicList.value.find((mockItem) => mockItem.demographicId === item.id)
     if (current) {
@@ -152,6 +145,13 @@ const archivesUpload = () => {
   routerForward('archives', {
     type: 1,
     uid: props.dataInfo.uid
+  })
+}
+const handleClick = () => {
+  routerForward('pdfSerch', {
+    data: JSON.stringify(demographicList.value),
+    dataInfo: JSON.stringify(props.dataInfo),
+    id: 1
   })
 }
 </script>

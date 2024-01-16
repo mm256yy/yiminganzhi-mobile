@@ -75,7 +75,7 @@ const getDataRequest = async () => {
     const data=dataLists.value.filter((item) => item.id == props.immigrantSettle.settleAddress)
     console.log(data,'选择的东西')
     if(data[0].isProductionLand==2){
-        landNoList.value=dict[375].filter((item) => item.value!= 1)
+      landNoList.value = dict[375].filter((item: any) => item.value != 1)
         console.log( landNoList.value,'字典数据222')
       }else{
         landNoList.value=dict[375]
@@ -87,8 +87,8 @@ const getDataRequest = async () => {
 interface PropsType {
   isEdit: boolean
   demographicList: PopulationType[] | SimulateDemographicType[]
-  immigrantSettle: any
-  dataList:any
+  immigrantSettle?: any
+  dataList?:any
 }
 
 const emit = defineEmits(['submit'])

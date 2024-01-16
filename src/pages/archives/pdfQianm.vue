@@ -123,7 +123,12 @@ export default {
 
           let paths = res.tempFilePath;
           // that.signImage=path
-           routerForward('pdf',{path:paths,dataInfo:that.uid,replace:true})
+          uni.$emit('id', { path: paths, dataInfo: that.uid, replace: true })
+          uni.navigateBack({
+            delta: 1 //返回上一页
+          })
+
+          //  routerForward('pdf',{path:paths,dataInfo:that.uid,replace:true})
           // uni.saveImageToPhotosAlbum({
           //   filePath: paths,
           //   success: (response) => {
