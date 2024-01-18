@@ -6,13 +6,7 @@
       <uni-forms class="form" ref="form" :modelValue="formData">
         <uni-row v-if="commonParams.type === 'add'">
           <uni-col :span="24">
-            <uni-forms-item
-              required
-              label="新增原因"
-              :label-width="150"
-              label-align="right"
-              name="formData.addReason"
-            >
+            <uni-forms-item required label="新增原因" :label-width="150" label-align="right" name="formData.addReason">
               <uni-data-select v-model="formData.addReason" :localdata="dict[370]" />
             </uni-forms-item>
           </uni-col>
@@ -20,33 +14,15 @@
 
         <uni-row>
           <uni-col :span="12">
-            <uni-forms-item
-              required
-              label="房屋编号"
-              :label-width="150"
-              label-align="right"
-              name="formData.houseNo"
-            >
+            <uni-forms-item required label="房屋编号" :label-width="150" label-align="right" name="formData.houseNo">
               <uni-easyinput v-model="formData.houseNo" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
-            <uni-forms-item
-              required
-              label="层数"
-              :label-width="150"
-              label-align="right"
-              name="formData.storeyNumber"
-            >
+            <uni-forms-item required label="层数" :label-width="150" label-align="right" name="formData.storeyNumber">
               <view :class="['input-wrapper', focusIndex === 1 ? 'focus' : '']">
-                <input
-                  class="input-txt"
-                  placeholder="请输入"
-                  type="number"
-                  v-model="formData.storeyNumber"
-                  @focus="inputFocus(1)"
-                  @blur="inputBlur"
-                />
+                <input class="input-txt" placeholder="请输入" type="number" v-model="formData.storeyNumber"
+                  @focus="inputFocus(1)" @blur="inputBlur" />
                 <view class="unit">层</view>
               </view>
             </uni-forms-item>
@@ -55,34 +31,16 @@
 
         <uni-row>
           <uni-col :span="12">
-            <uni-forms-item
-              required
-              label="建筑面积"
-              :label-width="150"
-              label-align="right"
-              name="formData.landArea"
-            >
+            <uni-forms-item required label="建筑面积" :label-width="150" label-align="right" name="formData.landArea">
               <view :class="['input-wrapper', focusIndex === 2 ? 'focus' : '']">
-                <input
-                  class="input-txt"
-                  placeholder="请输入"
-                  type="number"
-                  v-model="formData.landArea"
-                  @focus="inputFocus(2)"
-                  @blur="inputBlur"
-                />
+                <input class="input-txt" placeholder="请输入" type="number" v-model="formData.landArea"
+                  @focus="inputFocus(2)" @blur="inputBlur" />
                 <view class="unit">㎡</view>
               </view>
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
-            <uni-forms-item
-              required
-              label="房屋结构"
-              :label-width="150"
-              label-align="right"
-              name="formData.constructionType"
-            >
+            <uni-forms-item required label="房屋结构" :label-width="150" label-align="right" name="formData.constructionType">
               <uni-data-select v-model="formData.constructionType" :localdata="dict[252]" />
             </uni-forms-item>
           </uni-col>
@@ -90,25 +48,13 @@
 
         <uni-row>
           <uni-col :span="12">
-            <uni-forms-item
-              required
-              label="房屋来源"
-              :label-width="150"
-              label-align="right"
-              name="formData.houseNature"
-            >
+            <uni-forms-item required label="房屋来源" :label-width="150" label-align="right" name="formData.houseNature">
               <!-- <uni-easyinput v-model="formData.houseNature" type="text" placeholder="请输入" /> -->
               <uni-data-select v-model="formData.houseNature" :localdata="dict[304]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
-            <uni-forms-item
-              required
-              label="房屋产权人"
-              :label-width="150"
-              label-align="right"
-              name="formData.demographicId"
-            >
+            <uni-forms-item required label="房屋产权人" :label-width="150" label-align="right" name="formData.demographicId">
               <uni-data-select v-model="formData.demographicId" :localdata="demographicList" />
             </uni-forms-item>
           </uni-col>
@@ -116,36 +62,18 @@
 
         <uni-row>
           <uni-col :span="12">
-            <uni-forms-item
-              required
-              label="是否合法"
-              :label-width="150"
-              label-align="right"
-              name="formData.isCompliance"
-            >
+            <uni-forms-item required label="是否合法" :label-width="150" label-align="right" name="formData.isCompliance">
               <uni-data-select v-model="formData.isCompliance" :localdata="dict[371]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
-            <uni-forms-item
-              label="共有人"
-              :label-width="150"
-              label-align="right"
-              name="formData.ownersSituation"
-            >
+            <uni-forms-item label="共有人" :label-width="150" label-align="right" name="formData.ownersSituation">
               <view class="flex-center">
-                <view
-                  :class="['name-wrapper', formData.ownersName ? 'isSelected' : '']"
-                  @click="selectName"
-                >
+                <view :class="['name-wrapper', formData.ownersName ? 'isSelected' : '']" @click="selectName">
                   {{ formData.ownersName ? formData.ownersName : '请选择' }}
                 </view>
                 <view @click="resetOwnersName">
-                  <image
-                    class="icon_img"
-                    src="@/static/images/icon_delete_mini.png"
-                    mode="scaleToFill"
-                  />
+                  <image class="icon_img" src="@/static/images/icon_delete_mini.png" mode="scaleToFill" />
                 </view>
               </view>
             </uni-forms-item>
@@ -154,80 +82,34 @@
 
         <uni-row>
           <uni-col :span="24">
-            <uni-forms-item
-              label="房屋平面示意图"
-              :label-width="150"
-              label-align="right"
-              name="formData.housePic"
-            >
-              <upload-file
-                v-model="formData.housePic"
-                :file-list="formData.housePic"
-                :limit="20"
-                show-type="list"
-                notCompress
-                :accepts="['.jpg', '.png']"
-              />
+            <uni-forms-item label="房屋平面示意图" :label-width="150" label-align="right" name="formData.housePic">
+              <upload-file v-model="formData.housePic" :file-list="formData.housePic" :limit="20" show-type="list"
+                notCompress :accepts="['.jpg', '.png']" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="24">
-            <uni-forms-item
-              label="土地证/房屋产权证照片"
-              :label-width="150"
-              label-align="right"
-              name="formData.landPic"
-            >
-              <upload-file
-                v-model="formData.landPic"
-                :file-list="formData.landPic"
-                :limit="20"
-                show-type="list"
-                :accepts="['.jpg', '.png']"
-              />
+            <uni-forms-item label="土地证/房屋产权证照片" :label-width="150" label-align="right" name="formData.landPic">
+              <upload-file v-model="formData.landPic" :file-list="formData.landPic" :limit="20" show-type="list"
+                :accepts="['.jpg', '.png']" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="24">
-            <uni-forms-item
-              label="房屋照片"
-              :label-width="150"
-              label-align="right"
-              name="formData.homePic"
-            >
-              <upload-file
-                v-model="formData.homePic"
-                :file-list="formData.homePic"
-                :limit="20"
-                show-type="list"
-                :accepts="['.jpg', '.png']"
-              />
+            <uni-forms-item label="房屋照片" :label-width="150" label-align="right" name="formData.homePic">
+              <upload-file v-model="formData.homePic" :file-list="formData.homePic" :limit="20" show-type="list"
+                :accepts="['.jpg', '.png']" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="24">
-            <uni-forms-item
-              label="房屋其他附件照片"
-              :label-width="150"
-              label-align="right"
-              name="formData.otherPic"
-            >
-              <upload-file
-                v-model="formData.otherPic"
-                :file-list="formData.otherPic"
-                :limit="20"
-                show-type="list"
-                :accepts="['.jpg', '.png']"
-              />
+            <uni-forms-item label="房屋其他附件照片" :label-width="150" label-align="right" name="formData.otherPic">
+              <upload-file v-model="formData.otherPic" :file-list="formData.otherPic" :limit="20" show-type="list"
+                :accepts="['.jpg', '.png']" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
 
         <uni-row>
           <uni-col :span="12">
-            <uni-forms-item
-              label="集体土地使用权证"
-              :label-width="150"
-              label-align="right"
-              name="formData.landNo"
-            >
+            <uni-forms-item label="集体土地使用权证" :label-width="150" label-align="right" name="formData.landNo">
               <uni-easyinput v-model="formData.landNo" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
@@ -235,12 +117,7 @@
 
         <uni-row>
           <uni-col :span="24">
-            <uni-forms-item
-              label="房屋所有权证"
-              :label-width="150"
-              label-align="right"
-              name="formData.propertyNo"
-            >
+            <uni-forms-item label="房屋所有权证" :label-width="150" label-align="right" name="formData.propertyNo">
               <uni-easyinput v-model="formData.propertyNo" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
@@ -248,41 +125,28 @@
 
         <uni-row>
           <uni-col :span="24">
-            <uni-forms-item
-              label="其他佐证材料"
-              :label-width="150"
-              label-align="right"
-              name="formData.otherProofPic"
-            >
-              <upload-file
-                v-model="formData.otherProofPic"
-                :file-list="formData.otherProofPic"
-                :limit="20"
-                show-type="list"
-                :accepts="['.jpg', '.png']"
-              />
+            <uni-forms-item label="其他佐证材料" :label-width="150" label-align="right" name="formData.otherProofPic">
+              <upload-file v-model="formData.otherProofPic" :file-list="formData.otherProofPic" :limit="20"
+                show-type="list" :accepts="['.jpg', '.png']" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
+        <uni-col :span="24">
+          <uni-forms-item label="宅基地面积" :label-width="150" label-align="right" name="formData.homesteadArea">
+            <view :class="['input-wrapper', focusIndex === 4 ? 'focus' : '']">
+              <input class="input-txt" placeholder="请输入" type="number" v-model="formData.homesteadArea" />
+              <view class="unit">㎡</view>
+            </view>
+          </uni-forms-item>
+        </uni-col>
       </uni-forms>
 
-      <image
-        class="submit-btn"
-        src="@/static/images/icon_submit.png"
-        mode="scaleToFill"
-        @click="submit"
-      />
+      <image class="submit-btn" src="@/static/images/icon_submit.png" mode="scaleToFill" @click="submit" />
     </view>
 
     <!-- 搜索选择户号 -->
-    <search-list
-      v-show="showSearch"
-      :mainType="MainType.PeasantHousehold"
-      type="multiple"
-      stage="implementation"
-      @close="close"
-      @confirm-select="confirmSelect"
-    />
+    <search-list v-show="showSearch" :mainType="MainType.PeasantHousehold" type="multiple" stage="implementation"
+      @close="close" @confirm-select="confirmSelect" />
   </view>
 </template>
 
@@ -341,7 +205,8 @@ const formData = ref<any>({
   isCompliance: '', // 是否合法
   landNo: '', // 集体土地使用权证
   propertyNo: '', // 房屋所有权证
-  otherProofPic: '[]' // 其他佐证材料
+  otherProofPic: '[]', // 其他佐证材料
+  homesteadArea:'' //宅基地面积
 })
 
 /**

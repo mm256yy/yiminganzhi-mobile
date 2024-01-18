@@ -102,6 +102,11 @@ export const getStatisticApi = (type: OtherDataType) => {
   return OtherController.getOtherWithType(type)
 }
 
+// 获取消息通知数据
+export const getNotifyDtoList = () => {
+  return OtherController.getOtherWithType(OtherDataType.notifyDtoList)
+}
+
 // 获取安置点详情
 export const getResettleDetail = (type: OtherDataType) => {
   const result = OtherController.getOtherWithType(type)

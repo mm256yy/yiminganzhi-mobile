@@ -16,7 +16,8 @@ export enum OtherDataType {
   FeedbackDtoList = 'feedbackDtoList', // 问题反馈
   PgTop = 'pgTop', //TOP5首页排行榜
   EvaluatorStatisticsDto = 'evaluatorStatisticsDto', //资产评估首页
-  settleAddressList='settleAddressList' //安置点详情
+  settleAddressList = 'settleAddressList', //安置点详情
+  notifyDtoList = 'notifyDtoList' // 消息通知
 }
 
 export interface OtherDDLType {

@@ -372,8 +372,9 @@ export interface StateType {
   feedbackDtoList: any[]
   pgTop: any[]
   evaluatorStatisticsDto: any
-  settleAddressList:any[]
+  settleAddressList: any[]
   peasantHouseholdDtoList: LandlordHasStatusType[]
+  notifyDtoList: any[]
 }
 
 export interface PushStateType {

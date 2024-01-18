@@ -122,6 +122,7 @@ class PullData {
       evaluatorStatisticsDto: null,
       settleAddressList: [],
       peasantHouseholdDtoList: [],
+      notifyDtoList: []
     }
 
     this.districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
@@ -251,7 +252,8 @@ class PullData {
       rankDtoList,
       pgTop,
       feedbackDtoList,
-      settleAddressList
+      settleAddressList,
+      notifyDtoList
     } = result
     // 需要reset
     this.state.immigrantIncomeConfigList = immigrantIncomeConfigList
@@ -274,6 +276,8 @@ class PullData {
     this.state.pgTop = pgTop
     this.state.feedbackDtoList = feedbackDtoList
     this.state.settleAddressList = settleAddressList
+    this.state.notifyDtoList = notifyDtoList
+    console.log(this.state.notifyDtoList, '测试接口数据')
     this.pullDict().then((res: boolean) => {
       res && this.count++
       // 重置 释放缓存
@@ -321,6 +325,7 @@ class PullData {
       this.state.pgTop = []
       this.state.feedbackDtoList = []
       this.state.settleAddressList = []
+      this.state.notifyDtoList = []
       console.log('拉取: 其他', res)
     })
   }
@@ -715,7 +720,7 @@ class PullData {
             })
           }
           const values = getLandlordValues(item, 'default')
-          console.log(values, '企业数据')
+          // console.log(values, '企业数据')
           db.insertOrReplaceData(LandlordTableName, values, landlordFields).catch((err) => {
             console.log(err, '插入业主')
           })
@@ -742,13 +747,13 @@ class PullData {
           let m = false
           listTwo.forEach((item) => {
             if (key.id == item.id) {
-              m=true
+              m = true
             }
           })
           if (!m) {
             db.deleteTableData(LandlordTableName, 'id', key.id).catch((err) => {
-            console.log(err, '删除业主')
-          })
+              console.log(err, '删除业主')
+            })
           }
         })
         listTwo.forEach((item) => {
@@ -1023,7 +1028,8 @@ class PullData {
         individualWarnNum,
         villageLagNum,
         villageWarnNum,
-        evaluatorStatisticsDto
+        evaluatorStatisticsDto,
+        notifyDtoList,
       } = this.state
       await db.transaction('begin').catch(() => {
         resolve(false)
@@ -1147,6 +1153,15 @@ class PullData {
         const values = `'${OtherDataType.settleAddressList}','${JSON.stringify(
           settleAddressList
         )}','${getCurrentTimeStamp()}'`
+        db.insertOrReplaceData(OtherTableName, values, fields)
+      }
+      //消息通知
+      if (notifyDtoList && notifyDtoList.length) {
+        const fields = "'type','content','updatedDate'"
+        const values = `'${OtherDataType.notifyDtoList}','${JSON.stringify(
+          notifyDtoList
+        )}','${getCurrentTimeStamp()}'`
+        console.log(values, '消息通知数据')
         db.insertOrReplaceData(OtherTableName, values, fields)
       }
       await db.transaction('commit').catch(() => {
