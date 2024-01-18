@@ -12,7 +12,7 @@
           <image class="icon" src="@/static/images/icon_sign_white.png" mode="scaleToFill" />
           <text class="txt">填报完成</text>
         </view>
-        <view class="btn green">
+        <view class="btn green" @click="handleClick">
           <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
           <text class="txt">打印报表</text>
         </view>
@@ -32,14 +32,7 @@
     </view>
 
     <view class="table-wrap">
-      <uni-table
-        class="table"
-        ref="table"
-        :loading="loading"
-        border
-        stripe
-        emptyText="暂无更多数据"
-      >
+      <uni-table class="table" ref="table" :loading="loading" border stripe emptyText="暂无更多数据">
         <uni-tr>
           <uni-th width="90rpx">坟墓与登记人关系</uni-th>
           <uni-th width="59rpx">材料</uni-th>
@@ -140,6 +133,13 @@ const archivesUpload = () => {
   routerForward('archives', {
     type: 3,
     uid: props.dataInfo.uid
+  })
+}
+const handleClick = () => {
+  routerForward('pdfSerch', {
+    data: JSON.stringify(tableData.value),
+    dataInfo: JSON.stringify(props.dataInfo),
+    id: 5
   })
 }
 </script>

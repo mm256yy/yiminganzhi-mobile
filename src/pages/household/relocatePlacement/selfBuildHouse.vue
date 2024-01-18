@@ -4,10 +4,10 @@
       <view class="row">
         <view class="left" />
         <view class="right">
-          <view class="btn green">
+          <!-- <view class="btn green">
             <image class="icon" src="@/static/images/icon_print_white.png" mode="scaleToFill" />
             打印表格
-          </view>
+          </view> -->
           <view class="btn blue" @click="onArchives">
             <image class="icon" src="@/static/images/icon_upload_white.png" mode="scaleToFill" />
             档案上传
@@ -33,12 +33,8 @@
             <view class="left">
               <view class="icon-box">
                 <view v-if="item.isComplete === '0'" class="disabled" />
-                <image
-                  v-if="item.isComplete === '1'"
-                  class="icon"
-                  src="@/static/images/icon_finished.png"
-                  mode="scaleToFill"
-                />
+                <image v-if="item.isComplete === '1'" class="icon" src="@/static/images/icon_finished.png"
+                  mode="scaleToFill" />
                 <view v-if="item.isComplete === '2'" class="hollow" />
               </view>
               <view v-if="item.isComplete === '0' && item.type !== '9'" class="line disabled" />
@@ -53,18 +49,11 @@
                   <view class="mini-btn" v-if="item.type === '1'" @click="onPrint(item)">
                     打印
                   </view>
-                  <view
-                    v-if="item.type !== '1' && item.isComplete !== '1'"
-                    :class="['mini-btn', item.isComplete === '0' ? 'disabled' : '']"
-                    @click="onFill(item)"
-                  >
+                  <view v-if="item.type !== '1' && item.isComplete !== '1'"
+                    :class="['mini-btn', item.isComplete === '0' ? 'disabled' : '']" @click="onFill(item)">
                     填写
                   </view>
-                  <view
-                    v-if="item.type !== '1' && item.isComplete === '1'"
-                    class="mini-btn"
-                    @click="onFill(item)"
-                  >
+                  <view v-if="item.type !== '1' && item.isComplete === '1'" class="mini-btn" @click="onFill(item)">
                     查看
                   </view>
                 </view>
@@ -98,6 +87,7 @@ import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 interface PropsType {
   dataList: any[]
   dataInfo: LandlordType
+  pdfdata: any[]
 }
 
 const props = defineProps<PropsType>()
@@ -126,6 +116,7 @@ const onPrint = (data: any) => {
       if (res) {
         showToast(SUCCESS_MSG)
         emit('updateData')
+        handleClick()
       }
     })
     .catch(() => {
@@ -159,6 +150,14 @@ const onArchives = () => {
     type: 14
   }
   routerForward('archives', params)
+}
+const handleClick = () => {
+  routerForward('pdfSerch', {
+    data: JSON.stringify(props.pdfdata),
+    dataInfo: JSON.stringify(props.dataInfo),
+    id: 5,
+    show: true
+  })
 }
 </script>
 

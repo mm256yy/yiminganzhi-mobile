@@ -2,29 +2,25 @@
   <view class="house-wrap">
     <view class="btn-box">
       <view>
-              <view
-        class="btn blue-btn"
-        @click="handle"
-        v-if="!excessInfo.isExcess || excessInfo.isExcess === '1'"
-      >
-        <image class="icon" src="@/static/images/icon_sign_white.png" mode="scaleToFill" />
-        <text class="txt">办理</text>
+        <view class="btn blue-btn" @click="handle" v-if="!excessInfo.isExcess || excessInfo.isExcess === '1'">
+          <image class="icon" src="@/static/images/icon_sign_white.png" mode="scaleToFill" />
+          <text class="txt">办理</text>
+        </view>
       </view>
-      </view>
-      <view style="display:flex">
-              <view class="btn green-btn">
-        <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
-        <text class="txt">打印报表</text>
-      </view>
+      <view style="display:flex" @click="handleClick">
+        <view class="btn green-btn">
+          <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
+          <text class="txt">打印报表</text>
+        </view>
 
-      <view class="btn blue-btn" @click="archivesUpload">
-        <image class="icon" src="@/static/images/icon_dangan_upload.png" mode="scaleToFill" />
-        <text class="txt">档案上传</text>
-      </view>
-      <view class="btn blue-btn" @click="notHandle" v-if="!excessInfo.isExcess">
-        <image class="icon" src="@/static/images/icon_not_handle.png" mode="scaleToFill" />
-        <text class="txt">无需办理</text>
-      </view>
+        <view class="btn blue-btn" @click="archivesUpload">
+          <image class="icon" src="@/static/images/icon_dangan_upload.png" mode="scaleToFill" />
+          <text class="txt">档案上传</text>
+        </view>
+        <view class="btn blue-btn" @click="notHandle" v-if="!excessInfo.isExcess">
+          <image class="icon" src="@/static/images/icon_not_handle.png" mode="scaleToFill" />
+          <text class="txt">无需办理</text>
+        </view>
       </view>
 
       <!-- <view class="btn blue-btn">
@@ -158,6 +154,12 @@ const notHandle = async () => {
     })
     emit('updateData')
   }
+}
+const handleClick = () => {
+  routerForward('pdfSerch', {
+    dataInfo: JSON.stringify(props.dataInfo),
+    id: 9
+  })
 }
 </script>
 

@@ -95,6 +95,7 @@
             }}</div>
           <div style="font-size: 16px;">{{ dayjs(new Date()).format('YYYY年MM月DD日') }}</div>
         </div>
+        <div v-if=show style="font-size: 16px;margin-top: 20px;">已完成宅基地基础建设，特此告知。</div>
         <view class="row-2">
           <table style="width: 100%" border="1" cellspacing="0" cellpadding="0">
             <!-- 表头行 -->
@@ -168,10 +169,117 @@
           </table>
         </view>
       </div>
+      <div v-if="id == 5 || id == 6"
+        style="width: 100%;border: 1px solid #000000;display: flex;flex-direction: column;padding: 10px; ">
+        <h1 style="font-size: 24px; text-align: center">{{ id == 6 ? '坟墓择址坟确认单' : '坟墓确认单' }}</h1>
+        <div style="display: flex;justify-content: space-between;">
+          <div style="font-size: 16px;">
+            {{
+              `${baseInfo.areaCodeText} ${baseInfo.townCodeText} ${baseInfo.villageCodeText} ${baseInfo.name} 户号
+                        ${baseInfo.showDoorNo} `
+            }}</div>
+          <div style="font-size: 16px;">{{ dayjs(new Date()).format('YYYY年MM月DD日') }}</div>
+        </div>
+        <view class="row-2">
+          <table style="width: 100%" border="1" cellspacing="0" cellpadding="0">
+            <!-- 表头行 -->
+            <tr>
+              <th align="left" class="uTitle">坟墓与登记人关系</th>
+              <th align="left" class="uTitle">数量</th>
+              <th align="left" class="uTitle">处理方式</th>
+              <th align="left" class="uTitle">安置公墓/择址地址</th>
+              <th align="left" class="uTitle">编号</th>
+              <th align="left" class="uTitle">备注</th>
+            </tr>
+            <!-- 表格数据行 -->
+            <tr v-for="(item, index) in dataList" :key="index">
+              <td align="left" class="uTd">{{ formatDict(item.relation, 307) }}</td>
+              <td align="left" class="uTd">{{ item.number }}</td>
+              <td align="left" class="uTd">{{ formatDict(item.handleWay, 238) }} </td>
+              <td align="left" class="uTd">{{ item.handleWay === '1' ? item.settingAddress :
+                formatDict(item.settingGrave, 377) }}</td>
+              <td align="left" class="uTd">{{ formatStr(item.graveNo) }}</td>
+              <td align="left" class="uTd"></td>
+            </tr>
+            <tr style="height: 100px;">
+              <td colspan="3">
+                <div style="display: flex;justify-content: space-between;align-items: center;">
+                  <div>户主代表或收委托人(签名)：</div>
+                  <img id='signatureImg' class="signatureImg" :src='path' v-if="path" />
+                </div>
+
+              </td>
+              <td colspan="2">联系移民干部(签名)：</td>
+            </tr>
+          </table>
+        </view>
+      </div>
+      <div v-if="id > 6" id="printReports"
+        style="width: 50%;border: 1px solid #000000;display: flex;flex-direction: column;padding: 10px; ">
+        <h1 style="font-size: 24px; text-align: center">{{ id == 7 ? '房屋腾空确认单' : (id == 8 ? '土地腾让确认单' : '过渡安置确认单') }}</h1>
+        <view class="row-4">
+          <table style="width: 100%" border="1" cellspacing="0" cellpadding="0">
+            <tr>
+              <td align="center" class="uTd">户主姓名</td>
+              <td align="center" class="uTd">{{ baseInfo.name }}</td>
+              <td align="center" class="uTd">户号</td>
+              <td align="center" class="uTd">{{ baseInfo.showDoorNo }}</td>
+            </tr>
+            <tr>
+              <td align="center" class="uTd">户内人口</td>
+              <td align="center" class="uTd"> {{ baseInfo.familyNum }}</td>
+              <td align="center" class="uTd">联系方式</td>
+              <td align="center" class="uTd">{{ baseInfo.phone }}</td>
+            </tr>
+            <tr>
+              <td align="center" class="uTd">迁出地</td>
+              <td align="center" class="uTd" colspan="3"> {{ baseInfo.locationTypeText }}</td>
+            </tr>
+            <tr>
+              <td align="center" class="uTd" colspan="4">{{ id == 7 ? '房屋腾让情况' : (id == 8 ? '土地腾让情况' : '过渡去向情况') }}
+              </td>
+            </tr>
+            <tr>
+              <td align="center" class="uTd">过渡安置地详址</td>
+              <td align="center" class="uTd" colspan="3"> {{ baseInfo.immigrantExcess.excessAddress }}</td>
+            </tr>
+            <tr>
+              <td align="center" class="uTd" rowspan="2">移民户主意见</td>
+              <td align="center" class="uTd" colspan="3" v-if="id == 7">{{ baseInfo.immigrantHouseEmpty ?
+                baseInfo.immigrantHouseEmpty.houseEmptyOpinion : '' }}</td>
+              <td align="center" class="uTd" colspan="3" v-if="id == 8">{{ baseInfo.immigrantLandEmpty ?
+                baseInfo.immigrantLandEmpty.landEmptyOpinion : '' }}</td>
+              <td align="center" class="uTd" colspan="3" v-if="id == 9">{{ baseInfo.immigrantExcess ?
+                baseInfo.immigrantExcess.landEmptyOpinion : '' }}</td>
+            </tr>
+            <tr>
+              <td align="left" class="uTd" colspan="3">移民户主:<img id='signatureImg' class="signatureImgs" :src='path'
+                  v-if="path" /></td>
+            </tr>
+            <tr>
+              <td align="center" class="uTd" rowspan="2">移民工作组验收意见</td>
+              <td align="center" class="uTd" colspan="3"></td>
+            </tr>
+            <tr>
+              <td align="left" class="uTd" colspan="2">验收人：</td>
+              <td align="left" class="uTd" colspan="1">验收时间:</td>
+            </tr>
+            <tr>
+              <td align="center" class="uTd" rowspan="2">乡镇街道审核意见</td>
+              <td align="center" class="uTd" colspan="3"></td>
+            </tr>
+            <tr>
+              <td align="left" class="uTd" colspan="2">审核人：</td>
+              <td align="left" class="uTd" colspan="1">验收时间:</td>
+            </tr>
+          </table>
+        </view>
+      </div>
     </div>
     <div class="reportInstrument">
       <div class="reportInstrumentContent1">
-        <button class="reportButton" type="info" @click="render.headelReport">导出PDF</button>
+        <button class="reportButton" type="info" @click="render.headelReport" v-if="id < 7">导出PDF</button>
+        <button class="reportButton" type="info" @click="render.headelReporst" v-else>导出PDF</button>
         <button class="reportButton" type="info" @click="handleClick">签名</button>
         <button class="reportButton" type="info" @click="handleClickToymjk">返回</button>
       </div>
@@ -491,20 +599,23 @@ export default {
       landNoList: [],
       storeroomNoList: [],
       carNoList: [],
-      dictOption
+      dictOption,
+      show: false
     }
   },
   onLoad(option) {
     this.id = option.id
-    console.log(JSON.parse(option.data));
     console.log(JSON.parse(option.dataInfo));
-    this.dataList = JSON.parse(option.data);
-    this.baseInfo = JSON.parse(option.dataInfo)
-    if (this.dataList[0].houseAreaType == 'flat' || this.dataList[0].houseAreaType == 'homestead') {
+    this.dataList = option.data ? JSON.parse(option.data) : [];
+    this.baseInfo = option.dataInfo ? JSON.parse(option.dataInfo) : []
+    if (this.dataList[0]?.houseAreaType == 'flat' || this.dataList[0]?.houseAreaType == 'homestead') {
       this.getChooseConfig()
       if (this.dataList[0].houseAreaType == 'homestead') {
         this.id = 3
       }
+    }
+    if (option.show) {
+      this.show = true
     }
 
   },
@@ -673,7 +784,7 @@ export default {
 					let imgHeight = 841.89 / contentWidth * contentHeight
 					// canvas.crossOrigin="anonymous";
 					let pageData = canvas.toDataURL('image/png', 1.0);
-					let PDF = new JsPDF('l', 'pt', 'a4')
+					let PDF = new JsPDF('landscape', 'pt', 'a4')
 					//有两个高度需要区分，一个是html页面的实际高度，和生成pdf的页面高度(841.89)
 					//当内容未超过pdf一页显示的范围，无需分页
 					if (leftHeight < pageHeight) {
@@ -720,7 +831,72 @@ export default {
 						// console.log('R12133313221' + JSON.stringify(e));
 					});
 				})
+			},
+    headelReporst(e, ownerVm) {
+				html2Canvas(document.querySelector('#printReport'), {
+					allowTaint: true, //允许污染
+					taintTest: true, //在渲染前测试图片(没整明白有啥用)
+					useCORS: true, //使用跨域(当allowTaint为true时这段代码没什么用,下面解释)
+       foreignObjectRendering: true
+				}).then(function(canvas) {
+			 const contentWidth = canvas.width/2
+    const contentHeight = canvas.height
+    const pageHeight =(contentWidth / 595.28) * 841.89
+    let leftHeight = contentHeight
+    let position = 0
+    const imgWidth =  1100
+    const imgHeight =(595.28 / contentWidth) * contentHeight
+
+    const pageData = canvas.toDataURL('image/jpeg', 1.0)
+    const landscape = 'portrait'
+    const pdf = new JsPDF(landscape, 'pt', 'a4')
+    if (leftHeight < pageHeight) {
+      pdf.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight)
+    } else {
+      while (leftHeight > 0) {
+        pdf.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight)
+        leftHeight -= pageHeight
+        position -= 841.89
+        //避免添加空白页
+        if (leftHeight > 0) {
+          pdf.addPage()
+        }
+      }
+    }
+					var _this = this
+					plus.android.requestPermissions(['android.permission.WRITE_EXTERNAL_STORAGE'], function(e) {
+						if (e.deniedAlways.length > 0) { //权限被永久拒绝
+							// 弹出提示框解释为何需要读写手机储存权限，引导用户打开设置页面开启
+							uni.showModal({
+								title: '存储权限',
+								content: '您拒绝了存储权限，请去设置-应用开启存储权限。',
+								success: function(res) {
+									if (res.confirm) {
+										// console.log('用户点击确定');
+									} else if (res.cancel) {
+										// console.log('用户点击取消');
+									}
+								}
+							});
+						}
+						if (e.deniedPresent.length > 0) { //权限被临时拒绝
+							// 弹出提示框解释为何需要读写手机储存权限，可再次调用plus.android.requestPermissions申请权限
+							plus.android.requestPermissions(['android.permission.WRITE_EXTERNAL_STORAGE'])
+							// console.log('666666666 ' + e.deniedPresent.toString());
+						}
+						if (e.granted.length > 0) { //权限被允许
+							//调用依赖获取读写手机储存权限的代码
+							let base64Str = pdf.output('dataurlstring');
+							// console.log("base64Str: ", base64Str);
+							ownerVm.callMethod('savePDF', base64Str)
+						}
+					}, function(e) {
+						// console.log('R12133313221' + JSON.stringify(e));
+					});
+				})
 			}
+		
+  
 		}
 	};
 </script>
@@ -797,10 +973,40 @@ export default {
   }
 }
 
+.signatureImgs {
+  width: 50px;
+  height: 100%;
+  background-color: #fff;
+  object-fit: contain;
+}
+
 .signatureImg {
   width: 100px;
   height: 100px;
   background-color: #fff;
   object-fit: contain;
+}
+
+.row-4 {
+  width: 100%;
+  font-size: 12px;
+
+  table {
+    width: 700px;
+    // 下面设置表格整体的边框，左上
+    border-top: 1px solid #e8eaec;
+    border-left: 1px solid #e8eaec;
+
+    tr {
+      width: 100%;
+      height: 50px; //每一行高度
+
+      td {
+        width: 25%; // 因为我的一行分了五个，所以是20%
+        // 下面设置每个格子边框，右下
+
+      }
+    }
+  }
 }
 </style>

@@ -3,26 +3,23 @@
     <!-- 房屋腾空 -->
     <view class="btn-box">
       <view>
-              <view
-        class="btn blue-btn"
-        @click="handle"
-        v-if="!houseEmptyInfo.isHouseEmpty || houseEmptyInfo.isHouseEmpty === '1'"
-      >
-        <image class="icon" src="@/static/images/icon_sign_white.png" mode="scaleToFill" />
-        <text class="txt">办理</text>
-      </view>
+        <view class="btn blue-btn" @click="handle"
+          v-if="!houseEmptyInfo.isHouseEmpty || houseEmptyInfo.isHouseEmpty === '1'">
+          <image class="icon" src="@/static/images/icon_sign_white.png" mode="scaleToFill" />
+          <text class="txt">办理</text>
+        </view>
       </view>
       <view style="display:flex">
-              <view class="btn green-btn">
-        <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
-        <text class="txt">打印报表</text>
-      </view>
+        <view class="btn green-btn" @click="handleClick">
+          <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
+          <text class="txt">打印报表</text>
+        </view>
 
-      <view class="btn blue-btn" @click="archivesUpload">
-        <image class="icon" src="@/static/images/icon_dangan_upload.png" mode="scaleToFill" />
-        <text class="txt">档案上传</text>
-      </view>
-      <!-- <view
+        <view class="btn blue-btn" @click="archivesUpload">
+          <image class="icon" src="@/static/images/icon_dangan_upload.png" mode="scaleToFill" />
+          <text class="txt">档案上传</text>
+        </view>
+        <!-- <view
         class="btn blue-btn"
         @click="handle"
         v-if="!houseEmptyInfo.isHouseEmpty || houseEmptyInfo.isHouseEmpty === '1'"
@@ -30,10 +27,10 @@
         <image class="icon" src="@/static/images/icon_sign_white.png" mode="scaleToFill" />
         <text class="txt">办理</text>
       </view> -->
-      <view class="btn blue-btn" @click="notHandle" v-if="!houseEmptyInfo.isHouseEmpty">
-        <image class="icon" src="@/static/images/icon_not_handle.png" mode="scaleToFill" />
-        <text class="txt">无需办理</text>
-      </view>
+        <view class="btn blue-btn" @click="notHandle" v-if="!houseEmptyInfo.isHouseEmpty">
+          <image class="icon" src="@/static/images/icon_not_handle.png" mode="scaleToFill" />
+          <text class="txt">无需办理</text>
+        </view>
       </view>
 
       <!-- <view class="btn blue-btn">
@@ -100,8 +97,8 @@
         房屋腾空办理已完成，腾空日期:
         {{
           houseEmptyInfo.houseEmptyDate
-            ? dayjs(houseEmptyInfo.houseEmptyDate).format('YYYY-MM-DD')
-            : '-'
+          ? dayjs(houseEmptyInfo.houseEmptyDate).format('YYYY-MM-DD')
+          : '-'
         }}
       </view>
     </view>
@@ -152,6 +149,12 @@ const notHandle = async () => {
     })
     emit('updateData')
   }
+}
+const handleClick = () => {
+  routerForward('pdfSerch', {
+    dataInfo: JSON.stringify(props.dataInfo),
+    id: 7
+  })
 }
 </script>
 

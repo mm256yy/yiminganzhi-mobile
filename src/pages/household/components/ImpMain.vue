@@ -15,90 +15,43 @@
           <base-info-imp v-if="tabVal === 1" :dataInfo="dataInfo" @update-data="updateData" />
 
           <!-- 人口核定 -->
-          <population-verfication
-            v-if="tabVal === 2"
-            :dataList="dataInfo.demographicList"
-            :dataInfo="dataInfo"
-            @delete-population="deletePopulation"
-            @update-data="updateData"
-          />
+          <population-verfication v-if="tabVal === 2" :dataList="dataInfo.demographicList" :dataInfo="dataInfo"
+            @delete-population="deletePopulation" @update-data="updateData" />
 
           <!-- 房屋产权 -->
-          <house-property
-            v-if="tabVal === 3"
-            :dataList="dataInfo.immigrantHouseList"
-            :dataInfo="dataInfo"
-            @update-data="updateData"
-          />
+          <house-property v-if="tabVal === 3" :dataList="dataInfo.immigrantHouseList" :dataInfo="dataInfo"
+            @update-data="updateData" />
 
           <!-- 房屋/附属物评估报告 -->
-          <house-accessory-eva-report
-            v-if="tabVal === 4"
-            :dataInfo="dataInfo.immigrantDocumentation"
-          />
+          <house-accessory-eva-report v-if="tabVal === 4" :dataInfo="dataInfo.immigrantDocumentation" />
 
           <!-- 土地/附着物评估报告 -->
-          <land-accessory-eva-report
-            v-if="tabVal === 5"
-            :dataInfo="dataInfo.immigrantDocumentation"
-          />
+          <land-accessory-eva-report v-if="tabVal === 5" :dataInfo="dataInfo.immigrantDocumentation" />
 
           <!-- 模拟安置 -->
-          <imitate-resettle
-            v-if="tabVal === 6"
-            :dataInfo="(dataInfo as any)"
-            @update-data="updateData"
-          />
+          <imitate-resettle v-if="tabVal === 6" :dataInfo="(dataInfo as any)" @update-data="updateData" />
 
           <!-- 生产安置 -->
-          <produce-resettle-confirm
-            v-if="tabVal === 7"
-            :dataInfo="(dataInfo as any)"
-            @update-data="updateData"
-          />
+          <produce-resettle-confirm v-if="tabVal === 7" :dataInfo="(dataInfo as any)" @update-data="updateData" />
 
           <!-- 搬迁安置 -->
-          <relocate-resettle-confirm
-            v-if="tabVal === 8"
-            :dataInfo="(dataInfo as any)"
-            @update-data="updateData"
-          />
+          <relocate-resettle-confirm v-if="tabVal === 8" :dataInfo="(dataInfo as any)" @update-data="updateData" />
 
           <!-- 坟墓确认 -->
-          <grave-resettle-confirm
-            v-if="tabVal === 9"
-            :dataInfo="(dataInfo as any)"
-            @update-data="updateData"
-          />
+          <grave-resettle-confirm v-if="tabVal === 9" :dataInfo="(dataInfo as any)" @update-data="updateData" />
 
           <!-- 生产用地 -->
-          <product-land
-            v-if="tabVal === 10"
-            :baseInfo="dataInfo"
-            :dataInfo="dataInfo.immigrantLand"
-            @update-data="updateData"
-          />
+          <product-land v-if="tabVal === 10" :baseInfo="dataInfo" :dataInfo="dataInfo.immigrantLand"
+            @update-data="updateData" />
 
           <!-- 选房择址 -->
-          <choose-house
-            v-if="tabVal === 11"
-            :baseInfo="dataInfo"
-            :dataList="dataInfo.immigrantChooseHouseList"
-          />
+          <choose-house v-if="tabVal === 11" :baseInfo="dataInfo" :dataList="dataInfo.immigrantChooseHouseList" />
 
           <!-- 坟墓择址 -->
-          <grave-site-sel
-            v-if="tabVal === 12"
-            :baseInfo="dataInfo"
-            :dataList="dataInfo.immigrantGraveList"
-          />
+          <grave-site-sel v-if="tabVal === 12" :baseInfo="dataInfo" :dataList="dataInfo.immigrantGraveList" />
 
           <!--移民建卡-->
-          <migrate-card
-            v-if="tabVal === 13"
-            :dataInfo="dataInfo"
-            :dataList="dataInfo.demographicList"
-          />
+          <migrate-card v-if="tabVal === 13" :dataInfo="dataInfo" :dataList="dataInfo.demographicList" />
 
           <!-- 房屋腾空 -->
           <house-vacate v-if="tabVal === 14" :dataInfo="dataInfo" @update-data="updateData" />
@@ -113,33 +66,17 @@
           <agreement v-if="tabVal === 17" :dataInfo="dataInfo" />
 
           <!-- 自建房 -->
-          <self-build-house
-            v-if="tabVal === 18"
-            :dataList="dataInfo.immigrantBuildOneselfList"
-            :dataInfo="dataInfo"
-            @update-data="updateData"
-          />
+          <self-build-house v-if="tabVal === 18" :dataList="dataInfo.immigrantBuildOneselfList"
+            :pdfdata="dataInfo.immigrantChooseHouseList" :dataInfo="dataInfo" @update-data="updateData" />
 
           <!-- 公寓房 -->
-          <apartment
-            v-if="tabVal === 19"
-            :data-list="dataInfo.immigrantChooseHouseList"
-            :dataInfo="dataInfo"
-          />
+          <apartment v-if="tabVal === 19" :data-list="dataInfo.immigrantChooseHouseList" :dataInfo="dataInfo" />
 
           <!-- 集中供养 -->
-          <centralized-support
-            v-if="tabVal === 20"
-            :data-list="dataInfo.demographicList"
-            :data-info="dataInfo"
-          />
+          <centralized-support v-if="tabVal === 20" :data-list="dataInfo.demographicList" :data-info="dataInfo" />
 
           <!-- 自谋出路 -->
-          <self-find-way
-            v-if="tabVal === 21"
-            :data-info="dataInfo"
-            :base-info="dataInfo.immigrantSelfSeeking"
-          />
+          <self-find-way v-if="tabVal === 21" :data-info="dataInfo" :base-info="dataInfo.immigrantSelfSeeking" />
 
           <!-- 生产安置 农业安置 -->
           <farming v-if="tabVal === 22" :dataInfo="dataInfo" />

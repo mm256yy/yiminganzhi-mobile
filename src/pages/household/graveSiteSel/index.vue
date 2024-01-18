@@ -8,6 +8,10 @@
           <image class="icon" src="@/static/images/icon_upload_white.png" mode="scaleToFill" />
           档案上传
         </view>
+        <view class="btn green" @click="handleClick">
+          <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
+          <text class="txt">打印报表</text>
+        </view>
         <!-- <view class="btn blue-btn">
           <image class="icon" src="@/static/images/icon_feedback.png" mode="scaleToFill" />
           <text class="txt">问题反馈</text>
@@ -68,8 +72,8 @@
 
                   {{
                     item.handleWay === '1'
-                      ? item.settingAddress
-                      : formatDict(item.settingGrave, 377)
+                    ? item.settingAddress
+                    : formatDict(item.settingGrave, 377)
                   }}
                 </view>
               </view>
@@ -128,6 +132,13 @@ const toLink = (itemUid?: any) => {
   let params = { uid, doorNo, itemUid }
   routerForward('graveSiteSelEdit', {
     params: JSON.stringify(params)
+  })
+}
+const handleClick = () => {
+  routerForward('pdfSerch', {
+    data: JSON.stringify(props.dataList),
+    dataInfo: JSON.stringify(props.baseInfo),
+    id: 6
   })
 }
 </script>
