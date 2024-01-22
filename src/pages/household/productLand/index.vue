@@ -1,8 +1,10 @@
 <template>
   <!-- 生产用地（实施） -->
-  <view class="base-info-wrapper"  @click="handleClick">
+  <view class="base-info-wrapper" @click="handleClick">
     <!-- 安置方式 settingWay: 1 农业安置 -->
-    <view v-if="baseInfo.settingWay && baseInfo.settingWay === '1'">
+    <!-- v-if="baseInfo.settingWay && baseInfo.settingWay === '1'" -->
+    <!-- v-if="hasFarmingResettle" -->
+    <view v-if="hasFarmingResettle">
       <view class="title">
         <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
         择地结果录入
@@ -24,14 +26,8 @@
               <view class="label">地块编号：</view>
               <view class="content">
                 <!-- <uni-data-select v-model="formData.landNo" :localdata="landNoList" /> -->
-                <muti-select
-                v-model="formData.landNo"
-                :value="formData.landNo"
-                :list="landNoList"
-                label-key="text"
-                value-key="value"
-                ref="childSelect"
-              />
+                <muti-select v-model="formData.landNo" :value="formData.landNo" :list="landNoList" label-key="text"
+                  value-key="value" ref="childSelect" />
               </view>
             </view>
           </uni-col>
@@ -41,14 +37,8 @@
               <view class="label">面积：</view>
               <view class="content">
                 <view :class="['input-wrapper', focusIndex === 1 ? 'focus' : '']">
-                  <input
-                    class="input-txt"
-                    placeholder="请输入"
-                    type="number"
-                    v-model="formData.landArea"
-                    @focus="inputFocus(1)"
-                    @blur="inputBlur"
-                  />
+                  <input class="input-txt" placeholder="请输入" type="number" v-model="formData.landArea"
+                    @focus="inputFocus(1)" @blur="inputBlur" />
                   <view class="unit">亩</view>
                 </view>
               </view>
@@ -61,28 +51,18 @@
             <view class="col">
               <view class="label">相关凭证：</view>
               <view class="content">
-                <upload-file
-                  v-model="landPicStr"
-                  :file-list="landPicStr"
-                  :limit="20"
-                  show-type="grid"
-                  :accepts="['.jpg', '.png']"
-                />
+                <upload-file v-model="landPicStr" :file-list="landPicStr" :limit="20" show-type="grid"
+                  :accepts="['.jpg', '.png']" />
               </view>
             </view>
           </uni-col>
         </uni-row>
       </view>
 
-      <image
-        class="btn submit"
-        src="@/static/images/icon_submit.png"
-        mode="scaleToFill"
-        @click="submit"
-      />
+      <image class="btn submit" src="@/static/images/icon_submit.png" mode="scaleToFill" @click="submit" />
     </view>
 
-    <view class="null-wrapper" v-else>
+    <view class="null-wrapper" v-if="!hasFarmingResettle">
       <image class="icon" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
       <view class="tips">该户未选择农业安置，无需办理生产用地</view>
     </view>
@@ -90,7 +70,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, computed } from 'vue'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 // import { resettleArea, apartmentArea } from '@/config'
 import { LandlordType } from '@/types/sync'
@@ -108,7 +88,7 @@ const emit = defineEmits(['updateData'])
 const landNoList = ref<any[]>([])
 const formData = ref<any>({})
 const landPicStr = ref<string>('[]') // 凭证照片
-const childSelect=ref<any>()
+const childSelect = ref<any>()
 // 获得焦点的输入框下标
 const focusIndex = ref<number>(-1)
 import { getResettleDetail } from '@/service'
@@ -119,7 +99,7 @@ const dataLists = ref<LocationType[]>([])
 const getDataRequest = async () => {
   try {
     const datas = await getResettleDetail(OtherDataType.settleAddressList)
-    dataLists.value=datas
+    dataLists.value = datas
     // resettleArea.value=dataLists.value.filter((item) => item.id == props.immigrantSettle.settleAddress)
   } catch (error) {
     console.log('error', error);
@@ -131,8 +111,8 @@ watch(
     if (val) {
       formData.value = { ...val }
       // formData.value.landNo='111,222,333'
-      console.log(val,'测试数据1')
-      console.log(props.baseInfo.immigrantSettle,'测试数据2')
+      console.log(val, '测试数据1')
+      console.log(props.baseInfo, '测试数据2')
       const { landPic } = formData.value
       if (landPic) {
         landPicStr.value = landPic
@@ -141,7 +121,14 @@ watch(
   },
   { immediate: true, deep: true }
 )
-
+// 是否有农业安置
+const hasFarmingResettle = computed(() => {
+  const list =
+    props.baseInfo && props.baseInfo.demographicList ? props.baseInfo.demographicList : []
+  console.log(props.baseInfo, '测试数据农业安置')
+  const len = list.filter((item: any) => item.settingWay === '1').length
+  return len > 0
+})
 /**
  * 获取安置区块
  * @param data
@@ -167,8 +154,8 @@ const getSettleAddress = (data: string) => {
       //   })
       //   return str
       // }
-      const str=dataLists.value.filter((item:any) => item.id == data)
-      console.log(str,'测试数据')
+      const str = dataLists.value.filter((item: any) => item.id == data)
+      console.log(str, '测试数据')
       return str[0].name
     } else {
       return ''
@@ -195,11 +182,11 @@ const getLandNoList = () => {
           })
         }
       })
-      const arrList=[...arr]
+      const arrList = [...arr]
       landNoList.value = arrList.filter((item: any) => {
         return item.disable === false
       })
-      console.log(landNoList.value,'测试下拉数据')
+      console.log(landNoList.value, '测试下拉数据')
     }
   })
 }
@@ -231,7 +218,7 @@ const submit = () => {
       showToast(ERROR_MSG)
     })
 }
-const handleClick=() => {
+const handleClick = () => {
   childSelect.value.showType()
 }
 onMounted(() => {
