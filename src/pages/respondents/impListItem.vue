@@ -115,8 +115,9 @@ const typeColor = (type: string | null) => {
   return type === '0' || type === null || type === '' || type === 'null' ? 'head-rtg' : 'head-rt'
 }
 const filterWarnStatus = (type: string) => {
-  // 预警状态 0正常 1预警 2滞后
-  return type === '0' || type === null || type === '' || type === 'null' ? '正常' : type === '1' ? '预警' : '滞后'
+  // 预警状态 否则正常 1预警 2滞后
+  // return type === '0' || type === null || type === '' || type === 'null' ? '正常' : type === '1' ? '预警' : '滞后'
+  return type === '1' ? '预警' : type === '2' ? '滞后' : '正常'
 }
 
 const getProgressText = (data: LandlordType) => {

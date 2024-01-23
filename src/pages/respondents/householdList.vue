@@ -44,7 +44,12 @@
           :enable-flex="true"
           @scrolltolower="loadMore"
         >
-          <view class="scroll" v-if="roleType === RoleCodeType.implementation||roleType === RoleCodeType.implementleader">
+          <view
+            class="scroll"
+            v-if="
+              roleType === RoleCodeType.implementation || roleType === RoleCodeType.implementleader
+            "
+          >
             <ImpListItem
               v-for="item in list"
               :data="item"
@@ -87,7 +92,7 @@
       v-if="
         roleType !== RoleCodeType.assessor &&
         roleType !== RoleCodeType.assessorland &&
-        roleType !== RoleCodeType.implementation&&
+        roleType !== RoleCodeType.implementation &&
         roleType !== RoleCodeType.implementleader
       "
       class="add-box"
@@ -144,7 +149,7 @@ import {
   getLandlordListBySearchApi,
   getVillageTreeWithoutNullApi,
   deleteLandlordApi,
-  getLandlordItemApi,
+  getLandlordItemApi
   // getLandlordListBySearchApiTwo,
 } from '@/service'
 import { LandlordType } from '@/types/sync'
@@ -218,7 +223,7 @@ const villageConfirm = (code: string[], tit: string[]) => {
 
 const getTreeData = async () => {
   const res = await getVillageTreeWithoutNullApi(MainType.PeasantHousehold)
-   console.log('res----------------------',res)
+  console.log('res----------------------', res)
   treeData.value = res || []
 }
 
@@ -238,6 +243,30 @@ const getList = () => {
     }
     if (sourceType.value) {
       params.warnStatus = sourceType.value
+      if (sourceType.value == '1') {
+        const dataList = await getLandlordListBySearchApi(params).catch(() => {
+          isLoading.value = false
+        })
+        const res = dataList.filter((item: any) => item.warnStatus == 1)
+        getListCommon(res)
+      } else if (sourceType.value == '2') {
+        const dataList = await getLandlordListBySearchApi(params).catch(() => {
+          isLoading.value = false
+        })
+        const res = dataList.filter((item: any) => item.warnStatus == 2)
+        getListCommon(res)
+      } else if (sourceType.value == '0') {
+        const dataList = await getLandlordListBySearchApi(params).catch(() => {
+          isLoading.value = false
+        })
+        const res = dataList.filter((item: any) => item.warnStatus != '1' && item.warnStatus != '2')
+        getListCommon(res)
+      }
+    } else {
+      const res = await getLandlordListBySearchApi(params).catch(() => {
+        isLoading.value = false
+      })
+      getListCommon(res)
     }
     const realList = villageCode.value.filter((item) => !!item)
     if (realList.length) {
@@ -251,30 +280,27 @@ const getList = () => {
         params.virutalVillageCode = unref(villageCode)[3] || ''
       }
     }
-    const res = await getLandlordListBySearchApi(params).catch(() => {
-      isLoading.value = false
-    })
-    console.log('对象===========================1', res)
-    isLoading.value = false
-    if (res && res.length) {
-      if (page.value === 1) {
-        list.value = res || []
-      } else {
-        list.value = list.value.concat(res)
-      }
-      if (res.length < pageSize.value) {
-        isEnd.value = true
-      } else {
-        page.value = page.value + 1
-      }
-    } else {
-      if (page.value === 1) {
-        list.value = []
-      }
-      isEnd.value = true
-    }
   })
   console.log('居民户列表', list.value)
+}
+const getListCommon = (res: any) => {
+  if (res && res.length) {
+    if (page.value === 1) {
+      list.value = res || []
+    } else {
+      list.value = list.value.concat(res)
+    }
+    if (res.length < pageSize.value) {
+      isEnd.value = true
+    } else {
+      page.value = page.value + 1
+    }
+  } else {
+    if (page.value === 1) {
+      list.value = []
+    }
+    isEnd.value = true
+  }
 }
 const getListAll = () => {
   nextTick(async () => {
@@ -342,7 +368,10 @@ const getRouterName = (roleType: string) => {
     return 'household'
   } else if (roleType === RoleCodeType.assessor || roleType === RoleCodeType.assessorland) {
     return 'householdEva'
-  } else if (roleType === RoleCodeType.implementation||roleType === RoleCodeType.implementleader) {
+  } else if (
+    roleType === RoleCodeType.implementation ||
+    roleType === RoleCodeType.implementleader
+  ) {
     return 'householdImp'
   } else {
     return 'household'
