@@ -12,7 +12,7 @@
           <uni-col :span="12">
             <uni-forms-item
               required
-              label="法人姓名"
+              label="法人姓名123"
               :label-width="170"
               label-align="right"
               name="formData.legalPersonName"
@@ -140,7 +140,20 @@
             </uni-forms-item>
           </uni-col>
         </uni-row>
-
+        <uni-row>
+           <uni-col :span="12">
+            <uni-forms-item label="关联居民户" :label-width="150" label-align="right" name="formData.ownersSituation">
+              <view class="flex-center">
+                <view :class="['name-wrapper', formData.ownersName ? 'isSelected' : '']" @click="selectName">
+                  {{ formData.ownersName ? formData.ownersName : '请选择' }}
+                </view>
+                <view @click="resetOwnersName">
+                  <image class="icon_img" src="@/static/images/icon_delete_mini.png" mode="scaleToFill" />
+                </view>
+              </view>
+            </uni-forms-item>
+          </uni-col>
+        </uni-row>
         <view class="title-wrapper">
           <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
           <view class="title">个体工商户证照信息</view>
@@ -655,6 +668,10 @@
         @click="submit"
       />
     </view>
+            <!-- 搜索选择户号 -->
+    <search-list
+v-show="showSearch" :mainType="MainType.IndividualHousehold" type="multiple" stage="implementation" status="1"
+      @close="close" @confirm-select="confirmSelect" />
   </view>
 </template>
 
@@ -669,6 +686,8 @@ import Back from '@/components/Back/Index.vue'
 import VillageSelectFormItem from '@/components/VillageSelectFormItem/index.vue'
 import UploadFile from '@/components/UploadFile/index.vue'
 import { MainType } from '@/types/common'
+import SearchList from '@/components/SearchList/Index.vue'
+const showSearch = ref<boolean>(false)
 
 // 表单数据
 const formData = ref<any>({
@@ -710,7 +729,9 @@ const formData = ref<any>({
   treatmentScheme: '',
   otherRemark: '',
   licensePic: '[]',
-  otherPic: '[]'
+  otherPic: '[]',
+  ownersName:null
+
 })
 
 // 获取数据字典
@@ -731,6 +752,7 @@ onLoad((option: any) => {
       formData.value = { ...params }
       title.value = '个体工商户基本概况编辑'
       uid.value = option.uid
+      console.log(uid.value,'测试传入的uid是什么？')
     } else if (type.value === 'add') {
       title.value = '添加个体工商户'
       if (option.areaCode && option.townCode && option.villageCode) {
@@ -751,7 +773,37 @@ const inputFocus = (index: number) => {
 const inputBlur = () => {
   focusIndex.value = -1
 }
+// 选择户主姓名/户号
+const selectName = () => {
+  showSearch.value = true
+}
+// 关闭搜索组件
+const close = () => {
+  showSearch.value = false
+}
 
+/**
+ * 确认搜索户主姓名/户号
+ * @param{Object} data
+ */
+const confirmSelect = (data: any) => {
+  let idArr: any = []
+  let nameArr: any = []
+  if (data && data.length) {
+    data.map((item: any) => {
+      idArr.push(item.id)
+      nameArr.push(item.label)
+    })
+    formData.value.ownersSituation = idArr.toString()
+    formData.value.ownersName = nameArr.toString()
+  }
+  close()
+}
+
+const resetOwnersName = () => {
+  formData.value.ownersSituation = ''
+  formData.value.ownersName = ''
+}
 // 表单提交
 const submit = () => {
   let baseInfo: any = {
@@ -815,7 +867,8 @@ const submit = () => {
     treatmentScheme: formData.value.treatmentScheme,
     remark: formData.value.remark,
     licensePic: fmtPicUrl(formData.value.licensePic),
-    otherPic: fmtPicUrl(formData.value.otherPic)
+    otherPic: fmtPicUrl(formData.value.otherPic),
+    ownersName: formData.value.ownersName
   }
 
   if (!formData.value.legalPersonName) {
@@ -888,6 +941,29 @@ const submit = () => {
 </script>
 
 <style lang="scss" scoped>
+.flex-center {
+        display: flex;
+        align-items: center;
+      }
+.name-wrapper {
+        width: 200rpx;
+        height: 23rpx;
+        padding-left: 7rpx;
+        font-size: 9rpx;
+        line-height: 23rpx;
+        color: #999;
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+
+        &.isSelected {
+          color: #171718;
+        }
+      }
+.icon_img {
+        width: 23rpx;
+        height: 23rpx;
+        margin-left: 4rpx;
+      }
 .form-wrapper {
   display: flex;
   flex-direction: column;

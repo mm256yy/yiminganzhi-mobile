@@ -21,7 +21,8 @@
           <uni-col :span="12">
             <uni-forms-item required label="层数" :label-width="150" label-align="right" name="formData.storeyNumber">
               <view :class="['input-wrapper', focusIndex === 1 ? 'focus' : '']">
-                <input class="input-txt" placeholder="请输入" type="number" v-model="formData.storeyNumber"
+                <input
+class="input-txt" placeholder="请输入" type="number" v-model="formData.storeyNumber"
                   @focus="inputFocus(1)" @blur="inputBlur" />
                 <view class="unit">层</view>
               </view>
@@ -33,7 +34,8 @@
           <uni-col :span="12">
             <uni-forms-item required label="建筑面积" :label-width="150" label-align="right" name="formData.landArea">
               <view :class="['input-wrapper', focusIndex === 2 ? 'focus' : '']">
-                <input class="input-txt" placeholder="请输入" type="number" v-model="formData.landArea"
+                <input
+class="input-txt" placeholder="请输入" type="number" v-model="formData.landArea"
                   @focus="inputFocus(2)" @blur="inputBlur" />
                 <view class="unit">㎡</view>
               </view>
@@ -83,25 +85,29 @@
         <uni-row>
           <uni-col :span="24">
             <uni-forms-item label="房屋平面示意图" :label-width="150" label-align="right" name="formData.housePic">
-              <upload-file v-model="formData.housePic" :file-list="formData.housePic" :limit="20" show-type="list"
+              <upload-file
+v-model="formData.housePic" :file-list="formData.housePic" :limit="20" show-type="list"
                 notCompress :accepts="['.jpg', '.png']" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="24">
             <uni-forms-item label="土地证/房屋产权证照片" :label-width="150" label-align="right" name="formData.landPic">
-              <upload-file v-model="formData.landPic" :file-list="formData.landPic" :limit="20" show-type="list"
+              <upload-file
+v-model="formData.landPic" :file-list="formData.landPic" :limit="20" show-type="list"
                 :accepts="['.jpg', '.png']" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="24">
             <uni-forms-item label="房屋照片" :label-width="150" label-align="right" name="formData.homePic">
-              <upload-file v-model="formData.homePic" :file-list="formData.homePic" :limit="20" show-type="list"
+              <upload-file
+v-model="formData.homePic" :file-list="formData.homePic" :limit="20" show-type="list"
                 :accepts="['.jpg', '.png']" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="24">
             <uni-forms-item label="房屋其他附件照片" :label-width="150" label-align="right" name="formData.otherPic">
-              <upload-file v-model="formData.otherPic" :file-list="formData.otherPic" :limit="20" show-type="list"
+              <upload-file
+v-model="formData.otherPic" :file-list="formData.otherPic" :limit="20" show-type="list"
                 :accepts="['.jpg', '.png']" />
             </uni-forms-item>
           </uni-col>
@@ -126,7 +132,8 @@
         <uni-row>
           <uni-col :span="24">
             <uni-forms-item label="其他佐证材料" :label-width="150" label-align="right" name="formData.otherProofPic">
-              <upload-file v-model="formData.otherProofPic" :file-list="formData.otherProofPic" :limit="20"
+              <upload-file
+v-model="formData.otherProofPic" :file-list="formData.otherProofPic" :limit="20"
                 show-type="list" :accepts="['.jpg', '.png']" />
             </uni-forms-item>
           </uni-col>
@@ -145,7 +152,8 @@
     </view>
 
     <!-- 搜索选择户号 -->
-    <search-list v-show="showSearch" :mainType="MainType.PeasantHousehold" type="multiple" stage="implementation"
+    <search-list
+v-show="showSearch" :mainType="MainType.PeasantHousehold" type="multiple" stage="implementation"
       @close="close" @confirm-select="confirmSelect" />
   </view>
 </template>

@@ -266,6 +266,7 @@ const getList = () => {
       const res = await getLandlordListBySearchApi(params).catch(() => {
         isLoading.value = false
       })
+      console.log(res, "数据列表res")
       getListCommon(res)
     }
     const realList = villageCode.value.filter((item) => !!item)

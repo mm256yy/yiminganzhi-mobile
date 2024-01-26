@@ -62,6 +62,7 @@ interface PropsType {
   mainType: MainType
   type: 'single' | 'multiple'
   stage: 'survey' | 'implementation'
+  status?:any
 }
 
 const props = defineProps<PropsType>()
@@ -127,7 +128,7 @@ const confirm = (e: any) => {
 
 // 选择
 const select = (index: any) => {
-  if (props.type === 'single') {
+  if (props.type === 'single'||props.status=='1') {
     dataList.value.map((item: any, idx: any) => {
       if (index === idx) {
         item.checked = !item.checked

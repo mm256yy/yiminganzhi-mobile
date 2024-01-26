@@ -4,16 +4,34 @@
     <view class="list">
       <view class="list-item">
         <view class="list-1">
+        <view style="display: flex;align-items: center;">
           <view class="icon">户主</view>
           <view class="name">
             {{ formatStr(props.dataInfo.name) }}
           </view>
         </view>
+        <view style="display: flex;align-items: center;">
+                <view class="name">
+                    关联个体户：<text  @click="editLandlords" style="color: blue;">新昌县金禾纺织有限公司</text>
+                  </view>
+                <view class="btn-wrapper report">
+                  <text class="txt" @click="addLandlords">添加</text>
+                </view>
+        </view>
+        <view style="display: flex;align-items: center;">
+              <view class="name">
+                  关联企业：<text  @click="editLandlord" style="color: blue;">新昌县金禾纺织有限公司</text>
+              </view>
+              <view class="btn-wrapper report">
+                <text class="txt" @click="addLandlord">添加</text>
+              </view>
+        </view>
+        </view>
         <view class="list-2" @click="toLink('edit')">
           <uni-row>
             <uni-col :span="12">
               <view class="col">
-                <view class="label">户号：</view>
+                <view class="label">户号123：</view>
                 <view class="content">
                   {{ filterViewDoorNo(props.dataInfo) }}
                 </view>
@@ -105,18 +123,139 @@ import {
   dictOption,
   splitStr,
   routerForward,
-  filterViewDoorNo
+  filterViewDoorNo,
+  getStorage,
+  StorageKey 
 } from '@/utils'
 import { locationTypes, yesAndNoEnums } from '@/config/common'
 import { compatibleOldSystems } from '@/pages/common/config'
-
+import { MainType,RoleCodeType } from '@/types/common'
+import { ref,unref,nextTick,onMounted } from 'vue'
+import {
+  getLandlordListBySearchApi,
+} from '@/service'
+const tabType = ref<MainType>(MainType.Company)
+const tabTypes = ref<MainType>(MainType.IndividualHousehold)
+const companyUid = ref<any>()
+const individualHouseholdUid=ref<any>()
 const props = defineProps({
   dataInfo: {
     type: Object as any,
     default: () => {}
   }
 })
+const roleType = ref<RoleCodeType>(getStorage(StorageKey.USERROLE))
 
+/**
+ * 获取页面跳转的路由 name
+ * @params {Object} roleType 角色类型
+ */
+/**
+ * 获取页面跳转的路由 name
+ * @params {Object} roleType 角色类型
+ */
+const getRouterNameCompany = (roleType: string) => {
+  if (roleType === RoleCodeType.investigator) {
+    return 'enterprise'
+  } else if (roleType === RoleCodeType.assessor || roleType === RoleCodeType.assessorland) {
+    return 'enterpriseEva'
+  } else if (roleType === RoleCodeType.implementation) {
+    return 'enterpriseImp'
+  } else {
+    return 'enterprise'
+  }
+}
+/**
+ * 获取页面跳转的路由 name
+ * @params {Object} roleType 角色类型
+ */
+const getRouterName = (roleType: string) => {
+  if (roleType === RoleCodeType.investigator) {
+    return 'selfPerson'
+  } else if (roleType === RoleCodeType.assessor || roleType === RoleCodeType.assessorland) {
+    return 'selfPersonEva'
+  } else if (roleType === RoleCodeType.implementation) {
+    return 'selfPersonImp'
+  } else {
+    return 'selfPerson'
+  }
+}
+//企业
+const getList = () => {
+  const params: any = {
+      type: unref(tabType),
+      page: 1,
+      pageSize:10
+    }
+  nextTick(async () => {
+    const res = await getLandlordListBySearchApi(params).catch(() => {
+    })
+    console.log(res, '企业res是什么')
+    companyUid.value = res.find((item: any) => item.name == '新昌县金禾纺织有限公司')
+    console.log(companyUid.value.uid, '企业uid是什么')
+  })
+}
+
+//个体工商户
+const getLists = () => {
+  const params: any = {
+      type: unref(tabTypes),
+      page: 1,
+      pageSize:10
+    }
+  nextTick(async () => {
+    const res = await getLandlordListBySearchApi(params).catch(() => {
+    })
+    console.log(res, '个体工商户res是什么')
+    individualHouseholdUid.value = res.find((item: any) => item.name == '新昌县金禾纺织有限公司')
+    console.log(individualHouseholdUid.value.uid, '个体工商户uid是什么')
+  })
+}
+// 填报
+const routerMap: any = {
+  // [MainType.Village]: getRouterName(roleType.value)
+  // [MainType.PeasantHousehold]: 'household',
+  [MainType.IndividualHousehold]:getRouterName(roleType.value),
+  [MainType.Company]:getRouterNameCompany(roleType.value),
+}
+// 新增 路由 map
+const addRouterMap: any = {
+  [MainType.Village]: 'collectiveBaseInfoEdit',
+  [MainType.PeasantHousehold]: 'householdInfoEdit',
+  [MainType.IndividualHousehold]: 'selfBaseInfoEdit',
+  [MainType.Company]: 'baseInfoEdit'
+}
+
+//企业跳转
+const editLandlord = () => {
+  const name = routerMap[tabType.value]
+  routerForward(name, {
+    type: 'edit',
+    uid: companyUid.value.uid
+  })
+}
+
+//个体户跳转
+const editLandlords = () => {
+  const name = routerMap[tabTypes.value]
+  routerForward(name, {
+    type: 'edit',
+    uid:individualHouseholdUid.value.uid
+  })
+}
+
+const addLandlord = () => {
+  const name = addRouterMap[tabType.value]
+  routerForward(name, {
+    type: 'add'
+  })
+}
+const addLandlords = () => {
+  const name = addRouterMap[tabTypes.value]
+  routerForward(name, {
+    type: 'add'
+  })
+}
 const toLink = (type: string) => {
   const params = {
     id: props.dataInfo.id,
@@ -147,6 +286,11 @@ const toLink = (type: string) => {
     type
   })
 }
+onMounted(() => {
+  getList()
+  getLists()
+})
+
 </script>
 
 <style lang="scss" scoped>
@@ -163,6 +307,7 @@ const toLink = (type: string) => {
       .list-1 {
         display: flex;
         align-items: center;
+        justify-content: space-between;
         width: 100%;
         height: 28rpx;
         border-bottom: 1rpx dotted #d0cbcb;
@@ -225,5 +370,38 @@ const toLink = (type: string) => {
       bottom: 16rpx;
     }
   }
+        .btn-wrapper {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        width: 68rpx;
+        height: 23rpx;
+        border-radius: 11rpx;
+
+        &:active {
+          opacity: 0.7;
+        }
+
+        &.print {
+          background-color: #30a952;
+        }
+
+        &.report {
+          margin-left: 7rpx;
+          background-color: #3e73ec;
+        }
+
+        .icon {
+          width: 7rpx;
+          height: 7rpx;
+          margin-right: 3rpx;
+        }
+
+        .txt {
+          font-size: 9rpx;
+          color: #fff;
+        }
+      }
 }
 </style>

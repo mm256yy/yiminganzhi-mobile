@@ -38,7 +38,7 @@
       </view>
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
-        <view class="label">所属区域:</view>
+        <view class="label">所属区域111:</view>
         <view class="value">{{ props.data.areaCodeText }}/{{ props.data.townCodeText }}</view>
       </view>
       <view class="cont-item">
