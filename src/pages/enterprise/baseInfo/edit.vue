@@ -95,10 +95,11 @@
             </uni-forms-item>
           </uni-col>
            <uni-col :span="12">
-            <uni-forms-item label="关联居民户" :label-width="150" label-align="right" name="formData.ownersSituation">
+            <!-- householderDoorNo -->
+            <uni-forms-item label="关联居民户" :label-width="150" label-align="right" name="formData.householderDoorNo">
               <view class="flex-center">
-                <view :class="['name-wrapper', formData.ownersName ? 'isSelected' : '']" @click="selectName">
-                  {{ formData.ownersName ? formData.ownersName : '请选择' }}
+                <view :class="['name-wrapper', formData.householderName ? 'isSelected' : '']" @click="selectName">
+                  {{ formData.householderName ? formData.householderName : '请选择' }}
                 </view>
                 <view @click="resetOwnersName">
                   <image class="icon_img" src="@/static/images/icon_delete_mini.png" mode="scaleToFill" />
@@ -883,14 +884,14 @@
     </view>
         <!-- 搜索选择户号 -->
     <search-list
-v-show="showSearch" :mainType="MainType.Company" type="multiple" stage="implementation" status="1"
+v-show="showSearch" :mainType="MainType.PeasantHousehold" type="multiple" stage="implementation" status="1"
       @close="close" @confirm-select="confirmSelect" />
   </view>
 </template>
 
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
-import { ref } from 'vue'
+import { ref,onMounted } from 'vue'
 import dayjs from 'dayjs'
 import { routerBack, getStorage, StorageKey, cardReg } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
@@ -900,6 +901,21 @@ import VillageSelectFormItem from '@/components/VillageSelectFormItem/index.vue'
 import UploadFile from '@/components/UploadFile/index.vue'
 import { MainType } from '@/types/common'
 import SearchList from '@/components/SearchList/Index.vue'
+import {  getImpLandlordListBySearchApi } from '@/service'
+const getLandlordListBySearch = () => {
+  let params = {
+    type: MainType.PeasantHousehold,
+    page: 1,
+    pageSize: 50
+  }
+  getImpLandlordListBySearchApi(params).then((res) => {
+    console.log(res, '居民户数据')
+    console.log(formData.value,'表单数据编辑')
+    const list=res.filter((item:any)=> item.doorNo==formData.value.householderDoorNo)
+    formData.value.relateDoorName=list[0].name
+    console.log( list, '用户名字')
+    })
+}
 
 const showSearch = ref<boolean>(false)
 
@@ -962,7 +978,8 @@ const formData = ref<any>({
   remark: '',
   licensePic: '[]',
   otherPic: '[]',
-  ownersName:null,
+  householderDoorNo:null,
+  householderName:null
 })
 
 // 获取数据字典
@@ -981,6 +998,7 @@ onLoad((option: any) => {
     if (type.value === 'edit') {
       let params = JSON.parse(option.params)
       formData.value = { ...params }
+      console.log(formData.value,'测试数据是什么？')
       title.value = '企业基本概况编辑'
       uid.value = option.uid
     } else if (type.value === 'add') {
@@ -1044,18 +1062,19 @@ const confirmSelect = (data: any) => {
   let nameArr: any = []
   if (data && data.length) {
     data.map((item: any) => {
-      idArr.push(item.id)
+      idArr.push(item.value)
       nameArr.push(item.label)
     })
-    formData.value.ownersSituation = idArr.toString()
-    formData.value.ownersName = nameArr.toString()
+    formData.value.householderDoorNo = idArr.toString()
+    console.log(formData.value.householderDoorNo,'测试ID')
+    formData.value.householderName = nameArr.toString()
   }
   close()
 }
 
 const resetOwnersName = () => {
-  formData.value.ownersSituation = ''
-  formData.value.ownersName = ''
+  formData.value.householderDoorNo = ''
+  formData.value.householderName = ''
 }
 // 表单提交
 const submit = () => {
@@ -1076,7 +1095,9 @@ const submit = () => {
     villageCode: formData.value.villageCode,
     locationType: formData.value.locationType,
     phone: formData.value.phone,
-    type: MainType.Company
+    type: MainType.Company,
+    householderDoorNo: formData.value.householderDoorNo,
+    householderName: formData.value.householderName
   }
 
   let company: any = {
@@ -1138,7 +1159,7 @@ const submit = () => {
     remark: formData.value.remark,
     licensePic: formData.value.licensePic,
     otherPic: formData.value.otherPic,
-    ownersName: formData.value.ownersName
+    householderDoorNo: formData.value.householderDoorNo
   }
   if (!formData.value.name) {
     showToast('请输入企业名称')
@@ -1189,6 +1210,7 @@ const submit = () => {
         ...baseInfo,
         company
       }
+      console.log(params,'测试传输数据')
       updateLandlordCompanyApi(uid.value, params)
         .then((res) => {
           if (res) {
@@ -1202,6 +1224,9 @@ const submit = () => {
     }
   }
 }
+onMounted(() => {
+  getLandlordListBySearch()
+})
 </script>
 
 <style lang="scss" scoped>

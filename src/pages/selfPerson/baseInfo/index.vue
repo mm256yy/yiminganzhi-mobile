@@ -436,7 +436,7 @@ const props = defineProps({
 })
 
 const toLink = (type: string) => {
-  const { uid, name, doorNo, areaCode, townCode, villageCode, locationType, phone } = props.baseInfo
+  const { uid, name, doorNo, areaCode, townCode, villageCode, locationType, phone,householderName } = props.baseInfo
 
   const { establishDate } = props.dataInfo
 
@@ -448,6 +448,7 @@ const toLink = (type: string) => {
     townCode,
     villageCode,
     phone,
+    householderName,
     locationType: locationType ? locationType : null,
     // suffixNo: splitStr(doorNo, 13, 17),
     establishDate: establishDate ? dayjs(establishDate).format('YYYY-MM-DD') : null,

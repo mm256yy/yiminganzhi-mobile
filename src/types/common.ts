@@ -194,7 +194,7 @@ export interface LandlordQuery {
 
 // 根据行政村刷选
 export interface LandlordSearchType {
-  name: string
+  name?: string
   type: MainType
   doorNo?: string
   areaCode?: string

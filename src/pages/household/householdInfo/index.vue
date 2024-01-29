@@ -12,17 +12,17 @@
         </view>
         <view style="display: flex;align-items: center;">
                 <view class="name">
-                    关联个体户：<text  @click="editLandlords" style="color: blue;">新昌县金禾纺织有限公司</text>
+                    关联个体户：<text  @click="editLandlords" style="color: blue;">{{formatStr(props.dataInfo.relateIndividualHouseholdName)}}</text>
                   </view>
-                <view class="btn-wrapper report">
+                <view class="btn-wrapper report" v-if="!props.dataInfo.relateIndividualHouseholdName">
                   <text class="txt" @click="addLandlords">添加</text>
                 </view>
         </view>
         <view style="display: flex;align-items: center;">
               <view class="name">
-                  关联企业：<text  @click="editLandlord" style="color: blue;">新昌县金禾纺织有限公司</text>
+                  关联企业：<text  @click="editLandlord" style="color: blue;">{{ formatStr(props.dataInfo.relateCompanyName) }}</text>
               </view>
-              <view class="btn-wrapper report">
+              <view class="btn-wrapper report" v-if="!props.dataInfo.relateCompanyName">
                 <text class="txt" @click="addLandlord">添加</text>
               </view>
         </view>
@@ -191,7 +191,7 @@ const getList = () => {
     const res = await getLandlordListBySearchApi(params).catch(() => {
     })
     console.log(res, '企业res是什么')
-    companyUid.value = res.find((item: any) => item.name == '新昌县金禾纺织有限公司')
+    companyUid.value = res.find((item: any) => item.name == props.dataInfo.relateCompanyName)
     console.log(companyUid.value.uid, '企业uid是什么')
   })
 }
@@ -207,7 +207,7 @@ const getLists = () => {
     const res = await getLandlordListBySearchApi(params).catch(() => {
     })
     console.log(res, '个体工商户res是什么')
-    individualHouseholdUid.value = res.find((item: any) => item.name == '新昌县金禾纺织有限公司')
+    individualHouseholdUid.value = res.find((item: any) => item.name == props.dataInfo.relateIndividualHouseholdName)
     console.log(individualHouseholdUid.value.uid, '个体工商户uid是什么')
   })
 }
@@ -389,7 +389,7 @@ onMounted(() => {
 
         &.report {
           margin-left: 7rpx;
-          background-color: #3e73ec;
+          background-color: #F5F5F6;
         }
 
         .icon {
@@ -400,7 +400,7 @@ onMounted(() => {
 
         .txt {
           font-size: 9rpx;
-          color: #fff;
+          color: #171718;
         }
       }
 }

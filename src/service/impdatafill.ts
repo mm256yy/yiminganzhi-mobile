@@ -308,6 +308,66 @@ export const deleteImpLandlordGraveApi = (uid: string, reason?: string) => {
 // ---------------
 
 /**
+ * 添加基础设施评估
+ * @param uid 调查对象uid
+ * @param data 设施设备信息
+ * @returns
+ */
+export const addInfrastructureApi = (uid: string, data: EquipmentType) => {
+  return ImpDataFillController.addInfrastructure(uid, data)
+}
+
+/**
+ * 更新基础设施评估
+ * @param uid 调查对象uid
+ * @param data 设施设备信息
+ * @returns
+ */
+export const updateInfrastructureApi = (uid: string, data: EquipmentType) => {
+  return ImpDataFillController.updateInfrastructure(uid, data)
+}
+
+/**
+ * 删除基础设施评估
+ * @param uid 调查对象uid
+ * @param itemId 设施设备uid
+ * @returns
+ */
+export const deleteInfrastructureApi = (uid: string, itemId: string, reason?: string) => {
+  return ImpDataFillController.deleteInfrastructure(uid, itemId, reason)
+}
+
+/**
+ * 添加其他评估
+ * @param uid 调查对象uid
+ * @param data 设施设备信息
+ * @returns
+ */
+export const addOtherApi = (uid: string, data: EquipmentType) => {
+  return ImpDataFillController.addOther(uid, data)
+}
+
+/**
+ * 更新其他评估
+ * @param uid 调查对象uid
+ * @param data 设施设备信息
+ * @returns
+ */
+export const updateOtherApi = (uid: string, data: EquipmentType) => {
+  return ImpDataFillController.updateOther(uid, data)
+}
+
+/**
+ * 删除其他评估
+ * @param uid 调查对象uid
+ * @param itemId 设施设备uid
+ * @returns
+ */
+export const deleteOtherApi = (uid: string, itemId: string, reason?: string) => {
+  return ImpDataFillController.deleteOther(uid, itemId, reason)
+}
+
+/**
  * 添加设施设备
  * @param uid 调查对象uid
  * @param data 设施设备信息

@@ -7,7 +7,7 @@
           <uni-col :span="24">
             <uni-forms-item
               required
-              label="新增原因"
+              label="新增原因测试"
               :label-width="150"
               label-align="right"
               name="formData.addReason"
