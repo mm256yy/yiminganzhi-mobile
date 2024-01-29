@@ -76,7 +76,7 @@ import { getResettleDetail } from '@/service'
 import { OtherDataType } from '@/database';
 // import type { LocationType } from '@/types/datafill'
 
-const resettleArea = ref<any>([])
+const resettleArea = ref<any>([])	
 const apartmentArea = ref<any>([])
 
 const getDataRequest = async (res: any) => {

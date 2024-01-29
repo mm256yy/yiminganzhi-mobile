@@ -17,7 +17,11 @@
 
             <view class="tabs-content">
               <!-- tab 切换 -->
-              <Tabs :dataList="tabsList" :current-index="tabVal" @select-tabs="selectTabs" />
+              <Tabs
+                :dataList="tabsList"
+                :current-index="tabVal"
+                @select-tabs="selectTabs"
+              />
 
               <view
                 class="touch-content"
@@ -62,9 +66,34 @@
                   @update-data="updateData"
                 />
 
-                <!-- 土地基本情况评估 -->
-                <land-eva
+                
+                <!-- 设施设备评估 -->
+                <equipment-eva
                   v-if="tabVal === 5"
+                  :dataList="dataInfo.immigrantEquipmentList"
+                  :dataInfo="dataInfo"
+                  @delete-equipment="deleteEquipment"
+                  @update-data="updateData"
+                />
+
+                <!-- 基础设施评估 -->
+                <infrastructureEva
+                 v-if="tabVal === 6" 
+                 :dataInfo="dataInfo"
+                  @delete-equipment="deleteEquipment"
+                  @update-data="updateData"
+                />
+                <!-- 基础设施评估 -->
+                <otherEva
+                 v-if="tabVal === 7"
+                  :dataInfo="dataInfo"
+                  @delete-equipment="deleteEquipment"
+                  @update-data="updateData"
+                 />
+
+                <!-- 土地基本情况评估-->
+                <land-eva
+                  v-if="tabVal === 8"
                   :dataList="dataInfo.assetLandList"
                   :dataInfo="dataInfo"
                   @delete-land="deleteLand"
@@ -73,28 +102,23 @@
 
                 <!-- 土地青苗及附着物评估 -->
                 <seedlings-eva
-                  v-if="tabVal === 6"
+                  v-if="tabVal === 9"
                   :dataList="dataInfo.assetAppendantList"
                   :dataInfo="dataInfo"
                   @delete-seedlings="deleteSeedlings"
                   @update-data="updateData"
-                />
-
-                <!-- 设施设备评估 -->
-                <equipment-eva
-                  v-if="tabVal === 7"
-                  :dataList="dataInfo.immigrantEquipmentList"
-                  :dataInfo="dataInfo"
-                  @delete-equipment="deleteEquipment"
-                  @update-data="updateData"
-                />
+                /> 
               </view>
             </view>
           </view>
 
           <view class="box" v-else>
             <view class="null-wrapper">
-              <image class="icon" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
+              <image
+                class="icon"
+                src="@/static/images/icon_null_data.png"
+                mode="scaleToFill"
+              />
               <view class="tips">请先选择要评估的企业</view>
             </view>
           </view>
@@ -105,21 +129,23 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
-import { MainType, RoleCodeType } from '@/types/common'
-import { getStorage, StorageKey } from '@/utils'
-import Back from '@/components/Back/Index.vue'
-import Header from '@/components/Header/EvaIndex.vue'
-import Tabs from '@/components/Tabs/Index.vue'
-import baseInfoEva from '../baseInfoEva/index.vue' // 引入企业信息组件
-import houseSubjectEva from '../../common/houseSubjectEva/index.vue' // 引入房屋主体评估组件
-import houseDecorationEva from '../../common/houseDecorationEva/index.vue' // 引入房屋装修评估组件
-import accessoryEva from '../../common/accessoryEva/index.vue' // 引入附属设施评估组件
-import treeEva from '../../common/treeEva/index.vue' // 引入零星(林)果木评估组件
-import landEva from '../../common/landEva/index.vue' // 引入土地基本情况评估组件
-import seedlingsEva from '../../common/seedlingsEva/index.vue' // 引入土地青苗及附着物评估组件
-import equipmentEva from '../../common/equipmentEva/index.vue' // 引入设施设备评估组件
+import { computed, ref } from "vue";
+import { ERROR_MSG, SUCCESS_MSG, showToast } from "@/config/msg";
+import { MainType, RoleCodeType } from "@/types/common";
+import { getStorage, StorageKey } from "@/utils";
+import Back from "@/components/Back/Index.vue";
+import Header from "@/components/Header/EvaIndex.vue";
+import Tabs from "@/components/Tabs/Index.vue";
+import baseInfoEva from "../baseInfoEva/index.vue"; // 引入企业信息组件
+import houseSubjectEva from "../../common/houseSubjectEva/index.vue"; // 引入房屋主体评估组件
+import houseDecorationEva from "../../common/houseDecorationEva/index.vue"; // 引入房屋装修评估组件
+import accessoryEva from "../../common/accessoryEva/index.vue"; // 引入附属设施评估组件
+import treeEva from "../../common/treeEva/index.vue"; // 引入零星(林)果木评估组件
+// import landEva from "../../common/landEva/index.vue"; // 引入土地基本情况评估组件
+// import seedlingsEva from "../../common/seedlingsEva/index.vue"; // 引入土地青苗及附着物评估组件
+import equipmentEva from "../../common/equipmentEva/index.vue"; // 引入设施设备评估组件
+import infrastructureEva from "../../common/infrastructure/index.vue"; // 引入基础设施评估组件
+import otherEva from "../../common/other/index.vue"; // 引入其他评估组件
 
 import {
   deleteImpLandlordHouseFitUpApi,
@@ -127,143 +153,161 @@ import {
   deleteImpLandlordTreeApi,
   deleteImpLandlordAssetLandApi,
   deleteImpLandlordAssetAppendantApi,
-  deleteImpLandlordEquipmentApi
-} from '@/service'
+  deleteImpLandlordEquipmentApi,
+} from "@/service";
 
-import iconBaseDef from '@/static/images/icon_base_default.png' // 引入企业信息默认 icon
-import iconBaseSel from '@/static/images/icon_base_select.png' // 引入企业信息选中 icon
-import iconHouseDef from '@/static/images/icon_house_default.png' // 引入房屋主体评估默认 icon
-import iconHouseSel from '@/static/images/icon_house_select.png' // 引入房屋主体评估选中 icon
-import iconDecorationDef from '@/static/images/icon_decoration_default.png' // 引入房屋装修评估默认 icon
-import iconDecorationSel from '@/static/images/icon_decoration_select.png' // 引入房屋装修评估选中 icon
-import iconAccessoryDef from '@/static/images/icon_appurtenance_default.png' // 引入附属设施评估默认 icon
-import iconAccessorySel from '@/static/images/icon_appurtenance_select.png' // 引入附属设施评估选中 icon
-import iconTreeDef from '@/static/images/icon_tree_default.png' // 引入零星(林)果木评估默认 icon
-import iconTreeSel from '@/static/images/icon_tree_select.png' // 引入零星(林)果木评估选中
-import iconLandDef from '@/static/images/icon_land_default.png' // 引入土地基本情况评估默认 icon
-import iconLandSel from '@/static/images/icon_land_select.png' // 引入土地基本情况评估选中 icon
-import iconSeedlingsDef from '@/static/images/icon_seedlings_default.png' // 引入土地青苗及附着物评估默认 icon
-import iconSeedlingsSel from '@/static/images/icon_seedlings_select.png' // 引入土地青苗及附着物评估选中 icon
-import iconEquipmentDef from '@/static/images/icon_equipment_default.png' // 引入设施设备评估默认 icon
-import iconEquipmentSel from '@/static/images/icon_equipment_select.png' // 引入设施设备评估选中 icon
-import { LandlordType } from '@/types/sync'
+import iconBaseDef from "@/static/images/icon_base_default.png"; // 引入企业信息默认 icon
+import iconBaseSel from "@/static/images/icon_base_select.png"; // 引入企业信息选中 icon
+import iconHouseDef from "@/static/images/icon_house_default.png"; // 引入房屋主体评估默认 icon
+import iconHouseSel from "@/static/images/icon_house_select.png"; // 引入房屋主体评估选中 icon
+import iconDecorationDef from "@/static/images/icon_decoration_default.png"; // 引入房屋装修评估默认 icon
+import iconDecorationSel from "@/static/images/icon_decoration_select.png"; // 引入房屋装修评估选中 icon
+import iconAccessoryDef from "@/static/images/icon_appurtenance_default.png"; // 引入附属设施评估默认 icon
+import iconAccessorySel from "@/static/images/icon_appurtenance_select.png"; // 引入附属设施评估选中 icon
+import iconTreeDef from "@/static/images/icon_tree_default.png"; // 引入零星(林)果木评估默认 icon
+import iconTreeSel from "@/static/images/icon_tree_select.png"; // 引入零星(林)果木评估选中
+import iconLandDef from "@/static/images/icon_land_default.png"; // 引入土地基本情况评估默认 icon
+import iconLandSel from "@/static/images/icon_land_select.png"; // 引入土地基本情况评估选中 icon
+import iconSeedlingsDef from "@/static/images/icon_seedlings_default.png"; // 引入土地青苗及附着物评估默认 icon
+import iconSeedlingsSel from "@/static/images/icon_seedlings_select.png"; // 引入土地青苗及附着物评估选中 icon
+import iconEquipmentDef from "@/static/images/icon_equipment_default.png"; // 引入设施设备评估默认 icon
+import iconEquipmentSel from "@/static/images/icon_equipment_select.png"; // 引入设施设备评估选中 icon
+import iconInfrastructureSelect from "@/static/images/icon_accessory_select.png"; // 引入基础设施评估选中 icon
+import iconInfrastructureDefault from "@/static/images/icon_accessory_default.png"; // 引入基础设施评估默认 icon
+import iconOtherSelect from "@/static/images/icon_land_select.png"; // 引入其他评估选中 icon
+import iconOtherDefault from "@/static/images/icon_land_default.png"; // 引入其他评估默认 icon
+
+import { LandlordType } from "@/types/sync";
 
 interface PropsType {
-  dataInfo: any
+  dataInfo: any;
 }
 
 const props = withDefaults(defineProps<PropsType>(), {
-  dataInfo: {}
-})
+  dataInfo: {},
+});
 
 const tabsList = computed(() => {
-  const { immigrantFilling } = props.dataInfo as LandlordType
-  const role: RoleCodeType = getStorage(StorageKey.USERROLE)
+  
+  const { immigrantFilling } = props.dataInfo as LandlordType;
+  const role: RoleCodeType = getStorage(StorageKey.USERROLE);
   if (role === RoleCodeType.assessor) {
     return [
       {
-        label: '企业信息',
+        label: "企业信息",
         value: 0,
         filled: true,
         defIcon: iconBaseDef,
-        selIcon: iconBaseSel
+        selIcon: iconBaseSel,
       },
       {
-        label: '房屋主体评估',
+        label: "房屋主体评估",
         value: 1,
-        filled: immigrantFilling.houseMainStatus === '1',
+        filled: immigrantFilling.houseMainStatus === "1",
         defIcon: iconHouseDef,
-        selIcon: iconHouseSel
+        selIcon: iconHouseSel,
       },
       {
-        label: '房屋装修评估',
+        label: "房屋装修评估",
         value: 2,
-        filled: immigrantFilling.houseRenovationStatus === '1',
+        filled: immigrantFilling.houseRenovationStatus === "1",
         defIcon: iconDecorationDef,
-        selIcon: iconDecorationSel
+        selIcon: iconDecorationSel,
       },
       {
-        label: '附属设施评估',
+        label: "附属设施评估",
         value: 3,
-        filled: immigrantFilling.appendageStatus === '1',
+        filled: immigrantFilling.appendageStatus === "1",
         defIcon: iconAccessoryDef,
-        selIcon: iconAccessorySel
+        selIcon: iconAccessorySel,
       },
       {
-        label: '零星(林)果木评估',
+        label: "零星(林)果木评估",
         value: 4,
-        filled: immigrantFilling.treeStatus === '1',
+        filled: immigrantFilling.treeStatus === "1",
         defIcon: iconTreeDef,
-        selIcon: iconTreeSel
+        selIcon: iconTreeSel,
       },
-
       {
-        label: '设施设备评估',
-        value: 7,
-        filled: immigrantFilling.deviceStatus === '1',
+        label: "设施设备评估",
+        value: 5,
+        filled: immigrantFilling.deviceStatus === "1",
         defIcon: iconEquipmentDef,
-        selIcon: iconEquipmentSel
-      }
-    ]
+        selIcon: iconEquipmentSel,
+      },
+      {
+        label: "基础设施评估",
+        value: 6,
+        defIcon: iconInfrastructureDefault,
+        selIcon: iconInfrastructureSelect,
+      },
+      {
+        label: "其他评估",
+        value: 7,
+        defIcon: iconOtherDefault,
+        selIcon: iconOtherSelect,
+      },
+    ];
   }
 
   return [
     {
-      label: '企业信息',
+      label: "企业信息",
       value: 0,
       filled: true,
       defIcon: iconBaseDef,
-      selIcon: iconBaseSel
+      selIcon: iconBaseSel,
     },
     {
-      label: '土地基本情况评估',
-      value: 5,
-      filled: immigrantFilling.landStatus === '1',
+      label: "土地基本情况评估",
+      value: 8,
+      filled: immigrantFilling.landStatus === "1",
       defIcon: iconLandDef,
-      selIcon: iconLandSel
+      selIcon: iconLandSel,
     },
     {
-      label: '土地青苗及附着物评估',
-      value: 6,
-      filled: immigrantFilling.landSeedlingStatus === '1',
+      label: "土地青苗及附着物评估",
+      value: 9,
+      filled: immigrantFilling.landSeedlingStatus === "1",
       defIcon: iconSeedlingsDef,
-      selIcon: iconSeedlingsSel
-    }
-  ]
-})
+      selIcon: iconSeedlingsSel,
+    },
+  ];
+});
 
-const tabVal = ref<number>(0)
-const emit = defineEmits(['updateData'])
+const tabVal = ref<number>(0);
+const emit = defineEmits(["updateData"]);
 
 // 是否为空数组
 const isNotNullArray = (arr: any) => {
-  return arr && Array.isArray(arr) && arr.length
-}
+  return arr && Array.isArray(arr) && arr.length;
+};
 // tab 切换
 const selectTabs = (data: any) => {
-  tabVal.value = data.value
-}
+  tabVal.value = data.value;
+  console.log('Tab-V', tabVal.value);
+};
 
 // 页面向左滑动, tab 跟随页面一起动
 const touchLeft = () => {
-  tabVal.value += 1
+  tabVal.value += 1;
   if (tabVal.value > tabsList.value.length - 1) {
-    tabVal.value = 0
+    tabVal.value = 0;
   }
-}
+};
 
 // 页面向右滑动, tab 跟随页面一起动
 const touchRight = () => {
-  tabVal.value -= 1
+  tabVal.value -= 1;
   if (tabVal.value < 0) {
-    tabVal.value = tabsList.value.length - 1
+    tabVal.value = tabsList.value.length - 1;
   }
-}
+};
 
 // 更新整体数据
 const updateData = () => {
-  emit('updateData', props.dataInfo.uid)
-}
+  emit("updateData", props.dataInfo.uid);
+};
 
 /**
  * 房屋主体评估 - 删除
@@ -290,14 +334,14 @@ const deleteHouseDecoration = (data: any) => {
   deleteImpLandlordHouseFitUpApi(props.dataInfo.uid, data.uid)
     .then((res) => {
       if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
+        showToast(SUCCESS_MSG);
+        updateData();
       }
     })
     .catch((e) => {
-      showToast(ERROR_MSG)
-    })
-}
+      showToast(ERROR_MSG);
+    });
+};
 
 /**
  * 附属设施评估 - 删除
@@ -307,14 +351,14 @@ const deleteAccessory = (data: any) => {
   deleteImpLandlordAppendantApi(props.dataInfo.uid, data.uid)
     .then((res) => {
       if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
+        showToast(SUCCESS_MSG);
+        updateData();
       }
     })
     .catch((e) => {
-      showToast(ERROR_MSG)
-    })
-}
+      showToast(ERROR_MSG);
+    });
+};
 
 /**
  * 零星(林)果木评估 - 删除
@@ -324,14 +368,14 @@ const deleteTree = (data: any) => {
   deleteImpLandlordTreeApi(props.dataInfo.uid, data.uid)
     .then((res) => {
       if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
+        showToast(SUCCESS_MSG);
+        updateData();
       }
     })
     .catch((e) => {
-      showToast(ERROR_MSG)
-    })
-}
+      showToast(ERROR_MSG);
+    });
+};
 
 /**
  * 土地基本情况评估 - 删除
@@ -341,14 +385,14 @@ const deleteLand = (data: any) => {
   deleteImpLandlordAssetLandApi(props.dataInfo.uid, data.uid)
     .then((res) => {
       if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
+        showToast(SUCCESS_MSG);
+        updateData();
       }
     })
     .catch((e) => {
-      showToast(ERROR_MSG)
-    })
-}
+      showToast(ERROR_MSG);
+    });
+};
 
 /**
  * 土地青苗及附着物评估 - 删除
@@ -358,14 +402,14 @@ const deleteSeedlings = (data: any) => {
   deleteImpLandlordAssetAppendantApi(props.dataInfo.uid, data.uid)
     .then((res) => {
       if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
+        showToast(SUCCESS_MSG);
+        updateData();
       }
     })
     .catch((e) => {
-      showToast(ERROR_MSG)
-    })
-}
+      showToast(ERROR_MSG);
+    });
+};
 
 /*
  * 设施设备评估 - 删除
@@ -375,14 +419,14 @@ const deleteEquipment = (data: any) => {
   deleteImpLandlordEquipmentApi(props.dataInfo.uid, data.uid)
     .then((res: any) => {
       if (res) {
-        showToast(SUCCESS_MSG)
-        updateData()
+        showToast(SUCCESS_MSG);
+        updateData();
       }
     })
     .catch(() => {
-      showToast(ERROR_MSG)
-    })
-}
+      showToast(ERROR_MSG);
+    });
+};
 </script>
 
 <style lang="scss">

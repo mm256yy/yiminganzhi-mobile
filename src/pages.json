@@ -295,6 +295,20 @@
 			}
 		},
 		{
+			"name": "baseInfrastructureEdit",
+			"path": "pages/common/infrastructure/edit",
+			"style": {
+				"navigationBarTitleText": "编辑基础设施评估"
+			}
+		},
+		{
+			"name": "otherAssessmentEdit",
+			"path": "pages/common/other/edit",
+			"style": {
+				"navigationBarTitleText": "编辑其他评估"
+			}
+		},
+		{
 			"name": "specialEvaEdit",
 			"path": "pages/collective/specialEva/edit",
 			"style": {
@@ -386,7 +400,7 @@
 				"navigationBarTitleText": "pdf预览-移民建卡"
 			}
 		},
-			{
+		{
 			"name": "pdfSerch",
 			"path": "pages/archives/pdfSerch",
 			"style": {
