@@ -7,7 +7,7 @@
           <uni-col :span="24">
             <uni-forms-item
               required
-              label="新增原因111"
+              label="新增原因222"
               :label-width="150"
               label-align="right"
               name="formData.addReason"
@@ -65,7 +65,7 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-             required
+              required
               label="数量"
               :label-width="150"
               label-align="right"
@@ -75,11 +75,10 @@
             </uni-forms-item>
           </uni-col>
         </uni-row>
-
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-             required
+              required
               label="评估单价"
               :label-width="150"
               label-align="right"
@@ -100,7 +99,7 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-             required
+              required
               label="成新率"
               :label-width="150"
               label-align="right"
@@ -114,7 +113,7 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-             required
+              required
               label="评估金额"
               :label-width="150"
               label-align="right"
@@ -136,7 +135,7 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-             required
+              required
               label="补偿金额"
               :label-width="150"
               label-align="right"
@@ -196,8 +195,8 @@ import { onLoad } from '@dcloudio/uni-app'
 import dayjs from 'dayjs'
 import { routerBack, getStorage, StorageKey } from '@/utils'
 import {
-  addInfrastructureApi,
-  updateInfrastructureApi,
+  addImpLandlordEquipmentApi,
+  updateImpLandlordEquipmentApi,
   getEvaLandlordItemApi
 } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
@@ -264,11 +263,11 @@ onLoad((option: any) => {
     commonParams.value = JSON.parse(option.params)
     const { type } = commonParams.value
     if (type === 'edit') {
-      title.value = '基础设施信息编辑'
+      title.value = '其他评估编辑'
       getLandlordDetail()
     } else if (type === 'add') {
       currentYear.value = getYear()
-      title.value = '新增基础设施'
+      title.value = '新增其他评估'
     }
   }
 })
@@ -302,45 +301,45 @@ const submit = () => {
     year: formData.value.year ? dayjs(formData.value.year) : ''
   }
 
-  // if (!formData.value.addReason) {
-  //   showToast('新增原因不能为空')
-  //   return
-  // }
-  // if (!formData.value.name) {
-  //   showToast('名称不能为空')
-  //   return
-  // }
-  // if (!formData.value.size) {
-  //   showToast('规格/型号不能为空')
-  //   return
-  // }
-  // if (!formData.value.unit) {
-  //   showToast('单位不能为空')
-  //   return
-  // }
-  // if (!formData.value.number) {
-  //   showToast('数量不能为空')
-  //   return
-  // }
-  // if (!formData.value.price) {
-  //   showToast('评估单价不能为空')
-  //   return
-  // }
-  // if (!formData.value.newnessRate) {
-  //   showToast('成新率不能为空')
-  //   return
-  // }
-  // if (!formData.value.valuationAmount) {
-  //   showToast('评估金额不能为空')
-  //   return
-  // }
-  // if (!formData.value.compensationAmount) {
-  //   showToast('补偿金额不能为空')
-  //   return
-  // }
+  if (!formData.value.addReason) {
+    showToast('新增原因不能为空')
+    return
+  }
+  if (!formData.value.name) {
+    showToast('名称不能为空')
+    return
+  }
+  if (!formData.value.size) {
+    showToast('规格/型号不能为空')
+    return
+  }
+  if (!formData.value.unit) {
+    showToast('单位不能为空')
+    return
+  }
+  if (!formData.value.number) {
+    showToast('数量不能为空')
+    return
+  }
+  if (!formData.value.price) {
+    showToast('评估单价不能为空')
+    return
+  }
+  if (!formData.value.newnessRate) {
+    showToast('成新率不能为空')
+    return
+  }
+  if (!formData.value.valuationAmount) {
+    showToast('评估金额不能为空')
+    return
+  }
+  if (!formData.value.compensationAmount) {
+    showToast('补偿金额不能为空')
+    return
+  }
 
     if (type === 'add') {
-      addInfrastructureApi(uid, params)
+      addImpLandlordEquipmentApi(uid, params)
         .then((res) => {
           if (res) {
             showToast(SUCCESS_MSG)
@@ -351,7 +350,7 @@ const submit = () => {
           showToast(ERROR_MSG)
         })
     } else if (type === 'edit') {
-      updateInfrastructureApi(uid, params)
+      updateImpLandlordEquipmentApi(uid, params)
         .then((res) => {
           if (res) {
             showToast(SUCCESS_MSG)

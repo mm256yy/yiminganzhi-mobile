@@ -808,7 +808,7 @@ class ImpDataFill extends ImpLandlord {
   }
 
   // 调查对象-基础设施评估新增操作  暂时这么写 枚举类型需更换
-  addInfrastructure(uid: string, data: EquipmentType): Promise<boolean> {
+  addInfrastructure(uid: string, data: any): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!uid) {
@@ -842,7 +842,7 @@ class ImpDataFill extends ImpLandlord {
     })
   }
   // 调查对象-基础设施评估修改操作
-  updateInfrastructure(uid: string, data: EquipmentType): Promise<boolean> {
+  updateInfrastructure(uid: string, data: any): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!uid) {

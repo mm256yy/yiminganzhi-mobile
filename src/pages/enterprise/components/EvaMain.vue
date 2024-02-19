@@ -76,18 +76,20 @@
                   @update-data="updateData"
                 />
 
-                <!-- 基础设施评估 -->
+                <!-- 基础设施评估 基础和其他列表数据需调整 -->
                 <infrastructureEva
                  v-if="tabVal === 6" 
+                  :dataList="dataInfo.immigrantEquipmentList"  
                  :dataInfo="dataInfo"
-                  @delete-equipment="deleteEquipment"
+                  @delete-equipment="deleteInfrastructure"
                   @update-data="updateData"
                 />
-                <!-- 基础设施评估 -->
+                <!-- 其他设施评估 -->
                 <otherEva
                  v-if="tabVal === 7"
+                  :dataList="dataInfo.immigrantEquipmentList"  
                   :dataInfo="dataInfo"
-                  @delete-equipment="deleteEquipment"
+                  @delete-equipment="deleteOther"
                   @update-data="updateData"
                  />
 
@@ -154,6 +156,8 @@ import {
   deleteImpLandlordAssetLandApi,
   deleteImpLandlordAssetAppendantApi,
   deleteImpLandlordEquipmentApi,
+  deleteInfrastructureApi,
+  deleteOtherApi
 } from "@/service";
 
 import iconBaseDef from "@/static/images/icon_base_default.png"; // 引入企业信息默认 icon
@@ -417,6 +421,40 @@ const deleteSeedlings = (data: any) => {
  */
 const deleteEquipment = (data: any) => {
   deleteImpLandlordEquipmentApi(props.dataInfo.uid, data.uid)
+    .then((res: any) => {
+      if (res) {
+        showToast(SUCCESS_MSG);
+        updateData();
+      }
+    })
+    .catch(() => {
+      showToast(ERROR_MSG);
+    });
+};
+
+/*
+ * 基础设施评估 - 删除
+ * @param(Object) data 被删除的行信息
+ */
+const deleteInfrastructure = (data: any) => {
+  deleteInfrastructureApi(props.dataInfo.uid, data.uid)
+    .then((res: any) => {
+      if (res) {
+        showToast(SUCCESS_MSG);
+        updateData();
+      }
+    })
+    .catch(() => {
+      showToast(ERROR_MSG);
+    });
+};
+
+/*
+ * 其他评估 - 删除
+ * @param(Object) data 被删除的行信息
+ */
+const deleteOther = (data: any) => {
+  deleteOtherApi(props.dataInfo.uid, data.uid)
     .then((res: any) => {
       if (res) {
         showToast(SUCCESS_MSG);

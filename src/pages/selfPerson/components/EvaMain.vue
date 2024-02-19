@@ -1,7 +1,7 @@
 <template>
   <view class="main-wrap">
     <!-- 移民实施阶段 —— 个体工商户评估 -->
-    <Back title="个体工商户评估" />
+    <Back title="个体工商户评估11" />
 
     <view class="main-cont">
       <view class="list-content">
@@ -88,6 +88,22 @@
                   @delete-equipment="deleteEquipment"
                   @update-data="updateData"
                 />
+
+                
+                <!-- 基础设施评估 -->
+                <infrastructureEva
+                 v-if="tabVal === 8" 
+                 :dataInfo="dataInfo"
+                  @delete-equipment="deleteEquipment"
+                  @update-data="updateData"
+                />
+                <!-- 基础设施评估 -->
+                <otherEva
+                 v-if="tabVal === 9"
+                  :dataInfo="dataInfo"
+                  @delete-equipment="deleteEquipment"
+                  @update-data="updateData"
+                 />
               </view>
             </view>
           </view>
@@ -120,7 +136,8 @@ import treeEva from '../../common/treeEva/index.vue' // 引入零星（林）果
 import landEva from '../../common/landEva/index.vue' // 引入土地基本情况评估组件
 import seedlingsEva from '../../common/seedlingsEva/index.vue' // 引入土地青苗及附着物评估组件
 import equipmentEva from '../../common/equipmentEva/index.vue' // 引入设施设备评估组件
-
+import infrastructureEva from "../../common/infrastructureEva/index.vue"; // 引入基础设施评估组件
+import otherEva from "../../common/otherEva/index.vue"; // 引入其他评估组件
 import {
   deleteImpLandlordHouseFitUpApi,
   deleteImpLandlordAppendantApi,
@@ -146,6 +163,10 @@ import iconSeedlingsDef from '@/static/images/icon_seedlings_default.png' // 引
 import iconSeedlingsSel from '@/static/images/icon_seedlings_select.png' // 引入土地青苗及附着物评估选中 icon
 import iconEquipmentDef from '@/static/images/icon_equipment_default.png' // 引入设施设备评估默认 icon
 import iconEquipmentSel from '@/static/images/icon_equipment_select.png' // 引入设施设备评估选中 icon
+import iconInfrastructureSelect from "@/static/images/icon_accessory_select.png"; // 引入基础设施评估选中 icon
+import iconInfrastructureDefault from "@/static/images/icon_accessory_default.png"; // 引入基础设施评估默认 icon
+import iconOtherSelect from "@/static/images/icon_land_select.png"; // 引入其他评估选中 icon
+import iconOtherDefault from "@/static/images/icon_land_default.png"; // 引入其他评估默认 icon
 import { LandlordType } from '@/types/sync'
 
 interface PropsType {
@@ -203,7 +224,19 @@ const tabsList = computed(() => {
         filled: immigrantFilling.deviceStatus === '1',
         defIcon: iconEquipmentDef,
         selIcon: iconEquipmentSel
-      }
+      },
+      {
+        label: "基础设施评估",
+        value: 8,
+        defIcon: iconInfrastructureDefault,
+        selIcon: iconInfrastructureSelect,
+      },
+      {
+        label: "其他评估",
+        value: 9,
+        defIcon: iconOtherDefault,
+        selIcon: iconOtherSelect,
+      },
     ]
   }
 
