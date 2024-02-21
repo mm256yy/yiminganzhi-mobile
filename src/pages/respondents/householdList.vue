@@ -1,5 +1,5 @@
 <template>
-  <Container title="居民户列表123">
+  <Container title="居民户列表">
     <template #right>
       <view class="title" @click="onToggleVillage">
         <text class="tit">

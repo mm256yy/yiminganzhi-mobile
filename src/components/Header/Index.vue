@@ -2,7 +2,7 @@
   <view class="list-header">
     <view class="list-header-rt">
       <view class="list-header-left">
-        <view class="name">{{ dataInfo.name }}123</view>
+        <view class="name">{{ dataInfo.name }}</view>
         <view class="account-no">{{ dataInfo.showDoorNo }}
         </view>
         <view class="fill-number">
