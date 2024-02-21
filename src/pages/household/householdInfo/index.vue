@@ -31,7 +31,7 @@
           <uni-row>
             <uni-col :span="12">
               <view class="col">
-                <view class="label">户号123：</view>
+                <view class="label">户号：</view>
                 <view class="content">
                   {{ filterViewDoorNo(props.dataInfo) }}
                 </view>

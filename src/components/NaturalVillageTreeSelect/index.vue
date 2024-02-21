@@ -100,6 +100,8 @@ const title = ref<string[]>([])
 watch(
   () => props.value,
   (val) => {
+    console.log(val, 'val数据')
+    console.log(props.treeData,'treeData数据')
     if (val && val.length) {
       currentSelect.value = [...val]
       const townList = props.treeData.find((item: any) => item.code === val[0]).children || []

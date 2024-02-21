@@ -47,8 +47,8 @@ import {
   getLandlordListBySearchApi,
   // getLandlordListBySearchApiTwo,
 } from '@/service'
-// 最大拉取时间 10 分钟
-const baseMaxCount = 600
+// 最大拉取时间 20 分钟
+const baseMaxCount = 1200
 class PullData {
   // 接口返回数据存储
   public state: StateType

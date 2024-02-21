@@ -3,7 +3,8 @@
 		<div class="report-text" id="printReport" style="display: flex;">
 			<div style="width: 50%;border: 1px solid #000000;display: flex;flex-direction: column;">
 				<h1 style="font-size: 24px; text-align: center">移民协议补偿登记卡</h1>
-				<div style="display: flex;
+				<div
+style="display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
             padding: 20px 0 20px 0;
@@ -144,7 +145,7 @@
 		<div class="reportInstrument">
 			<div class="reportInstrumentContent1">
 				<button class="reportButton" type="info" @click="render.headelReport">导出PDF</button>
-				<button class="reportButton" type="info" @click="handleClick">签名</button>
+				<button class="reportButton" type="info" @click="handleClick">户主签字</button>
 				<button class="reportButton" type="info" @click="handleClickToymjk">返回</button>
 			</div>
 		</div>

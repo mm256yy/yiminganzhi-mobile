@@ -726,6 +726,7 @@ export class Landlord extends Common {
             array.push(landlord)
           })
           const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
+          console.log(array, '测试数据是什么')
           // 拿到上级行政区划
           array.forEach((item) => {
             // townCode: string

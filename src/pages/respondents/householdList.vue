@@ -1,5 +1,5 @@
 <template>
-  <Container title="居民户列表">
+  <Container title="居民户列表123">
     <template #right>
       <view class="title" @click="onToggleVillage">
         <text class="tit">
@@ -173,7 +173,7 @@ const isLoading = ref<boolean>(false)
 const isEnd = ref<boolean>(false)
 
 const page = ref<number>(1)
-const pageSize = ref<number>(10)
+const pageSize = ref<number>(50)
 const sourceType = ref<string | null>(null) // 源类型 0已完成  1 预警 2 滞后
 const statusCount = ref<number>(0)
 
@@ -241,6 +241,7 @@ const getList = () => {
       page: page.value,
       pageSize: pageSize.value
     }
+    console.log(params,'传输的数据')
     if (sourceType.value) {
       params.warnStatus = sourceType.value
       if (sourceType.value == '1') {

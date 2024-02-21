@@ -164,6 +164,7 @@ class DistrictTree extends Common {
           // 拿到 自然村列表
           const villageList = await VillageController.getList()
           newDistrictList = [...districtList, ...villageList]
+          console.log(districtList, villageList, '树数据')
         } else {
           newDistrictList = districtList
         }
@@ -221,7 +222,7 @@ class DistrictTree extends Common {
         const totalArray = [...newDistrictList, ...villageList]
         if (this.isArrayAndNotNull(totalArray)) {
           const res = arrayToTree(totalArray)
-          // console.log(res, '自然村树')
+          console.log(res, '自然村树')
           resolve(res)
         } else {
           resolve([])

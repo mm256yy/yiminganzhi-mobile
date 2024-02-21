@@ -195,5 +195,9 @@
             }
         }
     },
-    "fallbackLocale": "zh-Hans"
+    "fallbackLocale": "zh-Hans",
+    "android": {
+        "largeHeap": true,
+        "hardwareAccelerated":false
+    }
 }

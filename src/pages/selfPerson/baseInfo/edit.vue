@@ -12,7 +12,7 @@
           <uni-col :span="12">
             <uni-forms-item
               required
-              label="法人姓名123"
+              label="法人姓名"
               :label-width="170"
               label-align="right"
               name="formData.legalPersonName"

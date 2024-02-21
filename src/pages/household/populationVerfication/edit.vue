@@ -12,7 +12,8 @@
           </uni-col>
           <uni-col :span="12" v-if="formData.addReason !== '3'">
             <uni-forms-item required label="人口性质" :label-width="150" label-align="right" name="formData.populationNature">
-              <uni-data-select :disabled="formData.addReason === '3'" v-model="formData.populationNature"
+              <uni-data-select
+:disabled="formData.addReason === '3'" v-model="formData.populationNature"
                 :localdata="dict[263]" />
             </uni-forms-item>
           </uni-col>
@@ -66,7 +67,8 @@
           <uni-col :span="24">
             <uni-forms-item required label="身份证照片" :label-width="150" label-align="right" name="formData.cardPic">
               <view class="display-flex">
-                <upload-file v-model="formData.cardPic" :file-list="formData.cardPic" :limit="2" uploadType="IdCard"
+                <upload-file
+v-model="formData.cardPic" :file-list="formData.cardPic" :limit="2" uploadType="IdCard"
                   show-type="list" :accepts="['.jpg', '.png']" style="width:100%" />
               </view>
             </uni-forms-item>
@@ -74,14 +76,16 @@
 
           <uni-col :span="24">
             <uni-forms-item required label="户口本照片" :label-width="150" label-align="right" name="formData.householdPic">
-              <upload-file v-model="formData.householdPic" :file-list="formData.householdPic" :limit="10" show-type="list"
+              <upload-file
+v-model="formData.householdPic" :file-list="formData.householdPic" :limit="10" show-type="list"
                 :accepts="['.jpg', '.png']" />
             </uni-forms-item>
           </uni-col>
 
           <uni-col :span="24">
             <uni-forms-item label="其他照片" :label-width="150" label-align="right" name="formData.otherPic">
-              <upload-file v-model="formData.otherPic" :file-list="formData.otherPic" :limit="10" show-type="list"
+              <upload-file
+v-model="formData.otherPic" :file-list="formData.otherPic" :limit="10" show-type="list"
                 :accepts="['.jpg', '.png']" />
             </uni-forms-item>
           </uni-col>
@@ -96,7 +100,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { routerBack, getStorage, StorageKey, fmtPicUrl } from '@/utils'
+import { routerBack, getStorage, StorageKey, fmtPicUrl,cardReg } from '@/utils'
 import {
   addImpLandlordPeopleApi,
   updateImpLandlordPeopleApi,
@@ -189,6 +193,9 @@ const submit = () => {
     return
   } else if (!formData.value.card && formData.value.addReason !== '3') {
     showToast('请输入身份证号')
+    return
+  } else if (!cardReg.test(formData.value.card)) {
+    showToast('请输入正确的法人身份证号')
     return
   } else if (!formData.value.relation && formData.value.addReason !== '3') {
     showToast('请选择与户主关系')

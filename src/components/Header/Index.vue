@@ -2,8 +2,9 @@
   <view class="list-header">
     <view class="list-header-rt">
       <view class="list-header-left">
-        <view class="name">{{ dataInfo.name }}</view>
-        <view class="account-no">{{ filterViewDoorNoMd(dataInfo) }}</view>
+        <view class="name">{{ dataInfo.name }}123</view>
+        <view class="account-no">{{ dataInfo.showDoorNo }}
+        </view>
         <view class="fill-number">
           填报进度&nbsp;
           <text class="green">{{ fillNumber }}</text>
@@ -86,7 +87,7 @@
 </template>
 
 <script lang="ts">
-import { StorageKey, getCurrentTimeStamp, getStorage, filterViewDoorNo } from '@/utils'
+import { StorageKey, getCurrentTimeStamp, getStorage } from '@/utils'
 import { reportDataApi, getPrintTemplatesApi, getPrintLandlordApi, signDataApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { MainType, PrintType } from '@/types/common'
@@ -251,9 +252,9 @@ export default {
     }
   },
   methods: {
-    filterViewDoorNoMd(data: any) {
-      return filterViewDoorNo(data)
-    },
+    // filterViewDoorNoMd(data: any) {
+    //   return filterViewDoorNo(data)
+    // },
     // 是否为空数组
     isNotNullArray(arr: any) {
       return arr && Array.isArray(arr) && arr.length

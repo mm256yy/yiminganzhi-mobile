@@ -84,13 +84,14 @@ const getLandlordListBySearch = (name: string, type: any) => {
   }
   if (props.stage === 'survey') {
     getLandlordListBySearchApi(params).then((res) => {
+       console.log(res,'测试数据111')
       if (res && res.length > 0) {
         let arr: any = []
         res.map((item: any) => {
           arr.push({
             id: item.id,
             label: item.name,
-            value: item.doorNo,
+            value: item.showDoorNo,
             checked: item.checked
           })
         })
@@ -99,13 +100,14 @@ const getLandlordListBySearch = (name: string, type: any) => {
     })
   } else if (props.stage === 'implementation') {
     getImpLandlordListBySearchApi(params).then((res) => {
+       console.log(res,'测试数据222')
       if (res && res.length > 0) {
         let arr: any = []
         res.map((item: any) => {
           arr.push({
             id: item.id,
             label: item.name,
-            value: item.doorNo,
+            value: item.showDoorNo,
             checked: item.checked
           })
         })

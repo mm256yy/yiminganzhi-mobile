@@ -61,7 +61,7 @@
             </uni-col>
           </uni-row>
           <uni-row>
-            <uni-col :span="24">
+            <uni-col :span="12">
               <view class="col">
                 <view class="label">人口性质：</view>
                 <view class="content">
@@ -71,6 +71,12 @@
                       : formatDict(item.populationNature, 263)
                   }}
                 </view>
+              </view>
+            </uni-col>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">删除原因：</view>
+                <view class="content">{{ formatDict(item.censusType, 249) }}</view>
               </view>
             </uni-col>
           </uni-row>

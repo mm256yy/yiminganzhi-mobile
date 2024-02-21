@@ -213,7 +213,7 @@ const pollingSuccess = async () => {
 const polling = () => {
   intervalId.value = setInterval(() => {
     console.log('轮询拉取状态')
-
+    console.log(pullInstance.maxCount,count.value,'测试异常状态次数')
     // 拉取接口报错 异常 超过设定最大轮询次数 u需要结束轮询
     if (pullInstance.maxCount === -1 || count.value === pullInstance.maxCount) {
       uni.hideLoading()
