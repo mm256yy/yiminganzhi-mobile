@@ -34,7 +34,7 @@
         <view class="content" @click="select(index)">
           <view class="left">
             <view class="label">{{ item.label }}</view>
-            <view class="value">{{ item.value }}</view>
+            <view class="value">{{ item.value.substring(2) }}</view>
           </view>
           <view class="right">
             <image
@@ -91,7 +91,7 @@ const getLandlordListBySearch = (name: string, type: any) => {
           arr.push({
             id: item.id,
             label: item.name,
-            value: item.showDoorNo,
+            value: item.doorNo,
             checked: item.checked
           })
         })
@@ -107,7 +107,7 @@ const getLandlordListBySearch = (name: string, type: any) => {
           arr.push({
             id: item.id,
             label: item.name,
-            value: item.showDoorNo,
+            value: item.doorNo,
             checked: item.checked
           })
         })
