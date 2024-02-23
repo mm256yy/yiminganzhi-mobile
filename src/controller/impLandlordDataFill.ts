@@ -183,6 +183,7 @@ class ImpDataFill extends ImpLandlord {
           return
         }
         // 更新数据
+        console.log(landlordItem, '删除的接口内部数据')
         const updateRes = await this.updateLandlord(landlordItem)
         updateRes ? resolve(true) : reject(false)
       } catch (error) {

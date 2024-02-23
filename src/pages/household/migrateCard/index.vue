@@ -165,7 +165,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref,computed } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import { formatDict, formatStr, routerForward } from '@/utils'
 import { getCompensationCardConfigApi } from '@/service'
@@ -178,7 +178,9 @@ interface PropsType {
 
 const props = defineProps<PropsType>()
 const tableData = ref<any[]>([])
-
+const dataList = computed(() => {
+  return props.dataList.filter((item) => item.isDelete !== '1')
+})
 // 获取移民建卡奖励费列表
 const getCompensationCardConfig = async () => {
   let res = await getCompensationCardConfigApi()

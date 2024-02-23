@@ -65,7 +65,7 @@ const props = defineProps<PropsType>()
 const demographicList = computed(() => {
   console.log(props.dataInfo.demographicList, 'list')
   return props.dataInfo && props.dataInfo.demographicList
-    ? props.dataInfo.demographicList.filter((item) => item.settingWay === '2')
+    ? props.dataInfo.demographicList.filter((item) => item.settingWay === '2'&&item.isDelete!=='1')
     : []
 })
 

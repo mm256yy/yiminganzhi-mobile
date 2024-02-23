@@ -126,7 +126,7 @@ const dataList = ref<LocationType[]>([])
 const getDataRequest = async () => {
   try {
     const data = await getResettleDetail(OtherDataType.settleAddressList)
-    dataList.value=data
+    dataList.value = data
   } catch (error) {
     console.log('error', error);
   }
@@ -152,11 +152,7 @@ const demographicList = computed(() => {
 //     :
 // 获取模拟安置 生产安置信息
 const simulateDemographic = computed(() => {
-  return props.dataInfo &&
-    props.dataInfo.simulateDemographic &&
-    props.dataInfo.simulateDemographic.length
-    ? props.dataInfo.simulateDemographic
-    :demographicList.value.map((item) => {
+  return demographicList.value.map((item) => {
     const {
       id: demographicId,
       name,
@@ -166,7 +162,8 @@ const simulateDemographic = computed(() => {
       censusType,
       populationNature,
       settingWay,
-      settingRemark
+      settingRemark,
+      isDelete
     } = item
     return {
       demographicId,
@@ -177,9 +174,11 @@ const simulateDemographic = computed(() => {
       censusType,
       populationNature,
       settingWay,
-      settingRemark
+      settingRemark,
+      isDelete
     }
   })
+  // return props.dataInfo && props.dataInfo.demographicList ? props.dataInfo.demographicList : []
 })
 
 // 获取模拟安置 搬迁安置信息

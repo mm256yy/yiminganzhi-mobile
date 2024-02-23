@@ -3,7 +3,7 @@
     <!-- 搬迁安置 —— 集中供养 -->
     <view class="main" v-if="getRelocationResettlement">
       <view class="list" v-if="props.dataList && props.dataList.length > 0">
-        <view class="list-item" v-for="item in props.dataList" :key="item.id">
+        <view class="list-item" v-for="item in dataList" :key="item.id">
           <view class="list-1">
             <view class="left">
               <view class="icon">{{ formatDict(item.relation, 307) }}</view>
@@ -23,7 +23,7 @@
             <uni-row>
               <uni-col :span="12">
                 <view class="col">
-                  <view class="label">身份证号：</view>
+                  <view class="label">身份证号1：</view>
                   <view class="content">
                     {{ formatStr(item.card) }}
                   </view>
@@ -123,6 +123,9 @@ const getRelocationResettlement = computed(() => {
   return houseAreaType === HouseAreaType.concentrate
 })
 
+const dataList = computed(() => {
+  return props.dataList.filter((item) => item.isDelete !== '1')
+})
 /**
  * 办理/查看
  * @params {Object} data：handle: 办理 , view: 查看

@@ -155,6 +155,7 @@ import {
 import { LandlordType } from '@/types/sync'
 import { LandlordSearchType, MainType, RoleCodeType } from '@/types/common'
 import { routerForward, getStorage, StorageKey } from '@/utils'
+import { getVirutalVillageTreeApi } from '@/service'
 
 const tabType = ref<MainType>(MainType.PeasantHousehold)
 const showVillageSelect = ref<boolean>(false)
@@ -222,7 +223,8 @@ const villageConfirm = (code: string[], tit: string[]) => {
 }
 
 const getTreeData = async () => {
-  const res = await getVillageTreeWithoutNullApi(MainType.PeasantHousehold)
+  // const res = await getVillageTreeWithoutNullApi(MainType.PeasantHousehold)
+  const res = await getVirutalVillageTreeApi()
   console.log('res----------------------', res)
   treeData.value = res || []
 }

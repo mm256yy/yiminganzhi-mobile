@@ -64,7 +64,7 @@ const props = defineProps<PropsType>()
 // 获取人口列表
 const demographicList = computed(() => {
   return props.dataInfo && props.dataInfo.demographicList
-    ? props.dataInfo.demographicList.filter((item) => item.settingWay === '3')
+    ? props.dataInfo.demographicList.filter((item) => item.settingWay === '3'&&item.isDelete!=='1')
     : []
 })
 

@@ -73,10 +73,10 @@
                 </view>
               </view>
             </uni-col>
-            <uni-col :span="12">
+            <uni-col :span="12" v-if="item.deleteReason">
               <view class="col">
                 <view class="label">删除原因：</view>
-                <view class="content">{{ formatDict(item.censusType, 249) }}</view>
+                <view class="content">{{ formatStr(item.deleteReason)}}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -189,6 +189,7 @@ const dialogConfirm = (data: any) => {
     ...currentItem.value,
     deleteReason: data
   }
+  console.log(params, '测试params')
   emit('deletePopulation', params)
 }
 

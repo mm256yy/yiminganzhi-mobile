@@ -15,11 +15,13 @@
           <base-info-imp v-if="tabVal === 1" :dataInfo="dataInfo" @update-data="updateData" />
 
           <!-- 人口核定 -->
-          <population-verfication v-if="tabVal === 2" :dataList="dataInfo.demographicList" :dataInfo="dataInfo"
+          <population-verfication
+v-if="tabVal === 2" :dataList="dataInfo.demographicList" :dataInfo="dataInfo"
             @delete-population="deletePopulation" @update-data="updateData" />
 
           <!-- 房屋产权 -->
-          <house-property v-if="tabVal === 3" :dataList="dataInfo.immigrantHouseList" :dataInfo="dataInfo"
+          <house-property
+v-if="tabVal === 3" :dataList="dataInfo.immigrantHouseList" :dataInfo="dataInfo"
             @update-data="updateData" />
 
           <!-- 房屋/附属物评估报告 -->
@@ -41,7 +43,8 @@
           <grave-resettle-confirm v-if="tabVal === 9" :dataInfo="(dataInfo as any)" @update-data="updateData" />
 
           <!-- 生产用地 -->
-          <product-land v-if="tabVal === 10" :baseInfo="dataInfo" :dataInfo="dataInfo.immigrantLand"
+          <product-land
+v-if="tabVal === 10" :baseInfo="dataInfo" :dataInfo="dataInfo.immigrantLand"
             @update-data="updateData" />
 
           <!-- 选房择址 -->
@@ -66,7 +69,8 @@
           <agreement v-if="tabVal === 17" :dataInfo="dataInfo" />
 
           <!-- 自建房 -->
-          <self-build-house v-if="tabVal === 18" :dataList="dataInfo.immigrantBuildOneselfList"
+          <self-build-house
+v-if="tabVal === 18" :dataList="dataInfo.immigrantBuildOneselfList"
             :pdfdata="dataInfo.immigrantChooseHouseList" :dataInfo="dataInfo" @update-data="updateData" />
 
           <!-- 公寓房 -->
@@ -288,7 +292,8 @@ const switchTab = (item: any) => {
  * @param{Object} reason 删除原因
  */
 const deletePopulation = (data: any, reason?: string) => {
-  deleteImpLandlordPeopleApi(props.dataInfo.uid, data.uid, reason)
+  console.log(data,reason,'删除的是什么？')
+  deleteImpLandlordPeopleApi(props.dataInfo.uid, data.uid, data.deleteReason)
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)

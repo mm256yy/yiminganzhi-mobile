@@ -547,9 +547,9 @@ export class ImpLandlord extends Common {
           // 赋值坟墓信息
           res.immigrantGraveList = graveList || []
           console.log('res坟墓信息', res.immigrantGraveList)
-          if (this.isArrayAndNotNull(res.demographicList)) {
-            res.demographicList = res.demographicList.filter((item) => item.isDelete !== '1')
-          }
+          // if (this.isArrayAndNotNull(res.demographicList)) {
+          //   res.demographicList = res.demographicList.filter((item) => item.isDelete !== '1')
+          // }
 
           if (this.isArrayAndNotNull(res.immigrantHouseList)) {
             res.immigrantHouseList = res.immigrantHouseList.filter((item) => item.isDelete !== '1')

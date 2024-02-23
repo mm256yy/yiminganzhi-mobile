@@ -2,7 +2,7 @@
   <view class="population-list">
     <view class="population-item" v-for="item in tableData" :key="item.uid">
       <view class="item">
-        <view class="label">姓名：</view>
+        <view class="label">姓名1：</view>
         <view class="value">{{ item.name }}</view>
       </view>
       <view class="item">
@@ -105,6 +105,8 @@ watch(
   (val) => {
     if (val) {
       tableData.value = val
+      console.log(tableData.value,'测试数据模拟安置')
+      tableData.value=tableData.value.filter((item) => item.isDelete !== '1')
       // val.forEach((item,index) => {
       //   if(item.name=='人口增计'){
       //      val.splice(index,1)
