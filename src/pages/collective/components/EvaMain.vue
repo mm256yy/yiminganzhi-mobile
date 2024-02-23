@@ -127,7 +127,8 @@ import {
   deleteImpLandlordTreeApi,
   deleteImpLandlordAssetLandApi,
   deleteImpLandlordAssetAppendantApi,
-  deleteImpLandlordFacilitiesApi
+  deleteImpLandlordFacilitiesApi,
+  deleteInfrastructureVcApi
 } from '@/service'
 
 import iconBaseDef from '@/static/images/icon_collect_info_default.png' // 引入基本信息默认 icon
@@ -384,6 +385,23 @@ const deleteSpecial = (data: any) => {
       showToast(ERROR_MSG)
     })
 }
+
+/*
+ * 基础设施评估 - 删除
+ * @param(Object) data 被删除的行信息
+ */
+const deleteInfrastructureVc = (data: any) => {
+  deleteInfrastructureVcApi(props.dataInfo.uid, data.uid)
+    .then((res: any) => {
+      if (res) {
+        showToast(SUCCESS_MSG);
+        updateData();
+      }
+    })
+    .catch(() => {
+      showToast(ERROR_MSG);
+    });
+};
 </script>
 
 <style lang="scss">

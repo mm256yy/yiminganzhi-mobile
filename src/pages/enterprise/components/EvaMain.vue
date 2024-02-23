@@ -79,7 +79,7 @@
                 <!-- 基础设施评估 基础和其他列表数据需调整 -->
                 <infrastructureEva
                  v-if="tabVal === 6" 
-                  :dataList="dataInfo.immigrantEquipmentList"  
+                  :dataList="dataInfo.immigrantInfrastructureList"  
                  :dataInfo="dataInfo"
                   @delete-equipment="deleteInfrastructure"
                   @update-data="updateData"
@@ -87,7 +87,7 @@
                 <!-- 其他设施评估 -->
                 <otherEva
                  v-if="tabVal === 7"
-                  :dataList="dataInfo.immigrantEquipmentList"  
+                  :dataList="dataInfo.immigrantOtherList"  
                   :dataInfo="dataInfo"
                   @delete-equipment="deleteOther"
                   @update-data="updateData"

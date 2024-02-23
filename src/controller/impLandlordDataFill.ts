@@ -808,7 +808,7 @@ class ImpDataFill extends ImpLandlord {
     })
   }
 
-  // 调查对象-基础设施评估新增操作  暂时这么写 枚举类型需更换
+  // 调查对象-企业基础设施评估新增操作  暂时这么写 枚举类型需更换
   addInfrastructure(uid: string, data: any): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -824,10 +824,10 @@ class ImpDataFill extends ImpLandlord {
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         console.log(landlordItem, '测试landlordItem')
         if (landlordItem) {
-          if (!landlordItem.immigrantEquipmentList) {
-            landlordItem.immigrantEquipmentList = []
+          if (!landlordItem.immigrantInfrastructureList) {
+            landlordItem.immigrantInfrastructureList = []
           }
-          landlordItem.immigrantEquipmentList.push(data)
+          landlordItem.immigrantInfrastructureList.push(data)
         } else {
           reject(false)
           console.log('调查对象信息查询失败')
@@ -842,7 +842,7 @@ class ImpDataFill extends ImpLandlord {
       }
     })
   }
-  // 调查对象-基础设施评估修改操作
+  // 调查对象-企业基础设施评估修改操作
   updateInfrastructure(uid: string, data: any): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -853,7 +853,7 @@ class ImpDataFill extends ImpLandlord {
         }
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
-          landlordItem.immigrantEquipmentList = landlordItem.immigrantEquipmentList.map((item) => {
+          landlordItem.immigrantInfrastructureList = landlordItem.immigrantInfrastructureList.map((item) => {
             if (item.uid === data.uid) {
               item = { ...item, ...data }
               item.isUpdate = '1'
@@ -874,7 +874,7 @@ class ImpDataFill extends ImpLandlord {
       }
     })
   }
-  // 调查对象-基础设施评估删除操作
+  // 调查对象-企业基础设施评估删除操作
   deleteInfrastructure(uid: string, itemUid: string, deleteReason?: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -885,7 +885,7 @@ class ImpDataFill extends ImpLandlord {
         }
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
-          landlordItem.immigrantEquipmentList = landlordItem.immigrantEquipmentList.map((item) => {
+          landlordItem.immigrantInfrastructureList = landlordItem.immigrantInfrastructureList.map((item) => {
             if (item.uid === itemUid) {
               item.deleteReason = deleteReason || ''
               item.isDelete = '1'
@@ -908,7 +908,7 @@ class ImpDataFill extends ImpLandlord {
     })
   }
 
-  // 调查对象-其他评估新增操作
+  // 调查对象-企业其他评估新增操作
   addOther(uid: string, data: EquipmentType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -924,10 +924,10 @@ class ImpDataFill extends ImpLandlord {
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         console.log(landlordItem, '测试landlordItem')
         if (landlordItem) {
-          if (!landlordItem.immigrantEquipmentList) {
-            landlordItem.immigrantEquipmentList = []
+          if (!landlordItem.immigrantOtherList) {
+            landlordItem.immigrantOtherList = []
           }
-          landlordItem.immigrantEquipmentList.push(data)
+          landlordItem.immigrantOtherList.push(data)
         } else {
           reject(false)
           console.log('调查对象信息查询失败')
@@ -942,7 +942,7 @@ class ImpDataFill extends ImpLandlord {
       }
     })
   }
-  // 调查对象-其他评估修改操作
+  // 调查对象-企业其他评估修改操作
   updateOther(uid: string, data: EquipmentType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -953,7 +953,7 @@ class ImpDataFill extends ImpLandlord {
         }
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
-          landlordItem.immigrantEquipmentList = landlordItem.immigrantEquipmentList.map((item) => {
+          landlordItem.immigrantOtherList = landlordItem.immigrantOtherList.map((item) => {
             if (item.uid === data.uid) {
               item = { ...item, ...data }
               item.isUpdate = '1'
@@ -974,7 +974,7 @@ class ImpDataFill extends ImpLandlord {
       }
     })
   }
-  // 调查对象-其他评估删除操作
+  // 调查对象-企业其他评估删除操作
   deleteOther(uid: string, itemUid: string, deleteReason?: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -985,7 +985,7 @@ class ImpDataFill extends ImpLandlord {
         }
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
-          landlordItem.immigrantEquipmentList = landlordItem.immigrantEquipmentList.map((item) => {
+          landlordItem.immigrantOtherList = landlordItem.immigrantOtherList.map((item) => {
             if (item.uid === itemUid) {
               item.deleteReason = deleteReason || ''
               item.isDelete = '1'
@@ -1008,7 +1008,305 @@ class ImpDataFill extends ImpLandlord {
     })
   }
 
+  // 调查对象-个体户基础设施评估新增操作  暂时这么写 枚举类型需更换
+  addSepInfrastructure(uid: string, data: any): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!uid) {
+          reject(false)
+          console.log('调查对象uid缺失')
+          return
+        }
+        const itemUid = guid()
+        data.uid = itemUid
+        data.isDelete = '0'
+        data.isUpdate = '1'
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
+        console.log(landlordItem, '测试landlordItem')
+        if (landlordItem) {
+          if (!landlordItem.immigrantInfrastructureList) {
+            landlordItem.immigrantInfrastructureList = []
+          }
+          landlordItem.immigrantInfrastructureList.push(data)
+        } else {
+          reject(false)
+          console.log('调查对象信息查询失败')
+          return
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'addLandlordEquipment-error')
+        reject(false)
+      }
+    })
+  }
+  // 调查对象-个体户基础设施评估修改操作
+  updateSepInfrastructure(uid: string, data: any): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!uid) {
+          reject(false)
+          console.log('调查对象uid缺失')
+          return
+        }
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
+        if (landlordItem) {
+          landlordItem.immigrantInfrastructureList = landlordItem.immigrantInfrastructureList.map((item) => {
+            if (item.uid === data.uid) {
+              item = { ...item, ...data }
+              item.isUpdate = '1'
+            }
+            return item
+          })
+        } else {
+          reject(false)
+          console.log('调查对象信息查询失败')
+          return
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'updateLandlordEquipment-error')
+        reject(false)
+      }
+    })
+  }
+  // 调查对象-个体户基础设施评估删除操作
+  deleteSepInfrastructure(uid: string, itemUid: string, deleteReason?: string): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!uid || !itemUid) {
+          reject(false)
+          console.log('uid缺失')
+          return
+        }
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
+        if (landlordItem) {
+          landlordItem.immigrantInfrastructureList = landlordItem.immigrantInfrastructureList.map((item) => {
+            if (item.uid === itemUid) {
+              item.deleteReason = deleteReason || ''
+              item.isDelete = '1'
+              item.isUpdate = '1'
+            }
+            return item
+          })
+        } else {
+          reject(false)
+          console.log('调查对象信息查询失败')
+          return
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'deleteLandlordEquipment-error')
+        reject(false)
+      }
+    })
+  }
 
+  // 调查对象-个体户其他评估新增操作
+  addSepOther(uid: string, data: EquipmentType): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!uid) {
+          reject(false)
+          console.log('调查对象uid缺失')
+          return
+        }
+        const itemUid = guid()
+        data.uid = itemUid
+        data.isDelete = '0'
+        data.isUpdate = '1'
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
+        console.log(landlordItem, '测试landlordItem')
+        if (landlordItem) {
+          if (!landlordItem.immigrantOtherList) {
+            landlordItem.immigrantOtherList = []
+          }
+          landlordItem.immigrantOtherList.push(data)
+        } else {
+          reject(false)
+          console.log('调查对象信息查询失败')
+          return
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'addLandlordEquipment-error')
+        reject(false)
+      }
+    })
+  }
+  // 调查对象-个体户其他评估修改操作
+  updateSepOther(uid: string, data: EquipmentType): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!uid) {
+          reject(false)
+          console.log('调查对象uid缺失')
+          return
+        }
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
+        if (landlordItem) {
+          landlordItem.immigrantOtherList = landlordItem.immigrantOtherList.map((item) => {
+            if (item.uid === data.uid) {
+              item = { ...item, ...data }
+              item.isUpdate = '1'
+            }
+            return item
+          })
+        } else {
+          reject(false)
+          console.log('调查对象信息查询失败')
+          return
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'updateLandlordEquipment-error')
+        reject(false)
+      }
+    })
+  }
+  // 调查对象-个体户其他评估删除操作
+  deleteSepOther(uid: string, itemUid: string, deleteReason?: string): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!uid || !itemUid) {
+          reject(false)
+          console.log('uid缺失')
+          return
+        }
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
+        if (landlordItem) {
+          landlordItem.immigrantOtherList = landlordItem.immigrantOtherList.map((item) => {
+            if (item.uid === itemUid) {
+              item.deleteReason = deleteReason || ''
+              item.isDelete = '1'
+              item.isUpdate = '1'
+            }
+            return item
+          })
+        } else {
+          reject(false)
+          console.log('调查对象信息查询失败')
+          return
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'deleteLandlordEquipment-error')
+        reject(false)
+      }
+    })
+  }
+
+  // 调查对象-村集体基础设施评估新增操作  暂时这么写 枚举类型需更换
+  addVcInfrastructure(uid: string, data: any): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!uid) {
+          reject(false)
+          console.log('调查对象uid缺失')
+          return
+        }
+        const itemUid = guid()
+        data.uid = itemUid
+        data.isDelete = '0'
+        data.isUpdate = '1'
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
+        console.log(landlordItem, '测试landlordItem')
+        if (landlordItem) {
+          if (!landlordItem.immigrantInfrastructureList) {
+            landlordItem.immigrantInfrastructureList = []
+          }
+          landlordItem.immigrantInfrastructureList.push(data)
+        } else {
+          reject(false)
+          console.log('调查对象信息查询失败')
+          return
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'addLandlordEquipment-error')
+        reject(false)
+      }
+    })
+  }
+  // 调查对象-村集体基础设施评估修改操作
+  updateVcInfrastructure(uid: string, data: any): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!uid) {
+          reject(false)
+          console.log('调查对象uid缺失')
+          return
+        }
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
+        if (landlordItem) {
+          landlordItem.immigrantInfrastructureList = landlordItem.immigrantInfrastructureList.map((item) => {
+            if (item.uid === data.uid) {
+              item = { ...item, ...data }
+              item.isUpdate = '1'
+            }
+            return item
+          })
+        } else {
+          reject(false)
+          console.log('调查对象信息查询失败')
+          return
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'updateLandlordEquipment-error')
+        reject(false)
+      }
+    })
+  }
+  // 调查对象-村集体基础设施评估删除操作
+  deleteVcInfrastructure(uid: string, itemUid: string, deleteReason?: string): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!uid || !itemUid) {
+          reject(false)
+          console.log('uid缺失')
+          return
+        }
+        const landlordItem = await this.getLandlordByUidNoFilter(uid)
+        if (landlordItem) {
+          landlordItem.immigrantInfrastructureList = landlordItem.immigrantInfrastructureList.map((item) => {
+            if (item.uid === itemUid) {
+              item.deleteReason = deleteReason || ''
+              item.isDelete = '1'
+              item.isUpdate = '1'
+            }
+            return item
+          })
+        } else {
+          reject(false)
+          console.log('调查对象信息查询失败')
+          return
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'deleteLandlordEquipment-error')
+        reject(false)
+      }
+    })
+  }
   // 调查对象-农村专项设施新增操作
   addLandlordFacilities(uid: string, data: FacilitiesType): Promise<boolean> {
     return new Promise(async (resolve, reject) => {

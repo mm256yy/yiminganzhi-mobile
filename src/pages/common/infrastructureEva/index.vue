@@ -1,5 +1,5 @@
 <template>
-  <!--基础设施评估 -->
+  <!--个体工商户基础设施评估 -->
   <view class="equipment-eva-wrapper">
     <view class="list" v-if="props.dataList && props.dataList.length">
       <view class="list-item" v-for="item in props.dataList" :key="item.id">

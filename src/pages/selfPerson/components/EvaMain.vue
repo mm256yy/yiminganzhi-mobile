@@ -92,7 +92,8 @@
                 
                 <!-- 基础设施评估 -->
                 <infrastructureEva
-                 v-if="tabVal === 8" 
+                 v-if="tabVal === 8"
+                  :dataList="dataInfo.immigrantInfrastructureList"   
                  :dataInfo="dataInfo"
                   @delete-equipment="deleteEquipment"
                   @update-data="updateData"
@@ -100,6 +101,7 @@
                 <!-- 基础设施评估 -->
                 <otherEva
                  v-if="tabVal === 9"
+                 :dataList="dataInfo.immigrantOtherList" 
                   :dataInfo="dataInfo"
                   @delete-equipment="deleteEquipment"
                   @update-data="updateData"
