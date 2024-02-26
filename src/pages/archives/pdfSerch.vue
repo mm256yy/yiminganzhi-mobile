@@ -303,7 +303,7 @@
       <div class="reportInstrumentContent1">
         <button class="reportButton" type="info" @click="render.headelReport" v-if="id < 7">导出PDF</button>
         <button class="reportButton" type="info" @click="render.headelReporst" v-else>导出PDF</button>
-        <button class="reportButton" type="info" @click="handleClick">签名</button>
+        <button class="reportButton" type="info" @click="handleClick">户主签名</button>
         <button class="reportButton" type="info" @click="handleClickToymjk">返回</button>
       </div>
     </div>

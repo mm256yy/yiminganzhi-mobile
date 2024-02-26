@@ -194,7 +194,7 @@ const submit = () => {
   } else if (!formData.value.card && formData.value.addReason !== '3') {
     showToast('请输入身份证号')
     return
-  } else if (!cardReg.test(formData.value.card)) {
+  } else if (!cardReg.test(formData.value.card) && formData.value.addReason !== '3') {
     showToast('请输入正确的法人身份证号')
     return
   } else if (!formData.value.relation && formData.value.addReason !== '3') {

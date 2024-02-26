@@ -11,7 +11,8 @@ import {
   EquipmentType,
   FacilitiesType,
   CompanyType,
-  UpdateLogType
+  UpdateLogType,
+  FoundationType
 } from './datafill'
 import {
   ProjectType,
@@ -111,6 +112,10 @@ export interface LandlordType {
   immigrantManagementList: ManagementType[]
   // 企业设备
   immigrantEquipmentList: EquipmentType[]
+  //基础设施评估
+  immigrantInfrastructureList: FoundationType[]
+  //其他评估
+  immigrantOtherList: FoundationType[]
   // 农村小型专项及农副业设施信息
   immigrantFacilitiesList: FacilitiesType[]
   // 个体户 / 公司 扩展字段
@@ -214,6 +219,10 @@ export interface LandlordHasStatusType {
   immigrantManagementList: ManagementType[]
   // 企业设备
   immigrantEquipmentList: EquipmentType[]
+  //基础设施评估
+  immigrantInfrastructureList: any[]
+  //其他评估
+  immigrantOtherList: any[]
   // 农村小型专项及农副业设施信息
   immigrantFacilitiesList: FacilitiesType[]
   // 个体户 / 公司 扩展字段

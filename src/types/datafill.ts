@@ -182,6 +182,35 @@ export interface TreeType {
   deleteReason?: string
   isDelete?: string
 }
+// 基础设施类型定义
+export interface FoundationType {
+  id: number
+  doorNo: string
+  householdId: number
+  surveyId: number
+  name: string
+  usageType: string
+  size: string
+  unit: string
+  number: number
+  remark: string
+  [key: string]: any
+
+  uid?: string
+  inundationRange?: string
+  altitude?: number
+  projectId?: number
+  status?: string
+  price?: number
+  discountRate?: number
+  valuationAmount?: number
+  compensationAmount?: number
+  valuationRemark?: string
+
+  addReason?: string
+  deleteReason?: string
+  isDelete?: string
+}
 
 // 坟墓类型定义
 export interface GraveType {

@@ -69,7 +69,9 @@ class PushData {
                   immigrantFacilitiesList,
                   immigrantDocumentation,
                   immigrantFilling,
-                  immigrantCompensationCardList
+                  immigrantCompensationCardList,
+                  immigrantInfrastructureList,
+                  immigrantOtherList
                 } = landlordItem
 
                 if (demographicList && demographicList.length) {
@@ -111,6 +113,16 @@ class PushData {
                 if (immigrantFacilitiesList && immigrantFacilitiesList.length) {
                   landlordItem.immigrantFacilitiesList = immigrantFacilitiesList.filter(
                     (item) => item.isPadDelete !== '1'
+                  )
+                }
+                if (immigrantInfrastructureList && immigrantInfrastructureList.length) {
+                  landlordItem.immigrantInfrastructureList = immigrantInfrastructureList.filter(
+                    (item: any) => item.isPadDelete !== '1'
+                  )
+                }
+                if (immigrantOtherList && immigrantOtherList.length) {
+                  landlordItem.immigrantOtherList = immigrantOtherList.filter(
+                    (item: any) => item.isPadDelete !== '1'
                   )
                 }
                 if (immigrantFilling) {
@@ -290,7 +302,9 @@ class PushData {
                   immigrantHouseList,
                   immigrantTreeList,
                   immigrantEquipmentList,
-                  immigrantFacilitiesList
+                  immigrantFacilitiesList,
+                  immigrantInfrastructureList,
+                  immigrantOtherList
                 } = landlordItem
                 if (demographicList && demographicList.length) {
                   demographicList.forEach((item) => {
@@ -340,6 +354,26 @@ class PushData {
                     if (item.uid && item.id && item.isPadDelete === '1') {
                       deleteList.push({
                         type: 'immigrantFacilitiesList',
+                        deleteId: item.uid
+                      })
+                    }
+                  })
+                }
+                if (immigrantInfrastructureList && immigrantInfrastructureList.length) {
+                  immigrantInfrastructureList.forEach((item: any) => {
+                    if (item.uid && item.id && item.isPadDelete === '1') {
+                      deleteList.push({
+                        type: 'immigrantInfrastructureList',
+                        deleteId: item.uid
+                      })
+                    }
+                  })
+                }
+                if (immigrantOtherList && immigrantOtherList.length) {
+                  immigrantOtherList.forEach((item: any) => {
+                    if (item.uid && item.id && item.isPadDelete === '1') {
+                      deleteList.push({
+                        type: 'immigrantOtherList',
                         deleteId: item.uid
                       })
                     }
