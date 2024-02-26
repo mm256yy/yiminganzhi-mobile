@@ -162,14 +162,14 @@
               label="备注"
               :label-width="150"
               label-align="right"
-              name="formData.valuationRemark"
+              name="formData.remark"
             >
               <view :class="['input-txtarea-wrapper', focusIndex === 6 ? 'focus' : '']">
                 <textarea
                   class="input-txtarea"
                   placeholder="请输入(50字以内)"
                   :maxlength="50"
-                  v-model="formData.valuationRemark"
+                  v-model="formData.remark"
                   @focus="inputFocus(6)"
                   @blur="inputBlur"
                 ></textarea>
@@ -190,7 +190,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue'
+import { ref, computed,watch } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import dayjs from 'dayjs'
 import { routerBack, getStorage, StorageKey } from '@/utils'
@@ -219,7 +219,7 @@ const formData = ref<any>({
   newnessRate: '',
   valuationAmount: '',
   compensationAmount: '',
-  valuationRemark: ''
+  remark: ''
 })
 
 // 获取数据字典
@@ -362,6 +362,11 @@ const submit = () => {
         })
     }
 }
+
+watch(()=>formData.value.valuationAmount,(newValue)=>{
+    formData.value.compensationAmount=newValue
+})
+
 </script>
 
 <style lang="scss" scoped>

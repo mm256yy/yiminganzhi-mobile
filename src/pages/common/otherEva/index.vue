@@ -126,7 +126,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['deleteEquipment'])
+const emit = defineEmits(['deleteOther'])
 const alertDialog = ref<any>(null)
 const currentItem = ref<any>({})
 const deleteReason = ref<string>('') // 删除原因
@@ -140,12 +140,12 @@ const toLink = (type: string, itemUid?: any) => {
   const { uid, doorNo } = props.dataInfo
   if (type === 'edit') {
     let params = { type, uid, doorNo, itemUid }
-    routerForward('otherAssessmentEdit', {
+    routerForward('otherAssessmentEvaEdit', {
       params: JSON.stringify(params)
     })
   } else if (type === 'add') {
     let params = { type, uid, doorNo }
-    routerForward('otherAssessmentEdit', {
+    routerForward('otherAssessmentEvaEdit', {
       params: JSON.stringify(params)
     })
   }
@@ -169,7 +169,7 @@ const dialogConfirm = (data: any) => {
     ...currentItem.value,
     deleteReason: data
   }
-  emit('deleteEquipment', params)
+  emit('deleteOther', params)
 }
 
 const dialogClose = () => {

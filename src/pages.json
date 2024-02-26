@@ -302,8 +302,29 @@
 			}
 		},
 		{
+			"name": "baseInfrastructureEvaEdit",
+			"path": "pages/common/infrastructureEva/edit",
+			"style": {
+				"navigationBarTitleText": "编辑基础设施评估"
+			}
+		},
+		{
+			"name": "baseInfrastructureCollectiveEdit",
+			"path": "pages/common/infrastructureCollective/edit",
+			"style": {
+				"navigationBarTitleText": "编辑基础设施评估"
+			}
+		},
+		{
 			"name": "otherAssessmentEdit",
 			"path": "pages/common/other/edit",
+			"style": {
+				"navigationBarTitleText": "编辑其他评估"
+			}
+		},
+		{
+			"name": "otherAssessmentEvaEdit",
+			"path": "pages/common/otherEva/edit",
 			"style": {
 				"navigationBarTitleText": "编辑其他评估"
 			}

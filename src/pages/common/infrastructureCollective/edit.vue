@@ -7,7 +7,7 @@
           <uni-col :span="24">
             <uni-forms-item
               required
-              label="新增原因111"
+              label="新增原因"
               :label-width="150"
               label-align="right"
               name="formData.addReason"
@@ -83,14 +83,14 @@
               label="评估单价"
               :label-width="150"
               label-align="right"
-              name="formData.price"
+              name="formData.valuationPrice"
             >
               <view :class="['input-wrapper', focusIndex === 3 ? 'focus' : '']">
                 <input
                   class="input-txt"
                   placeholder="请输入"
                   type="number"
-                  v-model="formData.price"
+                  v-model="formData.valuationPrice"
                   @focus="inputFocus(3)"
                   @blur="inputBlur"
                 />
@@ -163,14 +163,14 @@
               label="备注"
               :label-width="150"
               label-align="right"
-              name="formData.valuationRemark"
+              name="formData.remark"
             >
               <view :class="['input-txtarea-wrapper', focusIndex === 6 ? 'focus' : '']">
                 <textarea
                   class="input-txtarea"
                   placeholder="请输入(50字以内)"
                   :maxlength="50"
-                  v-model="formData.valuationRemark"
+                  v-model="formData.remark"
                   @focus="inputFocus(6)"
                   @blur="inputBlur"
                 ></textarea>
@@ -196,8 +196,8 @@ import { onLoad } from '@dcloudio/uni-app'
 import dayjs from 'dayjs'
 import { routerBack, getStorage, StorageKey } from '@/utils'
 import {
-  addInfrastructureApi,
-  updateInfrastructureApi,
+  addInfrastructureVcApi,
+  updateInfrastructureVcApi,
   getEvaLandlordItemApi
 } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
@@ -216,11 +216,11 @@ const formData = ref<any>({
   unit: '',
   number: '',
   amount: '',
-  price: '',
   newnessRate: '',
-  valuationAmount: '',
+  valuationPrice: '',// 评估单价
+  valuationAmount: '',// 评估金额
   compensationAmount: '',
-  valuationRemark: ''
+  remark: '' // 备注
 })
 
 // 获取数据字典
@@ -248,14 +248,12 @@ const getLandlordDetail = () => {
   const { uid, itemUid } = commonParams.value
   getEvaLandlordItemApi(uid).then((res: any) => {
     let arr: any = res && res.immigrantInfrastructureList ? res.immigrantInfrastructureList : []
-    console.log('PLL',res);
     if (arr && arr.length) {
       let obj: any = arr.filter((item: any) => item.uid === itemUid)[0]
       formData.value = {
         ...obj,
         year: obj.year ? dayjs(obj.year) : ''
       }
-   
       currentYear.value = obj.year ? dayjs(obj.year) : ''
     }
   })
@@ -287,9 +285,9 @@ const inputBlur = () => {
 
 // 计算评估价格
 const countPrice = computed(() => {
-  const { newnessRate, price, number } = formData.value
-  if (newnessRate && price && number) {
-    return (newnessRate * price * number).toFixed(2)
+  const { newnessRate, valuationPrice, number } = formData.value
+  if (newnessRate && valuationPrice && number) {
+    return (newnessRate * valuationPrice * number).toFixed(2)
   }
   return '0'
 })
@@ -324,7 +322,7 @@ const submit = () => {
   //   showToast('数量不能为空')
   //   return
   // }
-  // if (!formData.value.price) {
+  // if (!formData.value.valuationPrice) {
   //   showToast('评估单价不能为空')
   //   return
   // }
@@ -342,7 +340,7 @@ const submit = () => {
   // }
 
     if (type === 'add') {
-      addInfrastructureApi(uid, params)
+      addInfrastructureVcApi(uid, params)
         .then((res) => {
           if (res) {
             showToast(SUCCESS_MSG)
@@ -353,7 +351,7 @@ const submit = () => {
           showToast(ERROR_MSG)
         })
     } else if (type === 'edit') {
-      updateInfrastructureApi(uid, params)
+      updateInfrastructureVcApi(uid, params)
         .then((res) => {
           if (res) {
             showToast(SUCCESS_MSG)

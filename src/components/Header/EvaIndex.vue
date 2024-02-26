@@ -168,16 +168,16 @@ export default {
         params = {
           treeStatus: '1' // 零星(林)果木评估
         }
-      } else if (this.tabVal === 5) {
+      } else if (this.tabVal === 8) {
         params = {
           landStatus: '1' // 土地基本情况评估
         }
-      } else if (this.tabVal === 6) {
+      } else if (this.tabVal === 9) {
         params = {
           landSeedlingStatus: '1' // 土地青苗及附着物评估
         }
       } else if (
-        this.tabVal === 7 &&
+        this.tabVal === 5 &&
         (this.type === MainType.Company || this.type === MainType.IndividualHousehold)
       ) {
         params = {

@@ -7,7 +7,7 @@
           <uni-col :span="24">
             <uni-forms-item
               required
-              label="新增原因222"
+              label="新增原因"
               :label-width="150"
               label-align="right"
               name="formData.addReason"
@@ -82,14 +82,14 @@
               label="评估单价"
               :label-width="150"
               label-align="right"
-              name="formData.price"
+              name="formData.valuationPrice"
             >
               <view :class="['input-wrapper', focusIndex === 3 ? 'focus' : '']">
                 <input
                   class="input-txt"
                   placeholder="请输入"
                   type="number"
-                  v-model="formData.price"
+                  v-model="formData.valuationPrice"
                   @focus="inputFocus(3)"
                   @blur="inputBlur"
                 />
@@ -162,14 +162,14 @@
               label="备注"
               :label-width="150"
               label-align="right"
-              name="formData.valuationRemark"
+              name="formData.remark"
             >
               <view :class="['input-txtarea-wrapper', focusIndex === 6 ? 'focus' : '']">
                 <textarea
                   class="input-txtarea"
                   placeholder="请输入(50字以内)"
                   :maxlength="50"
-                  v-model="formData.valuationRemark"
+                  v-model="formData.remark"
                   @focus="inputFocus(6)"
                   @blur="inputBlur"
                 ></textarea>
@@ -190,7 +190,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue'
+import { ref, computed,watch } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import dayjs from 'dayjs'
 import { routerBack, getStorage, StorageKey } from '@/utils'
@@ -215,11 +215,11 @@ const formData = ref<any>({
   unit: '',
   number: '',
   amount: '',
-  price: '',
-  newnessRate: '',
-  valuationAmount: '',
-  compensationAmount: '',
-  valuationRemark: ''
+  valuationPrice: '', //评估单价
+  newnessRate: '', // 成新率
+  valuationAmount: '', // 评估金额
+  compensationAmount: '', // 补偿金额
+  remark: ''
 })
 
 // 获取数据字典
@@ -301,42 +301,42 @@ const submit = () => {
     year: formData.value.year ? dayjs(formData.value.year) : ''
   }
 
-  if (!formData.value.addReason) {
-    showToast('新增原因不能为空')
-    return
-  }
-  if (!formData.value.name) {
-    showToast('名称不能为空')
-    return
-  }
-  if (!formData.value.size) {
-    showToast('规格/型号不能为空')
-    return
-  }
-  if (!formData.value.unit) {
-    showToast('单位不能为空')
-    return
-  }
-  if (!formData.value.number) {
-    showToast('数量不能为空')
-    return
-  }
-  if (!formData.value.price) {
-    showToast('评估单价不能为空')
-    return
-  }
-  if (!formData.value.newnessRate) {
-    showToast('成新率不能为空')
-    return
-  }
-  if (!formData.value.valuationAmount) {
-    showToast('评估金额不能为空')
-    return
-  }
-  if (!formData.value.compensationAmount) {
-    showToast('补偿金额不能为空')
-    return
-  }
+  // if (!formData.value.addReason) {
+  //   showToast('新增原因不能为空')
+  //   return
+  // }
+  // if (!formData.value.name) {
+  //   showToast('名称不能为空')
+  //   return
+  // }
+  // if (!formData.value.size) {
+  //   showToast('规格/型号不能为空')
+  //   return
+  // }
+  // if (!formData.value.unit) {
+  //   showToast('单位不能为空')
+  //   return
+  // }
+  // if (!formData.value.number) {
+  //   showToast('数量不能为空')
+  //   return
+  // }
+  // if (!formData.value.price) {
+  //   showToast('评估单价不能为空')
+  //   return
+  // }
+  // if (!formData.value.newnessRate) {
+  //   showToast('成新率不能为空')
+  //   return
+  // }
+  // if (!formData.value.valuationAmount) {
+  //   showToast('评估金额不能为空')
+  //   return
+  // }
+  // if (!formData.value.compensationAmount) {
+  //   showToast('补偿金额不能为空')
+  //   return
+  // }
 
     if (type === 'add') {
       addImpLandlordEquipmentApi(uid, params)
@@ -362,6 +362,10 @@ const submit = () => {
         })
     }
 }
+
+watch(()=>formData.value.valuationAmount,(newValue)=>{
+    formData.value.compensationAmount=newValue
+})
 </script>
 
 <style lang="scss" scoped>

@@ -289,7 +289,6 @@ const isNotNullArray = (arr: any) => {
 // tab 切换
 const selectTabs = (data: any) => {
   tabVal.value = data.value;
-  console.log('Tab-V', tabVal.value);
 };
 
 // 页面向左滑动, tab 跟随页面一起动

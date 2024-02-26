@@ -1,7 +1,7 @@
 <template>
   <view class="main-wrap">
     <!-- 移民实施阶段 —— 个体工商户评估 -->
-    <Back title="个体工商户评估11" />
+    <Back title="个体工商户评估" />
 
     <view class="main-cont">
       <view class="list-content">
@@ -62,9 +62,36 @@
                   @update-data="updateData"
                 />
 
-                <!-- 土地基本情况评估 -->
-                <land-eva
+        
+                <!-- 设施设备评估 -->
+                <equipment-eva
                   v-if="tabVal === 5"
+                  :dataList="dataInfo.immigrantEquipmentList"
+                  :dataInfo="dataInfo"
+                  @delete-equipment="deleteEquipment"
+                  @update-data="updateData"
+                />
+                
+                <!-- 基础设施评估 -->
+                <infrastructureEva
+                 v-if="tabVal === 6"
+                  :dataList="dataInfo.immigrantInfrastructureList"   
+                 :dataInfo="dataInfo"
+                  @delete-equipment="deleteEquipment"
+                  @update-data="updateData"
+                />
+                <!-- 其他评估 -->
+                <otherEva
+                 v-if="tabVal === 7"
+                 :dataList="dataInfo.immigrantOtherList" 
+                  :dataInfo="dataInfo"
+                  @delete-other="deleteEquipment"
+                  @update-data="updateData"
+                 />
+
+              <!-- 土地基本情况评估 -->
+                <land-eva
+                  v-if="tabVal === 8"
                   :dataList="dataInfo.assetLandList"
                   :dataInfo="dataInfo"
                   @delete-land="deleteLand"
@@ -73,39 +100,13 @@
 
                 <!-- 土地青苗及附着物评估 -->
                 <seedlings-eva
-                  v-if="tabVal === 6"
+                  v-if="tabVal === 9"
                   :dataList="dataInfo.assetAppendantList"
                   :dataInfo="dataInfo"
                   @delete-seedlings="deleteSeedlings"
                   @update-data="updateData"
                 />
 
-                <!-- 设施设备评估 -->
-                <equipment-eva
-                  v-if="tabVal === 7"
-                  :dataList="dataInfo.immigrantEquipmentList"
-                  :dataInfo="dataInfo"
-                  @delete-equipment="deleteEquipment"
-                  @update-data="updateData"
-                />
-
-                
-                <!-- 基础设施评估 -->
-                <infrastructureEva
-                 v-if="tabVal === 8"
-                  :dataList="dataInfo.immigrantInfrastructureList"   
-                 :dataInfo="dataInfo"
-                  @delete-equipment="deleteEquipment"
-                  @update-data="updateData"
-                />
-                <!-- 基础设施评估 -->
-                <otherEva
-                 v-if="tabVal === 9"
-                 :dataList="dataInfo.immigrantOtherList" 
-                  :dataInfo="dataInfo"
-                  @delete-equipment="deleteEquipment"
-                  @update-data="updateData"
-                 />
               </view>
             </view>
           </view>
@@ -222,20 +223,20 @@ const tabsList = computed(() => {
 
       {
         label: '设施设备评估',
-        value: 7,
+        value: 5,
         filled: immigrantFilling.deviceStatus === '1',
         defIcon: iconEquipmentDef,
         selIcon: iconEquipmentSel
       },
       {
         label: "基础设施评估",
-        value: 8,
+        value: 6,
         defIcon: iconInfrastructureDefault,
         selIcon: iconInfrastructureSelect,
       },
       {
         label: "其他评估",
-        value: 9,
+        value: 7,
         defIcon: iconOtherDefault,
         selIcon: iconOtherSelect,
       },
@@ -252,14 +253,14 @@ const tabsList = computed(() => {
     },
     {
       label: '土地基本情况评估',
-      value: 5,
+      value: 8,
       filled: immigrantFilling.landStatus === '1',
       defIcon: iconLandDef,
       selIcon: iconLandSel
     },
     {
       label: '土地青苗及附着物评估',
-      value: 6,
+      value: 9,
       filled: immigrantFilling.landSeedlingStatus === '1',
       defIcon: iconSeedlingsDef,
       selIcon: iconSeedlingsSel

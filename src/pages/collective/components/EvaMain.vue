@@ -61,10 +61,27 @@
                   @delete-tree="deleteTree"
                   @update-data="updateData"
                 />
+               <!-- 小型专项评估 -->
+                <special-eva
+                  v-if="tabVal === 5"
+                  :dataList="dataInfo.immigrantFacilitiesList"
+                  :dataInfo="dataInfo"
+                  @delete-special="deleteSpecial"
+                  @update-data="updateData"
+                />
 
+              <!-- 基础设施评估 -->
+                <infrastructureEva
+                 v-if="tabVal === 6" 
+                  :dataList="dataInfo.immigrantInfrastructureList"  
+                  :dataInfo="dataInfo"
+                  @delete-equipment="deleteInfrastructureVc"
+                  @update-data="updateData"
+                />
+     
                 <!-- 土地基本情况评估 -->
                 <land-eva
-                  v-if="tabVal === 5"
+                  v-if="tabVal === 7"
                   :dataList="dataInfo.assetLandList"
                   :dataInfo="dataInfo"
                   @delete-land="deleteLand"
@@ -73,21 +90,12 @@
 
                 <!-- 土地青苗及附着物评估 -->
                 <seedlings-eva
-                  v-if="tabVal === 6"
+                  v-if="tabVal === 8"
                   :dataList="dataInfo.assetAppendantList"
                   :dataInfo="dataInfo"
                   @delete-seedlings="deleteSeedlings"
                   @update-data="updateData"
-                />
-
-                <!-- 小型专项评估 -->
-                <special-eva
-                  v-if="tabVal === 7"
-                  :dataList="dataInfo.immigrantFacilitiesList"
-                  :dataInfo="dataInfo"
-                  @delete-special="deleteSpecial"
-                  @update-data="updateData"
-                />
+                />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
               </view>
             </view>
           </view>
@@ -120,6 +128,7 @@ import treeEva from '../../common/treeEva/index.vue' // 引入零星(林)果木�
 import landEva from '../../common/landEva/index.vue' // 引入土地基本情况评估组件
 import seedlingsEva from '../../common/seedlingsEva/index.vue' // 引入土地青苗及附着物评估组件
 import specialEva from '../specialEva/index.vue' // 引入小型专项评估组件
+import infrastructureEva from "../../common/infrastructureCollective/index.vue"; // 引入基础设施评估组件
 
 import {
   deleteImpLandlordHouseFitUpApi,
@@ -147,6 +156,8 @@ import iconSeedlingsDef from '@/static/images/icon_seedlings_default.png' // 引
 import iconSeedlingsSel from '@/static/images/icon_seedlings_select.png' // 引入土地青苗及附着物评估选中 icon
 import iconSpecialDef from '@/static/images/icon_special_default.png' // 引入设施设备评估默认 icon
 import iconSpecialSel from '@/static/images/icon_special_select.png' // 引入设施设备评估选中 icon
+import iconInfrastructureSelect from "@/static/images/icon_accessory_select.png"; // 引入基础设施评估选中 icon
+import iconInfrastructureDefault from "@/static/images/icon_accessory_default.png"; // 引入基础设施评估默认 icon
 import { LandlordType } from '@/types/sync'
 
 interface PropsType {
@@ -197,13 +208,18 @@ const tabsList = computed(() => {
         defIcon: iconTreeDef,
         selIcon: iconTreeSel
       },
-
       {
         label: '小型专项评估',
-        value: 7,
+        value: 5,
         filled: immigrantFilling.specialStatus === '1',
         defIcon: iconSpecialDef,
         selIcon: iconSpecialSel
+      },
+      {
+        label: "基础设施评估",
+        value: 6,
+        defIcon: iconInfrastructureDefault,
+        selIcon: iconInfrastructureSelect,
       }
     ]
   }
@@ -218,14 +234,14 @@ const tabsList = computed(() => {
     },
     {
       label: '土地基本情况评估',
-      value: 5,
+      value: 7,
       filled: immigrantFilling.landStatus === '1',
       defIcon: iconLandDef,
       selIcon: iconLandSel
     },
     {
       label: '土地青苗及附着物评估',
-      value: 6,
+      value: 8,
       filled: immigrantFilling.landSeedlingStatus === '1',
       defIcon: iconSeedlingsDef,
       selIcon: iconSeedlingsSel

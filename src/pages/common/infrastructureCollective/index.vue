@@ -1,5 +1,5 @@
 <template>
-  <!--个体工商户基础设施评估 -->
+  <!--村集体基础设施评估 -->
   <view class="equipment-eva-wrapper">
     <view class="list" v-if="props.dataList && props.dataList.length">
       <view class="list-item" v-for="item in props.dataList" :key="item.id">
@@ -39,7 +39,7 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">评估单价(元)：</view>
-                <view class="content">{{ formatStr(item.price) }}</view>
+                <view class="content">{{ formatStr(item.valuationPrice) }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -122,12 +122,12 @@ const toLink = (type: string, itemUid?: any) => {
   const { uid, doorNo } = props.dataInfo
   if (type === 'edit') {
     let params = { type, uid, doorNo, itemUid }
-    routerForward('baseInfrastructureEvaEdit', {
+    routerForward('baseInfrastructureCollectiveEdit', {
       params: JSON.stringify(params)
     })
   } else if (type === 'add') {
     let params = { type, uid, doorNo }
-    routerForward('baseInfrastructureEvaEdit', {
+    routerForward('baseInfrastructureCollectiveEdit', {
       params: JSON.stringify(params)
     })
   }
