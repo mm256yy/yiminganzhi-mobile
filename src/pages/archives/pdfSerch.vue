@@ -1,8 +1,7 @@
 <template>
   <view class="content" style="display: flex;">
     <div class="report-text" id="printReport" style="display: flex;">
-      <div
-v-if="id == 1"
+      <div v-if="id == 1"
         style="width: 100%;border: 1px solid #000000;display: flex;flex-direction: column;padding: 10px; ">
         <h1 style="font-size: 24px; text-align: center">生产安置确认单</h1>
         <div style="display: flex;justify-content: space-between;">
@@ -41,8 +40,7 @@ v-if="id == 1"
           </table>
         </view>
       </div>
-      <div
-v-if="id == 2"
+      <div v-if="id == 2"
         style="width: 100%;border: 1px solid #000000;display: flex;flex-direction: column;padding: 10px; ">
         <h1 style="font-size: 24px; text-align: center">选房确认单</h1>
         <div style="display: flex;justify-content: space-between;">
@@ -86,8 +84,7 @@ v-if="id == 2"
           </table>
         </view>
       </div>
-      <div
-v-if="id == 3"
+      <div v-if="id == 3"
         style="width: 100%;border: 1px solid #000000;display: flex;flex-direction: column;padding: 10px; ">
         <h1 style="font-size: 24px; text-align: center">选址确认单</h1>
         <div style="display: flex;justify-content: space-between;">
@@ -130,8 +127,7 @@ v-if="id == 3"
           </table>
         </view>
       </div>
-      <div
-v-if="id == 4"
+      <div v-if="id == 4"
         style="width: 100%;border: 1px solid #000000;display: flex;flex-direction: column;padding: 10px; ">
         <h1 style="font-size: 24px; text-align: center">搬迁安置确认单</h1>
         <div style="display: flex;justify-content: space-between;">
@@ -173,8 +169,7 @@ v-if="id == 4"
           </table>
         </view>
       </div>
-      <div
-v-if="id == 5 || id == 6"
+      <div v-if="id == 5 || id == 6"
         style="width: 100%;border: 1px solid #000000;display: flex;flex-direction: column;padding: 10px; ">
         <h1 style="font-size: 24px; text-align: center">{{ id == 6 ? '坟墓择址坟确认单' : '坟墓确认单' }}</h1>
         <div style="display: flex;justify-content: space-between;">
@@ -219,19 +214,30 @@ v-if="id == 5 || id == 6"
           </table>
         </view>
       </div>
-      <div
-v-if="id > 6" id="printReports"
+      <div v-if="id > 6" id="printReports"
         style="width: 50%;border: 1px solid #000000;display: flex;flex-direction: column;padding: 10px; ">
         <h1 style="font-size: 24px; text-align: center">{{ id == 7 ? '房屋腾空确认单' : (id == 8 ? '土地腾让确认单' : '过渡安置确认单') }}</h1>
         <view class="row-4">
           <table style="width: 100%" border="1" cellspacing="0" cellpadding="0">
             <tr>
-              <td align="center" class="uTd">户主姓名</td>
+              <td align="center" class="uTd">{{ baseInfo.type == 'Company'
+                ? '企业名称'
+                : baseInfo.type == 'IndividualHousehold'
+                  ? '个体户名称'
+                  : baseInfo.type == 'PeasantHousehold'
+                    ? '户主姓名'
+                    : '村集体名称' }}</td>
               <td align="center" class="uTd">{{ baseInfo.name }}</td>
-              <td align="center" class="uTd">户号</td>
-              <td align="center" class="uTd">{{ baseInfo.showDoorNo }}</td>
+              <td align="center" class="uTd">{{ baseInfo.type == 'Company'
+                ? '企业编码'
+                : baseInfo.type == 'IndividualHousehold'
+                  ? '个体户编码'
+                  : baseInfo.type == 'PeasantHousehold'
+                    ? '户号'
+                    : '村集体编码' }}</td>
+              <td align="center" class="uTd">{{ baseInfo.showDoorNo || baseInfo.doorNo }}</td>
             </tr>
-            <tr>
+            <tr v-if="baseInfo.type == 'PeasantHousehold'">
               <td align="center" class="uTd">户内人口</td>
               <td align="center" class="uTd"> {{ baseInfo.familyNum }}</td>
               <td align="center" class="uTd">联系方式</td>
@@ -245,12 +251,18 @@ v-if="id > 6" id="printReports"
               <td align="center" class="uTd" colspan="4">{{ id == 7 ? '房屋腾让情况' : (id == 8 ? '土地腾让情况' : '过渡去向情况') }}
               </td>
             </tr>
-            <tr>
+            <tr v-if="id == 9">
               <td align="center" class="uTd">过渡安置地详址</td>
               <td align="center" class="uTd" colspan="3"> {{ baseInfo.immigrantExcess?.excessAddress }}</td>
             </tr>
             <tr>
-              <td align="center" class="uTd" rowspan="2">移民户主意见</td>
+              <td align="center" class="uTd" rowspan="2">{{ baseInfo.type == 'Company'
+                ? '企业意见'
+                : baseInfo.type == 'IndividualHousehold'
+                  ? '个体户意见'
+                  : baseInfo.type == 'PeasantHousehold'
+                    ? '移民户主意见'
+                    : '村集体意见' }}</td>
               <td align="center" class="uTd" colspan="3" v-if="id == 7">{{ baseInfo.immigrantHouseEmpty ?
                 baseInfo.immigrantHouseEmpty.houseEmptyOpinion : '' }}</td>
               <td align="center" class="uTd" colspan="3" v-if="id == 8">{{ baseInfo.immigrantLandEmpty ?
@@ -259,9 +271,13 @@ v-if="id > 6" id="printReports"
                 baseInfo.immigrantExcess.landEmptyOpinion : '' }}</td>
             </tr>
             <tr>
-              <td align="left" class="uTd" colspan="3">移民户主:<img
-id='signatureImg' class="signatureImgs" :src='path'
-                  v-if="path" /></td>
+              <td align="left" class="uTd" colspan="3">{{ baseInfo.type == 'Company'
+                ? '企业盖章'
+                : baseInfo.type == 'IndividualHousehold'
+                  ? '个体户盖章'
+                  : baseInfo.type == 'PeasantHousehold'
+                    ? '移民户主'
+                    : '村集体盖章' }}:<img id='signatureImg' class="signatureImgs" :src='path' v-if="path" /></td>
             </tr>
             <tr>
               <td align="center" class="uTd" rowspan="2">移民工作组验收意见</td>
