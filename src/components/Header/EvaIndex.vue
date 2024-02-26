@@ -54,13 +54,13 @@ export default {
           return role === RoleCodeType.assessor ? 5 : 3
           break
         case MainType.Company:
-          return role === RoleCodeType.assessor ? 6 : 3
+          return role === RoleCodeType.assessor ? 8 : 3
           break
         case MainType.IndividualHousehold:
-          return role === RoleCodeType.assessor ? 6 : 3
+          return role === RoleCodeType.assessor ? 8 : 3
           break
         case MainType.Village:
-          return role === RoleCodeType.assessor ? 6 : 3
+          return role === RoleCodeType.assessor ? 7 : 3
           break
         default:
           return 8
@@ -77,7 +77,9 @@ export default {
         landStatus,
         landSeedlingStatus,
         deviceStatus,
-        specialStatus
+        specialStatus,
+        infrastructureStatus, // 基础设施评估
+        otherStatus // 其他评估
       } = immigrantFilling
 
       const role: RoleCodeType = getStorage(StorageKey.USERROLE)
@@ -98,10 +100,20 @@ export default {
           fillCount++
         }
 
+
+
         if (type === MainType.IndividualHousehold || type === MainType.Company) {
           // 个体户 企业
           if (deviceStatus === '1') {
             fillCount++
+          }
+         
+          if (infrastructureStatus==='1') {
+                 fillCount++
+          }
+
+          if (otherStatus==='1') {
+                 fillCount++
           }
         }
 
@@ -110,7 +122,12 @@ export default {
           if (specialStatus === '1') {
             fillCount++
           }
+
+          if (infrastructureStatus==='1') {
+            fillCount++
+          }
         }
+
       } else {
         // 资产评估-土地角色
         if (landStatus === '1') {
@@ -183,7 +200,15 @@ export default {
         params = {
           deviceStatus: '1' // 设施设备评估
         }
-      } else if (this.tabVal === 7 && this.type === MainType.Village) {
+      } else if (this.tabVal === 6) {
+        params = {
+          infrastructureStatus: '1' // 基础设施评估
+         }
+      } else if (this.tabVal === 7) {
+            params = {
+          otherStatus: '1' // 其他评估
+        }
+      }else if (this.tabVal === 5 && this.type === MainType.Village) {
         params = {
           specialStatus: '1' // 农村小型专项及农副业设施评估
         }

@@ -75,7 +75,7 @@
                  v-if="tabVal === 6" 
                   :dataList="dataInfo.immigrantInfrastructureList"  
                   :dataInfo="dataInfo"
-                  @delete-equipment="deleteInfrastructureVc"
+                  @deleteInfrastructure="deleteInfrastructureVc"
                   @update-data="updateData"
                 />
      

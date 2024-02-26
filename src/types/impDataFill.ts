@@ -409,7 +409,9 @@ export interface ImmigrantFillingType {
   specialStatus: string
   disposalMeasuresStatus: string
   selfSeekingStatus: string
-  isUpdate?: string
+  isUpdate?: string,
+  infrastructureStatus: string // 基础设施评估
+  otherStatus: string // 其他评估
 }
 
 // 自谋出路

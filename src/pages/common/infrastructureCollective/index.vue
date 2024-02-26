@@ -108,7 +108,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['deleteEquipment'])
+const emit = defineEmits(['deleteInfrastructure'])
 const alertDialog = ref<any>(null)
 const currentItem = ref<any>({})
 const deleteReason = ref<string>('') // 删除原因
@@ -151,7 +151,7 @@ const dialogConfirm = (data: any) => {
     ...currentItem.value,
     deleteReason: data
   }
-  emit('deleteEquipment', params)
+  emit('deleteInfrastructure', params)
 }
 
 const dialogClose = () => {

@@ -81,5 +81,7 @@ export const defaultFillingObj = {
   specialStatus: '0',
   disposalMeasuresStatus: '0',
   selfSeekingStatus: '0', // 自谋出路
-  landSeedlingStatus: '0' // 土地青苗
+  landSeedlingStatus: '0', // 土地青苗
+  infrastructureStatus: '0', // 基础设施评估
+  otherStatus: '0' // 其他评估
 }

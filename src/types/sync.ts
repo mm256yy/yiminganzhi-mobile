@@ -140,6 +140,8 @@ export interface LandlordType {
   resettlePic: string
   implementFillStatus: string
   implementEscalationStatus: string
+  infrastructureStatus: string // 基础设施评估
+  otherStatus: string // 其他评估
   disposalMeasuresPic: string
 
   updateLogList: UpdateLogType[]
