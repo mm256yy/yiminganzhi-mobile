@@ -7,7 +7,7 @@
           <uni-col :span="24">
             <uni-forms-item
               required
-              label="新增原因222"
+              label="新增原因"
               :label-width="150"
               label-align="right"
               name="formData.addReason"
@@ -362,9 +362,10 @@ const submit = () => {
         })
     }
 }
-
-watch(()=>formData.value.valuationAmount,(newValue)=>{
+watch(() => formData.value.valuationAmount, (newValue) => {
+  if (!formData.value.compensationAmount) {
     formData.value.compensationAmount=newValue
+  }
 })
 
 </script>

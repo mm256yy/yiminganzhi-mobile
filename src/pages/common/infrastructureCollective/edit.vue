@@ -364,8 +364,10 @@ const submit = () => {
     }
 }
 
-watch(()=>formData.value.valuationAmount,(newValue)=>{
+watch(() => formData.value.valuationAmount, (newValue) => {
+  if (!formData.value.compensationAmount) {
     formData.value.compensationAmount=newValue
+  }
 })
 
 </script>

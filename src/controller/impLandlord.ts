@@ -665,7 +665,7 @@ export class ImpLandlord extends Common {
           uid
         )
         const res: LandlordType = result && result[0] ? JSON.parse(result[0].content) : {}
-
+        console.log(res, '查询数据是什么？')
         // 获取坟墓信息
         const graveList = await GraveController.getImpListWithLandlord(res.type, res.doorNo)
         if (res && res.uid) {
@@ -688,7 +688,15 @@ export class ImpLandlord extends Common {
               (item) => item.isDelete !== '1'
             )
           }
-
+          if (this.isArrayAndNotNull(res.immigrantInfrastructureList)) {
+            res.immigrantInfrastructureList = res.immigrantInfrastructureList.filter(
+              (item: any) => item.isDelete !== '1'
+            )
+          } if (this.isArrayAndNotNull(res.immigrantOtherList)) {
+            res.immigrantOtherList = res.immigrantOtherList.filter(
+              (item: any) => item.isDelete !== '1'
+            )
+          }
           if (this.isArrayAndNotNull(res.immigrantFacilitiesList)) {
             res.immigrantFacilitiesList = res.immigrantFacilitiesList.filter(
               (item) => item.isDelete !== '1'

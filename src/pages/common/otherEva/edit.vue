@@ -195,8 +195,8 @@ import { onLoad } from '@dcloudio/uni-app'
 import dayjs from 'dayjs'
 import { routerBack, getStorage, StorageKey } from '@/utils'
 import {
-  addImpLandlordEquipmentApi,
-  updateImpLandlordEquipmentApi,
+  addOtherEvaApi,
+  updateOtherEvaApi,
   getEvaLandlordItemApi
 } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
@@ -339,7 +339,7 @@ const submit = () => {
   // }
 
     if (type === 'add') {
-      addImpLandlordEquipmentApi(uid, params)
+      addOtherEvaApi(uid, params)
         .then((res) => {
           if (res) {
             showToast(SUCCESS_MSG)
@@ -350,7 +350,7 @@ const submit = () => {
           showToast(ERROR_MSG)
         })
     } else if (type === 'edit') {
-      updateImpLandlordEquipmentApi(uid, params)
+      updateOtherEvaApi(uid, params)
         .then((res) => {
           if (res) {
             showToast(SUCCESS_MSG)
@@ -363,8 +363,10 @@ const submit = () => {
     }
 }
 
-watch(()=>formData.value.valuationAmount,(newValue)=>{
+watch(() => formData.value.valuationAmount, (newValue) => {
+  if (!formData.value.compensationAmount) {
     formData.value.compensationAmount=newValue
+  }
 })
 </script>
 
