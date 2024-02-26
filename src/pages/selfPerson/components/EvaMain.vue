@@ -77,7 +77,7 @@
                  v-if="tabVal === 6"
                   :dataList="dataInfo.immigrantInfrastructureList"   
                  :dataInfo="dataInfo"
-                  @delete-equipment="deleteEquipment"
+                  @delete-equipment="deleteFoundation"
                   @update-data="updateData"
                 />
                 <!-- 其他评估 -->
@@ -85,7 +85,7 @@
                  v-if="tabVal === 7"
                  :dataList="dataInfo.immigrantOtherList" 
                   :dataInfo="dataInfo"
-                  @delete-other="deleteEquipment"
+                  @delete-other="deleteOther"
                   @update-data="updateData"
                  />
 
@@ -147,7 +147,9 @@ import {
   deleteImpLandlordTreeApi,
   deleteImpLandlordAssetLandApi,
   deleteImpLandlordAssetAppendantApi,
-  deleteImpLandlordEquipmentApi
+  deleteImpLandlordEquipmentApi,
+  deleteOtherEvaApi,
+  deleteInfrastructureEvaApi
 } from '@/service'
 
 import iconBaseDef from '@/static/images/icon_base_default.png' // 引入基本信息默认 icon
@@ -231,14 +233,12 @@ const tabsList = computed(() => {
       {
         label: "基础设施评估",
         value: 6,
-        filled: immigrantFilling.infrastructureStatus === '1',
         defIcon: iconInfrastructureDefault,
         selIcon: iconInfrastructureSelect,
       },
       {
         label: "其他评估",
         value: 7,
-        filled: immigrantFilling.otherStatus === '1',
         defIcon: iconOtherDefault,
         selIcon: iconOtherSelect,
       },
@@ -417,6 +417,38 @@ const deleteSeedlings = (data: any, reason?: string) => {
  */
 const deleteEquipment = (data: any) => {
   deleteImpLandlordEquipmentApi(props.dataInfo.uid, data.uid)
+    .then((res: any) => {
+      if (res) {
+        showToast(SUCCESS_MSG)
+        updateData()
+      }
+    })
+    .catch(() => {
+      showToast(ERROR_MSG)
+    })
+}
+/*
+ * 基础设施评估 - 删除
+ * @param(Object) data 被删除的行信息
+ */
+const deleteFoundation = (data: any) => {
+  deleteOtherEvaApi(props.dataInfo.uid, data.uid)
+    .then((res: any) => {
+      if (res) {
+        showToast(SUCCESS_MSG)
+        updateData()
+      }
+    })
+    .catch(() => {
+      showToast(ERROR_MSG)
+    })
+}
+/*
+ * 其他评估 - 删除
+ * @param(Object) data 被删除的行信息
+ */
+const deleteOther = (data: any) => {
+  deleteInfrastructureEvaApi(props.dataInfo.uid, data.uid)
     .then((res: any) => {
       if (res) {
         showToast(SUCCESS_MSG)
