@@ -9,7 +9,6 @@
       <uni-row>
         <uni-col :span="24">
           <uni-forms-item
-            required
             label="自建房告知单："
             :label-width="150"
             label-align="right"
@@ -27,7 +26,6 @@
 
         <uni-col :span="24">
           <uni-forms-item
-            required
             label="自建房验收告知单："
             :label-width="150"
             label-align="right"

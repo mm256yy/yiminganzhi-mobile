@@ -35,7 +35,7 @@
     </view>
 
     <view class="content">
-      <PeopleList :isEdit="false" :demographic-list="demographicList" />
+      <PeopleList :isEdit="false" :demographic-list="demographicList" :demographiclists="demographicList"/>
     </view>
 
     <uni-popup ref="alertDialog" type="dialog">

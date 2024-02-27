@@ -2,7 +2,7 @@
   <view class="population-list">
     <view class="population-item" v-for="item in tableData" :key="item.uid">
       <view class="item">
-        <view class="label">姓名1：</view>
+        <view class="label">姓名：</view>
         <view class="value">{{ item.name }}</view>
       </view>
       <view class="item">
@@ -88,7 +88,8 @@ interface PropsType {
   isEdit: boolean
   demographicList: PopulationType[] | SimulateDemographicType[]
   immigrantSettle?: any
-  dataList?:any
+  dataList?: any
+  demographicLists?: any
 }
 
 const emit = defineEmits(['submit'])
@@ -104,9 +105,19 @@ watch(
   () => props.demographicList,
   (val) => {
     if (val) {
-      tableData.value = val
-      console.log(tableData.value,'测试数据模拟安置')
-      tableData.value=tableData.value.filter((item) => item.isDelete !== '1')
+      tableData.value = val 
+      console.log(val, props.demographicLists, '测试数据')
+      if (props.demographicLists) {
+        val.forEach((item:any) => {
+        props.demographicLists.forEach((ite:any) => {
+          if (item.demographicId == ite.id) {
+            item.isDelete = ite.isDelete
+          }
+        })
+      })
+      }
+      console.log(tableData.value, '测试数据模拟安置')
+      tableData.value=val.filter((item:any) => item.isDelete !== '1')
       // val.forEach((item,index) => {
       //   if(item.name=='人口增计'){
       //      val.splice(index,1)

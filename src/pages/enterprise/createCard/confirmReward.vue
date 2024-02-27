@@ -19,44 +19,30 @@
           <uni-td align="left" class="u-td">{{ item.name }}</uni-td>
           <!-- <uni-td align="left" class="u-td">{{ formatDict(item.unit, 268) }}</uni-td> -->
           <uni-td align="left" class="u-td">{{ item.unit }}</uni-td>
-          <uni-td align="left" class="u-td">
-            <!-- <input
-              v-if="item.isUpdate === '1' && item.isVerify !== '1'"
-              class="input-txt"
-              v-model="item.number"
-              placeholder="请输入"
-            /> -->
-            <!-- <view v-if="item.isUpdate === '1' && item.isVerify === '1'">{{
-              formatStr(item.number)
-            }}</view> -->
-            {{ formatStr(item.number) }}
-            <!-- <view v-if="!item.number"> - </view> -->
+          <uni-td align="left" class="u-td">      
+            <!-- <input v-if="item.isVerify == '0'" class="input-txt" v-model="item.number" placeholder="请输入" />
+            <view v-if="item.isVerify == '1'">{{ formatStr(item.number) }}</view> -->
+            {{ item.number }}
           </uni-td>
           <uni-td align="left" class="u-td">
-            <!-- <input
-              v-if="item.isUpdate === '1' && item.isVerify !== '1'"
-              class="input-txt"
-              v-model="item.price"
-              placeholder="请输入"
-            /> -->
-            <!-- <view v-if="item.isUpdate === '1' && item.isVerify === '1'">{{ item.price }}</view>
-            <view v-if="item.isUpdate !== '1'"> - </view> -->
-            {{ item.price }}
+            <input v-if="item.isVerify == '0'" class="input-txt" v-model="item.price" placeholder="请输入" />
+            <view v-if="item.isVerify == '1'">{{ item.price }}</view>
+            <!-- <view v-if="item.isUpdate !== '1'"> - </view> -->
           </uni-td>
           <uni-td align="left" class="u-td">
-            <input v-if="flag" class="input-txt" v-model="item.totalPrice" placeholder="请输入" />
-            <!-- <view v-if="item.isUpdate === '0'">{{ item.totalPrice }}</view>
+            <view v-if="item.isUpdate === '0'">{{ item.totalPrice }}</view>
             <view v-else-if="item.isUpdate === '1'">{{ computedTotalPrice(item) }}</view>
-            <view v-else-if="item.isUpdate === '2'"> {{ getSummaries(item) }} </view> -->
-            <view v-if="!flag">{{ item.totalPrice }}</view>
+            <view v-else-if="item.isUpdate === '2'"> {{ getSummaries(item) }} </view>
+            <!-- <input v-if="item.isVerify == '0'" class="input-txt" v-model="item.price" placeholder="请输入" />
+            <view v-if="item.isVerify == '1'">{{ item.totalPrice }}</view> -->
           </uni-td>
 
           <uni-td align="left" class="u-td">{{
             item.isVerify == '0' ? '未确认' : item.isVerify == '1' ? '已确认' : '-'
           }}</uni-td>
           <uni-td align="left" class="u-td">
-            <input v-if="flag" class="input-txt" v-model="item.remark" placeholder="请输入" />
-            <view v-if="!flag">{{ item.remark }}</view>
+            <input v-if="item.isVerify === '0'" class="input-txt" v-model="item.remark" placeholder="请输入" />
+            <view v-if="item.isVerify === '1'">{{ item.remark }}</view>
           </uni-td>
           <uni-td class="u-td">
             <view style="display: flex; align-items: center; justify-content: center">
@@ -166,9 +152,10 @@ const getSummaries = (row: any) => {
  */
 const onSave = (data: any, isVerify: any) => {
   if (isVerify == 0) {
-    flag.value = true
-  } else if (isVerify == 1) {
-    flag.value = false
+    data.isVerify = '0'
+  }
+   else if (isVerify == 1) {
+   data.isVerify = '1'
   }
   const { doorNo, uid } = commonParams.value
   let params = {

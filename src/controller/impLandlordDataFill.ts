@@ -2332,11 +2332,14 @@ class ImpDataFill extends ImpLandlord {
         // 拿到详情信息
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
-          landlordItem.simulateDemographic = data.map((item) => {
+          landlordItem.simulateDemographic = data.map((item: any) => {
             if (!item.uid) {
               const itemUid = guid()
               item.uid = itemUid
             }
+            // landlordItem.demographicList.forEach((ite: any) => {
+            //   ite.isDelte = item.isDelete
+            // })
             return item
           })
         } else {

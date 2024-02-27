@@ -302,42 +302,42 @@ const submit = () => {
     year: formData.value.year ? dayjs(formData.value.year) : ''
   }
 
-  // if (!formData.value.addReason) {
-  //   showToast('新增原因不能为空')
-  //   return
-  // }
-  // if (!formData.value.name) {
-  //   showToast('名称不能为空')
-  //   return
-  // }
-  // if (!formData.value.size) {
-  //   showToast('规格/型号不能为空')
-  //   return
-  // }
-  // if (!formData.value.unit) {
-  //   showToast('单位不能为空')
-  //   return
-  // }
-  // if (!formData.value.number) {
-  //   showToast('数量不能为空')
-  //   return
-  // }
-  // if (!formData.value.valuationPrice) {
-  //   showToast('评估单价不能为空')
-  //   return
-  // }
-  // if (!formData.value.newnessRate) {
-  //   showToast('成新率不能为空')
-  //   return
-  // }
-  // if (!formData.value.valuationAmount) {
-  //   showToast('评估金额不能为空')
-  //   return
-  // }
-  // if (!formData.value.compensationAmount) {
-  //   showToast('补偿金额不能为空')
-  //   return
-  // }
+  if (!formData.value.addReason) {
+    showToast('新增原因不能为空')
+    return
+  }
+  if (!formData.value.name) {
+    showToast('名称不能为空')
+    return
+  }
+  if (!formData.value.size) {
+    showToast('规格/型号不能为空')
+    return
+  }
+  if (!formData.value.unit) {
+    showToast('单位不能为空')
+    return
+  }
+  if (!formData.value.number) {
+    showToast('数量不能为空')
+    return
+  }
+  if (!formData.value.valuationPrice) {
+    showToast('评估单价不能为空')
+    return
+  }
+  if (!formData.value.newnessRate) {
+    showToast('成新率不能为空')
+    return
+  }
+  if (!formData.value.valuationAmount) {
+    showToast('评估金额不能为空')
+    return
+  }
+  if (!formData.value.compensationAmount) {
+    showToast('补偿金额不能为空')
+    return
+  }
 
     if (type === 'add') {
       addInfrastructureVcApi(uid, params)

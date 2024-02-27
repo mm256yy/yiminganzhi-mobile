@@ -83,6 +83,7 @@
           :demographicList="(simulateDemographic as any[])"
           :immigrantSettle="simulateImmigrantSettle"
           :dataList="dataList"
+          :demographicLists="demographicList"
           @submit="productionResettleSubmit"
         />
       </view>
@@ -152,7 +153,11 @@ const demographicList = computed(() => {
 //     :
 // 获取模拟安置 生产安置信息
 const simulateDemographic = computed(() => {
-  return demographicList.value.map((item) => {
+  return  props.dataInfo &&
+ props.dataInfo.simulateDemographic &&
+     props.dataInfo.simulateDemographic.length
+    ? props.dataInfo.simulateDemographic
+     :demographicList.value.map((item) => {
     const {
       id: demographicId,
       name,
@@ -175,7 +180,7 @@ const simulateDemographic = computed(() => {
       populationNature,
       settingWay,
       settingRemark,
-      isDelete
+      isDelete,
     }
   })
   // return props.dataInfo && props.dataInfo.demographicList ? props.dataInfo.demographicList : []
@@ -186,6 +191,14 @@ const simulateImmigrantSettle = computed(() => {
   console.log(props.dataInfo,'搬迁安置信息')
   return props.dataInfo && props.dataInfo.simulateImmigrantSettle
     ? props.dataInfo.simulateImmigrantSettle
+    : {}
+})
+
+//获取模拟安置 生产安置信息
+const simulateDemographics = computed(() => {
+  console.log(props.dataInfo,'生产安置信息')
+  return props.dataInfo && props.dataInfo.simulateDemographic
+    ? props.dataInfo.simulateDemographic
     : {}
 })
 
@@ -250,6 +263,7 @@ const houseAreaTypeChange = (item: any) => {
  * 生产安置确认
  */
 const productionResettleSubmit = async (data: any) => {
+  console.log(data,'生产安置确认')
   const res = await updateImpLandlordSimulateDemographicApi(uid.value, data)
   if (res) {
     showToast('生产安置保存成功!')
