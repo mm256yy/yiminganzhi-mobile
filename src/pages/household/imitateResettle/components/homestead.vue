@@ -99,27 +99,27 @@ const otherNum = computed(() => {
   return familyNum.value - ruralMigrantNum.value - unruralMigrantNum.value
 })
 
-// const resettleArea = computed(() => {
-//   const { dataList,data } = props
-//   if(!data){
-//       const areaList = dataList.filter((item) => item.type === '1')
-//       return areaList
-//   }else{
-//     const datas=data.filter((item) => item.relation === '1')
-//   if(datas[0].settingWay=='1'){
-//   const areaList = dataList.filter((item) => item.type === '1'&&item.isProductionLand==='1')
-//   return areaList
-//   }else{
-//   const areaList = dataList.filter((item) => item.type === '1'&&item.isProductionLand==='2')
-//   return areaList
-//   }
-// }
-// })
 const resettleArea = computed(() => {
-  const { dataList } = props
-  const areaList = dataList.filter((item:any) => item.type === '1')
+  const { dataList,data } = props
+  if(!data){
+      const areaList = dataList.filter((item) => item.type === '1')
+      return areaList
+  }else{
+    const datas=data.filter((item) => item.relation === '1')
+  if(datas[0].settingWay=='1'){
+  const areaList = dataList.filter((item) => item.type === '1'&&item.isProductionLand==='1')
   return areaList
+  }else{
+  const areaList = dataList.filter((item) => item.type === '1'&&item.isProductionLand==='2')
+  return areaList
+  }
+}
 })
+// const resettleArea = computed(() => {
+//   const { dataList } = props
+//   const areaList = dataList.filter((item:any) => item.type === '1')
+//   return areaList
+// })
 watch(
   () => props.immigrantSettle,
   (val) => {

@@ -246,27 +246,27 @@ const apartmentPlaceChange = (id: string) => {
 }
 
 
-// const apartmentArea = computed(() => {
-//   const { dataList,data } = props
-//   if(!data){
-//   const apartment = dataList.filter((item) => item.type === '2')
-//   return apartment
-//   }else{
-//       const datas=data.filter((item) => item.relation === '1')
-//   if(datas[0].settingWay=='1'){
-//   const apartment = dataList.filter((item) => item.type === '2'&&item.isProductionLand==='1')
-//   return apartment
-//   }else{
-//   const apartment = dataList.filter((item) => item.type === '2'&&item.isProductionLand==='2')
-//   return apartment
-//   }
-//   }
-// })
-const apartmentArea=computed(() => {
-  const { dataList } = props
-  const apartment = dataList.filter((item:any) => item.type === '2')
+const apartmentArea = computed(() => {
+  const { dataList,data } = props
+  if(!data){
+  const apartment = dataList.filter((item) => item.type === '2')
   return apartment
+  }else{
+      const datas=data.filter((item) => item.relation === '1')
+  if(datas[0].settingWay=='1'){
+  const apartment = dataList.filter((item) => item.type === '2'&&item.isProductionLand==='1')
+  return apartment
+  }else{
+  const apartment = dataList.filter((item) => item.type === '2'&&item.isProductionLand==='2')
+  return apartment
+  }
+  }
 })
+// const apartmentArea=computed(() => {
+//   const { dataList } = props
+//   const apartment = dataList.filter((item:any) => item.type === '2')
+//   return apartment
+// })
 // 获取方案
 const getPlans = async () => {
   const res = []
