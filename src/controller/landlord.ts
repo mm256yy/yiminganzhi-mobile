@@ -129,9 +129,8 @@ export class Landlord extends Common {
     return new Promise(async (resolve, reject) => {
       try {
         const array: LandlordType[] = []
-        const sql = `select * from ${LandlordTableName} where isPadDelete = '0' and type = '${type}' order by updatedDate desc limit ${pageSize} offset ${
-          (page - 1) * pageSize
-        }`
+        const sql = `select * from ${LandlordTableName} where isPadDelete = '0' and type = '${type}' order by updatedDate desc limit ${pageSize} offset ${(page - 1) * pageSize
+          }`
         const list: LandlordDDLType[] = await this.db.selectSql(sql)
         if (this.isArrayAndNotNull(list)) {
           list.forEach((item) => {
@@ -378,7 +377,6 @@ export class Landlord extends Common {
           '0'
         )
         const res: LandlordType = result && result[0] ? JSON.parse(result[0].content) : {}
-        console.log(res, '居民户列表1111')
         // 获取坟墓信息
         const graveList = await GraveController.getListWithLandlord(res.type, res.doorNo)
         if (res && res.uid) {
@@ -747,7 +745,7 @@ export class Landlord extends Common {
       }
     })
   }
- // 业主列表-根据行政村 和 名称 查询列表
+  // 业主列表-根据行政村 和 名称 查询列表
   getLandlordListBySearchTwo(data?: LandlordSearchType): Promise<any> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -756,7 +754,7 @@ export class Landlord extends Common {
           areaCode,
           townCode,
           villageCode,
-		  warnStatus,
+          warnStatus,
           virutalVillageCode,
           type,
           pageSize = 10,
@@ -765,7 +763,7 @@ export class Landlord extends Common {
         const array: LandlordType[] = []
         let sql = `select * from ${LandlordHasStatusTableName} where 1=1`
         if (type) {
-           sql += ` and type = '${type}'`
+          sql += ` and type = '${type}'`
         }
         if (name) {
           sql += ` and (name like '%${name}%' or doorNo like '%${name.slice(
@@ -785,20 +783,20 @@ export class Landlord extends Common {
         if (virutalVillageCode) {
           sql += ` and virutalVillageCode = '${virutalVillageCode}'`
         }
-		if (warnStatus && warnStatus =='0') {
-		     sql += ` and   (stage is  null or stage ='' or stage ='null') `
-		}else if(warnStatus && warnStatus =='2'){
-			sql += ` and   (stage is not null and stage !='' and stage !='null' and lagAddDataStatus is not null  and lagAddDataStatus !='' and lagAddDataStatus !='null') `
-		}else if(warnStatus && warnStatus =='1'){
-			sql += ` and   (stage is not null and stage !='' and stage !='null' and warnAddDataStatus is not null  and warnAddDataStatus !='' and warnAddDataStatus !='null')   `
-		}
+        if (warnStatus && warnStatus == '0') {
+          sql += ` and   (stage is  null or stage ='' or stage ='null') `
+        } else if (warnStatus && warnStatus == '2') {
+          sql += ` and   (stage is not null and stage !='' and stage !='null' and lagAddDataStatus is not null  and lagAddDataStatus !='' and lagAddDataStatus !='null') `
+        } else if (warnStatus && warnStatus == '1') {
+          sql += ` and   (stage is not null and stage !='' and stage !='null' and warnAddDataStatus is not null  and warnAddDataStatus !='' and warnAddDataStatus !='null')   `
+        }
         sql += ` order by updatedDate desc limit ${pageSize} offset ${(page - 1) * pageSize}`
         const list: LandlordHasStatusDDLType[] = await this.db.selectSql(sql)
         /* if (this.isArrayAndNotNull(list)) {
-			list.forEach((item) => {
-			  const landlord = JSON.parse(item.type)
-			  array.push(landlord)
-			})
+      list.forEach((item) => {
+        const landlord = JSON.parse(item.type)
+        array.push(landlord)
+      })
           const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
           // 拿到上级行政区划
           array.forEach((item) => {
@@ -833,10 +831,10 @@ export class Landlord extends Common {
         }
         const sql = `select count(reportStatus = 'ReportSucceed' or null) as hasReport,
         count(reportStatus = 'ReportSucceed' and reportDate Between '${dayjs()
-          .startOf('day')
-          .format(this.format)}' and '${dayjs()
-          .endOf('day')
-          .format(this.format)}' or null) as todayReport
+            .startOf('day')
+            .format(this.format)}' and '${dayjs()
+              .endOf('day')
+              .format(this.format)}' or null) as todayReport
       from ${LandlordTableName} where reportUser = '${reportUser}'`
         const res: LandlordDDLType[] = await this.db.selectSql(sql)
         const sql2 = `select count(reportStatus != 'ReportSucceed' or null) as noReport from ${LandlordTableName}`
@@ -960,11 +958,9 @@ export class Landlord extends Common {
         realData.reportDate = dayjs()
         realData.reportUser = userInfo.id
 
-        const values = `padStatus = 'modify',reportStatus = '${
-          ReportStatusEnum.ReportSucceed
-        }',reportDate = '${dayjs().format(this.format)}',reportUser = '${
-          realData.reportUser
-        }',content = '${JSON.stringify(realData)}',updatedDate = '${getCurrentTimeStamp()}'`
+        const values = `padStatus = 'modify',reportStatus = '${ReportStatusEnum.ReportSucceed
+          }',reportDate = '${dayjs().format(this.format)}',reportUser = '${realData.reportUser
+          }',content = '${JSON.stringify(realData)}',updatedDate = '${getCurrentTimeStamp()}'`
         const sql = `update ${LandlordTableName} set ${values} where uid = '${realData.uid}' and isPadDelete = '0'`
         const res = await this.db.execteSql([sql])
         if (res && res.code) {
@@ -1001,11 +997,10 @@ export class Landlord extends Common {
         data.signDate = dayjs()
         data.signUser = userInfo.id
 
-        const values = `padStatus = 'modify',signStatus = '${
-          SignStatusEnum.SignSucceed
-        }',signDate = '${dayjs().format(this.format)}',content = '${JSON.stringify(
-          data
-        )}',updatedDate = '${getCurrentTimeStamp()}'`
+        const values = `padStatus = 'modify',signStatus = '${SignStatusEnum.SignSucceed
+          }',signDate = '${dayjs().format(this.format)}',content = '${JSON.stringify(
+            data
+          )}',updatedDate = '${getCurrentTimeStamp()}'`
         const sql = `update ${LandlordTableName} set ${values} where uid = '${data.uid}' and isPadDelete = '0'`
         const res = await this.db.execteSql([sql])
         if (res && res.code) {

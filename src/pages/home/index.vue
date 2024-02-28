@@ -71,15 +71,23 @@
         @to-link="toLink"
         @login-in="loginIn"
       />
-      <!-- 资产评估的首页 -->
+      <!-- 资产评估-房屋首页 -->
       <Assessor
         v-else-if="
-          homeViewType === RoleCodeType.assessor ||
+          homeViewType === RoleCodeType.assessor 
+        "
+        @to-link="toLink"
+        @login-in="loginIn"
+      />
+     <!-- 资产评估-土地首页 -->
+      <LandHome
+        v-else-if="
           homeViewType === RoleCodeType.assessorland
         "
         @to-link="toLink"
         @login-in="loginIn"
       />
+
       <!-- 移民实施人员的首页 -->
       <Implementation
         v-else-if="
@@ -140,6 +148,7 @@ import { pullInstance } from "@/sync";
 import { RoleCodeType } from "@/types/common";
 import { imageUrlAndBase64Map } from "@/config";
 import Assessor from "./components/Assessor.vue";
+import LandHome from "./components/LandHome.vue";
 import Investigator from "./components/Investigator.vue";
 import Implementation from "./components/Implementation.vue";
 import { OtherDataType } from "@/database";
