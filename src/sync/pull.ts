@@ -122,7 +122,9 @@ class PullData {
       evaluatorStatisticsDto: null,
       settleAddressList: [],
       peasantHouseholdDtoList: [],
-      notifyDtoList: []
+      notifyDtoList: [],
+      landPeasantHouseholdDtoList: [],
+      landEstimateDtoList: []
     }
 
     this.districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
@@ -253,7 +255,9 @@ class PullData {
       pgTop,
       feedbackDtoList,
       settleAddressList,
-      notifyDtoList
+      notifyDtoList,
+      landEstimateDtoList,
+      landPeasantHouseholdDtoList
     } = result
     // 需要reset
     this.state.immigrantIncomeConfigList = immigrantIncomeConfigList
@@ -276,7 +280,9 @@ class PullData {
     this.state.pgTop = pgTop
     this.state.feedbackDtoList = feedbackDtoList
     this.state.settleAddressList = settleAddressList
-    this.state.notifyDtoList = notifyDtoList
+    this.state.notifyDtoList = notifyDtoList,
+      this.state.landPeasantHouseholdDtoList = landPeasantHouseholdDtoList
+    this.state.landEstimateDtoList = landEstimateDtoList
     console.log(this.state.notifyDtoList, '测试接口数据')
     this.pullDict().then((res: boolean) => {
       res && this.count++
@@ -326,6 +332,8 @@ class PullData {
       this.state.feedbackDtoList = []
       this.state.settleAddressList = []
       this.state.notifyDtoList = []
+      this.state.landPeasantHouseholdDtoList = []
+      this.state.landEstimateDtoList = []
       console.log('拉取: 其他', res)
     })
   }
@@ -1030,6 +1038,8 @@ class PullData {
         villageWarnNum,
         evaluatorStatisticsDto,
         notifyDtoList,
+        landEstimateDtoList,
+        landPeasantHouseholdDtoList
       } = this.state
       await db.transaction('begin').catch(() => {
         resolve(false)
@@ -1162,6 +1172,24 @@ class PullData {
           notifyDtoList
         )}','${getCurrentTimeStamp()}'`
         console.log(values, '消息通知数据')
+        db.insertOrReplaceData(OtherTableName, values, fields)
+      }
+      //土地数据
+      if (landEstimateDtoList && landEstimateDtoList.length) {
+        const fields = "'type','content','updatedDate'"
+        const values = `'${OtherDataType.landEstimateDtoList}','${JSON.stringify(
+          landEstimateDtoList
+        )}','${getCurrentTimeStamp()}'`
+        console.log(values, '测试土地数据')
+        db.insertOrReplaceData(OtherTableName, values, fields)
+      }
+      //土地关联用户数据
+      if (landPeasantHouseholdDtoList && landPeasantHouseholdDtoList.length) {
+        const fields = "'type','content','updatedDate'"
+        const values = `'${OtherDataType.landPeasantHouseholdDtoList}','${JSON.stringify(
+          landPeasantHouseholdDtoList
+        )}','${getCurrentTimeStamp()}'`
+        console.log(values, '测试土地关联用户数据')
         db.insertOrReplaceData(OtherTableName, values, fields)
       }
       await db.transaction('commit').catch(() => {

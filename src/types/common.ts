@@ -119,7 +119,8 @@ export enum ReviewCategory {
   immigrantWill = 'immigrantWill',
   immigrantIncomeList = 'immigrantIncomeList',
   immigrantOtherList = 'immigrantOtherList',
-  immigrantInfrastructureList = 'immigrantInfrastructureList'
+  immigrantInfrastructureList = 'immigrantInfrastructureList',
+  landEstimateDtoList = 'landEstimateDtoList'
 }
 
 export interface ReportParamsType {

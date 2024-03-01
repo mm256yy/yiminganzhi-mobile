@@ -410,10 +410,10 @@ const gotoEdit = (data: any) => {
     // 业主失败
     // 填报
     const routerMap: any = {
-      [MainType.PeasantHousehold]: 'household',
-      [MainType.IndividualHousehold]: 'selfPerson',
-      [MainType.Company]: 'enterprise',
-      [MainType.Village]: 'collective'
+      [MainType.PeasantHousehold]: 'householdImp',
+      [MainType.IndividualHousehold]: 'selfPersonImp',
+      [MainType.Company]: 'enterpriseImp',
+      [MainType.Village]: 'collectiveImp'
     }
     routerForward(routerMap[data.data.type], {
       uid: data.data.uid,

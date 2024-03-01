@@ -15,7 +15,8 @@
               <view class="col">
                 <view class="label">户号：</view>
                 <view class="content">
-                  {{ filterViewDoorNo(props.dataInfo) }}
+                  <!-- {{ filterViewDoorNo(props.dataInfo) }} -->
+                  {{ props.dataInfo.showDoorNo  }}
                 </view>
               </view>
             </uni-col>

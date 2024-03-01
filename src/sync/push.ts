@@ -71,7 +71,8 @@ class PushData {
                   immigrantFilling,
                   immigrantCompensationCardList,
                   immigrantInfrastructureList,
-                  immigrantOtherList
+                  immigrantOtherList,
+                  landEstimateDtoList
                 } = landlordItem
 
                 if (demographicList && demographicList.length) {
@@ -122,6 +123,11 @@ class PushData {
                 }
                 if (immigrantOtherList && immigrantOtherList.length) {
                   landlordItem.immigrantOtherList = immigrantOtherList.filter(
+                    (item: any) => item.isPadDelete !== '1'
+                  )
+                }
+                if (landEstimateDtoList&& landEstimateDtoList.length) {
+                  landlordItem.landEstimateDtoList= landEstimateDtoList.filter(
                     (item: any) => item.isPadDelete !== '1'
                   )
                 }
@@ -304,7 +310,8 @@ class PushData {
                   immigrantEquipmentList,
                   immigrantFacilitiesList,
                   immigrantInfrastructureList,
-                  immigrantOtherList
+                  immigrantOtherList,
+                  landEstimateDtoList
                 } = landlordItem
                 if (demographicList && demographicList.length) {
                   demographicList.forEach((item) => {
@@ -374,6 +381,16 @@ class PushData {
                     if (item.uid && item.id && item.isPadDelete === '1') {
                       deleteList.push({
                         type: 'immigrantOtherList',
+                        deleteId: item.uid
+                      })
+                    }
+                  })
+                }
+                if (landEstimateDtoList && landEstimateDtoList.length) {
+                  landEstimateDtoList.forEach((item) => {
+                    if (item.uid && item.id && item.isPadDelete === '1') {
+                      deleteList.push({
+                        type: 'landEstimateDtoList',
                         deleteId: item.uid
                       })
                     }

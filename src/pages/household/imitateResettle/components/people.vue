@@ -90,6 +90,7 @@ interface PropsType {
   immigrantSettle?: any
   dataList?: any
   demographicLists?: any
+  flag?:any
 }
 
 const emit = defineEmits(['submit'])
@@ -105,8 +106,9 @@ watch(
   () => props.demographicList,
   (val) => {
     if (val) {
+      // if(!props.flag) return 
       tableData.value = val 
-      console.log(val, props.demographicLists, '测试数据')
+      console.log(props.demographicList, '测试数据')
       if (props.demographicLists) {
         val.forEach((item:any) => {
         props.demographicLists.forEach((ite:any) => {
@@ -134,6 +136,30 @@ watch(
     if (val) {
       console.log(val,'测试选择前面的数据')
       getDataRequest()
+    }
+  },
+  { immediate: true, deep: true }
+)
+watch(
+  () => props.demographicLists,
+  (val) => {
+    if (val) {
+      console.log(val,'再次测试人口数据')
+      if(props.flag){
+        val=val.filter((item:any) => item.isDelete !== '1')
+         tableData.value.forEach((item:any) => {
+           val.forEach((ite:any) => {
+             if(item.demographicId==ite.id){
+               item.name = ite.name
+               item.relation=ite.relation
+               item.sex=ite.sex
+               item.card=ite.card
+               item.censusType=ite.censusType
+               item.populationNature=ite.populationNature
+             }
+           })
+         })
+      }
     }
   },
   { immediate: true, deep: true }
