@@ -84,6 +84,7 @@
           :immigrantSettle="simulateImmigrantSettle"
           :dataList="dataList"
           :demographicLists="demographicList"
+          :flag="true"
           @submit="productionResettleSubmit"
         />
       </view>
@@ -102,7 +103,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
+import { computed, ref, onMounted, onBeforeUnmount,watch } from 'vue'
 import { StorageKey, getStorage } from '@/utils/storage'
 import resettleDesc from './resettleDesc.vue'
 import people from './components/people.vue'
@@ -145,7 +146,15 @@ const emit = defineEmits(['updateData'])
 const demographicList = computed(() => {
   return props.dataInfo && props.dataInfo.demographicList ? props.dataInfo.demographicList.filter((item) => item.name !== '增计人口'): []
 })
-
+watch(
+  () => props.dataInfo,
+  (val) => {
+    if (val) {
+      console.log(val.demographicList,'测试人口的数据')
+    }
+  },
+  { immediate: true, deep: true }
+)
 // props.dataInfo &&
 // props.dataInfo.simulateDemographic &&
 //     props.dataInfo.simulateDemographic.length

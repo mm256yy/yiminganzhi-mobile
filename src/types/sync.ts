@@ -116,6 +116,8 @@ export interface LandlordType {
   immigrantInfrastructureList: FoundationType[]
   //其他评估
   immigrantOtherList: FoundationType[]
+  //土地信息关联数据
+  landEstimateDtoList: any[]
   // 农村小型专项及农副业设施信息
   immigrantFacilitiesList: FacilitiesType[]
   // 个体户 / 公司 扩展字段
@@ -225,6 +227,8 @@ export interface LandlordHasStatusType {
   immigrantInfrastructureList: any[]
   //其他评估
   immigrantOtherList: any[]
+  //土地信息关联数据
+  landEstimateDtoList: any[]
   // 农村小型专项及农副业设施信息
   immigrantFacilitiesList: FacilitiesType[]
   // 个体户 / 公司 扩展字段
@@ -386,6 +390,8 @@ export interface StateType {
   settleAddressList: any[]
   peasantHouseholdDtoList: LandlordHasStatusType[]
   notifyDtoList: any[]
+  landPeasantHouseholdDtoList: any[]
+  landEstimateDtoList: any[]
 }
 
 export interface PushStateType {

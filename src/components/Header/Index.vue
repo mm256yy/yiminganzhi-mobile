@@ -597,6 +597,7 @@ export default {
 						promiseArray.push(printPdf.createCollective(templateIds, landlord, projectInfo))
 					}
         })
+        console.log(promiseArray, 'promiseArray')
         // 并行生成
         Promise.all(promiseArray)
           .then((result) => {

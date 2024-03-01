@@ -251,6 +251,7 @@ const getList = () => {
           isLoading.value = false
         })
         const res = dataList.filter((item: any) => item.warnStatus == 1)
+        console.log(res, "res预警数据")
         getListCommon(res)
       } else if (sourceType.value == '2') {
         const dataList = await getLandlordListBySearchApi(params).catch(() => {
@@ -262,7 +263,9 @@ const getList = () => {
         const dataList = await getLandlordListBySearchApi(params).catch(() => {
           isLoading.value = false
         })
+        console.log(dataList, "dataList数据")
         const res = dataList.filter((item: any) => item.warnStatus != '1' && item.warnStatus != '2')
+        console.log(res, "res正常数据")
         getListCommon(res)
       }
     } else {

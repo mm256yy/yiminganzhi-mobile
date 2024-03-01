@@ -385,11 +385,12 @@
 		      label-align="right"
 		      name="formData.villageCode"
 		    >
-		      <village-select-form-item
+		      <!-- <village-select-form-item
 		        v-model:areaCode="formData.areaCode"
 		        v-model:townCode="formData.townCode"
 		        v-model:villageCode="formData.villageCode"
-		      />
+		      /> -->
+          <uni-data-select v-model="formData.type" :localdata="dict[379]" />
 		    </uni-forms-item>
 		  </uni-col>
         </uni-row>

@@ -17,7 +17,9 @@ export enum OtherDataType {
   PgTop = 'pgTop', //TOP5首页排行榜
   EvaluatorStatisticsDto = 'evaluatorStatisticsDto', //资产评估首页
   settleAddressList = 'settleAddressList', //安置点详情
-  notifyDtoList = 'notifyDtoList' // 消息通知
+  notifyDtoList = 'notifyDtoList', // 消息通知
+  landEstimateDtoList = 'landEstimateDtoList', //土地列表
+  landPeasantHouseholdDtoList = 'landPeasantHouseholdDtoList' //土地关联的用户（企业，村集体，居民户，只征地不搬迁）
 }
 
 export interface OtherDDLType {

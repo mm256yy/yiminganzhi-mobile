@@ -100,7 +100,8 @@ const otherNum = computed(() => {
 })
 
 const resettleArea = computed(() => {
-  const { dataList,data } = props
+  const { dataList, data } = props
+  console.log(data,'测试数据data')
   if(!data){
       const areaList = dataList.filter((item) => item.type === '1')
       return areaList
