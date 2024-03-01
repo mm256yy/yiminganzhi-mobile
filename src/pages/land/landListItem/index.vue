@@ -1,8 +1,8 @@
 <template>
-  <view class="company-item">
+  <view class="company-item" @click="handleItemCLick">
     <view class="head">
       <view class="head-lt">
-          <radio :value="itemChecked" checked="true" />
+        <checkbox style="margin-bottom:5rpx" :value="checkSelectedStr" :checked="checkSelected" />
           <view
             class="status"
             :class="[props.data.reportStatus === 'ReportSucceed' ? 'success' : '']"
@@ -24,13 +24,6 @@
         <view class="btn blue-btn" @click="estimate">
           <text class="txt">评估</text>
         </view>
-        <!-- <view class="status" :class="[props.data.reportStatus === 'ReportSucceed' ? 'success' : '']"
-          ><text class="circle" />{{
-            props.data.reportStatus === 'ReportSucceed' ? '已评估' : '未评估'
-          }}</view> -->
-        <!-- <view class="btn blue-btn" @click="estimate">
-          <text class="txt">评估</text>
-        </view> -->
       </view>
     </view>
     <view class="cont">
@@ -84,23 +77,23 @@ interface PropsType {
 
 const props = defineProps<PropsType>();
 const emit = defineEmits(["delete"]);
-const itemChecked = ref<number>(0)
+const checkSelectedStr = ref<string>('0')
+const checkSelected = ref<boolean>(false)
 
 
-const deleteItem = () => {
-  emit("delete");
-};
+const handleItemCLick = () => {
+  checkSelected.value=!checkSelected.value
+}
 
-const estimate = () => {};
-
+const estimate = () => { };
 
 </script>
 
 <style lang="scss" scoped>
 .company-item {
   position: relative;
-  width: 346rpx;
-  padding: 12rpx;
+  width: 348rpx;
+  padding: 2rpx 12rpx 12rpx 12rpx;
   margin: 0 7rpx 7rpx 0;
   background-color: #ffffff;
   border-radius: 7rpx;

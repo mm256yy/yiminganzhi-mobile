@@ -59,19 +59,43 @@
         title="土地编号：XXXX、XXX已关联，是否继续关联，如选择继续关联，则以最新一次关联为准"
         style="padding:10rpx 10rpx 0 10rpx"
         @confirm="dialogConfirm"
-        @close="dialogClose"
+        @close="associationDialogClose"
       />
     </uni-popup>
+    <!-- 同步数据确认弹窗-->
+    <uni-popup ref="confirmDialogRef" type="dialog">
+      <uni-popup-dialog
+        type="warn"
+        cancelText="取消"
+        confirmText="确认"
+        :title="lastConfirmTime"
+        content="是否确认同步数据？"
+        @confirm="confirmSync"
+        @close="closeConfirmDialog"
+      />
+    </uni-popup>
+
+    <SyncCompont ref="syncCmt" from="sync" />
     </view>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted,nextTick, unref,computed } from 'vue'
+import { ref, onMounted,nextTick,computed,onBeforeMount,onBeforeUnmount } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
-import { getStorage, StorageKey, routerForward } from '@/utils'
-import { getImpHomeCollectDtoApi } from '@/service'
+import { getStorage, StorageKey, routerForward,debounce } from '@/utils'
+import { getOtherItemApi } from "@/service";
+// import { getImpHomeCollectDtoApi } from '@/service'
 import NoData from '@/components/NoData/index.vue'
 import LandListItem from '@/pages/land/landListItem/index.vue'
+import SyncCompont from "@/components/Sync/Index.vue";
+import dayjs from "dayjs";
+import { OtherDataType } from "@/database";
+
+const confirmDialogRef = ref<any>(null);
+const pullTime = ref<string>("");
+const syncing = ref<boolean>(false);
+const syncCmt = ref();
+const lastConfirmTime = ref("");
 
 const emit = defineEmits(['toLink', 'loginIn'])
 const list = ref<any[]>([
@@ -99,6 +123,15 @@ const onSearch = () => {
       name: searchName.value
     })
   }
+}
+
+const toTarget = (name: any) => {
+  const params = {
+  }
+
+  routerForward(name, {
+    ...params
+  })
 }
 
 const getList = () => {
@@ -142,7 +175,8 @@ const getList = () => {
   })
 }
 
-const editLandlord = (item:any) => {
+const editLandlord = (item: any) => {
+  
   console.log(item);
 }
 
@@ -159,24 +193,53 @@ const clear = () => {
 }
 
 const dialogConfirm = () => {
-  // if (routerType.value === 'back') {
-  //   goBack()
-  // } else if (routerType.value === 'home') {
-  //   goHome()
-  // }
-   associationBindingRef.value?.close()
+  associationBindingRef.value?.close()
+  const routeName='associationBinding'
+  toTarget(routeName)
 }
 
-const dialogClose = () => {
+const associationDialogClose = () => {
   associationBindingRef.value?.close()
 }
+
+const closeConfirmDialog = () => {
+  confirmDialogRef.value?.close()
+}
+
+// 处理数据同步
+const onSyncHandle = debounce(() => {
+  if (syncing.value) {
+    return;
+  }
+  syncing.value = true;
+  syncCmt.value?.onSync();
+});
+
+// 同步结束
+const onSyncEnd = () => {
+  syncing.value = false;
+};
+
+// 确认同步
+const confirmSync = () => {
+  closeConfirmDialog();
+  onSyncHandle();
+};
+
+const getPullTime = async () => {
+  const time: string = await getOtherItemApi(OtherDataType.PullTime);
+  pullTime.value = time ? dayjs(Number(time)).format("YYYY-MM-DD HH:mm:ss") : "";
+  lastConfirmTime.value = `上次：${pullTime.value}`;
+};
 
 const status = computed(() => {
   return isEnd.value ? 'noMore' : isLoading.value ? 'loading' : 'more'
 })
 
+// 更多查询
 const onSearchMore = () => {
-  
+  const routeName='searchMore'
+  toTarget(routeName)
 }
 const toLink = (name: string) => {
   emit('toLink', name)
@@ -193,7 +256,7 @@ const associatedBind = () => {
 
 // 数据同步
 const syncData = () => {
-  
+    confirmDialogRef.value?.open()
 }
 
 const loadMore = () => {
@@ -201,7 +264,6 @@ const loadMore = () => {
     return
   }
   console.log('load more')
-
   getList()
 }
 
@@ -211,12 +273,27 @@ onShow(() => {
   // userInfo.value = user
   // projectInfo.value = project
 })
+
+onBeforeMount(() => {
+  // 不同角色展示不同的首页视图
+  const role = getStorage(StorageKey.USERROLE);
+  console.log(role, "目前是什么角色");
+  //homeViewType.value = role;
+});
+
+onBeforeUnmount(() => {
+  uni.$off("SyncEnd", onSyncEnd);
+});
+
+
 onMounted(() => {
   // getImpHomeCollectDtoApi().then((res) => {
   //   if (res) {
   //     homeCollect.value = { ...homeCollect.value, ...res }
   //   }
   // })
+  getPullTime();
+  uni.$on("SyncEnd", onSyncEnd);
 })
 </script>
 

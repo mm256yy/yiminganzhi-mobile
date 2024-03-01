@@ -560,6 +560,20 @@
 			"style": {
 				"navigationBarTitleText": "数据库详情数据"
 			}
+		},
+		{
+			"name": "associationBinding",
+			"path": "pages/land/associationBinding/index",
+			"style": {
+				"navigationBarTitleText": "关联绑定"
+			}
+		},
+		{
+			"name": "searchMore",
+			"path": "pages/land/searchMore/index",
+			"style": {
+				"navigationBarTitleText": "更多查询"
+			}
 		}
 	],
 	"globalStyle": {
@@ -584,43 +598,13 @@
 		"current": 2,
 		"list": [
 			{
-				"name": "地图列表",
-				"path": "pages/mapList/index",
-				"query": ""
-			},
-			{
-				"name": "地图坐标选择页面",
-				"path": "pages/map/index",
-				"query": ""
-			},
-			{
 				"name": "首页",
 				"path": "pages/home/index",
 				"query": ""
 			},
 			{
-				"name": "数据同步页面",
-				"path": "pages/summary/index",
-				"query": ""
-			},
-			{
-				"name": "数据库页面",
-				"path": "pages/database/index",
-				"query": ""
-			},
-			{
-				"name": "数据库测试页面",
-				"path": "pages/user/index",
-				"query": ""
-			},
-			{
-				"name": "同步页面",
-				"path": "pages/sync/index",
-				"query": ""
-			},
-			{
-				"name": "信息反馈详情",
-				"path": "pages/feedback/detail",
+				"name": "关联绑定",
+				"path": "pages/land/associationBinding/index",
 				"query": ""
 			}
 		]

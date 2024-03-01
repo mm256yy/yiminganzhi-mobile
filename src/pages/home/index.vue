@@ -8,7 +8,6 @@
           <view class="project" v-if="roleType == RoleCodeType.investigator"
             >移民安置综合管理服务平台V{{ appVersion }}</view
           >
-          <!-- &nbsp;-&nbsp; -->
           <view
             class="project"
             v-if="
@@ -170,14 +169,14 @@ const lastConfirmTime = ref("");
  * 首页视图类型
  * 不同角色不同的首页内容
  */
-const homeViewType = ref<RoleCodeType>(RoleCodeType.investigator);
+//const homeViewType = ref<RoleCodeType>(RoleCodeType.investigator);
+const homeViewType = ref<RoleCodeType>(RoleCodeType.assessorland);
 
 const toLink = (name: string) => {
   // 判断是否为数据同步
   if (name === "sync") {
     if (homeViewType.value === RoleCodeType.implementation) {
       openConfirmDialog();
-      console.log("123");
       return;
     }
   }

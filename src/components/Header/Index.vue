@@ -455,7 +455,7 @@ export default {
       })
     },
     getPrintResult(result: any[]) {
-      // console.log('result:', result)
+      console.log('result:', result)
       // 拿到打印结果
       const base64Str = result[0][0]
       console.log(base64Str,'测试base')
@@ -597,6 +597,7 @@ export default {
 						promiseArray.push(printPdf.createCollective(templateIds, landlord, projectInfo))
 					}
         })
+		console.log('promiseArray',promiseArray)
         // 并行生成
         Promise.all(promiseArray)
           .then((result) => {

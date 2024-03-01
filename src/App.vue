@@ -31,6 +31,9 @@ onLaunch(() => {
       replace: true
     })
   }
+    //   routerForward('home', {
+    //   replace: true
+    // })
 })
 onShow(() => {
   console.log('App Show')
