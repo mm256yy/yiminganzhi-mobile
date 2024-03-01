@@ -38,7 +38,7 @@ const getLandlordDetail = async () => {
   if (uid.value) {
     const res = await getImpLandlordItemApi(uid.value)
     if (res) {
-      demographicList.value = res.demographicList.filter((item) => item.name !== '增计人口')
+      demographicList.value = res.demographicList
       // .filter((item) => item.name !== '增计人口')
     }
   }

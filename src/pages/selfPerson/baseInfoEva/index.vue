@@ -120,6 +120,20 @@
                 <view class="content">{{ totalPriceObj.equipmentTotalAmount }}</view>
               </view>
             </uni-col>
+             <uni-col :span="12">
+              <view class="col">
+                <view class="label">基础设施评估合计：</view>
+                <view class="content">{{ totalPriceObj.infrastructureAmount }}</view>
+              </view>
+            </uni-col>
+          </uni-row>
+          <uni-row>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">其他评估合计：</view>
+                <view class="content">{{ totalPriceObj.otherAmount }}</view>
+              </view>
+            </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">资产评估合计：</view>
@@ -156,7 +170,8 @@ const totalPriceObj = computed(() => {
 
     equipmentTotalAmount: 0,
     specialTotalAmount: 0,
-
+    infrastructureAmount: 0,
+    otherAmount: 0,
     totalAmount: 0
   }
   if (props.dataInfo) {
@@ -165,9 +180,11 @@ const totalPriceObj = computed(() => {
       assetHouseFitUpList,
       immigrantAppendantList,
       immigrantTreeList,
-      assetLandList,
+      landEstimateDtoList,
       assetAppendantList,
-      immigrantEquipmentList
+      immigrantEquipmentList,
+      immigrantInfrastructureList,
+      immigrantOtherList   
     } = props.dataInfo
     // 房屋主体
     if (immigrantHouseList && immigrantHouseList.length) {
@@ -202,8 +219,8 @@ const totalPriceObj = computed(() => {
       })
     }
     // 土地
-    if (assetLandList && assetLandList.length) {
-      assetLandList.forEach((item: any) => {
+    if (landEstimateDtoList && landEstimateDtoList.length) {
+      landEstimateDtoList.forEach((item: any) => {
         if (item.compensationAmount > 0) {
           obj.landTotalAmount += +item.compensationAmount
         }
@@ -225,7 +242,22 @@ const totalPriceObj = computed(() => {
         }
       })
     }
-
+    // 基础设施评估
+    if (immigrantInfrastructureList && immigrantInfrastructureList.length) {
+      immigrantInfrastructureList.forEach((item: any) => {
+        if (item.compensationAmount > 0) {
+          obj.infrastructureAmount += +item.compensationAmount
+        }
+      })
+    }
+    // 其他评估
+    if (immigrantOtherList && immigrantOtherList.length) {
+      immigrantOtherList.forEach((item: any) => {
+        if (item.compensationAmount > 0) {
+          obj.otherAmount += +item.compensationAmount
+        }
+      })
+    }
     obj.houseTotalAmount = +obj.houseTotalAmount.toFixed(2)
     obj.fitUpTotalAmount = +obj.fitUpTotalAmount.toFixed(2)
     obj.appendantTotalAmount = +obj.appendantTotalAmount.toFixed(2)
@@ -233,7 +265,8 @@ const totalPriceObj = computed(() => {
     obj.landTotalAmount = +obj.landTotalAmount.toFixed(2)
     obj.assetAppendantTotalAmount = +obj.assetAppendantTotalAmount.toFixed(2)
     obj.equipmentTotalAmount = +obj.equipmentTotalAmount.toFixed(2)
-
+    obj.infrastructureAmount = +obj.infrastructureAmount.toFixed(2)
+    obj.otherAmount = +obj.otherAmount.toFixed(2)
     obj.totalAmount = +(
       obj.houseTotalAmount +
       obj.fitUpTotalAmount +
@@ -241,10 +274,11 @@ const totalPriceObj = computed(() => {
       obj.treeTotalAmount +
       obj.landTotalAmount +
       obj.assetAppendantTotalAmount +
-      obj.equipmentTotalAmount
+      obj.equipmentTotalAmount +
+      obj.infrastructureAmount +
+      obj.otherAmount
     ).toFixed(2)
   }
-
   return obj
 })
 </script>

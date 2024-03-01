@@ -234,7 +234,7 @@ export class ImpLandlord extends Common {
       //   // 安置确认 坟墓没有确认
       //   landlordItem.immigrantFilling.chooseGraveStatus = '0'
       // } else {
-      if (res2 && this.isNotNullPic(graveChoosePic)) {
+      if (!res2 && this.isNotNullPic(graveChoosePic)) {
         landlordItem.immigrantFilling.chooseGraveStatus = '1'
       } else {
         landlordItem.immigrantFilling.chooseGraveStatus = '0'
@@ -585,8 +585,8 @@ export class ImpLandlord extends Common {
             )
           }
 
-          if (this.isArrayAndNotNull(res.assetLandList)) {
-            res.assetLandList = res.assetLandList.filter((item) => item.isDelete !== '1')
+          if (this.isArrayAndNotNull(res.landEstimateDtoList)) {
+            res.landEstimateDtoList = res.landEstimateDtoList.filter((item) => item.isDelete !== '1')
           }
 
           if (this.isArrayAndNotNull(res.assetAppendantList)) {
@@ -709,8 +709,8 @@ export class ImpLandlord extends Common {
             )
           }
 
-          if (this.isArrayAndNotNull(res.assetLandList)) {
-            res.assetLandList = res.assetLandList.filter((item) => item.isDelete !== '1')
+          if (this.isArrayAndNotNull(res.landEstimateDtoList)) {
+            res.landEstimateDtoList = res.landEstimateDtoList.filter((item) => item.isDelete !== '1')
           }
 
           if (this.isArrayAndNotNull(res.assetAppendantList)) {

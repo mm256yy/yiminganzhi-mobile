@@ -160,7 +160,7 @@ const totalPriceObj = computed(() => {
       assetHouseFitUpList,
       immigrantAppendantList,
       immigrantTreeList,
-      assetLandList,
+      landEstimateDtoList,
       assetAppendantList
     } = props.dataInfo
     // 房屋主体
@@ -196,8 +196,8 @@ const totalPriceObj = computed(() => {
       })
     }
     // 土地
-    if (assetLandList && assetLandList.length) {
-      assetLandList.forEach((item: any) => {
+    if (landEstimateDtoList && landEstimateDtoList.length) {
+      landEstimateDtoList.forEach((item: any) => {
         if (item.compensationAmount > 0) {
           obj.landTotalAmount += +item.compensationAmount
         }

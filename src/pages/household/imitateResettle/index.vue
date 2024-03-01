@@ -144,7 +144,8 @@ const emit = defineEmits(['updateData'])
 // .filter((item) => item.name !== '增计人口')
 // 获取人口列表
 const demographicList = computed(() => {
-  return props.dataInfo && props.dataInfo.demographicList ? props.dataInfo.demographicList.filter((item) => item.name !== '增计人口'): []
+  // return props.dataInfo && props.dataInfo.demographicList ? props.dataInfo.demographicList.filter((item) => item.name !== '增计人口'): []
+  return props.dataInfo.demographicList
 })
 watch(
   () => props.dataInfo,

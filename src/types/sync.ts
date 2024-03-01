@@ -148,7 +148,8 @@ export interface LandlordType {
 
   updateLogList: UpdateLogType[]
   assetHouseFitUpList: AssetHouseFitUpType[]
-  assetLandList: AssetLandType[]
+  assetLandList: AssetLandType[]  //已废弃
+
   assetAppendantList: AssetAppendantType[]
   immigrantDocumentation: any
   immigrantSettle: Partial<ImmigrantSettleType>
@@ -257,7 +258,7 @@ export interface LandlordHasStatusType {
 
   updateLogList: UpdateLogType[]
   assetHouseFitUpList: AssetHouseFitUpType[]
-  assetLandList: AssetLandType[]
+  assetLandList: AssetLandType[] //已废弃
   assetAppendantList: AssetAppendantType[]
   immigrantDocumentation: any
   immigrantSettle: Partial<ImmigrantSettleType>

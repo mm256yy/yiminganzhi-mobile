@@ -66,7 +66,7 @@
                 <land-eva
                   v-if="tabVal === 5"
                   :dataInfo="dataInfo"
-                  :dataList="dataInfo.assetLandList"
+                  :dataList="dataInfo.landEstimateDtoList"
                   @delete-land="deleteLand"
                   @update-data="updateData"
                 />

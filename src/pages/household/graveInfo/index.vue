@@ -53,7 +53,9 @@
               <view class="col">
                 <view class="label">所在位置：</view>
                 <view class="content">
-                  {{ formatDict(item.gravePosition, 288) }}
+                  <!-- {{ formatDict(item.gravePosition, 288) }} -->
+                  <!-- 暂时改成326 有问题再改回288 -->
+                  {{ formatDict(item.gravePosition, 326)  }}  
                 </view>
               </view>
             </uni-col>

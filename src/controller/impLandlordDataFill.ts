@@ -1425,10 +1425,10 @@ class ImpDataFill extends ImpLandlord {
         data.isUpdate = '1'
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
-          if (!landlordItem.assetLandList) {
-            landlordItem.assetLandList = []
+          if (!landlordItem.landEstimateDtoList) {
+            landlordItem.landEstimateDtoList = []
           }
-          landlordItem.assetLandList.push(data)
+          landlordItem.landEstimateDtoList.push(data)
         } else {
           reject(false)
           console.log('调查对象信息查询失败')
@@ -1459,7 +1459,7 @@ class ImpDataFill extends ImpLandlord {
         }
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
-          landlordItem.assetLandList = data.map((item) => {
+          landlordItem.landEstimateDtoList = data.map((item) => {
             if (!item.uid) {
               const itemUid = guid()
               item.uid = itemUid
@@ -1493,7 +1493,7 @@ class ImpDataFill extends ImpLandlord {
         }
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
-          landlordItem.assetLandList = landlordItem.assetLandList.map((item) => {
+          landlordItem.landEstimateDtoList = landlordItem.landEstimateDtoList.map((item) => {
             if (item.uid === data.uid) {
               item = { ...item, ...data }
               item.isUpdate = '1'
@@ -1525,7 +1525,7 @@ class ImpDataFill extends ImpLandlord {
         }
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
-          landlordItem.assetLandList = landlordItem.assetLandList.map((item) => {
+          landlordItem.landEstimateDtoList = landlordItem.landEstimateDtoList.map((item) => {
             if (item.uid === itemUid) {
               item.deleteReason = deleteReason || ''
               item.isDelete = '1'

@@ -107,7 +107,7 @@ watch(
   (val) => {
     if (val) {
       // if(!props.flag) return 
-      tableData.value = val 
+      tableData.value = JSON.parse(JSON.stringify(val)) 
       console.log(props.demographicList, '测试数据')
       if (props.demographicLists) {
         val.forEach((item:any) => {
@@ -119,7 +119,7 @@ watch(
       })
       }
       console.log(tableData.value, '测试数据模拟安置')
-      tableData.value=val.filter((item:any) => item.isDelete !== '1')
+      tableData.value=tableData.value.filter((item:any) => item.isDelete !== '1'&&item.name!='增计人口')
       // val.forEach((item,index) => {
       //   if(item.name=='人口增计'){
       //      val.splice(index,1)
@@ -159,6 +159,7 @@ watch(
              }
            })
          })
+         tableData.value=tableData.value.filter((item:any) => item.name)
       }
     }
   },
@@ -172,6 +173,9 @@ const stepNext = async () => {
     showToast('请选择安置方式')
     return
   }
+  let arr = props.demographicList.find((item: any) => item.name == '增计人口')
+  let arrs=props.demographicLists.find((item:any) => item.name=='增计人口')
+  console.log(arr,'测试增计人口')
   const data = tableData.value.map((item) => {
     return {
       ...item,
@@ -180,7 +184,13 @@ const stepNext = async () => {
       settingRemark: item.settingRemark
     }
   })
-  emit('submit', data)
+  if (arr) {
+      data.push(arr)
+      emit('submit', data)
+  } else {
+    data.push(arrs)
+       emit('submit', data)
+  }
 }
 onMounted(() => {
   getDataRequest()

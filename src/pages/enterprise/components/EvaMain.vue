@@ -96,7 +96,7 @@
                 <!-- 土地基本情况评估-->
                 <land-eva
                   v-if="tabVal === 8"
-                  :dataList="dataInfo.assetLandList"
+                  :dataList="dataInfo.landEstimateDtoList"
                   :dataInfo="dataInfo"
                   @delete-land="deleteLand"
                   @update-data="updateData"
