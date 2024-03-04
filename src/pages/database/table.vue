@@ -21,6 +21,8 @@ onLoad((option: any) => {
   console.log(option, 'option')
   if (option && option.table) {
     tableName.value = option.table
+    console.log(option.table);
+    
     getJsonData()
   }
 })
@@ -39,6 +41,7 @@ const screenHeight = sysInfo.screenHeight
 const pageHeight = screenHeight - statusBarHeight
 
 const getJsonData = async () => {
+  console.log(db.isOpen());
   if (db.isOpen()) {
     const res = await db.selectTableData(tableName.value).catch((err) => {
       console.log(err, 'err')
@@ -47,7 +50,8 @@ const getJsonData = async () => {
     if (
       tableName.value === 'landlord' ||
       tableName.value === 'other' ||
-      tableName.value === 'image'
+      tableName.value === 'image' ||
+      tableName.value==='landEstimateDtoList'
     ) {
       if (tableName.value === 'other') {
         jsonData.value = (res || []).map((item: any) => {

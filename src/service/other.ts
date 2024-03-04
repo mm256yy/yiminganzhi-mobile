@@ -12,7 +12,8 @@ import {
   ResettlementController,
   PrintController,
   ImageController,
-  FeedbackDtoListController
+  FeedbackDtoListController,
+  landEstimateDtoListFill
 } from '@/controller'
 import { OtherDataType } from '@/database'
 import { MainType, PrintType } from '@/types/common'
@@ -140,4 +141,16 @@ export const getImpHomeCollectApi = () => {
 // 获取资产评估-首页统计信息
 export const getImpHomeCollectDtoApi = () => {
   return OtherController.getOtherWithType(OtherDataType.EvaluatorStatisticsDto)
+}
+// 获取资产评估-土地关联列表
+export const getLandEstimateDtoListApi = (data?: any) => {
+  return landEstimateDtoListFill.getLandlordListBySearch(data)
+}
+// 获取资产评估-农户信息
+export const getLandPeasantHouseholdDtoListApi = () => {
+  return OtherController.getOtherWithType(OtherDataType.landPeasantHouseholdDtoList)
+}
+//保存 updateLandlord 更新
+export const updateLandlord = (data?: any) => {
+  return landEstimateDtoListFill.updateLandlord(data)
 }

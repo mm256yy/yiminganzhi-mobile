@@ -187,7 +187,7 @@
       </view>
     </view>
 
-    <view class="other-enter self">
+    <view class="other-enter">
       <view class="other-item" @click="toLink('database')">
         <view class="inner">
           <image class="other-icon" src="@/static/images/sync_enter.png" mode="scaleToFill" />
@@ -212,7 +212,7 @@ import { onShow } from '@dcloudio/uni-app'
 import { getStorage, StorageKey, routerForward } from '@/utils'
 import Echart from './GroupTopFive.vue'
 import MessageNotice from './MessageNoticeFive.vue'
-import { getImpHomeCollectDtoApi } from '@/service'
+import { getImpHomeCollectDtoApi,getLandEstimateDtoListApi } from '@/service'
 
 const emit = defineEmits(['toLink', 'loginIn'])
 const userInfo = ref<any>(null)
@@ -282,6 +282,9 @@ onMounted(() => {
       homeCollect.value = { ...homeCollect.value, ...res }
     }
   })
+  console.log('===================================');
+  
+
 })
 </script>
 

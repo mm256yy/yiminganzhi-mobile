@@ -73,7 +73,7 @@
       <!-- 资产评估-房屋首页 -->
       <Assessor
         v-else-if="
-          homeViewType === RoleCodeType.assessor 
+          homeViewType === RoleCodeType.assessor
         "
         @to-link="toLink"
         @login-in="loginIn"

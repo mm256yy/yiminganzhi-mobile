@@ -30,7 +30,11 @@ import {
   landlordFields,
   getLandlordHasStatusValues,
   LandlordHasStatusDDL,
-  landlordHasStatusFields
+  landlordHasStatusFields,
+  landEstimateDtoListName,
+  landEstimateDtoListDDL,
+  landEstimateDtoListlds,
+  getLandEstimateDtoListValues
 } from '@/database/index'
 import {
   getProjectDataApi,
@@ -518,6 +522,7 @@ class PullData {
         db.createTableWithDDL(DictionariesDDL),
         db.createTableWithDDL(LandlordDDL),
         db.createTableWithDDL(LandlordHasStatusDDL),
+        db.createTableWithDDL(landEstimateDtoListDDL),
         db.createTableWithDDL(ResettlementDDL),
         db.createTableWithDDL(FamilyIncomeDDL),
         db.createTableWithDDL(CollectDDL),
@@ -556,7 +561,8 @@ class PullData {
         db.dropTable(OtherTableName),
         db.dropTable(DistrictTableName),
         db.dropTable(VillageTableName),
-        db.dropTable(AppendantTableName),
+        db.dropTable(AppendantTableName), 
+        db.dropTable(landEstimateDtoListName),
         // db.dropTable(ImageTableName), // 图片库不做清理 数据库字段不要做变更
         db.dropTable(GraveTableName)
       ])
@@ -1176,12 +1182,29 @@ class PullData {
       }
       //土地数据
       if (landEstimateDtoList && landEstimateDtoList.length) {
-        const fields = "'type','content','updatedDate'"
-        const values = `'${OtherDataType.landEstimateDtoList}','${JSON.stringify(
-          landEstimateDtoList
-        )}','${getCurrentTimeStamp()}'`
-        console.log(values, '测试土地数据')
-        db.insertOrReplaceData(OtherTableName, values, fields)
+        console.log(landEstimateDtoList, '测试土地数据')
+        landEstimateDtoList.forEach((item) => {
+          if (!item.uid) {
+            item.uid = guid()
+          }
+          const fields = landEstimateDtoListlds
+          const values = getLandEstimateDtoListValues(item, 'default')
+          console.log(values, fields);
+
+          db.insertOrReplaceData(landEstimateDtoListName, values, fields).then((res) => {
+            console.log(`成功`, res);
+
+          })
+            .catch((err) => {
+              console.log(err, '插入土地失败')
+            })
+        })
+        // const fields = "'type','content','updatedDate'"
+        // const values = `'${OtherDataType.landEstimateDtoList}','${JSON.stringify(
+        //   landEstimateDtoList
+        // )}','${getCurrentTimeStamp()}'`
+        // console.log(values, '测试土地数据')
+        // db.insertOrReplaceData(OtherTableName, values, fields)
       }
       //土地关联用户数据
       if (landPeasantHouseholdDtoList && landPeasantHouseholdDtoList.length) {
@@ -1189,7 +1212,7 @@ class PullData {
         const values = `'${OtherDataType.landPeasantHouseholdDtoList}','${JSON.stringify(
           landPeasantHouseholdDtoList
         )}','${getCurrentTimeStamp()}'`
-        console.log(values, '测试土地关联用户数据')
+        // console.log(values, '测试土地关联用户数据')
         db.insertOrReplaceData(OtherTableName, values, fields)
       }
       await db.transaction('commit').catch(() => {

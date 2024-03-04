@@ -63,7 +63,8 @@ export enum MainType {
   PeasantHousehold = 'PeasantHousehold',
   Company = 'Company',
   IndividualHousehold = 'IndividualHousehold',
-  Village = 'Village'
+  Village = 'Village',
+  LandNoMove = 'LandNoMove'
 }
 
 export enum DistrictTypeEnum {

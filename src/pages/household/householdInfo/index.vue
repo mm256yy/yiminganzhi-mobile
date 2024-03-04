@@ -4,28 +4,32 @@
     <view class="list">
       <view class="list-item">
         <view class="list-1">
-        <view style="display: flex;align-items: center;">
-          <view class="icon">户主</view>
-          <view class="name">
-            {{ formatStr(props.dataInfo.name) }}
+          <view style="display: flex; align-items: center">
+            <view class="icon">户主</view>
+            <view class="name">
+              {{ formatStr(props.dataInfo.name) }}
+            </view>
           </view>
-        </view>
-        <view style="display: flex;align-items: center;">
-                <view class="name">
-                    关联个体户：<text  @click="editLandlords" style="color: blue;">{{formatStr(props.dataInfo.relateIndividualHouseholdName)}}</text>
-                  </view>
-                <view class="btn-wrapper report" v-if="!props.dataInfo.relateIndividualHouseholdName">
-                  <text class="txt" @click="addLandlords">添加</text>
-                </view>
-        </view>
-        <view style="display: flex;align-items: center;">
-              <view class="name">
-                  关联企业：<text  @click="editLandlord" style="color: blue;">{{ formatStr(props.dataInfo.relateCompanyName) }}</text>
-              </view>
-              <view class="btn-wrapper report" v-if="!props.dataInfo.relateCompanyName">
-                <text class="txt" @click="addLandlord">添加</text>
-              </view>
-        </view>
+          <view style="display: flex; align-items: center">
+            <view class="name">
+              关联个体户：<text @click="editLandlords" style="color: blue">{{
+                formatStr(props.dataInfo.relateIndividualHouseholdName)
+              }}</text>
+            </view>
+            <view class="btn-wrapper report" v-if="!props.dataInfo.relateIndividualHouseholdName">
+              <text class="txt" @click="addLandlords">添加</text>
+            </view>
+          </view>
+          <view style="display: flex; align-items: center">
+            <view class="name">
+              关联企业：<text @click="editLandlord" style="color: blue">{{
+                formatStr(props.dataInfo.relateCompanyName)
+              }}</text>
+            </view>
+            <view class="btn-wrapper report" v-if="!props.dataInfo.relateCompanyName">
+              <text class="txt" @click="addLandlord">添加</text>
+            </view>
+          </view>
         </view>
         <view class="list-2" @click="toLink('edit')">
           <uni-row>
@@ -33,7 +37,7 @@
               <view class="col">
                 <view class="label">户号：</view>
                 <view class="content">
-                  {{ props.dataInfo.showDoorNo  }}
+                  {{ props.dataInfo.showDoorNo }}
                 </view>
               </view>
             </uni-col>
@@ -125,19 +129,17 @@ import {
   routerForward,
   filterViewDoorNo,
   getStorage,
-  StorageKey 
+  StorageKey
 } from '@/utils'
 import { locationTypes, yesAndNoEnums } from '@/config/common'
 import { compatibleOldSystems } from '@/pages/common/config'
-import { MainType,RoleCodeType } from '@/types/common'
-import { ref,unref,nextTick,onMounted } from 'vue'
-import {
-  getLandlordListBySearchApi,
-} from '@/service'
+import { MainType, RoleCodeType } from '@/types/common'
+import { ref, unref, nextTick, onMounted } from 'vue'
+import { getLandlordListBySearchApi } from '@/service'
 const tabType = ref<MainType>(MainType.Company)
 const tabTypes = ref<MainType>(MainType.IndividualHousehold)
 const companyUid = ref<any>()
-const individualHouseholdUid=ref<any>()
+const individualHouseholdUid = ref<any>()
 const props = defineProps({
   dataInfo: {
     type: Object as any,
@@ -183,13 +185,12 @@ const getRouterName = (roleType: string) => {
 //企业
 const getList = () => {
   const params: any = {
-      type: unref(tabType),
-      page: 1,
-      pageSize:10
-    }
+    type: unref(tabType),
+    page: 1,
+    pageSize: 10
+  }
   nextTick(async () => {
-    const res = await getLandlordListBySearchApi(params).catch(() => {
-    })
+    const res = await getLandlordListBySearchApi(params).catch(() => {})
     console.log(res, '企业res是什么')
     companyUid.value = res.find((item: any) => item.name == props.dataInfo.relateCompanyName)
     console.log(companyUid.value.uid, '企业uid是什么')
@@ -199,15 +200,16 @@ const getList = () => {
 //个体工商户
 const getLists = () => {
   const params: any = {
-      type: unref(tabTypes),
-      page: 1,
-      pageSize:10
-    }
+    type: unref(tabTypes),
+    page: 1,
+    pageSize: 10
+  }
   nextTick(async () => {
-    const res = await getLandlordListBySearchApi(params).catch(() => {
-    })
+    const res = await getLandlordListBySearchApi(params).catch(() => {})
     console.log(res, '个体工商户res是什么')
-    individualHouseholdUid.value = res.find((item: any) => item.name == props.dataInfo.relateIndividualHouseholdName)
+    individualHouseholdUid.value = res.find(
+      (item: any) => item.name == props.dataInfo.relateIndividualHouseholdName
+    )
     console.log(individualHouseholdUid.value.uid, '个体工商户uid是什么')
   })
 }
@@ -215,8 +217,8 @@ const getLists = () => {
 const routerMap: any = {
   // [MainType.Village]: getRouterName(roleType.value)
   // [MainType.PeasantHousehold]: 'household',
-  [MainType.IndividualHousehold]:getRouterName(roleType.value),
-  [MainType.Company]:getRouterNameCompany(roleType.value),
+  [MainType.IndividualHousehold]: getRouterName(roleType.value),
+  [MainType.Company]: getRouterNameCompany(roleType.value)
 }
 // 新增 路由 map
 const addRouterMap: any = {
@@ -240,7 +242,7 @@ const editLandlords = () => {
   const name = routerMap[tabTypes.value]
   routerForward(name, {
     type: 'edit',
-    uid:individualHouseholdUid.value.uid
+    uid: individualHouseholdUid.value.uid
   })
 }
 
@@ -290,7 +292,6 @@ onMounted(() => {
   getList()
   getLists()
 })
-
 </script>
 
 <style lang="scss" scoped>
@@ -370,38 +371,38 @@ onMounted(() => {
       bottom: 16rpx;
     }
   }
-        .btn-wrapper {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        width: 68rpx;
-        height: 23rpx;
-        border-radius: 11rpx;
+  .btn-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 68rpx;
+    height: 23rpx;
+    border-radius: 11rpx;
 
-        &:active {
-          opacity: 0.7;
-        }
+    &:active {
+      opacity: 0.7;
+    }
 
-        &.print {
-          background-color: #30a952;
-        }
+    &.print {
+      background-color: #30a952;
+    }
 
-        &.report {
-          margin-left: 7rpx;
-          background-color: #F5F5F6;
-        }
+    &.report {
+      margin-left: 7rpx;
+      background-color: #f5f5f6;
+    }
 
-        .icon {
-          width: 7rpx;
-          height: 7rpx;
-          margin-right: 3rpx;
-        }
+    .icon {
+      width: 7rpx;
+      height: 7rpx;
+      margin-right: 3rpx;
+    }
 
-        .txt {
-          font-size: 9rpx;
-          color: #171718;
-        }
-      }
+    .txt {
+      font-size: 9rpx;
+      color: #171718;
+    }
+  }
 }
 </style>

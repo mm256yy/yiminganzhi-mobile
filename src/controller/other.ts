@@ -18,7 +18,6 @@ class Other extends Common {
           resolve(
             type === OtherDataType.PullTime ? result[0].content : JSON.parse(result[0].content)
           )
-          console.log(result[0].content, '测试配置--数据')
           return
         }
         reject(null)
