@@ -83,14 +83,14 @@
               label="评估单价"
               :label-width="150"
               label-align="right"
-              name="formData.price"
+              name="formData.valuationPrice"
             >
               <view :class="['input-wrapper', focusIndex === 3 ? 'focus' : '']">
                 <input
                   class="input-txt"
                   placeholder="请输入"
                   type="number"
-                  v-model="formData.price"
+                  v-model="formData.valuationPrice"
                   @focus="inputFocus(3)"
                   @blur="inputBlur"
                 />
@@ -216,7 +216,7 @@ const formData = ref<any>({
   unit: '',
   number: '',
   amount: '',
-  price: '',
+  valuationPrice: '',
   newnessRate: '',
   valuationAmount: '',
   compensationAmount: '',
@@ -287,9 +287,9 @@ const inputBlur = () => {
 
 // 计算评估价格
 const countPrice = computed(() => {
-  const { newnessRate, price, number } = formData.value
-  if (newnessRate && price && number) {
-    return (newnessRate * price * number).toFixed(2)
+  const { newnessRate, valuationPrice, number } = formData.value
+  if (newnessRate && valuationPrice && number) {
+    return (newnessRate * valuationPrice * number).toFixed(2)
   }
   return '0'
 })
@@ -324,7 +324,7 @@ const submit = () => {
     showToast('数量不能为空')
     return
   }
-  if (!formData.value.price) {
+  if (!formData.value.valuationPrice) {
     showToast('评估单价不能为空')
     return
   }

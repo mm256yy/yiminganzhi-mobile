@@ -70,7 +70,7 @@ const emit = defineEmits(['delete'])
 
 const filled = computed(() => {
   return (
-    props.data && props.data.immigrantFilling && props.data.immigrantFilling.estimateeStatus === '1'
+    props.data && props.data.immigrantFilling && props.data.immigrantFilling.estimateeStatus === '1'&&props.data.houseImplementEscalationStatus==='1'
   )
 })
 // const deleteItem = () => {

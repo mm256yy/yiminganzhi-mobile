@@ -9,7 +9,7 @@
             幢号：{{ formatStr(item.houseNo) }}
           </view>
           <view class="right">
-            <div class="fixed-price">是否一口价：{{ formatDict(item.isFixedPrice, 376) }}</div>
+            <div class="fixed-price">是否一口价：{{ item.isBuyItNow=='1'?'是':item.isBuyItNow=='0'?'否':'-' }}</div>
             <image
               class="icon m-r-10"
               src="@/static/images/icon_delete_mini.png"

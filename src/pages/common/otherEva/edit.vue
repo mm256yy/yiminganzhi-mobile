@@ -246,7 +246,7 @@ const getYear = () => {
 const getLandlordDetail = () => {
   const { uid, itemUid } = commonParams.value
   getEvaLandlordItemApi(uid).then((res: any) => {
-    let arr: any = res && res.immigrantEquipmentList ? res.immigrantEquipmentList : []
+    let arr: any = res && res.immigrantOtherList ? res.immigrantOtherList : []
     if (arr && arr.length) {
       let obj: any = arr.filter((item: any) => item.uid === itemUid)[0]
       formData.value = {
@@ -284,9 +284,9 @@ const inputBlur = () => {
 
 // 计算评估价格
 const countPrice = computed(() => {
-  const { newnessRate, price, number } = formData.value
-  if (newnessRate && price && number) {
-    return (newnessRate * price * number).toFixed(2)
+  const { newnessRate, valuationPrice, number } = formData.value
+  if (newnessRate && valuationPrice && number) {
+    return (newnessRate * valuationPrice * number).toFixed(2)
   }
   return '0'
 })
@@ -321,7 +321,7 @@ const submit = () => {
     showToast('数量不能为空')
     return
   }
-  if (!formData.value.price) {
+  if (!formData.value.valuationPrice) {
     showToast('评估单价不能为空')
     return
   }

@@ -232,12 +232,14 @@ const tabsList = computed(() => {
       },
       {
         label: "基础设施评估",
+        filled: immigrantFilling.infrastructureStatus === "1",
         value: 6,
         defIcon: iconInfrastructureDefault,
         selIcon: iconInfrastructureSelect,
       },
       {
         label: "其他评估",
+        filled: immigrantFilling.otherStatus === "1",
         value: 7,
         defIcon: iconOtherDefault,
         selIcon: iconOtherSelect,

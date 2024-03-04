@@ -39,7 +39,7 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">评估单价(元)：</view>
-                <view class="content">{{ formatStr(item.price) }}</view>
+                <view class="content">{{ formatStr(item.valuationPrice) }}</view>
               </view>
             </uni-col>
           </uni-row>

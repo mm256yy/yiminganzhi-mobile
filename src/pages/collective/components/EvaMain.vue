@@ -75,7 +75,7 @@
                  v-if="tabVal === 6" 
                   :dataList="dataInfo.immigrantInfrastructureList"  
                   :dataInfo="dataInfo"
-                  @deleteInfrastructure="deleteInfrastructureVc"
+                  @delete-infrastructure="deleteInfrastructureVc"
                   @update-data="updateData"
                 />
      
@@ -217,6 +217,7 @@ const tabsList = computed(() => {
       },
       {
         label: "基础设施评估",
+        filled: immigrantFilling.infrastructureStatus === "1",
         value: 6,
         defIcon: iconInfrastructureDefault,
         selIcon: iconInfrastructureSelect,

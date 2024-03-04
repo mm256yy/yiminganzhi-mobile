@@ -66,7 +66,16 @@ export class ImpLandlord extends Common {
       specialPic,
       proceduresPic
     } = landlordItem.immigrantDocumentation
-
+    const {
+      houseMainStatus, //房屋主体评估完成状态
+      houseRenovationStatus, //房屋装修评估完成状态
+      appendageStatus, //附属设施评估完成状态
+      treeStatus, //零星(林)果木评估完成状态
+      specialStatus,  //小型专项评估
+      infrastructureStatus, //基础设施评估
+      deviceStatus,//设施设备评估完成状态
+      otherStatus, //其他评估完成状态
+    } = landlordItem.immigrantFilling
     // 判断初始化
     landlordItem.immigrantFilling = { ...defaultFillingObj, ...immigrantFilling }
 
@@ -81,24 +90,27 @@ export class ImpLandlord extends Common {
     if (role === RoleCodeType.assessor) {
       // 资产评估-房屋
 
-      if (this.isNotNullPic(houseEstimatePic) && type === MainType.PeasantHousehold) {
+      if (this.isNotNullPic(houseEstimatePic) && type === MainType.PeasantHousehold && houseMainStatus === '1' && houseRenovationStatus === '1' && appendageStatus === '1' && treeStatus === '1') {
         // 评估总状态
         landlordItem.immigrantFilling.estimateeStatus = '1'
+        landlordItem.houseImplementEscalationStatus = '1'
       } else if (
         (type === MainType.Company || type === MainType.IndividualHousehold) &&
         this.isNotNullPic(houseEstimatePic) &&
-        this.isNotNullPic(devicePic)
-      ) {
+        this.isNotNullPic(devicePic) && houseMainStatus === '1' && houseRenovationStatus === '1' && appendageStatus === '1' && treeStatus === '1' && infrastructureStatus === '1' && otherStatus === '1' && deviceStatus === '1') {
         landlordItem.immigrantFilling.estimateeStatus = '1'
+        landlordItem.houseImplementEscalationStatus = '1'
       } else if (
         type === MainType.Village &&
         this.isNotNullPic(houseEstimatePic) &&
-        this.isNotNullPic(specialPic)
+        this.isNotNullPic(specialPic) && houseMainStatus === '1' && houseRenovationStatus === '1' && appendageStatus === '1' && treeStatus === '1' && specialStatus === '1' && infrastructureStatus === '1'
       ) {
         // 农村小型专项
         landlordItem.immigrantFilling.estimateeStatus = '1'
+        landlordItem.houseImplementEscalationStatus = '1'
       } else {
         landlordItem.immigrantFilling.estimateeStatus = '0'
+        landlordItem.houseImplementEscalationStatus = '0'
       }
     } else if (role === RoleCodeType.assessorland) {
       // 资产评估土地

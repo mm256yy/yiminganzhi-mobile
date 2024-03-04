@@ -44,11 +44,11 @@
               label="是否一口价"
               :label-width="150"
               label-align="right"
-              name="formData.isFixedPrice"
+              name="formData.isBuyItNow"
             >
               <uni-data-select
-                v-model="formData.isFixedPrice"
-                :localdata="dict[376]"
+                v-model="formData.isBuyItNow"
+                :localdata="fixedPriceOptions"
                 @change="change"
               />
             </uni-forms-item>
@@ -66,7 +66,7 @@
               <uni-data-select
                 v-model="formData.fitUpType"
                 :localdata="dict[323]"
-                :disabled="formData.isFixedPrice === '1'"
+                :disabled="formData.isBuyItNow === '1'"
               />
             </uni-forms-item>
           </uni-col>
@@ -79,7 +79,7 @@
             >
               <uni-easyinput
                 v-model="formData.fitUpName"
-                :disabled="formData.isFixedPrice === '1'"
+                :disabled="formData.isBuyItNow === '1'"
                 type="text"
                 placeholder="请输入"
               />
@@ -98,7 +98,7 @@
               <uni-data-select
                 v-model="formData.unit"
                 :localdata="dict[268]"
-                :disabled="formData.isFixedPrice === '1'"
+                :disabled="formData.isBuyItNow === '1'"
               />
             </uni-forms-item>
           </uni-col>
@@ -111,7 +111,7 @@
             >
               <uni-easyinput
                 v-model="formData.number"
-                :disabled="formData.isFixedPrice === '1'"
+                :disabled="formData.isBuyItNow === '1'"
                 type="number"
                 placeholder="请输入"
               />
@@ -131,7 +131,7 @@
                 :class="[
                   'input-wrapper',
                   focusIndex === 2 ? 'focus' : '',
-                  formData.isFixedPrice === '1' ? 'disabled' : ''
+                  formData.isBuyItNow === '1' ? 'disabled' : ''
                 ]"
               >
                 <input
@@ -139,7 +139,7 @@
                   placeholder="请输入"
                   type="number"
                   v-model="formData.price"
-                  :disabled="formData.isFixedPrice === '1'"
+                  :disabled="formData.isBuyItNow === '1'"
                   @focus="inputFocus(2)"
                   @blur="inputBlur"
                 />
@@ -157,7 +157,7 @@
               <uni-easyinput
                 v-model="formData.discountRate"
                 @input="inputChange"
-                :disabled="formData.isFixedPrice === '1'"
+                :disabled="formData.isBuyItNow === '1'"
                 type="number"
                 placeholder="请输入"
               />
@@ -177,7 +177,7 @@
                 :class="[
                   'input-wrapper',
                   focusIndex === 3 ? 'focus' : '',
-                  formData.isFixedPrice === '1' ? 'disabled' : ''
+                  formData.isBuyItNow === '1' ? 'disabled' : ''
                 ]"
               >
                 <input
@@ -262,14 +262,23 @@ import Back from '@/components/Back/Index.vue'
 
 const title = ref<string>('')
 const commonParams = ref<any>({})
-
+const fixedPriceOptions = ref<any>([
+  {
+    text: '是',
+    value: '1'
+  },
+  {
+    text: '否',
+    value: '0'
+  }
+])
 // 表单数据
 const formData = ref<any>({
   doorNo: commonParams.value.doorNo,
   status: 'implementation',
   addReason: '',
   houseNo: '',
-  isFixedPrice: '',
+  isBuyItNow: '',
   fitUpType: '',
   fitUpName: '',
   unit: '',
@@ -375,7 +384,7 @@ const submit = () => {
   } else if (!formData.value.houseNo) {
     showToast('请输入幢号')
     return
-  } else if (!formData.value.isFixedPrice) {
+  } else if (!formData.value.isBuyItNow) {
     showToast('请选择是否一口价')
     return
   } else {
