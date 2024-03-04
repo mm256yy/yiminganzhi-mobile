@@ -574,6 +574,34 @@
 			"style": {
 				"navigationBarTitleText": "更多查询"
 			}
+		},
+		{
+			"name": "baseLandEvaEdit",
+			"path": "pages/land/components/landEva/edit",
+			"style": {
+				"navigationBarTitleText": "土地基本情况评估编辑"
+			}
+		},
+		{
+			"name": "seedEvaEdit",
+			"path": "pages/land/components/seedlingsEva/edit",
+			"style": {
+				"navigationBarTitleText": "土地青苗及附着物评估编辑"
+			}
+		},
+		{
+			"name": "relocateList",
+			"path": "pages/land/relocateList/index",
+			"style": {
+				"navigationBarTitleText": "只征地不搬迁列表"
+			}
+		},
+		{
+			"name": "landNavigation",
+			"path": "pages/land/components/navigation/index",
+			"style": {
+				"navigationBarTitleText": "只征地不搬迁实施"
+			}
 		}
 	],
 	"globalStyle": {

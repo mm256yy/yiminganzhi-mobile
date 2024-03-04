@@ -650,3 +650,80 @@ export const collectiveSidebarList = [
     ]
   }
 ]
+
+// 只征地不搬迁左侧边栏选项列表
+export const landNoMoveList = [
+  {
+    title: '动迁阶段',
+    filled: false,
+    list: [
+      {
+        title: '',
+        filled: false,
+        list: [
+          {
+            label: '资产评估报告',
+            value: 1,
+            filled: false,
+            iconDef: iconFwfswDef,
+            iconSel: iconFwfswSel
+          },
+          {
+            label: '生产安置确认',
+            value: 2,
+            filled: false,
+            iconDef: iconTdfzwDef,
+            iconSel: iconTdfzwSel
+          },
+          {
+            label: '补偿卡',
+            value: 3,
+            filled: false,
+            iconDef: iconScazDef,
+            iconSel: iconScazSel
+          },
+          {
+            label: '征地协议',
+            value: 4,
+            filled: false,
+            iconDef: iconBqazDef,
+            iconSel: iconBqazSel
+          },
+          {
+            label: '土地腾让',
+            value: 5,
+            filled: false,
+            iconDef: iconMnazDef,
+            iconSel: iconMnazSel
+          }
+        ]
+      }
+    ]
+  },
+  {
+    title: '安置阶段',
+    filled: false,
+    list: [
+      {
+        title: '生产安置办理',
+        filled: false,
+        list: [
+          {
+            label: '自谋职业',
+            value: 6,
+            filled: false,
+            iconDef: iconFmqrDef,
+            iconSel: iconFmqrSel
+          },
+          {
+            label: '养老保险',
+            value: 7,
+            filled: false,
+            iconDef: iconScydDef,
+            iconSel: iconScydSel
+          }
+        ]
+      }
+    ]
+  }
+]

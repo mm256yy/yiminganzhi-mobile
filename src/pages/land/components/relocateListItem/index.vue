@@ -1,75 +1,44 @@
 <template>
-  <view class="company-item" @click="handleItemCLick">
+  <view class="company-item" @click="toDetail">
     <view class="head">
       <view class="head-lt">
-        <checkbox style="margin-bottom:5rpx" :value="checkSelectedStr" :checked="checkSelected" />
-          <view
-            class="status"
-            :class="[props.data.reportStatus === 'ReportSucceed' ? 'success' : '']"
-            ><text class="circle" />{{
-              props.data.reportStatus === "ReportSucceed" ? "已关联" : "未关联"
-            }}</view
-          >
-        <view class="name">{{ props.data.name }}</view>
-        <view class="landNo">{{ props.data.landNo }}</view>
+         <image class="user-icon" src="@/static/images/people_icon.png" mode="scaleToFill" />
+        <view class="name">{{ props.data?.name }}</view>
+        <view class="landNo">{{ props.data?.doorNo }}</view>
       </view>
       <view class="head-rt">
         <view
             class="status"
-            :class="[props.data.reportStatus === 'ReportSucceed' ? 'success' : '']"
-            ><text class="circle" />{{
-              props.data.reportStatus === "ReportSucceed" ? "已评估" : "未评估"
-            }}</view
-          >
-        <view class="btn blue-btn" @click="estimate">
-          <text class="txt">评估</text>
-        </view>
+            ><text class="circle" />
+              '1/6'</view>
       </view>
     </view>
     <view class="cont">
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
-        <view class="label">权属单位:</view>
-        <view class="value">{{ props.data.phone }}</view>
+        <view class="label">所属区域:</view>
+        <view class="value">文本</view>
       </view>
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
-        <view class="label">所在区域:</view>
+        <view class="label">类别:</view>
         <view class="value">
-          {{ dictOption(yesAndNoEnums, props.data.hasPropertyAccount) }}
+          文本
         </view>
       </view>
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
-        <view class="label">关联户主:</view>
-        <view class="value">{{ getLocationText(props.data.locationType) }}</view>
-      </view>
-      <view class="cont-item">
-        <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
-        <view class="label">图幅号</view>
-        <view class="value"
-          >{{ props.data.areaCodeText }}/{{ props.data.townCodeText }}</view
-        >
-      </view>
-      <view class="cont-item">
-        <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
-        <view class="label">地类:</view>
-        <view class="value">{{ props.data.villageCodeText }}</view>
-      </view>
-      <view class="cont-item">
-        <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
-        <view class="label">土地性质:</view>
-        <view class="value">{{ props.data.virutalVillageCodeText || "" }}</view>
+        <view class="label">所在区域:</view>
+        <view class="value">文本</view>
       </view>
     </view>
   </view>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { dictOption } from "@/utils";
-import { getLocationText, yesAndNoEnums } from "@/config/common";
+// import { ref } from 'vue'
 import { LandlordType } from "@/types/sync";
+import { routerForward } from '@/utils'
 
 interface PropsType {
   data: LandlordType;
@@ -77,22 +46,25 @@ interface PropsType {
 
 const props = defineProps<PropsType>();
 const emit = defineEmits(["delete"]);
-const checkSelectedStr = ref<string>('0')
-const checkSelected = ref<boolean>(false)
 
+// 跳转详细页面
+const toDetail = () => { 
+const routeName='landNavigation'
+  const params = {
+    data:props.data
+  }
 
-const handleItemCLick = () => {
-  checkSelected.value=!checkSelected.value
-}
-
-const estimate = () => { };
+  routerForward(routeName, {
+    ...params
+  })
+};
 
 </script>
 
 <style lang="scss" scoped>
 .company-item {
   position: relative;
-  width: 348rpx;
+  width: 338rpx;
   padding: 2rpx 12rpx 12rpx 12rpx;
   margin: 0 7rpx 7rpx 0;
   background-color: #ffffff;
@@ -130,7 +102,6 @@ const estimate = () => { };
       }
 
       .name {
-        // width: 220rpx;
         margin-right: 6rpx;
         overflow: hidden;
         font-size: 12rpx;

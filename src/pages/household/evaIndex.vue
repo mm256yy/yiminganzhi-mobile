@@ -4,7 +4,14 @@
     <image src="@/static/images/common_bg.png" class="head-bg" mode="widthFix" />
     <view class="home-wrap" :style="{ height: `${pageHeight}px` }">
       <view class="home-body">
+        <LandEvaMain
+          v-if="type === 'land'"
+          :dataInfo="dataInfo"
+          :occupationOptions="occupationOptions"
+          @update-data="getLandlordDetail"
+        />
         <EvaMain
+          v-else
           :dataInfo="dataInfo"
           :occupationOptions="occupationOptions"
           @update-data="getLandlordDetail"
@@ -15,35 +22,40 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { getEvaLandlordItemApi, getOtherItemApi } from '@/service'
-import { OtherDataType } from '@/database'
-import EvaMain from './components/EvaMain.vue'
-import { onLoad, onShow } from '@dcloudio/uni-app'
+import { ref, onMounted } from "vue";
+import { getEvaLandlordItemApi, getOtherItemApi } from "@/service";
+import { OtherDataType } from "@/database";
+import EvaMain from "./components/EvaMain.vue";
+import { onLoad, onShow } from "@dcloudio/uni-app";
+import LandEvaMain from "@/pages/land/components/LandEvaMain.vue";
 
-const sysInfo = uni.getSystemInfoSync()
-const statusBarHeight = sysInfo.statusBarHeight || 0
-const screenHeight = sysInfo.screenHeight
-const pageHeight = screenHeight - statusBarHeight
-const dataInfo = ref<any>({})
+const sysInfo = uni.getSystemInfoSync();
+const statusBarHeight = sysInfo.statusBarHeight || 0;
+const screenHeight = sysInfo.screenHeight;
+const pageHeight = screenHeight - statusBarHeight;
+const dataInfo = ref<any>({});
+const type = ref<string>("");
 // 职业选项
-const occupationOptions = ref<any>([])
+const occupationOptions = ref<any>([]);
 
 onShow(() => {
   if (dataInfo.value.uid) {
-    getLandlordDetail(dataInfo.value.uid)
+    getLandlordDetail(dataInfo.value.uid);
   }
-})
+});
 
 onLoad((option) => {
   if (option && option.uid) {
-    getLandlordDetail(option.uid)
+    getLandlordDetail(option.uid);
   }
-})
+  type.value = option?.type;
+
+  console.log("PLL", type.value);
+});
 
 onMounted(() => {
-  initOccpationData()
-})
+  initOccpationData();
+});
 
 /**
  * 获取居民户详情
@@ -51,18 +63,18 @@ onMounted(() => {
  */
 const getLandlordDetail = (uid: string) => {
   getEvaLandlordItemApi(uid).then((res: any) => {
-    console.log('资产评估res:', res)
-    dataInfo.value = { ...res }
-  })
-}
+    console.log("资产评估res:", res);
+    dataInfo.value = { ...res };
+  });
+};
 
 // 初始化职业选择框数据
 const initOccpationData = async () => {
-  const res = await getOtherItemApi(OtherDataType.ProfessionalTree)
+  const res = await getOtherItemApi(OtherDataType.ProfessionalTree);
   if (res && res.length > 0) {
-    occupationOptions.value = res
+    occupationOptions.value = res;
   }
-}
+};
 </script>
 
 <style scoped lang="scss">

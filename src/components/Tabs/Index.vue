@@ -41,10 +41,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['selectTabs'])
-
 const tabsList = ref<any>([])
 const currentIndex = ref<number>(props.currentIndex)
-console.log('currentIndex:', currentIndex)
 
 const selectTabs = (data: any, index: number) => {
   currentIndex.value = index

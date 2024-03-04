@@ -65,7 +65,7 @@
               label-align="right"
               name="formData.doorNo"
             >
-              <uni-data-select v-model="formData.typeText" :localdata="typeOptionsList" />
+            <uni-data-select v-model="formData.landType" :localdata="dict[222]" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -77,17 +77,17 @@
               label-align="right"
               name="formData.doorNo"
             >
-              <uni-data-select v-model="formData.typeText" :localdata="typeOptionsList" />
+              <uni-data-select v-model="formData.landType" :localdata="dict[233]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              label="关联状态："
+              label="关联状态："        
               :label-width="150"
               label-align="right"
-              name="formData.doorNo"
+              name="formData.associationStatus"
             >
-              <uni-data-select v-model="formData.typeText" :localdata="typeOptionsList" />
+              <uni-data-select v-model="formData.associationStatus" :localdata="associationStatusList()" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -109,7 +109,7 @@
               label-align="right"
               name="formData.doorNo"
             >
-              <uni-data-select v-model="formData.typeText" :localdata="typeOptionsList" />
+             <uni-data-select v-model="formData.locationType" :localdata="dict[326]" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -126,12 +126,8 @@
           </uni-col>
         </uni-row>
         <view class="submit-district">
-          <view class="btn blue-btn" @click="toSearch">
-            <text class="txt">搜索</text>
-          </view>
-          <view class="btn" @click="reset">
-            <text class="txt">重置</text>
-          </view>
+        	 <button type="primary" size="small" @click="toSearch">搜索</button>
+          	<button type="default" @click="reset">重置</button>
         </view>
       </uni-forms>
     </view>
@@ -153,7 +149,7 @@
 import { onLoad } from "@dcloudio/uni-app";
 import { ref } from "vue";
 import Back from "@/components/Back/Index.vue";
-import { routerBack } from "@/utils";
+import { routerForward,routerBack,getStorage, StorageKey } from "@/utils";
 import { showToast, SUCCESS_MSG } from "@/config/msg";
 
 interface DictType {
@@ -169,17 +165,11 @@ const formData = ref<any>({
   doorNo: "",
   landNo: "",
   remark: "",
-  areaCode: "",
-  townCode: "",
-  villageCode: "",
-  virutalVillageCode: "",
-  otherCode: "",
 });
-const naturalVillageRef = ref<any>(null);
-const checkSelectedStr = ref<string>("0");
-const checkSelected = ref<boolean>(false);
 const typeOptionsList = ref<DictType[]>([]);
 const confirmBindingRef = ref();
+// 获取数据字典
+const dict = getStorage(StorageKey.DICT)
 
 onLoad((option) => {
   if (option) {
@@ -199,10 +189,25 @@ const dialogClose = () => {
 };
 
 // 查询
-const toSearch = () => {};
+const toSearch = () => {
+      routerForward('home', {
+      replace: true
+    })
+};
 
 // 重置
-const reset = () => {};
+const reset = () => {
+  formData.value = {
+    
+  }
+};
+
+const associationStatusList = () => {
+  return [
+    { value: 0, text: "已关联" },
+    { value: 1, text: "未关联" }
+  ]
+}
 </script>
 
 <style lang="scss" scoped>
@@ -317,8 +322,10 @@ const reset = () => {};
   .submit-district {
     display: flex;
     align-items: center;
+    width: 160rpx;
     padding: 20rpx;
     justify-content: center;
+    margin: 0 auto;
 
     .btn {
       display: flex;

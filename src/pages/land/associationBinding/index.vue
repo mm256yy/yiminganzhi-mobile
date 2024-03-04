@@ -3,21 +3,30 @@
     <Back title="关联绑定" needConfirm />
     <view class="main">
       <uni-forms class="form" ref="form" :modelValue="formData">
+        <uni-row>
+          <uni-col :span="12">
+            <uni-forms-item
+              label="户名："
+              :label-width="150"
+              label-align="right"
+              name="formData.typeText"
+            >
+              <uni-data-select v-model="formData.typeText" :localdata="typeOptionsList" />
+            </uni-forms-item>
+          </uni-col>
+        </uni-row>
         <view class="land-segment">
           <label><text class="common-txt">土地编号： NO12345678 </text></label>
         </view>
         <uni-row>
           <uni-col :span="24">
             <uni-forms-item :label-width="78">
-              	<checkbox-group    @change="handleRadioChange">
-                <checkbox
-                  :value="checkSelectedStr"
-                  :checked="checkSelected"
-                />
+              <checkbox-group @change="handleRadioChange">
+                <checkbox :value="checkSelectedStr" :checked="checkSelected" />
                 <span class="common-txt"
                   >没有查询到户名，使用以下信息新增户名，只征地不搬迁才可以新增户名</span
                 >
-             </checkbox-group>
+              </checkbox-group>
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -119,7 +128,6 @@ import { routerBack } from "@/utils";
 import { showToast, SUCCESS_MSG } from "@/config/msg";
 import NaturalVillageSelectFormItem from "@/components/NaturalVillageSelectFormItem/index.vue";
 
-
 interface DictType {
   text: string;
   value: string;
@@ -133,13 +141,13 @@ const formData = ref<any>({
   doorNo: "",
   landNo: "",
   remark: "",
-  areaCode: '',
-  townCode:'',
-  villageCode: '',
-  virutalVillageCode: '',
-  otherCode:''
+  areaCode: "",
+  townCode: "",
+  villageCode: "",
+  virutalVillageCode: "",
+  otherCode: "",
 });
-const naturalVillageRef = ref<any>(null)
+const naturalVillageRef = ref<any>(null);
 const checkSelectedStr = ref<string>("0");
 const checkSelected = ref<boolean>(false);
 const typeOptionsList = ref<DictType[]>([]);
@@ -184,16 +192,16 @@ const submit = () => {
 
 // 初始化自然村/村民小组组件数据
 const initNaturalVillageData = () => {
-  naturalVillageRef.value?.getTreeData()
-}
+  naturalVillageRef.value?.getTreeData();
+};
 
 /**
  * 自然村/村民小组选择确认
  * @param{Object} otherCode 用于兼容老系统，该code值由 1位乡/镇code + 2位行政村code组成
  */
 const confirmSelectNaturalVillage = (otherCode: string) => {
-  formData.value.otherCode = otherCode || ''
-}
+  formData.value.otherCode = otherCode || "";
+};
 
 const dialogConfirm = () => {
   confirmBindingRef.value?.close();
@@ -208,11 +216,9 @@ const dialogClose = () => {
 };
 
 const handleRadioChange = (e: any) => {
-  console.log('event',e.detail.value);
+  console.log("event", e.detail.value);
   checkSelected.value = !checkSelected.value;
 };
-
-
 </script>
 
 <style lang="scss" scoped>
@@ -319,7 +325,7 @@ const handleRadioChange = (e: any) => {
   .land-segment {
     display: flex;
     align-items: center;
-    padding: 20rpx;
+    padding: 0 20rpx 20rpx 20rpx 20rpx;
     margin-left: 40rpx;
     box-sizing: border-box;
   }

@@ -86,7 +86,7 @@ import { getStorage, StorageKey, routerForward,debounce } from '@/utils'
 import { getOtherItemApi } from "@/service";
 // import { getImpHomeCollectDtoApi } from '@/service'
 import NoData from '@/components/NoData/index.vue'
-import LandListItem from '@/pages/land/landListItem/index.vue'
+import LandListItem from '@/pages/land/components/landListItem/index.vue'
 import SyncCompont from "@/components/Sync/Index.vue";
 import dayjs from "dayjs";
 import { OtherDataType } from "@/database";
