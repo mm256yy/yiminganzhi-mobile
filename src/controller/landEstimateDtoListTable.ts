@@ -70,10 +70,7 @@ export class landEstimateDtoListFills extends Common {
         }
         if (name) {
           //模糊搜索
-          sql += ` and (name like '%${name}%' or doorNo like '%${name.slice(
-            name.length - 6 < 0 ? 0 : name.length - 6,
-            name.length
-          )}%' or content like '%${name}%')`
+          sql += ` and (rightHolder like '%${name}%' or landNumber like '%${name}%')`
         }
         if (areaCode) {
           sql += ` and areaCode = '${areaCode}'`

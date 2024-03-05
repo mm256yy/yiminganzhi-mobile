@@ -25,8 +25,8 @@ import { ref } from 'vue'
 import { pullInstance } from '@/sync'
 // import { getBaseDataApi, getConfigDataApi, getCollectApi, getMainTreeApi } from '@/sync/api'
 import { routerForward, routerBack } from '@/utils'
-// import { getLandEstimateDtoListApi, getLandPeasantHouseholdDtoListApi,updateLandlord,getLandlordListBySearchApi } from '@/service'
-// import {MainType } from '@/types/common'
+import { getLandEstimateDtoListApi, getLandPeasantHouseholdDtoListApi,updateLandlord,getLandlordListBySearchApi } from '@/service'
+import {MainType } from '@/types/common'
 const currentTable = ref<string>('')
 const list = ref<any[]>([])
 
@@ -55,12 +55,12 @@ getApiData()
 const getTables = async () => {
   const tables = await pullInstance.getTables()
   list.value = tables || []
-  //   getLandEstimateDtoListApi().then((res:any) => {
-  //   console.log(res,'土地列表');
-  //   })
-  // getLandPeasantHouseholdDtoListApi().then((res:any) => {
-  //   console.log(res,'农户列表');
-  // })
+    getLandEstimateDtoListApi({name:'wxl'}).then((res:any) => {
+    console.log(res,'土地列表');
+    })
+  getLandPeasantHouseholdDtoListApi().then((res:any) => {
+    console.log(res,'农户列表');
+  })
   // updateLandlord({uid:'735624d2-1172-446a-9424-b1cd55b424bb',id:232761,type:'1'}).then((res:any) => {
   //   console.log(res, '更新数据');
   //   getLandlordListBySearchApi({type:MainType.LandNoMove}).catch((err:any) => {
