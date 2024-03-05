@@ -25,7 +25,7 @@ import { ref } from 'vue'
 import { pullInstance } from '@/sync'
 // import { getBaseDataApi, getConfigDataApi, getCollectApi, getMainTreeApi } from '@/sync/api'
 import { routerForward, routerBack } from '@/utils'
-import { getLandEstimateDtoListApi, getLandPeasantHouseholdDtoListApi,updateLandlord,getLandlordListBySearchApi } from '@/service'
+import { getLandEstimateDtoListApi, getLandPeasantHouseholdDtoListApi,updateLandlord,getLandlordListBySearchApi,getDictObjsApi } from '@/service'
 import {MainType } from '@/types/common'
 const currentTable = ref<string>('')
 const list = ref<any[]>([])
@@ -67,6 +67,10 @@ const getTables = async () => {
   //     console.log(err,'更新数据');
   //   })
   // })
+  getDictObjsApi([397,398,399]).then((res) => {
+      console.log(res,'字典');
+      
+    })
   
 }
 
