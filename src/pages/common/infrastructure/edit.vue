@@ -248,7 +248,7 @@ const getLandlordDetail = () => {
   const { uid, itemUid } = commonParams.value
   getEvaLandlordItemApi(uid).then((res: any) => {
     let arr: any = res && res.immigrantInfrastructureList ? res.immigrantInfrastructureList : []
-    console.log('PLL',res);
+    console.log('',res);
     if (arr && arr.length) {
       let obj: any = arr.filter((item: any) => item.uid === itemUid)[0]
       formData.value = {

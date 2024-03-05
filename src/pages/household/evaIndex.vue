@@ -50,7 +50,6 @@ onLoad((option) => {
   }
   type.value = option?.type;
 
-  console.log("PLL", type.value);
 });
 
 onMounted(() => {

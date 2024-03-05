@@ -14,13 +14,23 @@
               <uni-data-select v-model="formData.typeText" :localdata="typeOptionsList" />
             </uni-forms-item>
           </uni-col>
+          <uni-col :span="12">
+            <uni-forms-item
+              label="土地编号："
+              :label-width="150"
+              label-align="right"
+              name="formData.typeText"
+            >
+              <span>NO12345678</span>
+            </uni-forms-item>
+          </uni-col>
         </uni-row>
-        <view class="land-segment">
+        <!-- <view class="land-segment">
           <label><text class="common-txt">土地编号： NO12345678 </text></label>
-        </view>
+        </view> -->
         <uni-row>
           <uni-col :span="24">
-            <uni-forms-item :label-width="78">
+            <uni-forms-item :label-width="80">
               <checkbox-group @change="handleRadioChange">
                 <checkbox :value="checkSelectedStr" :checked="checkSelected" />
                 <span class="common-txt"

@@ -139,7 +139,7 @@
 
 <script lang="ts" setup>
 import { onBeforeMount, onMounted, ref, onBeforeUnmount } from "vue";
-import { onShow } from "@dcloudio/uni-app";
+import { onShow,onLoad } from "@dcloudio/uni-app";
 import { getStorage, routerForward, resetCache, StorageKey, debounce } from "@/utils";
 import { loginOutApi } from "./api";
 import { getImgListApi, getOtherItemApi } from "@/service";
@@ -239,7 +239,6 @@ const getPullTime = async () => {
   const time: string = await getOtherItemApi(OtherDataType.PullTime);
   pullTime.value = time ? dayjs(Number(time)).format("YYYY-MM-DD HH:mm:ss") : "";
   lastConfirmTime.value = `上次同步时间：${pullTime.value}`;
-  console.log(pullTime.value);
 };
 
 const loginOut = () => {
@@ -290,6 +289,12 @@ onBeforeMount(() => {
 
 onBeforeUnmount(() => {
   uni.$off("SyncEnd", onSyncEnd);
+});
+
+onLoad((option) => {
+  if (option&&option.params) {
+    console.log('父组件OnLoad',option.params);
+  }
 });
 
 onMounted(() => {

@@ -5,23 +5,22 @@
         <checkbox style="margin-bottom:5rpx" :value="checkSelectedStr" :checked="checkSelected" />
           <view
             class="status"
-            :class="[props.data.reportStatus === 'ReportSucceed' ? 'success' : '']"
+            :class="[props.data.relationFlag === '1' ? 'success' : '']"
             ><text class="circle" />{{
-              props.data.reportStatus === "ReportSucceed" ? "已关联" : "未关联"
+              props.data.relationFlag === "1" ? "已关联" : "未关联"
             }}</view
           >
-        <view class="name">{{ props.data.name }}</view>
-        <view class="landNo">{{ props.data.landNo }}</view>
+        <view class="name">{{ formatEmptyText(props.data.rightHolder)}}</view>
+        <view class="landNo">{{ formatEmptyText(props.data.landNumber)}}</view>
       </view>
       <view class="head-rt">
         <view
             class="status"
-            :class="[props.data.reportStatus === 'ReportSucceed' ? 'success' : '']"
-            ><text class="circle" />{{
-              props.data.reportStatus === "ReportSucceed" ? "已评估" : "未评估"
+            :class="[props.data.estimateFlag === '1' ? 'success' : '']"><text class="circle" />{{
+              props.data.estimateFlag === "1" ? "已评估" : "未评估"
             }}</view
           >
-        <view class="btn blue-btn" @click.stop="estimate">
+        <view v-show="props.data.relationFlag === '1'" class="btn blue-btn" @click.stop="estimate">
           <text class="txt">评估</text>
         </view>
       </view>
@@ -30,36 +29,36 @@
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">权属单位:</view>
-        <view class="value">{{ props.data.phone }}</view>
+        <view class="value">{{ getUnit(props.data) }}</view>
       </view>
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">所在区域:</view>
         <view class="value">
-          {{ dictOption(yesAndNoEnums, props.data.hasPropertyAccount) }}
+          {{ formatEmptyText(props.data.areaText) }}
         </view>
       </view>
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">关联户主:</view>
-        <view class="value">{{ getLocationText(props.data.locationType) }}</view>
+        <view class="value">{{ formatEmptyText(props.data.householder) }}</view>
       </view>
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">图幅号</view>
         <view class="value"
-          >{{ props.data.areaCodeText }}/{{ props.data.townCodeText }}</view
+          >{{ formatEmptyText(props.data.sheetNumber)  }}</view
         >
       </view>
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">地类:</view>
-        <view class="value">{{ props.data.villageCodeText }}</view>
+        <view class="value">{{ formatEmptyText(props.data.landTypeText)  }}</view>
       </view>
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">土地性质:</view>
-        <view class="value">{{ props.data.virutalVillageCodeText || "" }}</view>
+        <view class="value">{{ formatEmptyText(props.data.landNatureText)  || "" }}</view>
       </view>
     </view>
   </view>
@@ -67,10 +66,9 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { dictOption } from "@/utils";
-import { getLocationText, yesAndNoEnums } from "@/config/common";
 import { LandlordType } from "@/types/sync";
 import { routerForward } from '@/utils'
+import {formatEmptyText} from '@/utils/format'
 
 interface PropsType {
   data: LandlordType;
@@ -97,6 +95,16 @@ const routeName='householdEva'
     ...params
   })
 };
+
+const getUnit = (item:any) => {
+   let  str1=item?.cityCodeText?item?.cityCodeText+'/':''
+   let  str2=item?.areaCodeText?item?.areaCodeText+'/':''
+   let  str3=item?.townCodeText?item?.townCodeText+'/':''
+   let  str4=item?.villageText?item?.villageText:''
+   return  str1.concat(str2).concat(str3).concat(str4)
+}
+
+
 
 </script>
 

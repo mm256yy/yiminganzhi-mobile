@@ -17,7 +17,7 @@
     <!-- 具体内容 -->
     <view class="main-enter"> 
       <view class="operate-segment">
-        <text class="land-text">土地列表（共 30000条土地数据）</text>
+        <text class="land-text">{{ `土地列表（共 ${list?.length} 条土地数据）` }}</text>
         <view class="right-side">
          <view class="btn blue-btn" @click="associatedBind">
           <text class="txt">关联绑定</text>
@@ -80,11 +80,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted,nextTick,computed,onBeforeMount,onBeforeUnmount } from 'vue'
-import { onShow } from '@dcloudio/uni-app'
+import { ref,reactive, onMounted,nextTick,computed,onBeforeMount,onBeforeUnmount } from 'vue'
+import { onShow,onLoad } from '@dcloudio/uni-app'
 import { getStorage, StorageKey, routerForward,debounce } from '@/utils'
-import { getOtherItemApi } from "@/service";
-// import { getImpHomeCollectDtoApi } from '@/service'
+import { getOtherItemApi,getLandEstimateDtoListApi } from "@/service";
 import NoData from '@/components/NoData/index.vue'
 import LandListItem from '@/pages/land/components/landListItem/index.vue'
 import SyncCompont from "@/components/Sync/Index.vue";
@@ -98,30 +97,22 @@ const syncCmt = ref();
 const lastConfirmTime = ref("");
 
 const emit = defineEmits(['toLink', 'loginIn'])
-const list = ref<any[]>([
-  {
-    name: '使用权人',
-    landNo:'地块编号',
-    phone:'15869083628'
-  },
-  {
-    name: '使用权人',
-    landNo:'地块编号',
-    phone:'15869083622'
-  }
-])
+const list = ref<any[]>()
 const searchName = ref<string>('')
 const isLoading = ref<boolean>(false) //是否正在加载
 const isEnd = ref<boolean>(false) // 是否加载到底
 const page = ref<number>(1)
 const pageSize = ref<number>(10)
-const associationBindingRef=ref()
+const associationBindingRef = ref()
+const searchParams = reactive({
+  name:''
+}) // 查询参数
 
 const onSearch = () => {
   if (searchName.value) {
-    routerForward('householdList', {
-      name: searchName.value
-    })
+    console.log('土地列表-查询Name',searchName.value);
+    searchParams.name = searchName.value
+    getList()
   }
 }
 
@@ -137,46 +128,37 @@ const toTarget = (name: any) => {
 const getList = () => {
   nextTick(async () => {
     isLoading.value = true
-    // const params: any = {
-    //   page: page.value,
-    //   pageSize: pageSize.value
-    // }
-    // const realList = villageCode.value.filter((item) => !!item)
-    // if (realList.length) {
-    //   if (realList.length === 1) {
-    //     params.areaCode = unref(villageCode)[0] || ''
-    //   } else if (realList.length === 2) {
-    //     params.townCode = unref(villageCode)[1] || ''
-    //   } else if (realList.length === 3) {
-    //     params.villageCode = unref(villageCode)[2] || ''
-    //   }
-    // }
-    // const res = await getLandlordListBySearchApi(params).catch(() => {
-    //   isLoading.value = false
-    // })
+    const params: any = {
+      page: page.value,
+      pageSize: pageSize.value,
+      ...searchParams
+    }
+        console.log('土地列表查询',params);
+    const res = await getLandEstimateDtoListApi(params)
+    console.log('土地列表接口',res);
+    list.value = res
     isLoading.value = false
-    // if (res && res.length) {
-    //   if (page.value === 1) {
-    //     list.value = res || []
-    //   } else {
-    //     list.value = list.value.concat(res)
-    //   }
-    //   if (res.length < pageSize.value) {
-    //     isEnd.value = true
-    //   } else {
-    //     page.value = page.value + 1
-    //   }
-    // } else {
-    //   if (page.value === 1) {
-    //     list.value = []
-    //   }
-    //   isEnd.value = true
-    // }
+    if (res && res.length) {
+      if (page.value === 1) {
+        list.value = res || []
+      } else {
+        list.value = list.value?.concat(res)
+      }
+      if (res.length < pageSize.value) {
+        isEnd.value = true
+      } else {
+        page.value = page.value + 1
+      }
+    } else {
+      if (page.value === 1) {
+        list.value = []
+      }
+      isEnd.value = true
+    }
   })
 }
 
 const editLandlord = (item: any) => {
-  
   console.log(item);
 }
 
@@ -274,11 +256,17 @@ onShow(() => {
   // projectInfo.value = project
 })
 
+onLoad((option) => {
+  if (option) {
+    console.log('子组件OnLoad');
+  }
+});
+
 onBeforeMount(() => {
   // 不同角色展示不同的首页视图
   const role = getStorage(StorageKey.USERROLE);
   console.log(role, "目前是什么角色");
-  //homeViewType.value = role;
+  // homeViewType.value = role;
 });
 
 onBeforeUnmount(() => {
@@ -287,11 +275,7 @@ onBeforeUnmount(() => {
 
 
 onMounted(() => {
-  // getImpHomeCollectDtoApi().then((res) => {
-  //   if (res) {
-  //     homeCollect.value = { ...homeCollect.value, ...res }
-  //   }
-  // })
+  init()
   getPullTime();
   uni.$on("SyncEnd", onSyncEnd);
 })
@@ -383,7 +367,7 @@ onMounted(() => {
   .operate-segment{
     display: flex;
     align-items: center;
-    margin-bottom: 10rpx;
+    margin-bottom: 5rpx;
     justify-content: space-between;
 
     .land-text{

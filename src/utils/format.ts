@@ -298,3 +298,8 @@ export const filterViewDoorNo = (data: any): string => {
   }
   return doorNo
 }
+
+// 处理字符串Null显示
+export const formatEmptyText = (text: string) => {
+  return text ? text === 'null' ? '' : text : ''
+}

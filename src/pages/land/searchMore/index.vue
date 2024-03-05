@@ -9,9 +9,17 @@
               label="权属单位："
               :label-width="150"
               label-align="right"
-              name="formData.householder"
+              name="formData.virutalVillageCode"
             >
-              <uni-data-select v-model="formData.typeText" :localdata="typeOptionsList" />
+              <natural-village-select-form-item
+                ref="naturalVillage"
+                v-model:areaCode="formData.areaCode"
+                v-model:townCode="formData.townCode"
+                v-model:villageCode="formData.villageCode"
+                v-model:virutalVillageCode="formData.virutalVillageCode"
+                @open="initNaturalVillageData"
+                @confirm="confirmSelectNaturalVillage"
+              />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -19,9 +27,9 @@
               label="户号："
               :label-width="150"
               label-align="right"
-              name="formData.typeText"
+              name="formData.doorNo"
             >
-              <uni-data-select v-model="formData.typeText" :localdata="typeOptionsList" />
+              <uni-easyinput v-model="formData.doorNo" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -31,9 +39,9 @@
               label="地块编号："
               :label-width="150"
               label-align="right"
-              name="formData.idCard"
+              name="formData.landNumber"
             >
-              <uni-easyinput v-model="formData.idCard" placeholder="请输入" />
+              <uni-easyinput v-model="formData.landNumber" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -41,9 +49,9 @@
               label="使用权人："
               :label-width="150"
               label-align="right"
-              name="formData.doorNo"
+              name="formData.rightHolder"
             >
-              <uni-easyinput v-model="formData.doorNo" placeholder="请输入" />
+              <uni-easyinput v-model="formData.rightHolder" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -53,9 +61,9 @@
               label="地名："
               :label-width="150"
               label-align="right"
-              name="formData.doorNo"
+              name="formData.landName"
             >
-              <uni-easyinput v-model="formData.doorNo" placeholder="请输入" />
+              <uni-easyinput v-model="formData.landName" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -63,9 +71,9 @@
               label="土地性质："
               :label-width="150"
               label-align="right"
-              name="formData.doorNo"
+              name="formData.landNature"
             >
-            <uni-data-select v-model="formData.landType" :localdata="dict[222]" />
+              <uni-data-select v-model="formData.landNature" :localdata="dict[222]" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -75,19 +83,27 @@
               label="地类："
               :label-width="150"
               label-align="right"
-              name="formData.doorNo"
+              name="formData.landLevel"
             >
-              <uni-data-select v-model="formData.landType" :localdata="dict[233]" />
-            </uni-forms-item>
+              <uni-data-picker
+                placeholder="请选择"
+                :map="{ text: 'label', value: 'value' }"
+                :localdata="levelItems"
+                @change="onchange"
+                @nodeclick="onNodeClick"
+            /></uni-forms-item>
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              label="关联状态："        
+              label="关联状态："
               :label-width="150"
               label-align="right"
-              name="formData.associationStatus"
+              name="formData.relationFlag"
             >
-              <uni-data-select v-model="formData.associationStatus" :localdata="associationStatusList()" />
+              <uni-data-select
+                v-model="formData.relationFlag"
+                :localdata="associationStatusList()"
+              />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -97,9 +113,12 @@
               label="评估状态："
               :label-width="150"
               label-align="right"
-              name="formData.doorNo"
+              name="formData.estimateFlag"
             >
-              <uni-data-select v-model="formData.typeText" :localdata="typeOptionsList" />
+              <uni-data-select
+                v-model="formData.estimateFlag"
+                :localdata="estimateStatusList()"
+              />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -107,9 +126,9 @@
               label="所在区域："
               :label-width="150"
               label-align="right"
-              name="formData.doorNo"
+              name="formData.area"
             >
-             <uni-data-select v-model="formData.locationType" :localdata="dict[326]" />
+              <uni-data-select v-model="formData.area" :localdata="dict[326]" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -119,15 +138,18 @@
               label="淹没范围："
               :label-width="150"
               label-align="right"
-              name="formData.doorNo"
+              name="formData.inundationRange"
             >
-              <uni-data-select v-model="formData.typeText" :localdata="typeOptionsList" />
+              <uni-data-select
+                v-model="formData.inundationRange"
+                :localdata="dict[346]"
+              />
             </uni-forms-item>
           </uni-col>
         </uni-row>
         <view class="submit-district">
-        	 <button type="primary" size="small" @click="toSearch">搜索</button>
-          	<button type="default" @click="reset">重置</button>
+          <button type="primary" size="small" @click="toSearch">搜索</button>
+          <button type="default" @click="reset">重置</button>
         </view>
       </uni-forms>
     </view>
@@ -147,67 +169,119 @@
 
 <script lang="ts" setup>
 import { onLoad } from "@dcloudio/uni-app";
-import { ref } from "vue";
+import { ref,onMounted } from "vue";
 import Back from "@/components/Back/Index.vue";
-import { routerForward,routerBack,getStorage, StorageKey } from "@/utils";
+import { routerForward, routerBack, getStorage, StorageKey } from "@/utils";
 import { showToast, SUCCESS_MSG } from "@/config/msg";
-
-interface DictType {
-  text: string;
-  value: string;
-}
+import NaturalVillageSelectFormItem from "@/components/NaturalVillageSelectFormItem/index.vue";
 
 const formData = ref<any>({
-  householder: "",
-  typeText: "",
-  idCard: "",
-  area: "",
+  areaCode: "", // 区/县
+  townCode: "", // 镇/街道
+  villageCode: "", // 行政村
+  virutalVillageCode: "", // 自然村/村民小组
   doorNo: "",
-  landNo: "",
-  remark: "",
+  landNumber: "",
+  rightHolder: "",
+  landName: "", // 地名
+  landNature: "", // 土地性质
+  landLevel: "", // 地类
+  relationFlag: "", // 关联状态
+  estimateFlag: "", // 评估状态
+  area: "", // 所在区域
+  inundationRange: "", // 淹没范围
 });
-const typeOptionsList = ref<DictType[]>([]);
+
 const confirmBindingRef = ref();
+const levelItems=ref<any[]>()
 // 获取数据字典
-const dict = getStorage(StorageKey.DICT)
+const dict = getStorage(StorageKey.DICT);
+const naturalVillage = ref<any>(null);
 
 onLoad((option) => {
   if (option) {
   }
 });
 
+// 初始化自然村/村民小组组件数据
+const initNaturalVillageData = () => {
+  naturalVillage.value?.getTreeData();
+};
+
+/**
+ * 自然村/村民小组选择确认
+ * @param{Object} otherCode 用于兼容老系统，该code值由 1位乡/镇code + 2位行政村code组成
+ */
+const confirmSelectNaturalVillage = (otherCode: string) => {
+  formData.value.otherCode = otherCode || "";
+};
+
 const dialogConfirm = () => {
   confirmBindingRef.value?.close();
   showToast(SUCCESS_MSG);
   routerBack();
-  // const routeName='associationBinding'
-  // toTarget(routeName)
 };
-
+ 
 const dialogClose = () => {
   confirmBindingRef.value?.close();
 };
 
 // 查询
 const toSearch = () => {
-      routerForward('home', {
-      replace: true
-    })
+  routerForward("home", {
+     params: JSON.stringify(formData.value),
+     replace: true,
+  });
 };
 
 // 重置
 const reset = () => {
   formData.value = {
-    
+  areaCode: "", // 区/县
+  townCode: "", // 镇/街道
+  villageCode: "", // 行政村
+  virutalVillageCode: "", // 自然村/村民小组
+  doorNo: "",
+  landNumber: "",
+  rightHolder: "",
+  landName: "", // 地名
+  landNature: "", // 土地性质
+  landLevel: "", // 地类
+  relationFlag: "", // 关联状态
+  estimateFlag: "", // 评估状态
+  area: "", // 所在区域
+  inundationRange: "", // 淹没范围
   }
 };
 
+// 关联状态
 const associationStatusList = () => {
   return [
-    { value: 0, text: "已关联" },
-    { value: 1, text: "未关联" }
-  ]
-}
+    { value: "0", text: "未关联" },
+    { value: "1", text: "已关联" },
+  ];
+};
+
+// 评估状态
+const estimateStatusList = () => {
+  return [
+    { value: "0", text: "未评估" },
+    { value: "1", text: "已评估" },
+  ];
+};
+
+const onchange = (e: any) => {
+  console.log("e", e.detail.value);
+};
+
+const onNodeClick = (node: any) => {
+  console.log("node", node);
+};
+
+onMounted(() => {
+  levelItems.value = dict['土地类型']
+  console.log('土地类型数据',levelItems.value);
+})
 </script>
 
 <style lang="scss" scoped>

@@ -1,70 +1,70 @@
 export interface landEstimateDtoListDDLType {
-  createdBy: string
-  createdDate: string
-  lastModifiedBy: string
-  lastModifiedDate: string
+  createdBy: any
+  createdDate: any
+  lastModifiedBy: any
+  lastModifiedDate: any
   id: Number
   projectId: Number
-  status: string
+  status: any
   householdId: Number
-  householdType: string
-  doorNo: string
-  showDoorNo: string
-  householder: string
-  area: string
-  inundationRange: string
-  sheetNumber: string
-  landNumber: string
-  landName: string
-  cityCode: string
-  areaCode: string
-  townCode: string
-  villageCode: string
-  villagerGroup: string
-  rightHolder: string
-  landNature: string
-  xzdw: string
-  landLevelOne: string
-  landLevelTwo: string
+  householdType: any
+  doorNo: any
+  showDoorNo: any
+  householder: any
+  area: any
+  inundationRange: any
+  sheetNumber: any
+  landNumber: any
+  landName: any
+  cityCode: any
+  areaCode: any
+  townCode: any
+  villageCode: any
+  villagerGroup: any
+  rightHolder: any
+  landNature: any
+  xzdw: any
+  landLevelOne: any
+  landLevelTwo: any
   shapeArea: Number
   shapeLeng: Number
-  avgElevat: string
-  minElevat: string
-  maxElevat: string
-  avgX: string
-  minX: string
-  maxX: string
-  avgY: string
-  minY: string
-  maxY: string
-  remark: string
-  isDelete: string
-  relationFlag: string
-  estimateFlag: string
-  relationBy: string
-  landOwner: string
-  getType: string
-  landSea: string
+  avgElevat: any
+  minElevat: any
+  maxElevat: any
+  avgX: any
+  minX: any
+  maxX: any
+  avgY: any
+  minY: any
+  maxY: any
+  remark: any
+  isDelete: any
+  relationFlag: any
+  estimateFlag: any
+  relationBy: any
+  landOwner: any
+  getType: any
+  landSea: any
   valuationPrice: Number
   valuationAmount: Number
   compensationAmount: Number
   uid: Number
-  addReason: string
-  deleteReason: string
-  evalIsDelete: string
-  areaText: string
-  inundationRangeText: string
-  cityCodeText: string
-  areaCodeText: string
-  townCodeText: string
-  villageCodeText: string
-  landNatureText: string
-  landLevelOneText: string
-  landLevelTwoText: string
-  landTypeText: string
-  cbRate: string
-  cbNum: string
-  isUpdate: string
+  addReason: any
+  deleteReason: any
+  evalIsDelete: any
+  areaText: any
+  inundationRangeText: any
+  cityCodeText: any
+  areaCodeText: any
+  townCodeText: any
+  villageCodeText: any
+  landNatureText: any
+  landLevelOneText: any
+  landLevelTwoText: any
+  landTypeText: any
+  cbRate: any
+  cbNum: any
+  isUpdate: any
 }
 
 export const landEstimateDtoListName = 'landEstimateDtoList'

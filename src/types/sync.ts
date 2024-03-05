@@ -78,7 +78,7 @@ export interface LandlordType {
   cityCode: string
   reportStatus: string
   hasPropertyAccount?: boolean
-  householdNumber: string
+  householdNumber: any
   reportDate: any
   reportUser: number
   fillingUpdateDate: string
@@ -89,6 +89,8 @@ export interface LandlordType {
   reportNum?: number
   signStatus?: string
   signDate?: any
+  landTypeText: string // 地类
+  landNature: string // 土地性质
   [key: string]: any
 
   // 人口
