@@ -108,7 +108,7 @@ export class landEstimateDtoListFills extends Common {
           return
         }
         let values = ''
-        let setuid = ''
+        const setuid = ''
         // 拿到更新的sql字符串
         if (data.type == 1) {
           const list = await getLandPeasantHouseholdDtoListApi()
@@ -118,10 +118,8 @@ export class landEstimateDtoListFills extends Common {
             }
           })
         } else {
-          setuid = guid()
           addLandlordApi({
             doorNo: data.doorNo,
-            uid: setuid,
             type: 'LandNoMove',
             cityCode: data.cityCode,
             areaCode: data.areaCode,

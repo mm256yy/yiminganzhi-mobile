@@ -216,6 +216,8 @@ export class Landlord extends Common {
     return new Promise(async (resolve, reject) => {
       try {
         const data: any = landlord
+        console.log(data, 'addLandlord');
+
         if (!data || data.uid) {
           console.log('数据为空或者uid已经存在')
           reject('')
