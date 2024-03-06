@@ -101,7 +101,7 @@ export class landEstimateDtoListFills extends Common {
     })
   }
   //土地修改
-  updateLandlord(data: any): Promise<boolean> {
+  updateLandlord(datas: any): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!data || !data.uid || !data.type) {
@@ -135,13 +135,16 @@ export class landEstimateDtoListFills extends Common {
           })
           values = `doorNo='${data.doorNo}',householder='${data.rightHolder}',relationFlag='1'`
         }
+        const uids = data.uid.split(',')
+        uids.forEach(res => {
+          const sql = `update ${landEstimateDtoListName} set ${values} where uid = '${res}'`
+          const res = await this.db.execteSql([sql])
+          if (res && res.code) {
+            reject(false)
+            return
+          }
+        });
 
-        const sql = `update ${landEstimateDtoListName} set ${values} where uid = '${data.uid}'`
-        const res = await this.db.execteSql([sql])
-        if (res && res.code) {
-          reject(false)
-          return
-        }
         resolve(true)
       } catch (error) {
         console.log(error, 'updateLandlord-error')

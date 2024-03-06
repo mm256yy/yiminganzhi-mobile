@@ -92,7 +92,9 @@ v-if="tabVal === 18" :dataList="dataInfo.immigrantBuildOneselfList"
           <find-self v-if="tabVal === 24" :dataInfo="dataInfo" />
 
           <!-- 相关手续 -->
-          <procedures v-if="tabVal === 25" :dataInfo="dataInfo" @update-data="updateData" />
+          <procedures v-if="tabVal === 26" :dataInfo="dataInfo" @update-data="updateData" />
+          
+          <assessmentReport v-if="tabVal === 25" :dataInfo="dataInfo" @update-data="updateData" />
         </view>
       </view>
     </view>
@@ -138,6 +140,7 @@ import centralizedSupport from '../relocatePlacement/centralizedSupport.vue' // 
 import selfFindWay from '../relocatePlacement/selfFindWay.vue' // 引入搬迁安置 -- 自谋出路组件
 
 import procedures from '../procedures/index.vue' // 引入生产安置 -- 相关手续
+import assessmentReport from '../procedures/assessmentReport.vue' // 引入评估报告安置 -- 相关手续
 import farming from '../productionResettle/farming.vue' // 引入生产安置 -- 农业安置组件
 import insure from '../productionResettle/insure.vue' // 引入生产安置 -- 养老保险组件
 import findSelf from '../productionResettle/findself.vue' // 引入生产安置 -- 自谋职业组件
