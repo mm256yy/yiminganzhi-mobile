@@ -127,7 +127,7 @@ export class landEstimateDtoListFills extends Common {
             areaCode: data.areaCode,
             townCode: data.townCode,
             villageCode: data.villageCode,
-            name: data.name,
+            name: data.rightHolder,
             card: data.card,
             landUserType: data.landUserType
           }).catch(() => {
