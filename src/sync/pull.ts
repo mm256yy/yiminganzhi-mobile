@@ -116,7 +116,9 @@ class PullData {
 
       villageLagNum: 0,
       villageWarnNum: 0,
-
+      landNoMoveNum: 0,
+      landNoMoveCompleteNum: 0,
+      landNoMoveIncompleteNum: 0,
       chooseConfig: [],
       houseConfig: [],
       immigrantCompensationCardConfig: [],
@@ -1045,7 +1047,10 @@ class PullData {
         evaluatorStatisticsDto,
         notifyDtoList,
         landEstimateDtoList,
-        landPeasantHouseholdDtoList
+        landPeasantHouseholdDtoList,
+        landNoMoveNum,
+        landNoMoveCompleteNum,
+        landNoMoveIncompleteNum
       } = this.state
       await db.transaction('begin').catch(() => {
         resolve(false)
@@ -1126,7 +1131,11 @@ class PullData {
         villageNum,
         villageLagNum,
         villageWarnNum,
-        villageDoneNum: villageNum - villageLagNum - villageWarnNum
+        villageDoneNum: villageNum - villageLagNum - villageWarnNum,
+        landNoMoveNum,
+        landNoMoveCompleteNum,
+        landNoMoveIncompleteNum
+
       })}','${getCurrentTimeStamp()}'`
       db.insertOrReplaceData(OtherTableName, values, fields)
       //资产评估统计首页

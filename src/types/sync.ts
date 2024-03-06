@@ -382,7 +382,9 @@ export interface StateType {
 
   villageLagNum: number
   villageWarnNum: number
-
+  landNoMoveNum: number
+  landNoMoveCompleteNum: number
+  landNoMoveIncompleteNum: number
   chooseConfig: ChooseConfigType[]
   houseConfig: HouseConfigType[]
   immigrantCompensationCardConfig: ImmigrantCompensationCardConfigType[]

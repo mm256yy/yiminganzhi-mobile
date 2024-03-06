@@ -24,17 +24,22 @@ export class landEstimateDtoListFills extends Common {
           rightHolder,
           landName,
           landNature,
-          landLevelOne,
-          landLevelTwo,
           relationFlag,
           estimateFlag,
           area,
           inundationRange,
           pageSize = 4,
-          page = 1
+          page = 1,
+          landLevel
         } = data || {}
         let array: any[] = []
+        let landLevelOne = ''
+        let landLevelTwo = ''
         let sql = `select * from ${landEstimateDtoListName} where 1=1`
+        if (landLevel) {
+          landLevelOne = landLevel.split('-')[0]
+          landLevelTwo = landLevel.split('-')[1]
+        }
         if (doorNo) {
           sql += ` and doorNo = '${doorNo}'`
         }
@@ -123,7 +128,8 @@ export class landEstimateDtoListFills extends Common {
             townCode: data.townCode,
             villageCode: data.villageCode,
             name: data.name,
-            card: data.card
+            card: data.card,
+            landUserType: data.landUserType
           }).catch(() => {
             reject(false)
           })

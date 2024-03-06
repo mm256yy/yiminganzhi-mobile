@@ -261,7 +261,8 @@ export class Landlord extends Common {
             cityCode: '',
             areaCode: data.areaCode || '',
             phone: data.phone,
-            uid: demographicUid
+            uid: demographicUid,
+            landUserType: data.landUserType
           })
         }
 
