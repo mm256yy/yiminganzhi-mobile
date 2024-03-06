@@ -91,6 +91,7 @@ export interface LandlordType {
   signDate?: any
   landTypeText: string // 地类
   landNature: string // 土地性质
+  isChecked: boolean
   [key: string]: any
 
   // 人口
@@ -382,6 +383,7 @@ export interface StateType {
 
   villageLagNum: number
   villageWarnNum: number
+
   landNoMoveNum: number
   landNoMoveCompleteNum: number
   landNoMoveIncompleteNum: number
