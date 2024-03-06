@@ -86,9 +86,10 @@
               name="formData.landLevel"
             >
               <uni-data-picker
+                v-model="formData.landLevel"
                 placeholder="请选择"
-                :map="{ text: 'label', value: 'value' }"
                 :localdata="levelItems"
+                popup-title="请选择所在地区"
                 @change="onchange"
                 @nodeclick="onNodeClick"
             /></uni-forms-item>
@@ -173,6 +174,7 @@ import { ref,onMounted } from "vue";
 import Back from "@/components/Back/Index.vue";
 import { routerForward, routerBack, getStorage, StorageKey } from "@/utils";
 import { showToast, SUCCESS_MSG } from "@/config/msg";
+import { getDictObjsApi } from "@/service";
 import NaturalVillageSelectFormItem from "@/components/NaturalVillageSelectFormItem/index.vue";
 
 const formData = ref<any>({
@@ -276,11 +278,22 @@ const onchange = (e: any) => {
 
 const onNodeClick = (node: any) => {
   console.log("node", node);
+  const {parent_value,value}=node
+  formData.value.landLevel=`${parent_value}-${value}`
 };
 
+const getDictData = async() => {
+   try {
+     const result = await getDictObjsApi([397,398,399,400,401,402,403,404,405,408])
+    levelItems.value = result as any
+    console.log('土地类型数据',result);
+   } catch {
+     levelItems.value = []
+   }
+}
+
 onMounted(() => {
-  levelItems.value = dict['土地类型']
-  console.log('土地类型数据',levelItems.value);
+  getDictData()
 })
 </script>
 

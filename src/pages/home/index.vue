@@ -293,7 +293,7 @@ onBeforeUnmount(() => {
 
 onLoad((option) => {
   if (option&&option.params) {
-    console.log('父组件OnLoad',option.params);
+
   }
 });
 

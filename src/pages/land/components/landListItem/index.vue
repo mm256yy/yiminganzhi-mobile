@@ -2,7 +2,7 @@
   <view class="company-item" @click="handleItemCLick">
     <view class="head">
       <view class="head-lt">
-        <checkbox style="margin-bottom:5rpx" :value="checkSelectedStr" :checked="checkSelected" />
+        <checkbox style="margin-bottom:5rpx" :value="checkSelectedStr" :checked="props.data.isChecked" />
           <view
             class="status"
             :class="[props.data.relationFlag === '1' ? 'success' : '']"
@@ -71,17 +71,21 @@ import { routerForward } from '@/utils'
 import {formatEmptyText} from '@/utils/format'
 
 interface PropsType {
+  index:number
   data: LandlordType;
 }
 
 const props = defineProps<PropsType>();
-const emit = defineEmits(["delete"]);
+const emit = defineEmits(["delete",'itemChecked']);
 const checkSelectedStr = ref<string>('0')
 const checkSelected = ref<boolean>(false)
 
-
 const handleItemCLick = () => {
-  checkSelected.value=!checkSelected.value
+  checkSelected.value = !checkSelected.value
+  emit('itemChecked', {
+    isChecked: checkSelected.value,
+    index:props.index
+  })
 }
 
 // 跳转评估页面

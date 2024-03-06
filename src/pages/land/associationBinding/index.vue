@@ -9,30 +9,24 @@
               label="户名："
               :label-width="150"
               label-align="right"
-              name="formData.typeText"
+              name="formData.id"
             >
-              <uni-data-select v-model="formData.typeText" :localdata="typeOptionsList" />
+              <uni-data-select placeholder="请选择" v-model="formData.id" :localdata="doorNoInfoList" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              label="土地编号："
+              :label="landNo"
               :label-width="150"
-              label-align="right"
-              name="formData.typeText"
-            >
-              <span>NO12345678</span>
-            </uni-forms-item>
+              name="formData.uid"
+            />
           </uni-col>
         </uni-row>
-        <!-- <view class="land-segment">
-          <label><text class="common-txt">土地编号： NO12345678 </text></label>
-        </view> -->
         <uni-row>
           <uni-col :span="24">
             <uni-forms-item :label-width="80">
               <checkbox-group @change="handleRadioChange">
-                <checkbox :value="checkSelectedStr" :checked="checkSelected" />
+                <checkbox :value="checkSelectedStr" :checked="checkSelected"  />
                 <span class="common-txt"
                   >没有查询到户名，使用以下信息新增户名，只征地不搬迁才可以新增户名</span
                 >
@@ -43,22 +37,24 @@
         <uni-row v-show="checkSelected">
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="户主："
               :label-width="150"
               label-align="right"
-              name="formData.householder"
+              name="formData.rightHolder"
             >
-              <uni-easyinput v-model="formData.householder" placeholder="请输入" />
+              <uni-easyinput v-model="formData.rightHolder" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
+             required
               label="类别："
               :label-width="150"
               label-align="right"
-              name="formData.typeText"
+              name="formData.landUserType"
             >
-              <uni-data-select v-model="formData.typeText" :localdata="typeOptionsList" />
+              <uni-data-select v-model="formData.landUserType" :localdata="dict[418]" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -68,9 +64,9 @@
               label="身份证号："
               :label-width="150"
               label-align="right"
-              name="formData.idCard"
+              name="formData.card"
             >
-              <uni-easyinput v-model="formData.idCard" placeholder="请输入" />
+              <uni-easyinput v-model="formData.card" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -98,12 +94,28 @@
         <uni-row v-show="checkSelected">
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="户号："
               :label-width="150"
               label-align="right"
               name="formData.doorNo"
             >
-              <uni-easyinput v-model="formData.doorNo" placeholder="请输入" />
+            <view :class="['input-wrapper', isFocus ? 'focus' : '']">
+                <view class="pre-txt">
+                  {{
+                    suffixNo()
+                  }}
+                </view>
+                <input
+                  class="input-txt"
+                  placeholder="请输入"
+                  type="number"
+                  :maxlength="4"
+                  v-model="formData.doorNo"
+                  @focus="inputFocus"
+                  @blur="inputBlur"
+                />
+              </view>
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -131,73 +143,88 @@
 </template>
 
 <script lang="ts" setup>
-import { onLoad } from "@dcloudio/uni-app";
-import { ref } from "vue";
+import { onLoad} from "@dcloudio/uni-app";
+import { ref,onMounted } from "vue";
 import Back from "@/components/Back/Index.vue";
-import { routerBack } from "@/utils";
-import { showToast, SUCCESS_MSG } from "@/config/msg";
+import { routerBack,getStorage, StorageKey,filterViewDoorNoWithBefore } from "@/utils";
 import NaturalVillageSelectFormItem from "@/components/NaturalVillageSelectFormItem/index.vue";
-
-interface DictType {
-  text: string;
-  value: string;
-}
+import { getLandPeasantHouseholdDtoListApi,updateLandlord } from '@/service'
+import { compatibleOldSystems } from '@/pages/common/config'
+import { showToast, SUCCESS_MSG } from "@/config/msg";
 
 const formData = ref<any>({
-  householder: "",
-  typeText: "",
-  idCard: "",
-  area: "",
-  doorNo: "",
-  landNo: "",
-  remark: "",
-  areaCode: "",
-  townCode: "",
-  villageCode: "",
-  virutalVillageCode: "",
-  otherCode: "",
+  id: '',  // 户名
+  uid: '', // 土地编号
+  rightHolder: '', // 户主
+  landUserType: '', // 类别
+  card: '', // 身份证号
+  doorNo: '', // 户号
+  areaCode: '',
+  townCode: '',
+  villageCode: '',
+  virutalVillageCode: '',
+  otherCode: ''
 });
 const naturalVillageRef = ref<any>(null);
-const checkSelectedStr = ref<string>("0");
+const checkSelectedStr = ref<string>("1"); // 未选中
 const checkSelected = ref<boolean>(false);
-const typeOptionsList = ref<DictType[]>([]);
 const confirmBindingRef = ref();
+const doorNoInfoList = ref<any[]>()
+const landNo = ref<string>('')
+// 输入框是否获得焦点
+const isFocus = ref<boolean>(false)
+// 获取数据字典
+const dict = getStorage(StorageKey.DICT);
+const checkList = ref<any[]>([])
+const landMark = ref<string>('')
 
 onLoad((option) => {
-  if (option) {
+  if (option&&option.params) {
+    const params = JSON.parse(option.params)
+    console.log('P-params', params);
+    checkList.value = params
+    landMark.value = checkList.value.map(item => item.landNumber).join()
+    console.log('landMark', landMark.value);
+    landNo.value = `土地编号：${landMark.value}`
+    formData.value.uid=checkList.value.map(item=>item.uid).join()
   }
 });
 
-const submit = () => {
-  confirmBindingRef.value?.open();
-  // if (!formData.value.householder) {
-  //   showToast('户主不能为空')
-  //   return
-  // }
-  // if (!formData.value.typeText) {
-  //   showToast('反馈阶段不能为空')
-  //   return
-  // }
-  // if (!formData.value.remark) {
-  //   showToast('问题描述不能为空')
-  //   return
-  // }
+const suffixNo = () => {
+  return  compatibleOldSystems()? `ZD${formData.value.otherCode}`: `ZD${filterViewDoorNoWithBefore(formData.value.villageCode)}`
+}
 
-  // let params = {
-  //   ...formData.value,
-  //   feedbackPic: fmtPicUrl(flatOtherPicStr.value)
-  // }
+const submit = async () => {
+  if (!formData.value.rightHolder) {
+    showToast('户主不能为空')
+    return
+  }
 
-  // try {
-  //   const res = await addOtherItemApi(params)
-  //   if (res) {
-  //     showToast(SUCCESS_MSG)
-  //     routerBack()
-  //     // 触发自定义事件
-  //     uni.$emit('customRefresh');
-  //   }
-  // } catch {
-  // }
+  if (!formData.value.landUserType) {
+    showToast('类别不能为空')
+    return
+  }
+  if (!formData.value.virutalVillageCode) {
+    showToast('所属区域不能为空')
+    return
+  }
+
+  let params = {
+    ...formData.value,
+    type: checkSelectedStr.value,
+    doorNo:`${suffixNo()}${formData.value.doorNo}`
+  }
+  console.log('submit-params',params)
+  try {                                   
+    const res = await updateLandlord(params)
+    if (res) {
+	  showToast('绑定成功')
+      routerBack()
+      // 触发自定义事件
+      uni.$emit('customRefresh');
+    }
+  } catch {
+  }
 };
 
 // 初始化自然村/村民小组组件数据
@@ -217,8 +244,6 @@ const dialogConfirm = () => {
   confirmBindingRef.value?.close();
   showToast(SUCCESS_MSG);
   routerBack();
-  // const routeName='associationBinding'
-  // toTarget(routeName)
 };
 
 const dialogClose = () => {
@@ -226,9 +251,40 @@ const dialogClose = () => {
 };
 
 const handleRadioChange = (e: any) => {
-  console.log("event", e.detail.value);
   checkSelected.value = !checkSelected.value;
+  checkSelectedStr.value=checkSelected.value?'0':'1'
 };
+
+// 获取农户信息
+const getDoorNoInfoList = async () => {
+    try {
+        const res = await getLandPeasantHouseholdDtoListApi()
+        if (res) {
+          doorNoInfoList.value = res.map((item:any) => {
+            return {
+              text: item.result,
+              value:item.id
+            }
+          })
+        }
+    } catch {
+          doorNoInfoList.value=[]
+    }
+}
+
+// 输入框获得焦点
+const inputFocus = () => {
+  isFocus.value = true
+}
+
+// 输入框失去焦点
+const inputBlur = () => {
+  isFocus.value = false
+}
+
+onMounted(() => {
+  getDoorNoInfoList()
+});
 </script>
 
 <style lang="scss" scoped>
@@ -344,5 +400,34 @@ const handleRadioChange = (e: any) => {
     display: flex;
     align-items: center;
   }
+
+  .input-wrapper {
+    display: flex;
+    align-items: center;
+    width: 200rpx;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+
+    &.focus {
+      border-color: rgb(41, 121, 255);
+    }
+
+    .input-txt {
+      width: 168rpx;
+      height: 35px;
+      padding-left: 7rpx;
+      font-size: 9rpx;
+      line-height: 35px;
+      color: #171718;
+
+      &.small {
+        width: 120rpx;
+      }
+
+      &.mini {
+        width: 40rpx;
+      }
+     }
+    }
 }
 </style>

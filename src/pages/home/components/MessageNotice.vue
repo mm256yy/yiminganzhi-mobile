@@ -82,7 +82,6 @@ const getFeedbackList = async () => {
 const getNotify = async () => {
   const res = await getNotifyDtoList()
   notifyList.value = res || []
-  console.log(res, '消息通知数据')
 }
 
 onShow(() => {
