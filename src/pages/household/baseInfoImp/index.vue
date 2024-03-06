@@ -6,8 +6,11 @@
         <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
         家庭情况
       </view>
-      <view v-if="dataInfo.householderDoorNo != null">
-        关联企业/个体户:{{ dataInfo.householderDoorNo }}
+      <view v-if="dataInfo.relateIndividualHouseholdName != ''">
+        关联个体户:<text style="color:blue" @click="editLandlords">{{ dataInfo.relateIndividualHouseholdName }}</text>
+      </view>
+      <view v-if="dataInfo.relateCompanyName != ''">
+        关联企业:<text style="color:blue" @click="editLandlord">{{ dataInfo.relateCompanyName }}</text>
       </view>
     </view>
 
@@ -175,18 +178,25 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue'
-import { formatStr, dictOption, formatDict } from '@/utils'
+import { computed, ref, watch,onMounted,unref,nextTick } from 'vue'
+import { formatStr, dictOption, formatDict, routerForward,  getStorage,
+  StorageKey } from '@/utils'
+import {  RoleCodeType } from '@/types/common'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { locationTypes, yesAndNoEnums } from '@/config/common'
 import { LandlordType } from '@/types/sync'
 import { saveImpLandlordItemApi } from '@/service'
 import UploadFile from '@/components/UploadFile/index.vue'
+import { getLandlordListBySearchApi } from '@/service'
+import { MainType } from '@/types/common'
 
+const tabType = ref<MainType>(MainType.Company)
+const tabTypes = ref<MainType>(MainType.IndividualHousehold)
 interface PropsType {
   dataInfo: LandlordType
 }
-
+const roleType = ref<RoleCodeType>(getStorage(StorageKey.USERROLE))
+console.log(roleType.value,'测试类型')
 const props = defineProps<PropsType>()
 const emit = defineEmits(['updateData'])
 
@@ -194,11 +204,63 @@ const householdPicStr = ref<string>('[]') // 户主照片
 const familyPicStr = ref<string>('[]') // 全家福照片
 const housePicStr = ref<string>('[]') // 库区房屋照片
 const resettlePicStr = ref<string>('[]') // 安置房照片
+const companyUid = ref<any>()
+const individualHouseholdUid = ref<any>()
+// 填报
+const routerMap: any = {
+  [MainType.Company]: 'enterpriseImp',
+  // [MainType.PeasantHousehold]: 'peasantHousehold',
+  [MainType.IndividualHousehold]: 'selfPersonImp'
+  // [MainType.Village]: 'collective'
+}
+
+const dataList=ref<any>()
+//企业跳转
+const editLandlord = () => {
+  console.log('测试企业跳转')
+  const name = routerMap[tabType.value]
+  console.log(name, 'name是什么')
+  console.log(companyUid.value.uid, '企业uid是什么')
+  routerForward(name, {
+    type: 'edit',
+    uid:companyUid.value.uid
+  })
+}
+
+//个体户跳转
+const editLandlords =() => {
+  console.log('个体户跳转')
+  const name = routerMap[tabTypes.value]
+  console.log(individualHouseholdUid.value.uid, '个体工商户uid是什么')
+  routerForward(name, {
+    type: 'edit',
+    uid: individualHouseholdUid.value.uid
+  })
+}
+
+// /**
+//  * 获取页面跳转的路由 name
+//  * @params {Object} roleType 角色类型
+//  */
+// const getRouterName = (roleType: string) => {
+//   if (roleType === RoleCodeType.investigator) {
+//     return 'collective'
+//   } else if (roleType === RoleCodeType.assessor || roleType === RoleCodeType.assessorland) {
+//     return 'collectiveEva'
+//   } else if (roleType === RoleCodeType.implementation) {
+//     return 'collectiveImp'
+//   } else {
+//     return 'collective'
+//   }
+// }
 
 watch(
   () => props.dataInfo,
   (val) => {
     if (val) {
+      dataList.value = val
+      getList()
+      getLists()
       const { householdPic, familyPic, housePic, resettlePic } = val
       if (householdPic) {
         householdPicStr.value = householdPic
@@ -216,6 +278,29 @@ watch(
   },
   { immediate: true, deep: true }
 )
+//企业
+const getList = async() => {
+  const params: any = {
+    type: unref(tabType),
+    page: 1,
+    pageSize: 10
+  }
+    const res = await getLandlordListBySearchApi(params).catch(() => {})
+    companyUid.value = res.find((item: any) => item.name == dataList.value.relateCompanyName)
+}
+
+//个体工商户
+const getLists = async() => {
+  const params: any = {
+    type: unref(tabTypes),
+    page: 1,
+    pageSize: 10
+  }
+    const res = await getLandlordListBySearchApi(params).catch(() => {})
+    individualHouseholdUid.value = res.find(
+      (item: any) => item.name == dataList.value.relateIndividualHouseholdName
+    )
+}
 
 const submit = () => {
   if (householdPicStr.value === '[]') {
@@ -259,6 +344,10 @@ watch(
   },
   { immediate: true, deep: true }
 )
+// onMounted(() => {
+//   getList()
+//   getLists()
+// })
 </script>
 
 <style lang="scss" scoped>

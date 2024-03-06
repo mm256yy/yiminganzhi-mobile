@@ -284,6 +284,7 @@ const touchRight = () => {
  * @param{Object} reason 删除原因（填报阶段没有此参数，复核阶段有此参数）
  */
 const deleteDemographic = (data: any, reason?: string) => {
+  console.log(data,reason,'删除的是什么')
   deleteLandlordPeopleApi(props.dataInfo.uid, data.uid, reason)
     .then((res) => {
       if (res) {
