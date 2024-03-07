@@ -1,27 +1,27 @@
 <template>
   <view class="form-wrapper">
-    <Back :title="title" needConfirm />
+      <Container :title="title">
     <view class="main">
       <uni-forms class="form" ref="form" :modelValue="formData">
-        <uni-row v-if="commonParams.type === 'add'">
-          <uni-col :span="24">
+        <uni-row>
+          <uni-col :span="12">
             <uni-forms-item
-              required
-              label="新增原因"
+              label="村民小组"
               :label-width="150"
               label-align="right"
-              name="formData.addReason"
+              name="formData.villagerGroup"
             >
-              <view :class="['input-txtarea-wrapper', focusIndex === 1 ? 'focus' : '']">
-                <textarea
-                  class="input-txtarea"
-                  placeholder="请输入(50字以内)"
-                  :maxlength="50"
-                  v-model="formData.addReason"
-                  @focus="inputFocus(1)"
-                  @blur="inputBlur"
-                ></textarea>
-              </view>
+              <uni-easyinput v-model="formData.villagerGroup" disabled type="text" placeholder="请输入" />
+            </uni-forms-item>
+          </uni-col>
+          <uni-col :span="12">
+            <uni-forms-item
+              label="地块编号"
+              :label-width="150"
+              label-align="right"
+              name="formData.landNumber"
+            >
+              <uni-easyinput v-model="formData.landNumber" disabled type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -29,40 +29,17 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              label="组别"
-              :label-width="150"
-              label-align="right"
-              name="formData.groupName"
-            >
-              <uni-easyinput v-model="formData.groupName" type="text" placeholder="请输入" />
-            </uni-forms-item>
-          </uni-col>
-          <uni-col :span="12">
-            <uni-forms-item
-              label="地块名称"
+              label="地块名"
               :label-width="150"
               label-align="right"
               name="formData.landName"
             >
-              <uni-easyinput v-model="formData.landName" type="text" placeholder="请输入" />
+            <uni-easyinput v-model="formData.landName" disabled type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
-        </uni-row>
-
-        <uni-row>
           <uni-col :span="12">
             <uni-forms-item
               label="所在位置"
-              :label-width="150"
-              label-align="right"
-              name="formData.locationType"
-            >
-              <uni-data-select v-model="formData.locationType" :localdata="dict[326]" />
-            </uni-forms-item>
-          </uni-col>
-          <uni-col :span="12">
-            <uni-forms-item
-              label="种植户"
               :label-width="150"
               label-align="right"
               name="formData.growers"
@@ -73,6 +50,16 @@
         </uni-row>
 
         <uni-row>
+          <uni-col :span="12">
+            <uni-forms-item
+              label="淹没范围"
+              :label-width="150"
+              label-align="right"
+              name="formData.inundationRangeText"
+            >
+              <uni-data-select v-model="formData.inundationRangeText" :localdata="dict[233]" />
+            </uni-forms-item>
+          </uni-col>
           <uni-col :span="12">
             <uni-forms-item
               label="地块面积"
@@ -93,14 +80,27 @@
               </view>
             </uni-forms-item>
           </uni-col>
+        </uni-row>
+
+        <uni-row>
           <uni-col :span="12">
             <uni-forms-item
               label="地类"
               :label-width="150"
               label-align="right"
-              name="formData.landType"
+              name="formData.landTypeText"
             >
-              <uni-data-select v-model="formData.landType" :localdata="dict[233]" />
+              <uni-easyinput v-model="formData.landTypeText" type="text" placeholder="请输入" />
+            </uni-forms-item>
+          </uni-col>
+          <uni-col :span="12">
+            <uni-forms-item
+              label="土地性质"
+              :label-width="150"
+              label-align="right"
+              name="formData.landNatureText"
+            >
+              <uni-easyinput v-model="formData.landNatureText" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -123,7 +123,17 @@
               label-align="right"
               name="formData.getType"
             >
-              <uni-easyinput v-model="formData.getType" type="text" placeholder="请输入" />
+              <view :class="['input-wrapper', focusIndex === 3 ? 'focus' : '']">
+                <input
+                  class="input-txt"
+                  placeholder="请输入"
+                  type="number"
+                  v-model="formData.getType"
+                  @focus="inputFocus(3)"
+                  @blur="inputBlur"
+                />
+                <view class="unit">元/㎡</view>
+              </view>
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -134,9 +144,20 @@
               label="地块位置"
               :label-width="150"
               label-align="right"
-              name="formData.landSea"
+              name="formData.valuationAmount"
             >
-              <uni-easyinput v-model="formData.landSea" type="text" placeholder="请输入" />
+              <view :class="['input-wrapper', focusIndex === 4 ? 'focus' : '']">
+                <input
+                  class="input-txt"
+                  placeholder="请输入"
+                  type="number"
+                  disabled
+                  :value="countPrice"
+                  @focus="inputFocus(4)"
+                  @blur="inputBlur"
+                />
+                <view class="unit">元</view>
+              </view>
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -144,23 +165,22 @@
               label="评估单价"
               :label-width="150"
               label-align="right"
-              name="formData.valuationPrice"
+              name="formData.compensationAmount"
             >
-              <view :class="['input-wrapper', focusIndex === 3 ? 'focus' : '']">
+              <view :class="['input-wrapper', focusIndex === 5 ? 'focus' : '']">
                 <input
                   class="input-txt"
                   placeholder="请输入"
                   type="number"
-                  v-model="formData.valuationPrice"
-                  @focus="inputFocus(3)"
+                  v-model="formData.compensationAmount"
+                  @focus="inputFocus(5)"
                   @blur="inputBlur"
                 />
-                <view class="unit">元/㎡</view>
+                <view class="unit">元</view>
               </view>
             </uni-forms-item>
           </uni-col>
         </uni-row>
-
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
@@ -235,6 +255,7 @@
         @click="submit"
       />
     </view>
+</Container>
   </view>
 </template>
 
@@ -248,7 +269,7 @@ import {
   getEvaLandlordItemApi
 } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
-import Back from '@/components/Back/Index.vue'
+import Container from '@/components/Container/index.vue'
 
 const title = ref<string>('')
 const commonParams = ref<any>({})
