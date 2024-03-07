@@ -399,6 +399,7 @@ export interface StateType {
   notifyDtoList: any[]
   landPeasantHouseholdDtoList: any[]
   landEstimateDtoList: any[]
+   landAppendantList: any[]
 }
 
 export interface PushStateType {
