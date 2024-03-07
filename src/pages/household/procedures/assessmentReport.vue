@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue'
+import { ref, computed,onMounted } from 'vue'
 import dayjs from 'dayjs'
 import { LandlordType } from '@/types/sync'
 import { routerForward } from '@/utils'
@@ -59,27 +59,10 @@ const emit = defineEmits(['updateData'])
 const immigrantProceduresList = computed(() => {
   return props.dataInfo.immigrantProceduresList || []
 })
-
-const handle = (uid: string) => {
-  routerForward('attendto', {
-    uid: props.dataInfo.uid,
-    type: 1,
-    data: uid
-  })
-}
-const notHandle = (uid: string) => {
-  // 直接更新数据
-  updateImpLandlordProceduresApi(props.dataInfo.uid, uid, {
-    needHandle: '0', // 是否需要办理01
-    isComplete: '1'
-  }).then(() => {
-    uni.showToast({
-      title: '保存成功！',
-      icon: 'success'
-    })
-    emit('updateData')
-  })
-}
+onMounted(() => {
+  console.log(props.dataInfo.landAppendantList);
+  
+})
 </script>
 
 <style lang="scss" scoped>

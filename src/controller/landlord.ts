@@ -129,8 +129,9 @@ export class Landlord extends Common {
     return new Promise(async (resolve, reject) => {
       try {
         const array: LandlordType[] = []
-        const sql = `select * from ${LandlordTableName} where isPadDelete = '0' and type = '${type}' order by updatedDate desc limit ${pageSize} offset ${(page - 1) * pageSize
-          }`
+        const sql = `select * from ${LandlordTableName} where isPadDelete = '0' and type = '${type}' order by updatedDate desc limit ${pageSize} offset ${
+          (page - 1) * pageSize
+        }`
         const list: LandlordDDLType[] = await this.db.selectSql(sql)
         if (this.isArrayAndNotNull(list)) {
           list.forEach((item) => {
@@ -216,7 +217,7 @@ export class Landlord extends Common {
     return new Promise(async (resolve, reject) => {
       try {
         const data: any = landlord
-        console.log(data, 'addLandlord');
+        console.log(data, 'addLandlord')
 
         if (!data || data.uid) {
           console.log('数据为空或者uid已经存在')
@@ -692,6 +693,7 @@ export class Landlord extends Common {
           villageCode,
           virutalVillageCode,
           type,
+          doorNo,
           pageSize = 10,
           page = 1
         } = data || {}
@@ -717,6 +719,9 @@ export class Landlord extends Common {
         }
         if (virutalVillageCode) {
           sql += ` and virutalVillageCode = '${virutalVillageCode}'`
+        }
+        if (doorNo) {
+          sql += ` and doorNo = '${doorNo}'`
         }
         sql += ` order by updatedDate desc limit ${pageSize} offset ${(page - 1) * pageSize}`
         // console.log('sql', sql)
@@ -834,10 +839,10 @@ export class Landlord extends Common {
         }
         const sql = `select count(reportStatus = 'ReportSucceed' or null) as hasReport,
         count(reportStatus = 'ReportSucceed' and reportDate Between '${dayjs()
-            .startOf('day')
-            .format(this.format)}' and '${dayjs()
-              .endOf('day')
-              .format(this.format)}' or null) as todayReport
+          .startOf('day')
+          .format(this.format)}' and '${dayjs()
+          .endOf('day')
+          .format(this.format)}' or null) as todayReport
       from ${LandlordTableName} where reportUser = '${reportUser}'`
         const res: LandlordDDLType[] = await this.db.selectSql(sql)
         const sql2 = `select count(reportStatus != 'ReportSucceed' or null) as noReport from ${LandlordTableName}`
@@ -961,9 +966,11 @@ export class Landlord extends Common {
         realData.reportDate = dayjs()
         realData.reportUser = userInfo.id
 
-        const values = `padStatus = 'modify',reportStatus = '${ReportStatusEnum.ReportSucceed
-          }',reportDate = '${dayjs().format(this.format)}',reportUser = '${realData.reportUser
-          }',content = '${JSON.stringify(realData)}',updatedDate = '${getCurrentTimeStamp()}'`
+        const values = `padStatus = 'modify',reportStatus = '${
+          ReportStatusEnum.ReportSucceed
+        }',reportDate = '${dayjs().format(this.format)}',reportUser = '${
+          realData.reportUser
+        }',content = '${JSON.stringify(realData)}',updatedDate = '${getCurrentTimeStamp()}'`
         const sql = `update ${LandlordTableName} set ${values} where uid = '${realData.uid}' and isPadDelete = '0'`
         const res = await this.db.execteSql([sql])
         if (res && res.code) {
@@ -1000,10 +1007,11 @@ export class Landlord extends Common {
         data.signDate = dayjs()
         data.signUser = userInfo.id
 
-        const values = `padStatus = 'modify',signStatus = '${SignStatusEnum.SignSucceed
-          }',signDate = '${dayjs().format(this.format)}',content = '${JSON.stringify(
-            data
-          )}',updatedDate = '${getCurrentTimeStamp()}'`
+        const values = `padStatus = 'modify',signStatus = '${
+          SignStatusEnum.SignSucceed
+        }',signDate = '${dayjs().format(this.format)}',content = '${JSON.stringify(
+          data
+        )}',updatedDate = '${getCurrentTimeStamp()}'`
         const sql = `update ${LandlordTableName} set ${values} where uid = '${data.uid}' and isPadDelete = '0'`
         const res = await this.db.execteSql([sql])
         if (res && res.code) {
