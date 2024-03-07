@@ -25,8 +25,14 @@ import { ref } from 'vue'
 import { pullInstance } from '@/sync'
 // import { getBaseDataApi, getConfigDataApi, getCollectApi, getMainTreeApi } from '@/sync/api'
 import { routerForward, routerBack } from '@/utils'
-import { getLandEstimateDtoListApi, getLandPeasantHouseholdDtoListApi,updateLandlord,getLandlordListBySearchApi,getDictObjsApi } from '@/service'
-import {MainType } from '@/types/common'
+import {
+  getLandEstimateDtoListApi,
+  getLandPeasantHouseholdDtoListApi,
+  updateLandlord,
+  getLandlordListBySearchApi,
+  getDictObjsApi
+} from '@/service'
+import { MainType } from '@/types/common'
 const currentTable = ref<string>('')
 const list = ref<any[]>([])
 
@@ -55,23 +61,17 @@ getApiData()
 const getTables = async () => {
   const tables = await pullInstance.getTables()
   list.value = tables || []
-    getLandEstimateDtoListApi({name:'wxl'}).then((res:any) => {
-    console.log(res,'土地列表');
-    })
-  getLandPeasantHouseholdDtoListApi().then((res:any) => {
-    console.log(res,'农户列表');
+  let m = await getLandlordListBySearchApi({ type: MainType.LandNoMove, name: '赵六' })
+  console.log(m, '只征地不搬迁人数据')
+  getLandEstimateDtoListApi().then((res: any) => {
+    console.log(res, '土地列表')
   })
-  // updateLandlord({uid:'735624d2-1172-446a-9424-b1cd55b424bb',id:232761,type:'1'}).then((res:any) => {
+  // updateLandlord({uid:'33b30180-b5e8-47db-8222-3c0de067ffc7',id:232794,type:'1'}).then((res:any) => {
   //   console.log(res, '更新数据');
-  //   getLandlordListBySearchApi({type:MainType.LandNoMove}).catch((err:any) => {
+  //   getLandlordListBySearchApi({type:MainType.LandNoMove,name: '赵六'}).then((err:any) => {
   //     console.log(err,'更新数据');
   //   })
   // })
-  getDictObjsApi([397,398,399]).then((res) => {
-      console.log(res,'字典');
-      
-    })
-  
 }
 
 getTables()

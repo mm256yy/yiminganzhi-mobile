@@ -1,7 +1,8 @@
 import { Common } from './common'
-import { landEstimateDtoListName } from '@/database'
+import { landEstimateDtoListName, LandlordTableName } from '@/database'
 import { getLandPeasantHouseholdDtoListApi } from '@/service'
 import { addLandlordApi } from '@/service'
+import { ImpDataFillController } from '@/controller'
 import { guid } from '@/utils'
 export class landEstimateDtoListFills extends Common {
   public format: string
@@ -111,15 +112,20 @@ export class landEstimateDtoListFills extends Common {
         }
         let values = ''
         const setuid = ''
+        let doorNos = ''
         // 拿到更新的sql字符串
         if (data.type == 1) {
           const list = await getLandPeasantHouseholdDtoListApi()
+
           list.filter((item: any) => {
             if (item.id == data.id) {
+              console.log(item.doorNo)
+              doorNos = item.doorNo
               values = `doorNo='${item.doorNo}',householder='${item.name}',relationFlag='1'`
             }
           })
         } else {
+          doorNos = data.doorNo
           addLandlordApi({
             doorNo: data.doorNo,
             type: 'LandNoMove',
@@ -136,6 +142,7 @@ export class landEstimateDtoListFills extends Common {
           values = `doorNo='${data.doorNo}',householder='${data.rightHolder}',relationFlag='1'`
         }
         const uids = data.uid.split(',')
+        let listTds = []
         uids.forEach(async (bbq: any) => {
           const sql = `update ${landEstimateDtoListName} set ${values} where uid = '${bbq}'`
           const res = await this.db.execteSql([sql])
@@ -143,8 +150,37 @@ export class landEstimateDtoListFills extends Common {
             reject(false)
             return
           }
-        });
+        })
+        const sqlTd = `select * from ${landEstimateDtoListName} where doorNo='${doorNos}'`
+        listTds = await this.db.selectSql(sqlTd)
+        const sqlUser = `select * from ${LandlordTableName} where type = 'LandNoMove' and doorNo='${doorNos}'`
+        const userData = await this.db.selectSql(sqlUser)
+        const userDataAll = await this.db.selectSql(
+          `select * from ${LandlordTableName} where type = 'LandNoMove'`
+        )
+        console.log(userData, listTds, doorNos, '修改人')
 
+        if (userData.length == 1) {
+          ImpDataFillController.updateLandlordAssetLandBatch(userData[0].uid, listTds)
+          userDataAll.forEach((item: any) => {
+            if (item.landEstimateDtoList) {
+              let m = false
+              item.landEstimateDtoList.forEach((key: any) => {
+                if (uids.incloud(key.uid)) {
+                  m = true
+                }
+              })
+              if (m) {
+                ImpDataFillController.updateLandlordAssetLandBatch(
+                  item.uid,
+                  item.landEstimateDtoList.filter((value: any) => !uids.incloud(value.uid))
+                )
+              }
+            }
+          })
+        } else {
+          console.log('数据重复')
+        }
         resolve(true)
       } catch (error) {
         console.log(error, 'updateLandlord-error')
