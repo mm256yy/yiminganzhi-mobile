@@ -58,7 +58,27 @@ import { dictOption } from '@/utils'
 import { LandlordType } from '@/types/sync'
 import { yesAndNoEnums } from '@/config/common'
 import { MainType } from '@/types/common'
+// import {getLandlordListBySearchApi,getImpLandlordItemApi} from '@/service'
+// const getTables =  () => {
+//     getLandlordListBySearchApi({type:MainType.LandNoMove}).then((res:any) => {
+//       console.log(res,'查看数据');
+//     }).catch((err:any) => {
+//       console.log(err,'报错数据');
+//     })
+// }
 
+// getTables()
+// /**
+//  * 获取业主详情
+//  * @param(object) uid
+//  */
+// const getLandlordDetail = (uid: string) => {
+//   getImpLandlordItemApi(uid).then((res: any) => {
+//     dataInfo.value = { ...res }
+//     console.log(res,'测试数据')
+//   })
+// }
+// getLandlordDetail()
 interface PropsType {
   data: LandlordType
   showStatus: boolean // 是否展示状态

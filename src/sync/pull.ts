@@ -130,7 +130,8 @@ class PullData {
       peasantHouseholdDtoList: [],
       notifyDtoList: [],
       landPeasantHouseholdDtoList: [],
-      landEstimateDtoList: []
+      landEstimateDtoList: [],
+      landAppendantList: []
     }
 
     this.districtMap = getStorage(StorageKey.DISTRICTMAP) || {}

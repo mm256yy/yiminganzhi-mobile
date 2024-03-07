@@ -29,19 +29,14 @@
           <text class="time">发送时间</text>
         </view>
         <view class="list">
-          <view class="item-title">
+          <view class="item-title" v-for="(item, index) in notifyList" :key="index">
             <view>
-              <text class="item-index">1</text>
-              <text class="item-content">您有5还有居民已严重滞后，请推进实施工作</text>
+              <text class="item-index">{{ index + 1 }}</text>
+              <text class="item-content">{{ item.title }}</text>
             </view>
-            <text class="item-time">2023-05-11</text>
-          </view>
-          <view class="item-title">
-            <view>
-              <text class="item-index">2</text>
-              <text class="item-content">您有2户居民未开始填报，请推进实施工作</text>
-            </view>
-            <text class="item-time">2023-05-11</text>
+            <text class="item-time">{{
+              item.createdDate ? dayjs(item.createdDate).format('YYYY-MM-DD') : '-'
+            }}</text>
           </view>
         </view>
       </div>
@@ -76,13 +71,14 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
-import { getOtherItemApi } from '@/service'
+import { getOtherItemApi,getNotifyDtoList } from '@/service'
 import { OtherDataType } from '@/database'
 import dayjs from 'dayjs'
 
 const currentTab = ref(0)
 let menuIndex = ref(0)
 const feedbackList = ref<any[]>([])
+const notifyList = ref<any[]>([])
 
 const tabChange = (id: number) => {
   if (currentTab.value === id) {
@@ -95,6 +91,12 @@ const handleItemClick = (index: number) => {
   menuIndex.value = index
 }
 
+// 消息通知列表
+const getNotify = async () => {
+  const res = await getNotifyDtoList()
+  notifyList.value = res || []
+  console.log(res, '消息通知数据')
+}
 // 消息反馈列表
 const getFeedbackList = async () => {
   const res = await getOtherItemApi(OtherDataType.FeedbackDtoList)
@@ -109,6 +111,7 @@ const getFeedbackList = async () => {
 
 onMounted(() => {
   getFeedbackList()
+  getNotify()
 })
 </script>
 
