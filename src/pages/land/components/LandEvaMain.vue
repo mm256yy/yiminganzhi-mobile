@@ -61,11 +61,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref,onMounted } from 'vue'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { MainType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
-import Header from '@/components/Header/EvaIndex.vue'
+// import Header from '@/components/Header/EvaIndex.vue'
 import Tabs from '@/components/Tabs/Index.vue'
 import baseInfoEva from './baseInfo/index.vue' // 引入居民户信息组件
 import landEva from './landEva/index.vue' // 引入土地基本情况评估组件
@@ -124,7 +124,7 @@ const tabsList = computed(() => {
 
 const tabVal = ref<number>(0)
 const emit = defineEmits(['updateData'])
-console.log('tabList-LL',props.dataInfo);
+
 
 // tab 切换
 const selectTabs = (data: any) => {
@@ -187,6 +187,10 @@ const deleteSeedlings = (data: any, reason?: string) => {
 const updateData = () => {
   emit('updateData', props.dataInfo.uid)
 }
+
+onMounted(() => {
+  console.log('tabList-LL',props.dataInfo);
+})
 </script>
 
 <style lang="scss">

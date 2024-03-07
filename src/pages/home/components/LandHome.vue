@@ -36,7 +36,7 @@
             <text class="txt">数据同步</text>
           </view>
         </view>
-      </view>
+      </view> 
       <view class="main-list">
         <scroll-view
           v-if="list && list.length"
@@ -108,7 +108,7 @@ import LandListItem from "@/pages/land/components/landListItem/index.vue";
 import SyncCompont from "@/components/Sync/Index.vue";
 import dayjs from "dayjs";
 import { OtherDataType } from "@/database";
-import { showToast, SUCCESS_MSG } from "@/config/msg";
+import { showToast } from "@/config/msg";
 
 const confirmDialogRef = ref<any>(null);
 const pullTime = ref<string>("");
@@ -159,6 +159,7 @@ const getList = () => {
         isChecked: false,
       };
     });
+    console.log('列表数据日志',res);
 
     isLoading.value = false;
      if (res && res.length) {

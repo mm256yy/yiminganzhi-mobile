@@ -90,13 +90,15 @@ const handleItemCLick = () => {
 
 // 跳转评估页面
 const estimate = () => { 
-const routeName='householdEva'
-  const params = {
-    type:'land'
+  const routeName = 'householdEva'
+
+  const obj = {
+    type: 'land',
+    uid:props.data.uid
   }
 
   routerForward(routeName, {
-    ...params
+    params:JSON.stringify(obj)
   })
 };
 
@@ -107,9 +109,6 @@ const getUnit = (item:any) => {
    let  str4=item?.villageText?item?.villageText:''
    return  str1.concat(str2).concat(str3).concat(str4)
 }
-
-
-
 </script>
 
 <style lang="scss" scoped>

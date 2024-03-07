@@ -71,13 +71,13 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">土地青苗及附着物评估合计：</view>
-                <view class="content">{{ totalPriceObj.houseTotalAmount }}</view>
+                <view class="content">{{ 123 }}</view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">资产评估合计：</view>
-                <view class="content">{{ totalPriceObj.fitUpTotalAmount }}</view>
+                <view class="content">{{ 456 }}</view>
               </view>
             </uni-col>
           </uni-row>

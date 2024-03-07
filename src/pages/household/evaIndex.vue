@@ -45,11 +45,12 @@ onShow(() => {
 });
 
 onLoad((option) => {
-  if (option && option.uid) {
-    getLandlordDetail(option.uid);
-  }
-  type.value = option?.type;
-
+  if (option && option.params) {
+    const params = JSON.parse(option.params)
+    type.value = params.type;
+    console.log('evaLoadType',type.value);
+    getLandlordDetail(params.uid);
+  } 
 });
 
 onMounted(() => {
@@ -64,7 +65,9 @@ const getLandlordDetail = (uid: string) => {
   getEvaLandlordItemApi(uid).then((res: any) => {
     console.log("资产评估res:", res);
     dataInfo.value = { ...res };
-  });
+  }).catch((err: any) => {
+    console.log("资产评估err:", err);
+  })
 };
 
 // 初始化职业选择框数据
