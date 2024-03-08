@@ -21,18 +21,18 @@
           <!-- 数量 -->
           <uni-td align="left" class="u-td">      
             <input v-if="item.isVerify == '0'" class="input-txt" v-model="item.number" placeholder="请输入" />
-            <view v-if="item.isVerify == '1'">{{ formatStr(item.number) }}</view>
+            <view v-if="item.isVerify == '1'||item.isVerify == null">{{ formatStr(item.number) }}</view>
           </uni-td>
           <!-- 补偿单价 -->
           <uni-td align="left" class="u-td">
             <input v-if="item.isVerify == '0'" class="input-txt" v-model="item.price" placeholder="请输入" />
-            <view v-if="item.isVerify == '1'">{{ item.price }}</view>
+            <view v-if="item.isVerify == '1'||item.isVerify == null">{{ item.price }}</view>
             <!-- <view v-if="item.isUpdate !== '1'"> - </view> -->
           </uni-td>
           <uni-td align="left" class="u-td">
             <view v-if="item.isUpdate === '0'">{{ item.totalPrice }}</view>
-            <view v-else-if="item.isUpdate === '1'">{{ computedTotalPrice(item) }}</view>
-            <view v-else-if="item.isUpdate === '2'"> {{ getSummaries(item) }} </view>
+            <view v-else-if="item.isUpdate === '1'&&item.isSum === '0'">{{ computedTotalPrice(item) }}</view>
+            <view v-if="item.isSum === '1'"> {{ getSummaries(item) }} </view>
           </uni-td>
           <uni-td align="left" class="u-td">{{
             item.isVerify == '0' ? '未确认' : item.isVerify == '1' ? '已确认' : '-'
@@ -40,7 +40,7 @@
           <!-- 备注 -->
           <uni-td align="left" class="u-td">
             <input v-if="item.isVerify === '0'" class="input-txt" v-model="item.remark" placeholder="请输入" />
-            <view v-if="item.isVerify === '1'">{{ item.remark }}</view>
+            <view v-if="item.isVerify === '1'||item.isVerify == null">{{ item.remark }}</view>
           </uni-td>
           <uni-td class="u-td">
             <view style="display: flex; align-items: center; justify-content: center">
@@ -86,37 +86,75 @@ onLoad((option) => {
 })
 
 // 获取移民建卡奖励费列表
+// const getCompensationCardConfig = async () => {
+//   let res = await getCompensationCardConfigApi()
+//   if (res) {
+//     // res.forEach((item:any)=>{
+//     //   if(item.unit=='人'&&item.type=='3'&&!item.hasOwnProperty('isVerify')){
+//     //     item.number=res.demographicList.length
+//     //   }else if(item.unit=='项'&&item.type=='3'&&!item.hasOwnProperty('isVerify')){
+//     //     item.number=1
+//     //   }
+//     // })
+//     console.log('获取移民建卡奖励费列表', res)
+
+//     // tableData.value = res
+//     let data: any = await getLandlordItemApi(commonParams.value.uid)
+//     console.log(data, '测试dada数据')
+
+//     // data.immigrantCompensationCardList.forEach((item: any) => {
+//     //   let index = res.findIndex((e: any) => e.name == item.name)
+//     //   if (index > -1) {
+//     //     res[index] = item
+//     //   } else {
+//     //     res.push(item)
+//     //   }
+//     // })
+//         let result = res.map((item1:any) => {
+//   const item2 = data.immigrantCompensationCardList.find((item:any) => item.name === item1.name);
+//   if (item2) {
+//     return {...item1, ...item2};
+//   }
+//   return item1;
+// });
+//     dataList.value = result.filter(
+//       (item: any) => item.isUpdate == '1' && item.phType == 'PeasantHousehold'
+//     )
+//     dataList.value.forEach((item: any) => {
+//       // !item.hasOwnProperty('isVerify')  暂时先去掉，后面有需要再加
+//       if(item.unit=='人'&&item.type=='3'){
+//         item.number=data.demographicList.length
+//       }else if(item.unit=='项'&&item.type=='3'){
+//         item.number=1
+//       }
+//     })
+//     console.log('合并', dataList.value, res, data.immigrantCompensationCardList)
+//   }
+// }
+// 获取移民建卡奖励费列表
 const getCompensationCardConfig = async () => {
   let res = await getCompensationCardConfigApi()
   if (res) {
-    // res.forEach((item:any)=>{
-    //   if(item.unit=='人'&&item.type=='3'&&!item.hasOwnProperty('isVerify')){
-    //     item.number=res.demographicList.length
-    //   }else if(item.unit=='项'&&item.type=='3'&&!item.hasOwnProperty('isVerify')){
-    //     item.number=1
-    //   }
-    // })
     console.log('获取移民建卡奖励费列表', res)
 
     // tableData.value = res
     let data: any = await getLandlordItemApi(commonParams.value.uid)
-    console.log(data, '测试dada数据')
+    console.log(data)
 
     data.immigrantCompensationCardList.forEach((item: any) => {
-      let index = res.findIndex((e: any) => e.name == item.name)
+      let index = res.findIndex((e: any) => e.id == item.id)
       if (index > -1) {
         res[index] = item
       } else {
         res.push(item)
       }
     })
-    dataList.value = res.filter(
-      (item: any) => item.isUpdate == '1' && item.phType == 'PeasantHousehold'
-    )
-    dataList.value.forEach((item:any)=>{
-      if(item.unit=='人'&&item.type=='3'&&!item.hasOwnProperty('isVerify')){
-        item.number=data.demographicList.length
-      }else if(item.unit=='项'&&item.type=='3'&&!item.hasOwnProperty('isVerify')){
+    dataList.value = res.filter((item: any) => item.type === '3' && item.phType == 'PeasantHousehold')
+        dataList.value.forEach((item: any) => {
+      // !item.hasOwnProperty('isVerify')  暂时先去掉，后面有需要再加
+      if(item.unit=='人'&&item.type=='3'&& item.isVerify!='1'){
+        item.number=data.demographicList.filter((item:any) => item.isDelete !== '1').length
+      }else if(item.unit=='项'&&item.type=='3'&& item.isVerify!='1'){
         item.number=1
       }
     })
@@ -169,26 +207,26 @@ const onSave = (data: any, isVerify: any) => {
     data.isVerify = '0'
   }
    else if (isVerify == 1) {
-   data.isVerify = '1'
+    data.isVerify = '1'
+    const { doorNo, uid } = commonParams.value
+    console.log(uid, '当前数据')
+    let params = {
+      ...data,
+      doorNo,
+      isVerify
+    }
+    updateImpLandlordCompensationCardApi(uid, params)
+      .then((res) => {
+        if (res) {
+          console.log(res, '查看奖励费res')
+          showToast(SUCCESS_MSG)
+          getCompensationCardConfig()
+        }
+      })
+      .catch(() => {
+        showToast(ERROR_MSG)
+      })
   }
-  const { doorNo, uid } = commonParams.value
-  console.log(uid, '当前数据')
-  let params = {
-    ...data,
-    doorNo,
-    isVerify
-  }
-  updateImpLandlordCompensationCardApi(uid, params)
-    .then((res) => {
-      if (res) {
-        console.log(res, '查看奖励费res')
-        showToast(SUCCESS_MSG)
-        getCompensationCardConfig()
-      }
-    })
-    .catch(() => {
-      showToast(ERROR_MSG)
-    })
 }
 </script>
 

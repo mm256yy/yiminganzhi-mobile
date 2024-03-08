@@ -291,8 +291,8 @@ export class ImpLandlord extends Common {
 
     // 移民建卡
     if (this.isArrayAndNotNull(immigrantCompensationCardList)) {
-      const res = immigrantCompensationCardList.find((item) => !item.isVerify)
-      if (!res && this.isNotNullPic(compensationCardPic)) {
+      // const res = immigrantCompensationCardList.find((item) => !item.isVerify)不需要确认 是否有奖励费确认
+      if (this.isNotNullPic(compensationCardPic)) {
         landlordItem.immigrantFilling.cardStatus = '1'
       } else {
         landlordItem.immigrantFilling.cardStatus = '0'

@@ -154,8 +154,8 @@
           <view class="td td-3">{{ formatStr(item.price) }}</view>
           <view class="td td-3">
             <view v-if="item.isUpdate === '0'">{{ formatStr(item.totalPrice) }}</view>
-            <view v-else-if="item.isUpdate === '1'">{{ computedTotalPrice(item) }}</view>
-            <view v-else-if="item.isUpdate === '2'">{{ getSummaries(item) }}</view>
+               <view v-else-if="item.isUpdate === '1'&&item.isSum === '0'">{{ computedTotalPrice(item) }}</view>
+            <view v-if="item.isSum === '1'"> {{ getSummaries(item) }} </view>
           </view>
           <view class="td td-4">{{ formatStr(item.remark) }}</view>
         </view>
@@ -182,6 +182,44 @@ const dataList = computed(() => {
   return props.dataList.filter((item) => item.isDelete !== '1')
 })
 // 获取移民建卡奖励费列表
+// const getCompensationCardConfig = async () => {
+//   let res = await getCompensationCardConfigApi()
+//   if (res) {
+//     console.log('获取移民建卡奖励费列表', res)
+
+//     // tableData.value = res
+//     let data: any = await getLandlordItemApi(props.dataInfo.uid)
+//     console.log(data,data.demographicList.length, '测试dada数据')
+//     // data.immigrantCompensationCardList.forEach((item: any) => {
+//     //   let index = res.findIndex((e: any) => e.name == item.name)
+//     //   if (index > -1) {
+//     //     res[index] = item
+//     //   } else {
+//     //     res.push(item)
+//     //   }
+//     // })
+//     let result = res.map((item1:any) => {
+//   const item2 = data.immigrantCompensationCardList.find((item:any) => item.name === item1.name);
+//   if (item2) {
+//     return {...item1, ...item2};
+//   }
+//   return item1;
+// });
+//    console.log(result,'测试res的数据')
+//     tableData.value = result.filter((item: any) => item.phType == 'PeasantHousehold')
+//     tableData.value.forEach((item:any)=>{
+//       // && !item.hasOwnProperty('isVerify') 暂时去掉，需要的时候再使用
+//       if (item.unit == '人' && item.type == '3'&& item.isVerify!='1') {
+//         console.log('是否走了这个条件')
+//         item.number=data.demographicList.length
+//       }else if(item.unit=='项'&&item.type=='3'&& item.isVerify!='1'){
+//         item.number=1
+//       }
+//     })
+//     console.log(tableData.value,'测试table数据',)
+//   }
+// }
+// 获取移民建卡奖励费列表
 const getCompensationCardConfig = async () => {
   let res = await getCompensationCardConfigApi()
   if (res) {
@@ -189,27 +227,29 @@ const getCompensationCardConfig = async () => {
 
     // tableData.value = res
     let data: any = await getLandlordItemApi(props.dataInfo.uid)
-    console.log(data, '测试dada数据')
+
     data.immigrantCompensationCardList.forEach((item: any) => {
-      let index = res.findIndex((e: any) => e.name == item.name)
+      let index = res.findIndex((e: any) => e.id == item.id)
       if (index > -1) {
         res[index] = item
       } else {
         res.push(item)
       }
     })
-
-    tableData.value = res.filter((item: any) => item.phType == 'PeasantHousehold')
+    tableData.value = res.filter((item: any) => item.phType == 'PeasantHousehold'&&item.type=='3')
     tableData.value.forEach((item:any)=>{
-      if(item.unit=='人'&&item.type=='3'&&!item.hasOwnProperty('isVerify')){
-        item.number=data.demographicList.length
-      }else if(item.unit=='项'&&item.type=='3'&&!item.hasOwnProperty('isVerify')){
+      // && !item.hasOwnProperty('isVerify') 暂时去掉，需要的时候再使用
+      if (item.unit == '人' && item.type == '3'&& item.isVerify!='1') {
+        console.log('是否走了这个条件')
+        item.number=dataList.value.length
+      }else if(item.unit=='项'&&item.type=='3'&& item.isVerify!='1'){
         item.number=1
       }
     })
-    console.log(tableData.value,'测试table数据',)
+    console.log('合并', tableData.value, res, data.immigrantCompensationCardList)
   }
 }
+
 
 onShow(() => {
   getCompensationCardConfig()

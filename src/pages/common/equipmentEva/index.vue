@@ -35,7 +35,7 @@
               <view class="col">
                 <view class="label">建造/购置年份：</view>
                 <view class="content">
-                  {{ dayjs(item.year).format('YYYY年') || '-' }}
+                  {{ item.year?dayjs(item.year).format('YYYY年'):'-' }}
                 </view>
               </view>
             </uni-col>

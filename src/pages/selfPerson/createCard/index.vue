@@ -165,9 +165,9 @@
           <view class="td td-3">{{ formatStr(item.number) }}</view>
           <view class="td td-3">{{ formatStr(item.price) }}</view>
           <view class="td td-3">
-            <view v-if="item.isUpdate === '0'">{{ formatStr(item.totalPrice) }}</view>
-            <view v-else-if="item.isUpdate === '1'">{{ computedTotalPrice(item) }}</view>
-            <view v-else-if="item.isUpdate === '2'">{{ getSummaries(item) }}</view>
+                <view v-if="item.isVerify != '1'&&item.isSum === '0'">{{ item.totalPrice }}</view>
+            <view v-if="item.isSum === '0'&&item.isVerify ==='1'">{{ computedTotalPrice(item) }}</view>
+            <view v-if="item.isSum === '1'"> {{ getSummaries(item) }} </view>
           </view>
           <view class="td td-4">{{ formatStr(item.remark) }}</view>
         </view>
@@ -184,6 +184,15 @@ import { formatDict, formatStr, routerForward } from '@/utils'
 import { getCompensationCardConfigApi } from '@/service'
 import { apartmentArea, resettleArea } from '@/config'
 import { getLandlordItemApi } from '@/service'
+// import {getLandlordListBySearchApi} from '@/service'
+// import { MainType } from '@/types/common'
+// const getTables =  () => {
+//     getLandlordListBySearchApi({type:MainType.LandNoMove}).then((res:any) => {
+//       console.log(res,'查看数据');
+//     }).catch((err:any) => {
+//       console.log(err,'报错数据');
+//     })
+// }
 interface PropsType {
   dataInfo: any
   dataList: any[]
@@ -197,7 +206,8 @@ const getCompensationCardConfig = async () => {
   let res = await getCompensationCardConfigApi()
   if (res) {
     console.log('获取移民建卡奖励费列表', res)
-
+    let arr=res.filter((item: any) => item.phType == 'LandNoMove')
+    console.log(arr,'测试只征地不搬迁数据')
     // tableData.value = res
     let data: any = await getLandlordItemApi(props.dataInfo.uid)
     console.log(data, '测试dada数据')
@@ -211,12 +221,22 @@ const getCompensationCardConfig = async () => {
     })
 
     tableData.value = res.filter((item: any) => item.phType == 'IndividualHousehold')
+        tableData.value.forEach((item:any)=>{
+      // && !item.hasOwnProperty('isVerify') 暂时去掉，需要的时候再使用
+      if (item.unit == '人' && item.type == '3'&& item.isVerify!='1') {
+        console.log('是否走了这个条件')
+        item.number=data.demographicList.length
+      }else if(item.unit=='项'&&item.type=='3'&& item.isVerify!='1'){
+        item.number=1
+      }
+    })
     console.log('合并', tableData.value, res, data.immigrantCompensationCardList)
   }
 }
 
 onShow(() => {
   getCompensationCardConfig()
+  getTables()
 })
 
 const getSettleAddressText = (settleAddress?: string) => {
