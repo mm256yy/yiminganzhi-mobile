@@ -92,9 +92,9 @@ v-if="tabVal === 18" :dataList="dataInfo.immigrantBuildOneselfList"
           <find-self v-if="tabVal === 24" :dataInfo="dataInfo" />
 
           <!-- 相关手续 -->
-          <procedures v-if="tabVal === 26" :dataInfo="dataInfo" @update-data="updateData" />
+          <procedures v-if="tabVal === 25" :dataInfo="dataInfo" @update-data="updateData" />
           
-          <assessmentReport v-if="tabVal === 25" :dataInfo="dataInfo" @update-data="updateData" />
+          <assessmentReport v-if="tabVal === 26" :dataInfo="dataInfo" @update-data="updateData" />
         </view>
       </view>
     </view>
