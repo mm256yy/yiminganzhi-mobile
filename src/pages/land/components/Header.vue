@@ -25,12 +25,9 @@
 </template>
 
 <script lang="ts">
-import { filterViewDoorNo, routerForward, getStorage, StorageKey } from '@/utils'
-import { MainType } from '@/types/common'
+import { routerForward } from '@/utils'
 import { updateImpLandlordImmigrantFillingApi } from '@/service'
 import { showToast, SUCCESS_MSG, ERROR_MSG } from '@/config'
-import { RoleCodeType } from '@/types/common'
-
 export default {
   props: {
     dataInfo: {
@@ -48,94 +45,20 @@ export default {
   },
   computed: {
     totalFillNumber: function () {
-      const role: RoleCodeType = getStorage(StorageKey.USERROLE)
-      switch (this.type) {
-        case MainType.PeasantHousehold:
-          return role === RoleCodeType.assessor ? 5 : 3
-          break
-        case MainType.Company:
-          return role === RoleCodeType.assessor ? 8 : 3
-          break
-        case MainType.IndividualHousehold:
-          return role === RoleCodeType.assessor ? 8 : 3
-          break
-        case MainType.Village:
-          return role === RoleCodeType.assessor ? 7 : 3
-          break
-        case MainType.LandNoMove:
-          return 3
-          break
-        default:
-          return 8
-          break
-      }
+      return 3
     },
     fillNumber: function () {
-      const { immigrantFilling, type } = this.dataInfo
-
-      const role: RoleCodeType = getStorage(StorageKey.USERROLE)
+      const { immigrantFilling } = this.dataInfo
       let fillCount = 1
 
-      if (role === RoleCodeType.assessor) {
-        const {
-          houseMainStatus,
-          houseRenovationStatus,
-          appendageStatus,
-          treeStatus,
-          deviceStatus,
-          specialStatus,
-          infrastructureStatus, // 基础设施评估
-          otherStatus // 其他评估
-        } = immigrantFilling
-
-        // 资产评估-房屋角色
-        if (houseMainStatus === '1') {
-          fillCount++
-        }
-        if (houseRenovationStatus === '1') {
-          fillCount++
-        }
-        if (appendageStatus === '1') {
-          fillCount++
-        }
-        if (treeStatus === '1') {
-          fillCount++
-        }
-
-        if (type === MainType.IndividualHousehold || type === MainType.Company) {
-          // 个体户 企业
-          if (deviceStatus === '1') {
-            fillCount++
-          }
-
-          if (infrastructureStatus === '1') {
-            fillCount++
-          }
-
-          if (otherStatus === '1') {
-            fillCount++
-          }
-        }
-
-        if (type === MainType.Village) {
-          // 村集体
-          if (specialStatus === '1') {
-            fillCount++
-          }
-
-          if (infrastructureStatus === '1') {
-            fillCount++
-          }
-        }
-      } else {
-        const { landStatus, landSeedlingStatus } = immigrantFilling
-        // 资产评估-土地角色
-        if (landStatus === '1') {
-          fillCount++
-        }
-        if (landSeedlingStatus === '1') {
-          fillCount++
-        }
+      const { landStatus, landSeedlingStatus } = immigrantFilling || {}
+      // 土地基本信息
+      if (landStatus === '1') {
+        fillCount++
+      }
+      // 青苗
+      if (landSeedlingStatus === '1') {
+        fillCount++
       }
       return fillCount
     }
@@ -149,9 +72,6 @@ export default {
     }
   },
   methods: {
-    filterViewDoorNoMd(data: any) {
-      return filterViewDoorNo(data)
-    },
     // 是否为空数组
     isNotNullArray(arr: any) {
       return arr && Array.isArray(arr) && arr.length
@@ -169,48 +89,13 @@ export default {
       const { uid } = this.dataInfo
       let params = {}
 
-      if (this.tabVal === 1) {
-        params = {
-          houseMainStatus: '1' // 房屋主体评估
-        }
-      } else if (this.tabVal === 2) {
-        params = {
-          houseRenovationStatus: '1' // 房屋装修评估
-        }
-      } else if (this.tabVal === 3) {
-        params = {
-          appendageStatus: '1' // 房屋附属设施评估
-        }
-      } else if (this.tabVal === 4) {
-        params = {
-          treeStatus: '1' // 零星(林)果木评估
-        }
-      } else if (this.tabVal === 8) {
+      if (this.tabVal === 2) {
         params = {
           landStatus: '1' // 土地基本情况评估
         }
-      } else if (this.tabVal === 9) {
+      } else if (this.tabVal === 3) {
         params = {
           landSeedlingStatus: '1' // 土地青苗及附着物评估
-        }
-      } else if (
-        this.tabVal === 5 &&
-        (this.type === MainType.Company || this.type === MainType.IndividualHousehold)
-      ) {
-        params = {
-          deviceStatus: '1' // 设施设备评估
-        }
-      } else if (this.tabVal === 6) {
-        params = {
-          infrastructureStatus: '1' // 基础设施评估
-        }
-      } else if (this.tabVal === 7) {
-        params = {
-          otherStatus: '1' // 其他评估
-        }
-      } else if (this.tabVal === 5 && this.type === MainType.Village) {
-        params = {
-          specialStatus: '1' // 农村小型专项及农副业设施评估
         }
       }
 

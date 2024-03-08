@@ -20,7 +20,7 @@
         <input
           type="text"
           class="ipt"
-          placeholder="搜索户号/使用权人"
+          placeholder="请输入户号/使用权人"
           :value="keyWords"
           :confirm-type="'search'"
           @confirm="iptChange"
@@ -37,11 +37,7 @@
           @scrolltolower="loadMore"
         >
           <view class="scroll">
-            <ListItem
-              v-for="item in list"
-              :data="item"
-              :key="item.uid"
-            />
+            <ListItem v-for="item in list" :data="item" :key="item.uid" />
           </view>
           <view class="load-more">
             <uni-load-more iconType="auto" :status="status" />
@@ -65,7 +61,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, nextTick, computed } from 'vue'
+import { ref, onMounted, nextTick, computed, reactive } from 'vue'
 import { onLoad, onShow } from '@dcloudio/uni-app'
 import Container from '@/components/Container/index.vue'
 import NoData from '@/components/NoData/index.vue'
@@ -74,7 +70,7 @@ import NaturalVillageTreeSelect from '@/components/NaturalVillageTreeSelect/inde
 // import { LandlordType } from '@/types/sync'
 import { MainType, RoleCodeType } from '@/types/common'
 import { routerForward, getStorage, StorageKey } from '@/utils'
-import { getVirutalVillageTreeApi } from '@/service'
+import { getVirutalVillageTreeApi, getLandlordListBySearchApi } from '@/service'
 
 const tabType = ref<MainType>(MainType.PeasantHousehold)
 const showVillageSelect = ref<boolean>(false)
@@ -84,16 +80,7 @@ const treeData = ref<any>([])
 const title = ref<string[]>([])
 const tipsList = ref<any>([])
 const confirmMsg = ref<string>('')
-const list = ref<any[]>([
-  {
-  name: '杨汉中',
-  doorNo:'60305007'
-  },
-  {
-  name: '连仁茵',
-  doorNo:'60305008'
-  }
-])
+const list = ref<any[]>([])
 
 const isLoading = ref<boolean>(false)
 const isEnd = ref<boolean>(false)
@@ -104,7 +91,7 @@ const sourceType = ref<string | null>(null) // 源类型 0已完成  1 预警 2 
 const statusCount = ref<number>(0)
 
 // 角色类型，不同角色跳转不同的页面，默认为实物采集页面
-const roleType = ref<RoleCodeType>(getStorage(StorageKey.USERROLE))
+// const roleType = ref<RoleCodeType>(getStorage(StorageKey.USERROLE))
 
 onLoad((options: any) => {
   // if (options && options.type) {
@@ -136,6 +123,7 @@ const onToggleVillage = () => {
 
 const iptChange = (e: any) => {
   keyWords.value = e.detail.value
+
   init()
 }
 
@@ -158,7 +146,35 @@ const status = computed(() => {
 const getList = () => {
   nextTick(async () => {
     isLoading.value = true
+    const params: any = {
+      page: page.value,
+      pageSize: pageSize.value,
+      type: MainType.LandNoMove,
+      name: keyWords.value
+      // villageCode: villageCode.value
+    }
+
+    const res: any[] = await getLandlordListBySearchApi(params)
+    console.log('只征地不搬迁列表List', res)
+
     isLoading.value = false
+    if (res && res.length) {
+      if (page.value === 1) {
+        list.value = res || []
+      } else {
+        list.value = list.value?.concat(res)
+      }
+      if (res.length < pageSize.value) {
+        isEnd.value = true
+      } else {
+        page.value = page.value + 1
+      }
+    } else {
+      if (page.value === 1) {
+        list.value = []
+      }
+      isEnd.value = true
+    }
   })
 }
 
@@ -171,6 +187,7 @@ const loadMore = () => {
 
 onMounted(() => {
   getTreeData()
+  init()
 })
 
 onShow((options) => {

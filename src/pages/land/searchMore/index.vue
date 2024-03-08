@@ -116,10 +116,7 @@
               label-align="right"
               name="formData.estimateFlag"
             >
-              <uni-data-select
-                v-model="formData.estimateFlag"
-                :localdata="estimateStatusList()"
-              />
+              <uni-data-select v-model="formData.estimateFlag" :localdata="estimateStatusList()" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -141,10 +138,7 @@
               label-align="right"
               name="formData.inundationRange"
             >
-              <uni-data-select
-                v-model="formData.inundationRange"
-                :localdata="dict[346]"
-              />
+              <uni-data-select v-model="formData.inundationRange" :localdata="dict[346]" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -154,142 +148,118 @@
         </view>
       </uni-forms>
     </view>
-    <!-- 绑定确认弹框 -->
-    <uni-popup ref="confirmBindingRef" type="dialog" :is-mask-click="false">
-      <uni-popup-dialog
-        type="info"
-        cancelText="暂时不评"
-        confirmText="进行评估"
-        title="绑定成功，是否继续进行资产评估？"
-        @confirm="dialogConfirm"
-        @close="dialogClose"
-      />
-    </uni-popup>
   </view>
 </template>
 
 <script lang="ts" setup>
-import { onLoad } from "@dcloudio/uni-app";
-import { ref,onMounted } from "vue";
-import Back from "@/components/Back/Index.vue";
-import { routerForward, routerBack, getStorage, StorageKey } from "@/utils";
-import { showToast, SUCCESS_MSG } from "@/config/msg";
-import { getDictObjsApi } from "@/service";
-import NaturalVillageSelectFormItem from "@/components/NaturalVillageSelectFormItem/index.vue";
+import { onLoad } from '@dcloudio/uni-app'
+import { ref, onMounted } from 'vue'
+import Back from '@/components/Back/Index.vue'
+import { routerForward, getStorage, StorageKey } from '@/utils'
+import { getDictObjsApi } from '@/service'
+import NaturalVillageSelectFormItem from '@/components/NaturalVillageSelectFormItem/index.vue'
 
 const formData = ref<any>({
-  areaCode: "", // 区/县
-  townCode: "", // 镇/街道
-  villageCode: "", // 行政村
-  virutalVillageCode: "", // 自然村/村民小组
-  doorNo: "",
-  landNumber: "",
-  rightHolder: "",
-  landName: "", // 地名
-  landNature: "", // 土地性质
-  landLevel: "", // 地类
-  relationFlag: "", // 关联状态
-  estimateFlag: "", // 评估状态
-  area: "", // 所在区域
-  inundationRange: "", // 淹没范围
-});
+  areaCode: '', // 区/县
+  townCode: '', // 镇/街道
+  villageCode: '', // 行政村
+  virutalVillageCode: '', // 自然村/村民小组
+  doorNo: '',
+  landNumber: '',
+  rightHolder: '',
+  landName: '', // 地名
+  landNature: '', // 土地性质
+  landLevel: '', // 地类
+  relationFlag: '', // 关联状态
+  estimateFlag: '', // 评估状态
+  area: '', // 所在区域
+  inundationRange: '' // 淹没范围
+})
 
-const confirmBindingRef = ref();
-const levelItems=ref<any[]>()
+const levelItems = ref<any[]>()
 // 获取数据字典
-const dict = getStorage(StorageKey.DICT);
-const naturalVillage = ref<any>(null);
+const dict = getStorage(StorageKey.DICT)
+const naturalVillage = ref<any>(null)
 
 onLoad((option) => {
   if (option) {
   }
-});
+})
 
 // 初始化自然村/村民小组组件数据
 const initNaturalVillageData = () => {
-  naturalVillage.value?.getTreeData();
-};
+  naturalVillage.value?.getTreeData()
+}
 
 /**
  * 自然村/村民小组选择确认
  * @param{Object} otherCode 用于兼容老系统，该code值由 1位乡/镇code + 2位行政村code组成
  */
 const confirmSelectNaturalVillage = (otherCode: string) => {
-  formData.value.otherCode = otherCode || "";
-};
-
-const dialogConfirm = () => {
-  confirmBindingRef.value?.close();
-  showToast(SUCCESS_MSG);
-  routerBack();
-};
- 
-const dialogClose = () => {
-  confirmBindingRef.value?.close();
-};
+  formData.value.otherCode = otherCode || ''
+}
 
 // 查询
 const toSearch = () => {
-  routerForward("home", {
-     params: JSON.stringify(formData.value),
-     replace: true,
-  });
-};
+  routerForward('home', {
+    params: JSON.stringify(formData.value),
+    replace: true
+  })
+  reset()
+}
 
 // 重置
 const reset = () => {
   formData.value = {
-  areaCode: "", // 区/县
-  townCode: "", // 镇/街道
-  villageCode: "", // 行政村
-  virutalVillageCode: "", // 自然村/村民小组
-  doorNo: "",
-  landNumber: "",
-  rightHolder: "",
-  landName: "", // 地名
-  landNature: "", // 土地性质
-  landLevel: "", // 地类
-  relationFlag: "", // 关联状态
-  estimateFlag: "", // 评估状态
-  area: "", // 所在区域
-  inundationRange: "", // 淹没范围
+    areaCode: '', // 区/县
+    townCode: '', // 镇/街道
+    villageCode: '', // 行政村
+    virutalVillageCode: '', // 自然村/村民小组
+    doorNo: '',
+    landNumber: '',
+    rightHolder: '',
+    landName: '', // 地名
+    landNature: '', // 土地性质
+    landLevel: '', // 地类
+    relationFlag: '', // 关联状态
+    estimateFlag: '', // 评估状态
+    area: '', // 所在区域
+    inundationRange: '' // 淹没范围
   }
-};
+}
 
 // 关联状态
 const associationStatusList = () => {
   return [
-    { value: "0", text: "未关联" },
-    { value: "1", text: "已关联" },
-  ];
-};
+    { value: '0', text: '未关联' },
+    { value: '1', text: '已关联' }
+  ]
+}
 
 // 评估状态
 const estimateStatusList = () => {
   return [
-    { value: "0", text: "未评估" },
-    { value: "1", text: "已评估" },
-  ];
-};
+    { value: '0', text: '未评估' },
+    { value: '1', text: '已评估' }
+  ]
+}
 
 const onchange = (e: any) => {
-  console.log("e", e.detail.value);
-};
+  console.log('e', e.detail.value)
+}
 
 const onNodeClick = (node: any) => {
-  console.log("node", node);
-  const {parent_value,value}=node
-  formData.value.landLevel=`${parent_value}-${value}`
-};
+  const { parent_value, value } = node
+  formData.value.landLevel = `${parent_value}-${value}`
+}
 
-const getDictData = async() => {
-   try {
-     const result = await getDictObjsApi([397,398,399,400,401,402,403,404,405,408])
+const getDictData = async () => {
+  try {
+    const result = await getDictObjsApi([397, 398, 399, 400, 401, 402, 403, 404, 405, 408])
     levelItems.value = result as any
-    console.log('土地类型数据',result);
-   } catch {
-     levelItems.value = []
-   }
+  } catch {
+    levelItems.value = []
+  }
 }
 
 onMounted(() => {
@@ -303,7 +273,7 @@ onMounted(() => {
   flex-direction: column;
   width: 100%;
   height: 100vh;
-  background: url("../../../static/images/common_bg.png") no-repeat;
+  background: url('../../../static/images/common_bg.png') no-repeat;
   background-size: 100% 100%;
 
   .main {

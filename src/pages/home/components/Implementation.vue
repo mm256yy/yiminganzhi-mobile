@@ -35,7 +35,7 @@
             <view class="line-1">{{ homeCollect.peasantHouseholdLagNum }}</view>
             <view class="flex">
               <view class="common-dot red" />
-              <view class="line-2">严重滞后</view>
+              <view class="line-2">滞后</view>
             </view>
           </view>
           <view
@@ -86,7 +86,7 @@
             <view class="line-1">{{ homeCollect.companyLagNum }}</view>
             <view class="flex">
               <view class="common-dot red" />
-              <view class="line-2 red">严重滞后</view>
+              <view class="line-2 red">滞后</view>
             </view>
           </view>
           <view
@@ -133,7 +133,7 @@
             <view class="line-1">{{ homeCollect.individualLagNum }}</view>
             <view class="flex">
               <view class="common-dot red" />
-              <view class="line-2 red">严重滞后</view>
+              <view class="line-2 red">滞后</view>
             </view>
           </view>
           <view
@@ -180,7 +180,7 @@
             <view class="line-1">{{ homeCollect.villageLagNum }}</view>
             <view class="flex">
               <view class="common-dot red" />
-              <view class="line-2 red">严重滞后</view>
+              <view class="line-2 red">滞后</view>
             </view>
           </view>
           <view
@@ -201,6 +201,37 @@
             <view class="flex">
               <view class="common-dot green" />
               <view class="line-2">正常</view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <!--只征地不搬迁-->
+      <view class="enter-item" @click="toLink('relocateList')">
+        <view class="title-field">
+          <view class="enter-icon">
+            <image class="img" src="@/static/images/jt_enter.png" />
+          </view>
+          <view class="enter-title">
+            <text class="title-txt">只征地不搬迁</text>
+            <view class="flex">
+              <text class="count-num">{{ homeCollect.landNoMoveNum }}</text>
+              <text class="count-unit">户</text>
+            </view>
+          </view>
+        </view>
+        <view class="row-field" style="justify-content: space-evenly">
+          <view class="field-box">
+            <view class="line-1">{{ homeCollect.landNoMoveCompleteNum }}</view>
+            <view class="flex">
+              <view class="common-dot green" />
+              <view class="line-2 red">已完成</view>
+            </view>
+          </view>
+          <view class="field-box">
+            <view class="line-1">{{ homeCollect.landNoMoveIncompleteNum }}</view>
+            <view class="flex">
+              <view class="common-dot red" />
+              <view class="line-2">未完成</view>
             </view>
           </view>
         </view>
@@ -248,7 +279,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted,computed } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import { getStorage, StorageKey, routerForward } from '@/utils'
 import Echart from './WorkGroupChart.vue'
@@ -276,6 +307,10 @@ interface HomeCollectType {
   villageLagNum: number
   villageWarnNum: number
   villageDoneNum: number
+
+  landNoMoveNum: number
+  landNoMoveCompleteNum: number
+  landNoMoveIncompleteNum: number
 }
 const roleType = ref<RoleCodeType>(getStorage(StorageKey.USERROLE))
 const emit = defineEmits(['toLink', 'toParamsLink', 'loginIn'])
@@ -300,17 +335,21 @@ const homeCollect = ref<HomeCollectType>({
   villageNum: 0,
   villageLagNum: 0,
   villageWarnNum: 0,
-  villageDoneNum: 0
+  villageDoneNum: 0,
+
+  landNoMoveNum: 0,
+  landNoMoveCompleteNum: 0,
+  landNoMoveIncompleteNum: 0
 })
 
 const seachName = ref<string>('')
-const pullTime = ref<string>('')                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+const pullTime = ref<string>('')
 const syncing = ref<boolean>(false)
 
 const syncCmt = ref()
-const roles=['investigator','assessor','assessorland']
+const roles = ['investigator', 'assessor', 'assessorland']
 
-const showWork=computed(()=>{
+const showWork = computed(() => {
   return roles.includes(roleType.value)
 })
 
@@ -344,7 +383,7 @@ onShow(() => {
 onMounted(() => {
   getImpHomeCollectApi().then((res) => {
     if (res) {
-      console.log(res, 'getImpHomeCollectApi')
+		console.log('首页统计',res)
       homeCollect.value = { ...homeCollect.value, ...res }
     }
   })
@@ -504,7 +543,7 @@ onMounted(() => {
   border-radius: 11rpx;
 
   .enter-item {
-    width: 176rpx;
+    width: 136rpx;
     height: 96rpx;
     padding: 12rpx 6rpx 7rpx 6rpx;
     background: linear-gradient(180deg, #deebf6 0%, #ffffff 100%);
@@ -556,7 +595,7 @@ onMounted(() => {
 
       .field-box {
         display: flex;
-        width: 50rpx;
+        width: 40rpx;
         height: 32rpx;
         padding-top: 4rpx;
         background: linear-gradient(180deg, #ffffff 0%, #e9f5ff 100%);

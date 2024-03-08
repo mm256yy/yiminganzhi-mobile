@@ -8,12 +8,12 @@
         <view class="list-box">
           <view class="box">
             <!-- 头部 -->
-            <!-- <Header
+            <Header
               :dataInfo="dataInfo"
               :type="MainType.LandNoMove"
               :tabVal="tabVal"
               @update-data="updateData"
-            /> -->
+            />
 
             <view class="tabs-content">
               <!-- tab 切换 -->
@@ -31,7 +31,7 @@
                 <land-eva
                   v-if="tabVal === 1"
                   :dataInfo="dataInfo"
-                  :dataList="dataInfo.landEstimateDtoList"
+                  :dataList="landList"
                   @delete-land="deleteLand"
                   @update-data="updateData"
                 />
@@ -61,18 +61,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref } from 'vue'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
-// import { MainType } from '@/types/common'
+import { MainType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
-// import Header from '@/components/Header/EvaIndex.vue'
+import Header from './Header.vue'
 import Tabs from '@/components/Tabs/Index.vue'
 import baseInfoEva from './baseInfo/index.vue' // 引入居民户信息组件
 import landEva from './landEva/index.vue' // 引入土地基本情况评估组件
 import seedlingsEva from './seedlingsEva/index.vue' // 引入土地青苗及附着物评估组件
 
 import { deleteImpLandlordAssetLandApi, deleteImpLandlordAssetAppendantApi } from '@/service'
-
 import iconHouseholdDef from '@/static/images/icon_household_default.png' // 引入居民户信息默认 icon
 import iconHouseholdSel from '@/static/images/icon_household_select.png' // 引入居民户信息选中 icon
 import iconLandDef from '@/static/images/icon_land_default.png' // 引入土地基本情况评估默认 icon
@@ -105,14 +104,14 @@ const tabsList = computed(() => {
     {
       label: '土地基本情况评估',
       value: 1,
-      // filled: immigrantFilling?.landStatus === '1',
+      filled: immigrantFilling?.landStatus === '1',
       defIcon: iconLandDef,
       selIcon: iconLandSel
     },
     {
       label: '土地青苗及附着物评估',
       value: 2,
-      // filled: immigrantFilling?.landSeedlingStatus === '1',
+      filled: immigrantFilling?.landSeedlingStatus === '1',
       defIcon: iconSeedlingsDef,
       selIcon: iconSeedlingsSel
     }
@@ -121,6 +120,10 @@ const tabsList = computed(() => {
 
 const tabVal = ref<number>(0)
 const emit = defineEmits(['updateData'])
+
+const landList = computed(() => {
+  return props.dataInfo.landEstimateDtoList.filter((item: any) => item.landNature === '4')
+})
 
 // tab 切换
 const selectTabs = (data: any) => {
@@ -183,10 +186,6 @@ const deleteSeedlings = (data: any, reason?: string) => {
 const updateData = () => {
   emit('updateData', props.dataInfo.uid)
 }
-
-onMounted(() => {
-  console.log('tabList-LL', props.dataInfo)
-})
 </script>
 
 <style lang="scss">

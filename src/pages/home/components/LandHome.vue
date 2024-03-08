@@ -81,7 +81,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, onMounted, nextTick, computed, onBeforeMount, onBeforeUnmount } from 'vue'
+import { ref, reactive, onMounted, nextTick, computed, onBeforeUnmount } from 'vue'
 import { onShow, onLoad } from '@dcloudio/uni-app'
 import { getStorage, StorageKey, routerForward, debounce } from '@/utils'
 import { getOtherItemApi, getLandEstimateDtoListApi } from '@/service'
@@ -150,7 +150,7 @@ const getList = () => {
       } else {
         list.value = list.value?.concat(res)
       }
-      if (res.length < pageSize.value) {
+      if (res.length < pageSize.value) { 
         isEnd.value = true
       } else {
         page.value = page.value + 1
@@ -226,13 +226,14 @@ const onSearchMore = () => {
 // 关联绑定
 const associatedBind = () => {
   const tickList = list.value.filter((item) => item.isChecked)
+  console.log('关联绑定-S::: ', tickList)
   if (tickList?.length <= 0) {
     showToast('请至少选择一项数据')
     return
   }
 
   checkList.value = list.value.filter((item) => item.relationFlag === '1' && item.isChecked)
-
+  console.log('关联绑定-L::: ', checkList.value)
   if (checkList.value?.length > 0) {
     const landStr = checkList.value.map((item) => item.landNumber)
     bindStrTitle.value = `土地编号：${landStr}已关联，是否继续关联，如选择继续关联，则以最新一次关联为准`
@@ -265,6 +266,7 @@ const handleItemClick = (item: any) => {
     return
   }
   list.value[index].isChecked = isChecked
+  console.log('isChecked::: ', list.value[index].isChecked)
 }
 
 onShow(() => {
@@ -272,19 +274,14 @@ onShow(() => {
   uni.$on('customRefresh', () => {
     getList()
   })
+  console.log('onShow::: ')
 })
 
 onLoad((option) => {
   if (option) {
     console.log('子组件OnLoad')
   }
-})
-
-onBeforeMount(() => {
-  // 不同角色展示不同的首页视图
-  const role = getStorage(StorageKey.USERROLE)
-  console.log(role, '目前是什么角色')
-  // homeViewType.value = role;
+  console.log('onLoad::: ')
 })
 
 onBeforeUnmount(() => {

@@ -377,6 +377,7 @@ export interface ImmigrantFillingType {
   treeStatus: string
   landStatus: string
   landSeedlingStatus: string
+  baseStatus: string
   graveStatus: string
   estimateeStatus: string
   populationStatus: string
@@ -409,7 +410,7 @@ export interface ImmigrantFillingType {
   specialStatus: string
   disposalMeasuresStatus: string
   selfSeekingStatus: string
-  isUpdate?: string,
+  isUpdate?: string
   infrastructureStatus: string // 基础设施评估
   otherStatus: string // 其他评估
 }

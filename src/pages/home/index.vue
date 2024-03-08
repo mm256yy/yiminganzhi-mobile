@@ -30,10 +30,10 @@
           >
             {{
               homeViewType === RoleCodeType.investigator
-                ? projectInfo.status && projectInfo.status === "review"
-                  ? "（实物复核）"
-                  : "（实物采集）"
-                : "（移民实施）"
+                ? projectInfo.status && projectInfo.status === 'review'
+                  ? '（实物复核）'
+                  : '（实物采集）'
+                : '（移民实施）'
             }}
           </view>
         </view>
@@ -50,11 +50,7 @@
             "
           >
             <view class="name">项目切换</view>
-            <image
-              class="icon"
-              src="@/static/images/project_enter.png"
-              mode="scaleToFill"
-            />
+            <image class="icon" src="@/static/images/project_enter.png" mode="scaleToFill" />
           </view>
           <view v-else class="user-name">
             {{ getStorage(StorageKey.USERINFO).username }}
@@ -72,17 +68,13 @@
       />
       <!-- 资产评估-房屋首页 -->
       <Assessor
-        v-else-if="
-          homeViewType === RoleCodeType.assessor
-        "
+        v-else-if="homeViewType === RoleCodeType.assessor"
         @to-link="toLink"
         @login-in="loginIn"
       />
-     <!-- 资产评估-土地首页 -->
+      <!-- 资产评估-土地首页 -->
       <LandHome
-        v-else-if="
-          homeViewType === RoleCodeType.assessorland
-        "
+        v-else-if="homeViewType === RoleCodeType.assessorland"
         @to-link="toLink"
         @login-in="loginIn"
       />
@@ -138,180 +130,179 @@
 </template>
 
 <script lang="ts" setup>
-import { onBeforeMount, onMounted, ref, onBeforeUnmount } from "vue";
-import { onShow,onLoad } from "@dcloudio/uni-app";
-import { getStorage, routerForward, resetCache, StorageKey, debounce } from "@/utils";
-import { loginOutApi } from "./api";
-import { getImgListApi, getOtherItemApi } from "@/service";
-import { pullInstance } from "@/sync";
-import { RoleCodeType } from "@/types/common";
-import { imageUrlAndBase64Map } from "@/config";
-import Assessor from "./components/Assessor.vue";
-import LandHome from "./components/LandHome.vue";
-import Investigator from "./components/Investigator.vue";
-import Implementation from "./components/Implementation.vue";
-import { OtherDataType } from "@/database";
-import dayjs from "dayjs";
-import SyncCompont from "@/components/Sync/Index.vue";
+import { onBeforeMount, onMounted, ref, onBeforeUnmount } from 'vue'
+import { onShow, onLoad } from '@dcloudio/uni-app'
+import { getStorage, routerForward, resetCache, StorageKey, debounce } from '@/utils'
+import { loginOutApi } from './api'
+import { getImgListApi, getOtherItemApi } from '@/service'
+import { pullInstance } from '@/sync'
+import { RoleCodeType } from '@/types/common'
+import { imageUrlAndBase64Map } from '@/config'
+import Assessor from './components/Assessor.vue'
+import LandHome from './components/LandHome.vue'
+import Investigator from './components/Investigator.vue'
+import Implementation from './components/Implementation.vue'
+import { OtherDataType } from '@/database'
+import dayjs from 'dayjs'
+import SyncCompont from '@/components/Sync/Index.vue'
 
-const roleType = ref<RoleCodeType>(getStorage(StorageKey.USERROLE));
-const userInfo = ref<any>(null);
-const projectInfo = ref<any>(null);
-const alertDialog = ref<any>(null);
-const appVersion = ref<string>("");
-const confirmDialog = ref<any>(null);
-const pullTime = ref<string>("");
-const syncing = ref<boolean>(false);
-const syncCmt = ref();
-const lastConfirmTime = ref("");
+const roleType = ref<RoleCodeType>(getStorage(StorageKey.USERROLE))
+const userInfo = ref<any>(null)
+const projectInfo = ref<any>(null)
+const alertDialog = ref<any>(null)
+const appVersion = ref<string>('')
+const confirmDialog = ref<any>(null)
+const pullTime = ref<string>('')
+const syncing = ref<boolean>(false)
+const syncCmt = ref()
+const lastConfirmTime = ref('')
 
 /**
  * 首页视图类型
  * 不同角色不同的首页内容
  */
 //const homeViewType = ref<RoleCodeType>(RoleCodeType.investigator);
-const homeViewType = ref<RoleCodeType>(RoleCodeType.assessorland);
+const homeViewType = ref<RoleCodeType>(RoleCodeType.assessorland)
 
 const toLink = (name: string) => {
   // 判断是否为数据同步
-  if (name === "sync") {
+  if (name === 'sync') {
     if (homeViewType.value === RoleCodeType.implementation) {
-      openConfirmDialog();
-      return;
+      openConfirmDialog()
+      return
     }
   }
-  routerForward(name);
-};
+  routerForward(name)
+}
 
 const toParamsLink = (params: any) => {
-  const { name, type, count } = params;
+  const { name, type, count } = params
   routerForward(name, {
     type,
-    count,
-  });
-};
+    count
+  })
+}
 
 const loginIn = () => {
-  routerForward("login");
-};
+  routerForward('login')
+}
 
 const loginOutPre = () => {
-  alertDialog.value?.open();
-};
+  alertDialog.value?.open()
+}
 
 const dialogConfirm = () => {
-  loginOut();
-};
+  loginOut()
+}
 
 const dialogClose = () => {
-  alertDialog.value.close();
-};
+  alertDialog.value.close()
+}
 
 const openConfirmDialog = () => {
-  confirmDialog.value?.open();
-};
+  confirmDialog.value?.open()
+}
 
 const closeConfirmDialog = () => {
-  confirmDialog.value?.close();
-};
+  confirmDialog.value?.close()
+}
 
 // 处理数据同步
 const onSyncHandle = debounce(() => {
   if (syncing.value) {
-    return;
+    return
   }
-  syncing.value = true;
-  syncCmt.value?.onSync();
-});
+  syncing.value = true
+  syncCmt.value?.onSync()
+})
 
 // 同步结束
 const onSyncEnd = () => {
-  syncing.value = false;
-};
+  syncing.value = false
+}
 
 // 确认同步
 const confirmSync = () => {
-  closeConfirmDialog();
-  onSyncHandle();
-};
+  closeConfirmDialog()
+  onSyncHandle()
+}
 
 const getPullTime = async () => {
-  const time: string = await getOtherItemApi(OtherDataType.PullTime);
-  pullTime.value = time ? dayjs(Number(time)).format("YYYY-MM-DD HH:mm:ss") : "";
-  lastConfirmTime.value = `上次同步时间：${pullTime.value}`;
-};
+  const time: string = await getOtherItemApi(OtherDataType.PullTime)
+  pullTime.value = time ? dayjs(Number(time)).format('YYYY-MM-DD HH:mm:ss') : ''
+  lastConfirmTime.value = `上次同步时间：${pullTime.value}`
+}
 
 const loginOut = () => {
   uni.showLoading({
-    title: "正在退出...",
-    mask: true,
-  });
+    title: '正在退出...',
+    mask: true
+  })
   loginOutApi()
     .then(() => {
-      userInfo.value = null;
-      projectInfo.value = null;
+      userInfo.value = null
+      projectInfo.value = null
       // 重置本地缓存
-      resetCache();
+      resetCache()
       pullInstance
         .resetTable()
         .then(() => {
-          uni.hideLoading();
-          routerForward("login");
+          uni.hideLoading()
+          routerForward('login')
         })
         .catch(() => {
-          uni.hideLoading();
-        });
+          uni.hideLoading()
+        })
     })
     .catch(() => {
-      uni.hideLoading();
-    });
-};
+      uni.hideLoading()
+    })
+}
 
 // 获取图片 url:base64 map 存储起来
 const getImageObj = async () => {
-  const result = await getImgListApi();
+  const result = await getImgListApi()
   if (result && result.length) {
     result.forEach((item) => {
       imageUrlAndBase64Map[item.url] = {
-        base64: "",
-        path: item.path || "",
-      };
-    });
+        base64: '',
+        path: item.path || ''
+      }
+    })
   }
-};
+}
 
 onBeforeMount(() => {
   // 不同角色展示不同的首页视图
-  const role = getStorage(StorageKey.USERROLE);
-  console.log(role, "目前是什么角色");
-  homeViewType.value = role;
-});
+  const role = getStorage(StorageKey.USERROLE)
+  console.log(role, '目前是什么角色')
+  homeViewType.value = role
+})
 
 onBeforeUnmount(() => {
-  uni.$off("SyncEnd", onSyncEnd);
-});
+  uni.$off('SyncEnd', onSyncEnd)
+})
 
 onLoad((option) => {
-  if (option&&option.params) {
-
+  if (option && option.params) {
   }
-});
+})
 
 onMounted(() => {
-  getImageObj();
-  getPullTime();
-  const systemInfo = uni.getSystemInfoSync();
-  appVersion.value = systemInfo.appWgtVersion || "1.0.0";
-  console.log(getStorage(StorageKey.USERINFO), "测试用户名");
-  uni.$on("SyncEnd", onSyncEnd);
-});
+  getImageObj()
+  getPullTime()
+  const systemInfo = uni.getSystemInfoSync()
+  appVersion.value = systemInfo.appWgtVersion || '1.0.0'
+  console.log(getStorage(StorageKey.USERINFO), '测试用户名')
+  uni.$on('SyncEnd', onSyncEnd)
+})
 
 onShow(() => {
-  const user = getStorage(StorageKey.USERINFO);
-  const project = getStorage(StorageKey.PROJECTINFO);
-  userInfo.value = user;
-  projectInfo.value = project;
-});
+  const user = getStorage(StorageKey.USERINFO)
+  const project = getStorage(StorageKey.PROJECTINFO)
+  userInfo.value = user
+  projectInfo.value = project
+})
 </script>
 
 <style lang="scss" scoped>

@@ -84,7 +84,7 @@
                 label="株数"
                 :label-width="150"
                 label-align="right"
-                name="formData.rate"
+                name="formData.number"
               >
                 <view :class="['input-wrapper', focusIndex === 2 ? 'focus' : '']">
                   <input
@@ -307,7 +307,9 @@ onLoad((option: any) => {
       title.value = '新增土地青苗及附着物评估'
     }
 
-    landNumberList.value = landEstimateDtoList.map((item: any) => {
+    const landList = landEstimateDtoList.filter((item: any) => item.landNature === '4')
+
+    landNumberList.value = landList.map((item: any) => {
       return {
         text: item.landNumber,
         value: item.landName
@@ -360,6 +362,22 @@ const submit = () => {
 
   if (!formData.value.compensationAmount) {
     showToast('补偿金额不能为空')
+    return
+  }
+
+  // 判断株数和面积是否都没有填写
+  if (!formData.value.number && !formData.value.area) {
+    showToast('株数和面积至少填写一个')
+    return
+  }
+
+  if (formData.value.number && !formData.value.numPrice) {
+    showToast('单价不能为空')
+    return
+  }
+
+  if (formData.value.area && !formData.value.price) {
+    showToast('单价不能为空')
     return
   }
 

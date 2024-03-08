@@ -2,13 +2,15 @@
   <view class="company-item" @click="handleItemCLick">
     <view class="head">
       <view class="head-lt">
-        <checkbox
-          style="margin-bottom: 5rpx"
-          :value="checkSelectedStr"
-          :checked="props.data.isChecked"
-        />
+        <checkbox-group @change="handleCheckBoxChange">
+          <checkbox
+            style="margin-bottom: 5rpx"
+            :value="checkSelectedStr"
+            :checked="data.isChecked"
+          />
+        </checkbox-group>
         <view class="status" :class="[props.data.relationFlag === '1' ? 'success' : '']"
-          ><text class="circle" />{{ props.data.relationFlag === '1' ? '已关联' : '未关联' }}</view
+          ><text class="circle" />{{ data.relationFlag === '1' ? '已关联' : '未关联' }}</view
         >
         <view class="name">{{ formatEmptyText(props.data.rightHolder) }}</view>
         <view class="landNo">{{ formatEmptyText(props.data.landNumber) }}</view>
@@ -65,7 +67,6 @@ import { LandlordType } from '@/types/sync'
 import { routerForward } from '@/utils'
 import { formatEmptyText } from '@/utils/format'
 import { getLandlordListBySearchApi } from '@/service'
-import { MainType } from '@/types/common'
 
 interface PropsType {
   index: number
@@ -112,6 +113,11 @@ const getUnit = (item: any) => {
   let str3 = item?.townCodeText ? item?.townCodeText + '/' : ''
   let str4 = item?.villageText ? item?.villageText : ''
   return str1.concat(str2).concat(str3).concat(str4)
+}
+
+const handleCheckBoxChange = (e: any) => {
+  handleItemCLick()
+  console.log(e)
 }
 </script>
 
@@ -243,7 +249,7 @@ const getUnit = (item: any) => {
       }
 
       .label {
-        width: 56rpx;
+        width: 42rpx;
         overflow: hidden;
         font-size: 9rpx;
         color: #171718;
