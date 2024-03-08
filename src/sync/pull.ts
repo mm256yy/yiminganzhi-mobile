@@ -48,7 +48,7 @@ import { getCurrentTimeStamp, getStorage, setStorage, StorageKey, guid } from '@
 import dayjs from 'dayjs'
 import { pathToBase64 } from 'image-tools'
 import {
-  getLandlordListBySearchApi,
+  getLandlordListBySearchApi
   // getLandlordListBySearchApiTwo,
 } from '@/service'
 // 最大拉取时间 20 分钟
@@ -287,8 +287,8 @@ class PullData {
     this.state.pgTop = pgTop
     this.state.feedbackDtoList = feedbackDtoList
     this.state.settleAddressList = settleAddressList
-    this.state.notifyDtoList = notifyDtoList,
-      this.state.landPeasantHouseholdDtoList = landPeasantHouseholdDtoList
+    ;(this.state.notifyDtoList = notifyDtoList),
+      (this.state.landPeasantHouseholdDtoList = landPeasantHouseholdDtoList)
     this.state.landEstimateDtoList = landEstimateDtoList
     console.log(this.state.notifyDtoList, '测试接口数据')
     this.pullDict().then((res: boolean) => {
@@ -433,7 +433,9 @@ class PullData {
 
       peasantHouseholdLagNum,
       peasantHouseholdWarnNum,
-
+      landNoMoveNum,
+      landNoMoveCompleteNum,
+      landNoMoveIncompleteNum,
       companyLagNum,
       companyWarnNum,
 
@@ -456,7 +458,9 @@ class PullData {
     this.state.villageNum = villageNum
     this.state.virutalVillageNum = virutalVillageNum
     this.state.upgradation = appVersion
-
+    this.state.landNoMoveNum = landNoMoveNum
+    this.state.landNoMoveCompleteNum = landNoMoveCompleteNum
+    this.state.landNoMoveIncompleteNum = landNoMoveIncompleteNum
     this.state.peasantHouseholdLagNum = peasantHouseholdLagNum
     this.state.peasantHouseholdWarnNum = peasantHouseholdWarnNum
 
@@ -517,7 +521,7 @@ class PullData {
   }
 
   public createTable() {
-    console.log("==创建表===========开始====")
+    console.log('==创建表===========开始====')
     // 创建表
     return new Promise((resolve, reject) => {
       Promise.all([
@@ -564,7 +568,7 @@ class PullData {
         db.dropTable(OtherTableName),
         db.dropTable(DistrictTableName),
         db.dropTable(VillageTableName),
-        db.dropTable(AppendantTableName), 
+        db.dropTable(AppendantTableName),
         db.dropTable(landEstimateDtoListName),
         // db.dropTable(ImageTableName), // 图片库不做清理 数据库字段不要做变更
         db.dropTable(GraveTableName)
@@ -656,10 +660,11 @@ class PullData {
           // isPadDelete: '0' | '1'
           const fields =
             "'uid','registrantId','registrantDoorNo','villageId','villageDoorNo','content','updatedDate','isPadDelete','padStatus'"
-          const values = `'${item.uid}','${item.registrantId}','${item.registrantDoorNo}','${item.villageId
-            }','${item.villageDoorNo}','${JSON.stringify(
-              item
-            )}','${getCurrentTimeStamp()}','0','default'`
+          const values = `'${item.uid}','${item.registrantId}','${item.registrantDoorNo}','${
+            item.villageId
+          }','${item.villageDoorNo}','${JSON.stringify(
+            item
+          )}','${getCurrentTimeStamp()}','0','default'`
           db.insertOrReplaceData(GraveTableName, values, fields).catch((err) => {
             console.log(err, '插入坟墓')
           })
@@ -694,7 +699,7 @@ class PullData {
                       imgUrls.push(imgItem.url)
                     }
                   })
-                } catch (err) { }
+                } catch (err) {}
               }
             })
           }
@@ -720,7 +725,7 @@ class PullData {
   private pullLandlord(): Promise<boolean> {
     return new Promise(async (resolve) => {
       const { peasantHouseholdPushDtoList: list, peasantHouseholdDtoList: listTwo } = this.state
-      console.log("===========listTwo=============", listTwo, list)
+      console.log('===========listTwo=============', listTwo, list)
       if (this.isArrayAndNotNull(list)) {
         // 开启事务
         await db.transaction('begin').catch(() => {
@@ -741,7 +746,6 @@ class PullData {
           db.insertOrReplaceData(LandlordTableName, values, landlordFields).catch((err) => {
             console.log(err, '插入业主')
           })
-
         })
         await db.transaction('commit').catch(() => {
           resolve(false)
@@ -752,14 +756,13 @@ class PullData {
         resolve(true)
       }
 
-
       if (this.isArrayAndNotNull(listTwo)) {
         // 开启事务
         await db.transaction('begin').catch(() => {
           resolve(false)
         })
         const res = await getLandlordListBySearchApi()
-        console.log("===========listTwo=============", listTwo, res, list)
+        console.log('===========listTwo=============', listTwo, res, list)
         res.forEach((key: any) => {
           let m = false
           listTwo.forEach((item) => {
@@ -775,10 +778,11 @@ class PullData {
         })
         listTwo.forEach((item) => {
           const values = getLandlordHasStatusValues(item, 'default')
-          db.insertOrReplaceData(LandlordHasStatusTableName, values, landlordHasStatusFields).catch((err) => {
-            console.log(err, '插入业主带状态')
-          })
-
+          db.insertOrReplaceData(LandlordHasStatusTableName, values, landlordHasStatusFields).catch(
+            (err) => {
+              console.log(err, '插入业主带状态')
+            }
+          )
         })
         await db.transaction('commit').catch(() => {
           resolve(false)
@@ -812,7 +816,6 @@ class PullData {
             // 删除居民户数据
             db.deleteTableData(LandlordHasStatusTableName, 'uid', item.deleteId)
           }
-
         })
 
         await db.transaction('commit').catch(() => {
@@ -865,8 +868,9 @@ class PullData {
           this.districtMap[item.code] = item.name
           const fields =
             "'uid','isPadDelete','padStatus','parentCode','name','content','updatedDate'"
-          const values = `'${item.uid}','0','default','${item.parentCode}','${item.name
-            }','${JSON.stringify(item)}','${getCurrentTimeStamp()}'`
+          const values = `'${item.uid}','0','default','${item.parentCode}','${
+            item.name
+          }','${JSON.stringify(item)}','${getCurrentTimeStamp()}'`
           db.insertOrReplaceData(VillageTableName, values, fields).catch((err) => {
             console.log(err, 'err village')
           })
@@ -1136,7 +1140,6 @@ class PullData {
         landNoMoveNum,
         landNoMoveCompleteNum,
         landNoMoveIncompleteNum
-
       })}','${getCurrentTimeStamp()}'`
       db.insertOrReplaceData(OtherTableName, values, fields)
       //资产评估统计首页
@@ -1199,12 +1202,12 @@ class PullData {
           }
           const fields = landEstimateDtoListlds
           const values = getLandEstimateDtoListValues(item, 'default')
-          console.log(values, fields);
+          console.log(values, fields)
 
-          db.insertOrReplaceData(landEstimateDtoListName, values, fields).then((res) => {
-            console.log(`成功`, res);
-
-          })
+          db.insertOrReplaceData(landEstimateDtoListName, values, fields)
+            .then((res) => {
+              console.log(`成功`, res)
+            })
             .catch((err) => {
               console.log(err, '插入土地失败')
             })
@@ -1245,8 +1248,9 @@ class PullData {
       imgArray.forEach((item) => {
         // status状态为1 不需要上传
         const fields = `'status','base64','path','url','updatedDate'`
-        const values = `'1','${item.base64 || ''}','${item.path}','${item.url
-          }','${dayjs().valueOf()}'`
+        const values = `'1','${item.base64 || ''}','${item.path}','${
+          item.url
+        }','${dayjs().valueOf()}'`
         this.db.insertTableData(ImageTableName, values, fields).catch((err: any) => {
           console.log(err, '更新img err')
         })
