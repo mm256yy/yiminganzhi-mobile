@@ -10,7 +10,7 @@
             <!-- 头部 -->
             <!-- <Header
               :dataInfo="dataInfo"
-              :type="MainType.PeasantHousehold"
+              :type="MainType.LandNoMove"
               :tabVal="tabVal"
               @update-data="updateData"
             /> -->
@@ -25,13 +25,13 @@
                 v-touch:swipe.right="touchRight"
               >
                 <!-- 居民户信息 -->
-                <base-info-eva v-if="tabVal ==0" :dataInfo="dataInfo" />
+                <base-info-eva v-if="tabVal == 0" :dataInfo="dataInfo" type="land" />
 
                 <!-- 土地基本情况评估 -->
                 <land-eva
                   v-if="tabVal === 1"
                   :dataInfo="dataInfo"
-                  :dataList="dataInfo.assetLandList"
+                  :dataList="dataInfo.landEstimateDtoList"
                   @delete-land="deleteLand"
                   @update-data="updateData"
                 />
@@ -61,9 +61,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref,onMounted } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
-import { MainType } from '@/types/common'
+// import { MainType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
 // import Header from '@/components/Header/EvaIndex.vue'
 import Tabs from '@/components/Tabs/Index.vue'
@@ -71,10 +71,7 @@ import baseInfoEva from './baseInfo/index.vue' // 引入居民户信息组件
 import landEva from './landEva/index.vue' // 引入土地基本情况评估组件
 import seedlingsEva from './seedlingsEva/index.vue' // 引入土地青苗及附着物评估组件
 
-import {
-  deleteImpLandlordAssetLandApi,
-  deleteImpLandlordAssetAppendantApi
-} from '@/service'
+import { deleteImpLandlordAssetLandApi, deleteImpLandlordAssetAppendantApi } from '@/service'
 
 import iconHouseholdDef from '@/static/images/icon_household_default.png' // 引入居民户信息默认 icon
 import iconHouseholdSel from '@/static/images/icon_household_select.png' // 引入居民户信息选中 icon
@@ -124,7 +121,6 @@ const tabsList = computed(() => {
 
 const tabVal = ref<number>(0)
 const emit = defineEmits(['updateData'])
-
 
 // tab 切换
 const selectTabs = (data: any) => {
@@ -189,7 +185,7 @@ const updateData = () => {
 }
 
 onMounted(() => {
-  console.log('tabList-LL',props.dataInfo);
+  console.log('tabList-LL', props.dataInfo)
 })
 </script>
 

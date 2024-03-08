@@ -22,61 +22,62 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
-import { getEvaLandlordItemApi, getOtherItemApi } from "@/service";
-import { OtherDataType } from "@/database";
-import EvaMain from "./components/EvaMain.vue";
-import { onLoad, onShow } from "@dcloudio/uni-app";
-import LandEvaMain from "@/pages/land/components/LandEvaMain.vue";
+import { ref, onMounted } from 'vue'
+import { getEvaLandlordItemApi, getOtherItemApi } from '@/service'
+import { OtherDataType } from '@/database'
+import EvaMain from './components/EvaMain.vue'
+import { onLoad, onShow } from '@dcloudio/uni-app'
+import LandEvaMain from '@/pages/land/components/LandEvaMain.vue'
 
-const sysInfo = uni.getSystemInfoSync();
-const statusBarHeight = sysInfo.statusBarHeight || 0;
-const screenHeight = sysInfo.screenHeight;
-const pageHeight = screenHeight - statusBarHeight;
-const dataInfo = ref<any>({});
-const type = ref<string>("");
+const sysInfo = uni.getSystemInfoSync()
+const statusBarHeight = sysInfo.statusBarHeight || 0
+const screenHeight = sysInfo.screenHeight
+const pageHeight = screenHeight - statusBarHeight
+const dataInfo = ref<any>({})
+const type = ref<string>('')
 // 职业选项
-const occupationOptions = ref<any>([]);
+const occupationOptions = ref<any>([])
 
 onShow(() => {
   if (dataInfo.value.uid) {
-    getLandlordDetail(dataInfo.value.uid);
+    getLandlordDetail(dataInfo.value.uid)
   }
-});
+})
 
 onLoad((option) => {
   if (option && option.params) {
     const params = JSON.parse(option.params)
-    type.value = params.type;
-    console.log('evaLoadType',type.value);
-    getLandlordDetail(params.uid);
-  } 
-});
+    type.value = params.type
+    getLandlordDetail(params.uid)
+  }
+})
 
 onMounted(() => {
-  initOccpationData();
-});
+  initOccpationData()
+})
 
 /**
  * 获取居民户详情
  * @param(object) uid
  */
 const getLandlordDetail = (uid: string) => {
-  getEvaLandlordItemApi(uid).then((res: any) => {
-    console.log("资产评估res:", res);
-    dataInfo.value = { ...res };
-  }).catch((err: any) => {
-    console.log("资产评估err:", err);
-  })
-};
+  getEvaLandlordItemApi(uid)
+    .then((res: any) => {
+      console.log('资产评估res:', res)
+      dataInfo.value = { ...res }
+    })
+    .catch((err: any) => {
+      console.log('资产评估err:', err)
+    })
+}
 
 // 初始化职业选择框数据
 const initOccpationData = async () => {
-  const res = await getOtherItemApi(OtherDataType.ProfessionalTree);
+  const res = await getOtherItemApi(OtherDataType.ProfessionalTree)
   if (res && res.length > 0) {
-    occupationOptions.value = res;
+    occupationOptions.value = res
   }
-};
+}
 </script>
 
 <style scoped lang="scss">

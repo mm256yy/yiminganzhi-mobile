@@ -21,7 +21,7 @@
           <uni-row>
             <uni-col :span="8">
               <view class="col">
-                <view class="label">地块编号：</view>
+                <view class="label">地块：</view>
                 <view class="content">
                   {{ formatStr(item.landNumber) }}
                 </view>
@@ -31,7 +31,7 @@
               <view class="col">
                 <view class="label">面积（㎡）：</view>
                 <view class="content">
-                  {{ formatStr(item.price) }}
+                  {{ formatStr(item.area) }}
                 </view>
               </view>
             </uni-col>
@@ -39,7 +39,7 @@
               <view class="col">
                 <view class="label">单价(元/株)：</view>
                 <view class="content">
-                  {{ formatStr(item.price) }}
+                  {{ formatStr(item.numPrice) }}
                 </view>
               </view>
             </uni-col>
@@ -49,16 +49,14 @@
             <uni-col :span="8">
               <view class="col">
                 <view class="label">青苗户主：</view>
-                <view class="content">
-                  {{ formatStr(item.rate, '%') }}
-                </view>
+                <view class="content"> {{ formatStr(item.householder) }} </view>
               </view>
             </uni-col>
             <uni-col :span="8">
               <view class="col">
                 <view class="label">单价（元/㎡）：</view>
                 <view class="content">
-                  {{ formatStr(item.valuationAmount) }}
+                  {{ formatStr(item.price) }}
                 </view>
               </view>
             </uni-col>
@@ -77,15 +75,15 @@
               <view class="col">
                 <view class="label">规格：</view>
                 <view class="content">
-                  {{ formatStr(item.number) }}
+                  {{ formatStr(item.size) }}
                 </view>
               </view>
             </uni-col>
             <uni-col :span="8">
               <view class="col">
-                <view class="label">株树：</view>
+                <view class="label">株数：</view>
                 <view class="content">
-                  {{ formatStr(item.compensationAmount) }}
+                  {{ formatStr(item.number) }}
                 </view>
               </view>
             </uni-col>
@@ -153,15 +151,15 @@ const currentItem = ref<any>({})
 const deleteReason = ref<string>('') // 删除原因
 
 const toLink = (type: string, itemUid?: any) => {
-  const { uid, doorNo } = props.dataInfo
+  const { uid, doorNo, landEstimateDtoList } = props.dataInfo
 
   if (type === 'edit') {
-    let params = { type, uid, doorNo, itemUid }
+    let params = { type, uid, doorNo, itemUid, landEstimateDtoList }
     routerForward('seedEvaEdit', {
       params: JSON.stringify(params)
     })
   } else if (type === 'add') {
-    let params = { type, uid, doorNo }
+    let params = { type, uid, doorNo, landEstimateDtoList }
     routerForward('seedEvaEdit', {
       params: JSON.stringify(params)
     })
@@ -248,7 +246,7 @@ const dialogClose = () => {
           flex-direction: row;
 
           .label {
-            width: 66rpx;
+            width: 75rpx;
             height: 16rpx;
             margin-left: 9rpx;
             font-size: 9rpx;

@@ -3,18 +3,10 @@
     <view class="search-segment">
       <view class="search">
         <view class="search-input">
-          <input
-            type="text"
-            placeholder="请输入使用权人、地块编号"
-            v-model.trim="searchName"
-          />
+          <input type="text" placeholder="请输入使用权人、地块编号" v-model.trim="searchName" />
         </view>
         <view class="search-btn" @click="onSearch">
-          <image
-            class="search-icon"
-            src="@/static/images/icon_search_white.png"
-            mode="aspectFit"
-          />
+          <image class="search-icon" src="@/static/images/icon_search_white.png" mode="aspectFit" />
           <text class="search-txt">查询</text>
         </view>
       </view>
@@ -25,9 +17,7 @@
     <!-- 具体内容 -->
     <view class="main-enter">
       <view class="operate-segment">
-        <text class="land-text">{{
-          `土地列表（共 ${list?.length || 0} 条土地数据）`
-        }}</text>
+        <text class="land-text">{{ `土地列表（共 ${list?.length || 0} 条土地数据）` }}</text>
         <view class="right-side">
           <view class="btn blue-btn" @click="associatedBind">
             <text class="txt">关联绑定</text>
@@ -36,7 +26,7 @@
             <text class="txt">数据同步</text>
           </view>
         </view>
-      </view> 
+      </view>
       <view class="main-list">
         <scroll-view
           v-if="list && list.length"
@@ -51,7 +41,7 @@
               :data="item"
               :key="index"
               :index="index"
-              @itemChecked="handleItemClick"
+              @item-checked="handleItemClick"
             />
           </view>
           <view class="load-more">
@@ -91,231 +81,221 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  ref,
-  reactive,
-  onMounted,
-  nextTick,
-  computed,
-  onBeforeMount,
-  onBeforeUnmount,
-} from "vue";
-import { onShow, onLoad } from "@dcloudio/uni-app";
-import { getStorage, StorageKey, routerForward, debounce } from "@/utils";
-import { getOtherItemApi, getLandEstimateDtoListApi } from "@/service";
-import NoData from "@/components/NoData/index.vue";
-import LandListItem from "@/pages/land/components/landListItem/index.vue";
-import SyncCompont from "@/components/Sync/Index.vue";
-import dayjs from "dayjs";
-import { OtherDataType } from "@/database";
-import { showToast } from "@/config/msg";
+import { ref, reactive, onMounted, nextTick, computed, onBeforeMount, onBeforeUnmount } from 'vue'
+import { onShow, onLoad } from '@dcloudio/uni-app'
+import { getStorage, StorageKey, routerForward, debounce } from '@/utils'
+import { getOtherItemApi, getLandEstimateDtoListApi } from '@/service'
+import NoData from '@/components/NoData/index.vue'
+import LandListItem from '@/pages/land/components/landListItem/index.vue'
+import SyncCompont from '@/components/Sync/Index.vue'
+import dayjs from 'dayjs'
+import { OtherDataType } from '@/database'
+import { showToast } from '@/config/msg'
 
-const confirmDialogRef = ref<any>(null);
-const pullTime = ref<string>("");
-const syncing = ref<boolean>(false);
-const syncCmt = ref();
-const lastConfirmTime = ref("");
-const bindStrTitle = ref<string>("");
-const list = ref<any[]>([]);
-const searchName = ref<string>("");
-const isLoading = ref<boolean>(false); //是否正在加载
-const isEnd = ref<boolean>(false); // 是否加载到底
-const page = ref<number>(1);
-const pageSize = ref<number>(10);
-const associationBindingRef = ref();
-const checkList = ref<any[]>([]);
+const confirmDialogRef = ref<any>(null)
+const pullTime = ref<string>('')
+const syncing = ref<boolean>(false)
+const syncCmt = ref()
+const lastConfirmTime = ref('')
+const bindStrTitle = ref<string>('')
+const list = ref<any[]>([])
+const searchName = ref<string>('')
+const isLoading = ref<boolean>(false) //是否正在加载
+const isEnd = ref<boolean>(false) // 是否加载到底
+const page = ref<number>(1)
+const pageSize = ref<number>(10)
+const associationBindingRef = ref()
+const checkList = ref<any[]>([])
 const searchParams = reactive({
-  name: "",
-}); // 查询参数
+  name: ''
+}) // 查询参数
 
 const onSearch = () => {
   if (searchName.value) {
-    searchParams.name = searchName.value;
-    getList();
+    searchParams.name = searchName.value
+    getList()
   }
-};
+}
 
 const toTarget = (name: any) => {
-  const params = {};
+  const params = {}
 
   routerForward(name, {
-    ...params,
-  });
-};
+    ...params
+  })
+}
 
 const getList = () => {
   nextTick(async () => {
-    isLoading.value = true;
+    isLoading.value = true
     const params: any = {
       page: page.value,
       pageSize: pageSize.value,
-      ...searchParams,
-    };
+      ...searchParams
+    }
 
-    const tempList: any[] = await getLandEstimateDtoListApi(params);
+    const tempList: any[] = await getLandEstimateDtoListApi(params)
     let res = tempList.map((item) => {
       return {
         ...item,
-        isChecked: false,
-      };
-    });
-    console.log('列表数据日志',res);
+        isChecked: false
+      }
+    })
+    console.log('列表数据日志', res)
 
-    isLoading.value = false;
-     if (res && res.length) {
+    isLoading.value = false
+    if (res && res.length) {
       if (page.value === 1) {
-         list.value = res || [];
-       } else {
-         list.value = list.value?.concat(res);
-       }
-       if (res.length < pageSize.value) {
-         isEnd.value = true;
-       } else {
-         page.value = page.value + 1;
-       }
-     } else {
-       if (page.value === 1) {
-         list.value = [];
-       }
-       isEnd.value = true;
-     }
-  });
-};
+        list.value = res || []
+      } else {
+        list.value = list.value?.concat(res)
+      }
+      if (res.length < pageSize.value) {
+        isEnd.value = true
+      } else {
+        page.value = page.value + 1
+      }
+    } else {
+      if (page.value === 1) {
+        list.value = []
+      }
+      isEnd.value = true
+    }
+  })
+}
 
 const init = () => {
-  page.value = 1;
-  isEnd.value = false;
-  isLoading.value = false;
-  getList();
-};
+  page.value = 1
+  isEnd.value = false
+  isLoading.value = false
+  getList()
+}
 
 const dialogConfirm = () => {
-  const routeName = "associationBinding";
+  const routeName = 'associationBinding'
   routerForward(routeName, {
-    params: JSON.stringify(checkList.value),
-  });
-  associationBindingRef.value?.close();
-};
+    params: JSON.stringify(checkList.value)
+  })
+  associationBindingRef.value?.close()
+}
 
 const associationDialogClose = () => {
-  associationBindingRef.value?.close();
-};
+  associationBindingRef.value?.close()
+}
 
 const closeConfirmDialog = () => {
-  confirmDialogRef.value?.close();
-};
+  confirmDialogRef.value?.close()
+}
 
 // 处理数据同步
 const onSyncHandle = debounce(() => {
   if (syncing.value) {
-    return;
+    return
   }
-  syncing.value = true;
-  syncCmt.value?.onSync();
-});
+  syncing.value = true
+  syncCmt.value?.onSync()
+})
 
 // 同步结束
 const onSyncEnd = () => {
-  syncing.value = false;
-};
+  syncing.value = false
+}
 
 // 确认同步
 const confirmSync = () => {
-  closeConfirmDialog();
-  onSyncHandle();
-};
+  closeConfirmDialog()
+  onSyncHandle()
+}
 
 const getPullTime = async () => {
-  const time: string = await getOtherItemApi(OtherDataType.PullTime);
-  pullTime.value = time ? dayjs(Number(time)).format("YYYY-MM-DD HH:mm:ss") : "";
-  lastConfirmTime.value = `上次：${pullTime.value}`;
-};
+  const time: string = await getOtherItemApi(OtherDataType.PullTime)
+  pullTime.value = time ? dayjs(Number(time)).format('YYYY-MM-DD HH:mm:ss') : ''
+  lastConfirmTime.value = `上次：${pullTime.value}`
+}
 
 const status = computed(() => {
-  return isEnd.value ? "noMore" : isLoading.value ? "loading" : "more";
-});
+  return isEnd.value ? 'noMore' : isLoading.value ? 'loading' : 'more'
+})
 
 // 更多查询
 const onSearchMore = () => {
-  const routeName = "searchMore";
-  toTarget(routeName);
-};
+  const routeName = 'searchMore'
+  toTarget(routeName)
+}
 
 // 关联绑定
 const associatedBind = () => {
-  const tickList = list.value.filter((item) => item.isChecked);
+  const tickList = list.value.filter((item) => item.isChecked)
   if (tickList?.length <= 0) {
-    showToast("请至少选择一项数据");
-    return;
+    showToast('请至少选择一项数据')
+    return
   }
 
-  checkList.value = list.value.filter(
-    (item) => item.relationFlag === "1" && item.isChecked
-  );
+  checkList.value = list.value.filter((item) => item.relationFlag === '1' && item.isChecked)
 
-  if (checkList.value?.length>0) {
-    const landStr = checkList.value.map((item) => item.landNumber);
-    bindStrTitle.value = `土地编号：${landStr}已关联，是否继续关联，如选择继续关联，则以最新一次关联为准`;
-    associationBindingRef.value?.open();
+  if (checkList.value?.length > 0) {
+    const landStr = checkList.value.map((item) => item.landNumber)
+    bindStrTitle.value = `土地编号：${landStr}已关联，是否继续关联，如选择继续关联，则以最新一次关联为准`
+    associationBindingRef.value?.open()
   } else {
-  const routeName = "associationBinding";
-  routerForward(routeName, {
-    params: JSON.stringify(tickList),
-  });
-  associationBindingRef.value?.close();
+    const routeName = 'associationBinding'
+    routerForward(routeName, {
+      params: JSON.stringify(tickList)
+    })
+    associationBindingRef.value?.close()
   }
-};
+}
 
 // 数据同步
 const syncData = () => {
-  confirmDialogRef.value?.open();
-};
+  confirmDialogRef.value?.open()
+}
 
 const loadMore = () => {
   if (isEnd.value || isLoading.value) {
-    return;
+    return
   }
-  console.log("load more");
-  getList();
-};
+  console.log('load more')
+  getList()
+}
 
 const handleItemClick = (item: any) => {
-  const { isChecked, index } = item;
+  const { isChecked, index } = item
   if (!list.value) {
-    return;
+    return
   }
-  list.value[index].isChecked = isChecked;
-};
+  list.value[index].isChecked = isChecked
+}
 
 onShow(() => {
   // 注册事件监听器
-  uni.$on("customRefresh", () => {
-    getList();
-  });
-});
+  uni.$on('customRefresh', () => {
+    getList()
+  })
+})
 
 onLoad((option) => {
   if (option) {
-    console.log("子组件OnLoad");
+    console.log('子组件OnLoad')
   }
-});
+})
 
 onBeforeMount(() => {
   // 不同角色展示不同的首页视图
-  const role = getStorage(StorageKey.USERROLE);
-  console.log(role, "目前是什么角色");
+  const role = getStorage(StorageKey.USERROLE)
+  console.log(role, '目前是什么角色')
   // homeViewType.value = role;
-});
+})
 
 onBeforeUnmount(() => {
-  uni.$off("SyncEnd", onSyncEnd);
-});
+  uni.$off('SyncEnd', onSyncEnd)
+})
 
 onMounted(() => {
-  init();
-  getPullTime();
-  uni.$on("SyncEnd", onSyncEnd);
-});
+  init()
+  getPullTime()
+  uni.$on('SyncEnd', onSyncEnd)
+})
 </script>
 
 <style lang="scss" scoped>

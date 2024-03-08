@@ -1,372 +1,411 @@
 <template>
   <view class="form-wrapper">
-    <Back :title="title" needConfirm />
-    <view class="main">
-      <uni-forms class="form" ref="form" :modelValue="formData">
-        <uni-row v-if="commonParams.type === 'add'">
-          <uni-col :span="24">
-            <uni-forms-item
-              required
-              label="新增原因"
-              :label-width="150"
-              label-align="right"
-              name="formData.addReason"
-            >
-              <view :class="['input-txtarea-wrapper', focusIndex === 1 ? 'focus' : '']">
-                <textarea
-                  class="input-txtarea"
-                  placeholder="请输入(50字以内)"
-                  :maxlength="50"
-                  v-model="formData.addReason"
-                  @focus="inputFocus(1)"
-                  @blur="inputBlur"
-                ></textarea>
-              </view>
-            </uni-forms-item>
-          </uni-col>
-        </uni-row>
+    <Container :title="title">
+      <view class="main">
+        <uni-forms class="form" ref="form" :modelValue="formData">
+          <uni-row v-if="commonParams.type === 'add'">
+            <uni-col :span="24">
+              <uni-forms-item
+                required
+                label="新增原因"
+                :label-width="150"
+                label-align="right"
+                name="formData.addReason"
+              >
+                <view :class="['input-txtarea-wrapper', focusIndex === 1 ? 'focus' : '']">
+                  <textarea
+                    class="input-txtarea"
+                    placeholder="请输入(50字以内)"
+                    :maxlength="50"
+                    v-model="formData.addReason"
+                    @focus="inputFocus(1)"
+                    @blur="inputBlur"
+                  ></textarea>
+                </view>
+              </uni-forms-item>
+            </uni-col>
+          </uni-row>
 
-        <uni-row>
-          <uni-col :span="12">
-            <uni-forms-item
-              required
-              label="地块编号"
-              :label-width="150"
-              label-align="right"
-              name="formData.landNumber"
-            >
-              <uni-easyinput
-                v-model="formData.landNumber"
-                type="text"
-                placeholder="请输入"
-              />
-            </uni-forms-item>
-          </uni-col>
-          <uni-col :span="12">
-            <uni-forms-item
-              label="地块名称"
-              :label-width="150"
-              label-align="right"
-              name="formData.name"
-            >
-              <uni-easyinput v-model="formData.name" type="text" placeholder="请输入" />
-            </uni-forms-item>
-          </uni-col>
-        </uni-row>
+          <uni-row>
+            <uni-col :span="12">
+              <uni-forms-item
+                required
+                label="地块编号"
+                :label-width="150"
+                label-align="right"
+                name="formData.landNumber"
+              >
+                <uni-data-select
+                  placeholder="请选择"
+                  v-model="formData.landNumber"
+                  :localdata="landNumberList"
+                />
+              </uni-forms-item>
+            </uni-col>
+            <uni-col :span="12">
+              <uni-forms-item
+                label="地块名称"
+                :label-width="150"
+                label-align="right"
+                name="formData.landName"
+              >
+                <text class="label-txt">{{ formData.landName }} </text>
+              </uni-forms-item>
+            </uni-col>
+          </uni-row>
 
-        <uni-row>
-          <uni-col :span="12">
-            <uni-forms-item
-              required
-              label="品种"
-              :label-width="150"
-              label-align="right"
-              name="formData.unit"
-            >
-              <uni-easyinput v-model="formData.name" type="text" placeholder="请输入" />
-            </uni-forms-item>
-          </uni-col>
-          <uni-col :span="12">
-            <uni-forms-item
-              label="规格"
-              :label-width="150"
-              label-align="right"
-              name="formData.number"
-            >
-              <uni-easyinput
-                v-model="formData.number"
-                type="number"
-                placeholder="请输入"
-              />
-            </uni-forms-item>
-          </uni-col>
-        </uni-row>
+          <uni-row>
+            <uni-col :span="12">
+              <uni-forms-item
+                required
+                label="品种"
+                :label-width="150"
+                label-align="right"
+                name="formData.breed"
+              >
+                <uni-easyinput v-model="formData.breed" type="text" placeholder="请输入" />
+              </uni-forms-item>
+            </uni-col>
+            <uni-col :span="12">
+              <uni-forms-item
+                label="规格"
+                :label-width="150"
+                label-align="right"
+                name="formData.size"
+              >
+                <uni-easyinput v-model="formData.size" type="number" placeholder="请输入" />
+              </uni-forms-item>
+            </uni-col>
+          </uni-row>
 
-        <uni-row>
-          <uni-col :span="12">
-            <uni-forms-item
-              label="株树"
-              :label-width="150"
-              label-align="right"
-              name="formData.rate"
-            >
-              <view :class="['input-wrapper', focusIndex === 2 ? 'focus' : '']">
-                <input
-                  class="input-txt"
-                  placeholder="请输入"
-                  type="number"
-                  v-model="formData.price"
-                  @focus="inputFocus(2)"
-                  @blur="inputBlur"
-                />
-                <view class="unit"> 株 </view>
-              </view>
-            </uni-forms-item>
-          </uni-col>
-          <uni-col :span="12">
-            <uni-forms-item
-              label="单价"
-              :label-width="150"
-              label-align="right"
-              name="formData.price"
-            >
-              <view :class="['input-wrapper', focusIndex === 2 ? 'focus' : '']">
-                <input
-                  class="input-txt"
-                  placeholder="请输入"
-                  type="number"
-                  v-model="formData.price"
-                  @focus="inputFocus(2)"
-                  @blur="inputBlur"
-                />
-                <view class="unit"> 元／株 </view>
-              </view>
-            </uni-forms-item>
-          </uni-col>
-        </uni-row>
-        <uni-row>
-          <uni-col :span="12">
-            <uni-forms-item
-              label="面积"
-              :label-width="150"
-              label-align="right"
-              name="formData.valuationAmount"
-            >
-              <view :class="['input-wrapper', focusIndex === 3 ? 'focus' : '']">
-                <input
-                  class="input-txt"
-                  placeholder="请输入"
-                  type="number"
-                  disabled
-                  :value="countPrice"
-                  @focus="inputFocus(3)"
-                  @blur="inputBlur"
-                />
-                <view class="unit">㎡</view>
-              </view>
-            </uni-forms-item>
-          </uni-col>
-          <uni-col :span="12">
-            <uni-forms-item
-              label="单价"
-              :label-width="150"
-              label-align="right"
-              name="formData.compensationAmount"
-            >
-              <view :class="['input-wrapper', focusIndex === 4 ? 'focus' : '']">
-                <input
-                  class="input-txt"
-                  placeholder="请输入"
-                  type="number"
-                  v-model="formData.compensationAmount"
-                  @focus="inputFocus(4)"
-                  @blur="inputBlur"
-                />
-                <view class="unit">元／㎡</view>
-              </view>
-            </uni-forms-item>
-          </uni-col>
-        </uni-row>
-        <uni-row>
-          <uni-col :span="12">
-            <uni-forms-item
-              label="评估金额"
-              :label-width="150"
-              label-align="right"
-              name="formData.valuationAmount"
-            >
-              <view :class="['input-wrapper', focusIndex === 3 ? 'focus' : '']">
-                <input
-                  class="input-txt"
-                  placeholder="请输入"
-                  type="number"
-                  disabled
-                  :value="countPrice"
-                  @focus="inputFocus(3)"
-                  @blur="inputBlur"
-                />
-                <view class="unit">元</view>
-              </view>
-            </uni-forms-item>
-          </uni-col>
-          <uni-col :span="12">
-            <uni-forms-item
-              required
-              label="补偿金额"
-              :label-width="150"
-              label-align="right"
-              name="formData.compensationAmount"
-            >
-              <view :class="['input-wrapper', focusIndex === 4 ? 'focus' : '']">
-                <input
-                  class="input-txt"
-                  placeholder="请输入"
-                  type="number"
-                  v-model="formData.compensationAmount"
-                  @focus="inputFocus(4)"
-                  @blur="inputBlur"
-                />
-                <view class="unit">元</view>
-              </view>
-            </uni-forms-item>
-          </uni-col>
-        </uni-row>
+          <uni-row>
+            <uni-col :span="12">
+              <uni-forms-item
+                label="株数"
+                :label-width="150"
+                label-align="right"
+                name="formData.rate"
+              >
+                <view :class="['input-wrapper', focusIndex === 2 ? 'focus' : '']">
+                  <input
+                    class="input-txt"
+                    placeholder="请输入"
+                    type="number"
+                    v-model="formData.number"
+                    @focus="inputFocus(2)"
+                    @blur="inputBlur"
+                  />
+                  <view class="unit"> 株 </view>
+                </view>
+              </uni-forms-item>
+            </uni-col>
+            <uni-col :span="12">
+              <uni-forms-item
+                label="单价"
+                :label-width="150"
+                label-align="right"
+                name="formData.numPrice"
+              >
+                <view :class="['input-wrapper', focusIndex === 3 ? 'focus' : '']">
+                  <input
+                    class="input-txt"
+                    placeholder="请输入"
+                    type="number"
+                    v-model="formData.numPrice"
+                    @focus="inputFocus(3)"
+                    @blur="inputBlur"
+                  />
+                  <view class="unit"> 元／株 </view>
+                </view>
+              </uni-forms-item>
+            </uni-col>
+          </uni-row>
+          <uni-row>
+            <uni-col :span="12">
+              <uni-forms-item
+                label="面积"
+                :label-width="150"
+                label-align="right"
+                name="formData.area"
+              >
+                <view :class="['input-wrapper', focusIndex === 4 ? 'focus' : '']">
+                  <input
+                    class="input-txt"
+                    placeholder="请输入"
+                    type="number"
+                    v-model="formData.area"
+                    @focus="inputFocus(4)"
+                    @blur="inputBlur"
+                  />
+                  <view class="unit">㎡</view>
+                </view>
+              </uni-forms-item>
+            </uni-col>
+            <uni-col :span="12">
+              <uni-forms-item
+                label="单价"
+                :label-width="150"
+                label-align="right"
+                name="formData.price"
+              >
+                <view :class="['input-wrapper', focusIndex === 5 ? 'focus' : '']">
+                  <input
+                    class="input-txt"
+                    placeholder="请输入"
+                    type="number"
+                    v-model="formData.price"
+                    @focus="inputFocus(5)"
+                    @blur="inputBlur"
+                  />
+                  <view class="unit">元／㎡</view>
+                </view>
+              </uni-forms-item>
+            </uni-col>
+          </uni-row>
+          <uni-row>
+            <uni-col :span="12">
+              <uni-forms-item
+                label="评估金额"
+                :label-width="150"
+                label-align="right"
+                name="formData.valuationAmount"
+              >
+                <view :class="['input-wrapper', focusIndex === 6 ? 'focus' : '']">
+                  <input
+                    class="input-txt"
+                    placeholder="请输入"
+                    type="number"
+                    disabled
+                    :value="countPrice"
+                    @focus="inputFocus(6)"
+                    @blur="inputBlur"
+                  />
+                  <view class="unit">元</view>
+                </view>
+              </uni-forms-item>
+            </uni-col>
+            <uni-col :span="12">
+              <uni-forms-item
+                required
+                label="补偿金额"
+                :label-width="150"
+                label-align="right"
+                name="formData.compensationAmount"
+              >
+                <view :class="['input-wrapper', focusIndex === 7 ? 'focus' : '']">
+                  <input
+                    class="input-txt"
+                    placeholder="请输入"
+                    type="number"
+                    v-model="formData.compensationAmount"
+                    @focus="inputFocus(7)"
+                    @blur="inputBlur"
+                  />
+                  <view class="unit">元</view>
+                </view>
+              </uni-forms-item>
+            </uni-col>
+          </uni-row>
 
-        <uni-row>
-          <uni-col :span="24">
-            <uni-forms-item
-              label="备注"
-              :label-width="150"
-              label-align="right"
-              name="formData.remark"
-            >
-              <view :class="['input-txtarea-wrapper', focusIndex === 5 ? 'focus' : '']">
-                <textarea
-                  class="input-txtarea"
-                  placeholder="请输入(50字以内)"
-                  :maxlength="50"
-                  v-model="formData.remark"
-                  @focus="inputFocus(5)"
-                  @blur="inputBlur"
-                ></textarea>
-              </view>
-            </uni-forms-item>
-          </uni-col>
-        </uni-row>
-      </uni-forms>
+          <uni-row>
+            <uni-col :span="24">
+              <uni-forms-item
+                label="备注"
+                :label-width="150"
+                label-align="right"
+                name="formData.remark"
+              >
+                <view :class="['input-txtarea-wrapper', focusIndex === 8 ? 'focus' : '']">
+                  <textarea
+                    class="input-txtarea"
+                    placeholder="请输入(50字以内)"
+                    :maxlength="50"
+                    v-model="formData.remark"
+                    @focus="inputFocus(8)"
+                    @blur="inputBlur"
+                  ></textarea>
+                </view>
+              </uni-forms-item>
+            </uni-col>
+          </uni-row>
+        </uni-forms>
 
-      <image
-        class="submit-btn"
-        src="@/static/images/icon_submit.png"
-        mode="scaleToFill"
-        @click="submit"
-      />
-    </view>
+        <image
+          class="submit-btn"
+          src="@/static/images/icon_submit.png"
+          mode="scaleToFill"
+          @click="submit"
+        />
+      </view>
+    </Container>
   </view>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from "vue";
-import { onLoad } from "@dcloudio/uni-app";
-import { routerBack, getStorage, StorageKey, formatDict } from "@/utils";
+import { ref, computed, watch } from 'vue'
+import { onLoad } from '@dcloudio/uni-app'
+import { routerBack, getStorage, StorageKey } from '@/utils'
 import {
   addImpLandlordAssetAppendantApi,
   updateImpLandlordAssetAppendantApi,
-  getEvaLandlordItemApi,
-} from "@/service";
-import { ERROR_MSG, SUCCESS_MSG, showToast } from "@/config/msg";
-import Back from "@/components/Back/Index.vue";
+  getEvaLandlordItemApi
+} from '@/service'
+import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
+import Container from '@/components/Container/index.vue'
 
-const title = ref<string>("");
-const commonParams = ref<any>({});
+const title = ref<string>('')
+const commonParams = ref<any>({})
+const landNumberList = ref<any[]>([])
 
 // 表单数据
 const formData = ref<any>({
   doorNo: commonParams.value.doorNo,
-  status: "implementation",
-  addReason: "",
-  landNumber: "",
-  name: "",
-  unit: "",
-  number: "",
-  price: "",
-  rate: "",
-  valuationAmount: "",
-  compensationAmount: "",
-  remark: "",
-});
+  status: 'implementation',
+  addReason: '',
+  landNumber: '',
+  landName: '',
+  breed: '',
+  size: '',
+  numPrice: '',
+  number: '',
+  area: '',
+  price: '',
+  valuationAmount: '',
+  compensationAmount: '',
+  remark: ''
+})
 
 // 获取数据字典
-const dict = getStorage(StorageKey.DICT);
+const dict = getStorage(StorageKey.DICT)
 
 // 获得焦点的输入框下标
-const focusIndex = ref<number>(-1);
+const focusIndex = ref<number>(-1)
 
 /**
  * 获取业主详情
  * @param(object) uid
  */
 const getLandlordDetail = () => {
-  const { uid, itemUid } = commonParams.value;
+  const { uid, itemUid } = commonParams.value
   getEvaLandlordItemApi(uid).then((res: any) => {
-    let arr: any = res && res.assetAppendantList ? res.assetAppendantList : [];
+    let arr: any = res && res.assetAppendantList ? res.assetAppendantList : []
     if (arr && arr.length) {
-      let obj: any = arr.filter((item: any) => item.uid === itemUid)[0];
-      formData.value = { ...obj };
+      let obj: any = arr.filter((item: any) => item.uid === itemUid)[0]
+      formData.value = { ...obj }
     }
-  });
-};
+  })
+}
 
 onLoad((option: any) => {
   if (option) {
-    commonParams.value = JSON.parse(option.params);
-    const { type } = commonParams.value;
-    if (type === "edit") {
-      title.value = "土地青苗及附着物评估编辑";
-      getLandlordDetail();
-    } else if (type === "add") {
-      title.value = "新增土地青苗及附着物评估";
+    commonParams.value = JSON.parse(option.params)
+    const { type, landEstimateDtoList } = commonParams.value
+    if (type === 'edit') {
+      title.value = '土地青苗及附着物评估编辑'
+      getLandlordDetail()
+    } else if (type === 'add') {
+      title.value = '新增土地青苗及附着物评估'
     }
+
+    landNumberList.value = landEstimateDtoList.map((item: any) => {
+      return {
+        text: item.landNumber,
+        value: item.landName
+      }
+    })
   }
-});
+})
 
 // 输入框获得焦点事件
 const inputFocus = (index: number) => {
-  focusIndex.value = index;
-};
+  focusIndex.value = index
+}
 
 // 输入框失去焦点事件
 const inputBlur = () => {
-  focusIndex.value = -1;
-};
+  focusIndex.value = -1
+}
 
 // 计算评估价格
 const countPrice = computed(() => {
-  const { rate, price, number } = formData.value;
-  if (rate && price && number) {
-    return (rate * price * number).toFixed(2);
-  }
-  return "0";
-});
+  const { number, numPrice, area, price } = formData.value
+  // 评估金额＝　株树*单价（元/株） + 面积 * 单价（元/㎡）
+  const result = (number * numPrice + area * price).toFixed(2)
+  return result
+})
 
 // 表单提交
 const submit = () => {
-  const { uid, doorNo, type } = commonParams.value;
-  formData.value.valuationAmount = countPrice.value;
+  const { uid, doorNo, type } = commonParams.value
+  formData.value.valuationAmount = countPrice.value
   const params = {
     doorNo,
-    ...formData.value,
-  };
+    ...formData.value
+  }
 
-  if (!formData.value.addReason && type === "add") {
-    showToast("请输入新增原因");
-    return;
-  } else {
-    if (type === "add") {
-      addImpLandlordAssetAppendantApi(uid, params)
-        .then((res) => {
-          if (res) {
-            showToast(SUCCESS_MSG);
-            routerBack();
-          }
-        })
-        .catch(() => {
-          showToast(ERROR_MSG);
-        });
-    } else if (type === "edit") {
-      updateImpLandlordAssetAppendantApi(uid, params)
-        .then((res) => {
-          if (res) {
-            showToast(SUCCESS_MSG);
-            routerBack();
-          }
-        })
-        .catch(() => {
-          showToast(ERROR_MSG);
-        });
+  if (!formData.value.addReason && type === 'add') {
+    showToast('请输入新增原因')
+    return
+  }
+
+  if (!formData.value.landNumber) {
+    showToast('地块编号不能为空')
+    return
+  }
+
+  if (!formData.value.breed) {
+    showToast('品种不能为空')
+    return
+  }
+
+  if (!formData.value.compensationAmount) {
+    showToast('补偿金额不能为空')
+    return
+  }
+
+  if (type === 'add') {
+    addImpLandlordAssetAppendantApi(uid, params)
+      .then((res) => {
+        if (res) {
+          showToast(SUCCESS_MSG)
+          routerBack()
+        }
+      })
+      .catch(() => {
+        showToast(ERROR_MSG)
+      })
+  } else if (type === 'edit') {
+    updateImpLandlordAssetAppendantApi(uid, params)
+      .then((res) => {
+        if (res) {
+          showToast(SUCCESS_MSG)
+          routerBack()
+        }
+      })
+      .catch(() => {
+        showToast(ERROR_MSG)
+      })
+  }
+}
+
+watch(
+  () => formData.value.landNumber,
+  (val) => {
+    formData.value.landName = val
+  },
+  {
+    immediate: true,
+    deep: true
+  }
+)
+watch(
+  () => formData.value.valuationAmount,
+  (newValue) => {
+    if (!formData.value.compensationAmount) {
+      formData.value.compensationAmount = newValue
     }
   }
-};
+)
 </script>
 
 <style lang="scss" scoped>
@@ -375,7 +414,7 @@ const submit = () => {
   flex-direction: column;
   width: 100%;
   height: 100vh;
-  background: url("../../../static/images/common_bg.png") no-repeat;
+  background: url('../../../static/images/common_bg.png') no-repeat;
   background-size: 100% 100%;
 
   .main {
@@ -535,6 +574,19 @@ const submit = () => {
       height: 36rpx;
       border-radius: 50%;
     }
+  }
+
+  .label-txt {
+    margin-left: 6rpx;
+    font-size: 9rpx;
+    color: #171718;
+    line-height: 36px;
+  }
+
+  .input-wrapper {
+    display: flex;
+    align-items: center;
+    width: 240rpx;
   }
 }
 </style>

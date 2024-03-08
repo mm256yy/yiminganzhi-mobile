@@ -2,24 +2,21 @@
   <view class="company-item" @click="handleItemCLick">
     <view class="head">
       <view class="head-lt">
-        <checkbox style="margin-bottom:5rpx" :value="checkSelectedStr" :checked="props.data.isChecked" />
-          <view
-            class="status"
-            :class="[props.data.relationFlag === '1' ? 'success' : '']"
-            ><text class="circle" />{{
-              props.data.relationFlag === "1" ? "已关联" : "未关联"
-            }}</view
-          >
-        <view class="name">{{ formatEmptyText(props.data.rightHolder)}}</view>
-        <view class="landNo">{{ formatEmptyText(props.data.landNumber)}}</view>
+        <checkbox
+          style="margin-bottom: 5rpx"
+          :value="checkSelectedStr"
+          :checked="props.data.isChecked"
+        />
+        <view class="status" :class="[props.data.relationFlag === '1' ? 'success' : '']"
+          ><text class="circle" />{{ props.data.relationFlag === '1' ? '已关联' : '未关联' }}</view
+        >
+        <view class="name">{{ formatEmptyText(props.data.rightHolder) }}</view>
+        <view class="landNo">{{ formatEmptyText(props.data.landNumber) }}</view>
       </view>
       <view class="head-rt">
-        <view
-            class="status"
-            :class="[props.data.estimateFlag === '1' ? 'success' : '']"><text class="circle" />{{
-              props.data.estimateFlag === "1" ? "已评估" : "未评估"
-            }}</view
-          >
+        <view class="status" :class="[props.data.estimateFlag === '1' ? 'success' : '']"
+          ><text class="circle" />{{ props.data.estimateFlag === '1' ? '已评估' : '未评估' }}</view
+        >
         <view v-show="props.data.relationFlag === '1'" class="btn blue-btn" @click.stop="estimate">
           <text class="txt">评估</text>
         </view>
@@ -46,19 +43,17 @@
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">图幅号</view>
-        <view class="value"
-          >{{ formatEmptyText(props.data.sheetNumber)  }}</view
-        >
+        <view class="value">{{ formatEmptyText(props.data.sheetNumber) }}</view>
       </view>
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">地类:</view>
-        <view class="value">{{ formatEmptyText(props.data.landTypeText)  }}</view>
+        <view class="value">{{ formatEmptyText(props.data.landTypeText) }}</view>
       </view>
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">土地性质:</view>
-        <view class="value">{{ formatEmptyText(props.data.landNatureText)  || "" }}</view>
+        <view class="value">{{ formatEmptyText(props.data.landNatureText) || '' }}</view>
       </view>
     </view>
   </view>
@@ -66,17 +61,19 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { LandlordType } from "@/types/sync";
+import { LandlordType } from '@/types/sync'
 import { routerForward } from '@/utils'
-import {formatEmptyText} from '@/utils/format'
+import { formatEmptyText } from '@/utils/format'
+import { getLandlordListBySearchApi } from '@/service'
+import { MainType } from '@/types/common'
 
 interface PropsType {
-  index:number
-  data: LandlordType;
+  index: number
+  data: LandlordType
 }
 
-const props = defineProps<PropsType>();
-const emit = defineEmits(["delete",'itemChecked']);
+const props = defineProps<PropsType>()
+const emit = defineEmits(['delete', 'itemChecked'])
 const checkSelectedStr = ref<string>('0')
 const checkSelected = ref<boolean>(false)
 
@@ -84,30 +81,37 @@ const handleItemCLick = () => {
   checkSelected.value = !checkSelected.value
   emit('itemChecked', {
     isChecked: checkSelected.value,
-    index:props.index
+    index: props.index
   })
 }
 
 // 跳转评估页面
-const estimate = () => { 
-  const routeName = 'householdEva'
+const estimate = () => {
+  getUidFromAPi()
+}
 
-  const obj = {
-    type: 'land',
-    uid:props.data.uid
-  }
+const getUidFromAPi = async () => {
+  try {
+    let result = await getLandlordListBySearchApi({
+      doorNo: props.data.doorNo
+    })
+    const routeName = 'householdEva'
+    const obj = {
+      type: 'land',
+      uid: result[0]?.uid
+    }
+    routerForward(routeName, {
+      params: JSON.stringify(obj)
+    })
+  } catch {}
+}
 
-  routerForward(routeName, {
-    params:JSON.stringify(obj)
-  })
-};
-
-const getUnit = (item:any) => {
-   let  str1=item?.cityCodeText?item?.cityCodeText+'/':''
-   let  str2=item?.areaCodeText?item?.areaCodeText+'/':''
-   let  str3=item?.townCodeText?item?.townCodeText+'/':''
-   let  str4=item?.villageText?item?.villageText:''
-   return  str1.concat(str2).concat(str3).concat(str4)
+const getUnit = (item: any) => {
+  let str1 = item?.cityCodeText ? item?.cityCodeText + '/' : ''
+  let str2 = item?.areaCodeText ? item?.areaCodeText + '/' : ''
+  let str3 = item?.townCodeText ? item?.townCodeText + '/' : ''
+  let str4 = item?.villageText ? item?.villageText : ''
+  return str1.concat(str2).concat(str3).concat(str4)
 }
 </script>
 

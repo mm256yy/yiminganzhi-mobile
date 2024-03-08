@@ -61,7 +61,7 @@ getApiData()
 const getTables = async () => {
   const tables = await pullInstance.getTables()
   list.value = tables || []
-  let m = await getLandlordListBySearchApi({ type: MainType.LandNoMove,doorNo: "jlZD1230001"})
+  let m = await getLandlordListBySearchApi({ type: MainType.LandNoMove, doorNo: 'jlZD1230001' })
   console.log(m, '只征地不搬迁人数据')
   getLandEstimateDtoListApi().then((res: any) => {
     console.log(res, '土地列表')

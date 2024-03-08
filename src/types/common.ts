@@ -199,7 +199,7 @@ export interface LandlordQuery {
 // 根据行政村刷选
 export interface LandlordSearchType {
   name?: string
-  type: MainType
+  type?: MainType
   doorNo?: string
   areaCode?: string
   townCode?: string
@@ -266,26 +266,25 @@ export interface FeedbackMessage {
   creater: string
 }
 
-
 // 信息填报
 export interface CommentType {
-  id: string,
-  projectId: string,
-  doorNo: string,
-  householder: string,
-  type: string,
-  typeText: string,
-  remark: string,
-  status: string,
-  statusText: string,
-  reader: any,
-  feedbackPic: any,
-  readerId: any,
-  createdDate: any,
-  creater: string,
-  createdBy: string,
-  isSelf: any,
-  uid: string,
-  feedbackMessageList: any,
+  id: string
+  projectId: string
+  doorNo: string
+  householder: string
+  type: string
+  typeText: string
+  remark: string
+  status: string
+  statusText: string
+  reader: any
+  feedbackPic: any
+  readerId: any
+  createdDate: any
+  creater: string
+  createdBy: string
+  isSelf: any
+  uid: string
+  feedbackMessageList: any
   [key: string]: any
 }

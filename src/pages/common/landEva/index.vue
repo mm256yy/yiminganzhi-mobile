@@ -1,5 +1,138 @@
 <template>
   <!-- 土地基本情况评估 -->
+  <view class="base-info-wrapper">
+    <view class="list">
+      <view class="list-item">
+        <view class="list-1">
+          <view class="left">
+            <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
+            基本信息
+          </view>
+          <view class="right" />
+        </view>
+        <view class="list-2">
+          <uni-row>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">村集体名称：</view>
+                <view class="content">{{ formatStr(props.dataInfo.name) }}</view>
+              </view>
+            </uni-col>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">村集体编码：</view>
+                <view class="content">{{ formatStr(props.dataInfo.doorNo) }}</view>
+              </view>
+            </uni-col>
+          </uni-row>
+
+          <uni-row>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">所属区域：</view>
+                <view class="content">
+                  {{
+                    (props.dataInfo.areaCodeText ? props.dataInfo.areaCodeText : '') +
+                    (props.dataInfo.townCodeText ? props.dataInfo.townCodeText : '') +
+                    (props.dataInfo.villageCodeText ? props.dataInfo.villageCodeText : '') +
+                    (props.dataInfo.virutalVillageCodeText
+                      ? props.dataInfo.virutalVillageCodeText
+                      : '')
+                  }}
+                </view>
+              </view>
+            </uni-col>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">联系方式：</view>
+                <view class="content">{{ formatStr(props.dataInfo.phone) }}</view>
+              </view>
+            </uni-col>
+          </uni-row>
+
+          <uni-row>
+            <uni-col :span="24">
+              <view class="col">
+                <view class="label">所在位置：</view>
+                <view class="content">
+                  {{ formatDict(props.dataInfo.locationType, 326) }}
+                </view>
+              </view>
+            </uni-col>
+          </uni-row>
+
+          <uni-row>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">房屋主体评估合计：</view>
+                <view class="content">{{ totalPriceObj.houseTotalAmount }}</view>
+              </view>
+            </uni-col>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">房屋装修评估合计：</view>
+                <view class="content">{{ totalPriceObj.fitUpTotalAmount }}</view>
+              </view>
+            </uni-col>
+          </uni-row>
+
+          <uni-row>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">房屋附属设施评估合计：</view>
+                <view class="content">{{ totalPriceObj.appendantTotalAmount }}</view>
+              </view>
+            </uni-col>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">零星(林)果木评估合计：</view>
+                <view class="content">{{ totalPriceObj.treeTotalAmount }}</view>
+              </view>
+            </uni-col>
+          </uni-row>
+
+          <uni-row>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">土地基本情况评估合计：</view>
+                <view class="content">{{ totalPriceObj.landTotalAmount }}</view>
+              </view>
+            </uni-col>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">土地青苗及附着物评估合计：</view>
+                <view class="content">{{ totalPriceObj.assetAppendantTotalAmount }}</view>
+              </view>
+            </uni-col>
+          </uni-row>
+
+          <uni-row>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">小型专项设施评估合计：</view>
+                <view class="content">{{ totalPriceObj.specialTotalAmount }}</view>
+              </view>
+            </uni-col>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">基础设施评估合计：</view>
+                <view class="content">{{ totalPriceObj.infrastructureAmount }}</view>
+              </view>
+            </uni-col>
+          </uni-row>
+          <uni-row>
+            <uni-col :span="24">
+              <view class="col">
+                <view class="label">资产评估合计：</view>
+                <view class="content">{{ totalPriceObj.totalAmount }}</view>
+              </view>
+            </uni-col>
+          </uni-row>
+        </view>
+      </view>
+    </view>
+  </view>
+
   <view class="land-eva-wrapper">
     <view class="list" v-if="props.dataList && props.dataList.length">
       <view class="list-item" v-for="item in props.dataList" :key="item.id">

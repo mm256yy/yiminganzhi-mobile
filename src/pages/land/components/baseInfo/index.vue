@@ -1,13 +1,10 @@
 <template>
-  <!-- 居民户信息（评估） -->
-  <view class="base-info-wrapper">
+  <!-- 基本信息（评估） -->
+  <view v-if="props.type === 'land'" class="base-info-wrapper">
     <view class="list">
       <view class="list-item">
         <view class="list-1">
           <view class="icon">基本信息</view>
-          <view class="name">
-            {{ formatStr(props.dataInfo.name) }}
-          </view>
         </view>
         <view class="list-2">
           <uni-row>
@@ -15,7 +12,7 @@
               <view class="col">
                 <view class="label">户主：</view>
                 <view class="content">
-                  {{ props.dataInfo.showDoorNo  }}
+                  {{ props.dataInfo.name }}
                 </view>
               </view>
             </uni-col>
@@ -23,7 +20,7 @@
               <view class="col">
                 <view class="label">户号：</view>
                 <view class="content">
-                  {{ formatStr(props.dataInfo.virutalVillageCodeText) }}
+                  {{ formatStr(props.dataInfo.showDoorNo) }}
                 </view>
               </view>
             </uni-col>
@@ -34,7 +31,7 @@
               <view class="col">
                 <view class="label">身份证号：</view>
                 <view class="content">
-                  {{ dictOption(yesAndNoEnums, props.dataInfo.hasPropertyAccount) }}
+                  {{ formatStr(props.dataInfo.card) }}
                 </view>
               </view>
             </uni-col>
@@ -42,7 +39,7 @@
               <view class="col">
                 <view class="label">类别：</view>
                 <view class="content">
-                  {{ formatStr(props.dataInfo.phone) }}
+                  {{ formatDict(props.dataInfo.landUserType, 418) }}
                 </view>
               </view>
             </uni-col>
@@ -53,7 +50,14 @@
               <view class="col">
                 <view class="label">所属区域：</view>
                 <view class="content">
-                  {{ dictOption(locationTypes, props.dataInfo.locationType) }}
+                  {{
+                    (props.dataInfo.areaCodeText ? props.dataInfo.areaCodeText : '') +
+                    (props.dataInfo.townCodeText ? props.dataInfo.townCodeText : '') +
+                    (props.dataInfo.villageCodeText ? props.dataInfo.villageCodeText : '') +
+                    (props.dataInfo.virutalVillageCodeText
+                      ? props.dataInfo.virutalVillageCodeText
+                      : '')
+                  }}
                 </view>
               </view>
             </uni-col>
@@ -61,7 +65,7 @@
               <view class="col">
                 <view class="label">土地基本情况评估合计：</view>
                 <view class="content">
-                  {{ formatStr(props.dataInfo.address) }}
+                  {{ totalPriceObj.landTotalAmount }}
                 </view>
               </view>
             </uni-col>
@@ -71,13 +75,96 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">土地青苗及附着物评估合计：</view>
-                <view class="content">{{ 123 }}</view>
+                <view class="content">{{ totalPriceObj.assetAppendantTotalAmount }}</view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">资产评估合计：</view>
-                <view class="content">{{ 456 }}</view>
+                <view class="content">{{
+                  (
+                    totalPriceObj.landTotalAmount + totalPriceObj.assetAppendantTotalAmount
+                  )?.toFixed(2)
+                }}</view>
+              </view>
+            </uni-col>
+          </uni-row>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view v-else class="base-info-wrapper">
+    <view class="list">
+      <view class="list-item">
+        <view class="list-1">
+          <view class="left">
+            <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
+            基本信息
+          </view>
+          <view class="right" />
+        </view>
+        <view class="list-2">
+          <uni-row>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">名称：</view>
+                <view class="content">{{ formatStr(props.dataInfo.name) }}</view>
+              </view>
+            </uni-col>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">编码：</view>
+                <view class="content">{{ formatStr(props.dataInfo.showDoorNo) }}</view>
+              </view>
+            </uni-col>
+          </uni-row>
+
+          <uni-row>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">所属区域：</view>
+                <view class="content">
+                  {{
+                    (props.dataInfo.areaCodeText ? props.dataInfo.areaCodeText : '') +
+                    (props.dataInfo.townCodeText ? props.dataInfo.townCodeText : '') +
+                    (props.dataInfo.villageCodeText ? props.dataInfo.villageCodeText : '') +
+                    (props.dataInfo.virutalVillageCodeText
+                      ? props.dataInfo.virutalVillageCodeText
+                      : '')
+                  }}
+                </view>
+              </view>
+            </uni-col>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">联系方式：</view>
+                <view class="content">{{ formatStr(props.dataInfo.phone) }}</view>
+              </view>
+            </uni-col>
+          </uni-row>
+
+          <uni-row>
+            <uni-col :span="24">
+              <view class="col">
+                <view class="label">所在位置：</view>
+                <view class="content">
+                  {{ formatStr(props.dataInfo.areaText) }}
+                </view>
+              </view>
+            </uni-col>
+          </uni-row>
+
+          <uni-row>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">土地基本情况评估合计：</view>
+                <view class="content">{{ totalPriceObj.landTotalAmount }}</view>
+              </view>
+            </uni-col>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">土地青苗及附着物评估合计：</view>
+                <view class="content">{{ totalPriceObj.assetAppendantTotalAmount }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -89,10 +176,13 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { formatStr, dictOption } from '@/utils'
-import { locationTypes, yesAndNoEnums } from '@/config/common'
+import { formatStr, formatDict } from '@/utils'
 
 const props = defineProps({
+  type: {
+    type: String,
+    default: ''
+  },
   dataInfo: {
     type: Object as any,
     default: () => {}
@@ -115,46 +205,7 @@ const totalPriceObj = computed(() => {
     totalAmount: 0
   }
   if (props.dataInfo) {
-    const {
-      immigrantHouseList,
-      assetHouseFitUpList,
-      immigrantAppendantList,
-      immigrantTreeList,
-      assetLandList,
-      assetAppendantList
-    } = props.dataInfo
-    // 房屋主体
-    if (immigrantHouseList && immigrantHouseList.length) {
-      immigrantHouseList.forEach((item: any) => {
-        if (item.compensationAmount > 0) {
-          obj.houseTotalAmount += +item.compensationAmount
-        }
-      })
-    }
-    // 房屋装修
-    if (assetHouseFitUpList && assetHouseFitUpList.length) {
-      assetHouseFitUpList.forEach((item: any) => {
-        if (item.compensationAmount > 0) {
-          obj.fitUpTotalAmount += +item.compensationAmount
-        }
-      })
-    }
-    // 附属物
-    if (immigrantAppendantList && immigrantAppendantList.length) {
-      immigrantAppendantList.forEach((item: any) => {
-        if (item.compensationAmount > 0) {
-          obj.appendantTotalAmount += +item.compensationAmount
-        }
-      })
-    }
-    // 零星果木
-    if (immigrantTreeList && immigrantTreeList.length) {
-      immigrantTreeList.forEach((item: any) => {
-        if (item.compensationAmount > 0) {
-          obj.treeTotalAmount += +item.compensationAmount
-        }
-      })
-    }
+    const { assetLandList, assetAppendantList } = props.dataInfo
     // 土地
     if (assetLandList && assetLandList.length) {
       assetLandList.forEach((item: any) => {

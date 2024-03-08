@@ -22,7 +22,7 @@
               <view class="col">
                 <view class="label">村民小组：</view>
                 <view class="content">
-                  {{ formatStr(item.groupName) }}
+                  {{ formatStr(item.villagerGroup) }}
                 </view>
               </view>
             </uni-col>
@@ -41,13 +41,13 @@
               <view class="col">
                 <view class="label">所在位置：</view>
                 <view class="content">
-                  {{ formatDict(item.locationType, 326) }}
+                  {{ formatStr(item.areaText) }}
                 </view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
-                <view class="label">评估单价（元/㎡）：</view>
+                <view class="label">评估单价(元/㎡)：</view>
                 <view class="content">
                   {{ formatStr(item.valuationPrice) }}
                 </view>
@@ -60,13 +60,13 @@
               <view class="col">
                 <view class="label">淹没范围：</view>
                 <view class="content">
-                  {{ formatStr(item.growers) }}
+                  {{ formatStr(item.inundationRangeText) }}
                 </view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
-                <view class="label">评估金额（元）：</view>
+                <view class="label">评估金额(元)：</view>
                 <view class="content">
                   {{ formatStr(item.valuationAmount) }}
                 </view>
@@ -79,7 +79,7 @@
               <view class="col">
                 <view class="label">地类：</view>
                 <view class="content">
-                  {{ formatDict(item.landType, 233) }}
+                  {{ formatStr(item.landTypeText) }}
                 </view>
               </view>
             </uni-col>
@@ -101,13 +101,6 @@
       <view class="tips">暂无数据</view>
     </view>
 
-    <image
-      class="btn add"
-      src="@/static/images/icon_add.png"
-      mode="scaleToFill"
-      @click="toLink('add')"
-    />
-
     <!-- 删除确认框 -->
     <uni-popup ref="alertDialog" type="dialog">
       <uni-popup-dialog
@@ -127,7 +120,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { formatDict, formatStr, routerForward } from '@/utils'
+import { formatStr, routerForward } from '@/utils'
 import { showToast } from '@/config'
 
 const props = defineProps({
@@ -146,20 +139,12 @@ const alertDialog = ref<any>(null)
 const currentItem = ref<any>({})
 const reason = ref<string>('') // 删除原因
 
-
 const toLink = (type: string, itemUid?: any) => {
   const { uid, doorNo } = props.dataInfo
-  if (type === 'edit') {
-    let params = { type, uid, doorNo, itemUid }
-    routerForward('baseLandEvaEdit', {
-      params: JSON.stringify(params)
-    })
-  } else if (type === 'add') {
-    let params = { type, uid, doorNo }
-    routerForward('baseLandEvaEdit', {
-      params: JSON.stringify(params)
-    })
-  }
+  let params = { type, uid, doorNo, itemUid }
+  routerForward('baseLandEvaEdit', {
+    params: JSON.stringify(params)
+  })
 }
 
 /**

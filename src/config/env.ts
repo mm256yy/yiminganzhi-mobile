@@ -18,9 +18,9 @@ const envMap = {
   //   apiBaseUrl: 'http://ym.zdwp.local',
   //   apiBasePath: '/api'
   // },
-  dev: {
+  dev: {	
     apiBaseUrl: 'https://r7r-ai.zdwp.net',
-    apiBasePath: '/api'
+    apiBasePath: '/api'                       
   },
   test: {
     apiBaseUrl: 'https://r7r-ai.zdwp.net',
