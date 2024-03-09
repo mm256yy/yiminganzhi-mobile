@@ -743,7 +743,7 @@ class PullData {
           }
           const values = getLandlordValues(item, 'default')
           console.log(values, `企业数据${index}`)
-          db.insertTableData(LandlordTableName, values, landlordFields)
+          db.insertOrReplaceData(LandlordTableName, values, landlordFields)
             .then((res) => {
               console.log(res, '插入业主')
             })
