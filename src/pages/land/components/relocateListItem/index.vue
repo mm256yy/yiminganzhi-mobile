@@ -52,12 +52,9 @@ const emit = defineEmits(['delete'])
 // 跳转详细页面
 const toDetail = () => {
   const routeName = 'landNavigation'
-  const params = {
-    data: props.data
-  }
 
   routerForward(routeName, {
-    ...params
+    data: JSON.stringify(props.data)
   })
 }
 

@@ -602,6 +602,13 @@
 			"style": {
 				"navigationBarTitleText": "只征地不搬迁实施"
 			}
+		},
+		{
+			"name": "arrangementEdit",
+			"path": "pages/land/components/navigation/ArrangmentEdit",
+			"style": {
+				"navigationBarTitleText": "生产安置确认编辑"
+			}
 		}
 	],
 	"globalStyle": {

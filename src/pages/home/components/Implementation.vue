@@ -214,21 +214,21 @@
           <view class="enter-title">
             <text class="title-txt">只征地不搬迁</text>
             <view class="flex">
-              <text class="count-num">{{ landStatisticsObj.landNoMoveNum }}</text>
+              <text class="count-num">{{ landStatisticsObj?.landNoMoveNum }}</text>
               <text class="count-unit">户</text>
             </view>
           </view>
         </view>
         <view class="row-field" style="justify-content: space-evenly">
           <view class="field-box">
-            <view class="line-1">{{ landStatisticsObj.landNoMoveCompleteNum }}</view>
+            <view class="line-1">{{ landStatisticsObj?.landNoMoveCompleteNum }}</view>
             <view class="flex">
               <view class="common-dot green" />
               <view class="line-2 red">已完成</view>
             </view>
           </view>
           <view class="field-box">
-            <view class="line-1">{{ landStatisticsObj.landNoMoveIncompleteNum }}</view>
+            <view class="line-1">{{ landStatisticsObj?.landNoMoveIncompleteNum }}</view>
             <view class="flex">
               <view class="common-dot red" />
               <view class="line-2">未完成</view>

@@ -1,63 +1,46 @@
 <template>
   <view class="main-wrap">
     <!-- 只征地不搬迁实施 -->
-  <Container title="只征地不搬迁实施">
-    <view class="content">
-      <LeftSidebar @switch-tab="switchTab" :dataList="tabList" />
+    <Container title="只征地不搬迁实施">
+      <view class="content">
+        <LeftSidebar @switch-tab="switchTab" :dataList="tabList" />
 
-      <view class="right">
-        <!-- 头部 -->
-        <Header :dataInfo="dataInfo" />
+        <view class="right">
+          <!-- 头部 -->
+          <Header :dataInfo="dataInfo" />
 
-        <view class="box">
-          <!-- 资产评估报告 -->
-          <Report
-            v-if="tabVal === 1"
-            :dataInfo="dataInfo"
-          />
-          <!-- 安置确认 -->
-          <Arrangement
-            v-if="tabVal === 2"
-            :dataInfo="dataInfo"
-          />
-          <!-- 补偿卡 -->
-          <CompensateCard
-            v-if="tabVal === 3"
-            :dataInfo="dataInfo"
-          />
-          <!-- 征地协议 --> 
-          <AcquisitionLand
-            v-if="tabVal === 4"
-            :dataInfo="dataInfo"
-          />
-          <!-- 土地腾让 -->
-          <LandTransfer
-            v-if="tabVal === 5"
-            :dataInfo="dataInfo"
-          />
+          <view class="box">
+            <!-- 资产评估报告 -->
+            <Report v-if="tabVal === 1" :dataInfo="dataInfo" @update-data="updateData" />
+            <!-- 安置确认 -->
+            <Arrangement v-if="tabVal === 2" :dataInfo="dataInfo" @update-data="updateData" />
+            <!-- 补偿卡 -->
+            <CompensateCard v-if="tabVal === 3" :dataInfo="dataInfo" @update-data="updateData" />
+            <!-- 征地协议 -->
+            <AcquisitionLand v-if="tabVal === 4" :dataInfo="dataInfo" @update-data="updateData" />
+            <!-- 土地腾让 -->
+            <LandTransfer v-if="tabVal === 5" :dataInfo="dataInfo" @update-data="updateData" />
+          </view>
         </view>
       </view>
-    </view>
     </Container>
   </view>
 </template>
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
-import { onLoad } from "@dcloudio/uni-app";
+import { onLoad } from '@dcloudio/uni-app'
 import { LandlordType } from '@/types/sync'
 import Container from '@/components/Container/index.vue'
 // import { deepClone } from '@/utils'
-import  { landNoMoveList } from '../../../common/config.ts'
-import Report from './Report.vue'  // 资产评估报告 
+import { landNoMoveList } from '../../../common/config.ts'
+import Report from './Report.vue' // 资产评估报告
 import Arrangement from './Arrangement.vue' // 安置确认
 import CompensateCard from './CompensateCard.vue' // 补偿卡
 import AcquisitionLand from './AcquisitionLand.vue' // 征地协议
 import LandTransfer from './LandTransfer.vue' // 土地腾让
 
-
 import LeftSidebar from '@/components/LeftSidebar/Index.vue' // 引入左侧边栏组件
 import Header from '@/pages/land/components/navigation/TopHeader.vue' // 引入头部组件
-const dataInfo=ref<any>()
 
 // interface PropsType {
 //   dataInfo: LandlordType
@@ -65,26 +48,26 @@ const dataInfo=ref<any>()
 
 // const props = defineProps<PropsType>()
 const tabVal = ref<number>(1)
-// const emit = defineEmits(['updateData'])
+const emit = defineEmits(['updateData'])
+const dataInfo = ref<any>(null)
 
 const tabList = computed(() => {
-   return landNoMoveList
+  return landNoMoveList
 })
 
 onLoad((option) => {
-  if (option&&option.data) {
-    //console.log('TPL', JSON.parse(option.data));
-    // dataInfo.value=JSON.parse(option.data)
+  if (option && option.data) {
+    dataInfo.value = JSON.parse(option.data)
   }
-  dataInfo.value = {
-    name: '张三',
-    doorNo:'1022030'
-  }
-});
-
+})
 
 const switchTab = (item: any) => {
   tabVal.value = item.value
+}
+
+// 更新整体数据
+const updateData = () => {
+  emit('updateData', dataInfo.value.uid)
 }
 </script>
 <style lang="scss" scoped>

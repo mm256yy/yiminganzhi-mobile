@@ -18,37 +18,67 @@
       本户共计征收土地：1.5亩，参保系数为：0.5，可参保3人，请添加参保人员
     </view>
     <view class="main-list">
-      <scroll-view v-if="list && list.length" class="scroll-view" scroll-y :enable-flex="true">
+      <scroll-view
+        v-if="dataInfo.demographicList && dataInfo.demographicList.length"
+        class="scroll-view"
+        scroll-y
+        :enable-flex="true"
+      >
         <view class="scroll">
-          <!-- <LandListItem v-for="(item, index) in list" :data="item" :key="index" /> -->
+          <ArrangementListItem
+            v-for="(item, index) in dataInfo.demographicList"
+            :data="item"
+            :key="index"
+            @to-detail="handleClickDetail"
+          />
         </view>
       </scroll-view>
-      <NoData v-else />
+      <NoData style="margin-top: 60rpx" v-else />
     </view>
+    <image
+      class="fix-btn add"
+      src="@/static/images/icon_add.png"
+      mode="scaleToFill"
+      @click="toLink('add', {})"
+    />
   </view>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-const onArchives = () => {}
-const list = ref<any[]>([])
-const isLoading = ref<boolean>(false) //是否正在加载
-const isEnd = ref<boolean>(false) // 是否加载到底
-const page = ref<number>(1)
-const pageSize = ref<number>(10)
+import ArrangementListItem from './ArrangementListItem.vue'
+import NoData from '@/components/NoData/index.vue'
+import { formatStr, routerForward } from '@/utils'
 
-const init = () => {
-  page.value = 1
-  isEnd.value = false
-  isLoading.value = false
+const onArchives = () => {}
+
+const props = defineProps({
+  dataInfo: {
+    type: Object as any,
+    default: () => {}
+  }
+})
+
+const toLink = (type: string, item: any) => {
+  if (type === 'edit') {
+    routerForward('arrangementEdit', {
+      params: JSON.stringify({
+        item,
+        type
+      })
+    })
+  } else if (type === 'add') {
+    routerForward('arrangementEdit', {
+      params: JSON.stringify({
+        type
+      })
+    })
+  }
 }
 
-// const loadMore = () => {
-//   if (isEnd.value || isLoading.value) {
-//     return
-//   }
-//   console.log('load more')
-// }
+const handleClickDetail = (data: any) => {
+  toLink('edit', data)
+}
 </script>
 
 <style lang="scss" scoped>
@@ -118,6 +148,22 @@ const init = () => {
     flex-direction: row;
     flex-wrap: wrap;
     align-items: flex-start;
+  }
+
+  .fix-btn {
+    position: fixed;
+    right: 25rpx;
+    width: 28rpx;
+    height: 28rpx;
+    border-radius: 50%;
+
+    &.add {
+      bottom: 16rpx;
+    }
+
+    &.record {
+      bottom: 54rpx;
+    }
   }
 }
 </style>
