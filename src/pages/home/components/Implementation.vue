@@ -214,21 +214,21 @@
           <view class="enter-title">
             <text class="title-txt">只征地不搬迁</text>
             <view class="flex">
-              <text class="count-num">{{ homeCollect.landNoMoveNum }}</text>
+              <text class="count-num">{{ landStatisticsObj.landNoMoveNum }}</text>
               <text class="count-unit">户</text>
             </view>
           </view>
         </view>
         <view class="row-field" style="justify-content: space-evenly">
           <view class="field-box">
-            <view class="line-1">{{ homeCollect.landNoMoveCompleteNum }}</view>
+            <view class="line-1">{{ landStatisticsObj.landNoMoveCompleteNum }}</view>
             <view class="flex">
               <view class="common-dot green" />
               <view class="line-2 red">已完成</view>
             </view>
           </view>
           <view class="field-box">
-            <view class="line-1">{{ homeCollect.landNoMoveIncompleteNum }}</view>
+            <view class="line-1">{{ landStatisticsObj.landNoMoveIncompleteNum }}</view>
             <view class="flex">
               <view class="common-dot red" />
               <view class="line-2">未完成</view>
@@ -286,6 +286,7 @@ import Echart from './WorkGroupChart.vue'
 import MessageNotice from './MessageNotice.vue'
 import { getImpHomeCollectApi } from '@/service'
 import { RoleCodeType } from '@/types/common'
+import { getBaseDataApi } from '@/sync/api'
 
 interface HomeCollectType {
   peasantHouseholdNum: number
@@ -345,6 +346,7 @@ const homeCollect = ref<HomeCollectType>({
 const seachName = ref<string>('')
 const pullTime = ref<string>('')
 const syncing = ref<boolean>(false)
+const landStatisticsObj = ref<any>(null)
 
 const syncCmt = ref()
 const roles = ['investigator', 'assessor', 'assessorland']
@@ -383,8 +385,17 @@ onShow(() => {
 onMounted(() => {
   getImpHomeCollectApi().then((res) => {
     if (res) {
-		console.log('首页统计',res)
       homeCollect.value = { ...homeCollect.value, ...res }
+    }
+  })
+
+  getBaseDataApi().then((res) => {
+    if (res) {
+      landStatisticsObj.value = {
+        landNoMoveNum: res.landNoMoveNum,
+        landNoMoveCompleteNum: res.landNoMoveCompleteNum,
+        landNoMoveIncompleteNum: res.landNoMoveIncompleteNum
+      }
     }
   })
 })

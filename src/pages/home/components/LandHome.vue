@@ -150,7 +150,7 @@ const getList = () => {
       } else {
         list.value = list.value?.concat(res)
       }
-      if (res.length < pageSize.value) { 
+      if (res.length < pageSize.value) {
         isEnd.value = true
       } else {
         page.value = page.value + 1
@@ -226,14 +226,12 @@ const onSearchMore = () => {
 // 关联绑定
 const associatedBind = () => {
   const tickList = list.value.filter((item) => item.isChecked)
-  console.log('关联绑定-S::: ', tickList)
   if (tickList?.length <= 0) {
     showToast('请至少选择一项数据')
     return
   }
 
   checkList.value = list.value.filter((item) => item.relationFlag === '1' && item.isChecked)
-  console.log('关联绑定-L::: ', checkList.value)
   if (checkList.value?.length > 0) {
     const landStr = checkList.value.map((item) => item.landNumber)
     bindStrTitle.value = `土地编号：${landStr}已关联，是否继续关联，如选择继续关联，则以最新一次关联为准`
