@@ -725,13 +725,13 @@ class PullData {
   private pullLandlord(): Promise<boolean> {
     return new Promise(async (resolve) => {
       const { peasantHouseholdPushDtoList: list, peasantHouseholdDtoList: listTwo } = this.state
-      console.log('===========listTwo=============', listTwo, list)
+      console.log('===========listTwo=============', listTwo.length, list)
       if (this.isArrayAndNotNull(list)) {
         // 开启事务
         await db.transaction('begin').catch(() => {
           resolve(false)
         })
-        list.forEach((item) => {
+        list.forEach((item, index) => {
           if (this.isArrayAndNotNull(item.immigrantBuildOneselfList)) {
             // 自建房增加uid
             item.immigrantBuildOneselfList = item.immigrantBuildOneselfList.map((ytem) => {
@@ -742,10 +742,14 @@ class PullData {
             })
           }
           const values = getLandlordValues(item, 'default')
-          // console.log(values, '企业数据')
-          db.insertOrReplaceData(LandlordTableName, values, landlordFields).catch((err) => {
-            console.log(err, '插入业主')
-          })
+          console.log(values, `企业数据${index}`)
+          db.insertTableData(LandlordTableName, values, landlordFields)
+            .then((res) => {
+              console.log(res, '插入业主')
+            })
+            .catch((err) => {
+              console.log(err, '插入业主')
+            })
         })
         await db.transaction('commit').catch(() => {
           resolve(false)
@@ -762,7 +766,7 @@ class PullData {
           resolve(false)
         })
         const res = await getLandlordListBySearchApi()
-        console.log('===========listTwo=============', listTwo, res, list)
+        // console.log('===========listTwo=============', listTwo, res, list)
         res.forEach((key: any) => {
           let m = false
           listTwo.forEach((item) => {
@@ -770,10 +774,16 @@ class PullData {
               m = true
             }
           })
-          if (!m) {
-            db.deleteTableData(LandlordTableName, 'id', key.id).catch((err) => {
-              console.log(err, '删除业主')
-            })
+          console.log(m, 'begin')
+
+          if (!m && key.type != 'LandNoMove') {
+            db.deleteTableData(LandlordTableName, 'id', key.id)
+              .then((res) => {
+                console.log(res, '插入业主')
+              })
+              .catch((err) => {
+                console.log(err, '删除业主')
+              })
           }
         })
         listTwo.forEach((item) => {
