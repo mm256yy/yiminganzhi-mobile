@@ -120,11 +120,10 @@ onLoad((option: any) => {
     typeInfo.value = type
     if (type === 'edit') {
       title.value = '生产安置人口编辑'
-      formData.value = commonParams.value.item
-      console.log('EDIT::: ', commonParams.value)
     } else if (type === 'add') {
       title.value = '生产安置人口新增'
     }
+    formData.value = commonParams.value.item
   }
 })
 

@@ -1,5 +1,5 @@
 <template>
-  <view class="company-item" @click="toDetail(data)">
+  <view class="company-item" @click="toDetail(data)" v-if="data.isPadDelete=='0'">
     <view class="head">
       <view class="head-lt">
         <view class="label">户主</view>
