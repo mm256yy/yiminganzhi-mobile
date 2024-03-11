@@ -1,29 +1,28 @@
 <template>
   <view class="main-wrap">
+    <Back title="只征地不搬迁实施" needConfirm />
     <!-- 只征地不搬迁实施 -->
-    <Container title="只征地不搬迁实施">
-      <view class="content">
-        <LeftSidebar @switch-tab="switchTab" :dataList="tabList" />
+    <view class="content">
+      <LeftSidebar @switch-tab="switchTab" :dataList="tabList" />
 
-        <view class="right">
-          <!-- 头部 -->
-          <Header :dataInfo="dataInfo" />
+      <view class="right">
+        <!-- 头部 -->
+        <Header :dataInfo="dataInfo" />
 
-          <view class="box">
-            <!-- 资产评估报告 -->
-            <Report v-if="tabVal === 1" :dataInfo="dataInfo" @update-data="updateData" />
-            <!-- 安置确认 -->
-            <Arrangement v-if="tabVal === 2" :dataInfo="dataInfo" @update-data="updateData" />
-            <!-- 补偿卡 -->
-            <CompensateCard v-if="tabVal === 3" :dataInfo="dataInfo" @update-data="updateData" />
-            <!-- 征地协议 -->
-            <AcquisitionLand v-if="tabVal === 4" :dataInfo="dataInfo" @update-data="updateData" />
-            <!-- 土地腾让 -->
-            <LandTransfer v-if="tabVal === 5" :dataInfo="dataInfo" @update-data="updateData" />
-          </view>
+        <view class="box">
+          <!-- 资产评估报告 -->
+          <Report v-if="tabVal === 1" :dataInfo="dataInfo" @update-data="updateData" />
+          <!-- 安置确认 -->
+          <Arrangement v-if="tabVal === 2" :dataInfo="dataInfo" @update-data="updateData" />
+          <!-- 补偿卡 -->
+          <CompensateCard v-if="tabVal === 3" :dataInfo="dataInfo" @update-data="updateData" />
+          <!-- 征地协议 -->
+          <AcquisitionLand v-if="tabVal === 4" :dataInfo="dataInfo" @update-data="updateData" />
+          <!-- 土地腾让 -->
+          <LandTransfer v-if="tabVal === 5" :dataInfo="dataInfo" @update-data="updateData" />
         </view>
       </view>
-    </Container>
+    </view>
   </view>
 </template>
 <script lang="ts" setup>
@@ -38,7 +37,7 @@ import Arrangement from './Arrangement.vue' // 安置确认
 import CompensateCard from './CompensateCard.vue' // 补偿卡
 import AcquisitionLand from './AcquisitionLand.vue' // 征地协议
 import LandTransfer from './LandTransfer.vue' // 土地腾让
-
+import Back from '@/components/Back/Index.vue'
 import LeftSidebar from '@/components/LeftSidebar/Index.vue' // 引入左侧边栏组件
 import Header from '@/pages/land/components/navigation/TopHeader.vue' // 引入头部组件
 
@@ -67,14 +66,17 @@ const switchTab = (item: any) => {
 
 // 更新整体数据
 const updateData = () => {
-  emit('updateData', dataInfo.value.uid)
+  // emit('updateData', dataInfo.value.uid)
 }
 </script>
 <style lang="scss" scoped>
 .main-wrap {
   display: flex;
   flex-direction: column;
-  flex: 1;
+  width: 100%;
+  height: 100vh;
+  background: url('../../../../static/images/common_bg.png') no-repeat;
+  background-size: 100% 100%;
   overflow: hidden;
 
   .content {

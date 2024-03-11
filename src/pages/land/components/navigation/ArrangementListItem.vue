@@ -8,7 +8,7 @@
       <view class="right">
         <image
           class="icon m-r-10"
-          @click.prevent.stop="handleDeleteItem"
+          @click.stop="handleDeleteItem"
           src="@/static/images/icon_delete_mini.png"
           mode="scaleToFill"
         />
@@ -50,33 +50,31 @@
 import { ref } from 'vue'
 import { LandlordType } from '@/types/sync'
 import { formatDict, routerForward } from '@/utils'
-import { MainType } from '@/types/common'
-import { showToast } from '@/config'
-// import { deleteLandlordPeopleApi } from '@/service'
+// import { MainType } from '@/types/common'
 
 interface PropsType {
   data: LandlordType
+  parentUId: any
+  parentDoorNo: any
 }
 
 const props = defineProps<PropsType>()
-const emit = defineEmits(['deleteItem', 'toDetail'])
+const emit = defineEmits(['deleteItem', 'toDetail', 'refresh'])
 const alertDialogRef = ref()
-const currentItem = ref<any>({})
 
 // 跳转详细页面
 const toDetail = (data: LandlordType) => {
   emit('toDetail', data)
 }
 
-const dialogConfirm = (data: any) => {
-  if (!data) {
-    showToast('请输入删除原因')
-    return
-  }
+const dialogConfirm = () => {
   let params = {
-    ...currentItem.value
+    ...props.data,
+    parentUId: props.parentUId,
+    parentDoorNo: props.parentDoorNo
   }
   emit('deleteItem', params)
+  alertDialogRef.value.close()
 }
 
 const dialogClose = () => {

@@ -37,7 +37,12 @@
               label-align="right"
               name="formData.card"
             >
-              <uni-easyinput v-model="formData.card" type="text" placeholder="请输入" />
+              <uni-easyinput
+                v-model="formData.card"
+                :maxlength="18"
+                type="text"
+                placeholder="请输入"
+              />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -108,21 +113,6 @@ const formData = ref<any>({
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
 
-// /**
-//  * 获取业主详情
-//  * @param(object) uid
-//  */
-// const getLandlordDetail = () => {
-//   const { uid } = commonParams.value
-//   getEvaLandlordItemApi(uid).then((res: any) => {
-//     let arr: any = res.landEstimateDtoList || []
-//     if (arr && arr.length) {
-//       let obj: any = arr[0]
-//       formData.value = { ...obj }
-//     }
-//   })
-// }
-
 onLoad((option: any) => {
   if (option) {
     commonParams.value = JSON.parse(option.params)
@@ -140,11 +130,20 @@ onLoad((option: any) => {
 
 // 表单提交
 const submit = () => {
-  const { uid, doorNo } = commonParams.value.item
-  const params = {
+  const { uid, doorNo, parentDoorNo, parentUId } = commonParams.value.item
+  const params1 = {
     doorNo,
-    ...formData.value
+    ...formData.value,
+    uid
   }
+
+  const params2 = {
+    doorNo: parentDoorNo,
+    ...formData.value,
+    uid: parentUId
+  }
+
+  console.log('Params2::: ', params2)
 
   if (!formData.value.name) {
     showToast('姓名不能为空')
@@ -164,7 +163,7 @@ const submit = () => {
   }
 
   if (typeInfo.value === 'add') {
-    addLandlordPeopleApi(uid, params)
+    addLandlordPeopleApi(uid, params1)
       .then((res: any) => {
         if (res) {
           showToast(SUCCESS_MSG)
@@ -175,7 +174,7 @@ const submit = () => {
         showToast(ERROR_MSG)
       })
   } else {
-    updateLandlordPeopleApi(uid, params)
+    updateLandlordPeopleApi(uid, params2)
       .then((res: any) => {
         if (res) {
           showToast(SUCCESS_MSG)

@@ -15,7 +15,7 @@
       </view>
     </view>
     <view class="row-label-title">
-      本户共计征收土地：1.5亩，参保系数为：0.5，可参保3人，请添加参保人员
+      本户共计征收土地：{{ totalLand }}亩，参保系数为：0.5，可参保3人，请添加参保人员
     </view>
     <view class="main-list">
       <scroll-view
@@ -29,7 +29,11 @@
             v-for="(item, index) in dataInfo.demographicList"
             :data="item"
             :key="index"
+            :parentUId="dataInfo.uid"
+            :parentDoorNo="dataInfo.doorNo"
             @to-detail="handleClickDetail"
+            @refresh="refresh"
+            @delete-item="dialogItem"
           />
         </view>
       </scroll-view>
@@ -45,10 +49,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import ArrangementListItem from './ArrangementListItem.vue'
 import NoData from '@/components/NoData/index.vue'
-import { formatStr, routerForward } from '@/utils'
+import { formatStr, getStorage, StorageKey, routerForward } from '@/utils'
+import { deleteLandlordPeopleApi } from '@/service'
+import { SUCCESS_MSG, showToast } from '@/config/msg'
+
+// 获取数据字典
+const dict = getStorage(StorageKey.DICT)
+const emit = defineEmits(['refreshData'])
+const totalLand = ref<any>()
 
 const onArchives = () => {}
 
@@ -63,13 +74,18 @@ const toLink = (type: string, item: any) => {
   if (type === 'edit') {
     routerForward('arrangementEdit', {
       params: JSON.stringify({
-        item,
+        item: {
+          ...item,
+          parentUId: props.dataInfo.uid,
+          parentDoorNo: props.dataInfo.doorNo
+        },
         type
       })
     })
   } else if (type === 'add') {
     routerForward('arrangementEdit', {
       params: JSON.stringify({
+        item: props.dataInfo,
         type
       })
     })
@@ -79,6 +95,31 @@ const toLink = (type: string, item: any) => {
 const handleClickDetail = (data: any) => {
   toLink('edit', data)
 }
+
+const refresh = () => {
+  emit('refreshData')
+}
+
+const dialogItem = (data: any) => {
+  console.log('DELETE', data)
+  deleteLandlordPeopleApi(data.parentUId, data.uid).then((res) => {
+    if (res) {
+      showToast(SUCCESS_MSG)
+      refresh()
+    }
+  })
+}
+
+onMounted(() => {
+  console.log('DICT1', dict[420])
+  const list = props.dataInfo.landEstimateDtoList?.map((item: any) => item.shapeArea)
+  console.log('DICT2', list)
+  const total = list.reduce((pre: any, cur: any) => {
+    return pre + cur
+  })
+  console.log('DICT3', typeof total)
+  totalLand.value = total.toFixed(2)
+})
 </script>
 
 <style lang="scss" scoped>
