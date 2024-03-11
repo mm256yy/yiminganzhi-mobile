@@ -19,7 +19,7 @@
       </view>
     </view>
     <view class="img-wrap">
-      <image src="@/static/images/agreement_bg.png" class="img" mode="widthFix" />
+      <image src="@/static/images/tdzqxy.png" class="img" mode="widthFix" />
     </view>
   </view>
 </template>
