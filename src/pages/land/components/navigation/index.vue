@@ -20,6 +20,10 @@
           <AcquisitionLand v-if="tabVal === 4" :dataInfo="dataInfo" @update-data="updateData" />
           <!-- 土地腾让 -->
           <LandTransfer v-if="tabVal === 5" :dataInfo="dataInfo" @update-data="updateData" />
+          <!-- 自谋职业 -->
+          <FindSelf v-if="tabVal === 6" :dataInfo="dataInfo" @update-data="updateData" />
+          <!-- 养老保险 -->
+          <Insure v-if="tabVal === 7" :dataInfo="dataInfo" @update-data="updateData" />
         </view>
       </view>
     </view>
@@ -28,36 +32,81 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { LandlordType } from '@/types/sync'
-import Container from '@/components/Container/index.vue'
-// import { deepClone } from '@/utils'
-import { landNoMoveList } from '../../../common/config.ts'
+import { deepClone } from '@/utils'
+import { landNoMoveList, landNoMoveOtherList } from '../../../common/config.ts'
 import Report from './Report.vue' // 资产评估报告
 import Arrangement from './Arrangement.vue' // 安置确认
 import CompensateCard from './CompensateCard.vue' // 补偿卡
 import AcquisitionLand from './AcquisitionLand.vue' // 征地协议
 import LandTransfer from './LandTransfer.vue' // 土地腾让
+import FindSelf from '@/pages/household/productionResettle/findself.vue'
+import Insure from '@/pages/household/productionResettle/insure.vue'
 import Back from '@/components/Back/Index.vue'
 import LeftSidebar from '@/components/LeftSidebar/Index.vue' // 引入左侧边栏组件
 import Header from '@/pages/land/components/navigation/TopHeader.vue' // 引入头部组件
 
-// interface PropsType {
-//   dataInfo: LandlordType
-// }
-
-// const props = defineProps<PropsType>()
 const tabVal = ref<number>(1)
 const emit = defineEmits(['updateData'])
 const dataInfo = ref<any>(null)
-
-const tabList = computed(() => {
-  return landNoMoveList
-})
 
 onLoad((option) => {
   if (option && option.data) {
     dataInfo.value = JSON.parse(option.data)
   }
+})
+
+const tabList = computed(() => {
+  const { immigrantFilling = {}, landEstimateDtoList } = dataInfo.value || {}
+  const list =
+    dataInfo.value.landUserType === 'PeasantHousehold' ? landNoMoveList : landNoMoveOtherList
+  const arr: any = deepClone(list)
+  // 资产评估报告
+  if (landEstimateDtoList && landEstimateDtoList.length > 0) {
+    arr[0].list[0].list[0].filled = true
+  }
+
+  if (immigrantFilling) {
+    if (dataInfo.value.landUserType === 'PeasantHousehold') {
+      // 生产安置确认
+      if (immigrantFilling.productionArrangementStatus === '1') {
+        arr[0].list[0].list[1].filled = true
+      }
+      // 补偿卡
+      if (immigrantFilling.cardStatus === '1') {
+        arr[0].list[0].list[2].filled = true
+      }
+      // 征地协议
+      if (immigrantFilling.agreementStatus === '1') {
+        arr[0].list[0].list[3].filled = true
+      }
+      // 土地腾让
+      if (immigrantFilling.agreementStatus === '1') {
+        arr[0].list[0].list[4].filled = true
+      }
+      // 自谋职业
+      if (immigrantFilling.selfEmploymentStatus === '1') {
+        arr[1].list[0].list[0].filled = true
+      }
+      // 养老保险
+      if (immigrantFilling.retirementStatus === '1') {
+        arr[0].list[0].list[1].filled = true
+      }
+    } else {
+      // 补偿卡
+      if (immigrantFilling.cardStatus === '1') {
+        arr[0].list[0].list[1].filled = true
+      }
+      // 征地协议
+      if (immigrantFilling.agreementStatus === '1') {
+        arr[0].list[0].list[2].filled = true
+      }
+      // 土地腾让
+      if (immigrantFilling.agreementStatus === '1') {
+        arr[0].list[0].list[3].filled = true
+      }
+    }
+  }
+  return [...arr]
 })
 
 const switchTab = (item: any) => {
@@ -66,7 +115,7 @@ const switchTab = (item: any) => {
 
 // 更新整体数据
 const updateData = () => {
-  // emit('updateData', dataInfo.value.uid)
+  emit('updateData', dataInfo.value.uid)
 }
 </script>
 <style lang="scss" scoped>

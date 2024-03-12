@@ -3,11 +3,11 @@
     <view class="list-header-rt">
       <view class="list-header-left">
         <view class="name">{{ props.dataInfo?.name }}</view>
-        <view class="account-no">{{ props.dataInfo?.doorNo }}</view>
+        <view class="account-no">{{ props.dataInfo?.showDoorNo }}</view>
         <view class="fill-number">
           填报表单：&nbsp;
-          <text class="green">3</text>
-          /6
+          <text class="green">{{ fillNumber }}</text>
+          /{{ totalStage }}
         </view>
       </view>
       <!-- <view class="list-header-right">
@@ -21,10 +21,8 @@
 </template>
 
 <script lang="ts" setup>
-// import { filterViewDoorNo } from '@/utils'
-// import { MainType } from '@/types/common'
-// import { routerForward } from '@/utils'
 import { LandlordType } from '@/types/sync'
+import { computed } from 'vue'
 
 interface PropsType {
   dataInfo: LandlordType
@@ -32,6 +30,64 @@ interface PropsType {
 
 const props = defineProps<PropsType>()
 
+const totalStage = computed(() => {
+  // 类别为农户时6个阶段，其他4个阶段
+  return props.dataInfo.landUserType === 'PeasantHousehold' ? 6 : 4
+})
+
+const fillNumber = computed(() => {
+  const { immigrantFilling, landUserType, landEstimateDtoList } = props.dataInfo || {}
+
+  let fillCount = 0
+  if (!immigrantFilling) {
+    return 0
+  }
+
+  const {
+    productionArrangementStatus, // 生产安置
+    cardStatus, //补偿卡
+    agreementStatus, // 动迁协议
+    landSoarStatus, // 土地腾让
+    selfEmploymentStatus, // 自谋职业
+    retirementStatus // 养老保险
+  } = immigrantFilling || {}
+
+  if (landUserType === 'PeasantHousehold') {
+    // 农户
+    //生产安置确认
+    if (productionArrangementStatus === '1') {
+      fillCount++
+    }
+    // 自谋职业
+    if (selfEmploymentStatus === '1') {
+      fillCount++
+    }
+    // 养老保险
+    if (retirementStatus === '1') {
+      fillCount++
+    }
+  }
+
+  // 补偿卡
+  if (cardStatus === '1') {
+    fillCount++
+  }
+  // 征地协议
+  if (agreementStatus === '1') {
+    fillCount++
+  }
+  // 土地腾让
+  if (landSoarStatus === '1') {
+    fillCount++
+  }
+
+  // 资产评估
+  if (landEstimateDtoList && landEstimateDtoList.length > 0) {
+    fillCount++
+  }
+
+  return fillCount
+})
 </script>
 
 <style lang="scss" scoped>

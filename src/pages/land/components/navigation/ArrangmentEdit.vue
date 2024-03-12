@@ -88,14 +88,12 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { routerBack, getStorage, StorageKey } from '@/utils'
 import { addLandlordPeopleApi, updateLandlordPeopleApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
-// import Container from '@/components/Container/index.vue'
 import Back from '@/components/Back/Index.vue'
-import { formatStr } from '@/utils'
 
 const title = ref<string>('')
 const commonParams = ref<any>({})
@@ -120,29 +118,21 @@ onLoad((option: any) => {
     typeInfo.value = type
     if (type === 'edit') {
       title.value = '生产安置人口编辑'
+      formData.value = commonParams.value.formValue
     } else if (type === 'add') {
       title.value = '生产安置人口新增'
+      formData.value = {}
     }
-    formData.value = commonParams.value.item
   }
 })
 
 // 表单提交
 const submit = () => {
-  const { uid, doorNo, parentDoorNo, parentUId } = commonParams.value.item
-  const params1 = {
+  const { uid, doorNo } = commonParams.value
+  const params = {
     doorNo,
-    ...formData.value,
-    uid
+    ...formData.value
   }
-
-  const params2 = {
-    doorNo: parentDoorNo,
-    ...formData.value,
-    uid: parentUId
-  }
-
-  console.log('Params2::: ', params2)
 
   if (!formData.value.name) {
     showToast('姓名不能为空')
@@ -162,22 +152,24 @@ const submit = () => {
   }
 
   if (typeInfo.value === 'add') {
-    addLandlordPeopleApi(uid, params1)
+    addLandlordPeopleApi(uid, params)
       .then((res: any) => {
         if (res) {
           showToast(SUCCESS_MSG)
           routerBack()
+          uni.$emit('customRefresh')
         }
       })
       .catch(() => {
         showToast(ERROR_MSG)
       })
   } else {
-    updateLandlordPeopleApi(uid, params2)
+    updateLandlordPeopleApi(uid, params)
       .then((res: any) => {
         if (res) {
           showToast(SUCCESS_MSG)
           routerBack()
+          uni.$emit('customRefresh')
         }
       })
       .catch(() => {

@@ -91,6 +91,7 @@ export interface LandlordType {
   signDate?: any
   landTypeText: string // 地类
   landNature: string // 土地性质
+  landUserType: string // 类别
   isChecked: boolean
   [key: string]: any
 
@@ -151,7 +152,7 @@ export interface LandlordType {
 
   updateLogList: UpdateLogType[]
   assetHouseFitUpList: AssetHouseFitUpType[]
-  assetLandList: AssetLandType[]  //已废弃
+  assetLandList: AssetLandType[] //已废弃
 
   assetAppendantList: AssetAppendantType[]
   immigrantDocumentation: any
@@ -399,7 +400,7 @@ export interface StateType {
   notifyDtoList: any[]
   landPeasantHouseholdDtoList: any[]
   landEstimateDtoList: any[]
-   landAppendantList: any[]
+  landAppendantList: any[]
 }
 
 export interface PushStateType {

@@ -727,3 +727,46 @@ export const landNoMoveList = [
     ]
   }
 ]
+
+export const landNoMoveOtherList = [
+  {
+    title: '动迁阶段',
+    filled: false,
+    list: [
+      {
+        title: '',
+        filled: false,
+        list: [
+          {
+            label: '资产评估报告',
+            value: 1,
+            filled: false,
+            iconDef: iconFwfswDef,
+            iconSel: iconFwfswSel
+          },
+          {
+            label: '补偿卡',
+            value: 3,
+            filled: false,
+            iconDef: iconScazDef,
+            iconSel: iconScazSel
+          },
+          {
+            label: '征地协议',
+            value: 4,
+            filled: false,
+            iconDef: iconBqazDef,
+            iconSel: iconBqazSel
+          },
+          {
+            label: '土地腾让',
+            value: 5,
+            filled: false,
+            iconDef: iconMnazDef,
+            iconSel: iconMnazSel
+          }
+        ]
+      }
+    ]
+  }
+]

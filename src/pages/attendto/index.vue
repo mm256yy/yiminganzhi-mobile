@@ -67,6 +67,8 @@
 
       <!-- 自谋出路办理 -->
       <SelfFindWay v-if="handleType === 8" :uid="query.uid" @submit="submitSuccess" />
+      <!-- 只征地不搬迁土地腾让办理 -->
+      <LandNoMove v-if="handleType === 9" :uid="query.uid" @submit="submitSuccess" />
     </view>
   </Container>
 </template>
@@ -89,6 +91,7 @@ import TransitionVacate from './transitionVacate.vue' // 引入过渡安置办�
 
 import CentralizeSupport from './centralizedSupport.vue' // 引入集中供养 —— 办理组件
 import SelfFindWay from './selfFindWay.vue' // 引入自谋出路 —— 办理组件
+import LandNoMove from './LandNoMove.vue'
 
 /**
  * 1 相关手续办理

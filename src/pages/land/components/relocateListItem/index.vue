@@ -8,7 +8,7 @@
       </view>
       <view class="head-rt">
         <view class="status"
-          ><text class="circle">{{ getProgressText(props.data) }} </text></view
+          ><text class="circle">{{ fillNumber }}/{{ totalStage }} </text></view
         >
       </view>
     </view>
@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts" setup>
-// import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { LandlordType } from '@/types/sync'
 import { formatDict, routerForward } from '@/utils'
 import { MainType } from '@/types/common'
@@ -58,40 +58,64 @@ const toDetail = () => {
   })
 }
 
-// 获取阶段状态文本
-const getProgressText = (data: LandlordType) => {
-  if (!data) return ''
-  const { type, immigrantFilling } = data
-  let count = 0
-  let total = 0
+const totalStage = computed(() => {
+  // 类别为农户时6个阶段，其他4个阶段
+  return props.data.landUserType === 'PeasantHousehold' ? 6 : 4
+})
 
-  if (type === MainType.LandNoMove) {
-    if (immigrantFilling) {
-      if (immigrantFilling.estimateeStatus === '1') {
-        count++
-      }
-      // 协议
-      if (immigrantFilling.agreementStatus === '1') {
-        count++
-      }
-      // 移民剪卡
-      if (immigrantFilling.cardStatus === '1') {
-        count++
-      }
-      // 腾空
-      if (immigrantFilling.excessSoarStatus === '1') {
-        count++
-      }
-      // 相关手续
-      if (immigrantFilling.proceduresStatus === '1') {
-        count++
-      }
-    }
+const fillNumber = computed(() => {
+  const { immigrantFilling, landUserType, landEstimateDtoList } = props.data || {}
 
-    total = 5
+  let fillCount = 0
+  if (!immigrantFilling) {
+    return 0
   }
-  return `${count} / ${total}`
-}
+
+  const {
+    productionArrangementStatus, // 生产安置
+    cardStatus, //补偿卡
+    agreementStatus, // 动迁协议
+    landSoarStatus, // 土地腾让
+    selfEmploymentStatus, // 自谋职业
+    retirementStatus // 养老保险
+  } = immigrantFilling || {}
+
+  if (landUserType === 'PeasantHousehold') {
+    // 农户
+    //生产安置确认
+    if (productionArrangementStatus === '1') {
+      fillCount++
+    }
+    // 自谋职业
+    if (selfEmploymentStatus === '1') {
+      fillCount++
+    }
+    // 养老保险
+    if (retirementStatus === '1') {
+      fillCount++
+    }
+  }
+
+  // 补偿卡
+  if (cardStatus === '1') {
+    fillCount++
+  }
+  // 征地协议
+  if (agreementStatus === '1') {
+    fillCount++
+  }
+  // 土地腾让
+  if (landSoarStatus === '1') {
+    fillCount++
+  }
+
+  // 资产评估
+  if (landEstimateDtoList && landEstimateDtoList.length > 0) {
+    fillCount++
+  }
+
+  return fillCount
+})
 </script>
 
 <style lang="scss" scoped>

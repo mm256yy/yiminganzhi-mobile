@@ -272,14 +272,12 @@ onShow(() => {
   uni.$on('customRefresh', () => {
     getList()
   })
-  console.log('onShow::: ')
 })
 
 onLoad((option) => {
   if (option) {
     console.log('子组件OnLoad')
   }
-  console.log('onLoad::: ')
 })
 
 onBeforeUnmount(() => {

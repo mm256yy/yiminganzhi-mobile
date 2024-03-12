@@ -5,12 +5,12 @@
       <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
       <text>资产评估报告</text>
     </view>
-    <view style="font-size: 7rpx">
+    <view class="row-label-title">
       使用权人
       {{ props.dataInfo.name }}，属坝址周边村只征地不搬迁农户及单位，青苗评估共有{{
         num
       }}个地块，面积{{ numss }}亩，株数{{ nums }}株，金额{{ numsss }}元。
-      <div>详见地块明细如下:</div>
+      <div class="row-hint-title">详见地块明细如下:</div>
     </view>
     <view class="table-wrap">
       <uni-table class="table" ref="table" border stripe emptyText="暂无更多数据">
@@ -167,5 +167,18 @@ onMounted(() => {
       margin-right: 0;
     }
   }
+}
+
+.row-label-title {
+  color: #333;
+  font-size: 8rpx;
+  line-height: 25rpx;
+}
+
+.row-hint-title {
+  color: #666;
+  font-size: 8rpx;
+  line-height: 22rpx;
+  height: 22rpx;
 }
 </style>

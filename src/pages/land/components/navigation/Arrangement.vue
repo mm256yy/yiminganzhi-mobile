@@ -2,7 +2,13 @@
 <template>
   <view class="main-wrapper">
     <view class="row-1">
-      <view class="left" />
+      <view class="left">
+        <view class="row-label-title">
+          本户共计征收土地：{{ totalLand || 0 }}亩，参保系数为：{{ insuranceFactor }}，可参保{{
+            num || 0
+          }}人，请添加参保人员
+        </view>
+      </view>
       <view class="right">
         <view class="btn green">
           <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
@@ -14,23 +20,19 @@
         </view>
       </view>
     </view>
-    <view class="row-label-title">
-      本户共计征收土地：{{ totalLand }}亩，参保系数为：0.5，可参保3人，请添加参保人员
-    </view>
+
     <view class="main-list">
       <scroll-view
-        v-if="dataInfo.demographicList && dataInfo.demographicList.length"
+        v-if="demographicList && demographicList.length"
         class="scroll-view"
         scroll-y
         :enable-flex="true"
       >
         <view class="scroll">
           <ArrangementListItem
-            v-for="(item, index) in dataInfo.demographicList"
+            v-for="(item, index) in demographicList"
             :data="item"
             :key="index"
-            :parentUId="dataInfo.uid"
-            :parentDoorNo="dataInfo.doorNo"
             @to-detail="handleClickDetail"
             @refresh="refresh"
             @delete-item="dialogItem"
@@ -45,21 +47,40 @@
       mode="scaleToFill"
       @click="toLink('add', {})"
     />
+
+    <!-- 删除确认框 -->
+    <uni-popup ref="alertDialogRef" type="dialog">
+      <uni-popup-dialog
+        type="warn"
+        cancelText="取消"
+        confirmText="确认"
+        title="是否确认删除该条数据？"
+        @confirm="dialogConfirm"
+        @close="dialogClose"
+      />
+    </uni-popup>
   </view>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import ArrangementListItem from './ArrangementListItem.vue'
 import NoData from '@/components/NoData/index.vue'
 import { formatStr, getStorage, StorageKey, routerForward } from '@/utils'
 import { deleteLandlordPeopleApi } from '@/service'
 import { SUCCESS_MSG, showToast } from '@/config/msg'
+import { getVirutalVillageTreeApi, getLandlordListBySearchApi } from '@/service'
+import { MainType } from '@/types/common'
+import { onShow } from '@dcloudio/uni-app'
 
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
 const emit = defineEmits(['refreshData'])
 const totalLand = ref<any>()
+const num = ref<any>()
+const currentItem = ref<any>()
+const demographicList = ref<any[]>()
+const alertDialogRef = ref()
 
 const onArchives = () => {}
 
@@ -70,26 +91,41 @@ const props = defineProps({
   }
 })
 
-const toLink = (type: string, item: any) => {
+const toLink = (type: string, data: any) => {
+  const { uid, doorNo } = props.dataInfo
   if (type === 'edit') {
+    let params = {
+      type,
+      uid,
+      doorNo,
+      itemUid: data.uid,
+      formValue: {
+        ...data
+      }
+    }
     routerForward('arrangementEdit', {
-      params: JSON.stringify({
-        item: {
-          ...item,
-          parentUId: props.dataInfo.uid,
-          parentDoorNo: props.dataInfo.doorNo
-        },
-        type
-      })
+      params: JSON.stringify(params)
     })
   } else if (type === 'add') {
+    let params = { type, uid, doorNo }
     routerForward('arrangementEdit', {
-      params: JSON.stringify({
-        item: props.dataInfo,
-        type
-      })
+      params: JSON.stringify(params)
     })
   }
+}
+
+const dialogConfirm = () => {
+  const { uid } = props.dataInfo
+  deleteLandlordPeopleApi(uid, currentItem.value.uid).then((res) => {
+    if (res) {
+      showToast(SUCCESS_MSG)
+      getListApi()
+    }
+  })
+}
+
+const dialogClose = () => {
+  alertDialogRef.value.close()
 }
 
 const handleClickDetail = (data: any) => {
@@ -102,24 +138,43 @@ const refresh = () => {
 
 const dialogItem = (data: any) => {
   console.log('DELETE', data)
-  deleteLandlordPeopleApi(data.parentUId, data.uid).then((res) => {
-    if (res) {
-      showToast(SUCCESS_MSG)
-      refresh()
-    }
-  })
+  currentItem.value = data
+  alertDialogRef.value?.open()
 }
 
-onMounted(() => {
-  console.log('DICT1', dict[420])
-  const list = props.dataInfo.landEstimateDtoList?.map((item: any) => item.shapeArea)
-  console.log('DICT2', list)
-  const total = list.reduce((pre: any, cur: any) => {
-    return pre + cur
-  })
-  console.log('DICT3', typeof total)
-  totalLand.value = total.toFixed(2)
+const insuranceFactor = computed(() => {
+  return dict[420][0]?.value
 })
+
+onMounted(() => {
+  getListApi()
+  countNum()
+})
+
+const countNum = () => {
+  const list = props.dataInfo.landEstimateDtoList?.map((item: any) => item.shapeArea)
+  if (list && list.length > 0) {
+    const total = list.reduce((pre: any, cur: any) => {
+      return pre + cur
+    })
+    totalLand.value = total.toFixed(2)
+    num.value = Math.floor(Number(totalLand.value) / Number(dict[420][0]?.text))
+  }
+}
+
+onShow(() => {
+  getListApi()
+})
+
+const getListApi = async () => {
+  const params: any = {
+    type: MainType.LandNoMove,
+    doorNo: props.dataInfo.doorNo
+  }
+
+  const res: any[] = await getLandlordListBySearchApi(params)
+  demographicList.value = res[0]?.demographicList || []
+}
 </script>
 
 <style lang="scss" scoped>
@@ -134,6 +189,10 @@ onMounted(() => {
     align-items: center;
     margin: 9rpx 0;
     justify-content: space-between;
+
+    .left {
+      flex-wrap: wrap;
+    }
 
     .right {
       display: flex;
@@ -170,7 +229,7 @@ onMounted(() => {
 
   .row-label-title {
     color: #333;
-    font-size: 10rpx;
+    font-size: 8rpx;
   }
 
   .main-list {

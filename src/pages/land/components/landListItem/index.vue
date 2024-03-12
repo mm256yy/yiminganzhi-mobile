@@ -108,9 +108,9 @@ const getUidFromAPi = async () => {
 }
 
 const getUnit = (item: any) => {
-  let str1 = item?.cityCodeText ? item?.cityCodeText + '/' : ''
-  let str2 = item?.areaCodeText ? item?.areaCodeText + '/' : ''
-  let str3 = item?.townCodeText ? item?.townCodeText + '/' : ''
+  let str1 = item?.cityCodeText ? item?.cityCodeText : ''
+  let str2 = item?.areaCodeText ? item?.areaCodeText : ''
+  let str3 = item?.townCodeText ? item?.townCodeText : ''
   let str4 = item?.villageText ? item?.villageText : ''
   return str1.concat(str2).concat(str3).concat(str4)
 }

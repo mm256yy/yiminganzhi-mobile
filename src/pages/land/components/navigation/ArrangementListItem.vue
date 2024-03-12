@@ -1,5 +1,5 @@
 <template>
-  <view class="company-item" @click="toDetail(data)" v-if="data.isPadDelete=='0'">
+  <view class="company-item" @click="toDetail(data)" v-if="data.isPadDelete == '0'">
     <view class="head">
       <view class="head-lt">
         <view class="label">户主</view>
@@ -8,7 +8,7 @@
       <view class="right">
         <image
           class="icon m-r-10"
-          @click.stop="handleDeleteItem"
+          @click.stop="handleDeleteItem(data)"
           src="@/static/images/icon_delete_mini.png"
           mode="scaleToFill"
         />
@@ -31,54 +31,23 @@
         <view class="value"> {{ formatDict(data.settingWay, 375) }} </view>
       </view>
     </view>
-
-    <!-- 删除确认框 -->
-    <uni-popup ref="alertDialogRef" type="dialog">
-      <uni-popup-dialog
-        type="warn"
-        cancelText="取消"
-        confirmText="确认"
-        title="是否确认删除该条数据？"
-        @confirm="dialogConfirm"
-        @close="dialogClose"
-      />
-    </uni-popup>
   </view>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
 import { LandlordType } from '@/types/sync'
-import { formatDict, routerForward } from '@/utils'
-// import { MainType } from '@/types/common'
+import { formatDict } from '@/utils'
 
 interface PropsType {
   data: LandlordType
-  parentUId: any
-  parentDoorNo: any
 }
 
 const props = defineProps<PropsType>()
-const emit = defineEmits(['deleteItem', 'toDetail', 'refresh'])
-const alertDialogRef = ref()
+const emit = defineEmits(['deleteItem', 'toDetail'])
 
 // 跳转详细页面
 const toDetail = (data: LandlordType) => {
   emit('toDetail', data)
-}
-
-const dialogConfirm = () => {
-  let params = {
-    ...props.data,
-    parentUId: props.parentUId,
-    parentDoorNo: props.parentDoorNo
-  }
-  emit('deleteItem', params)
-  alertDialogRef.value.close()
-}
-
-const dialogClose = () => {
-  alertDialogRef.value.close()
 }
 
 /**
@@ -86,11 +55,7 @@ const dialogClose = () => {
  * @param {Object} data 当前行数据
  */
 const handleDeleteItem = (data: LandlordType) => {
-  alertDialogRef.value?.open()
-  // currentItem.value = { ...data }
-  // 暂缺删除接口
-  // const {uid}=data||{}
-  //deleteLandlordPeopleApi(uid)
+  emit('deleteItem', data)
 }
 </script>
 
@@ -122,6 +87,7 @@ const handleDeleteItem = (data: LandlordType) => {
     flex-direction: row;
     padding-bottom: 6rpx;
     justify-content: space-between;
+    border-bottom: 1rpx dotted #d0cbcb;
 
     .head-lt {
       display: flex;

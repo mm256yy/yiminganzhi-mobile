@@ -93,15 +93,7 @@ const statusCount = ref<number>(0)
 // 角色类型，不同角色跳转不同的页面，默认为实物采集页面
 // const roleType = ref<RoleCodeType>(getStorage(StorageKey.USERROLE))
 
-onLoad((options: any) => {
-  // if (options && options.type) {
-  //   sourceType.value = options.type
-  // }
-  // statusCount.value = options.count || 0
-  // if (options && options.name) {
-  //   keyWords.value = options.name
-  // }
-})
+onLoad((options: any) => {})
 
 const init = () => {
   page.value = 1
@@ -123,7 +115,6 @@ const onToggleVillage = () => {
 
 const iptChange = (e: any) => {
   keyWords.value = e.detail.value
-
   init()
 }
 
@@ -153,6 +144,8 @@ const getList = () => {
       name: keyWords.value
       // villageCode: villageCode.value
     }
+
+    console.log('只征地不搬迁列表Params', params)
 
     const res: any[] = await getLandlordListBySearchApi(params)
     console.log('只征地不搬迁列表List', res)
@@ -190,8 +183,12 @@ onMounted(() => {
   init()
 })
 
-onShow((options) => {
+onShow(() => {
   init()
+  // 注册事件监听器
+  uni.$on('customRefresh', () => {
+    getList()
+  })
 })
 </script>
 
