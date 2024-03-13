@@ -157,3 +157,7 @@ export const updateLandlord = (data?: any) => {
 export const getDictObjsApi = (e: any) => {
   return DictionariesController.getDictObjs(e)
 }
+// 获取资产评估-土地关联数量
+export const getLandlordListBySearchTitleApi = () => {
+  return landEstimateDtoListFill.getLandlordListBySearchTitle()
+}

@@ -188,5 +188,19 @@ export class landEstimateDtoListFills extends Common {
       }
     })
   }
+  getLandlordListBySearchTitle(): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const listTit = await this.db.selectSql(`select * from ${landEstimateDtoListName}`)
+        const array = listTit.length
+        console.log(listTit.length, 'getLandlordListBySearchTitle')
+
+        resolve(array)
+      } catch (error) {
+        console.log(error, 'getLandlordListBySearchTitle')
+        reject([])
+      }
+    })
+  }
 }
 export const landEstimateDtoListFill = new landEstimateDtoListFills()

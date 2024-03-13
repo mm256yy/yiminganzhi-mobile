@@ -17,7 +17,7 @@
     <!-- 具体内容 -->
     <view class="main-enter">
       <view class="operate-segment">
-        <text class="land-text">{{ `土地列表（共 ${list?.length || 0} 条土地数据）` }}</text>
+        <text class="land-text">{{ `土地列表（共 ${num} 条土地数据）` }}</text>
         <view class="right-side">
           <view class="btn blue-btn" @click="associatedBind">
             <text class="txt">关联绑定</text>
@@ -84,7 +84,11 @@
 import { ref, reactive, onMounted, nextTick, computed, onBeforeUnmount } from 'vue'
 import { onShow, onLoad } from '@dcloudio/uni-app'
 import { getStorage, StorageKey, routerForward, debounce } from '@/utils'
-import { getOtherItemApi, getLandEstimateDtoListApi } from '@/service'
+import {
+  getOtherItemApi,
+  getLandEstimateDtoListApi,
+  getLandlordListBySearchTitleApi
+} from '@/service'
 import NoData from '@/components/NoData/index.vue'
 import LandListItem from '@/pages/land/components/landListItem/index.vue'
 import SyncCompont from '@/components/Sync/Index.vue'
@@ -124,7 +128,7 @@ const toTarget = (name: any) => {
     ...params
   })
 }
-
+let num = ref()
 const getList = () => {
   nextTick(async () => {
     isLoading.value = true
@@ -141,7 +145,8 @@ const getList = () => {
         isChecked: false
       }
     })
-    console.log('列表数据日志', res)
+    num.value = await getLandlordListBySearchTitleApi()
+    console.log(num.value, '列表数据日志', res)
 
     isLoading.value = false
     if (res && res.length) {

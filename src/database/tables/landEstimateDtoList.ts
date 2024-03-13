@@ -70,7 +70,10 @@ export interface landEstimateDtoListDDLType {
 export const landEstimateDtoListName = 'landEstimateDtoList'
 // 需要更新的字段定义 和 字段赋值
 export const landEstimateDtoListlds = `'createdBy','createdDate','lastModifiedBy','lastModifiedDate','id','projectId','status','householdId','householdType','doorNo','showDoorNo','householder','area','inundationRange','sheetNumber','landNumber','landName','cityCode','areaCode','townCode','villageCode','villagerGroup','rightHolder','landNature','xzdw','landLevelOne','landLevelTwo','shapeArea','shapeLeng','avgElevat','minElevat','maxElevat','avgX','minX','maxX','avgY','minY','maxY','remark','isDelete','relationFlag','estimateFlag','relationBy','landOwner','getType','landSea','valuationPrice','valuationAmount','compensationAmount','uid','addReason','deleteReason','evalIsDelete','areaText','inundationRangeText','cityCodeText','areaCodeText','townCodeText','villageCodeText','landNatureText','landLevelOneText','landLevelTwoText','landTypeText','cbRate','cbNum','isUpdate'`
-export const getLandEstimateDtoListValues = (item: landEstimateDtoListDDLType, status: 'default' | 'modify') => {
+export const getLandEstimateDtoListValues = (
+  item: landEstimateDtoListDDLType,
+  status: 'default' | 'modify'
+) => {
   let m = ''
   let key: keyof landEstimateDtoListDDLType
   for (key in item) {
@@ -82,11 +85,9 @@ export const getLandEstimateDtoListValues = (item: landEstimateDtoListDDLType, s
     } else {
       m = m + `'${item[key]}'`
     }
-
   }
   return m
 }
-
 
 export const landEstimateDtoListDDL = `
 create table if not exists ${landEstimateDtoListName} (
@@ -94,7 +95,7 @@ create table if not exists ${landEstimateDtoListName} (
   'createdDate' text,
   'lastModifiedBy' text,
   'lastModifiedDate' text,
-  'id' INTEGER DEFAULT NULL,
+  'id' text PRIMARY KEY,
   'projectId' text,
   'status' text,
   'householdId' text,
@@ -139,7 +140,7 @@ create table if not exists ${landEstimateDtoListName} (
   'valuationPrice' text,
   'valuationAmount' text,
   'compensationAmount' text,
-  'uid' text PRIMARY KEY,
+  'uid' text,
   'addReason' text,
   'deleteReason' text,
   'evalIsDelete' text,
