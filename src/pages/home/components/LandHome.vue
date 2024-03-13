@@ -270,7 +270,6 @@ const handleItemClick = (item: any) => {
     return
   }
   list.value[index].isChecked = isChecked
-  console.log('isChecked::: ', list.value[index].isChecked)
 }
 
 onShow(() => {
@@ -278,6 +277,7 @@ onShow(() => {
   uni.$on('customRefresh', () => {
     getList()
   })
+  getList()
 })
 
 onLoad((option) => {
@@ -292,7 +292,7 @@ onBeforeUnmount(() => {
 
 onMounted(() => {
   getOtherWithTypeSetApi({ like: '王' }).then((res) => {
-    console.log(res,'=======================');
+    console.log(res, '=======================')
   })
   init()
   getPullTime()

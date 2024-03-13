@@ -10,7 +10,7 @@
         </view>
       </view>
       <view class="right">
-        <view class="btn green">
+        <view class="btn green" @click="handleClick">
           <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
           <text class="txt">打印报表</text>
         </view>
@@ -66,10 +66,10 @@
 import { ref, onMounted, computed } from 'vue'
 import ArrangementListItem from './ArrangementListItem.vue'
 import NoData from '@/components/NoData/index.vue'
-import { formatStr, getStorage, StorageKey, routerForward } from '@/utils'
+import { getStorage, StorageKey, routerForward } from '@/utils'
 import { deleteLandlordPeopleApi } from '@/service'
 import { SUCCESS_MSG, showToast } from '@/config/msg'
-import { getVirutalVillageTreeApi, getLandlordListBySearchApi } from '@/service'
+import { getLandlordListBySearchApi } from '@/service'
 import { MainType } from '@/types/common'
 import { onShow } from '@dcloudio/uni-app'
 
@@ -81,8 +81,6 @@ const num = ref<any>()
 const currentItem = ref<any>()
 const demographicList = ref<any[]>()
 const alertDialogRef = ref()
-
-const onArchives = () => {}
 
 const props = defineProps({
   dataInfo: {
@@ -174,6 +172,21 @@ const getListApi = async () => {
 
   const res: any[] = await getLandlordListBySearchApi(params)
   demographicList.value = res[0]?.demographicList || []
+}
+
+const onArchives = () => {
+  routerForward('archives', {
+    type: 1,
+    uid: props.dataInfo.uid
+  })
+}
+
+const handleClick = () => {
+  routerForward('pdfSerch', {
+    data: JSON.stringify(demographicList.value),
+    dataInfo: JSON.stringify(props.dataInfo),
+    id: 1
+  })
 }
 </script>
 

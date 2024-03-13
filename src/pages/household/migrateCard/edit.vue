@@ -56,6 +56,7 @@ import { routerBack } from '@/utils'
 import { getImpLandlordItemApi, saveImpLandlordItemApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
+import { debounce } from 'lodash'
 
 const uid = ref<string>('')
 
@@ -85,7 +86,7 @@ const getLandlordDetail = () => {
 }
 
 // 表单提交
-const submit = () => {
+const submit = debounce(() => {
   let params = {
     ...formData.value
   }
@@ -99,7 +100,7 @@ const submit = () => {
     .catch(() => {
       showToast(ERROR_MSG)
     })
-}
+}, 800)
 </script>
 
 <style lang="scss" scoped>

@@ -146,6 +146,8 @@ const getCompensationCardConfig = async () => {
 }
 
 onShow(() => {
+  // 注册事件监听器
+  uni.$emit('customRefresh')
   getCompensationCardConfig()
 })
 

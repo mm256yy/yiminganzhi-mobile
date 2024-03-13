@@ -1,6 +1,6 @@
 <template>
   <view class="form-wrapper">
-    <Back title="更多查询" needConfirm />
+    <Back title="更多查询" />
     <view class="main">
       <uni-forms class="form" ref="form" :modelValue="formData">
         <uni-row>
@@ -91,7 +91,6 @@
                 :localdata="levelItems"
                 popup-title="请选择所在地区"
                 @change="onchange"
-                @nodeclick="onNodeClick"
             /></uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -246,11 +245,10 @@ const estimateStatusList = () => {
 
 const onchange = (e: any) => {
   console.log('e', e.detail.value)
-}
-
-const onNodeClick = (node: any) => {
-  const { parent_value, value } = node
-  formData.value.landLevel = `${parent_value}-${value}`
+  const list = e.detail.value
+  const start = list[0]?.value
+  const end = list[1]?.value
+  formData.value.landLevel = `${start}-${end}`
 }
 
 const getDictData = async () => {

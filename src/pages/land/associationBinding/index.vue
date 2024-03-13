@@ -11,11 +11,26 @@
               label-align="right"
               name="formData.id"
             >
-              <uni-data-select
+              <view class="flex-center">
+                <view
+                  :class="['name-wrapper', formData.name ? 'isSelected' : '']"
+                  @click="selectName"
+                >
+                  {{ formData.name ? formData.name : '请选择' }}
+                </view>
+                <view @click="resetOwnersName">
+                  <image
+                    class="icon_img"
+                    src="@/static/images/icon_delete_mini.png"
+                    mode="scaleToFill"
+                  />
+                </view>
+              </view>
+              <!-- <uni-data-select
                 placeholder="请选择"
                 v-model="formData.id"
                 :localdata="doorNoInfoList"
-              />
+              /> -->
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -54,7 +69,11 @@
               label-align="right"
               name="formData.landUserType"
             >
-              <uni-data-select v-model="formData.landUserType" :localdata="dict[418]" />
+              <uni-data-select
+                v-model="formData.landUserType"
+                :localdata="dict[418]"
+                @change="dataChange"
+              />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -137,6 +156,14 @@
         @close="dialogClose"
       />
     </uni-popup>
+
+    <SearchList
+      v-show="showSearch"
+      :mainType="MainType.LandNoMove"
+      type="single"
+      @close="close"
+      @confirm-select="confirmSelect"
+    />
   </view>
 </template>
 
@@ -144,6 +171,7 @@
 import { onLoad } from '@dcloudio/uni-app'
 import { ref, onMounted } from 'vue'
 import Back from '@/components/Back/Index.vue'
+import { MainType } from '@/types/common'
 import {
   routerBack,
   routerForward,
@@ -154,8 +182,9 @@ import {
 import NaturalVillageSelectFormItem from '@/components/NaturalVillageSelectFormItem/index.vue'
 import { getLandPeasantHouseholdDtoListApi, updateLandlord } from '@/service'
 import { compatibleOldSystems } from '@/pages/common/config'
-import { showToast, SUCCESS_MSG } from '@/config/msg'
+import { showToast } from '@/config/msg'
 import { getLandlordListBySearchApi } from '@/service'
+import SearchList from '../components/searchList/index.vue'
 
 const formData = ref<any>({
   id: '', // 户名
@@ -168,7 +197,8 @@ const formData = ref<any>({
   townCode: '',
   villageCode: '',
   virutalVillageCode: '',
-  otherCode: ''
+  otherCode: '',
+  name: ''
 })
 const naturalVillageRef = ref<any>(null)
 const checkSelectedStr = ref<string>('1') // 未选中
@@ -182,6 +212,7 @@ const isFocus = ref<boolean>(false)
 const dict = getStorage(StorageKey.DICT)
 const checkList = ref<any[]>([])
 const landMark = ref<string>('')
+const showSearch = ref<boolean>(false)
 
 onLoad((option) => {
   if (option && option.params) {
@@ -199,23 +230,35 @@ const suffixNo = () => {
     : `ZD${filterViewDoorNoWithBefore(formData.value.villageCode)}`
 }
 
-const submit = async () => {
-  if (!formData.value.rightHolder) {
-    showToast('户主不能为空')
-    return
-  }
+const resetOwnersName = () => {
+  formData.value.householderDoorNo = ''
+  formData.value.householderName = ''
+}
 
-  if (!formData.value.landUserType) {
-    showToast('类别不能为空')
-    return
-  }
-  if (!formData.value.virutalVillageCode) {
-    showToast('所属区域不能为空')
-    return
-  }
-  if (!formData.value.doorNo) {
-    showToast('户号不能为空')
-    return
+const dataChange = (e: any) => {
+  console.log('landUserType::: ', formData.value.landUserType)
+  console.log('Data-Change:::', e)
+}
+
+const submit = async () => {
+  if (checkSelected.value) {
+    if (!formData.value.rightHolder) {
+      showToast('户主不能为空')
+      return
+    }
+
+    if (!formData.value.landUserType) {
+      showToast('类别不能为空')
+      return
+    }
+    if (!formData.value.virutalVillageCode) {
+      showToast('所属区域不能为空')
+      return
+    }
+    if (!formData.value.doorNo) {
+      showToast('户号不能为空')
+      return
+    }
   }
 
   let params = {
@@ -241,6 +284,11 @@ const initNaturalVillageData = () => {
   naturalVillageRef.value?.getTreeData()
 }
 
+// 选择户主姓名/户号
+const selectName = () => {
+  showSearch.value = true
+}
+
 /**
  * 自然村/村民小组选择确认
  * @param{Object} otherCode 用于兼容老系统，该code值由 1位乡/镇code + 2位行政村code组成
@@ -256,6 +304,7 @@ const dialogConfirm = () => {
 
 const dialogClose = () => {
   confirmBindingRef.value?.close()
+  routerBack()
 }
 
 const handleRadioChange = (e: any) => {
@@ -279,6 +328,23 @@ const getDoorNoInfoList = async () => {
   } catch {
     doorNoInfoList.value = []
   }
+}
+
+/**
+ * 确认搜索户主姓名/户号
+ * @param{Object} data
+ */
+const confirmSelect = (data: any) => {
+  if (data) {
+    formData.value.id = data.value
+    formData.value.name = data.label
+  }
+  close()
+}
+
+// 关闭搜索组件
+const close = () => {
+  showSearch.value = false
 }
 
 // 输入框获得焦点
@@ -314,6 +380,31 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+.flex-center {
+  display: flex;
+  align-items: center;
+}
+
+.name-wrapper {
+  width: 200rpx;
+  height: 23rpx;
+  padding-left: 7rpx;
+  font-size: 9rpx;
+  line-height: 23rpx;
+  color: #999;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+
+  &.isSelected {
+    color: #171718;
+  }
+}
+.icon_img {
+  width: 23rpx;
+  height: 23rpx;
+  margin-left: 4rpx;
+}
+
 .form-wrapper {
   display: flex;
   flex-direction: column;

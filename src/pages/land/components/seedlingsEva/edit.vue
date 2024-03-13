@@ -307,9 +307,7 @@ onLoad((option: any) => {
       title.value = '新增土地青苗及附着物评估'
     }
 
-    const landList = landEstimateDtoList.filter((item: any) => item.landNature === '4')
-
-    landNumberList.value = landList.map((item: any) => {
+    landNumberList.value = landEstimateDtoList.map((item: any) => {
       return {
         text: item.landNumber,
         value: item.landName

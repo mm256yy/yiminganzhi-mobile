@@ -3,7 +3,7 @@
     <Back title="只征地不搬迁实施" needConfirm />
     <!-- 只征地不搬迁实施 -->
     <view class="content">
-      <LeftSidebar @switch-tab="switchTab" :dataList="tabList" />
+      <LeftSidebar @switch-tab="switchTab" :dataList="tabList" @time="getTime" />
 
       <view class="right">
         <!-- 头部 -->
@@ -48,12 +48,17 @@ import Header from '@/pages/land/components/navigation/TopHeader.vue' // 引入�
 const tabVal = ref<number>(1)
 const emit = defineEmits(['updateData'])
 const dataInfo = ref<any>(null)
+const startTime = ref<any>(0)
 
 onLoad((option) => {
   if (option && option.data) {
     dataInfo.value = JSON.parse(option.data)
   }
 })
+
+const getTime = (time: any) => {
+  startTime.value = time
+}
 
 const tabList = computed(() => {
   const { immigrantFilling = {}, landEstimateDtoList } = dataInfo.value || {}
@@ -111,6 +116,14 @@ const tabList = computed(() => {
 
 const switchTab = (item: any) => {
   tabVal.value = item.value
+  recordClickTime()
+}
+
+const recordClickTime = () => {
+  setTimeout(() => {
+    let responseTime = Date.now() - startTime.value
+    console.log(`响应时间: ${responseTime} 毫秒`)
+  }, 0)
 }
 
 // 更新整体数据

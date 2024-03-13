@@ -8,7 +8,7 @@
             <uni-forms-item
               required
               label="姓名"
-              :label-width="150"
+              :label-width="150" 
               label-align="right"
               name="formData.name"
             >

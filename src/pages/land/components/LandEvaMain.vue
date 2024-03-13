@@ -61,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { MainType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
@@ -122,6 +122,7 @@ const tabVal = ref<number>(0)
 const emit = defineEmits(['updateData'])
 
 const landList = computed(() => {
+  // 4 国有 5 集体
   return props.dataInfo.landEstimateDtoList.filter((item: any) => item.landNature === '4')
 })
 

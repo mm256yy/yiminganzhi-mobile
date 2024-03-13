@@ -94,15 +94,26 @@
               <uni-data-select v-model="formData.locationType" :localdata="dict[326]" />
             </uni-forms-item>
           </uni-col>
-           <uni-col :span="12">
-            <!-- householderDoorNo -->
-            <uni-forms-item label="关联居民户" :label-width="150" label-align="right" name="formData.householderDoorNo">
+          <uni-col :span="12">
+            <uni-forms-item
+              label="关联居民户"
+              :label-width="150"
+              label-align="right"
+              name="formData.householderDoorNo"
+            >
               <view class="flex-center">
-                <view :class="['name-wrapper', formData.householderName ? 'isSelected' : '']" @click="selectName">
+                <view
+                  :class="['name-wrapper', formData.householderName ? 'isSelected' : '']"
+                  @click="selectName"
+                >
                   {{ formData.householderName ? formData.householderName : '请选择' }}
                 </view>
                 <view @click="resetOwnersName">
-                  <image class="icon_img" src="@/static/images/icon_delete_mini.png" mode="scaleToFill" />
+                  <image
+                    class="icon_img"
+                    src="@/static/images/icon_delete_mini.png"
+                    mode="scaleToFill"
+                  />
                 </view>
               </view>
             </uni-forms-item>
@@ -377,22 +388,22 @@
               />
             </uni-forms-item>
           </uni-col>
-		  <uni-col :span="12">
-		    <uni-forms-item
-		      required
-		      label="企业类别"
-		      :label-width="170"
-		      label-align="right"
-		      name="formData.villageCode"
-		    >
-		      <!-- <village-select-form-item
+          <uni-col :span="12">
+            <uni-forms-item
+              required
+              label="企业类别"
+              :label-width="170"
+              label-align="right"
+              name="formData.villageCode"
+            >
+              <!-- <village-select-form-item
 		        v-model:areaCode="formData.areaCode"
 		        v-model:townCode="formData.townCode"
 		        v-model:villageCode="formData.villageCode"
 		      /> -->
-          <uni-data-select v-model="formData.type" :localdata="dict[379]" />
-		    </uni-forms-item>
-		  </uni-col>
+              <uni-data-select v-model="formData.type" :localdata="dict[379]" />
+            </uni-forms-item>
+          </uni-col>
         </uni-row>
 
         <view class="title-wrapper">
@@ -883,16 +894,22 @@
         @click="submit"
       />
     </view>
-        <!-- 搜索选择户号 -->
+    <!-- 搜索选择户号 -->
     <search-list
-v-show="showSearch" :mainType="MainType.PeasantHousehold" type="multiple" stage="implementation" status="1"
-      @close="close" @confirm-select="confirmSelect" />
+      v-show="showSearch"
+      :mainType="MainType.PeasantHousehold"
+      type="multiple"
+      stage="implementation"
+      status="1"
+      @close="close"
+      @confirm-select="confirmSelect"
+    />
   </view>
 </template>
 
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
-import { ref,onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import dayjs from 'dayjs'
 import { routerBack, getStorage, StorageKey, cardReg } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
@@ -902,7 +919,7 @@ import VillageSelectFormItem from '@/components/VillageSelectFormItem/index.vue'
 import UploadFile from '@/components/UploadFile/index.vue'
 import { MainType } from '@/types/common'
 import SearchList from '@/components/SearchList/Index.vue'
-import {  getImpLandlordListBySearchApi } from '@/service'
+import { getImpLandlordListBySearchApi } from '@/service'
 const getLandlordListBySearch = () => {
   let params = {
     type: MainType.PeasantHousehold,
@@ -911,11 +928,11 @@ const getLandlordListBySearch = () => {
   }
   getImpLandlordListBySearchApi(params).then((res) => {
     console.log(res, '居民户数据')
-    console.log(formData.value,'表单数据编辑')
-    const list=res.filter((item:any)=> item.doorNo==formData.value.householderDoorNo)
-    formData.value.relateDoorName=list[0].name
-    console.log( list, '用户名字')
-    })
+    console.log(formData.value, '表单数据编辑')
+    const list = res.filter((item: any) => item.doorNo == formData.value.householderDoorNo)
+    formData.value.relateDoorName = list[0].name
+    console.log(list, '用户名字')
+  })
 }
 
 const showSearch = ref<boolean>(false)
@@ -979,8 +996,8 @@ const formData = ref<any>({
   remark: '',
   licensePic: '[]',
   otherPic: '[]',
-  householderDoorNo:null,
-  householderName:null
+  householderDoorNo: null,
+  householderName: null
 })
 
 // 获取数据字典
@@ -999,7 +1016,7 @@ onLoad((option: any) => {
     if (type.value === 'edit') {
       let params = JSON.parse(option.params)
       formData.value = { ...params }
-      console.log(formData.value,'测试数据是什么？')
+      console.log(formData.value, '测试数据是什么？')
       title.value = '企业基本概况编辑'
       uid.value = option.uid
     } else if (type.value === 'add') {
@@ -1067,7 +1084,7 @@ const confirmSelect = (data: any) => {
       nameArr.push(item.label)
     })
     formData.value.householderDoorNo = idArr.toString()
-    console.log(formData.value.householderDoorNo,'测试ID')
+    console.log(formData.value.householderDoorNo, '测试ID')
     formData.value.householderName = nameArr.toString()
   }
   close()
@@ -1211,7 +1228,7 @@ const submit = () => {
         ...baseInfo,
         company
       }
-      console.log(params,'测试传输数据')
+      console.log(params, '测试传输数据')
       updateLandlordCompanyApi(uid.value, params)
         .then((res) => {
           if (res) {
@@ -1232,28 +1249,28 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .flex-center {
-        display: flex;
-        align-items: center;
-      }
+  display: flex;
+  align-items: center;
+}
 .name-wrapper {
-        width: 200rpx;
-        height: 23rpx;
-        padding-left: 7rpx;
-        font-size: 9rpx;
-        line-height: 23rpx;
-        color: #999;
-        border: 1px solid #d9d9d9;
-        border-radius: 4px;
+  width: 200rpx;
+  height: 23rpx;
+  padding-left: 7rpx;
+  font-size: 9rpx;
+  line-height: 23rpx;
+  color: #999;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
 
-        &.isSelected {
-          color: #171718;
-        }
-      }
-      .icon_img {
-        width: 23rpx;
-        height: 23rpx;
-        margin-left: 4rpx;
-      }
+  &.isSelected {
+    color: #171718;
+  }
+}
+.icon_img {
+  width: 23rpx;
+  height: 23rpx;
+  margin-left: 4rpx;
+}
 .form-wrapper {
   display: flex;
   flex-direction: column;

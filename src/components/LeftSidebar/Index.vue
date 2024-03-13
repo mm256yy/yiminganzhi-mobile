@@ -54,9 +54,11 @@ const props = defineProps({
 })
 
 const currentIndex = ref<number>(1)
-const emit = defineEmits(['switchTab'])
+const emit = defineEmits(['switchTab', 'time'])
 
 const switchTab = (item: any) => {
+  emit('time', Date.now())
+  console.log('内部时间计算')
   currentIndex.value = item.value
   emit('switchTab', item)
 }
