@@ -81,17 +81,18 @@ const areaType = ref('1')
 
 // 总人口
 const familyNum = computed(() => {
-  return props.baseInfo.demographicList.length || 1
+  // props.baseInfo.demographicList.length
+  return  props.baseInfo.demographicList.filter((item:any) => item.isDelete !== '1').length || 1
 })
 
 // 农村移民
 const ruralMigrantNum = computed(() => {
-  return props.baseInfo.demographicList.filter((item) => item.populationNature === '1').length || 0
+  return props.baseInfo.demographicList.filter((item) => item.populationNature === '1'&&item.isDelete !== '1').length || 0
 })
 
 // 非农移民
 const unruralMigrantNum = computed(() => {
-  return props.baseInfo.demographicList.filter((item) => item.populationNature === '2').length || 0
+  return props.baseInfo.demographicList.filter((item) => item.populationNature === '2'&&item.isDelete !== '1').length || 0
 })
 
 // 其他人口
@@ -103,15 +104,15 @@ const resettleArea = computed(() => {
   const { dataList, data } = props
   console.log(data,'测试数据data')
   if(!data){
-      const areaList = dataList.filter((item) => item.type === '1')
+      const areaList = dataList.filter((item:any) => item.type === '1')
       return areaList
   }else{
-    const datas=data.filter((item) => item.relation === '1')
+    const datas=data.filter((item:any)=> item.relation === '1')
   if(datas[0].settingWay=='1'){
-  const areaList = dataList.filter((item) => item.type === '1'&&item.isProductionLand==='1')
+  const areaList = dataList.filter((item:any)=> item.type === '1'&&item.isProductionLand==='1')
   return areaList
   }else{
-  const areaList = dataList.filter((item) => item.type === '1'&&item.isProductionLand==='2')
+  const areaList = dataList.filter((item:any) => item.type === '1'&&item.isProductionLand==='2')
   return areaList
   }
 }

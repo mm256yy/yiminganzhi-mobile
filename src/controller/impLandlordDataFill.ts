@@ -66,6 +66,7 @@ class ImpDataFill extends ImpLandlord {
             return
           }
           landlordItem.demographicList.push(data)
+          // landlordItem.simulateDemographic.push(data)
         } else {
           reject('调查对象信息查询失败')
           console.log('调查对象信息查询失败')

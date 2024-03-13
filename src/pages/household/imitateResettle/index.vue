@@ -80,7 +80,7 @@
       <view class="step-cont-item" v-else-if="stepIndex === 2">
         <people
           :is-edit="true"
-          :demographicList="(simulateDemographic as any[])"
+          :simulateDemographic="(simulateDemographic as any[])"
           :immigrantSettle="simulateImmigrantSettle"
           :dataList="dataList"
           :demographicLists="demographicList"
@@ -163,37 +163,37 @@ watch(
 //     :
 // 获取模拟安置 生产安置信息
 const simulateDemographic = computed(() => {
-  return  props.dataInfo &&
- props.dataInfo.simulateDemographic &&
-     props.dataInfo.simulateDemographic.length
-    ? props.dataInfo.simulateDemographic
-     :demographicList.value.map((item) => {
-    const {
-      id: demographicId,
-      name,
-      sex,
-      relation,
-      card,
-      censusType,
-      populationNature,
-      settingWay,
-      settingRemark,
-      isDelete
-    } = item
-    return {
-      demographicId,
-      name,
-      sex,
-      relation,
-      card,
-      censusType,
-      populationNature,
-      settingWay,
-      settingRemark,
-      isDelete,
-    }
-  })
-  // return props.dataInfo && props.dataInfo.demographicList ? props.dataInfo.demographicList : []
+//   return  props.dataInfo &&
+//  props.dataInfo.simulateDemographic &&
+//      props.dataInfo.simulateDemographic.length
+//     ? props.dataInfo.simulateDemographic
+//      :demographicList.value.map((item) => {
+//     const {
+//       id: demographicId,
+//       name,
+//       sex,
+//       relation,
+//       card,
+//       censusType,
+//       populationNature,
+//       settingWay,
+//       settingRemark,
+//       isDelete
+//     } = item
+//     return {
+//       demographicId,
+//       name,
+//       sex,
+//       relation,
+//       card,
+//       censusType,
+//       populationNature,
+//       settingWay,
+//       settingRemark,
+//       isDelete,
+//     }
+//   })
+  return props.dataInfo && props.dataInfo.simulateDemographic ? props.dataInfo.simulateDemographic : []
 })
 
 // 获取模拟安置 搬迁安置信息
@@ -273,7 +273,7 @@ const houseAreaTypeChange = (item: any) => {
  * 生产安置确认
  */
 const productionResettleSubmit = async (data: any) => {
-  console.log(data,'生产安置确认')
+  console.log(data,uid.value,'生产安置确认')
   const res = await updateImpLandlordSimulateDemographicApi(uid.value, data)
   if (res) {
     showToast('生产安置保存成功!')

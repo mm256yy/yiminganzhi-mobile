@@ -86,7 +86,8 @@ const getDataRequest = async () => {
 }
 interface PropsType {
   isEdit: boolean
-  demographicList: PopulationType[] | SimulateDemographicType[]
+  demographicList?: PopulationType[] | SimulateDemographicType[]
+  simulateDemographic?:any[]
   immigrantSettle?: any
   dataList?: any
   demographicLists?: any
@@ -100,32 +101,20 @@ const dict = getStorage(StorageKey.DICT)
 const landNoList = ref<any[]>([])
 landNoList.value=dict[375]
 const tableData = ref<any[]>([])
-const data = ref<any[]>([])
+const datas = ref<any>([])
+const data=ref<any>([])
 
+// 监听安置确认数据问题
 watch(
   () => props.demographicList,
   (val) => {
     if (val) {
-      // if(!props.flag) return 
-      tableData.value = JSON.parse(JSON.stringify(val)) 
-      console.log(props.demographicList, '测试数据')
-      if (props.demographicLists) {
-        val.forEach((item:any) => {
-        props.demographicLists.forEach((ite:any) => {
-          if (item.demographicId == ite.id) {
-            item.isDelete = ite.isDelete
-          }
-        })
-      })
-      }
+      if(!props.flag){
+      datas.value=props.demographicList 
+      tableData.value=val.filter((item: any) => item.isDelete != '1'&&item.name != '增计人口')
       console.log(tableData.value, '测试数据模拟安置')
-      tableData.value=tableData.value.filter((item:any) => item.isDelete !== '1'&&item.name!='增计人口')
-      // val.forEach((item,index) => {
-      //   if(item.name=='人口增计'){
-      //      val.splice(index,1)
-      //      tableData.value = val
-      //   }
-      // })
+      console.log( props.demographicList,'测试传递数据')
+      }
     }
   },
   { immediate: true, deep: true }
@@ -140,32 +129,28 @@ watch(
   },
   { immediate: true, deep: true }
 )
+
+// 监听模拟安置的数据问题
 watch(
-  () => props.demographicLists,
+  () => props.simulateDemographic,
   (val) => {
     if (val) {
       console.log(val,'再次测试人口数据')
       if(props.flag){
-        val=val.filter((item:any) => item.isDelete !== '1')
-         tableData.value.forEach((item:any) => {
-           val.forEach((ite:any) => {
-             if(item.demographicId==ite.id){
-               item.name = ite.name
-               item.relation=ite.relation
-               item.sex=ite.sex
-               item.card=ite.card
-               item.censusType=ite.censusType
-               item.populationNature=ite.populationNature
-             }
-           })
-         })
-         tableData.value=tableData.value.filter((item:any) => item.name)
+        if (props.simulateDemographic?.length == props.demographicLists?.length) {
+          console.log('长度相等,用更改表')
+          datas.value=props.simulateDemographic 
+          tableData.value=val.filter((item: any) => item.isDelete != '1'&&item.name != '增计人口') 
+        } else {
+          console.log('长度不相等,用人口表')
+          datas.value=props.demographicLists 
+          tableData.value=props.demographicLists.filter((item: any) => item.isDelete != '1'&&item.name != '增计人口')
+        }
       }
     }
   },
   { immediate: true, deep: true }
 )
-
 const stepNext = async () => {
   // 校验数据
   const notFillArray = tableData.value.filter((item) => !item.settingWay)
@@ -173,24 +158,10 @@ const stepNext = async () => {
     showToast('请选择安置方式')
     return
   }
-  let arr = props.demographicList.find((item: any) => item.name == '增计人口')
-  let arrs=props.demographicLists.find((item:any) => item.name=='增计人口')
-  console.log(arr,'测试增计人口')
-  const data = tableData.value.map((item) => {
-    return {
-      ...item,
-      demographicId: item.demographicId,
-      settingWay: item.settingWay,
-      settingRemark: item.settingRemark
-    }
-  })
-  if (arr) {
-      data.push(arr)
-      emit('submit', data)
-  } else {
-    data.push(arrs)
-       emit('submit', data)
-  }
+  console.log(datas.value, '传递的测试数据111') 
+  console.log(tableData.value, '测试数据222')
+  const data=datas.value
+  emit('submit', data)
 }
 onMounted(() => {
   getDataRequest()

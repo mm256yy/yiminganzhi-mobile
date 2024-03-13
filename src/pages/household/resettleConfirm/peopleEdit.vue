@@ -6,7 +6,7 @@
         <text>安置信息</text>
       </view>
 
-      <PeopleList :isEdit="true" :demographic-list="demographicList" @submit="produceSubmit" :immigrantSettle="immigrantSettle"/>
+      <PeopleList :isEdit="true" :demographic-list="demographicList" @submit="produceSubmit" :immigrantSettle="immigrantSettle" :flag="false"/>
     </view>
   </Container>
 </template>
@@ -45,6 +45,7 @@ const getLandlordDetail = async () => {
 }
 
 const produceSubmit = async (data: PopulationType[]) => {
+  console.log(uid.value,data,'测试编辑数据111')
   const res = await updateImpLandlordPeopleBatchApi(uid.value, data)
   if (res) {
     uni.showToast({

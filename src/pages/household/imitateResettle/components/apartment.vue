@@ -223,17 +223,17 @@ const tableData = ref<any>([])
 
 // 总人口
 const familyNum = computed(() => {
-  return props.baseInfo.demographicList.length || 1
+  return props.baseInfo.demographicList.filter((item:any) => item.isDelete !== '1').length || 1
 })
 
 // 农村移民
 const ruralMigrantNum = computed(() => {
-  return props.baseInfo.demographicList.filter((item) => item.populationNature === '1').length || 0
+  return props.baseInfo.demographicList.filter((item) => item.populationNature === '1'&&item.isDelete !== '1').length || 0
 })
 
 // 非农移民
 const unruralMigrantNum = computed(() => {
-  return props.baseInfo.demographicList.filter((item) => item.populationNature === '2').length || 0
+  return props.baseInfo.demographicList.filter((item) => item.populationNature === '2'&&item.isDelete !== '1').length || 0
 })
 
 // 其他人口

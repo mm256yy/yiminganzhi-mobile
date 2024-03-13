@@ -290,6 +290,7 @@ class PullData {
     ;(this.state.notifyDtoList = notifyDtoList),
       (this.state.landPeasantHouseholdDtoList = landPeasantHouseholdDtoList)
     this.state.landEstimateDtoList = landEstimateDtoList
+    console.log(this.state.landEstimateDtoList,'土地数据')
     console.log(this.state.notifyDtoList, '测试接口数据')
     this.pullDict().then((res: boolean) => {
       res && this.count++

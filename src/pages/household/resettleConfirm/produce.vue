@@ -35,7 +35,7 @@
     </view>
 
     <view class="content">
-      <PeopleList :isEdit="false" :demographic-list="demographicList" :demographiclists="demographicList"/>
+      <PeopleList :isEdit="false" :demographic-list="demographicList" :demographiclists="demographicList" :flag="false"/>
     </view>
 
     <uni-popup ref="alertDialog" type="dialog">
@@ -129,13 +129,14 @@ const dialogConfirm = () => {
   console.log(mockDemographicList.value, '模拟数据1')
   console.log(mockImmigrantSettle.value, '测试模拟')
   const data = demographicList.value.map((item) => {
-    const current = mockDemographicList.value.find((mockItem) => mockItem.demographicId === item.id)
+    const current = mockDemographicList.value.find((mockItem) => mockItem.uid === item.uid)
     if (current) {
       item.settingWay = current.settingWay
       item.settingRemark = current.settingRemark
     }
     return item
   })
+  console.log(data,'最终传输的数据')
   produceSubmit(data)
 }
 
