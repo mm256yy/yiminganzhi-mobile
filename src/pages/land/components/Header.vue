@@ -89,11 +89,11 @@ export default {
       const { uid } = this.dataInfo
       let params = {}
 
-      if (this.tabVal === 2) {
+      if (this.tabVal === 1) {
         params = {
           landStatus: '1' // 土地基本情况评估
         }
-      } else if (this.tabVal === 3) {
+      } else if (this.tabVal === 2) {
         params = {
           landSeedlingStatus: '1' // 土地青苗及附着物评估
         }
