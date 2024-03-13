@@ -111,7 +111,7 @@ const getUnit = (item: any) => {
   let str1 = item?.cityCodeText ? item?.cityCodeText : ''
   let str2 = item?.areaCodeText ? item?.areaCodeText : ''
   let str3 = item?.townCodeText ? item?.townCodeText : ''
-  let str4 = item?.villageText ? item?.villageText : ''
+  let str4 = item?.villageCodeText ? item?.villageCodeText : ''
   return str1.concat(str2).concat(str3).concat(str4)
 }
 
