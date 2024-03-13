@@ -65,9 +65,9 @@
                 label="地块面积"
                 :label-width="150"
                 label-align="right"
-                name="formData.landArea"
+                name="formData.shapeArea"
               >
-                <text class="label-txt">{{ formatStr(formData.landArea, '㎡') }} </text>
+                <text class="label-txt">{{ formatStr(formData.shapeArea, '㎡') }} </text>
               </uni-forms-item>
             </uni-col>
           </uni-row>
@@ -251,7 +251,7 @@ const formData = ref<any>({
   landName: '',
   locationType: '',
   inundationRangeText: '',
-  landArea: '',
+  shapeArea: '',
   landTypeText: '',
   landNatureText: '',
   landOwner: '',
@@ -279,6 +279,8 @@ const getLandlordDetail = () => {
     let arr: any = res.landEstimateDtoList || []
     if (arr && arr.length) {
       let obj: any = arr[0]
+      console.log('===========================',obj);
+      
       formData.value = { ...obj }
     }
   })
@@ -309,9 +311,9 @@ const inputBlur = () => {
 
 // 计算评估价格
 const countPrice = computed(() => {
-  const { valuationPrice, landArea } = formData.value
-  if (valuationPrice && landArea) {
-    return (valuationPrice * landArea).toFixed(2)
+  const { valuationPrice, shapeArea } = formData.value
+  if (valuationPrice && shapeArea) {
+    return (valuationPrice * shapeArea).toFixed(2)
   }
   return '0'
 })
