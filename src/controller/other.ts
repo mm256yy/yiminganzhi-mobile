@@ -27,6 +27,31 @@ class Other extends Common {
       }
     })
   }
+  getOtherWithTypeSet(data:any): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const sql = `select * from ${OtherTableName} where type = 'landPeasantHouseholdDtoList'`
+
+        const result: OtherDDLType[] = await this.db.selectSql(sql)
+        if (result && result[0]) {
+          let arr = []
+          if (data.like) {
+            arr = JSON.parse(result[0].content).filter((item: any) => {
+              return item.result.indexOf(data.like) > -1
+            })
+          } else {
+            arr = JSON.parse(result[0].content)
+          }
+          resolve(arr)
+          return
+        }
+        reject(null)
+      } catch (error) {
+        console.log(error, 'Other-get-list-error')
+        reject(null)
+      }
+    })
+  }
 }
 
 export const OtherController = new Other()

@@ -87,7 +87,8 @@ import { getStorage, StorageKey, routerForward, debounce } from '@/utils'
 import {
   getOtherItemApi,
   getLandEstimateDtoListApi,
-  getLandlordListBySearchTitleApi
+  getLandlordListBySearchTitleApi,
+  getOtherWithTypeSetApi
 } from '@/service'
 import NoData from '@/components/NoData/index.vue'
 import LandListItem from '@/pages/land/components/landListItem/index.vue'
@@ -290,6 +291,9 @@ onBeforeUnmount(() => {
 })
 
 onMounted(() => {
+  getOtherWithTypeSetApi({ like: '王' }).then((res) => {
+    console.log(res,'=======================');
+  })
   init()
   getPullTime()
   uni.$on('SyncEnd', onSyncEnd)

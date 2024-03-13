@@ -161,3 +161,7 @@ export const getDictObjsApi = (e: any) => {
 export const getLandlordListBySearchTitleApi = () => {
   return landEstimateDtoListFill.getLandlordListBySearchTitle()
 }
+// 农户模糊查询
+export const getOtherWithTypeSetApi = (data:any) => {
+  return OtherController.getOtherWithTypeSet(data)
+}
