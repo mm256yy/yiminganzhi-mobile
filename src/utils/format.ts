@@ -296,7 +296,7 @@ export const filterViewDoorNo = (data: any): string => {
     const lastSix = doorNo.slice(doorNo.length - 6 < 0 ? 0 : doorNo.length - 6, doorNo.length)
     return `${before}${lastSix}`
   }
-  return doorNo
+  return doorNo.substr(2)
 }
 
 // 处理字符串Null显示
