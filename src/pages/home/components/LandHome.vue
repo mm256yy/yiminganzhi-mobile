@@ -17,8 +17,11 @@
     <!-- 具体内容 -->
     <view class="main-enter">
       <view class="operate-segment">
-        <text class="land-text">{{ `土地列表（共 ${num} 条土地数据）` }}</text>
+        <text class="land-text">{{ `土地列表（共 ${total} 条土地数据）` }}</text>
         <view class="right-side">
+          <view class="btn blue-btn" @click="toTarget('database')">
+            <text class="txt">数据库</text>
+          </view>
           <view class="btn blue-btn" @click="associatedBind">
             <text class="txt">关联绑定</text>
           </view>
@@ -34,6 +37,8 @@
           scroll-y
           :enable-flex="true"
           @scrolltolower="loadMore"
+          @scrolltoupper="onRefresh"
+          v-loading="isLoading"
         >
           <view class="scroll">
             <LandListItem
@@ -83,7 +88,7 @@
 <script lang="ts" setup>
 import { ref, reactive, onMounted, nextTick, computed, onBeforeUnmount } from 'vue'
 import { onShow, onLoad, onUnload } from '@dcloudio/uni-app'
-import { getStorage, StorageKey, routerForward, debounce } from '@/utils'
+import { getStorage, StorageKey, routerForward, debounce, pagesMap } from '@/utils'
 import {
   getOtherItemApi,
   getLandEstimateDtoListApi,
@@ -103,7 +108,7 @@ const syncing = ref<boolean>(false)
 const syncCmt = ref()
 const lastConfirmTime = ref('')
 const bindStrTitle = ref<string>('')
-const list = ref<any[]>([])
+const list = ref<any[]>([]) // 列表数据
 const searchName = ref<string>('')
 const isLoading = ref<boolean>(false) //是否正在加载
 const isEnd = ref<boolean>(false) // 是否加载到底
@@ -114,11 +119,12 @@ const checkList = ref<any[]>([])
 const searchParams = reactive({
   name: ''
 }) // 查询参数
+let total = ref(0)
 
 const onSearch = () => {
   if (searchName.value) {
     searchParams.name = searchName.value
-    getList()
+    init()
   }
 }
 
@@ -129,44 +135,54 @@ const toTarget = (name: any) => {
     ...params
   })
 }
-let num = ref()
+
 const getList = () => {
   nextTick(async () => {
     isLoading.value = true
+
     const params: any = {
       page: page.value,
       pageSize: pageSize.value,
       ...searchParams
     }
 
-    const tempList: any[] = await getLandEstimateDtoListApi(params)
-    let res = tempList.map((item) => {
-      return {
-        ...item,
-        isChecked: false
-      }
-    })
-    num.value = await getLandlordListBySearchTitleApi()
-    console.log(num.value, '列表数据日志', res)
+    try {
+      const tempList: any[] = await getLandEstimateDtoListApi(params)
+      let res = tempList.map((item) => {
+        return {
+          ...item,
+          isChecked: false
+        }
+      })
+      total.value = await getLandlordListBySearchTitleApi()
+      isLoading.value = false
+      list.value = [...list.value, ...res]
 
-    isLoading.value = false
-    if (res && res.length) {
-      if (page.value === 1) {
-        list.value = res || []
-      } else {
-        list.value = list.value?.concat(res)
-      }
-      if (res.length < pageSize.value) {
+      //判断数据是否加载完成
+      if (list.value.length >= total.value) {
         isEnd.value = true
-      } else {
-        page.value = page.value + 1
       }
-    } else {
-      if (page.value === 1) {
-        list.value = []
-      }
+    } catch (error) {
+      console.log(error)
+      isLoading.value = false
       isEnd.value = true
     }
+
+    // if (res && res.length) {
+    //   if (page.value === 1) {
+    //     list.value = res || []
+    //   }
+    //   if (res.length < pageSize.value) {
+    //     isEnd.value = true
+    //   } else {
+    //     page.value = page.value + 1
+    //   }
+    // } else {
+    //   if (page.value === 1) {
+    //     list.value = []
+    //   }
+    //   isEnd.value = true
+    // }
   })
 }
 
@@ -174,6 +190,8 @@ const init = () => {
   page.value = 1
   isEnd.value = false
   isLoading.value = false
+  list.value = []
+  total.value = 0
   getList()
 }
 
@@ -261,7 +279,16 @@ const loadMore = () => {
     return
   }
   console.log('load more')
+  page.value = page.value + 1
   getList()
+}
+
+const onRefresh = () => {
+  if (isLoading.value) {
+    return
+  }
+  console.log('onRefresh')
+  init()
 }
 
 const handleItemClick = (item: any) => {
@@ -273,15 +300,14 @@ const handleItemClick = (item: any) => {
 }
 
 onShow(() => {
-  getList()
+  init()
 })
 
 onLoad((option) => {
   // 注册事件监听器
   uni.$on('customRefresh', () => {
-    getList()
+    init()
   })
-  getList()
 })
 
 onUnload(() => {
@@ -293,9 +319,6 @@ onBeforeUnmount(() => {
 })
 
 onMounted(() => {
-  getOtherWithTypeSetApi({ like: '王' }).then((res) => {
-    console.log(res, '=======================')
-  })
   init()
   getPullTime()
   uni.$on('SyncEnd', onSyncEnd)

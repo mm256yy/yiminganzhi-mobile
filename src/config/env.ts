@@ -8,7 +8,7 @@ const apiEnv: ApiEnv = 'local'
 const envMap = {
   // local: {
   //   apiBaseUrl: 'http://192.168.1.104:8880',
-  //   apiBasePath: '/api' 
+  //   apiBasePath: '/api'
   // },
   local: {
     apiBaseUrl: 'http://192.168.1.119:8880',
@@ -18,9 +18,9 @@ const envMap = {
   //   apiBaseUrl: 'http://ym.zdwp.local',
   //   apiBasePath: '/api'
   // },
-  dev: {	
+  dev: {
     apiBaseUrl: 'https://r7r-ai.zdwp.net',
-    apiBasePath: '/api'                       
+    apiBasePath: '/api'
   },
   test: {
     apiBaseUrl: 'https://r7r-ai.zdwp.net',

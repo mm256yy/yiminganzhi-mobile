@@ -6,7 +6,7 @@
     <view class="main-cont">
       <view class="list-content">
         <view class="list-box">
-          <view class="box" v-if="JSON.stringify(props.dataInfo) !== '{}'">
+          <view class="box" v-if="props.dataInfo">
             <!-- 头部 -->
             <Header
               :dataInfo="dataInfo"
@@ -25,7 +25,7 @@
                 v-touch:swipe.right="touchRight"
               >
                 <!-- 居民户信息 -->
-                <base-info-eva v-if="tabVal ==0" :dataInfo="dataInfo" />
+                <base-info-eva v-if="tabVal == 0" :dataInfo="dataInfo" />
 
                 <!-- 房屋主体评估 -->
                 <house-subject-eva

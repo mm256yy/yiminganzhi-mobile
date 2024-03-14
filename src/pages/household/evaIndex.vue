@@ -1,5 +1,5 @@
 <template>
-  <!-- 移民实施阶段 —— 居民户评估 -->
+  <!-- 移民实施阶段 -->
   <view class="page-wrap">
     <image src="@/static/images/common_bg.png" class="head-bg" mode="widthFix" />
     <view class="home-wrap" :style="{ height: `${pageHeight}px` }">

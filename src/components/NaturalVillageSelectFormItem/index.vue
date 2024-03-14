@@ -88,7 +88,7 @@ const getTitle = () => {
 const getTreeData = async () => {
   const res = await getVirutalVillageTreeApi()
   treeData.value = res || []
-  console.log('res:', res)
+  console.log('resTree:', res)
   getTitle()
 }
 
