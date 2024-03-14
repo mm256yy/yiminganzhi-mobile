@@ -82,7 +82,7 @@
 
 <script lang="ts" setup>
 import { ref, reactive, onMounted, nextTick, computed, onBeforeUnmount } from 'vue'
-import { onShow, onLoad } from '@dcloudio/uni-app'
+import { onShow, onLoad, onUnload } from '@dcloudio/uni-app'
 import { getStorage, StorageKey, routerForward, debounce } from '@/utils'
 import {
   getOtherItemApi,
@@ -273,6 +273,10 @@ const handleItemClick = (item: any) => {
 }
 
 onShow(() => {
+  getList()
+})
+
+onLoad((option) => {
   // 注册事件监听器
   uni.$on('customRefresh', () => {
     getList()
@@ -280,10 +284,8 @@ onShow(() => {
   getList()
 })
 
-onLoad((option) => {
-  if (option) {
-    console.log('子组件OnLoad')
-  }
+onUnload(() => {
+  uni.$off('customRefresh')
 })
 
 onBeforeUnmount(() => {

@@ -58,10 +58,7 @@
               @click.stop="editLandlord(item)"
             />
           </view>
-          <view
-            class="scroll"
-            v-else-if="roleType === RoleCodeType.assessor || roleType === RoleCodeType.assessorland"
-          >
+          <view class="scroll" v-else-if="roleType === RoleCodeType.assessor">
             <EvaListItem
               v-for="item in list"
               :data="item"
@@ -243,7 +240,7 @@ const getList = () => {
       page: page.value,
       pageSize: pageSize.value
     }
-    console.log(params,'传输的数据')
+    console.log('传输的数据', params)
     if (sourceType.value) {
       params.warnStatus = sourceType.value
       if (sourceType.value == '1') {
@@ -251,7 +248,6 @@ const getList = () => {
           isLoading.value = false
         })
         const res = dataList.filter((item: any) => item.warnStatus == 1)
-        console.log(res, "res预警数据")
         getListCommon(res)
       } else if (sourceType.value == '2') {
         const dataList = await getLandlordListBySearchApi(params).catch(() => {
@@ -263,16 +259,15 @@ const getList = () => {
         const dataList = await getLandlordListBySearchApi(params).catch(() => {
           isLoading.value = false
         })
-        console.log(dataList, "dataList数据")
+        console.log(dataList, 'dataList数据')
         const res = dataList.filter((item: any) => item.warnStatus != '1' && item.warnStatus != '2')
-        console.log(res, "res正常数据")
         getListCommon(res)
       }
     } else {
       const res = await getLandlordListBySearchApi(params).catch(() => {
         isLoading.value = false
       })
-      console.log(res, "数据列表res")
+      console.log(res, '数据列表res')
       getListCommon(res)
     }
     const realList = villageCode.value.filter((item) => !!item)

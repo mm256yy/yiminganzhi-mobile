@@ -145,7 +145,7 @@
                     @focus="inputFocus(5)"
                     @blur="inputBlur"
                   />
-                  <view class="unit">元</view>
+                  <view class="unit">元/㎡</view>
                 </view>
               </uni-forms-item>
             </uni-col>
@@ -279,8 +279,8 @@ const getLandlordDetail = () => {
     let arr: any = res.landEstimateDtoList || []
     if (arr && arr.length) {
       let obj: any = arr[0]
-      console.log('===========================',obj);
-      
+      console.log('===========================', obj)
+
       formData.value = { ...obj }
     }
   })

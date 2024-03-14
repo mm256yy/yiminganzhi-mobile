@@ -1,7 +1,7 @@
 <template>
   <view class="main-wrap">
     <!-- 土地评估 -->
-    <Back class="main-nav" title="土地评估" />
+    <Back class="main-nav" :title="migrateTypeTitle()" />
 
     <view class="main-cont">
       <view class="list-content">
@@ -61,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { MainType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
@@ -125,6 +125,17 @@ const landList = computed(() => {
   // 4 国有 5 集体
   return props.dataInfo.landEstimateDtoList.filter((item: any) => item.landNature === '4')
 })
+
+const migrateTypeTitle = () => {
+  const map: any = {
+    PeasantHousehold: '居民户评估',
+    Company: '企业评估',
+    IndividualHousehold: '个体户评估',
+    Village: '村集体评估',
+    LandNoMove: '土地评估'
+  }
+  return map[props.dataInfo.type]
+}
 
 // tab 切换
 const selectTabs = (data: any) => {

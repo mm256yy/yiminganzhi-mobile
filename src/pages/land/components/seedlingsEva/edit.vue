@@ -206,6 +206,18 @@
               </uni-forms-item>
             </uni-col>
           </uni-row>
+          <uni-row>
+            <uni-col :span="12">
+              <uni-forms-item
+                label="青苗户主"
+                :label-width="150"
+                label-align="right"
+                name="formData.householder"
+              >
+                <uni-easyinput v-model="formData.householder" type="text" placeholder="请输入" />
+              </uni-forms-item>
+            </uni-col>
+          </uni-row>
 
           <uni-row>
             <uni-col :span="24">
@@ -272,6 +284,7 @@ const formData = ref<any>({
   price: '',
   valuationAmount: '',
   compensationAmount: '',
+  householder: '',
   remark: ''
 })
 
@@ -316,6 +329,11 @@ onLoad((option: any) => {
   }
 })
 
+const findLandNumber = (val: any) => {
+  const name = landNumberList.value?.find((item) => item.value === val).text
+  return name
+}
+
 // 输入框获得焦点事件
 const inputFocus = (index: number) => {
   focusIndex.value = index
@@ -340,7 +358,8 @@ const submit = () => {
   formData.value.valuationAmount = countPrice.value
   const params = {
     doorNo,
-    ...formData.value
+    ...formData.value,
+    landNumber: findLandNumber(formData.value.landNumber)
   }
 
   if (!formData.value.addReason && type === 'add') {

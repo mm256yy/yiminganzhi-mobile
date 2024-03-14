@@ -26,11 +26,6 @@
                   />
                 </view>
               </view>
-              <!-- <uni-data-select
-                placeholder="请选择"
-                v-model="formData.id"
-                :localdata="doorNoInfoList"
-              /> -->
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -69,11 +64,7 @@
               label-align="right"
               name="formData.landUserType"
             >
-              <uni-data-select
-                v-model="formData.landUserType"
-                :localdata="dict[418]"
-                @change="dataChange"
-              />
+              <uni-data-select v-model="formData.landUserType" :localdata="dict[418]" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -231,13 +222,7 @@ const suffixNo = () => {
 }
 
 const resetOwnersName = () => {
-  formData.value.householderDoorNo = ''
-  formData.value.householderName = ''
-}
-
-const dataChange = (e: any) => {
-  console.log('landUserType::: ', formData.value.landUserType)
-  console.log('Data-Change:::', e)
+  formData.value.name = ''
 }
 
 const submit = async () => {

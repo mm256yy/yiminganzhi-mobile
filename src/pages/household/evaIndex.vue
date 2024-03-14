@@ -34,7 +34,7 @@ const statusBarHeight = sysInfo.statusBarHeight || 0
 const screenHeight = sysInfo.screenHeight
 const pageHeight = screenHeight - statusBarHeight
 const dataInfo = ref<any>({})
-const type = ref<string>('')
+const type = ref<string>('household')
 // 职业选项
 const occupationOptions = ref<any>([])
 
@@ -48,6 +48,7 @@ onLoad((option) => {
   if (option && option.params) {
     const params = JSON.parse(option.params)
     type.value = params.type
+    console.log('RType', type.value)
     getLandlordDetail(params.uid)
   }
 })

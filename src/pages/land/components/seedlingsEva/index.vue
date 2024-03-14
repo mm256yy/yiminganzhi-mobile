@@ -5,7 +5,7 @@
       <view class="list-item" v-for="item in props.dataList" :key="item.id">
         <view class="list-1">
           <view class="left">
-            {{ formatStr(item.name) }}
+            {{ formatStr(item.breed) }}
           </view>
           <view class="right">
             <image

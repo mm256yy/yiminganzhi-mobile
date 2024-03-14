@@ -302,6 +302,7 @@ onShow(() => {
   const project = getStorage(StorageKey.PROJECTINFO)
   userInfo.value = user
   projectInfo.value = project
+  uni.$emit('customRefresh')
 })
 </script>
 

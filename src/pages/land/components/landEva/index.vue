@@ -5,7 +5,10 @@
       <view class="list-item" v-for="item in props.dataList" :key="item.id">
         <view class="list-1">
           <view class="left">
-            {{ formatStr(item.landName) }}
+            <text class="land-name">{{ formatStr(item.landName) }}</text>
+            <text class="land-number">
+              {{ formatStr(item.landNumber) }}
+            </text>
           </view>
           <view class="right">
             <image
@@ -198,7 +201,14 @@ const dialogClose = () => {
           font-size: 9rpx;
           color: #171718;
           align-items: center;
-          flex: 1;
+          .land-name {
+            color: #333;
+          }
+
+          .land-number {
+            color: #666;
+            margin-left: 10rpx;
+          }
 
           .icon {
             width: 10rpx;

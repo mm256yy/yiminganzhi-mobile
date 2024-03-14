@@ -30,7 +30,7 @@
         <view class="label">权属单位:</view>
         <view class="value">{{ getUnit(props.data) }}</view>
       </view>
-      <view class="cont-item">
+      <view class="cont-item right">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">所在区域:</view>
         <view class="value">
@@ -42,7 +42,7 @@
         <view class="label">关联户主:</view>
         <view class="value">{{ formatEmptyText(props.data.householder) }}</view>
       </view>
-      <view class="cont-item">
+      <view class="cont-item right">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">图幅号</view>
         <view class="value">{{ formatEmptyText(props.data.sheetNumber) }}</view>
@@ -52,7 +52,7 @@
         <view class="label">地类:</view>
         <view class="value">{{ formatEmptyText(props.data.landTypeText) }}</view>
       </view>
-      <view class="cont-item">
+      <view class="cont-item right">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">土地性质:</view>
         <view class="value">{{ formatEmptyText(props.data.landNatureText) || '' }}</view>
@@ -237,10 +237,14 @@ const handleCheckBoxChange = (e: any) => {
     .cont-item {
       display: flex;
       height: 16rpx;
-      width: 50%;
+      width: 60%;
       margin-top: 6rpx;
       align-items: center;
       flex-direction: row;
+
+      &.right {
+        width: 40%;
+      }
 
       .icon {
         width: 9rpx;
@@ -257,6 +261,7 @@ const handleCheckBoxChange = (e: any) => {
       }
 
       .value {
+        flex: 1;
         font-size: 9rpx;
         color: #171718;
       }
