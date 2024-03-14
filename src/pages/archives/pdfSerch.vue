@@ -1,7 +1,8 @@
 <template>
   <view class="content" style="display: flex;">
     <div class="report-text" id="printReport" style="display: flex;">
-      <div v-if="id == 1"
+      <div
+v-if="id == 1"
         style="width: 100%;border: 1px solid #000000;display: flex;flex-direction: column;padding: 10px; ">
         <h1 style="font-size: 24px; text-align: center">生产安置确认单</h1>
         <div style="display: flex;justify-content: space-between;">
@@ -19,7 +20,8 @@
               <th align="left" class="uTitle">姓名</th>
               <th align="left" class="uTitle">与户主关系</th>
               <th align="left" class="uTitle">身份证号</th>
-              <th align="left" class="uTitle">人口性质</th>
+              <th align="left" class="uTitle" v-if="baseInfo.type!='LandNoMove'">人口性质</th>
+              <th align="left" class="uTitle" v-else>联系方式</th>
               <th align="left" class="uTitle">安置类型</th>
               <th align="left" class="uTitle">备注</th>
             </tr>
@@ -28,7 +30,8 @@
               <td align="left" class="uTd">{{ formatStr(item.name) }}</td>
               <td align="left" class="uTd">{{ formatDict(item.relation, 307) }}</td>
               <td align="left" class="uTd">{{ formatStr(item.card) }}</td>
-              <td align="left" class="uTd">{{ formatDict(item.populationNature, 263) }}</td>
+              <td align="left" class="uTd" v-if="baseInfo.type!='LandNoMove'">{{ formatDict(item.populationNature, 263) }}</td>
+              <td align="left" class="uTd" v-else>{{ formatStr(item.phone) }}</td>
               <td align="left" class="uTd">{{ formatDict(item.settingWay, 375) }}</td>
               <td align="left" class="uTd">{{ `` }}</td>
             </tr>
@@ -40,7 +43,8 @@
           </table>
         </view>
       </div>
-      <div v-if="id == 2"
+      <div
+v-if="id == 2"
         style="width: 100%;border: 1px solid #000000;display: flex;flex-direction: column;padding: 10px; ">
         <h1 style="font-size: 24px; text-align: center">选房确认单</h1>
         <div style="display: flex;justify-content: space-between;">
@@ -84,7 +88,8 @@
           </table>
         </view>
       </div>
-      <div v-if="id == 3"
+      <div
+v-if="id == 3"
         style="width: 100%;border: 1px solid #000000;display: flex;flex-direction: column;padding: 10px; ">
         <h1 style="font-size: 24px; text-align: center">选址确认单</h1>
         <div style="display: flex;justify-content: space-between;">
@@ -127,7 +132,8 @@
           </table>
         </view>
       </div>
-      <div v-if="id == 4"
+      <div
+v-if="id == 4"
         style="width: 100%;border: 1px solid #000000;display: flex;flex-direction: column;padding: 10px; ">
         <h1 style="font-size: 24px; text-align: center">搬迁安置确认单</h1>
         <div style="display: flex;justify-content: space-between;">
@@ -169,7 +175,8 @@
           </table>
         </view>
       </div>
-      <div v-if="id == 5 || id == 6"
+      <div
+v-if="id == 5 || id == 6"
         style="width: 100%;border: 1px solid #000000;display: flex;flex-direction: column;padding: 10px; ">
         <h1 style="font-size: 24px; text-align: center">{{ id == 6 ? '坟墓择址坟确认单' : '坟墓确认单' }}</h1>
         <div style="display: flex;justify-content: space-between;">
@@ -214,7 +221,8 @@
           </table>
         </view>
       </div>
-      <div v-if="id > 6" id="printReports"
+      <div
+v-if="id > 6" id="printReports"
         style="width: 50%;border: 1px solid #000000;display: flex;flex-direction: column;padding: 10px; ">
         <h1 style="font-size: 24px; text-align: center">{{ id == 7 ? '房屋腾空确认单' : (id == 8 ? '土地腾让确认单' : '过渡安置确认单') }}</h1>
         <view class="row-4">
