@@ -28,7 +28,7 @@
           <uni-th width="40rpx">备注</uni-th>
         </uni-tr>
 
-        <uni-tr v-for="(item, index) in landAppendantList" :key="index">
+        <uni-tr v-for="(item, index) in assetAppendantList" :key="index">
           <uni-td>{{ index + 1 }}</uni-td>
           <uni-td>{{ item.rightHolder }}</uni-td>
           <uni-td>{{ item.sheetNumber }}</uni-td>
@@ -40,14 +40,14 @@
           <uni-td>{{ item.number }}</uni-td>
           <uni-td>{{ item.compensationAmount }}</uni-td>
           <uni-td>{{ item.remark }}</uni-td>
-          <uni-td>
+          <!-- <uni-td>
             {{
               item.needHandle === '0' ? '无须办理' : item.isComplete === '1' ? '已办理' : '未办理'
             }}
           </uni-td>
           <uni-td>
             {{ item.completeDate ? dayjs(item.completeDate).format('YYYY-MM-DD') : '' }}
-          </uni-td>
+          </uni-td> -->
         </uni-tr>
       </uni-table>
     </view>
@@ -69,24 +69,24 @@ const props = defineProps<PropsType>()
 const emit = defineEmits(['updateData'])
 
 // 相关手续表
-const landAppendantList = computed(() => {
-  return props.dataInfo.landAppendantList || []
+const assetAppendantList = computed(() => {
+  return props.dataInfo.assetAppendantList || []
 })
 let num = ref(0)
 let nums = ref(0)
 let numss = ref(0)
 let numsss = ref(0)
 onMounted(() => {
-  num.value = landAppendantList.value.length
-  nums.value = landAppendantList.value.reduce((pre: any, cur: any) => {
+  num.value = assetAppendantList.value.length
+  nums.value = assetAppendantList.value.reduce((pre: any, cur: any) => {
     pre += Number(cur.number)
     return pre
   }, 0)
-  numss.value = landAppendantList.value.reduce((pre: any, cur: any) => {
+  numss.value = assetAppendantList.value.reduce((pre: any, cur: any) => {
     pre += Number(cur.shapeArea)
     return pre
   }, 0)
-  numsss.value = landAppendantList.value.reduce((pre: any, cur: any) => {
+  numsss.value = assetAppendantList.value.reduce((pre: any, cur: any) => {
     pre += Number(cur.compensationAmount)
     return pre
   }, 0)
