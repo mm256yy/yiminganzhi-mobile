@@ -197,7 +197,7 @@ export class landEstimateDtoListFills extends Common {
                 if (landNumbers.incloud(key.landNumber)) {
                   k = true
                   deleteImpLandlordAssetAppendantApi(item.uid, key.uid)
-                  km.push(key)
+                  kms.push(key)
                 }
               })
               if (k) {
