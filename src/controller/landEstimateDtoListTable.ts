@@ -1,7 +1,11 @@
 import { Common } from './common'
 import { landEstimateDtoListName, LandlordTableName } from '@/database'
 import { getLandPeasantHouseholdDtoListApi } from '@/service'
-import { addLandlordApi } from '@/service'
+import {
+  addLandlordApi,
+  addImpLandlordAssetAppendantApi,
+  deleteImpLandlordAssetAppendantApi
+} from '@/service'
 import { ImpDataFillController } from '@/controller'
 import { guid } from '@/utils'
 export class landEstimateDtoListFills extends Common {
@@ -110,6 +114,11 @@ export class landEstimateDtoListFills extends Common {
           console.log('核心字段缺失')
           return
         }
+        if (data.doorNo || data.doorNo.length != 9) {
+          reject('户号校验失败')
+          console.log('户号校验失败')
+          return
+        }
         let values = ''
         const setuid = ''
         let doorNos = ''
@@ -158,6 +167,10 @@ export class landEstimateDtoListFills extends Common {
         const userDataAll = await this.db.selectSql(
           `select * from ${LandlordTableName} where type = 'LandNoMove'`
         )
+        const landNumbers = listTds.reduce((pre: any, item: any) => {
+          pre.push(item.landNumber)
+          return pre
+        }, [])
         console.log(userData, listTds, doorNos, '修改人')
 
         if (userData.length == 1) {
@@ -175,6 +188,22 @@ export class landEstimateDtoListFills extends Common {
                   item.uid,
                   item.landEstimateDtoList.filter((value: any) => !uids.incloud(value.uid))
                 )
+              }
+            }
+            if (item.assetAppendantList) {
+              const kms: any = []
+              let k = false
+              item.assetAppendantList.forEach((key: any) => {
+                if (landNumbers.incloud(key.landNumber)) {
+                  k = true
+                  deleteImpLandlordAssetAppendantApi(item.uid, key.uid)
+                  km.push(key)
+                }
+              })
+              if (k) {
+                kms.forEach((item: any) => {
+                  addImpLandlordAssetAppendantApi(userData[0].uid, item)
+                })
               }
             }
           })
