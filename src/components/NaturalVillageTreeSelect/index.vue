@@ -84,6 +84,7 @@ interface PropsType {
   title?: string[]
   value?: string[]
   selectAny?: boolean // 是否选择任意一项
+  type?: string
 }
 
 const props = defineProps<PropsType>()
@@ -101,7 +102,7 @@ watch(
   () => props.value,
   (val) => {
     console.log(val, 'val数据')
-    console.log(props.treeData,'treeData数据')
+    console.log(props.treeData, 'treeData数据')
     if (val && val.length) {
       currentSelect.value = [...val]
       const townList = props.treeData.find((item: any) => item.code === val[0]).children || []
@@ -175,7 +176,7 @@ const cancle = () => {
 
 const confirm = () => {
   const realArray = currentSelect.value.filter((item) => !!item)
-  if (!props.selectAny && realArray.length < 4) {
+  if (!props.selectAny && realArray.length < (props.type === 'land' ? 3 : 4)) {
     uni.showToast({
       title: '未完成选择',
       icon: 'none'
@@ -192,12 +193,12 @@ const reset = () => {
   emit('onConfirm', currentSelect.value, title.value, otherCode.value)
 }
 
-function options(options: any, arg1: { code: any; }) {
-	throw new Error('Function not implemented.');
+function options(options: any, arg1: { code: any }) {
+  throw new Error('Function not implemented.')
 }
 
-function find(options: (options: any, arg1: { code: any; }) => void, arg1: { code: any; }) {
-	throw new Error('Function not implemented.');
+function find(options: (options: any, arg1: { code: any }) => void, arg1: { code: any }) {
+  throw new Error('Function not implemented.')
 }
 </script>
 <style lang="scss" scoped>

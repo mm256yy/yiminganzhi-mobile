@@ -4,7 +4,7 @@
     <view class="main">
       <uni-forms class="form" ref="form" :modelValue="formData">
         <uni-row>
-          <uni-col :span="12">
+          <uni-col :span="24">
             <uni-forms-item
               label="户名："
               :label-width="150"
@@ -28,13 +28,20 @@
               </view>
             </uni-forms-item>
           </uni-col>
+        </uni-row>
+        <uni-row>
           <uni-col :span="12">
-            <uni-forms-item :label="landNo" :label-width="150" name="formData.uid" />
+            <uni-forms-item
+              style="margin-left: 54rpx"
+              :label="landNo"
+              :label-width="150"
+              name="formData.uid"
+            />
           </uni-col>
         </uni-row>
         <uni-row>
           <uni-col :span="24">
-            <uni-forms-item :label-width="80">
+            <uni-forms-item :label-width="85">
               <checkbox-group @change="handleRadioChange">
                 <checkbox :value="checkSelectedStr" :checked="checkSelected" />
                 <span class="common-txt"
@@ -76,7 +83,7 @@
               label-align="right"
               name="formData.card"
             >
-              <uni-easyinput v-model="formData.card" placeholder="请输入" />
+              <uni-easyinput v-model="formData.card" :maxlength="18" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -204,7 +211,9 @@ const dict = getStorage(StorageKey.DICT)
 const checkList = ref<any[]>([])
 const landMark = ref<string>('')
 const showSearch = ref<boolean>(false)
-let oldDoorNo=ref([])
+let oldDoorNo = ref([])
+const doorNoList = ref<any[]>([])
+
 onLoad((option) => {
   if (option && option.params) {
     const params = JSON.parse(option.params)
@@ -215,7 +224,7 @@ onLoad((option) => {
     oldDoorNo.value = checkList.value.reduce((pre, item) => {
       pre.push(item.doorNo)
       return pre
-    },[])
+    }, [])
   }
 })
 
@@ -230,6 +239,7 @@ const resetOwnersName = () => {
 }
 
 const submit = async () => {
+  let doorNoResult = null
   if (checkSelected.value) {
     if (!formData.value.rightHolder) {
       showToast('户主不能为空')
@@ -247,28 +257,41 @@ const submit = async () => {
     if (!formData.value.doorNo) {
       showToast('户号不能为空')
       return
+    } else {
+      if (formData.value.doorNo.length < 4) {
+        showToast('户号后缀必须为4位')
+        return
+      }
+    }
+
+    doorNoResult = `${suffixNo()}${formData.value.doorNo}`
+
+    // 校验户号是否已存在
+    if (doorNoList.value.includes(doorNoResult)) {
+      showToast('当前户号已存在')
+      return
     }
   }
 
   let params = {
     ...formData.value,
     type: checkSelectedStr.value,
-    doorNo: `${suffixNo()}${formData.value.doorNo}`,
-    oldDoorNo:oldDoorNo.value
+    oldDoorNo: oldDoorNo.value,
+    doorNo: doorNoResult
   }
   console.log('submit-params', params)
   try {
     const res = await updateLandlord(params)
-    console.log(res);
-    
+    console.log(res)
+
     if (res) {
-      showToast('绑定成功')
       confirmBindingRef.value?.open()
-      // routerBack()
       // 触发自定义事件
       uni.$emit('customRefresh')
     }
-  } catch {}
+  } catch {
+    showToast('绑定失败')
+  }
 }
 
 // 初始化自然村/村民小组组件数据
@@ -290,7 +313,6 @@ const confirmSelectNaturalVillage = (otherCode: string) => {
 }
 
 const dialogConfirm = () => {
-  confirmBindingRef.value?.close()
   getUidFromAPi()
 }
 
@@ -350,24 +372,37 @@ const inputBlur = () => {
 }
 
 const getUidFromAPi = async () => {
+  const requestParams = {
+    doorNo: `${suffixNo()}${formData.value.doorNo}`
+  }
   try {
-    let result = await getLandlordListBySearchApi({
-      doorNo: formData.value.doorNo
-    })
-    const routeName = 'householdEva'
+    let result = await getLandlordListBySearchApi(requestParams)
+    console.log('OCK-result::: ', result)
+    const routeName = 'landEvaIndex'
     const obj = {
       type: 'land',
       uid: result[0]?.uid
     }
-    console.log('getUidFromAPi::: ', obj)
+    console.log('OCK::: ', obj)
     routerForward(routeName, {
+      replace: true,
       params: JSON.stringify(obj)
     })
   } catch {}
 }
 
+const getCheckList = async () => {
+  try {
+    let result = await getLandlordListBySearchApi({
+      type: 'LandNoMove'
+    } as any)
+    doorNoList.value = result.map((item: any) => item.showDoorNo)
+  } catch {}
+}
+
 onMounted(() => {
   getDoorNoInfoList()
+  getCheckList()
 })
 </script>
 
@@ -378,7 +413,7 @@ onMounted(() => {
 }
 
 .name-wrapper {
-  width: 200rpx;
+  width: 400rpx;
   height: 23rpx;
   padding-left: 7rpx;
   font-size: 9rpx;
@@ -495,6 +530,7 @@ onMounted(() => {
   .common-txt {
     font-size: 9rpx;
     color: #666;
+    margin-left: 10px;
   }
 
   .land-segment {

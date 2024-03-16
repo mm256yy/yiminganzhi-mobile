@@ -88,7 +88,8 @@ const getLandlordDetail = () => {
 // 表单提交
 const submit = debounce(() => {
   let params = {
-    ...formData.value
+    ...formData.value,
+    uid: uid.value
   }
   saveImpLandlordItemApi(params)
     .then((res) => {

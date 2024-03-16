@@ -315,7 +315,7 @@ const projectSyncHandle = async () => {
 const defaultSyncHandle = async () => {
   // 更新项目信息
   const projectList = await getProjectListApi()
-  console.log('更新项目信息')
+   console.log('更新项目信息')
   if (projectList && projectList.length) {
     const currentProjectId = getStorage(StorageKey.PROJECTID)
     const currentProjectItem = projectList.find((item) => item.id === currentProjectId)
@@ -329,8 +329,8 @@ const defaultSyncHandle = async () => {
 const onSync = async () => {
   uni.showLoading({
     title: '正在同步中....',
-    mask: true
-  })
+    mask: true 
+  })                                    
   const res = await networkCheck()
   if (!res) {
     uni.hideLoading()

@@ -71,10 +71,10 @@ export class ImpLandlord extends Common {
       houseRenovationStatus, //房屋装修评估完成状态
       appendageStatus, //附属设施评估完成状态
       treeStatus, //零星(林)果木评估完成状态
-      specialStatus,  //小型专项评估
+      specialStatus, //小型专项评估
       infrastructureStatus, //基础设施评估
-      deviceStatus,//设施设备评估完成状态
-      otherStatus, //其他评估完成状态
+      deviceStatus, //设施设备评估完成状态
+      otherStatus //其他评估完成状态
     } = landlordItem.immigrantFilling
     // 判断初始化
     landlordItem.immigrantFilling = { ...defaultFillingObj, ...immigrantFilling }
@@ -90,20 +90,41 @@ export class ImpLandlord extends Common {
     if (role === RoleCodeType.assessor) {
       // 资产评估-房屋
 
-      if (this.isNotNullPic(houseEstimatePic) && type === MainType.PeasantHousehold && houseMainStatus === '1' && houseRenovationStatus === '1' && appendageStatus === '1' && treeStatus === '1') {
+      if (
+        this.isNotNullPic(houseEstimatePic) &&
+        type === MainType.PeasantHousehold &&
+        houseMainStatus === '1' &&
+        houseRenovationStatus === '1' &&
+        appendageStatus === '1' &&
+        treeStatus === '1'
+      ) {
         // 评估总状态
         landlordItem.immigrantFilling.estimateeStatus = '1'
         landlordItem.houseImplementEscalationStatus = '1'
       } else if (
         (type === MainType.Company || type === MainType.IndividualHousehold) &&
         this.isNotNullPic(houseEstimatePic) &&
-        this.isNotNullPic(devicePic) && houseMainStatus === '1' && houseRenovationStatus === '1' && appendageStatus === '1' && treeStatus === '1' && infrastructureStatus === '1' && otherStatus === '1' && deviceStatus === '1') {
+        this.isNotNullPic(devicePic) &&
+        houseMainStatus === '1' &&
+        houseRenovationStatus === '1' &&
+        appendageStatus === '1' &&
+        treeStatus === '1' &&
+        infrastructureStatus === '1' &&
+        otherStatus === '1' &&
+        deviceStatus === '1'
+      ) {
         landlordItem.immigrantFilling.estimateeStatus = '1'
         landlordItem.houseImplementEscalationStatus = '1'
       } else if (
         type === MainType.Village &&
         this.isNotNullPic(houseEstimatePic) &&
-        this.isNotNullPic(specialPic) && houseMainStatus === '1' && houseRenovationStatus === '1' && appendageStatus === '1' && treeStatus === '1' && specialStatus === '1' && infrastructureStatus === '1'
+        this.isNotNullPic(specialPic) &&
+        houseMainStatus === '1' &&
+        houseRenovationStatus === '1' &&
+        appendageStatus === '1' &&
+        treeStatus === '1' &&
+        specialStatus === '1' &&
+        infrastructureStatus === '1'
       ) {
         // 农村小型专项
         landlordItem.immigrantFilling.estimateeStatus = '1'
@@ -354,8 +375,12 @@ export class ImpLandlord extends Common {
     if (immigrantSettle && immigrantSettle.houseAreaType === HouseAreaType.homestead) {
       if (this.isArrayAndNotNull(immigrantBuildOneselfList)) {
         // const res = immigrantBuildOneselfList.find((item) => item.isComplete !== '1')
-        console.log( this.isNotNullPic(buildOneselfPic),this.isNotNullPic(buildOneselfCheckPic), '查看自建房信息')
-        if ( this.isNotNullPic(buildOneselfPic) && this.isNotNullPic(buildOneselfCheckPic)) {
+        console.log(
+          this.isNotNullPic(buildOneselfPic),
+          this.isNotNullPic(buildOneselfCheckPic),
+          '查看自建房信息'
+        )
+        if (this.isNotNullPic(buildOneselfPic) && this.isNotNullPic(buildOneselfCheckPic)) {
           landlordItem.immigrantFilling.buildOneselfStatus = '1'
           console.log(
             landlordItem.immigrantFilling.buildOneselfStatus,
@@ -449,7 +474,7 @@ export class ImpLandlord extends Common {
           } else {
             landlordItem.immigrantFilling.agricultureArrangementStatus = '0'
           }
-        }else{
+        } else {
           // 无农业安置
           landlordItem.immigrantFilling.agricultureArrangementStatus = '1'
         }
@@ -580,7 +605,8 @@ export class ImpLandlord extends Common {
             res.immigrantInfrastructureList = res.immigrantInfrastructureList.filter(
               (item: any) => item.isDelete !== '1'
             )
-          } if (this.isArrayAndNotNull(res.immigrantOtherList)) {
+          }
+          if (this.isArrayAndNotNull(res.immigrantOtherList)) {
             res.immigrantOtherList = res.immigrantOtherList.filter(
               (item: any) => item.isDelete !== '1'
             )
@@ -598,7 +624,9 @@ export class ImpLandlord extends Common {
           }
 
           if (this.isArrayAndNotNull(res.landEstimateDtoList)) {
-            res.landEstimateDtoList = res.landEstimateDtoList.filter((item) => item.isDelete !== '1')
+            res.landEstimateDtoList = res.landEstimateDtoList.filter(
+              (item) => item.isDelete !== '1'
+            )
           }
 
           if (this.isArrayAndNotNull(res.assetAppendantList)) {
@@ -704,7 +732,8 @@ export class ImpLandlord extends Common {
             res.immigrantInfrastructureList = res.immigrantInfrastructureList.filter(
               (item: any) => item.isDelete !== '1'
             )
-          } if (this.isArrayAndNotNull(res.immigrantOtherList)) {
+          }
+          if (this.isArrayAndNotNull(res.immigrantOtherList)) {
             res.immigrantOtherList = res.immigrantOtherList.filter(
               (item: any) => item.isDelete !== '1'
             )
@@ -722,7 +751,9 @@ export class ImpLandlord extends Common {
           }
 
           if (this.isArrayAndNotNull(res.landEstimateDtoList)) {
-            res.landEstimateDtoList = res.landEstimateDtoList.filter((item) => item.isDelete !== '1')
+            res.landEstimateDtoList = res.landEstimateDtoList.filter(
+              (item) => item.isDelete !== '1'
+            )
           }
 
           if (this.isArrayAndNotNull(res.assetAppendantList)) {
@@ -921,6 +952,7 @@ export class ImpLandlord extends Common {
           virutalVillageCode,
           type,
           warnStatus,
+          doorNo,
           pageSize = 10,
           page = 1
         } = data || {}
@@ -949,6 +981,9 @@ export class ImpLandlord extends Common {
         }
         if (warnStatus) {
           sql += ` and warnStatus = '${warnStatus}'`
+        }
+        if (doorNo) {
+          sql += ` and doorNo = '${doorNo}'`
         }
         sql += ` order by updatedDate desc limit ${pageSize} offset ${(page - 1) * pageSize}`
         // console.log('sql', sql)

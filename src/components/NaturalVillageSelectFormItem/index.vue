@@ -11,6 +11,7 @@
       :tree-data="treeData"
       :value="codes"
       :title="villageTitle"
+      :type="type"
       @on-close="close"
       @on-confirm="villageConfirm"
     />
@@ -20,13 +21,18 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, nextTick } from 'vue'
 import NaturalVillageTreeSelect from '@/components/NaturalVillageTreeSelect/index.vue'
-import { getVirutalVillageTreeApi } from '@/service'
+import {
+  getVirutalVillageTreeApi,
+  getVillageTreeWithoutNullApi,
+  getVillageTreeApi
+} from '@/service'
 
 interface PropsType {
   areaCode: string
   townCode: string
   villageCode: string
   virutalVillageCode: string
+  type?: string
 }
 
 // areaCode
@@ -86,7 +92,12 @@ const getTitle = () => {
 }
 
 const getTreeData = async () => {
-  const res = await getVirutalVillageTreeApi()
+  let res: any = null
+  if (props.type === 'land') {
+    res = await getVillageTreeApi()
+  } else {
+    res = await getVirutalVillageTreeApi()
+  }
   treeData.value = res || []
   console.log('resTree:', res)
   getTitle()

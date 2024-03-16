@@ -6,7 +6,7 @@
     <view class="main-cont">
       <view class="list-content">
         <view class="list-box">
-          <view class="box" v-if="props.dataInfo">
+          <view class="box" v-if="JSON.stringify(props.dataInfo) !== '{}'">
             <!-- 头部 -->
             <Header
               :dataInfo="dataInfo"
@@ -79,13 +79,6 @@
                   @delete-seedlings="deleteSeedlings"
                   @update-data="updateData"
                 />
-
-                <!-- 坟墓评估 -->
-                <!-- <grave-eva
-                  v-if="tabVal === 7"
-                  :dataList="dataInfo.immigrantGraveList"
-                  :dataInfo="dataInfo"
-                /> -->
               </view>
             </view>
           </view>
@@ -93,7 +86,7 @@
           <view class="box" v-else>
             <view class="null-wrapper">
               <image class="icon" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
-              <view class="tips">请先选择要评估的居民户</view>
+              <view class="tips">暂无数据</view>
             </view>
           </view>
         </view>
@@ -225,6 +218,8 @@ const tabsList = computed(() => {
 
 const tabVal = ref<number>(0)
 const emit = defineEmits(['updateData'])
+
+console.log('DF:::DF', props.dataInfo)
 
 // 是否为空数组
 const isNotNullArray = (arr: any) => {

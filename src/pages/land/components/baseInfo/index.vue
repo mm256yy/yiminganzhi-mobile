@@ -136,7 +136,7 @@
                 <view class="col">
                   <view class="label">所在位置：</view>
                   <view class="content">
-                    {{ formatStr(props.dataInfo.areaText) }}
+                    {{ formatDict(props.dataInfo.locationType, 326) }}
                   </view>
                 </view>
               </uni-col>

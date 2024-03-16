@@ -31,7 +31,7 @@
 </template>
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
-import { onLoad } from '@dcloudio/uni-app'
+import { onLoad, onShow } from '@dcloudio/uni-app'
 import { deepClone } from '@/utils'
 import { landNoMoveList, landNoMoveOtherList } from '../../../common/config.ts'
 import Report from './Report.vue' // 资产评估报告
@@ -44,17 +44,38 @@ import Insure from '@/pages/household/productionResettle/insure.vue'
 import Back from '@/components/Back/Index.vue'
 import LeftSidebar from '@/components/LeftSidebar/Index.vue' // 引入左侧边栏组件
 import Header from '@/pages/land/components/navigation/TopHeader.vue' // 引入头部组件
+import { getLandlordListBySearchApi } from '@/service'
 
 const tabVal = ref<number>(1)
 const emit = defineEmits(['updateData'])
 const dataInfo = ref<any>(null)
 const startTime = ref<any>(0)
 
-onLoad((option) => {
-  if (option && option.data) {
-    dataInfo.value = JSON.parse(option.data)
+onShow(() => {
+  if (dataInfo.value?.doorNo) {
+    getLandlordDetail(dataInfo.value.doorNo)
   }
 })
+
+onLoad((option) => {
+  if (option && option.data) {
+    const result = JSON.parse(option.data)
+    console.log('KRESULT:', result)
+    if (result?.doorNo) {
+      getLandlordDetail(result.doorNo)
+    }
+  }
+})
+
+const getLandlordDetail = (doorNo: string) => {
+  const params = {
+    doorNo
+  }
+  getLandlordListBySearchApi(params).then((res: any) => {
+    dataInfo.value = res[0]
+    console.log('resAPI:', dataInfo.value)
+  })
+}
 
 const getTime = (time: any) => {
   startTime.value = time
@@ -63,7 +84,7 @@ const getTime = (time: any) => {
 const tabList = computed(() => {
   const { immigrantFilling = {}, landEstimateDtoList } = dataInfo.value || {}
   const list =
-    dataInfo.value.landUserType === 'PeasantHousehold' ? landNoMoveList : landNoMoveOtherList
+    dataInfo.value?.landUserType === 'PeasantHousehold' ? landNoMoveList : landNoMoveOtherList
   const arr: any = deepClone(list)
   // 资产评估报告
   if (landEstimateDtoList && landEstimateDtoList.length > 0) {
@@ -71,7 +92,7 @@ const tabList = computed(() => {
   }
 
   if (immigrantFilling) {
-    if (dataInfo.value.landUserType === 'PeasantHousehold') {
+    if (dataInfo.value?.landUserType === 'PeasantHousehold') {
       // 生产安置确认
       if (immigrantFilling.productionArrangementStatus === '1') {
         arr[0].list[0].list[1].filled = true
@@ -128,7 +149,7 @@ const recordClickTime = () => {
 
 // 更新整体数据
 const updateData = () => {
-  emit('updateData', dataInfo.value.uid)
+  emit('updateData', dataInfo.value?.uid)
 }
 </script>
 <style lang="scss" scoped>

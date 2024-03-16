@@ -5,7 +5,13 @@
       <uni-forms class="form" ref="form" :modelValue="formData">
         <uni-row>
           <uni-col :span="12">
-            <uni-forms-item required label="幢号" :label-width="150" label-align="right" name="formData.houseNo">
+            <uni-forms-item
+              required
+              label="幢号"
+              :label-width="150"
+              label-align="right"
+              name="formData.houseNo"
+            >
               <uni-easyinput v-model="formData.houseNo" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
@@ -23,12 +29,22 @@
 
         <uni-row>
           <uni-col :span="12">
-            <uni-forms-item label="房屋坐落" :label-width="150" label-align="right" name="formData.situated">
+            <uni-forms-item
+              label="房屋坐落"
+              :label-width="150"
+              label-align="right"
+              name="formData.situated"
+            >
               <uni-easyinput v-model="formData.situated" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
-            <uni-forms-item label="房屋类别" :label-width="150" label-align="right" name="formData.houseType">
+            <uni-forms-item
+              label="房屋类别"
+              :label-width="150"
+              label-align="right"
+              name="formData.houseType"
+            >
               <uni-data-select v-model="formData.houseType" :localdata="dict[266]" />
             </uni-forms-item>
           </uni-col>
@@ -36,15 +52,31 @@
 
         <uni-row>
           <uni-col :span="12">
-            <uni-forms-item label="结构类型" :label-width="150" label-align="right" name="formData.constructionType">
+            <uni-forms-item
+              label="结构类型"
+              :label-width="150"
+              label-align="right"
+              name="formData.constructionType"
+            >
               <uni-data-select v-model="formData.constructionType" :localdata="dict[252]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
-            <uni-forms-item label="层数" :label-width="150" label-align="right" name="formData.storeyNumber">
+            <uni-forms-item
+              label="层数"
+              :label-width="150"
+              label-align="right"
+              name="formData.storeyNumber"
+            >
               <view :class="['input-wrapper', focusIndex === 1 ? 'focus' : '']">
-                <input class="input-txt" placeholder="请输入" type="number" v-model="formData.storeyNumber"
-                  @focus="inputFocus(1)" @blur="inputBlur" />
+                <input
+                  class="input-txt"
+                  placeholder="请输入"
+                  type="number"
+                  v-model="formData.storeyNumber"
+                  @focus="inputFocus(1)"
+                  @blur="inputBlur"
+                />
                 <view class="unit">层</view>
               </view>
             </uni-forms-item>
@@ -53,16 +85,33 @@
 
         <uni-row>
           <uni-col :span="12">
-            <uni-forms-item label="建筑面积" :label-width="150" label-align="right" name="formData.landArea">
+            <uni-forms-item
+              label="建筑面积"
+              :label-width="150"
+              label-align="right"
+              name="formData.landArea"
+            >
               <view :class="['input-wrapper', focusIndex === 2 ? 'focus' : '']">
-                <input class="input-txt" placeholder="请输入" type="number" v-model="formData.landArea"
-                  @focus="inputFocus(2)" @blur="inputBlur" disabled />
+                <input
+                  class="input-txt"
+                  placeholder="请输入"
+                  type="number"
+                  v-model="formData.landArea"
+                  @focus="inputFocus(2)"
+                  @blur="inputBlur"
+                  disabled
+                />
                 <view class="unit">m²</view>
               </view>
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
-            <uni-forms-item label="竣工年月" :label-width="150" label-align="right" name="formData.completedTime">
+            <uni-forms-item
+              label="竣工年月"
+              :label-width="150"
+              label-align="right"
+              name="formData.completedTime"
+            >
               <view class="picker-wrapper">
                 <picker mode="date" :value="currentDate" :fields="'month'" @change="bindDateChange">
                   <view :class="['uni-input', formData.completedTime ? '' : 'select']">
@@ -76,19 +125,42 @@
 
         <uni-row>
           <uni-col :span="12">
-            <uni-forms-item label="房屋高程" :label-width="150" label-align="right" name="formData.houseHeight">
+            <uni-forms-item
+              label="房屋高程"
+              :label-width="150"
+              label-align="right"
+              name="formData.houseHeight"
+            >
               <view :class="['input-wrapper', focusIndex === 3 ? 'focus' : '']">
-                <input class="input-txt" placeholder="请输入" type="number" v-model="formData.houseHeight"
-                  @focus="inputFocus(3)" @blur="inputBlur" />
+                <input
+                  class="input-txt"
+                  placeholder="请输入"
+                  type="number"
+                  v-model="formData.houseHeight"
+                  @focus="inputFocus(3)"
+                  @blur="inputBlur"
+                />
                 <view class="unit">m</view>
               </view>
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
-            <uni-forms-item label="宅基地面积" :label-width="150" label-align="right" name="formData.homesteadArea">
+            <uni-forms-item
+              label="宅基地面积"
+              :label-width="150"
+              label-align="right"
+              name="formData.homesteadArea"
+            >
               <view :class="['input-wrapper', focusIndex === 4 ? 'focus' : '']">
-                <input class="input-txt" placeholder="请输入" type="number" v-model="formData.homesteadArea"
-                  @focus="inputFocus(4)" @blur="inputBlur" disabled />
+                <input
+                  class="input-txt"
+                  placeholder="请输入"
+                  type="number"
+                  v-model="formData.homesteadArea"
+                  @focus="inputFocus(4)"
+                  @blur="inputBlur"
+                  disabled
+                />
                 <view class="unit">㎡</view>
               </view>
             </uni-forms-item>
@@ -97,12 +169,22 @@
 
         <uni-row>
           <uni-col :span="12">
-            <uni-forms-item label="房产所有权证编号" :label-width="150" label-align="right" name="formData.propertyNo">
+            <uni-forms-item
+              label="房产所有权证编号"
+              :label-width="150"
+              label-align="right"
+              name="formData.propertyNo"
+            >
               <uni-easyinput v-model="formData.propertyNo" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
-            <uni-forms-item label="土地使用权证编号" :label-width="150" label-align="right" name="formData.landNo">
+            <uni-forms-item
+              label="土地使用权证编号"
+              :label-width="150"
+              label-align="right"
+              name="formData.landNo"
+            >
               <uni-easyinput v-model="formData.landNo" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
@@ -110,15 +192,31 @@
 
         <uni-row>
           <uni-col :span="12">
-            <uni-forms-item label="结构等级" :label-width="150" label-align="right" name="formData.constructionLevel">
+            <uni-forms-item
+              label="结构等级"
+              :label-width="150"
+              label-align="right"
+              name="formData.constructionLevel"
+            >
               <uni-data-select v-model="formData.constructionLevel" :localdata="dict[223]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
-            <uni-forms-item label="房屋高度" :label-width="150" label-align="right" name="formData.buildingHeight">
+            <uni-forms-item
+              label="房屋高度"
+              :label-width="150"
+              label-align="right"
+              name="formData.buildingHeight"
+            >
               <view :class="['input-wrapper', focusIndex === 5 ? 'focus' : '']">
-                <input class="input-txt" placeholder="请输入" type="number" v-model="formData.buildingHeight"
-                  @focus="inputFocus(5)" @blur="inputBlur" />
+                <input
+                  class="input-txt"
+                  placeholder="请输入"
+                  type="number"
+                  v-model="formData.buildingHeight"
+                  @focus="inputFocus(5)"
+                  @blur="inputBlur"
+                />
                 <view class="unit">m</view>
               </view>
             </uni-forms-item>
@@ -127,15 +225,31 @@
 
         <uni-row>
           <uni-col :span="12">
-            <uni-forms-item label="成新率" :label-width="150" label-align="right" name="formData.newnessRate">
+            <uni-forms-item
+              label="成新率"
+              :label-width="150"
+              label-align="right"
+              name="formData.newnessRate"
+            >
               <uni-easyinput v-model="formData.newnessRate" type="number" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
-            <uni-forms-item label="评估单价" :label-width="150" label-align="right" name="formData.valuationPrice">
+            <uni-forms-item
+              label="评估单价"
+              :label-width="150"
+              label-align="right"
+              name="formData.valuationPrice"
+            >
               <view :class="['input-wrapper', focusIndex === 6 ? 'focus' : '']">
-                <input class="input-txt" placeholder="请输入" type="number" v-model="formData.valuationPrice"
-                  @focus="inputFocus(6)" @blur="inputBlur" />
+                <input
+                  class="input-txt"
+                  placeholder="请输入"
+                  type="number"
+                  v-model="formData.valuationPrice"
+                  @focus="inputFocus(6)"
+                  @blur="inputBlur"
+                />
                 <view class="unit">元/㎡</view>
               </view>
             </uni-forms-item>
@@ -144,19 +258,42 @@
 
         <uni-row>
           <uni-col :span="12">
-            <uni-forms-item label="评估金额" :label-width="150" label-align="right" name="formData.valuationAmount">
+            <uni-forms-item
+              label="评估金额"
+              :label-width="150"
+              label-align="right"
+              name="formData.valuationAmount"
+            >
               <view :class="['input-wrapper', focusIndex === 7 ? 'focus' : '']">
-                <input class="input-txt" placeholder="请输入" type="number" :value="countPrice" @focus="inputFocus(7)"
-                  @blur="inputBlur" />
+                <input
+                  class="input-txt"
+                  placeholder="请输入"
+                  type="number"
+                  :value="countPrice"
+                  @focus="inputFocus(7)"
+                  @blur="inputBlur"
+                />
                 <view class="unit">元</view>
               </view>
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
-            <uni-forms-item label="补偿金额" :label-width="150" label-align="right" name="formData.compensationAmount">
+            <uni-forms-item
+              label="补偿金额"
+              :label-width="150"
+              label-align="right"
+              name="formData.compensationAmount"
+            >
               <view :class="['input-wrapper', focusIndex === 8 ? 'focus' : '']">
-                <input class="input-txt" placeholder="请输入
-" type="number" v-model="formData.compensationAmount" @focus="inputFocus(8)" @blur="inputBlur" />
+                <input
+                  class="input-txt"
+                  placeholder="请输入
+"
+                  type="number"
+                  v-model="formData.compensationAmount"
+                  @focus="inputFocus(8)"
+                  @blur="inputBlur"
+                />
                 <view class="unit">元</view>
               </view>
             </uni-forms-item>
@@ -165,24 +302,45 @@
 
         <uni-row>
           <uni-col :span="12">
-            <uni-forms-item label="备注" :label-width="150" label-align="right" name="formData.remark">
-              <uni-easyinput v-model="formData.remark" type="textarea" :maxlength="50" placeholder="请输入(50字以内)" />
+            <uni-forms-item
+              label="备注"
+              :label-width="150"
+              label-align="right"
+              name="formData.remark"
+            >
+              <uni-easyinput
+                v-model="formData.remark"
+                type="textarea"
+                :maxlength="50"
+                placeholder="请输入(50字以内)"
+              />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
             <uni-col :span="12">
-              <uni-forms-item label="是否合法" :label-width="150" label-align="right" name="formData.isCompliance">
-                <uni-data-select v-model="formData.isCompliance" :localdata="dict[371
-                ]" :disabled="true" />
+              <uni-forms-item
+                label="是否合法"
+                :label-width="150"
+                label-align="right"
+                name="formData.isCompliance"
+              >
+                <uni-data-select
+                  v-model="formData.isCompliance"
+                  :localdata="dict[371]"
+                  :disabled="true"
+                />
               </uni-forms-item>
             </uni-col>
           </uni-col>
         </uni-row>
       </uni-forms>
 
-      <image class="submit-btn" src="
-                                            @/static/images/icon
-_submit.png" mode="scaleToFill" @click="submit" />
+      <image
+        class="submit-btn"
+        src="@/static/images/icon_submit.png"
+        mode="scaleToFill"
+        @click="submit"
+      />
     </view>
   </view>
 </template>

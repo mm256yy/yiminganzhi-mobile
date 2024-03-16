@@ -4,7 +4,7 @@
     <image src="@/static/images/common_bg.png" class="head-bg" mode="widthFix" />
     <view class="home-wrap" :style="{ height: `${pageHeight}px` }">
       <view class="home-body">
-        <EvaMain
+        <LandEvaMain
           :dataInfo="dataInfo"
           :occupationOptions="occupationOptions"
           @update-data="getLandlordDetail"
@@ -18,9 +18,8 @@
 import { ref, onMounted } from 'vue'
 import { getEvaLandlordItemApi, getOtherItemApi } from '@/service'
 import { OtherDataType } from '@/database'
-import EvaMain from './components/EvaMain.vue'
 import { onLoad, onShow } from '@dcloudio/uni-app'
-// import LandEvaMain from '@/pages/land/components/LandEvaMain.vue'
+import LandEvaMain from '@/pages/land/components/LandEvaMain.vue'
 
 const sysInfo = uni.getSystemInfoSync()
 const statusBarHeight = sysInfo.statusBarHeight || 0
@@ -38,8 +37,13 @@ onShow(() => {
 })
 
 onLoad((option) => {
-  if (option && option.uid) {
-    getLandlordDetail(option.uid)
+  if (option && option.params) {
+    const params = JSON.parse(option.params)
+    type.value = params.type
+    console.log('RParams', params)
+    if (params.uid) {
+      getLandlordDetail(params.uid)
+    }
   }
 })
 

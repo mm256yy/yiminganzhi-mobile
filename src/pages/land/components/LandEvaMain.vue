@@ -6,7 +6,7 @@
     <view class="main-cont">
       <view class="list-content">
         <view class="list-box">
-          <view class="box">
+          <view class="box" v-if="JSON.stringify(props.dataInfo) !== '{}'">
             <!-- 头部 -->
             <Header
               :dataInfo="dataInfo"
@@ -48,10 +48,10 @@
             </view>
           </view>
 
-          <view class="box">
+          <view class="box" v-else>
             <view class="null-wrapper">
               <image class="icon" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
-              <view class="tips">请先选择要评估的居民户</view>
+              <view class="tips">暂无数据</view>
             </view>
           </view>
         </view>

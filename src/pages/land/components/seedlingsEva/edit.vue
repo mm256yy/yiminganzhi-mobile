@@ -310,8 +310,9 @@ const getLandlordDetail = () => {
 }
 
 onLoad((option: any) => {
-  if (option) {
+  if (option && option.params) {
     commonParams.value = JSON.parse(option.params)
+    console.log('BBB::: ', commonParams.value)
     const { type, landEstimateDtoList } = commonParams.value
     if (type === 'edit') {
       title.value = '土地青苗及附着物评估编辑'
