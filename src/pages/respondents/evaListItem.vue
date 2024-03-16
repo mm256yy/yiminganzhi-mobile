@@ -42,7 +42,7 @@
       </view>
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
-        <view class="label">行政村名称1:</view>
+        <view class="label">行政村名称:</view>
         <view class="value">{{ props.data.villageCodeText }}</view>
       </view>
       <view class="cont-item" v-if="props.data.type === MainType.PeasantHousehold">
@@ -70,7 +70,10 @@ const emit = defineEmits(['delete'])
 
 const filled = computed(() => {
   return (
-    props.data && props.data.immigrantFilling && props.data.immigrantFilling.estimateeStatus === '1'&&props.data.houseImplementEscalationStatus==='1'
+    props.data &&
+    props.data.immigrantFilling &&
+    props.data.immigrantFilling.estimateeStatus === '1' &&
+    props.data.houseImplementEscalationStatus === '1'
   )
 })
 // const deleteItem = () => {

@@ -1,5 +1,5 @@
 <template>
-  <view>
+  <view class="home-wrapper">
     <view class="search-segment">
       <view class="search">
         <view class="search-input">
@@ -21,6 +21,9 @@
         <view class="right-side">
           <view class="btn blue-btn" @click="toTarget('database')">
             <text class="txt">数据库</text>
+          </view>
+          <view class="btn blue-btn" @click="onReset">
+            <text class="txt">重置搜索</text>
           </view>
           <view class="btn blue-btn" @click="associatedBind">
             <text class="txt">关联绑定</text>
@@ -87,13 +90,12 @@
 
 <script lang="ts" setup>
 import { ref, reactive, onMounted, nextTick, computed, onBeforeUnmount } from 'vue'
-import { onShow, onLoad, onUnload } from '@dcloudio/uni-app'
-import { getStorage, StorageKey, routerForward, debounce, pagesMap } from '@/utils'
+import { onShow, onLoad } from '@dcloudio/uni-app'
+import { routerForward, debounce } from '@/utils'
 import {
   getOtherItemApi,
   getLandEstimateDtoListApi,
-  getLandlordListBySearchTitleApi,
-  getOtherWithTypeSetApi
+  getLandlordListBySearchTitleApi
 } from '@/service'
 import NoData from '@/components/NoData/index.vue'
 import LandListItem from '@/pages/land/components/landListItem/index.vue'
@@ -116,16 +118,14 @@ const page = ref<number>(1)
 const pageSize = ref<number>(10)
 const associationBindingRef = ref()
 const checkList = ref<any[]>([])
-const searchParams = reactive({
+let searchParams = reactive({
   name: ''
 }) // 查询参数
 let total = ref(0)
 
 const onSearch = () => {
-  if (searchName.value) {
-    searchParams.name = searchName.value
-    init()
-  }
+  searchParams.name = searchName.value
+  init()
 }
 
 const toTarget = (name: any) => {
@@ -146,8 +146,11 @@ const getList = () => {
       ...searchParams
     }
 
+    console.log('搜索参数', params)
+
     try {
       const tempList: any[] = await getLandEstimateDtoListApi(params)
+      console.log('list列表', tempList)
       let res = tempList.map((item) => {
         return {
           ...item,
@@ -167,22 +170,6 @@ const getList = () => {
       isLoading.value = false
       isEnd.value = true
     }
-
-    // if (res && res.length) {
-    //   if (page.value === 1) {
-    //     list.value = res || []
-    //   }
-    //   if (res.length < pageSize.value) {
-    //     isEnd.value = true
-    //   } else {
-    //     page.value = page.value + 1
-    //   }
-    // } else {
-    //   if (page.value === 1) {
-    //     list.value = []
-    //   }
-    //   isEnd.value = true
-    // }
   })
 }
 
@@ -240,6 +227,13 @@ const getPullTime = async () => {
 const status = computed(() => {
   return isEnd.value ? 'noMore' : isLoading.value ? 'loading' : 'more'
 })
+
+const onReset = () => {
+  searchParams = {
+    name: ''
+  }
+  init()
+}
 
 // 更多查询
 const onSearchMore = () => {
@@ -304,15 +298,19 @@ onShow(() => {
 })
 
 onLoad((option) => {
-  // 注册事件监听器
-  uni.$on('customRefresh', () => {
+  if (option && option.params) {
+    searchParams = JSON.parse(option.params)
     init()
-  })
+    // 注册事件监听器
+    // uni.$on('customRefresh', () => {
+    //   init()
+    // })
+  }
 })
 
-onUnload(() => {
-  uni.$off('customRefresh')
-})
+// onUnload(() => {
+//   uni.$off('customRefresh')
+// })
 
 onBeforeUnmount(() => {
   uni.$off('SyncEnd', onSyncEnd)
@@ -326,6 +324,14 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+.home-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
 .search-btn-radius {
   display: flex;
   width: 60rpx;
@@ -464,7 +470,8 @@ onMounted(() => {
 
 .scroll-view {
   width: 100%;
-  height: calc(100vh - var(--status-bar-height) - 33rpx - 18rpx - 6rpx - 10rpx - 42rpx);
+  height: calc(100vh - var(--status-bar-height) - 33rpx);
+  overflow: hidden;
 }
 
 .scroll {

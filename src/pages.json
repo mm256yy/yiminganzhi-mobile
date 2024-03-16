@@ -225,6 +225,13 @@
 			}
 		},
 		{
+			"name": "landEvaIndex",
+			"path": "pages/household/evaLandIndex",
+			"style": {
+				"navigationBarTitleText": "土地评估"
+			}
+		},
+		{
 			"name": "enterpriseEva",
 			"path": "pages/enterprise/evaIndex",
 			"style": {

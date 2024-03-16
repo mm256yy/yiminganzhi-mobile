@@ -44,7 +44,7 @@
               <view class="col">
                 <view class="label">所在位置：</view>
                 <view class="content">
-                  {{ formatStr(item.areaText) }}
+                  {{ formatDict(props.dataInfo.locationType, 326) }}
                 </view>
               </view>
             </uni-col>
@@ -123,7 +123,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { formatStr, routerForward } from '@/utils'
+import { formatStr, formatDict, routerForward } from '@/utils'
 import { showToast } from '@/config'
 
 const props = defineProps({

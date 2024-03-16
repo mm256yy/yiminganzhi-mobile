@@ -58,7 +58,10 @@
               @click.stop="editLandlord(item)"
             />
           </view>
-          <view class="scroll" v-else-if="roleType === RoleCodeType.assessor">
+          <view
+            class="scroll"
+            v-else-if="roleType === RoleCodeType.assessor || roleType === RoleCodeType.assessorland"
+          >
             <EvaListItem
               v-for="item in list"
               :data="item"

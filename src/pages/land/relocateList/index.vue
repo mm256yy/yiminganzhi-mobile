@@ -35,6 +35,8 @@
           scroll-y
           :enable-flex="true"
           @scrolltolower="loadMore"
+          @scrolltoupper="onRefresh"
+          v-loading="isLoading"
         >
           <view class="scroll">
             <ListItem v-for="item in list" :data="item" :key="item.uid" />
@@ -69,17 +71,14 @@ import ListItem from '@/pages/land/components/relocateListItem/index.vue'
 import NaturalVillageTreeSelect from '@/components/NaturalVillageTreeSelect/index.vue'
 // import { LandlordType } from '@/types/sync'
 import { MainType, RoleCodeType } from '@/types/common'
-import { routerForward, getStorage, StorageKey } from '@/utils'
 import { getVirutalVillageTreeApi, getLandlordListBySearchApi } from '@/service'
 
-const tabType = ref<MainType>(MainType.PeasantHousehold)
 const showVillageSelect = ref<boolean>(false)
 const keyWords = ref<string>('')
 const villageCode = ref<string[]>([])
 const treeData = ref<any>([])
 const title = ref<string[]>([])
 const tipsList = ref<any>([])
-const confirmMsg = ref<string>('')
 const list = ref<any[]>([])
 
 const isLoading = ref<boolean>(false)
@@ -100,7 +99,7 @@ const init = () => {
   isEnd.value = false
   isLoading.value = false
   tipsList.value = []
-  confirmMsg.value = ''
+  list.value = []
   getList()
 }
 
@@ -145,29 +144,23 @@ const getList = () => {
       // villageCode: villageCode.value
     }
 
-    console.log('只征地不搬迁列表Params', params)
-
-    const res: any[] = await getLandlordListBySearchApi(params)
-    console.log('只征地不搬迁列表List', res)
-
-    isLoading.value = false
-    if (res && res.length) {
-      if (page.value === 1) {
-        list.value = res || []
-      } else {
-        list.value = list.value?.concat(res)
-      }
+    console.log('只征地不搬迁列表提交Params', params)
+    try {
+      const res: any[] = await getLandlordListBySearchApi(params)
+      console.log('只征地不搬迁列表List', res)
+      isLoading.value = false
+      list.value = [...list.value, ...res]
+      //判断数据是否加载完成
       if (res.length < pageSize.value) {
         isEnd.value = true
-      } else {
-        page.value = page.value + 1
       }
-    } else {
-      if (page.value === 1) {
-        list.value = []
-      }
+    } catch (error) {
+      console.log(error)
+      isLoading.value = false
       isEnd.value = true
     }
+
+    isLoading.value = false
   })
 }
 
@@ -175,6 +168,8 @@ const loadMore = () => {
   if (isEnd.value || isLoading.value) {
     return
   }
+  console.log('load more')
+  page.value = page.value + 1
   getList()
 }
 
@@ -183,11 +178,22 @@ onMounted(() => {
   init()
 })
 
+const onRefresh = () => {
+  if (isLoading.value) {
+    return
+  }
+  console.log('onRefresh')
+  init()
+}
+
 onShow(() => {
   init()
+})
+
+onLoad((option) => {
   // 注册事件监听器
   uni.$on('customRefresh', () => {
-    getList()
+    init()
   })
 })
 </script>

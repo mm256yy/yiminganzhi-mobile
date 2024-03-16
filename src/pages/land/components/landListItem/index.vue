@@ -96,7 +96,7 @@ const getUidFromAPi = async () => {
     let result = await getLandlordListBySearchApi({
       doorNo: props.data.doorNo
     })
-    const routeName = 'householdEva'
+    const routeName = 'landEvaIndex'
     const obj = {
       type: 'land',
       uid: result[0]?.uid
