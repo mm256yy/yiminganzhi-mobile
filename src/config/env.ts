@@ -11,7 +11,7 @@ const envMap = {
   //   apiBasePath: '/api'
   // },
   local: {
-    apiBaseUrl: 'http://192.168.1.130:8880',
+    apiBaseUrl: 'http://192.168.1.119:8880',
     apiBasePath: '/api'
   },
   // local: {

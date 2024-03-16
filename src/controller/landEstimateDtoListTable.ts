@@ -114,11 +114,7 @@ export class landEstimateDtoListFills extends Common {
           console.log('核心字段缺失')
           return
         }
-        if (data.doorNo || data.doorNo.length != 9) {
-          reject('户号校验失败')
-          console.log('户号校验失败')
-          return
-        }
+
         let values = ''
         const setuid = ''
         let doorNos = ''
@@ -134,6 +130,11 @@ export class landEstimateDtoListFills extends Common {
             }
           })
         } else {
+          if (data.doorNo && data.doorNo.length != 9) {
+            reject('户号校验失败')
+            console.log('户号校验失败')
+            return
+          }
           doorNos = data.doorNo
           addLandlordApi({
             doorNo: data.doorNo,
@@ -155,6 +156,7 @@ export class landEstimateDtoListFills extends Common {
         uids.forEach(async (bbq: any) => {
           const sql = `update ${landEstimateDtoListName} set ${values} where uid = '${bbq}'`
           const res = await this.db.execteSql([sql])
+          console.log(res)
           if (res && res.code) {
             reject(false)
             return
@@ -162,53 +164,48 @@ export class landEstimateDtoListFills extends Common {
         })
         const sqlTd = `select * from ${landEstimateDtoListName} where doorNo='${doorNos}'`
         listTds = await this.db.selectSql(sqlTd)
-        const sqlUser = `select * from ${LandlordTableName} where type = 'LandNoMove' and doorNo='${doorNos}'`
+        const sqlUser = `select * from ${LandlordTableName} where doorNo='${doorNos}'`
         const userData = await this.db.selectSql(sqlUser)
-        const userDataAll = await this.db.selectSql(
-          `select * from ${LandlordTableName} where type = 'LandNoMove'`
-        )
+        // const userDataAll = await this.db.selectSql(`select * from ${LandlordTableName} where 1=1`)
         const landNumbers = listTds.reduce((pre: any, item: any) => {
           pre.push(item.landNumber)
           return pre
         }, [])
         console.log(userData, listTds, doorNos, '修改人')
+        ImpDataFillController.updateLandlordAssetLandBatch(userData[0].uid, listTds)
+        if (data.oldDoorNo.length > 0) {
+          console.log(data.oldDoorNo.length, '=================')
 
-        if (userData.length == 1) {
-          ImpDataFillController.updateLandlordAssetLandBatch(userData[0].uid, listTds)
-          userDataAll.forEach((item: any) => {
-            if (item.landEstimateDtoList) {
+          for (const element of data.oldDoorNo) {
+            const oldUsers = await this.db.selectSql(
+              `select * from ${LandlordTableName} where doorNo='${element}'`
+            )
+            const oldUser = JSON.parse(oldUsers[0].content)
+            console.log(oldUser)
+
+            if (oldUser.landEstimateDtoList) {
               let m = false
-              item.landEstimateDtoList.forEach((key: any) => {
-                if (uids.incloud(key.uid)) {
+              oldUser.landEstimateDtoList.forEach((key: any) => {
+                if (uids.includes(key.uid)) {
                   m = true
                 }
               })
               if (m) {
                 ImpDataFillController.updateLandlordAssetLandBatch(
-                  item.uid,
-                  item.landEstimateDtoList.filter((value: any) => !uids.incloud(value.uid))
+                  oldUser.uid,
+                  oldUser.landEstimateDtoList.filter((value: any) => !uids.includes(value.uid))
                 )
               }
             }
-            if (item.assetAppendantList) {
-              const kms: any = []
-              let k = false
-              item.assetAppendantList.forEach((key: any) => {
-                if (landNumbers.incloud(key.landNumber)) {
-                  k = true
-                  deleteImpLandlordAssetAppendantApi(item.uid, key.uid)
-                  kms.push(key)
+            if (oldUser.assetAppendantList) {
+              oldUser.assetAppendantList.forEach((key: any) => {
+                if (landNumbers.includes(key.landNumber)) {
+                  addImpLandlordAssetAppendantApi(userData[0].uid, key)
+                  deleteImpLandlordAssetAppendantApi(oldUser.uid, key.uid)
                 }
               })
-              if (k) {
-                kms.forEach((item: any) => {
-                  addImpLandlordAssetAppendantApi(userData[0].uid, item)
-                })
-              }
             }
-          })
-        } else {
-          console.log('数据重复')
+          }
         }
         resolve(true)
       } catch (error) {

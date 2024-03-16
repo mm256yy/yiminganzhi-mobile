@@ -204,7 +204,7 @@ const dict = getStorage(StorageKey.DICT)
 const checkList = ref<any[]>([])
 const landMark = ref<string>('')
 const showSearch = ref<boolean>(false)
-
+let oldDoorNo=ref([])
 onLoad((option) => {
   if (option && option.params) {
     const params = JSON.parse(option.params)
@@ -212,6 +212,10 @@ onLoad((option) => {
     landMark.value = checkList.value.map((item) => item.landNumber).join()
     landNo.value = `土地编号：${landMark.value}`
     formData.value.uid = checkList.value.map((item) => item.uid).join()
+    oldDoorNo.value = checkList.value.reduce((pre, item) => {
+      pre.push(item.doorNo)
+      return pre
+    },[])
   }
 })
 
@@ -249,11 +253,14 @@ const submit = async () => {
   let params = {
     ...formData.value,
     type: checkSelectedStr.value,
-    doorNo: `${suffixNo()}${formData.value.doorNo}`
+    doorNo: `${suffixNo()}${formData.value.doorNo}`,
+    oldDoorNo:oldDoorNo.value
   }
   console.log('submit-params', params)
   try {
     const res = await updateLandlord(params)
+    console.log(res);
+    
     if (res) {
       showToast('绑定成功')
       confirmBindingRef.value?.open()
