@@ -6,6 +6,7 @@
         <uni-row>
           <uni-col :span="24">
             <uni-forms-item
+              required
               label="户名："
               :label-width="150"
               label-align="right"
@@ -211,7 +212,6 @@ const dict = getStorage(StorageKey.DICT)
 const checkList = ref<any[]>([])
 const landMark = ref<string>('')
 const showSearch = ref<boolean>(false)
-let oldDoorNo = ref([])
 const doorNoList = ref<any[]>([])
 
 onLoad((option) => {
@@ -221,10 +221,6 @@ onLoad((option) => {
     landMark.value = checkList.value.map((item) => item.landNumber).join()
     landNo.value = `土地编号：${landMark.value}`
     formData.value.uid = checkList.value.map((item) => item.uid).join()
-    oldDoorNo.value = checkList.value.reduce((pre, item) => {
-      pre.push(item.doorNo)
-      return pre
-    }, [])
   }
 })
 
@@ -258,7 +254,7 @@ const submit = async () => {
       showToast('户号不能为空')
       return
     } else {
-      if (formData.value.doorNo.length < 4) {
+      if (formData.value.doorNo?.length < 4) {
         showToast('户号后缀必须为4位')
         return
       }
@@ -276,14 +272,11 @@ const submit = async () => {
   let params = {
     ...formData.value,
     type: checkSelectedStr.value,
-    oldDoorNo: oldDoorNo.value,
-    doorNo: doorNoResult
+    doorNo: checkSelected.value ? doorNoResult : formData.value.doorNo
   }
   console.log('submit-params', params)
   try {
     const res = await updateLandlord(params)
-    console.log(res)
-
     if (res) {
       confirmBindingRef.value?.open()
       // 触发自定义事件
@@ -352,6 +345,7 @@ const confirmSelect = (data: any) => {
   if (data) {
     formData.value.id = data.value
     formData.value.name = data.label
+    formData.value.doorNo = data.doorNo
   }
   close()
 }
@@ -373,7 +367,7 @@ const inputBlur = () => {
 
 const getUidFromAPi = async () => {
   const requestParams = {
-    doorNo: `${suffixNo()}${formData.value.doorNo}`
+    doorNo: checkSelected.value ? `${suffixNo()}${formData.value.doorNo}` : formData.value.doorNo
   }
   try {
     let result = await getLandlordListBySearchApi(requestParams)

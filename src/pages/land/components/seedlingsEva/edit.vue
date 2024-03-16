@@ -262,7 +262,7 @@ import {
   updateImpLandlordAssetAppendantApi,
   getEvaLandlordItemApi
 } from '@/service'
-import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
+import { ERROR_MSG, showToast } from '@/config/msg'
 import Container from '@/components/Container/index.vue'
 
 const title = ref<string>('')
@@ -305,6 +305,7 @@ const getLandlordDetail = () => {
     if (arr && arr.length) {
       let obj: any = arr.filter((item: any) => item.uid === itemUid)[0]
       formData.value = { ...obj }
+      formData.value.landNumber = formData.value.landName
     }
   })
 }
@@ -312,21 +313,20 @@ const getLandlordDetail = () => {
 onLoad((option: any) => {
   if (option && option.params) {
     commonParams.value = JSON.parse(option.params)
-    console.log('BBB::: ', commonParams.value)
     const { type, landEstimateDtoList } = commonParams.value
-    if (type === 'edit') {
-      title.value = '土地青苗及附着物评估编辑'
-      getLandlordDetail()
-    } else if (type === 'add') {
-      title.value = '新增土地青苗及附着物评估'
-    }
-
     landNumberList.value = landEstimateDtoList.map((item: any) => {
       return {
         text: item.landNumber,
         value: item.landName
       }
     })
+
+    if (type === 'edit') {
+      title.value = '土地青苗及附着物评估编辑'
+      getLandlordDetail()
+    } else if (type === 'add') {
+      title.value = '土地青苗及附着物评估新增'
+    }
   }
 })
 
@@ -403,7 +403,7 @@ const submit = () => {
     addImpLandlordAssetAppendantApi(uid, params)
       .then((res) => {
         if (res) {
-          showToast(SUCCESS_MSG)
+          showToast('新增成功')
           routerBack()
         }
       })
@@ -414,7 +414,7 @@ const submit = () => {
     updateImpLandlordAssetAppendantApi(uid, params)
       .then((res) => {
         if (res) {
-          showToast(SUCCESS_MSG)
+          showToast('编辑成功')
           routerBack()
         }
       })
@@ -427,7 +427,10 @@ const submit = () => {
 watch(
   () => formData.value.landNumber,
   (val) => {
-    formData.value.landName = val
+    const { type } = commonParams.value
+    if (type === 'add') {
+      formData.value.landName = val
+    }
   },
   {
     immediate: true,

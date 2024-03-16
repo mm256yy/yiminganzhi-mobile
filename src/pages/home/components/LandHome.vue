@@ -232,6 +232,7 @@ const onReset = () => {
   searchParams = {
     name: ''
   }
+  searchName.value = ''
   init()
 }
 
