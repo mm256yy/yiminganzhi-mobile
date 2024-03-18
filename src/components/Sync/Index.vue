@@ -181,6 +181,7 @@ const getImageObj = async () => {
 
 // 同步成功回调
 const pollingSuccess = async () => {
+  console.log('同步成功回调','pollingSuccess');
   const { peasantHouseholdNum, companyNum, individualNum, villageNum, virutalVillageNum } =
     pullInstance.state
   pullData.value = {

@@ -47,7 +47,7 @@ export class landEstimateDtoListFills extends Common {
           landLevelTwo = landLevel.split('-')[1]
         }
         if (doorNo) {
-          sql += ` and doorNo = '${doorNo}'`
+          sql += ` and showDoorNo = '${doorNo}'`
         }
         if (landNumber) {
           sql += ` and landNumber = '${landNumber}'`
@@ -95,8 +95,8 @@ export class landEstimateDtoListFills extends Common {
         if (virutalVillageCode) {
           sql += ` and virutalVillageCode = '${virutalVillageCode}'`
         }
-        if (ownershipUnitIsNull) {
-          sql += ` and ownershipUnitIsNull = '${ownershipUnitIsNull}'`
+        if (ownershipUnitIsNull == 1) {
+          sql += ` and areaCode = '' and townCode = '' and villageCode = '' and virutalVillageCode = ''`
         }
         sql += ` limit ${pageSize} offset ${(page - 1) * pageSize}`
         // console.log('sql', sql)
@@ -202,12 +202,15 @@ export class landEstimateDtoListFills extends Common {
               }
             }
             if (oldUser.assetAppendantList) {
-              oldUser.assetAppendantList.forEach((key: any) => {
+              for (const key of oldUser.assetAppendantList) {
+                console.log(key, '土地信息')
+                console.log(landNumbers, '土地编号')
+
                 if (landNumbers.includes(key.landNumber)) {
-                  addImpLandlordAssetAppendantApi(userData[0].uid, key)
-                  deleteImpLandlordAssetAppendantApi(oldUser.uid, key.uid)
+                  await addImpLandlordAssetAppendantApi(userData[0].uid, key)
+                  await deleteImpLandlordAssetAppendantApi(oldUser.uid, key.uid)
                 }
-              })
+              }
             }
           }
         }

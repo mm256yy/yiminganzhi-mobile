@@ -290,7 +290,7 @@ class PullData {
     ;(this.state.notifyDtoList = notifyDtoList),
       (this.state.landPeasantHouseholdDtoList = landPeasantHouseholdDtoList)
     this.state.landEstimateDtoList = landEstimateDtoList
-    console.log(this.state.landEstimateDtoList,'土地数据')
+    console.log(this.state.landEstimateDtoList, '土地数据')
     console.log(this.state.notifyDtoList, '测试接口数据')
     this.pullDict().then((res: boolean) => {
       res && this.count++
@@ -371,7 +371,7 @@ class PullData {
               ...peasantHouseholdPushDtoList
             ]
           }
-          console.log('递归:', lastId)
+          console.log('递归:', lastId, this.count)
           // 存储拉取时间
           this.state.pullTime = pullTime
           if (lastId) {
@@ -397,6 +397,8 @@ class PullData {
 
   // 获取调查对象成功处理函数
   private getLandlordDataSuccess() {
+    console.log('接口: 调查对象数据', 'getLandlordDataSuccess')
+
     // 存储调查对象数据
     this.pullLandlord().then((res) => {
       res && this.count++
