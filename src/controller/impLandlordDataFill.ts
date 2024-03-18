@@ -2184,7 +2184,7 @@ class ImpDataFill extends ImpLandlord {
         if (landlordItem) {
           if (landlordItem.immigrantCompensationCardList.length > 0) {
             const index = landlordItem.immigrantCompensationCardList.findIndex(
-              (e: any) => e.id == data.id
+              (e: any) => e.name == data.name
             )
             if (index > -1) {
               landlordItem.immigrantCompensationCardList[index] = data
