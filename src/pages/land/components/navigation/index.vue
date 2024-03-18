@@ -115,7 +115,7 @@ const tabList = computed(() => {
       }
       // 养老保险
       if (immigrantFilling.retirementStatus === '1') {
-        arr[0].list[0].list[1].filled = true
+        arr[1].list[0].list[1].filled = true
       }
     } else {
       // 补偿卡
