@@ -106,7 +106,7 @@ const tabList = computed(() => {
         arr[0].list[0].list[3].filled = true
       }
       // 土地腾让
-      if (immigrantFilling.agreementStatus === '1') {
+      if (immigrantFilling.landSoarStatus === '1') {
         arr[0].list[0].list[4].filled = true
       }
       // 自谋职业
@@ -127,7 +127,7 @@ const tabList = computed(() => {
         arr[0].list[0].list[2].filled = true
       }
       // 土地腾让
-      if (immigrantFilling.agreementStatus === '1') {
+      if (immigrantFilling.landSoarStatus === '1') {
         arr[0].list[0].list[3].filled = true
       }
     }
