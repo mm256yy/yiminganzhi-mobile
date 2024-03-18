@@ -1453,7 +1453,7 @@ class ImpDataFill extends ImpLandlord {
           console.log('调查对象uid缺失')
           return
         }
-        if (!data || !data.length) {
+        if (!data) {
           reject(false)
           console.log('土地基本情况评估列表缺失')
           return

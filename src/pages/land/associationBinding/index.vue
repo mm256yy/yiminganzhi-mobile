@@ -213,7 +213,7 @@ const checkList = ref<any[]>([])
 const landMark = ref<string>('')
 const showSearch = ref<boolean>(false)
 const doorNoList = ref<any[]>([])
-
+let oldDoorNo = ref([])
 onLoad((option) => {
   if (option && option.params) {
     const params = JSON.parse(option.params)
@@ -221,6 +221,10 @@ onLoad((option) => {
     landMark.value = checkList.value.map((item) => item.landNumber).join()
     landNo.value = `土地编号：${landMark.value}`
     formData.value.uid = checkList.value.map((item) => item.uid).join()
+    oldDoorNo.value = checkList.value.reduce((pre, item) => {
+      pre.push(item.doorNo)
+      return pre
+    }, [])
   }
 })
 
@@ -272,7 +276,8 @@ const submit = async () => {
   let params = {
     ...formData.value,
     type: checkSelectedStr.value,
-    doorNo: checkSelected.value ? doorNoResult : formData.value.doorNo
+    doorNo: checkSelected.value ? doorNoResult : formData.value.doorNo,
+    oldDoorNo: oldDoorNo.value,
   }
   console.log('submit-params', params)
   try {
