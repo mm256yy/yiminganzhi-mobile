@@ -728,7 +728,7 @@ class PullData {
   private pullLandlord(): Promise<boolean> {
     return new Promise(async (resolve) => {
       const { peasantHouseholdPushDtoList: list, peasantHouseholdDtoList: listTwo } = this.state
-      console.log('===========listTwo=============', listTwo.length, list)
+      console.log('===========listTwo=============', listTwo?.length, list)
       if (this.isArrayAndNotNull(list)) {
         // 开启事务
         await db.transaction('begin').catch(() => {
