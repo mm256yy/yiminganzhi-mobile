@@ -3,7 +3,7 @@
     <view class="list-header-rt">
       <view class="list-header-left">
         <view class="name">{{ dataInfo.name }}</view>
-        <view class="account-no">{{ dataInfo.showDoorNo }}</view>
+        <view class="account-no">{{ dataInfo.showDoorNo || dataInfo.doorNo }}</view>
         <view class="fill-number">
           填报进度&nbsp;
           <text class="green">{{ fillNumber }}</text>

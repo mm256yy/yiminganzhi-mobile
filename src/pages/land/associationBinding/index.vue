@@ -102,6 +102,7 @@
                   v-model:townCode="formData.townCode"
                   v-model:villageCode="formData.villageCode"
                   v-model:virutalVillageCode="formData.virutalVillageCode"
+                  type="land"
                   @open="initNaturalVillageData"
                   @confirm="confirmSelectNaturalVillage"
                 />
@@ -277,7 +278,7 @@ const submit = async () => {
     ...formData.value,
     type: checkSelectedStr.value,
     doorNo: checkSelected.value ? doorNoResult : formData.value.doorNo,
-    oldDoorNo: oldDoorNo.value,
+    oldDoorNo: oldDoorNo.value
   }
   console.log('submit-params', params)
   try {

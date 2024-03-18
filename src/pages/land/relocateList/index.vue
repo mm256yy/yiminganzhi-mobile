@@ -63,7 +63,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, nextTick, computed, reactive } from 'vue'
+import { ref, onMounted, nextTick, computed } from 'vue'
 import { onLoad, onShow } from '@dcloudio/uni-app'
 import Container from '@/components/Container/index.vue'
 import NoData from '@/components/NoData/index.vue'
@@ -158,6 +158,7 @@ const getList = () => {
       console.log(error)
       isLoading.value = false
       isEnd.value = true
+      list.value = []
     }
 
     isLoading.value = false
@@ -175,7 +176,6 @@ const loadMore = () => {
 
 onMounted(() => {
   getTreeData()
-  init()
 })
 
 const onRefresh = () => {
@@ -187,10 +187,12 @@ const onRefresh = () => {
 }
 
 onShow(() => {
+  console.log('reLocateList-onShow')
   init()
 })
 
 onLoad((option) => {
+  console.log('reLocateList-onLoad')
   // 注册事件监听器
   uni.$on('customRefresh', () => {
     init()

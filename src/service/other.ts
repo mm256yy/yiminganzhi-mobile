@@ -43,6 +43,11 @@ export const getVirutalVillageTreeApi = () => {
   return DistrictTreeController.getVirutalVillageTree()
 }
 
+// 获取土地自然村
+export const getLandVirutalVillageTreeApi = () => {
+  return DistrictTreeController.getLandVirutalVillageTree()
+}
+
 // 附属物配置列表
 export const getAppendantListApi = () => {
   return AppendantController.getList()
@@ -162,6 +167,6 @@ export const getLandlordListBySearchTitleApi = () => {
   return landEstimateDtoListFill.getLandlordListBySearchTitle()
 }
 // 农户模糊查询
-export const getOtherWithTypeSetApi = (data:any) => {
+export const getOtherWithTypeSetApi = (data: any) => {
   return OtherController.getOtherWithTypeSet(data)
 }

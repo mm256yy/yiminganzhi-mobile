@@ -33,6 +33,7 @@ export class landEstimateDtoListFills extends Common {
           estimateFlag,
           area,
           inundationRange,
+          ownershipUnitIsNull,
           pageSize = 4,
           page = 1,
           landLevel
@@ -93,6 +94,9 @@ export class landEstimateDtoListFills extends Common {
         }
         if (virutalVillageCode) {
           sql += ` and virutalVillageCode = '${virutalVillageCode}'`
+        }
+        if (ownershipUnitIsNull) {
+          sql += ` and ownershipUnitIsNull = '${ownershipUnitIsNull}'`
         }
         sql += ` limit ${pageSize} offset ${(page - 1) * pageSize}`
         // console.log('sql', sql)

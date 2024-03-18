@@ -17,6 +17,8 @@
                 v-model:townCode="formData.townCode"
                 v-model:villageCode="formData.villageCode"
                 v-model:virutalVillageCode="formData.virutalVillageCode"
+                type="land"
+                showOther
                 @open="initNaturalVillageData"
                 @confirm="confirmSelectNaturalVillage"
               />

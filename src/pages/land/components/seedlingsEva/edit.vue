@@ -73,7 +73,7 @@
                 label-align="right"
                 name="formData.size"
               >
-                <uni-easyinput v-model="formData.size" type="number" placeholder="请输入" />
+                <uni-easyinput v-model="formData.size" type="text" placeholder="请输入" />
               </uni-forms-item>
             </uni-col>
           </uni-row>
@@ -326,6 +326,7 @@ onLoad((option: any) => {
       getLandlordDetail()
     } else if (type === 'add') {
       title.value = '土地青苗及附着物评估新增'
+      formData.value.householder = commonParams.value?.name
     }
   }
 })

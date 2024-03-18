@@ -176,13 +176,16 @@ const cancle = () => {
 
 const confirm = () => {
   const realArray = currentSelect.value.filter((item) => !!item)
-  if (!props.selectAny && realArray.length < (props.type === 'land' ? 3 : 4)) {
-    uni.showToast({
-      title: '未完成选择',
-      icon: 'none'
-    })
-    return
+  if (props.type !== 'land') {
+    if (!props.selectAny && realArray.length < 4) {
+      uni.showToast({
+        title: '未完成选择',
+        icon: 'none'
+      })
+      return
+    }
   }
+
   emit('onConfirm', currentSelect.value, title.value, otherCode.value)
 }
 

@@ -28,7 +28,7 @@
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">权属单位:</view>
-        <view class="value">{{ getUnit(props.data) }}</view>
+        <view class="value">{{ formatStr(getUnit(props.data)) }}</view>
       </view>
       <view class="cont-item right">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
@@ -64,7 +64,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { LandlordType } from '@/types/sync'
-import { routerForward } from '@/utils'
+import { routerForward, formatStr } from '@/utils'
 import { formatEmptyText } from '@/utils/format'
 import { getLandlordListBySearchApi } from '@/service'
 

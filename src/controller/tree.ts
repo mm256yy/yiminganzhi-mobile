@@ -189,6 +189,8 @@ class DistrictTree extends Common {
         const districtList = await DistrictController.getList()
         // 拿到 自然村列表
         const villageList = await VillageController.getList()
+        console.log('区划列表::: ', districtList)
+        console.log('自然村列表::: ', villageList)
         const totalMap: any = {}
         villageList.forEach((item) => {
           if (item.villageCode) {
@@ -218,11 +220,64 @@ class DistrictTree extends Common {
           item.totalNum = totalMap[item.code] || 0
         })
 
-        const newDistrictList = districtList.filter((item) => item.totalNum !== 0)
+        // const newDistrictList = districtList.filter((item) => item.totalNum !== 0)
+        const newDistrictList = districtList
         const totalArray = [...newDistrictList, ...villageList]
         if (this.isArrayAndNotNull(totalArray)) {
           const res = arrayToTree(totalArray)
           console.log(res, '自然村树')
+          resolve(res)
+        } else {
+          resolve([])
+        }
+      } catch (error) {
+        console.log(error, 'getVirutalVillageTree-error')
+        resolve([])
+      }
+    })
+  }
+
+  // 获取土地自然村
+  getLandVirutalVillageTree(): Promise<any[]> {
+    return new Promise(async (resolve) => {
+      try {
+        // 拿到 区划列表
+        const districtList = await DistrictController.getList()
+        // 拿到 自然村列表
+        const villageList = await VillageController.getList()
+        const totalMap: any = {}
+        villageList.forEach((item) => {
+          if (item.villageCode) {
+            if (!totalMap[item.villageCode]) {
+              totalMap[item.villageCode] = 1
+            } else {
+              totalMap[item.villageCode] = totalMap[item.villageCode] + 1
+            }
+          }
+          if (item.townCode) {
+            if (!totalMap[item.townCode]) {
+              totalMap[item.townCode] = 1
+            } else {
+              totalMap[item.townCode] = totalMap[item.townCode] + 1
+            }
+          }
+          if (item.areaCode) {
+            if (!totalMap[item.areaCode]) {
+              totalMap[item.areaCode] = 1
+            } else {
+              totalMap[item.areaCode] = totalMap[item.areaCode] + 1
+            }
+          }
+        })
+
+        districtList.forEach((item) => {
+          item.totalNum = totalMap[item.code] || 0
+        })
+
+        const newDistrictList = districtList
+        const totalArray = [...newDistrictList, ...villageList]
+        if (this.isArrayAndNotNull(totalArray)) {
+          const res = arrayToTree(totalArray)
           resolve(res)
         } else {
           resolve([])

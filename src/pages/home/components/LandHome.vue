@@ -119,7 +119,9 @@ const pageSize = ref<number>(10)
 const associationBindingRef = ref()
 const checkList = ref<any[]>([])
 let searchParams = reactive({
-  name: ''
+  name: '',
+  areaCode: '',
+  ownershipUnitIsNull: ''
 }) // 查询参数
 let total = ref(0)
 
@@ -150,7 +152,7 @@ const getList = () => {
 
     try {
       const tempList: any[] = await getLandEstimateDtoListApi(params)
-      console.log('list列表', tempList)
+      console.log('首页list列表', tempList)
       let res = tempList.map((item) => {
         return {
           ...item,
@@ -230,7 +232,9 @@ const status = computed(() => {
 
 const onReset = () => {
   searchParams = {
-    name: ''
+    name: '',
+    areaCode: '',
+    ownershipUnitIsNull: ''
   }
   searchName.value = ''
   init()
@@ -296,12 +300,18 @@ const handleItemClick = (item: any) => {
 
 onShow(() => {
   init()
+  console.log('LandHome-onShow')
 })
 
 onLoad((option) => {
   if (option && option.params) {
     searchParams = JSON.parse(option.params)
+    if (searchParams?.areaCode === '1') {
+      searchParams.ownershipUnitIsNull = '1'
+      searchParams.areaCode = ''
+    }
     init()
+    console.log('LandHome-onLoad', searchParams)
     // 注册事件监听器
     // uni.$on('customRefresh', () => {
     //   init()
