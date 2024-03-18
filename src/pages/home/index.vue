@@ -126,12 +126,13 @@
     </uni-popup>
 
     <SyncCompont ref="syncCmt" from="sync" />
+    <view class="time-count">{{ time }}</view>
   </view>
 </template>
 
 <script lang="ts" setup>
 import { onBeforeMount, onMounted, ref, onBeforeUnmount } from 'vue'
-import { onShow, onLoad } from '@dcloudio/uni-app'
+import { onShow, onLoad, onUnload } from '@dcloudio/uni-app'
 import { getStorage, routerForward, resetCache, StorageKey, debounce } from '@/utils'
 import { loginOutApi } from './api'
 import { getImgListApi, getOtherItemApi } from '@/service'
@@ -156,6 +157,8 @@ const pullTime = ref<string>('')
 const syncing = ref<boolean>(false)
 const syncCmt = ref()
 const lastConfirmTime = ref('')
+const time = ref('00:00:00')
+let timer: any = null
 
 /**
  * 首页视图类型
@@ -214,6 +217,7 @@ const onSyncHandle = debounce(() => {
   }
   syncing.value = true
   syncCmt.value?.onSync()
+  startTimer()
 })
 
 // 同步结束
@@ -303,6 +307,30 @@ onShow(() => {
   userInfo.value = user
   projectInfo.value = project
   uni.$emit('customRefresh')
+})
+
+// 计时器
+const startTimer = () => {
+  let seconds = 0
+  timer = setInterval(() => {
+    seconds++
+    let hours: any = Math.floor(seconds / 3600)
+    let minutes: any = Math.floor((seconds - hours * 3600) / 60)
+    let secs: any = seconds % 60
+    hours = hours < 10 ? '0' + hours : hours
+    minutes = minutes < 10 ? '0' + minutes : minutes
+    secs = secs < 10 ? '0' + secs : secs
+    time.value = hours + ':' + minutes + ':' + secs
+  }, 1000)
+}
+
+const stopTimer = () => {
+  clearInterval(timer)
+  timer = null
+}
+
+onUnload(() => {
+  stopTimer()
 })
 </script>
 
@@ -409,6 +437,14 @@ onShow(() => {
         color: #ffffff;
       }
     }
+  }
+
+  .time-count {
+    position: absolute;
+    top: 30rpx;
+    right: 30rpx;
+    color: #fff;
+    font-size: 10rpx;
   }
 }
 </style>

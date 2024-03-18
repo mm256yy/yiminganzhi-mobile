@@ -8,7 +8,7 @@
             <uni-forms-item
               required
               label="姓名"
-              :label-width="150" 
+              :label-width="150"
               label-align="right"
               name="formData.name"
             >
@@ -71,7 +71,7 @@
               label-align="right"
               name="formData.settingWay"
             >
-              <uni-data-select v-model="formData.settingWay" :localdata="dict[375]" />
+              <uni-data-select v-model="formData.settingWay" :localdata="productionOptions" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -98,6 +98,8 @@ import Back from '@/components/Back/Index.vue'
 const title = ref<string>('')
 const commonParams = ref<any>({})
 const typeInfo = ref<string>('add')
+const numCount = ref<number>(0)
+const productionOptions = ref<any[]>([])
 
 // 表单数据
 const formData = ref<any>({
@@ -114,8 +116,11 @@ const dict = getStorage(StorageKey.DICT)
 onLoad((option: any) => {
   if (option) {
     commonParams.value = JSON.parse(option.params)
-    const { type } = commonParams.value
+    const { type, num } = commonParams.value
     typeInfo.value = type
+    numCount.value = num
+    console.log('OOOO:::KKKK', dict[375])
+    productionOptions.value = getProductionMethodOptions()
     if (type === 'edit') {
       title.value = '生产安置人口编辑'
       formData.value = commonParams.value.formValue
@@ -125,6 +130,15 @@ onLoad((option: any) => {
     }
   }
 })
+
+const getProductionMethodOptions = () => {
+  if (numCount.value && numCount.value > 0) {
+    return dict[375]
+  } else {
+    const options = dict[375].filter((item: any) => item.value !== '2')
+    return options
+  }
+}
 
 // 表单提交
 const submit = () => {

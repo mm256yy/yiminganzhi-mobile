@@ -384,6 +384,7 @@ const getUidFromAPi = async () => {
       uid: result[0]?.uid
     }
     console.log('OCK::: ', obj)
+
     routerForward(routeName, {
       replace: true,
       params: JSON.stringify(obj)

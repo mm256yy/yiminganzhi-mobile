@@ -99,7 +99,7 @@ const getUidFromAPi = async () => {
     const routeName = 'landEvaIndex'
     const obj = {
       type: 'land',
-      uid: result[0]?.uid
+      uid: result[0]?.uidssss
     }
     routerForward(routeName, {
       params: JSON.stringify(obj)

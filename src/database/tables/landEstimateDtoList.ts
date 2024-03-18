@@ -78,7 +78,7 @@ export const getLandEstimateDtoListValues = (
   let key: keyof landEstimateDtoListDDLType
   for (key in item) {
     if (!item[key]) {
-      item[key] == 'null'
+      item[key] == null
     }
     if (key != 'isUpdate') {
       m = m + `'${item[key]}',`

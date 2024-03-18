@@ -77,7 +77,7 @@ import { onShow } from '@dcloudio/uni-app'
 const dict = getStorage(StorageKey.DICT)
 const emit = defineEmits(['refreshData'])
 const totalLand = ref<any>()
-const num = ref<any>()
+const num = ref<number>(0)
 const currentItem = ref<any>()
 const demographicList = ref<any[]>()
 const alertDialogRef = ref()
@@ -99,13 +99,16 @@ const toLink = (type: string, data: any) => {
       itemUid: data.uid,
       formValue: {
         ...data
-      }
+      },
+      num: num.value
     }
+    console.log('UUUU:::KKKK', params)
     routerForward('arrangementEdit', {
       params: JSON.stringify(params)
     })
   } else if (type === 'add') {
-    let params = { type, uid, doorNo }
+    let params = { type, uid, doorNo, num: num.value }
+    console.log('UUUU:::KKKK', params)
     routerForward('arrangementEdit', {
       params: JSON.stringify(params)
     })
@@ -155,8 +158,8 @@ const countNum = () => {
     const total = list.reduce((pre: any, cur: any) => {
       return pre + cur
     })
-    totalLand.value = total.toFixed(2)
-    num.value = Math.floor(Number(totalLand.value) / Number(dict[420][0]?.text))
+    totalLand.value = Math.round(total / 666.66).toFixed(2)
+    num.value = Math.round(Number(totalLand.value) / Number(dict[420][0]?.text))
   }
 }
 
@@ -169,9 +172,11 @@ const getListApi = async () => {
     type: MainType.LandNoMove,
     doorNo: props.dataInfo.doorNo
   }
-
+  console.log('LP-params::: ', params)
   const res: any[] = await getLandlordListBySearchApi(params)
+  console.log('LP-res1::: ', res)
   demographicList.value = res[0]?.demographicList || []
+  console.log('LP-res22::: ', demographicList.value)
 }
 
 const onArchives = () => {

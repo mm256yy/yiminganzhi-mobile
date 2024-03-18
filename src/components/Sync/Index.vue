@@ -181,7 +181,7 @@ const getImageObj = async () => {
 
 // 同步成功回调
 const pollingSuccess = async () => {
-  console.log('同步成功回调','pollingSuccess');
+  console.log('同步成功回调', 'pollingSuccess')
   const { peasantHouseholdNum, companyNum, individualNum, villageNum, virutalVillageNum } =
     pullInstance.state
   pullData.value = {
@@ -214,7 +214,7 @@ const pollingSuccess = async () => {
 const polling = () => {
   intervalId.value = setInterval(() => {
     console.log('轮询拉取状态')
-    console.log(pullInstance.maxCount,count.value,'测试异常状态次数')
+    console.log(pullInstance.maxCount, count.value, '测试异常状态次数')
     // 拉取接口报错 异常 超过设定最大轮询次数 u需要结束轮询
     if (pullInstance.maxCount === -1 || count.value === pullInstance.maxCount) {
       uni.hideLoading()
@@ -265,13 +265,13 @@ const getRoleAndStageStatus = () => {
   // 资产评估人员	assessor assessorland
   // 实物复核人员 reviewer
   const projectInfo = getStorage(StorageKey.PROJECTINFO)
-  console.log(projectInfo.status,'当前阶段')
+  console.log(projectInfo.status, '当前阶段')
   console.log('role', role)
 
   if (role === RoleCodeType.investigator) {
-    if(projectInfo.status=='survey'){
+    if (projectInfo.status == 'survey') {
       stageStatus = MainStage.survey
-    }else if(projectInfo.status=='review'){
+    } else if (projectInfo.status == 'review') {
       stageStatus = MainStage.review
     }
     // stageStatus = MainStage.survey
@@ -316,7 +316,7 @@ const projectSyncHandle = async () => {
 const defaultSyncHandle = async () => {
   // 更新项目信息
   const projectList = await getProjectListApi()
-   console.log('更新项目信息')
+  console.log('更新项目信息')
   if (projectList && projectList.length) {
     const currentProjectId = getStorage(StorageKey.PROJECTID)
     const currentProjectItem = projectList.find((item) => item.id === currentProjectId)
@@ -329,9 +329,9 @@ const defaultSyncHandle = async () => {
 // 同步
 const onSync = async () => {
   uni.showLoading({
-    title: '正在同步中....',
-    mask: true 
-  })                                    
+    title: `正在同步中....`,
+    mask: true
+  })
   const res = await networkCheck()
   if (!res) {
     uni.hideLoading()

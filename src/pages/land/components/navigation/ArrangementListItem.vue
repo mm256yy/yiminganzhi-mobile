@@ -1,8 +1,12 @@
 <template>
-  <view class="company-item" @click="toDetail(data)" v-if="data.isPadDelete == '0'">
+  <view
+    class="company-item"
+    @click="toDetail(data)"
+    v-if="data.isPadDelete === '0' || !data.isPadDelete"
+  >
     <view class="head">
       <view class="head-lt">
-        <view class="label">户主</view>
+        <view class="label">{{ formatDict(data.relation, 307) }}</view>
         <view class="name">{{ data?.name }}</view>
       </view>
       <view class="right">
