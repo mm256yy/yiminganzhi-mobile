@@ -18,7 +18,7 @@
           <land-accessory-eva-report v-if="tabVal === 2" :dataInfo="dataInfo.immigrantDocumentation" />
 
           <!-- 设施设备评估报告 -->
-          <equipment-eva-report v-if="tabVal === 3" :dataInfo="dataInfo.immigrantEquipmentList" />
+          <equipment-eva-report v-if="tabVal === 3" :dataInfo="dataInfo.immigrantDocumentation" />
 
           <!-- 企业建卡 -->
           <create-card v-if="tabVal === 4" :dataInfo="dataInfo" :dataList="dataInfo.demographicList" />
@@ -33,7 +33,8 @@
           <relocation-agreement v-if="tabVal === 7" />
 
           <!-- 相关手续 -->
-          <procedures v-if="tabVal === 8" :dataInfo="dataInfo.immigrantDocumentation" :uid="dataInfo.uid"
+          <procedures
+v-if="tabVal === 8" :dataInfo="dataInfo.immigrantDocumentation" :uid="dataInfo.uid"
             @update-data="updateData" />
         </view>
       </view>

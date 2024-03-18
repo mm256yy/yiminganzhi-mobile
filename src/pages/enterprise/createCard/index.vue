@@ -196,21 +196,23 @@ const tableData = ref<any[]>([])
 const getCompensationCardConfig = async () => {
   let res = await getCompensationCardConfigApi()
   if (res) {
-    console.log('获取移民建卡奖励费列表', res)
+    console.log(res,'res是什么？')
+    let datas=[]
+    datas = res.filter((item:any) => item.phType == 'Company' && (item.type == '3' ||item.type=='1'))
+    console.log('获取移民建卡奖励费列表', datas)
 
     // tableData.value = res
     let data: any = await getLandlordItemApi(props.dataInfo.uid)
     console.log(data, '测试dada数据')
-    data.immigrantCompensationCardList.forEach((item: any) => {
-      let index = res.findIndex((e: any) => e.name == item.name)
-      if (index > -1) {
-        res[index] = item
-      } else {
-        res.push(item)
-      }
-    })
+    // data.immigrantCompensationCardList.forEach((item: any) => {
+    //   let index = res.findIndex((e: any) => e.name == item.name)
+    //   if (index > -1) {
+    //     res[index] = item
+    //   }
+    // })
 
-    tableData.value = res.filter((item: any) => item.phType == 'Company')
+    // tableData.value = res.filter((item: any) => item.phType == 'Company')
+    tableData.value =data.immigrantCompensationCardList
     tableData.value.forEach((item:any)=>{
       // && !item.hasOwnProperty('isVerify') 暂时去掉，需要的时候再使用
       if (item.unit == '人' && item.type == '3'&& item.isVerify!='1') {

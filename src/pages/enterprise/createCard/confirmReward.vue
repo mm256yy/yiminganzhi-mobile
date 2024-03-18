@@ -111,23 +111,26 @@ onLoad((option) => {
 const getCompensationCardConfig = async () => {
   let res = await getCompensationCardConfigApi()
   if (res) {
-    console.log('获取移民建卡奖励费列表', res)
-
+    console.log(res,'res是什么？')
+    let datas=[]
+    datas = res.filter((item:any) => item.phType == 'Company' && item.type == 3 ||item.type==1)
+    console.log('获取移民建卡奖励费列表', datas)
     let data: any = await getLandlordItemApi(commonParams.value.uid)
     console.log(data)
 
     if (commonParams.value?.fromType === 'land') {
       dataList.value = res.filter((item: any) => item.phType == 'LandNoMove')
     } else {
-      data.immigrantCompensationCardList.forEach((item: any) => {
-        let index = res.findIndex((e: any) => e.id == item.id)
-        if (index > -1) {
-          res[index] = item
-        } else {
-          res.push(item)
-        }
-      })
-      dataList.value = res.filter((item: any) => item.phType == 'Company')
+      // data.immigrantCompensationCardList.forEach((item: any) => {
+      //   let index = res.findIndex((e: any) => e.id == item.id)
+      //   if (index > -1) {
+      //     res[index] = item
+      //   } else {
+      //     res.push(item)
+      //   }
+      // })
+      // dataList.value = res.filter((item: any) => item.phType == 'Company')
+      dataList.value = data.immigrantCompensationCardList.filter((item: any) => item.type == '3')
     }
 
     dataList.value.forEach((item: any) => {

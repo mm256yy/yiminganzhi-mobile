@@ -86,79 +86,19 @@ onLoad((option) => {
 })
 
 // 获取移民建卡奖励费列表
-// const getCompensationCardConfig = async () => {
-//   let res = await getCompensationCardConfigApi()
-//   if (res) {
-//     // res.forEach((item:any)=>{
-//     //   if(item.unit=='人'&&item.type=='3'&&!item.hasOwnProperty('isVerify')){
-//     //     item.number=res.demographicList.length
-//     //   }else if(item.unit=='项'&&item.type=='3'&&!item.hasOwnProperty('isVerify')){
-//     //     item.number=1
-//     //   }
-//     // })
-//     console.log('获取移民建卡奖励费列表', res)
-
-//     // tableData.value = res
-//     let data: any = await getLandlordItemApi(commonParams.value.uid)
-//     console.log(data, '测试dada数据')
-
-//     // data.immigrantCompensationCardList.forEach((item: any) => {
-//     //   let index = res.findIndex((e: any) => e.name == item.name)
-//     //   if (index > -1) {
-//     //     res[index] = item
-//     //   } else {
-//     //     res.push(item)
-//     //   }
-//     // })
-//         let result = res.map((item1:any) => {
-//   const item2 = data.immigrantCompensationCardList.find((item:any) => item.name === item1.name);
-//   if (item2) {
-//     return {...item1, ...item2};
-//   }
-//   return item1;
-// });
-//     dataList.value = result.filter(
-//       (item: any) => item.isUpdate == '1' && item.phType == 'PeasantHousehold'
-//     )
-//     dataList.value.forEach((item: any) => {
-//       // !item.hasOwnProperty('isVerify')  暂时先去掉，后面有需要再加
-//       if(item.unit=='人'&&item.type=='3'){
-//         item.number=data.demographicList.length
-//       }else if(item.unit=='项'&&item.type=='3'){
-//         item.number=1
-//       }
-//     })
-//     console.log('合并', dataList.value, res, data.immigrantCompensationCardList)
-//   }
-// }
-// 获取移民建卡奖励费列表
 const getCompensationCardConfig = async () => {
   let res = await getCompensationCardConfigApi()
   if (res) {
-    console.log('获取移民建卡奖励费列表', res)
-
-    // tableData.value = res
     let data: any = await getLandlordItemApi(commonParams.value.uid)
     console.log(data)
-
-    data.immigrantCompensationCardList.forEach((item: any) => {
-      let index = res.findIndex((e: any) => e.id == item.id)
-      if (index > -1) {
-        res[index] = item
-      } else {
-        res.push(item)
+      dataList.value = data.immigrantCompensationCardList.filter((item: any) => item.type == '3')
+    dataList.value.forEach((item: any) => {
+      if (item.unit == '人' && item.type == '3' && item.isVerify != '1') {
+        item.number = data.demographicList.length
+      } else if (item.unit == '项' && item.type == '3' && item.isVerify != '1') {
+        item.number = 1
       }
     })
-    dataList.value = res.filter((item: any) => item.type === '3' && item.phType == 'PeasantHousehold')
-        dataList.value.forEach((item: any) => {
-      // !item.hasOwnProperty('isVerify')  暂时先去掉，后面有需要再加
-      if(item.unit=='人'&&item.type=='3'&& item.isVerify!='1'){
-        item.number=data.demographicList.filter((item:any) => item.isDelete !== '1').length
-      }else if(item.unit=='项'&&item.type=='3'&& item.isVerify!='1'){
-        item.number=1
-      }
-    })
-    console.log('合并', dataList.value, res, data.immigrantCompensationCardList)
   }
 }
 /**

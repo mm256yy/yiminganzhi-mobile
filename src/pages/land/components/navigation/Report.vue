@@ -35,8 +35,8 @@
           <uni-td>{{ item.landNumber }}</uni-td>
           <uni-td>{{ item.landName }}</uni-td>
           <uni-td>{{ item.householder }}</uni-td>
-          <uni-td>{{ item.shapeArea }}</uni-td>
-          <uni-td>{{ item.name }}</uni-td>
+          <uni-td>{{ item.breed }}</uni-td>
+          <uni-td>{{ item.area }}</uni-td>
           <uni-td>{{ item.number }}</uni-td>
           <uni-td>{{ item.compensationAmount }}</uni-td>
           <uni-td>{{ item.remark }}</uni-td>
@@ -55,7 +55,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed,watch } from 'vue'
 import dayjs from 'dayjs'
 import { LandlordType } from '@/types/sync'
 // import { routerForward } from '@/utils'
@@ -76,21 +76,33 @@ let num = ref(0)
 let nums = ref(0)
 let numss = ref(0)
 let numsss = ref(0)
-onMounted(() => {
-  num.value = assetAppendantList.value.length
-  nums.value = assetAppendantList.value.reduce((pre: any, cur: any) => {
-    pre += Number(cur.number)
-    return pre
-  }, 0)
-  numss.value = assetAppendantList.value.reduce((pre: any, cur: any) => {
-    pre += Number(cur.shapeArea)
-    return pre
-  }, 0)
-  numsss.value = assetAppendantList.value.reduce((pre: any, cur: any) => {
-    pre += Number(cur.compensationAmount)
-    return pre
-  }, 0)
-})
+watch(
+  () => props.dataInfo,
+  (val) => {
+    if (val) {
+        let map = new Map()
+        val.assetAppendantList.forEach(item => {
+          map.set(item.landNumber, item)
+        })
+      let newData = [...map.values()]
+        console.log(newData,'测试数据newData')
+        num.value =newData.length
+        nums.value = val.assetAppendantList.reduce((pre: any, cur: any) => {
+          pre += Number(cur.number)
+          return pre
+        }, 0)
+        numss.value = val.assetAppendantList.reduce((pre: any, cur: any) => {
+          pre += Number(cur.area)
+          return pre
+        }, 0)
+        numsss.value =val.assetAppendantList.reduce((pre: any, cur: any) => {
+          pre += Number(cur.compensationAmount)
+          return pre
+        }, 0)
+          }
+        },
+  { immediate: true, deep: true }
+)
 </script>
 
 <style lang="scss" scoped>
