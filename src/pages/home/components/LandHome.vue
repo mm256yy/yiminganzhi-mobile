@@ -19,9 +19,6 @@
       <view class="operate-segment">
         <text class="land-text">{{ `土地列表（共 ${total} 条土地数据）` }}</text>
         <view class="right-side">
-          <view class="btn blue-btn" @click="toTarget('database')">
-            <text class="txt">数据库</text>
-          </view>
           <view class="btn blue-btn" @click="onReset">
             <text class="txt">重置搜索</text>
           </view>
@@ -161,7 +158,11 @@ const getList = () => {
       })
       total.value = await getLandlordListBySearchTitleApi()
       isLoading.value = false
-      list.value = [...list.value, ...res]
+      if (page.value > 1) {
+        list.value = [...list.value, ...res]
+      } else {
+        list.value = [...res]
+      }
 
       //判断数据是否加载完成
       if (list.value.length >= total.value) {
@@ -319,16 +320,12 @@ onLoad((option) => {
   }
 })
 
-// onUnload(() => {
-//   uni.$off('customRefresh')
-// })
-
 onBeforeUnmount(() => {
   uni.$off('SyncEnd', onSyncEnd)
 })
 
 onMounted(() => {
-  init()
+  console.log('LandHome-onMount')
   getPullTime()
   uni.$on('SyncEnd', onSyncEnd)
 })

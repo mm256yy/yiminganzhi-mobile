@@ -89,11 +89,6 @@ const pageSize = ref<number>(50)
 const sourceType = ref<string | null>(null) // 源类型 0已完成  1 预警 2 滞后
 const statusCount = ref<number>(0)
 
-// 角色类型，不同角色跳转不同的页面，默认为实物采集页面
-// const roleType = ref<RoleCodeType>(getStorage(StorageKey.USERROLE))
-
-onLoad((options: any) => {})
-
 const init = () => {
   page.value = 1
   isEnd.value = false
@@ -149,7 +144,12 @@ const getList = () => {
       const res: any[] = await getLandlordListBySearchApi(params)
       console.log('只征地不搬迁列表List', res)
       isLoading.value = false
-      list.value = [...list.value, ...res]
+      if (page.value > 1) {
+        list.value = [...list.value, ...res]
+      } else {
+        list.value = [...res]
+      }
+
       //判断数据是否加载完成
       if (res.length < pageSize.value) {
         isEnd.value = true

@@ -52,7 +52,7 @@ onMounted(() => {
 })
 
 /**
- * 获取居民户详情
+ * 获取详情
  * @param(object) uid
  */
 const getLandlordDetail = (uid: string) => {

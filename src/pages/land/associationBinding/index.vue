@@ -215,6 +215,8 @@ const landMark = ref<string>('')
 const showSearch = ref<boolean>(false)
 const doorNoList = ref<any[]>([])
 let oldDoorNo = ref([])
+const topDoorNo = ref<string>('') // 顶部户名
+
 onLoad((option) => {
   if (option && option.params) {
     const params = JSON.parse(option.params)
@@ -277,7 +279,7 @@ const submit = async () => {
   let params = {
     ...formData.value,
     type: checkSelectedStr.value,
-    doorNo: checkSelected.value ? doorNoResult : formData.value.doorNo,
+    doorNo: checkSelected.value ? doorNoResult : topDoorNo.value,
     oldDoorNo: oldDoorNo.value
   }
   console.log('submit-params', params)
@@ -348,10 +350,12 @@ const getDoorNoInfoList = async () => {
  * @param{Object} data
  */
 const confirmSelect = (data: any) => {
+  console.log('ToPData::: ', data)
   if (data) {
     formData.value.id = data.value
     formData.value.name = data.label
-    formData.value.doorNo = data.doorNo
+    topDoorNo.value = data.doorNo
+    console.log('ToPDoorNo::: ', topDoorNo.value)
   }
   close()
 }
@@ -373,17 +377,15 @@ const inputBlur = () => {
 
 const getUidFromAPi = async () => {
   const requestParams = {
-    doorNo: checkSelected.value ? `${suffixNo()}${formData.value.doorNo}` : formData.value.doorNo
+    doorNo: checkSelected.value ? `${suffixNo()}${formData.value.doorNo}` : topDoorNo.value
   }
   try {
     let result = await getLandlordListBySearchApi(requestParams)
-    console.log('OCK-result::: ', result)
     const routeName = 'landEvaIndex'
     const obj = {
       type: 'land',
       uid: result[0]?.uid
     }
-    console.log('OCK::: ', obj)
 
     routerForward(routeName, {
       replace: true,

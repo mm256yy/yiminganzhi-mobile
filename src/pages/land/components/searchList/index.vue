@@ -146,6 +146,7 @@ const getDoorNoInfoList = async () => {
           id: item.id,
           label: item.result,
           value: item.id,
+          doorNo: item.doorNo,
           checked: item?.checked
         })
       })
