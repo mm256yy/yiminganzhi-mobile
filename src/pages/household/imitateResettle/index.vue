@@ -247,7 +247,8 @@ const descClose = () => {
 
 const viewPdf = () => {
   uni.downloadFile({
-    url: 'https://oss.zdwp.tech/migrate/files/85f6a5f5-eadd-46ae-9747-48d3ff8fa24b.pdf',
+    // url: 'https://oss.zdwp.tech/migrate/files/85f6a5f5-eadd-46ae-9747-48d3ff8fa24b.pdf',
+    url: 'https://zdwp.oss-cn-hangzhou.aliyuncs.com/85f6a5f5-eadd-46ae-9747-48d3ff8fa24b.pdf',
     success: function (res) {
       var filePath = res.tempFilePath
       uni.openDocument({

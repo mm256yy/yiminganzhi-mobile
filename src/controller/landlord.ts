@@ -577,7 +577,8 @@ export class Landlord extends Common {
                               // 处理图片链接
                               imgItem.url.replace(
                                 'https://zdwp.oss-cn-hangzhou.aliyuncs.com/',
-                                'https://oss.zdwp.tech/'
+                                // 'https://oss.zdwp.tech/'
+                                'https://zdwp.oss-cn-hangzhou.aliyuncs.com/'
                               )
                             )
                           }

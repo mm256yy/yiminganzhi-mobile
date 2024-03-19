@@ -56,7 +56,7 @@ export const yesAndNoEnums = [
   { text: '否', value: 'false', disable: false }
 ]
 
-export const ossDomain = 'https://oss.zdwp.tech/'
-
+// export const ossDomain = 'https://oss.zdwp.tech/'
+export const ossDomain = 'https://zdwp.oss-cn-hangzhou.aliyuncs.com/'
 // 缓存图片 url: { path : xxx, base64: xxxx }
 export const imageUrlAndBase64Map: { [key: string]: any } = {}
