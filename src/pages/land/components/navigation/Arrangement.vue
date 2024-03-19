@@ -158,7 +158,7 @@ const countNum = () => {
     const total = list.reduce((pre: any, cur: any) => {
       return pre + cur
     })
-    totalLand.value = Math.round(total / 666.66).toFixed(2)
+    totalLand.value = (total / 666.66).toFixed(2)
     num.value = Math.round(Number(totalLand.value) / Number(dict[420][0]?.text))
   }
 }

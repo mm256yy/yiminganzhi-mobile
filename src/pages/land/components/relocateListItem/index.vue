@@ -59,8 +59,8 @@ const toDetail = () => {
 }
 
 const totalStage = computed(() => {
-  // 类别为农户时6个阶段，其他4个阶段
-  return props.data.landUserType === 'PeasantHousehold' ? 6 : 4
+  // 类别为农户时7个阶段，其他4个阶段
+  return props.data.landUserType === 'PeasantHousehold' ? 7 : 4
 })
 
 const fillNumber = computed(() => {

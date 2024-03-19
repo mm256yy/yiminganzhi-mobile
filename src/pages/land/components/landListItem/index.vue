@@ -96,10 +96,12 @@ const getUidFromAPi = async () => {
     let result = await getLandlordListBySearchApi({
       doorNo: props.data.doorNo
     })
+    console.log('评估request-props', props.data)
+    console.log('评估', result)
     const routeName = 'landEvaIndex'
     const obj = {
       type: 'land',
-      uid: result[0]?.uidssss
+      uid: result[0]?.uid
     }
     routerForward(routeName, {
       params: JSON.stringify(obj)

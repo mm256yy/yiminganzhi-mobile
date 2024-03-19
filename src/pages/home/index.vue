@@ -441,8 +441,8 @@ onUnload(() => {
 
   .time-count {
     position: absolute;
-    top: 30rpx;
-    right: 30rpx;
+    top: 20%;
+    right: 50rpx;
     color: #fff;
     font-size: 10rpx;
   }

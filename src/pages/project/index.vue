@@ -43,6 +43,8 @@
       :projectItem="projectItem"
       @change-project="changeProject"
     />
+    <view v-if="syncing" class="time-count">{{ time }}</view>
+    <view v-if="showSyncCount" class="sync-time">本次同步共用时{{ time }}</view>
   </view>
 </template>
 
@@ -52,6 +54,7 @@ import { getProjectListApi } from '@/service'
 import SyncCompont from '@/components/Sync/Index.vue'
 import { routerBack, StorageKey, getStorage, debounce } from '@/utils'
 import { ProjectType } from '@/types/common'
+import { onUnload } from '@dcloudio/uni-app'
 
 const list = ref<any[]>([])
 
@@ -59,8 +62,11 @@ const currentProjectId = ref(0)
 const projectId = ref()
 const projectItem = ref<ProjectType | null>(null)
 const syncing = ref<boolean>(false)
+const showSyncCount = ref<boolean>(false)
 
 const syncCmt = ref()
+const time = ref('00:00:00')
+let timer: any = null
 
 const spliceIntoChunks = (arr: any[], chunkSize: number) => {
   if (arr.length <= chunkSize) {
@@ -90,6 +96,7 @@ const onChangeProject = debounce((item: ProjectType) => {
     return
   }
   syncing.value = true
+  startTimer()
   projectId.value = item.id
   projectItem.value = item
   // 项目切换需要做数据同步
@@ -99,6 +106,7 @@ const onChangeProject = debounce((item: ProjectType) => {
 // 同步结束
 const onSyncEnd = () => {
   syncing.value = false
+  stopTimer()
 }
 
 const changeProject = () => {
@@ -117,6 +125,31 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   uni.$off('SyncEnd', onSyncEnd)
+})
+
+// 计时器
+const startTimer = () => {
+  let seconds = 0
+  timer = setInterval(() => {
+    seconds++
+    let hours: any = Math.floor(seconds / 3600)
+    let minutes: any = Math.floor((seconds - hours * 3600) / 60)
+    let secs: any = seconds % 60
+    hours = hours < 10 ? '0' + hours : hours
+    minutes = minutes < 10 ? '0' + minutes : minutes
+    secs = secs < 10 ? '0' + secs : secs
+    time.value = hours + ':' + minutes + ':' + secs
+  }, 1000)
+}
+
+const stopTimer = () => {
+  clearInterval(timer)
+  timer = null
+  showSyncCount.value = true
+}
+
+onUnload(() => {
+  stopTimer()
 })
 </script>
 
@@ -218,5 +251,21 @@ onBeforeUnmount(() => {
   left: -1rpx;
   width: 40rpx;
   height: 35rpx;
+}
+
+.time-count {
+  position: absolute;
+  top: 10%;
+  right: 50rpx;
+  color: #fff;
+  font-size: 10rpx;
+}
+
+.sync-time {
+  position: absolute;
+  top: 15%;
+  right: 50rpx;
+  color: #fff;
+  font-size: 10rpx;
 }
 </style>
