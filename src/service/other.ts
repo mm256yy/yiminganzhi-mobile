@@ -159,6 +159,10 @@ export const getLandPeasantHouseholdDtoListApi = () => {
 export const updateLandlord = (data?: any) => {
   return landEstimateDtoListFill.updateLandlord(data)
 }
+//评估状态修改
+export const updateEstimateFlag = (data?: any) => {
+  return landEstimateDtoListFill.updateEstimateFlag(data)
+}
 export const getDictObjsApi = (e: any) => {
   return DictionariesController.getDictObjs(e)
 }

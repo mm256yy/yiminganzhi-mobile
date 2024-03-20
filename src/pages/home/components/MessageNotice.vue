@@ -21,7 +21,7 @@
           <text class="time">发送时间</text>
         </view>
         <view class="list">
-          <view class="item-title" v-for="(item, index) in notifyList" :key="index">
+          <view class="item-title" v-for="(item, index) in notifyList" :key="index" @click="toNotify(item)">
             <view>
               <text class="item-index">{{ index + 1 }}</text>
               <text class="item-content">{{ item.title }}</text>
@@ -82,6 +82,7 @@ const getFeedbackList = async () => {
 const getNotify = async () => {
   const res = await getNotifyDtoList()
   notifyList.value = res || []
+  console.log(notifyList.value,'消息通知数据')
 }
 
 onShow(() => {
@@ -99,6 +100,15 @@ const toTarget = (item: any) => {
   }
 
   routerForward('feedbackDetail', {
+    ...params
+  })
+}
+
+const toNotify=  (item: any) => {
+  const params = {
+    ...item
+  }
+  routerForward('NoticeDetail', {
     ...params
   })
 }

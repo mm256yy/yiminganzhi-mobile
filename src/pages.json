@@ -380,6 +380,13 @@
 			}
 		},
 		{
+			"name": "NoticeDetail",
+			"path": "pages/home/components/NoticeDetail",
+			"style": {
+				"navigationBarTitleText": "消息通知详情"
+			}
+		},
+		{
 			"name": "fillComments",
 			"path": "pages/feedback/fillComments",
 			"style": {

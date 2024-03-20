@@ -138,8 +138,10 @@ export class ImpLandlord extends Common {
       if (this.isNotNullPic(landEstimatePic)) {
         // 评估总状态
         landlordItem.immigrantFilling.estimateeStatus = '1'
+        landlordItem.landImplementEscalationStatus='1'
       } else {
         landlordItem.immigrantFilling.estimateeStatus = '0'
+        landlordItem.landImplementEscalationStatus='0'
       }
     }
 

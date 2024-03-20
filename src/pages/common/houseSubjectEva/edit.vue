@@ -303,17 +303,23 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              label="备注"
+              label="占地面积"
               :label-width="150"
               label-align="right"
-              name="formData.remark"
+              name="formData.occupyArea"
             >
-              <uni-easyinput
-                v-model="formData.remark"
-                type="textarea"
-                :maxlength="50"
-                placeholder="请输入(50字以内)"
-              />
+              <view :class="['input-wrapper', focusIndex === 4 ? 'focus' : '']">
+                <input
+                  class="input-txt"
+                  placeholder="请输入"
+                  type="number"
+                  v-model="formData.occupyArea"
+                  @focus="inputFocus(4)"
+                  @blur="inputBlur"
+                  disabled
+                />
+                <view class="unit">㎡</view>
+              </view>
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -331,6 +337,23 @@
                 />
               </uni-forms-item>
             </uni-col>
+          </uni-col>
+        </uni-row>
+        <uni-row>
+          <uni-col :span="12">
+            <uni-forms-item
+              label="备注"
+              :label-width="150"
+              label-align="right"
+              name="formData.remark"
+            >
+              <uni-easyinput
+                v-model="formData.remark"
+                type="textarea"
+                :maxlength="50"
+                placeholder="请输入(50字以内)"
+              />
+            </uni-forms-item>
           </uni-col>
         </uni-row>
       </uni-forms>
