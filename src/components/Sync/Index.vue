@@ -132,6 +132,7 @@ interface PropsType {
   from: 'sync' | 'project'
   projectId?: number
   projectItem?: ProjectType | null
+  isNeedPageJump?: boolean // 同步之后是否需要跳转页面
 }
 
 const props = defineProps<PropsType>()
@@ -435,14 +436,18 @@ const closePup = () => {
  * 跳转首页
  */
 const gotoHome = () => {
-  routerForward('home')
+  routerForward('home', {
+    replace: true
+  })
 }
 
 // 检测app是否需要更新
 const checkAppVersion = () => {
   const appVersionUpgradation = pullInstance.state.upgradation
   if (!appVersionUpgradation) {
-    gotoHome()
+    if (props.isNeedPageJump) {
+      gotoHome()
+    }
     return
   }
   // 赋值版本信息
@@ -452,7 +457,9 @@ const checkAppVersion = () => {
     // 当前版本小于发布版本 启动更新
     showAppVersionUpgradationPup.value = true
   } else {
-    gotoHome()
+    if (props.isNeedPageJump) {
+      gotoHome()
+    }
   }
 }
 

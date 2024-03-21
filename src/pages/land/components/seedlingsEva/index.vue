@@ -151,15 +151,15 @@ const currentItem = ref<any>({})
 const deleteReason = ref<string>('') // 删除原因
 
 const toLink = (type: string, itemUid?: any) => {
-  const { uid, doorNo, name, landEstimateDtoList } = props.dataInfo
+  const { uid, doorNo, name, landEstimateDtoList, landUid } = props.dataInfo
 
   if (type === 'edit') {
-    let params = { type, uid, doorNo, itemUid, landEstimateDtoList }
+    let params = { type, uid, doorNo, itemUid, landEstimateDtoList, landUid }
     routerForward('seedEvaEdit', {
       params: JSON.stringify(params)
     })
   } else if (type === 'add') {
-    let params = { type, uid, doorNo, name, landEstimateDtoList }
+    let params = { type, uid, doorNo, name, landEstimateDtoList, landUid }
     routerForward('seedEvaEdit', {
       params: JSON.stringify(params)
     })

@@ -226,7 +226,7 @@ export class landEstimateDtoListFills extends Common {
   }
 
   // 土地评估状态更改
-  updateEstimateFlag(data?: any): Promise<any> { 
+  updateEstimateFlag(data?: any): Promise<any> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!data || !data.uid) {
@@ -234,10 +234,10 @@ export class landEstimateDtoListFills extends Common {
           console.log('核心字段缺失')
           return
         }
-    let values = ''
-     values = `estimateFlag='1'`
-     const sql = `update ${landEstimateDtoListName} set ${values} where uid = '${data.uid}'`
-     const res = await this.db.execteSql([sql])
+        let values = ''
+        values = `estimateFlag='1'`
+        const sql = `update ${landEstimateDtoListName} set ${values} where uid = '${data.uid}'`
+        const res = await this.db.execteSql([sql])
         console.log('成功', res)
         if (res && res.code) {
           reject(false)

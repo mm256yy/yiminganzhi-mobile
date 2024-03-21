@@ -232,7 +232,7 @@
 import { ref, computed, watch } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { routerBack, getStorage, StorageKey } from '@/utils'
-import { updateImpLandlordAssetLandApi, getEvaLandlordItemApi } from '@/service'
+import { updateImpLandlordAssetLandApi, getEvaLandlordItemApi, updateEstimateFlag } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Container from '@/components/Container/index.vue'
 import { formatStr } from '@/utils'
@@ -259,7 +259,7 @@ const formData = ref<any>({
   landSea: '',
   valuationPrice: '',
   valuationAmount: '',
-  compensationAmount: '',
+  compensationAmount: '', // 补偿金额
   remark: ''
 })
 
@@ -331,12 +331,22 @@ const submit = () => {
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
+        updateEstimateApi()
         routerBack()
       }
     })
     .catch(() => {
       showToast(ERROR_MSG)
     })
+}
+
+// 更新评估状态api
+const updateEstimateApi = async () => {
+  try {
+    await updateEstimateFlag({ uid: commonParams.value?.landUid })
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 watch(

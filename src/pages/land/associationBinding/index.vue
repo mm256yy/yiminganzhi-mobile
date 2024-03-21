@@ -45,8 +45,8 @@
             <uni-forms-item :label-width="85">
               <checkbox-group @change="handleRadioChange">
                 <checkbox :value="checkSelectedStr" :checked="checkSelected" />
-                <span class="common-txt"
-                  >没有查询到户名，使用以下信息新增户名，只征地不搬迁才可以新增户名</span
+                <text class="common-txt"
+                  >没有查询到户名，使用以下信息新增户名，只征地不搬迁才可以新增户名</text
                 >
               </checkbox-group>
             </uni-forms-item>
@@ -350,12 +350,10 @@ const getDoorNoInfoList = async () => {
  * @param{Object} data
  */
 const confirmSelect = (data: any) => {
-  console.log('ToPData::: ', data)
   if (data) {
     formData.value.id = data.value
     formData.value.name = data.label
     topDoorNo.value = data.doorNo
-    console.log('ToPDoorNo::: ', topDoorNo.value)
   }
   close()
 }

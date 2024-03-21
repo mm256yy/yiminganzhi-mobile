@@ -210,7 +210,7 @@
       </view>
     </view>
 
-    <SyncCompont ref="syncCmt" from="sync" />
+    <SyncCompont ref="syncCmt" :isNeedPageJump="false" from="sync" />
   </view>
 </template>
 

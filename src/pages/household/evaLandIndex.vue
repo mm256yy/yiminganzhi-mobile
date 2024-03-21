@@ -29,6 +29,7 @@ const dataInfo = ref<any>({})
 const type = ref<string>('household')
 // 职业选项
 const occupationOptions = ref<any>([])
+const landUid = ref<string>('')
 
 onShow(() => {
   if (dataInfo.value.uid) {
@@ -40,6 +41,7 @@ onLoad((option) => {
   if (option && option.params) {
     const params = JSON.parse(option.params)
     type.value = params.type
+    landUid.value = params.landUid
     console.log('RParams', params)
     if (params.uid) {
       getLandlordDetail(params.uid)
@@ -59,7 +61,8 @@ const getLandlordDetail = (uid: string) => {
   getEvaLandlordItemApi(uid)
     .then((res: any) => {
       console.log('资产评估res:', res)
-      dataInfo.value = { ...res }
+      dataInfo.value = { ...res, landUid: landUid.value }
+      // console.log('KdataInfo', dataInfo.value)
     })
     .catch((err: any) => {
       console.log('资产评估err:', err)

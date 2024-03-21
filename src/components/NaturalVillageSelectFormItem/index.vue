@@ -1,7 +1,7 @@
 <template>
   <view class="select-box" @click.stop="open">
     <text class="txt black" v-if="villageTitle && villageTitle.length">
-      {{ villageTitle.join('/') }}
+      {{ villageTitle.join('') }}
     </text>
     <text class="txt" v-else>请选择</text>
     <uni-icons type="bottom" color="#BFBFBF" size="14rpx" />

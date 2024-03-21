@@ -66,7 +66,7 @@ const handleDeleteItem = (data: LandlordType) => {
 <style lang="scss" scoped>
 .company-item {
   position: relative;
-  width: 480rpx;
+  width: 492rpx;
   padding: 12rpx;
   margin: 0 7rpx 7rpx 0;
   background-color: #ffffff;

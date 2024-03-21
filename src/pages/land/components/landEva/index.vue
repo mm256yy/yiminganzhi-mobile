@@ -143,8 +143,8 @@ const currentItem = ref<any>({})
 const reason = ref<string>('') // 删除原因
 
 const toLink = (type: string, itemUid?: any) => {
-  const { uid, doorNo } = props.dataInfo
-  let params = { type, uid, doorNo, itemUid }
+  const { uid, doorNo, landUid } = props.dataInfo
+  let params = { type, uid, doorNo, itemUid, landUid }
   routerForward('baseLandEvaEdit', {
     params: JSON.stringify(params)
   })

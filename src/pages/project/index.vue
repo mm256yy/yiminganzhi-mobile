@@ -39,6 +39,7 @@
     <SyncCompont
       ref="syncCmt"
       from="project"
+      :isNeedPageJump="true"
       :projectId="projectId"
       :projectItem="projectItem"
       @change-project="changeProject"

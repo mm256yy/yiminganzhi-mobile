@@ -4,9 +4,10 @@
     <view class="row-1">
       <view class="left">
         <view class="row-label-title">
-          本户共计征收土地：{{ totalLand || 0 }}亩，参保系数为：{{ insuranceFactor }}，可参保{{
-            num || 0
-          }}人，请添加参保人员
+          本户共计征收土地：<text class="blue-num">{{ totalLand || 0 }}</text
+          >亩，参保系数为：<text class="blue-num">{{ insuranceFactor }}</text
+          >，可参保<text class="blue-num">{{ num || 0 }}</text
+          >人，请添加参保人员
         </view>
       </view>
       <view class="right">
@@ -159,7 +160,7 @@ const countNum = () => {
       return pre + cur
     })
     totalLand.value = (total / 666.66).toFixed(2)
-    num.value = Math.round(Number(totalLand.value) / Number(dict[420][0]?.text))
+    num.value = Math.round(Number(totalLand.value) / Number(dict[420][0]?.value))
   }
 }
 
@@ -282,6 +283,12 @@ const handleClick = () => {
     &.record {
       bottom: 54rpx;
     }
+  }
+
+  .blue-num {
+    font-size: 10rpx;
+    color: #3e73ec;
+    padding: 0 2rpx;
   }
 }
 </style>

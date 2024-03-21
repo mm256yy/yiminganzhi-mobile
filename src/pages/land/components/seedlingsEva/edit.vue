@@ -260,7 +260,8 @@ import { routerBack, getStorage, StorageKey } from '@/utils'
 import {
   addImpLandlordAssetAppendantApi,
   updateImpLandlordAssetAppendantApi,
-  getEvaLandlordItemApi
+  getEvaLandlordItemApi,
+  updateEstimateFlag
 } from '@/service'
 import { ERROR_MSG, showToast } from '@/config/msg'
 import Container from '@/components/Container/index.vue'
@@ -354,6 +355,15 @@ const countPrice = computed(() => {
   return result
 })
 
+// 更新评估状态api
+const updateEstimateApi = async () => {
+  try {
+    await updateEstimateFlag({ uid: commonParams.value?.landUid })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 // 表单提交
 const submit = () => {
   const { uid, doorNo, type } = commonParams.value
@@ -405,6 +415,7 @@ const submit = () => {
       .then((res) => {
         if (res) {
           showToast('新增成功')
+          updateEstimateApi()
           routerBack()
         }
       })
@@ -416,6 +427,7 @@ const submit = () => {
       .then((res) => {
         if (res) {
           showToast('编辑成功')
+          updateEstimateApi()
           routerBack()
         }
       })
