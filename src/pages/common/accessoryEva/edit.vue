@@ -299,7 +299,16 @@ const submit = () => {
   } else if (!formData.value.name) {
     showToast('请输入项目名称')
     return
-  } else {
+  } else if (!formData.value.size) {
+     showToast('请选择规格')
+    return
+  } else if (!formData.value.number) {
+     showToast('请输入数量')
+    return
+  } else if (!formData.value.unit) {
+     showToast('请选择单位')
+    return
+  }   else {
     if (type === 'add') {
       addImpLandlordAppendantApi(uid, params)
         .then((res) => {
