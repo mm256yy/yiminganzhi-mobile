@@ -70,6 +70,7 @@
       <Assessor
         v-else-if="homeViewType === RoleCodeType.assessor"
         @to-link="toLink"
+        @to-params-links="toParamsLinks"
         @login-in="loginIn"
       />
       <!-- 资产评估-土地首页 -->
@@ -180,6 +181,12 @@ const toParamsLink = (params: any) => {
   routerForward(name, {
     type,
     count
+  })
+}
+const toParamsLinks = (params: any) => {
+  const { name, types } = params
+  routerForward(name, {
+    types
   })
 }
 

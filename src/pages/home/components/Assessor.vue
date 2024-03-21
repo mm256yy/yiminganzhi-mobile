@@ -26,21 +26,30 @@
           </view>
         </view>
         <view class="row-field">
-          <view class="field-box">
+          <view
+class="field-box" @click.prevent.stop="
+              toLinkParams('householdList', '1')
+            ">
             <view class="line-1">{{ homeCollect.peasantCompleteCount }}</view>
             <view class="flex">
               <view class="common-dot red" />
               <view class="line-2">已评估</view>
             </view>
           </view>
-          <view class="field-box">
+          <view
+class="field-box" @click.prevent.stop="
+              toLinkParams('householdList', '0')
+            ">
             <view class="line-1">{{ homeCollect.peasantUncompletedCount }}</view>
             <view class="flex">
               <view class="common-dot yellow" />
               <view class="line-2">未评估</view>
             </view>
           </view>
-          <view class="field-box">
+          <view
+class="field-box" @click.prevent.stop="
+              toLinkParams('householdList', '2')
+            ">
             <view class="line-1">{{ homeCollect.peasantMyCompleteCount }}</view>
             <view class="flex">
               <view class="common-dot green" />
@@ -64,21 +73,30 @@
           </view>
         </view>
         <view class="row-field">
-          <view class="field-box">
+          <view
+class="field-box"  @click.prevent.stop="
+               toLinkParams('enterpriseList', '1')
+            ">
             <view class="line-1">{{ homeCollect.companyCompleteCount }}</view>
             <view class="flex">
               <view class="common-dot red" />
               <view class="line-2 red">已评估</view>
             </view>
           </view>
-          <view class="field-box">
+          <view
+class="field-box"  @click.prevent.stop="
+                toLinkParams('enterpriseList', '0')
+            ">
             <view class="line-1">{{ homeCollect.companyUncompletedCount }}</view>
             <view class="flex">
               <view class="common-dot yellow" />
               <view class="line-2">未评估</view>
             </view>
           </view>
-          <view class="field-box">
+          <view
+class="field-box"  @click.prevent.stop="
+              toLinkParams('enterpriseList', '2')
+            ">
             <view class="line-1">{{ homeCollect.companyMyCompleteCount }}</view>
             <view class="flex">
               <view class="common-dot green" />
@@ -102,21 +120,30 @@
           </view>
         </view>
         <view class="row-field">
-          <view class="field-box">
+          <view
+class="field-box"  @click.prevent.stop="
+              toLinkParams('selfPersonList', '1')
+            ">
             <view class="line-1">{{ homeCollect.individualCompleteCount }}</view>
             <view class="flex">
               <view class="common-dot red" />
               <view class="line-2 red">已评估</view>
             </view>
           </view>
-          <view class="field-box">
+          <view
+class="field-box"  @click.prevent.stop="
+             toLinkParams('selfPersonList', '0')
+            ">
             <view class="line-1">{{ homeCollect.individualUncompletedCount }}</view>
             <view class="flex">
               <view class="common-dot yellow" />
               <view class="line-2">未评估</view>
             </view>
           </view>
-          <view class="field-box">
+          <view
+class="field-box"  @click.prevent.stop="
+              toLinkParams('selfPersonList', '2')
+            ">
             <view class="line-1">{{ homeCollect.individualMyCompleteCount }}</view>
             <view class="flex">
               <view class="common-dot green" />
@@ -140,21 +167,30 @@
           </view>
         </view>
         <view class="row-field">
-          <view class="field-box">
+          <view
+class="field-box"  @click.prevent.stop="
+             toLinkParams('collectiveList', '1')
+            ">
             <view class="line-1">{{ homeCollect.villageCompleteCount }}</view>
             <view class="flex">
               <view class="common-dot red" />
               <view class="line-2 red">已评估</view>
             </view>
           </view>
-          <view class="field-box">
+          <view
+class="field-box"  @click.prevent.stop="
+              toLinkParams('collectiveList', '0')
+            ">
             <view class="line-1">{{ homeCollect.villageUncompletedCount }}</view>
             <view class="flex">
               <view class="common-dot yellow" />
               <view class="line-2">未评估</view>
             </view>
           </view>
-          <view class="field-box">
+          <view
+class="field-box"  @click.prevent.stop="
+              toLinkParams('collectiveList', '2')
+            ">
             <view class="line-1">{{ homeCollect.villageMyCompleteCount }}</view>
             <view class="flex">
               <view class="common-dot green" />
@@ -213,8 +249,7 @@ import { getStorage, StorageKey, routerForward } from '@/utils'
 import Echart from './GroupTopFive.vue'
 import MessageNotice from './MessageNoticeFive.vue'
 import { getImpHomeCollectDtoApi,getLandEstimateDtoListApi } from '@/service'
-
-const emit = defineEmits(['toLink', 'loginIn'])
+const emit = defineEmits(['toLink','toParamsLinks', 'loginIn'])
 const userInfo = ref<any>(null)
 const projectInfo = ref<any>(null)
 interface HomeCollectType {
@@ -254,6 +289,13 @@ const homeCollect = ref<HomeCollectType>({
   villageUncompletedCount: 0
 })
 const seachName = ref<string>('')
+
+const toLinkParams = (name: string, types: string) => {
+  emit('toParamsLinks', {
+    name,
+    types
+  })
+}
 
 const onSearch = () => {
   if (seachName.value) {

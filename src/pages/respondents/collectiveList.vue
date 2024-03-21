@@ -165,8 +165,9 @@ const isLoading = ref<boolean>(false)
 const isEnd = ref<boolean>(false)
 
 const page = ref<number>(1)
-const pageSize = ref<number>(10)
+const pageSize = ref<number>(50)
 const sourceType = ref<string | null>(null) // 源类型 0已完成  1 预警 2 滞后
+const pgType = ref<string | null>(null)  // 源类型 0已完成  1 预警 2 滞后
 const statusCount = ref<number>(0)
 
 // 角色类型，不同角色跳转不同的页面，默认为实物采集页面
@@ -176,7 +177,14 @@ onLoad((options: any) => {
   if (options && options.type) {
     sourceType.value = options.type
   }
+  if (options && options.types) {
+    pgType.value = options.types
+    console.log(pgType.value,'type是什么?')
+  }
   statusCount.value = options.count || 0
+  if (options && options.name) {
+    keyWords.value = options.name
+  }
 })
 
 const init = () => {
@@ -219,6 +227,52 @@ const status = computed(() => {
   return isEnd.value ? 'noMore' : isLoading.value ? 'loading' : 'more'
 })
 
+// const getList = () => {
+//   nextTick(async () => {
+//     isLoading.value = true
+//     const params: LandlordSearchType = {
+//       name: unref(keyWords),
+//       type: unref(tabType),
+//       page: page.value,
+//       pageSize: pageSize.value
+//     }
+//     if (sourceType.value) {
+//       params.warnStatus = sourceType.value
+//     }
+//     const realList = villageCode.value.filter((item) => !!item)
+//     if (realList.length) {
+//       if (realList.length === 1) {
+//         params.areaCode = unref(villageCode)[0] || ''
+//       } else if (realList.length === 2) {
+//         params.townCode = unref(villageCode)[1] || ''
+//       } else if (realList.length === 3) {
+//         params.villageCode = unref(villageCode)[2] || ''
+//       }
+//     }
+//     const res = await getLandlordListBySearchApi(params).catch(() => {
+//       isLoading.value = false
+//     })
+
+//     isLoading.value = false
+//     if (res && res.length) {
+//       if (page.value === 1) {
+//         list.value = res || []
+//       } else {
+//         list.value = list.value.concat(res)
+//       }
+//       if (res.length < pageSize.value) {
+//         isEnd.value = true
+//       } else {
+//         page.value = page.value + 1
+//       }
+//     } else {
+//       if (page.value === 1) {
+//         list.value = []
+//       }
+//       isEnd.value = true
+//     }
+//   })
+// }
 const getList = () => {
   nextTick(async () => {
     isLoading.value = true
@@ -228,8 +282,58 @@ const getList = () => {
       page: page.value,
       pageSize: pageSize.value
     }
+    console.log('传输的数据', params)
     if (sourceType.value) {
       params.warnStatus = sourceType.value
+      if (sourceType.value == '1') {
+        const dataList = await getLandlordListBySearchApi(params).catch(() => {
+          isLoading.value = false
+        })
+        const res = dataList.filter((item: any) => item.warnStatus == 1)
+        getListCommon(res)
+      } else if (sourceType.value == '2') {
+        const dataList = await getLandlordListBySearchApi(params).catch(() => {
+          isLoading.value = false
+        })
+        const res = dataList.filter((item: any) => item.warnStatus == 2)
+        getListCommon(res)
+      } else if (sourceType.value == '0') {
+        const dataList = await getLandlordListBySearchApi(params).catch(() => {
+          isLoading.value = false
+        })
+        console.log(dataList, 'dataList数据')
+        const res = dataList.filter((item: any) => item.warnStatus != '1' && item.warnStatus != '2')
+        getListCommon(res)
+      }
+    }else if (pgType.value) {
+      // params.houseAllStatus = pgType.value
+      if (pgType.value == '0') {
+        const dataList = await getLandlordListBySearchApi(params).catch(() => {
+          isLoading.value = false
+        })
+        const res = dataList.filter((item: any) => item.houseAllStatus == 0)
+        getListCommon(res)
+      } else if (pgType.value == '1') {
+        const dataList = await getLandlordListBySearchApi(params).catch(() => {
+          isLoading.value = false
+        })
+        const res = dataList.filter((item: any) => item.houseAllStatus == 1)
+        console.log(res, 'dataList数据')
+        getListCommon(res)
+      } else if (pgType.value == '2') {
+        const dataList = await getLandlordListBySearchApi(params).catch(() => {
+          isLoading.value = false
+        })
+        const res = dataList.filter((item: any) => item.houseAllStatus==2)
+          console.log(res, 'dataList数据')
+        getListCommon(res)
+      }
+    } else {
+      const res = await getLandlordListBySearchApi(params).catch(() => {
+        isLoading.value = false
+      })
+      console.log(res, '数据列表res')
+      getListCommon(res)
     }
     const realList = villageCode.value.filter((item) => !!item)
     if (realList.length) {
@@ -239,31 +343,32 @@ const getList = () => {
         params.townCode = unref(villageCode)[1] || ''
       } else if (realList.length === 3) {
         params.villageCode = unref(villageCode)[2] || ''
+      } else if (realList.length === 4) {
+        params.virutalVillageCode = unref(villageCode)[3] || ''
       }
-    }
-    const res = await getLandlordListBySearchApi(params).catch(() => {
-      isLoading.value = false
-    })
-
-    isLoading.value = false
-    if (res && res.length) {
-      if (page.value === 1) {
-        list.value = res || []
-      } else {
-        list.value = list.value.concat(res)
-      }
-      if (res.length < pageSize.value) {
-        isEnd.value = true
-      } else {
-        page.value = page.value + 1
-      }
-    } else {
-      if (page.value === 1) {
-        list.value = []
-      }
-      isEnd.value = true
     }
   })
+  console.log('居民户列表', list.value)
+}
+const getListCommon = (res: any) => {
+  if (res && res.length) {
+    if (page.value === 1) {
+      list.value = res || []
+      console.log(list.value,'list是什么')
+    } else {
+      list.value = list.value.concat(res)
+    }
+    if (res.length < pageSize.value) {
+      isEnd.value = true
+    } else {
+      page.value = page.value + 1
+    }
+  } else {
+    if (page.value === 1) {
+      list.value = []
+    }
+    isEnd.value = true
+  }
 }
 
 const loadMore = () => {
