@@ -165,7 +165,7 @@ const isLoading = ref<boolean>(false)
 const isEnd = ref<boolean>(false)
 
 const page = ref<number>(1)
-const pageSize = ref<number>(50)
+const pageSize = ref<number>(500)
 const sourceType = ref<string | null>(null) // 源类型 0已完成  1 预警 2 滞后
 const pgType = ref<string | null>(null)  // 源类型 0已完成  1 预警 2 滞后
 const statusCount = ref<number>(0)
@@ -308,23 +308,20 @@ const getList = () => {
     }else if (pgType.value) {
       // params.houseAllStatus = pgType.value
       if (pgType.value == '0') {
-        const dataList = await getLandlordListBySearchApi(params).catch(() => {
+        const res = await getLandlordListBySearchApi({ ...params ,houseAllStatus:'0'}).catch(() => {
           isLoading.value = false
         })
-        const res = dataList.filter((item: any) => item.houseAllStatus == 0)
         getListCommon(res)
       } else if (pgType.value == '1') {
-        const dataList = await getLandlordListBySearchApi(params).catch(() => {
+        const res = await getLandlordListBySearchApi({ ...params ,houseAllStatus:'1,2'}).catch(() => {
           isLoading.value = false
         })
-        const res = dataList.filter((item: any) => item.houseAllStatus == 1)
         console.log(res, 'dataList数据')
         getListCommon(res)
       } else if (pgType.value == '2') {
-        const dataList = await getLandlordListBySearchApi(params).catch(() => {
+        const res = await getLandlordListBySearchApi({ ...params ,houseAllStatus:'2'}).catch(() => {
           isLoading.value = false
         })
-        const res = dataList.filter((item: any) => item.houseAllStatus==2)
           console.log(res, 'dataList数据')
         getListCommon(res)
       }

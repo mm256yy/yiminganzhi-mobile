@@ -695,6 +695,7 @@ export class Landlord extends Common {
           virutalVillageCode,
           type,
           doorNo,
+          houseAllStatus,
           pageSize = 10,
           page = 1
         } = data || {}
@@ -724,8 +725,16 @@ export class Landlord extends Common {
         if (doorNo) {
           sql += ` and doorNo = '${doorNo}'`
         }
+        if (houseAllStatus) {
+          if (houseAllStatus.length>1) {
+            const arr = houseAllStatus.split(',')
+            sql += ` and houseAllStatus in (${arr.map((item) => `'${item}'`).join(',')})`
+          } else {
+              sql += ` and houseAllStatus = '${houseAllStatus}'`   
+          }      
+        }
         sql += ` order by updatedDate desc limit ${pageSize} offset ${(page - 1) * pageSize}`
-        // console.log('sql', sql)
+        console.log('sql', sql)
         const list: LandlordDDLType[] = await this.db.selectSql(sql)
         if (this.isArrayAndNotNull(list)) {
           list.forEach((item) => {
