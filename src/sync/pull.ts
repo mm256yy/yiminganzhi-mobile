@@ -508,12 +508,12 @@ class PullData {
       this.maxCount = -1
     })
     console.log('接口: 统计数据', result)
-    if (!result) {
-      console.error('统计数据获取失败')
-      this.maxCount = -1
-      return
-    }
-    this.state.collectList = result
+    // if (!result) {
+    //   console.error('统计数据获取失败')
+    //   this.maxCount = -1
+    //   return
+    // }
+    this.state.collectList = result ? result : []
     this.pullCollect().then((res) => {
       res && this.count++
       // 重置 释放缓存
