@@ -55,7 +55,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed,watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import dayjs from 'dayjs'
 import { LandlordType } from '@/types/sync'
 // import { routerForward } from '@/utils'
@@ -80,27 +80,27 @@ watch(
   () => props.dataInfo,
   (val) => {
     if (val) {
-        let map = new Map()
-        val.assetAppendantList.forEach(item => {
-          map.set(item.landNumber, item)
-        })
+      let map = new Map()
+      val.assetAppendantList.forEach((item) => {
+        map.set(item.landNumber, item)
+      })
       let newData = [...map.values()]
-        console.log(newData,'测试数据newData')
-        num.value =newData.length
-        nums.value = val.assetAppendantList.reduce((pre: any, cur: any) => {
-          pre += Number(cur.number)
-          return pre
-        }, 0)
-        numss.value = val.assetAppendantList.reduce((pre: any, cur: any) => {
-          pre += Number(cur.area)
-          return pre
-        }, 0)
-        numsss.value =val.assetAppendantList.reduce((pre: any, cur: any) => {
-          pre += Number(cur.compensationAmount)
-          return pre
-        }, 0)
-          }
-        },
+      console.log(newData, '测试数据newData')
+      num.value = newData.length
+      nums.value = val.assetAppendantList.reduce((pre: any, cur: any) => {
+        pre += Number(cur.number)
+        return pre
+      }, 0)
+      numss.value = val.assetAppendantList.reduce((pre: any, cur: any) => {
+        pre += Number(cur.area)
+        return pre
+      }, 0)
+      numsss.value = val.assetAppendantList.reduce((pre: any, cur: any) => {
+        pre += Number(cur.compensationAmount)
+        return pre
+      }, 0)
+    }
+  },
   { immediate: true, deep: true }
 )
 </script>

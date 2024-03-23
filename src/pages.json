@@ -1,661 +1,665 @@
 {
-	"pages": [
-		{
-			"name": "home",
-			"path": "pages/home/index",
-			"style": {
-				"navigationBarTitleText": "首页"
-			}
-		},
-		{
-			"name": "map",
-			"path": "pages/map/index",
-			"style": {
-				"navigationBarTitleText": "地图坐标选择"
-			}
-		},
-		{
-			"name": "mapList",
-			"path": "pages/mapList/index",
-			"style": {
-				"navigationBarTitleText": "地图"
-			}
-		},
-		{
-			"name": "household",
-			"path": "pages/household/index",
-			"style": {
-				"navigationBarTitleText": "居民户填报"
-			}
-		},
-		{
-			"name": "householdInfoEdit",
-			"path": "pages/household/householdInfo/edit",
-			"style": {
-				"navigationBarTitleText": "居民户填报-居民户信息编辑"
-			}
-		},
-		{
-			"name": "demographicInfoEdit",
-			"path": "pages/household/demographicInfo/edit",
-			"style": {
-				"navigationBarTitleText": "居民户填报-人口信息编辑"
-			}
-		},
-		{
-			"name": "householdGraveInfoEdit",
-			"path": "pages/household/graveInfo/edit",
-			"style": {
-				"navigationBarTitleText": "居民户填报-坟墓信息编辑"
-			}
-		},
-		{
-			"name": "householdRevenueInfoEdit",
-			"path": "pages/household/revenueInfo/edit",
-			"style": {
-				"navigationBarTitleText": "居民户填报-家庭收入信息编辑"
-			}
-		},
-		{
-			"name": "houseInfoEdit",
-			"path": "pages/common/houseInfo/edit",
-			"style": {
-				"navigationBarTitleText": "房屋信息编辑"
-			}
-		},
-		{
-			"name": "enterprise",
-			"path": "pages/enterprise/index",
-			"style": {
-				"navigationBarTitleText": "企业填报"
-			}
-		},
-		{
-			"name": "baseInfoEdit",
-			"path": "pages/enterprise/baseInfo/edit",
-			"style": {
-				"navigationBarTitleText": "企业填报-企业基本概况编辑"
-			}
-		},
-		{
-			"name": "businessInfoEdit",
-			"path": "pages/enterprise/businessInfo/edit",
-			"style": {
-				"navigationBarTitleText": "经营现状信息编辑"
-			}
-		},
-		{
-			"name": "equipmentInfoEdit",
-			"path": "pages/common/equipmentInfo/edit",
-			"style": {
-				"navigationBarTitleText": "设施设备信息新增/编辑"
-			}
-		},
-		{
-			"name": "selfPerson",
-			"path": "pages/selfPerson/index",
-			"style": {
-				"navigationBarTitleText": "个体户填报"
-			}
-		},
-		{
-			"name": "selfBaseInfoEdit",
-			"path": "pages/selfPerson/baseInfo/edit",
-			"style": {
-				"navigationBarTitleText": "个体户填报-个体户基本概况编辑"
-			}
-		},
-		{
-			"name": "collective",
-			"path": "pages/collective/index",
-			"style": {
-				"navigationBarTitleText": "村集体填报"
-			}
-		},
-		{
-			"name": "collectiveBaseInfoEdit",
-			"path": "pages/collective/baseInfo/edit",
-			"style": {
-				"navigationBarTitleText": "村集体填报-村集体基本情况编辑"
-			}
-		},
-		{
-			"name": "collectiveGraveInfoEdit",
-			"path": "pages/collective/graveInfo/edit",
-			"style": {
-				"navigationBarTitleText": "村集体填报-坟墓信息新增/编辑"
-			}
-		},
-		{
-			"name": "collectiveEquipmentInfoEdit",
-			"path": "pages/collective/equipmentInfo/edit",
-			"style": {
-				"navigationBarTitleText": "村集体填报-农村专项设施设备信息新增/编辑"
-			}
-		},
-		{
-			"name": "appendantInfoEdit",
-			"path": "pages/common/appendantInfo/edit",
-			"style": {
-				"navigationBarTitleText": "附属物信息编辑"
-			}
-		},
-		{
-			"name": "sync",
-			"path": "pages/sync/index",
-			"style": {
-				"navigationBarTitleText": "同步"
-			}
-		},
-		{
-			"name": "login",
-			"path": "pages/login/index",
-			"style": {
-				"navigationBarTitleText": "登录页面"
-			}
-		},
-		{
-			"name": "householdList",
-			"path": "pages/respondents/householdList",
-			"style": {
-				"navigationBarTitleText": "居民户列表"
-			}
-		},
-		{
-			"name": "enterpriseList",
-			"path": "pages/respondents/enterpriseList",
-			"style": {
-				"navigationBarTitleText": "企业列表"
-			}
-		},
-		{
-			"name": "selfPersonList",
-			"path": "pages/respondents/selfPersonList",
-			"style": {
-				"navigationBarTitleText": "个体户列表"
-			}
-		},
-		{
-			"name": "collectiveList",
-			"path": "pages/respondents/collectiveList",
-			"style": {
-				"navigationBarTitleText": "村集体列表"
-			}
-		},
-		{
-			"name": "village",
-			"path": "pages/village/index",
-			"style": {
-				"navigationBarTitleText": "自然村列表"
-			}
-		},
-		{
-			"name": "villageEdit",
-			"path": "pages/village/edit",
-			"style": {
-				"navigationBarTitleText": "自然村-添加/修改自然村"
-			}
-		},
-		{
-			"name": "treeEdit",
-			"path": "pages/common/treeInfo/treeEdit",
-			"style": {
-				"navigationBarTitleText": "编辑零星(林)果木"
-			}
-		},
-		{
-			"name": "work",
-			"path": "pages/work/index",
-			"style": {
-				"navigationBarTitleText": "我的工作"
-			}
-		},
-		{
-			"name": "project",
-			"path": "pages/project/index",
-			"style": {
-				"navigationBarTitleText": "项目列表"
-			}
-		},
-		{
-			"name": "householdEva",
-			"path": "pages/household/evaIndex",
-			"style": {
-				"navigationBarTitleText": "居民户评估"
-			}
-		},
-		{
-			"name": "landEvaIndex",
-			"path": "pages/household/evaLandIndex",
-			"style": {
-				"navigationBarTitleText": "土地评估"
-			}
-		},
-		{
-			"name": "enterpriseEva",
-			"path": "pages/enterprise/evaIndex",
-			"style": {
-				"navigationBarTitleText": "企业评估"
-			}
-		},
-		{
-			"name": "selfPersonEva",
-			"path": "pages/selfPerson/evaIndex",
-			"style": {
-				"navigationBarTitleText": "个体工商户评估"
-			}
-		},
-		{
-			"name": "collectiveEva",
-			"path": "pages/collective/evaIndex",
-			"style": {
-				"navigationBarTitleText": "村集体评估"
-			}
-		},
-		{
-			"name": "houseSubjectEvaEdit",
-			"path": "pages/common/houseSubjectEva/edit",
-			"style": {
-				"navigationBarTitleText": "编辑房屋主体评估"
-			}
-		},
-		{
-			"name": "houseDecorationEvaEdit",
-			"path": "pages/common/houseDecorationEva/edit",
-			"style": {
-				"navigationBarTitleText": "编辑房屋装修评估"
-			}
-		},
-		{
-			"name": "accessoryEvaEdit",
-			"path": "pages/common/accessoryEva/edit",
-			"style": {
-				"navigationBarTitleText": "编辑附属物设施评估"
-			}
-		},
-		{
-			"name": "treeEvaEdit",
-			"path": "pages/common/treeEva/edit",
-			"style": {
-				"navigationBarTitleText": "编辑零星(林)果木评估"
-			}
-		},
-		{
-			"name": "landEvaEdit",
-			"path": "pages/common/landEva/edit",
-			"style": {
-				"navigationBarTitleText": "编辑土地基本情况评估"
-			}
-		},
-		{
-			"name": "seedlingsEvaEdit",
-			"path": "pages/common/seedlingsEva/edit",
-			"style": {
-				"navigationBarTitleText": "编辑土地青苗及附着物评估"
-			}
-		},
-		{
-			"name": "equipmentEvaEdit",
-			"path": "pages/common/equipmentEva/edit",
-			"style": {
-				"navigationBarTitleText": "编辑设施设备评估"
-			}
-		},
-		{
-			"name": "baseInfrastructureEdit",
-			"path": "pages/common/infrastructure/edit",
-			"style": {
-				"navigationBarTitleText": "编辑基础设施评估"
-			}
-		},
-		{
-			"name": "baseInfrastructureEvaEdit",
-			"path": "pages/common/infrastructureEva/edit",
-			"style": {
-				"navigationBarTitleText": "编辑基础设施评估"
-			}
-		},
-		{
-			"name": "baseInfrastructureCollectiveEdit",
-			"path": "pages/common/infrastructureCollective/edit",
-			"style": {
-				"navigationBarTitleText": "编辑基础设施评估"
-			}
-		},
-		{
-			"name": "otherAssessmentEdit",
-			"path": "pages/common/other/edit",
-			"style": {
-				"navigationBarTitleText": "编辑其他评估"
-			}
-		},
-		{
-			"name": "otherAssessmentEvaEdit",
-			"path": "pages/common/otherEva/edit",
-			"style": {
-				"navigationBarTitleText": "编辑其他评估"
-			}
-		},
-		{
-			"name": "specialEvaEdit",
-			"path": "pages/collective/specialEva/edit",
-			"style": {
-				"navigationBarTitleText": "编辑小型专项评估"
-			}
-		},
-		{
-			"name": "householdImp",
-			"path": "pages/household/impIndex",
-			"style": {
-				"navigationBarTitleText": "居民户实施",
-				"app-plus": {
-					"titleNView": false,
-					"subNVues": [
-						{
-							"id": "areaDetail",
-							"path": "pages/household/areaDetail",
-							"type": "popup",
-							"style": {
-								"width": "527rpx",
-								"height": "350rpx",
-								"margin": "auto"
-							}
-						}
-					]
-				}
-			}
-		},
-		{
-			"name": "feedback",
-			"path": "pages/feedback/index",
-			"style": {
-				"navigationBarTitleText": "信息反馈"
-			}
-		},
-		{
-			"name": "feedbackDetail",
-			"path": "pages/feedback/detail",
-			"style": {
-				"navigationBarTitleText": "信息反馈详情"
-			}
-		},
-		{
-			"name": "NoticeDetail",
-			"path": "pages/home/components/NoticeDetail",
-			"style": {
-				"navigationBarTitleText": "消息通知详情"
-			}
-		},
-		{
-			"name": "fillComments",
-			"path": "pages/feedback/fillComments",
-			"style": {
-				"navigationBarTitleText": "填写意见"
-			}
-		},
-		{
-			"name": "amountEstimation",
-			"path": "pages/household/amountEstimation/index",
-			"style": {
-				"navigationBarTitleText": "金额估算"
-			}
-		},
-		{
-			"name": "enterpriseImp",
-			"path": "pages/enterprise/impIndex",
-			"style": {
-				"navigationBarTitleText": "企业实施"
-			}
-		},
-		{
-			"name": "selfPersonImp",
-			"path": "pages/selfPerson/impIndex",
-			"style": {
-				"navigationBarTitleText": "个体工商户实施"
-			}
-		},
-		{
-			"name": "collectiveImp",
-			"path": "pages/collective/impIndex",
-			"style": {
-				"navigationBarTitleText": "村集体实施"
-			}
-		},
-		{
-			"name": "archives",
-			"path": "pages/archives/index",
-			"style": {
-				"navigationBarTitleText": "档案上传"
-			}
-		},
-		{
-			"name": "pdf",
-			"path": "pages/archives/pdf",
-			"style": {
-				"navigationBarTitleText": "pdf预览-移民建卡"
-			}
-		},
-		{
-			"name": "pdfSerch",
-			"path": "pages/archives/pdfSerch",
-			"style": {
-				"navigationBarTitleText": "pdf预览-生产安置"
-			}
-		},
-		{
-			"name": "pdfqianm",
-			"path": "pages/archives/pdfQianm",
-			"style": {
-				"navigationBarTitleText": "pdfqianm"
-			}
-		},
-		{
-			"name": "populationVerficationEdit",
-			"path": "pages/household/populationVerfication/edit",
-			"style": {
-				"navigationBarTitleText": "人口核定编辑"
-			}
-		},
-		{
-			"name": "housePropertyEdit",
-			"path": "pages/household/houseProperty/edit",
-			"style": {
-				"navigationBarTitleText": "房屋产权编辑"
-			}
-		},
-		{
-			"name": "graveConfirmEdit",
-			"path": "pages/household/resettleConfirm/graveEdit",
-			"style": {
-				"navigationBarTitleText": "坟墓确认编辑"
-			}
-		},
-		{
-			"name": "peopleConfirm",
-			"path": "pages/household/resettleConfirm/peopleEdit",
-			"style": {
-				"navigationBarTitleText": "生产安置编辑"
-			}
-		},
-		{
-			"name": "relocateConfirm",
-			"path": "pages/household/resettleConfirm/relocateEdit",
-			"style": {
-				"navigationBarTitleText": "搬迁安置编辑"
-			}
-		},
-		{
-			"name": "chooseHouseEdit",
-			"path": "pages/household/chooseHouse/edit",
-			"style": {
-				"navigationBarTitleText": "选房择址编辑"
-			}
-		},
-		{
-			"name": "chooseHouseArchives",
-			"path": "pages/household/chooseHouse/archives",
-			"style": {
-				"navigationBarTitleText": "选房择址档案上传"
-			}
-		},
-		{
-			"name": "graveSiteSelEdit",
-			"path": "pages/household/graveSiteSel/edit",
-			"style": {
-				"navigationBarTitleText": "坟墓择址档案上传"
-			}
-		},
-		{
-			"name": "migrateCardEdit",
-			"path": "pages/household/migrateCard/edit",
-			"style": {
-				"navigationBarTitleText": "移民建卡用户信息编辑"
-			}
-		},
-		{
-			"name": "selfmigrateCardEdit",
-			"path": "pages/selfPerson/createCard/edit",
-			"style": {
-				"navigationBarTitleText": "移民建卡用户信息编辑"
-			}
-		},
-		{
-			"name": "entermigrateCardEdit",
-			"path": "pages/enterprise/createCard/edit",
-			"style": {
-				"navigationBarTitleText": "移民建卡用户信息编辑"
-			}
-		},
-		{
-			"name": "confirmReward",
-			"path": "pages/household/migrateCard/confirmReward",
-			"style": {
-				"navigationBarTitleText": "移民建卡奖励资费确认"
-			}
-		},
-		{
-			"name": "selfconfirmReward",
-			"path": "pages/selfPerson/createCard/confirmReward",
-			"style": {
-				"navigationBarTitleText": "移民建卡奖励资费确认"
-			}
-		},
-		{
-			"name": "enterconfirmReward",
-			"path": "pages/enterprise/createCard/confirmReward",
-			"style": {
-				"navigationBarTitleText": "移民建卡奖励资费确认"
-			}
-		},
-		{
-			"name": "selfBuildHouseFill",
-			"path": "pages/household/relocatePlacement/selfBuildHouseFill",
-			"style": {
-				"navigationBarTitleText": "自建房填写"
-			}
-		},
-		{
-			"name": "attendto",
-			"path": "pages/attendto/index",
-			"style": {
-				"navigationBarTitleText": "办理详情"
-			}
-		},
-		{
-			"name": "database",
-			"path": "pages/database/index",
-			"style": {
-				"navigationBarTitleText": "数据库"
-			}
-		},
-		{
-			"name": "table",
-			"path": "pages/database/table",
-			"style": {
-				"navigationBarTitleText": "数据库详情数据"
-			}
-		},
-		{
-			"name": "associationBinding",
-			"path": "pages/land/associationBinding/index",
-			"style": {
-				"navigationBarTitleText": "关联绑定"
-			}
-		},
-		{
-			"name": "searchMore",
-			"path": "pages/land/searchMore/index",
-			"style": {
-				"navigationBarTitleText": "更多查询"
-			}
-		},
-		{
-			"name": "baseLandEvaEdit",
-			"path": "pages/land/components/landEva/edit",
-			"style": {
-				"navigationBarTitleText": "土地基本情况评估编辑"
-			}
-		},
-		{
-			"name": "seedEvaEdit",
-			"path": "pages/land/components/seedlingsEva/edit",
-			"style": {
-				"navigationBarTitleText": "土地青苗及附着物评估编辑"
-			}
-		},
-		{
-			"name": "relocateList",
-			"path": "pages/land/relocateList/index",
-			"style": {
-				"navigationBarTitleText": "只征地不搬迁列表"
-			}
-		},
-		{
-			"name": "landNavigation",
-			"path": "pages/land/components/navigation/index",
-			"style": {
-				"navigationBarTitleText": "只征地不搬迁实施"
-			}
-		},
-		{
-			"name": "arrangementEdit",
-			"path": "pages/land/components/navigation/ArrangmentEdit",
-			"style": {
-				"navigationBarTitleText": "生产安置确认编辑"
-			}
-		}
-	],
-	"globalStyle": {
-		"navigationBarTextStyle": "white",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8",
-		"pageOrientation": "landscape",
-		"navigationStyle": "custom",
-		"rpxCalcMaxDeviceWidth": 2048,
-		"app-plus": {
-			"softinputNavBar": "none"
-		}
-	},
-	"easycom": {
-		"autoscan": true,
-		"custom": {
-			"^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
-		}
-	},
-	"condition": {
-		"current": 2,
-		"list": [
-			{
-				"name": "首页",
-				"path": "pages/home/index",
-				"query": ""
-			},
-			{
-				"name": "关联绑定",
-				"path": "pages/land/associationBinding/index",
-				"query": ""
-			}
-		]
-	}
+    "pages" : [
+        {
+            "name" : "home",
+            "path" : "pages/home/index",
+            "style" : {
+                "navigationBarTitleText" : "首页"
+            }
+        },
+        {
+            "name" : "map",
+            "path" : "pages/map/index",
+            "style" : {
+                "navigationBarTitleText" : "地图坐标选择"
+            }
+        },
+        {
+            "name" : "mapList",
+            "path" : "pages/mapList/index",
+            "style" : {
+                "navigationBarTitleText" : "地图"
+            }
+        },
+        {
+            "name" : "household",
+            "path" : "pages/household/index",
+            "style" : {
+                "navigationBarTitleText" : "居民户填报"
+            }
+        },
+        {
+            "name" : "householdInfoEdit",
+            "path" : "pages/household/householdInfo/edit",
+            "style" : {
+                "navigationBarTitleText" : "居民户填报-居民户信息编辑"
+            }
+        },
+        {
+            "name" : "demographicInfoEdit",
+            "path" : "pages/household/demographicInfo/edit",
+            "style" : {
+                "navigationBarTitleText" : "居民户填报-人口信息编辑"
+            }
+        },
+        {
+            "name" : "householdGraveInfoEdit",
+            "path" : "pages/household/graveInfo/edit",
+            "style" : {
+                "navigationBarTitleText" : "居民户填报-坟墓信息编辑"
+            }
+        },
+        {
+            "name" : "householdRevenueInfoEdit",
+            "path" : "pages/household/revenueInfo/edit",
+            "style" : {
+                "navigationBarTitleText" : "居民户填报-家庭收入信息编辑"
+            }
+        },
+        {
+            "name" : "houseInfoEdit",
+            "path" : "pages/common/houseInfo/edit",
+            "style" : {
+                "navigationBarTitleText" : "房屋信息编辑"
+            }
+        },
+        {
+            "name" : "enterprise",
+            "path" : "pages/enterprise/index",
+            "style" : {
+                "navigationBarTitleText" : "企业填报"
+            }
+        },
+        {
+            "name" : "baseInfoEdit",
+            "path" : "pages/enterprise/baseInfo/edit",
+            "style" : {
+                "navigationBarTitleText" : "企业填报-企业基本概况编辑"
+            }
+        },
+        {
+            "name" : "businessInfoEdit",
+            "path" : "pages/enterprise/businessInfo/edit",
+            "style" : {
+                "navigationBarTitleText" : "经营现状信息编辑"
+            }
+        },
+        {
+            "name" : "equipmentInfoEdit",
+            "path" : "pages/common/equipmentInfo/edit",
+            "style" : {
+                "navigationBarTitleText" : "设施设备信息新增/编辑"
+            }
+        },
+        {
+            "name" : "selfPerson",
+            "path" : "pages/selfPerson/index",
+            "style" : {
+                "navigationBarTitleText" : "个体户填报"
+            }
+        },
+        {
+            "name" : "selfBaseInfoEdit",
+            "path" : "pages/selfPerson/baseInfo/edit",
+            "style" : {
+                "navigationBarTitleText" : "个体户填报-个体户基本概况编辑"
+            }
+        },
+        {
+            "name" : "collective",
+            "path" : "pages/collective/index",
+            "style" : {
+                "navigationBarTitleText" : "村集体填报"
+            }
+        },
+        {
+            "name" : "collectiveBaseInfoEdit",
+            "path" : "pages/collective/baseInfo/edit",
+            "style" : {
+                "navigationBarTitleText" : "村集体填报-村集体基本情况编辑"
+            }
+        },
+        {
+            "name" : "collectiveGraveInfoEdit",
+            "path" : "pages/collective/graveInfo/edit",
+            "style" : {
+                "navigationBarTitleText" : "村集体填报-坟墓信息新增/编辑"
+            }
+        },
+        {
+            "name" : "collectiveEquipmentInfoEdit",
+            "path" : "pages/collective/equipmentInfo/edit",
+            "style" : {
+                "navigationBarTitleText" : "村集体填报-农村专项设施设备信息新增/编辑"
+            }
+        },
+        {
+            "name" : "appendantInfoEdit",
+            "path" : "pages/common/appendantInfo/edit",
+            "style" : {
+                "navigationBarTitleText" : "附属物信息编辑"
+            }
+        },
+        {
+            "name" : "sync",
+            "path" : "pages/sync/index",
+            "style" : {
+                "navigationBarTitleText" : "同步"
+            }
+        },
+        {
+            "name" : "login",
+            "path" : "pages/login/index",
+            "style" : {
+                "navigationBarTitleText" : "登录页面"
+            }
+        },
+        {
+            "name" : "householdList",
+            "path" : "pages/respondents/householdList",
+            "style" : {
+                "navigationBarTitleText" : "居民户列表"
+            }
+        },
+        {
+            "name" : "enterpriseList",
+            "path" : "pages/respondents/enterpriseList",
+            "style" : {
+                "navigationBarTitleText" : "企业列表"
+            }
+        },
+        {
+            "name" : "selfPersonList",
+            "path" : "pages/respondents/selfPersonList",
+            "style" : {
+                "navigationBarTitleText" : "个体户列表"
+            }
+        },
+        {
+            "name" : "collectiveList",
+            "path" : "pages/respondents/collectiveList",
+            "style" : {
+                "navigationBarTitleText" : "村集体列表"
+            }
+        },
+        {
+            "name" : "village",
+            "path" : "pages/village/index",
+            "style" : {
+                "navigationBarTitleText" : "自然村列表"
+            }
+        },
+        {
+            "name" : "villageEdit",
+            "path" : "pages/village/edit",
+            "style" : {
+                "navigationBarTitleText" : "自然村-添加/修改自然村"
+            }
+        },
+        {
+            "name" : "treeEdit",
+            "path" : "pages/common/treeInfo/treeEdit",
+            "style" : {
+                "navigationBarTitleText" : "编辑零星(林)果木"
+            }
+        },
+        {
+            "name" : "work",
+            "path" : "pages/work/index",
+            "style" : {
+                "navigationBarTitleText" : "我的工作"
+            }
+        },
+        {
+            "name" : "project",
+            "path" : "pages/project/index",
+            "style" : {
+                "navigationBarTitleText" : "项目列表"
+            }
+        },
+        {
+            "name" : "householdEva",
+            "path" : "pages/household/evaIndex",
+            "style" : {
+                "navigationBarTitleText" : "居民户评估"
+            }
+        },
+        {
+            "name" : "landEvaIndex",
+            "path" : "pages/household/evaLandIndex",
+            "style" : {
+                "navigationBarTitleText" : "土地评估"
+            }
+        },
+        {
+            "name" : "enterpriseEva",
+            "path" : "pages/enterprise/evaIndex",
+            "style" : {
+                "navigationBarTitleText" : "企业评估"
+            }
+        },
+        {
+            "name" : "selfPersonEva",
+            "path" : "pages/selfPerson/evaIndex",
+            "style" : {
+                "navigationBarTitleText" : "个体工商户评估"
+            }
+        },
+        {
+            "name" : "collectiveEva",
+            "path" : "pages/collective/evaIndex",
+            "style" : {
+                "navigationBarTitleText" : "村集体评估"
+            }
+        },
+        {
+            "name" : "houseSubjectEvaEdit",
+            "path" : "pages/common/houseSubjectEva/edit",
+            "style" : {
+                "navigationBarTitleText" : "编辑房屋主体评估"
+            }
+        },
+        {
+            "name" : "houseDecorationEvaEdit",
+            "path" : "pages/common/houseDecorationEva/edit",
+            "style" : {
+                "navigationBarTitleText" : "编辑房屋装修评估"
+            }
+        },
+        {
+            "name" : "accessoryEvaEdit",
+            "path" : "pages/common/accessoryEva/edit",
+            "style" : {
+                "navigationBarTitleText" : "编辑附属物设施评估"
+            }
+        },
+        {
+            "name" : "treeEvaEdit",
+            "path" : "pages/common/treeEva/edit",
+            "style" : {
+                "navigationBarTitleText" : "编辑零星(林)果木评估"
+            }
+        },
+        {
+            "name" : "landEvaEdit",
+            "path" : "pages/common/landEva/edit",
+            "style" : {
+                "navigationBarTitleText" : "编辑土地基本情况评估"
+            }
+        },
+        {
+            "name" : "seedlingsEvaEdit",
+            "path" : "pages/common/seedlingsEva/edit",
+            "style" : {
+                "navigationBarTitleText" : "编辑土地青苗及附着物评估"
+            }
+        },
+        {
+            "name" : "equipmentEvaEdit",
+            "path" : "pages/common/equipmentEva/edit",
+            "style" : {
+                "navigationBarTitleText" : "编辑设施设备评估"
+            }
+        },
+        {
+            "name" : "baseInfrastructureEdit",
+            "path" : "pages/common/infrastructure/edit",
+            "style" : {
+                "navigationBarTitleText" : "编辑基础设施评估"
+            }
+        },
+        {
+            "name" : "baseInfrastructureEvaEdit",
+            "path" : "pages/common/infrastructureEva/edit",
+            "style" : {
+                "navigationBarTitleText" : "编辑基础设施评估"
+            }
+        },
+        {
+            "name" : "baseInfrastructureCollectiveEdit",
+            "path" : "pages/common/infrastructureCollective/edit",
+            "style" : {
+                "navigationBarTitleText" : "编辑基础设施评估"
+            }
+        },
+        {
+            "name" : "otherAssessmentEdit",
+            "path" : "pages/common/other/edit",
+            "style" : {
+                "navigationBarTitleText" : "编辑其他评估"
+            }
+        },
+        {
+            "name" : "otherAssessmentEvaEdit",
+            "path" : "pages/common/otherEva/edit",
+            "style" : {
+                "navigationBarTitleText" : "编辑其他评估"
+            }
+        },
+        {
+            "name" : "specialEvaEdit",
+            "path" : "pages/collective/specialEva/edit",
+            "style" : {
+                "navigationBarTitleText" : "编辑小型专项评估"
+            }
+        },
+        {
+            "name" : "householdImp",
+            "path" : "pages/household/impIndex",
+            "style" : {
+                "navigationBarTitleText" : "居民户实施",
+                "app-plus" : {
+                    "titleNView" : false,
+                    "subNVues" : [
+                        {
+                            "id" : "areaDetail",
+                            "path" : "pages/household/areaDetail",
+                            "type" : "popup",
+                            "style" : {
+                                "width" : "527rpx",
+                                "height" : "350rpx",
+                                "margin" : "auto"
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name" : "feedback",
+            "path" : "pages/feedback/index",
+            "style" : {
+                "navigationBarTitleText" : "信息反馈"
+            }
+        },
+        {
+            "name" : "feedbackDetail",
+            "path" : "pages/feedback/detail",
+            "style" : {
+                "navigationBarTitleText" : "信息反馈详情"
+            }
+        },
+        {
+            "name" : "NoticeDetail",
+            "path" : "pages/home/components/NoticeDetail",
+            "style" : {
+                "navigationBarTitleText" : "消息通知详情"
+            }
+        },
+        {
+            "name" : "fillComments",
+            "path" : "pages/feedback/fillComments",
+            "style" : {
+                "navigationBarTitleText" : "填写意见"
+            }
+        },
+        {
+            "name" : "amountEstimation",
+            "path" : "pages/household/amountEstimation/index",
+            "style" : {
+                "navigationBarTitleText" : "金额估算"
+            }
+        },
+        {
+            "name" : "enterpriseImp",
+            "path" : "pages/enterprise/impIndex",
+            "style" : {
+                "navigationBarTitleText" : "企业实施"
+            }
+        },
+        {
+            "name" : "selfPersonImp",
+            "path" : "pages/selfPerson/impIndex",
+            "style" : {
+                "navigationBarTitleText" : "个体工商户实施"
+            }
+        },
+        {
+            "name" : "collectiveImp",
+            "path" : "pages/collective/impIndex",
+            "style" : {
+                "navigationBarTitleText" : "村集体实施"
+            }
+        },
+        {
+            "name" : "archives",
+            "path" : "pages/archives/index",
+            "style" : {
+                "navigationBarTitleText" : "档案上传"
+            }
+        },
+        {
+            "name" : "pdf",
+            "path" : "pages/archives/pdf",
+            "style" : {
+                "navigationBarTitleText" : "pdf预览-移民建卡"
+            }
+        },
+        {
+            "name" : "pdfSerch",
+            "path" : "pages/archives/pdfSerch",
+            "style" : {
+                "navigationBarTitleText" : "pdf预览-生产安置"
+            }
+        },
+        {
+            "name" : "pdfqianm",
+            "path" : "pages/archives/pdfQianm",
+            "style" : {
+                "navigationBarTitleText" : "pdfqianm"
+            }
+        },
+        {
+            "name" : "populationVerficationEdit",
+            "path" : "pages/household/populationVerfication/edit",
+            "style" : {
+                "navigationBarTitleText" : "人口核定编辑"
+            }
+        },
+        {
+            "name" : "housePropertyEdit",
+            "path" : "pages/household/houseProperty/edit",
+            "style" : {
+                "navigationBarTitleText" : "房屋产权编辑"
+            }
+        },
+        {
+            "name" : "graveConfirmEdit",
+            "path" : "pages/household/resettleConfirm/graveEdit",
+            "style" : {
+                "navigationBarTitleText" : "坟墓确认编辑"
+            }
+        },
+        {
+            "name" : "peopleConfirm",
+            "path" : "pages/household/resettleConfirm/peopleEdit",
+            "style" : {
+                "navigationBarTitleText" : "生产安置编辑"
+            }
+        },
+        {
+            "name" : "relocateConfirm",
+            "path" : "pages/household/resettleConfirm/relocateEdit",
+            "style" : {
+                "navigationBarTitleText" : "搬迁安置编辑"
+            }
+        },
+        {
+            "name" : "chooseHouseEdit",
+            "path" : "pages/household/chooseHouse/edit",
+            "style" : {
+                "navigationBarTitleText" : "选房择址编辑"
+            }
+        },
+        {
+            "name" : "chooseHouseArchives",
+            "path" : "pages/household/chooseHouse/archives",
+            "style" : {
+                "navigationBarTitleText" : "选房择址档案上传"
+            }
+        },
+        {
+            "name" : "graveSiteSelEdit",
+            "path" : "pages/household/graveSiteSel/edit",
+            "style" : {
+                "navigationBarTitleText" : "坟墓择址档案上传"
+            }
+        },
+        {
+            "name" : "migrateCardEdit",
+            "path" : "pages/household/migrateCard/edit",
+            "style" : {
+                "navigationBarTitleText" : "移民建卡用户信息编辑"
+            }
+        },
+        {
+            "name" : "selfmigrateCardEdit",
+            "path" : "pages/selfPerson/createCard/edit",
+            "style" : {
+                "navigationBarTitleText" : "移民建卡用户信息编辑"
+            }
+        },
+        {
+            "name" : "entermigrateCardEdit",
+            "path" : "pages/enterprise/createCard/edit",
+            "style" : {
+                "navigationBarTitleText" : "移民建卡用户信息编辑"
+            }
+        },
+        {
+            "name" : "confirmReward",
+            "path" : "pages/household/migrateCard/confirmReward",
+            "style" : {
+                "navigationBarTitleText" : "移民建卡奖励资费确认"
+            }
+        },
+        {
+            "name" : "selfconfirmReward",
+            "path" : "pages/selfPerson/createCard/confirmReward",
+            "style" : {
+                "navigationBarTitleText" : "移民建卡奖励资费确认"
+            }
+        },
+        {
+            "name" : "enterconfirmReward",
+            "path" : "pages/enterprise/createCard/confirmReward",
+            "style" : {
+                "navigationBarTitleText" : "移民建卡奖励资费确认"
+            }
+        },
+        {
+            "name" : "selfBuildHouseFill",
+            "path" : "pages/household/relocatePlacement/selfBuildHouseFill",
+            "style" : {
+                "navigationBarTitleText" : "自建房填写"
+            }
+        },
+        {
+            "name" : "attendto",
+            "path" : "pages/attendto/index",
+            "style" : {
+                "navigationBarTitleText" : "办理详情"
+            }
+        },
+        {
+            "name" : "database",
+            "path" : "pages/database/index",
+            "style" : {
+                "navigationBarTitleText" : "数据库"
+            }
+        },
+        {
+            "name" : "table",
+            "path" : "pages/database/table",
+            "style" : {
+                "navigationBarTitleText" : "数据库详情数据"
+            }
+        },
+        {
+            "name" : "associationBinding",
+            "path" : "pages/land/associationBinding/index",
+            "style" : {
+                "navigationBarTitleText" : "关联绑定"
+            }
+        },
+        {
+            "name" : "searchMore",
+            "path" : "pages/land/searchMore/index",
+            "style" : {
+                "navigationBarTitleText" : "更多查询"
+            }
+        },
+        {
+            "name" : "baseLandEvaEdit",
+            "path" : "pages/land/components/landEva/edit",
+            "style" : {
+                "navigationBarTitleText" : "土地基本情况评估编辑"
+            }
+        },
+        {
+            "name" : "seedEvaEdit",
+            "path" : "pages/land/components/seedlingsEva/edit",
+            "style" : {
+                "navigationBarTitleText" : "土地青苗及附着物评估编辑"
+            }
+        },
+        {
+            "name" : "relocateList",
+            "path" : "pages/land/relocateList/index",
+            "style" : {
+                "navigationBarTitleText" : "只征地不搬迁列表"
+            }
+        },
+        {
+            "name" : "landNavigation",
+            "path" : "pages/land/components/navigation/index",
+            "style" : {
+                "navigationBarTitleText" : "只征地不搬迁实施"
+            }
+        },
+        {
+            "name" : "arrangementEdit",
+            "path" : "pages/land/components/navigation/ArrangmentEdit",
+            "style" : {
+                "navigationBarTitleText" : "生产安置确认编辑"
+            }
+        },
+        {
+            "path" : "pages/common/houseAccessoryEvaReport/index",
+            "style" : {}
+        }
+    ],
+    "globalStyle" : {
+        "navigationBarTextStyle" : "white",
+        "navigationBarTitleText" : "uni-app",
+        "navigationBarBackgroundColor" : "#F8F8F8",
+        "backgroundColor" : "#F8F8F8",
+        "pageOrientation" : "landscape",
+        "navigationStyle" : "custom",
+        "rpxCalcMaxDeviceWidth" : 2048,
+        "app-plus" : {
+            "softinputNavBar" : "none"
+        }
+    },
+    "easycom" : {
+        "autoscan" : true,
+        "custom" : {
+            "^uni-(.*)" : "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
+        }
+    },
+    "condition" : {
+        "current" : 2,
+        "list" : [
+            {
+                "name" : "首页",
+                "path" : "pages/home/index",
+                "query" : ""
+            },
+            {
+                "name" : "关联绑定",
+                "path" : "pages/land/associationBinding/index",
+                "query" : ""
+            }
+        ]
+    }
 }

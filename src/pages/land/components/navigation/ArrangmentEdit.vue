@@ -132,8 +132,9 @@ onLoad((option: any) => {
 })
 
 const getProductionMethodOptions = () => {
+  // 1 农业安置 2 养老保险 3 自谋职业
   if (numCount.value && numCount.value > 0) {
-    return dict[375]
+    return dict[375].filter((item: any) => item.value !== '1')
   } else {
     const options = dict[375].filter((item: any) => item.value !== '2')
     return options

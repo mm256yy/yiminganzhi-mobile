@@ -5,37 +5,47 @@
       <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
       土地/附着物评估报告
     </view>
+    <view class="land-title"> 镜岭水库青苗评估汇总表 </view>
+    <view class="land-txt"
+      >xx村，户主名称吕伯元，户号1010005，属坝址周边村移民，青苗评估共有13个地块，面积3.45亩，株数9株，金额13315.00元。</view
+    >
+    <view class="land-txt">详见地块明细如下：</view>
+    <view class="table-wrap">
+      <uni-table class="table" ref="table" border stripe emptyText="暂无更多数据">
+        <uni-tr>
+          <uni-th width="28rpx" align="center">序号</uni-th>
+          <uni-th width="50rpx" align="center">户主名称</uni-th>
+          <uni-th width="40rpx">图幅号</uni-th>
+          <uni-th width="40rpx">编号</uni-th>
+          <uni-th width="40rpx">地名</uni-th>
+          <uni-th width="50rpx">青苗户主</uni-th>
+          <uni-th width="40rpx">品种</uni-th>
+          <uni-th width="40rpx">面积</uni-th>
+          <uni-th width="40rpx">株数</uni-th>
+          <uni-th width="40rpx">金额</uni-th>
+          <uni-th width="40rpx">备注</uni-th>
+        </uni-tr>
 
-    <view class="row" v-if="landEstimatePicStr && landEstimatePicStr !== '[]'">
-      <uni-row class="m-t-10">
-        <uni-col :span="12">
-          <view class="col">
-            <view class="label">评估报告：</view>
-            <view class="content">
-              <upload-file
-                v-model="landEstimatePicStr"
-                :file-list="landEstimatePicStr"
-                :limit="20"
-                :is-preview="true"
-                show-type="grid"
-                :accepts="['.jpg', '.png']"
-              />
-            </view>
-          </view>
-        </uni-col>
-      </uni-row>
-    </view>
-
-    <view class="null-wrapper" v-else>
-      <image class="icon" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
-      <view class="tips">资产评估还未完成，无法查看评估报告</view>
+        <!-- <uni-tr v-for="(item, index) in assetAppendantList" :key="index">
+          <uni-td>{{ index + 1 }}</uni-td>
+          <uni-td>{{ item.rightHolder }}</uni-td>
+          <uni-td>{{ item.sheetNumber }}</uni-td>
+          <uni-td>{{ item.landNumber }}</uni-td>
+          <uni-td>{{ item.landName }}</uni-td>
+          <uni-td>{{ item.householder }}</uni-td>
+          <uni-td>{{ item.breed }}</uni-td>
+          <uni-td>{{ item.area }}</uni-td>
+          <uni-td>{{ item.number }}</uni-td>
+          <uni-td>{{ item.compensationAmount }}</uni-td>
+          <uni-td>{{ item.remark }}</uni-td>
+        </uni-tr> -->
+      </uni-table>
     </view>
   </view>
 </template>
 
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
-import UploadFile from '@/components/UploadFile/index.vue'
 
 interface PropsType {
   dataInfo: any
@@ -79,62 +89,22 @@ watch(
     }
   }
 
-  .row {
-    padding: 5rpx 12rpx 12rpx 0;
-    box-sizing: border-box;
-
-    .col {
-      display: flex;
-      flex-direction: row;
-
-      .label {
-        width: 90rpx;
-        height: 16rpx;
-        margin-left: 9rpx;
-        font-size: 9rpx;
-        line-height: 16rpx;
-        color: rgba(23, 23, 24, 0.6);
-      }
-
-      .content {
-        font-size: 9rpx;
-        line-height: 16rpx;
-        color: #171718;
-
-        &.blue {
-          color: #3e73ec;
-        }
-      }
-    }
-
-    .line {
-      width: 100%;
-      height: 1rpx;
-      margin: 9rpx 0;
-      background: #ebebeb;
-    }
+  .land-title {
+    text-align: center;
+    display: block;
+    color: #333;
+    font-size: 600;
+    font-size: 12rpx;
+    line-height: 12rpx;
   }
 
-  .null-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    width: 100%;
-    height: calc(100vh - 33rpx - 12rpx - 33rpx - 24rpx - 60rpx - var(--status-bar-height));
-    background-color: #fff;
-
-    .icon {
-      width: 152rpx;
-      height: 92rpx;
-    }
-
-    .tips {
-      margin-top: 17rpx;
-      font-size: 9rpx;
-      line-height: 1;
-      color: #171718;
-    }
+  .land-txt {
+    display: block;
+    color: #666;
+    font-size: 600;
+    font-size: 8rpx;
+    line-height: 14rpx;
+    height: 14rpx;
   }
 }
 </style>

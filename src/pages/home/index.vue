@@ -126,7 +126,7 @@
       />
     </uni-popup>
 
-    <SyncCompont ref="syncCmt" from="sync" />
+    <SyncCompont :isNeedPageJump="false" ref="syncCmt" from="sync" />
   </view>
 </template>
 

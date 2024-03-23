@@ -5,57 +5,20 @@
       <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
       设施设备评估报告
     </view>
-
-    <view class="row" v-if="devicePicStr && devicePicStr !== '[]'">
-      <uni-row class="m-t-10">
-        <uni-col :span="12">
-          <view class="col">
-            <view class="label">评估报告：</view>
-            <view class="content">
-              <upload-file
-                v-model="devicePicStr"
-                :file-list="devicePicStr"
-                :limit="20"
-                :is-preview="true"
-                show-type="grid"
-                :accepts="['.jpg', '.png']"
-              />
-            </view>
-          </view>
-        </uni-col>
-      </uni-row>
-    </view>
-
-    <view class="null-wrapper" v-else>
-      <image class="icon" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
-      <view class="tips">资产评估还未完成，无法查看评估报告</view>
-    </view>
+    <view class="equipment-title"> 设施及其他资产评估报告 </view>
+    <view class="equipment-txt">镜岭采石场有限公司设施设备出具评估报告结果如下：</view>
+    <view class="equipment-txt">一、设施设备情况</view>
   </view>
 </template>
 
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
-import UploadFile from '@/components/UploadFile/index.vue'
 
 interface PropsType {
   dataInfo: any
 }
 
 const props = defineProps<PropsType>()
-const devicePicStr = ref<string>('[]') // 房屋/附属物评估报告照片
-
-watch(
-  () => props.dataInfo,
-  (val) => {
-    if (val) {
-      const { devicePic } = val
-      if (devicePic) {
-        devicePicStr.value = devicePic
-      }
-    }
-  },
-  { immediate: true, deep: true }
-)
 </script>
 
 <style lang="scss" scoped>
@@ -79,62 +42,25 @@ watch(
     }
   }
 
-  .row {
-    padding: 5rpx 12rpx 12rpx 0;
-    box-sizing: border-box;
-
-    .col {
-      display: flex;
-      flex-direction: row;
-
-      .label {
-        width: 90rpx;
-        height: 16rpx;
-        margin-left: 9rpx;
-        font-size: 9rpx;
-        line-height: 16rpx;
-        color: rgba(23, 23, 24, 0.6);
-      }
-
-      .content {
-        font-size: 9rpx;
-        line-height: 16rpx;
-        color: #171718;
-
-        &.blue {
-          color: #3e73ec;
-        }
-      }
-    }
-
-    .line {
-      width: 100%;
-      height: 1rpx;
-      margin: 9rpx 0;
-      background: #ebebeb;
-    }
+  .equipment-title {
+    text-align: center;
+    display: block;
+    color: #333;
+    font-size: 12rpx;
+    font-weight: 600;
+    line-height: 18rpx;
   }
 
-  .null-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    width: 100%;
-    height: calc(100vh - 33rpx - 12rpx - 33rpx - 24rpx - 60rpx - var(--status-bar-height));
-    background-color: #fff;
+  .equipment-txt {
+    display: block;
+    color: #666;
+    font-size: 8rpx;
+    line-height: 16rpx;
+    height: 16rpx;
+  }
 
-    .icon {
-      width: 152rpx;
-      height: 92rpx;
-    }
-
-    .tips {
-      margin-top: 17rpx;
-      font-size: 9rpx;
-      line-height: 1;
-      color: #171718;
-    }
+  .table-wrap {
+    overflow: auto;
   }
 }
 </style>

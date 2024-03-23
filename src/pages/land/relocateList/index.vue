@@ -69,8 +69,7 @@ import Container from '@/components/Container/index.vue'
 import NoData from '@/components/NoData/index.vue'
 import ListItem from '@/pages/land/components/relocateListItem/index.vue'
 import NaturalVillageTreeSelect from '@/components/NaturalVillageTreeSelect/index.vue'
-// import { LandlordType } from '@/types/sync'
-import { MainType, RoleCodeType } from '@/types/common'
+import { MainType } from '@/types/common'
 import { getVirutalVillageTreeApi, getLandlordListBySearchApi } from '@/service'
 
 const showVillageSelect = ref<boolean>(false)
@@ -85,9 +84,7 @@ const isLoading = ref<boolean>(false)
 const isEnd = ref<boolean>(false)
 
 const page = ref<number>(1)
-const pageSize = ref<number>(50)
-const sourceType = ref<string | null>(null) // 源类型 0已完成  1 预警 2 滞后
-const statusCount = ref<number>(0)
+const pageSize = ref<number>(10)
 
 const init = () => {
   page.value = 1
@@ -113,7 +110,9 @@ const iptChange = (e: any) => {
 }
 
 const villageConfirm = (code: string[], tit: string[]) => {
+  console.log('code::: ', code)
   villageCode.value = code
+  console.log('villageCode::: ', villageCode.value)
   title.value = tit
   onToggleVillage()
   init()
@@ -135,8 +134,8 @@ const getList = () => {
       page: page.value,
       pageSize: pageSize.value,
       type: MainType.LandNoMove,
-      name: keyWords.value
-      // villageCode: villageCode.value
+      name: keyWords.value,
+      villageCode: villageCode.value?.length > 0 ? villageCode.value : null
     }
 
     console.log('只征地不搬迁列表提交Params', params)
