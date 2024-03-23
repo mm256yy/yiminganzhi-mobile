@@ -127,41 +127,41 @@ const status = computed(() => {
   return isEnd.value ? 'noMore' : isLoading.value ? 'loading' : 'more'
 })
 
-const getList = () => {
-  nextTick(async () => {
-    isLoading.value = true
-    const params: any = {
-      page: page.value,
-      pageSize: pageSize.value,
-      type: MainType.LandNoMove,
-      name: keyWords.value,
-      villageCode: villageCode.value?.length > 0 ? villageCode.value : null
-    }
+const getList = async () => {
+  // nextTick(async () => {
+  isLoading.value = true
+  const params: any = {
+    page: page.value,
+    pageSize: pageSize.value,
+    type: MainType.LandNoMove,
+    name: keyWords.value,
+    villageCode: villageCode.value.length > 0 ? villageCode.value : null
+  }
 
-    console.log('只征地不搬迁列表提交Params', params)
-    try {
-      const res: any[] = await getLandlordListBySearchApi(params)
-      console.log('只征地不搬迁列表List', res)
-      isLoading.value = false
-      if (page.value > 1) {
-        list.value = [...list.value, ...res]
-      } else {
-        list.value = [...res]
-      }
-
-      //判断数据是否加载完成
-      if (res.length < pageSize.value) {
-        isEnd.value = true
-      }
-    } catch (error) {
-      console.log(error)
-      isLoading.value = false
-      isEnd.value = true
-      list.value = []
-    }
-
+  console.log('只征地不搬迁列表提交Params', params)
+  try {
+    const res: any[] = await getLandlordListBySearchApi(params)
+    console.log('只征地不搬迁列表List', res)
     isLoading.value = false
-  })
+    if (page.value > 1) {
+      list.value = [...list.value, ...res]
+    } else {
+      list.value = [...res]
+    }
+
+    //判断数据是否加载完成
+    if (res.length < pageSize.value) {
+      isEnd.value = true
+    }
+  } catch (error) {
+    console.log(error)
+    isLoading.value = false
+    isEnd.value = true
+    list.value = []
+  }
+
+  isLoading.value = false
+  // })
 }
 
 const loadMore = () => {

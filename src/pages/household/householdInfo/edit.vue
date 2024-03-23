@@ -63,7 +63,7 @@
               label-align="right"
               name="formData.locationType"
             >
-              <uni-data-select v-model="formData.locationType" :localdata="locationTypes" />
+              <uni-data-select v-model="formData.locationType" :localdata="dict[326]" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -199,7 +199,8 @@ import {
   StorageKey,
   routerForward,
   filterViewDoorNo,
-  filterViewDoorNoWithBefore
+  filterViewDoorNoWithBefore,
+  formatDict
 } from '@/utils'
 import { addLandlordApi, updateLandlordApi } from '@/service'
 import { locationTypes, yesAndNoEnums } from '@/config/common'
@@ -208,7 +209,6 @@ import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { MainType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
 import NaturalVillageSelectFormItem from '@/components/NaturalVillageSelectFormItem/index.vue'
-
 // 表单数据
 const formData = ref<any>({
   name: '', // 姓名
