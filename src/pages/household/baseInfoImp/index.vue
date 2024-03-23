@@ -7,10 +7,14 @@
         家庭情况
       </view>
       <view v-if="dataInfo.relateIndividualHouseholdName != ''">
-        关联个体户:<text style="color:blue" @click="editLandlords">{{ dataInfo.relateIndividualHouseholdName }}</text>
+        关联个体户:<text style="color: blue" @click="editLandlords">{{
+          dataInfo.relateIndividualHouseholdName
+        }}</text>
       </view>
       <view v-if="dataInfo.relateCompanyName != ''">
-        关联企业:<text style="color:blue" @click="editLandlord">{{ dataInfo.relateCompanyName }}</text>
+        关联企业:<text style="color: blue" @click="editLandlord">{{
+          dataInfo.relateCompanyName
+        }}</text>
       </view>
     </view>
 
@@ -28,7 +32,14 @@
           <view class="col">
             <view class="label">联系方式：</view>
             <view class="content">
-              {{ formatStr(dataInfo.phone) }}
+              <!-- {{ formatStr(dataInfo.phone) }} -->
+              <!-- <uni-easyinput v-model="dataList.phone" type="text" size="small" placeholder="请输入" /> -->
+              <input
+                type="text"
+                placeholder="请输入电话号码"
+                style="border: 1px solid #dfe2e5; font-size: 9rpx; border-radius: 2rpx"
+                v-model="options.phone"
+              />
             </view>
           </view>
         </uni-col>
@@ -80,8 +91,18 @@
       <uni-row>
         <uni-col :span="24">
           <view class="col">
-            <view class="label">经纬度：</view>
-            <view class="content"> {{ dataInfo.longitude }} {{ dataInfo.latitude }} </view>
+            <view class="label">中心经纬度:</view>
+            <view class="lg-txt-wrapper">
+              <!-- <uni-data-checkbox v-model="check" :localdata="lgTagList" /> -->
+              <view class="position" @click="gotoMap">
+                <uni-icons type="map" color="#5D8CF7" size="14rpx" />
+                <text class="content">{{
+                  options.longitude && options.latitude
+                    ? `${options.longitude},${options.latitude}`
+                    : '获取定位'
+                }}</text>
+              </view>
+            </view>
           </view>
         </uni-col>
       </uni-row>
@@ -178,10 +199,9 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch,onMounted,unref,nextTick } from 'vue'
-import { formatStr, dictOption, formatDict, routerForward,  getStorage,
-  StorageKey } from '@/utils'
-import {  RoleCodeType } from '@/types/common'
+import { computed, ref, watch, onMounted, onBeforeUnmount, unref, nextTick } from 'vue'
+import { formatStr, dictOption, formatDict, routerForward, getStorage, StorageKey } from '@/utils'
+import { RoleCodeType } from '@/types/common'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { locationTypes, yesAndNoEnums } from '@/config/common'
 import { LandlordType } from '@/types/sync'
@@ -189,14 +209,13 @@ import { saveImpLandlordItemApi } from '@/service'
 import UploadFile from '@/components/UploadFile/index.vue'
 import { getLandlordListBySearchApi } from '@/service'
 import { MainType } from '@/types/common'
-
 const tabType = ref<MainType>(MainType.Company)
 const tabTypes = ref<MainType>(MainType.IndividualHousehold)
 interface PropsType {
   dataInfo: LandlordType
 }
 const roleType = ref<RoleCodeType>(getStorage(StorageKey.USERROLE))
-console.log(roleType.value,'测试类型')
+console.log(roleType.value, '测试类型')
 const props = defineProps<PropsType>()
 const emit = defineEmits(['updateData'])
 
@@ -214,7 +233,7 @@ const routerMap: any = {
   // [MainType.Village]: 'collective'
 }
 
-const dataList=ref<any>()
+const dataList = ref<any>()
 //企业跳转
 const editLandlord = () => {
   console.log('测试企业跳转')
@@ -223,12 +242,12 @@ const editLandlord = () => {
   console.log(companyUid.value.uid, '企业uid是什么')
   routerForward(name, {
     type: 'edit',
-    uid:companyUid.value.uid
+    uid: companyUid.value.uid
   })
 }
 
 //个体户跳转
-const editLandlords =() => {
+const editLandlords = () => {
   console.log('个体户跳转')
   const name = routerMap[tabTypes.value]
   console.log(individualHouseholdUid.value.uid, '个体工商户uid是什么')
@@ -253,15 +272,17 @@ const editLandlords =() => {
 //     return 'collective'
 //   }
 // }
-
+let ismap=ref(false)
 watch(
   () => props.dataInfo,
   (val) => {
-    if (val) {
+    if (val && !ismap.value) {
+      console.log(val,'再次监听');
+      
       dataList.value = val
       getList()
       getLists()
-      const { householdPic, familyPic, housePic, resettlePic } = val
+      const { householdPic, familyPic, housePic, resettlePic, longitude, latitude, phone } = val
       if (householdPic) {
         householdPicStr.value = householdPic
       }
@@ -274,32 +295,41 @@ watch(
       if (resettlePic) {
         resettlePicStr.value = resettlePic
       }
+      if (longitude) {
+        options.value.longitude = longitude
+      }
+      if (latitude) {
+        options.value.latitude = latitude
+      }
+      if (phone) {
+         options.value.phone = phone
+      }
     }
   },
-  { immediate: true, deep: true }
+  { deep: true }
 )
 //企业
-const getList = async() => {
+const getList = async () => {
   const params: any = {
     type: unref(tabType),
     page: 1,
     pageSize: 10
   }
-    const res = await getLandlordListBySearchApi(params).catch(() => {})
-    companyUid.value = res.find((item: any) => item.name == dataList.value.relateCompanyName)
+  const res = await getLandlordListBySearchApi(params).catch(() => {})
+  companyUid.value = res.find((item: any) => item.name == dataList.value.relateCompanyName)
 }
 
 //个体工商户
-const getLists = async() => {
+const getLists = async () => {
   const params: any = {
     type: unref(tabTypes),
     page: 1,
     pageSize: 10
   }
-    const res = await getLandlordListBySearchApi(params).catch(() => {})
-    individualHouseholdUid.value = res.find(
-      (item: any) => item.name == dataList.value.relateIndividualHouseholdName
-    )
+  const res = await getLandlordListBySearchApi(params).catch(() => {})
+  individualHouseholdUid.value = res.find(
+    (item: any) => item.name == dataList.value.relateIndividualHouseholdName
+  )
 }
 
 const submit = () => {
@@ -312,7 +342,8 @@ const submit = () => {
     householdPic: householdPicStr.value,
     familyPic: familyPicStr.value,
     housePic: housePicStr.value,
-    resettlePic: resettlePicStr.value
+    resettlePic: resettlePicStr.value,
+    ...options.value
   }
   saveImpLandlordItemApi(params)
     .then((res) => {
@@ -336,7 +367,13 @@ const grantList: any = computed(() => {
   }
   return props.dataInfo.immigrantCompensationCardList.filter((item) => item.grantStatus == '0')
 })
-
+const gotoMap = () => {
+  ismap.value=true
+  routerForward('map', {
+    longitude: props.dataInfo.longitude,
+    latitude: props.dataInfo.latitude
+  })
+}
 watch(
   () => householdPicStr.value,
   (val) => {
@@ -344,10 +381,33 @@ watch(
   },
   { immediate: true, deep: true }
 )
+
 // onMounted(() => {
 //   getList()
 //   getLists()
 // })
+let options: any = ref({
+  longitude: null,
+  latitude: null,
+  phone: null
+})
+const mapChooseCallBack = (data: any) => {
+  console.log(data,'地理位置');
+  
+  if (data && data.longitude && data.latitude) {
+    options.value.longitude = data.longitude.toFixed(6)
+    options.value.latitude = data.latitude.toFixed(6)
+  }
+}
+
+onMounted(() => {
+   ismap.value=false
+  uni.$on('chooseMap', mapChooseCallBack)
+})
+
+onBeforeUnmount(() => {
+  uni.$off('chooseMap', mapChooseCallBack)
+})
 </script>
 
 <style lang="scss" scoped>
@@ -420,6 +480,27 @@ watch(
 
     &.submit {
       bottom: 16rpx;
+    }
+  }
+}
+.lg-txt-wrapper {
+  display: flex;
+  flex-direction: column;
+
+  .position {
+    display: flex;
+    width: 200rpx;
+    height: 18rpx;
+    background: #ffffff;
+    border: 1px solid #d9d9d9;
+    border-radius: 2rpx;
+    align-items: center;
+    justify-content: center;
+
+    .txt {
+      margin-left: 6rpx;
+      font-size: 9rpx;
+      color: #171718;
     }
   }
 }

@@ -81,7 +81,23 @@ class="input-txt" placeholder="请输入" type="number" v-model="formData.landAr
             </uni-forms-item>
           </uni-col>
         </uni-row>
-
+        <uni-row>
+          <uni-col :span="24">
+            <uni-forms-item label="中心经纬度"  name="formData.longitude" required :label-width="150" label-align="right">
+              <view class="lg-txt-wrapper">
+                <!-- <uni-data-checkbox v-model="check" :localdata="lgTagList" /> -->
+                <view class="position" @click="gotoMap">
+                  <uni-icons type="map" color="#5D8CF7" size="14rpx" />
+                  <text class="txt">{{
+                    formData.longitude && formData.latitude
+                      ? `${formData.longitude},${formData.latitude}`
+                      : '获取定位'
+                  }}</text>
+                </view>
+              </view>
+            </uni-forms-item>
+          </uni-col>
+            </uni-row>
         <uni-row>
           <uni-col :span="24">
             <uni-forms-item label="房屋平面示意图" :label-width="150" label-align="right" name="formData.housePic">
@@ -159,11 +175,11 @@ v-show="showSearch" :mainType="MainType.PeasantHousehold" type="multiple" stage=
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref,onBeforeUnmount,onMounted } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { MainType } from '@/types/common'
-import { routerBack, getStorage, StorageKey, fmtPicUrl } from '@/utils'
+import { routerBack, getStorage, StorageKey, fmtPicUrl,routerForward } from '@/utils'
 import { addImpLandlordHouseApi, updateImpLandlordHouseApi, getImpLandlordItemApi } from '@/service'
 import Back from '@/components/Back/Index.vue'
 import UploadFile from '@/components/UploadFile/index.vue'
@@ -296,7 +312,28 @@ const resetOwnersName = () => {
   formData.value.ownersSituation = ''
   formData.value.ownersName = ''
 }
+const gotoMap = () => {
+  routerForward('map', {
+    longitude: formData.value.longitude,
+    latitude: formData.value.latitude
+  })
+}
+const mapChooseCallBack = (data: any) => {
+  console.log(data,'地理位置');
+  
+  if (data && data.longitude && data.latitude) {
+    formData.value.longitude = data.longitude.toFixed(6)
+    formData.value.latitude = data.latitude.toFixed(6)
+  }
+}
 
+onMounted(() => {
+  uni.$on('chooseMap', mapChooseCallBack)
+})
+
+onBeforeUnmount(() => {
+  uni.$off('chooseMap', mapChooseCallBack)
+})
 // 表单提交
 const submit = () => {
   const { uid, doorNo, type } = commonParams.value
@@ -335,6 +372,9 @@ const submit = () => {
     return
   } else if (!formData.value.isCompliance) {
     showToast('请选择是否合法')
+    return
+  } else if (!formData.value.longitude) {
+    showToast('请选择中心经纬度')
     return
   } else {
     if (type === 'add') {
@@ -539,4 +579,26 @@ const submit = () => {
     }
   }
 }
+    .lg-txt-wrapper {
+        display: flex;
+        flex-direction: column;
+
+        .position {
+          display: flex;
+          width: 200rpx;
+          height: 23rpx;
+          margin-top: 5rpx;
+          background: #ffffff;
+          border: 1px solid #d9d9d9;
+          border-radius: 2rpx;
+          align-items: center;
+          justify-content: center;
+
+          .txt {
+            margin-left: 6rpx;
+            font-size: 9rpx;
+            color: #171718;
+          }
+        }
+      }
 </style>
