@@ -302,7 +302,7 @@ const getChooseConfig = () => {
         if (item.type === '2') {
           arr1.push({
             text: item.name,
-            value: item.id,
+            value: item.name,
             disable: item.isOccupy === '0' ? false : true // '0' 可选，'1' 已选
           })
         } else if (item.type === '3') {
@@ -320,6 +320,7 @@ const getChooseConfig = () => {
         }
       })
       landNoList.value = [...arr1]
+      console.log(landNoList.value, '测试数据下拉列表')
       storeroomNoList.value = [...arr2]
       carNoList.value = [...arr3]
     }

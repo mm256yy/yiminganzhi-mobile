@@ -16,9 +16,9 @@
           <view class="flex-row" style="flex-wrap: wrap;">
             <view
               class="area-item"
-              :class="{ active: settleAddress === item.id }"
+              :class="{ active: settleAddress == item.id }"
               @click="homesteadPlaceChange(item.id)"
-              v-for="item in resettleArea"
+              v-for="item in areaList"
               :key="item.id"
             >
               <uni-icons
@@ -39,7 +39,7 @@
           <view class="flex-row box-wrap">
             <view
               class="check-item"
-              :class="{ active: areaType === item.id }"
+              :class="{ active: areaType == item.id }"
               @click="homesteadAreaChange(item.id)"
               v-for="item in areaSizeArray"
               :key="item.id"
@@ -79,6 +79,7 @@ const props = defineProps<PropsType>()
 const settleAddress = ref('1')
 const areaType = ref('1')
 
+const areaList=ref<any>()
 // 总人口
 const familyNum = computed(() => {
   // props.baseInfo.demographicList.length
@@ -102,7 +103,8 @@ const otherNum = computed(() => {
 
 const resettleArea = computed(() => {
   const { dataList, data } = props
-  console.log(data,'测试数据data')
+  console.log(data, '测试数据data')
+  console.log(dataList,'测试数据dataList')
   if(!data){
       const areaList = dataList.filter((item:any) => item.type === '1')
       return areaList
@@ -126,9 +128,11 @@ watch(
   () => props.immigrantSettle,
   (val) => {
     if (val) {
-      const { areaType: area, settleAddress: settleArea } = val
-      areaType.value = area
-      settleAddress.value = settleArea
+      // const { areaType: areaType, settleAddress: settleAddress } = val
+      areaType.value = val.areaType
+      settleAddress.value = val.settleAddress
+      console.log(areaType.value, 'areaType是什么')
+      console.log(settleAddress.value, 'settleArea是什么')
     }
   },
   {
@@ -141,6 +145,24 @@ watch(
   (val) => {
     if (val) {
        console.log(val,'测试数据')
+           const datas=val.filter((item:any)=> item.relation == '1')
+      if (datas[0].settingWay == '1') {
+        areaList.value = props.dataList.filter((item: any) => item.type === '1' && item.isProductionLand === '1')
+      }else if (datas[0].settingWay == '2') {
+      const areaList = props.dataList.filter((item:any) => item.type === '1'&&item.isProductionLand==='2')
+      }
+    }
+  },
+  {
+    deep: true,
+    immediate: true
+  }
+)
+watch(
+  () => props.dataList,
+  (val) => {
+    if (val) {
+       areaList.value = val.filter((item:any) => item.type === '1')
     }
   },
   {

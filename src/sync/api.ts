@@ -41,8 +41,13 @@ export const getBaseDataApi = () => {
 
 // 统计
 export const getCollectApi = () => {
+  const role = getStorage(StorageKey.USERROLE)
+  console.log(role, '目前是什么角色')
   return request.get({
-    url: '/pad/collectStatistics'
+    url: '/pad/collectStatistics',
+     data: {
+      status: role=='assessor'?'implementation':null
+    }
   })
 }
 

@@ -54,7 +54,8 @@
     </view>
 
     <uni-popup ref="alertDialog" type="dialog">
-      <uni-popup-dialog type="warn" cancelText="取消" confirmText="确认" title="请确认是否导入？" content="导入模拟数据后，列表中的安置方式将被覆盖"
+      <uni-popup-dialog
+type="warn" cancelText="取消" confirmText="确认" title="请确认是否导入？" content="导入模拟数据后，列表中的安置方式将被覆盖"
         @confirm="onConfirm" @close="onClose" />
     </uni-popup>
   </view>
@@ -96,7 +97,7 @@ const getDataRequest = async (res: any) => {
         tableData.value = [
           {
             houseTypeText,
-            settleAddressText: resettleArea.value.find((item) => item.id === res.settleAddress)?.name,
+            settleAddressText: resettleArea.value.find((item) => item.id == res.settleAddress)?.name,
             area: homesteadAreaSize.find((item) => item.id === res.areaType)?.name,
             num: 1
           }
@@ -106,7 +107,7 @@ const getDataRequest = async (res: any) => {
         if (res.typeOneNum) {
           array.push({
             houseTypeText,
-            settleAddressText: apartmentArea.value.find((item) => item.id === res.settleAddress)?.name,
+            settleAddressText: apartmentArea.value.find((item) => item.id == res.settleAddress)?.name,
             area: apartmentAreaSize[0].name,
             num: res.typeOneNum
           })
@@ -114,7 +115,7 @@ const getDataRequest = async (res: any) => {
         if (res.typeTwoNum) {
           array.push({
             houseTypeText,
-            settleAddressText: apartmentArea.value.find((item) => item.id === res.settleAddress)?.name,
+            settleAddressText: apartmentArea.value.find((item) => item.id == res.settleAddress)?.name,
             area: apartmentAreaSize[1].name,
             num: res.typeTwoNum
           })
@@ -122,7 +123,7 @@ const getDataRequest = async (res: any) => {
         if (res.typeThreeNum) {
           array.push({
             houseTypeText,
-            settleAddressText: apartmentArea.value.find((item) => item.id === res.settleAddress)?.name,
+            settleAddressText: apartmentArea.value.find((item) => item.id == res.settleAddress)?.name,
             area: apartmentAreaSize[2].name,
             num: res.typeThreeNum
           })
@@ -130,7 +131,7 @@ const getDataRequest = async (res: any) => {
         if (res.typeFourNum) {
           array.push({
             houseTypeText,
-            settleAddressText: apartmentArea.value.find((item) => item.id === res.settleAddress)?.name,
+            settleAddressText: apartmentArea.value.find((item) => item.id == res.settleAddress)?.name,
             area: apartmentAreaSize[3].name,
             num: res.typeFourNum
           })

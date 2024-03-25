@@ -265,6 +265,7 @@ const getRoleAndStageStatus = () => {
   // 移民实施人员	implementation
   // 资产评估人员	assessor assessorland
   // 实物复核人员 reviewer
+  // 实施组长 implementleader
   const projectInfo = getStorage(StorageKey.PROJECTINFO)
   console.log(projectInfo.status, '当前阶段')
   console.log('role', role)
@@ -279,7 +280,8 @@ const getRoleAndStageStatus = () => {
   } else if (
     role === RoleCodeType.assessor ||
     role === RoleCodeType.assessorland ||
-    role === RoleCodeType.implementation
+    role === RoleCodeType.implementation ||
+    role === RoleCodeType.implementleader
   ) {
     stageStatus = MainStage.implementation
   } else if (role === RoleCodeType.reviewer) {
@@ -467,6 +469,7 @@ const checkAppVersion = () => {
 const pupConfirm = () => {
   console.log('确认')
   closePup()
+  gotoHome()
   if (syncStatus.value) {
     // 同步成功 校验app版本
     checkAppVersion()

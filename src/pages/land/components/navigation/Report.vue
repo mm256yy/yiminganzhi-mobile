@@ -85,22 +85,22 @@ watch(
         map.set(item.landNumber, item)
       })
       let newData = [...map.values()]
-      console.log(newData, '测试数据newData')
-      num.value = newData.length
-      nums.value = val.assetAppendantList.reduce((pre: any, cur: any) => {
-        pre += Number(cur.number)
-        return pre
-      }, 0)
-      numss.value = val.assetAppendantList.reduce((pre: any, cur: any) => {
-        pre += Number(cur.area)
-        return pre
-      }, 0)
-      numsss.value = val.assetAppendantList.reduce((pre: any, cur: any) => {
-        pre += Number(cur.compensationAmount)
-        return pre
-      }, 0)
-    }
-  },
+        console.log(newData,'测试数据newData')
+        num.value =newData.length
+        nums.value = val.assetAppendantList.reduce((pre: any, cur: any) => {
+          pre += Number(cur.number)
+          return pre
+        }, 0)
+        numss.value = val.assetAppendantList.reduce((pre: any, cur: any) => {
+          pre += Number(cur.shapeArea)
+          return pre
+        }, 0)
+        numsss.value =val.assetAppendantList.reduce((pre: any, cur: any) => {
+          pre += Number(cur.compensationAmount)
+          return pre
+        }, 0)
+          }
+        },
   { immediate: true, deep: true }
 )
 </script>

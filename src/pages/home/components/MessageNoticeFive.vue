@@ -29,7 +29,7 @@
           <text class="time">发送时间</text>
         </view>
         <view class="list">
-          <view class="item-title" v-for="(item, index) in notifyList" :key="index">
+          <view class="item-title" v-for="(item, index) in notifyList" :key="index" @click="toNotify(item)">
             <view>
               <text class="item-index">{{ index + 1 }}</text>
               <text class="item-content">{{ item.title }}</text>
@@ -74,6 +74,7 @@ import { onMounted, ref } from 'vue'
 import { getOtherItemApi,getNotifyDtoList } from '@/service'
 import { OtherDataType } from '@/database'
 import dayjs from 'dayjs'
+import { routerForward } from '@/utils'
 
 const currentTab = ref(0)
 let menuIndex = ref(0)
@@ -107,6 +108,15 @@ const getFeedbackList = async () => {
   // })
   feedbackList.value = res || []
   console.log(feedbackList.value, '测试数据')
+}
+
+const toNotify=  (item: any) => {
+  const params = {
+    ...item
+  }
+  routerForward('NoticeDetail', {
+    ...params
+  })
 }
 
 onMounted(() => {

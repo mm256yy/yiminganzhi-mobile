@@ -17,7 +17,7 @@
           <view class="flex-row" style="flex-wrap: wrap;">
             <view
               class="area-item"
-              :class="{ active: settleAddress === item.id }"
+              :class="{ active: settleAddress == item.id }"
               @click="apartmentPlaceChange(item.id)"
               v-for="item in apartmentArea"
               :key="item.id"

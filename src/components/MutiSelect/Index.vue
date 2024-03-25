@@ -95,7 +95,7 @@ const getSelectedData = () => {
     })
   modelLabel.value = labelArr.toString()
   modelValue.value = valueArr.toString()
-  emit('update:modelValue', modelValue.value)
+  emit('update:modelValue', modelLabel.value)
 }
 
 // 显示选择框
@@ -121,12 +121,13 @@ watch(
         })
         console.log( dataList.value,'push数据')
         if (props.value) {
+          console.log(props.value,'测试props.value数据')
           let arr = props.value.split(',')
           arr.map((val: any) => {
             if (getValueKeyValue(item) === val) {
               dataList.value[index].checked = true
             }
-            if(item.value==val){
+            if(item.text==val){
               arrs.value.push(item.text)
               modelValue.value=arrs.value.toString()
             }

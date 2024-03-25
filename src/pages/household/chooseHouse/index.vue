@@ -53,7 +53,8 @@
                 <view class="col">
                   <view class="label">地块编号：</view>
                   <view class="content">
-                    {{ dictOption(landNoList, item.landNo) }}
+                    <!-- {{ dictOption(landNoList, item.landNo) }} -->
+                    {{  formatStr(item.landNo) }}
                   </view>
                 </view>
               </uni-col>

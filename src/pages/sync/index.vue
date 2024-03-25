@@ -40,10 +40,10 @@
                   <text class="txt">总户数</text>
                 </view>
                 <view class="td">
-                  <text class="txt">已上报</text>
+                  <text class="txt">{{ roleType == RoleCodeType.investigator?'已上报':roleType == RoleCodeType.assessor?'已评估':'-' }}</text>
                 </view>
                 <view class="td">
-                  <text class="txt">我的上报</text>
+                  <text class="txt">{{ roleType == RoleCodeType.investigator?'我的上报':roleType == RoleCodeType.assessor?'我的评估':'-' }}</text>
                 </view>
               </view>
             </view>
@@ -87,10 +87,10 @@
                   <text class="txt">总户数</text>
                 </view>
                 <view class="td">
-                  <text class="txt">已上报</text>
+                  <text class="txt">{{ roleType == RoleCodeType.investigator?'已上报':roleType == RoleCodeType.assessor?'已评估':'-' }}</text>
                 </view>
                 <view class="td">
-                  <text class="txt">我的上报</text>
+                  <text class="txt">{{ roleType == RoleCodeType.investigator?'我的上报':roleType == RoleCodeType.assessor?'我的评估':'-' }}</text>
                 </view>
               </view>
             </view>
@@ -134,10 +134,10 @@
                   <text class="txt">总户数</text>
                 </view>
                 <view class="td">
-                  <text class="txt">已上报</text>
+                  <text class="txt">{{ roleType == RoleCodeType.investigator?'已上报':roleType == RoleCodeType.assessor?'已评估':'-' }}</text>
                 </view>
                 <view class="td">
-                  <text class="txt">我的上报</text>
+                  <text class="txt">{{ roleType == RoleCodeType.investigator?'我的上报':roleType == RoleCodeType.assessor?'我的评估':'-' }}</text>
                 </view>
               </view>
             </view>
@@ -181,10 +181,10 @@
                   <text class="txt">总户数</text>
                 </view>
                 <view class="td">
-                  <text class="txt">已上报</text>
+                  <text class="txt">{{ roleType == RoleCodeType.investigator?'已上报':roleType == RoleCodeType.assessor?'已评估':'-' }}</text>
                 </view>
                 <view class="td">
-                  <text class="txt">我的上报</text>
+                  <text class="txt">{{ roleType == RoleCodeType.investigator?'我的上报':roleType == RoleCodeType.assessor?'我的评估':'-' }}</text>
                 </view>
               </view>
             </view>
@@ -217,12 +217,13 @@
 <script lang="ts" setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { getCollectListApi, getOtherItemApi } from '@/service'
-import { routerBack, routerForward, debounce } from '@/utils'
-import { CollectType, MainType } from '@/types/common'
+import { routerBack, routerForward, debounce,getStorage,StorageKey } from '@/utils'
+import { CollectType, MainType,RoleCodeType } from '@/types/common'
 import { OtherDataType } from '@/database'
 import dayjs from 'dayjs'
 import SyncCompont from '@/components/Sync/Index.vue'
 
+const roleType = ref<RoleCodeType>(getStorage(StorageKey.USERROLE))
 const appVersion = ref<string>('')
 const peopleList = ref<CollectType[]>([])
 const individualHouseholdList = ref<CollectType[]>([])

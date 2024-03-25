@@ -84,7 +84,9 @@
         <uni-col :span="12">
           <view class="col">
             <view class="label">淹没范围：</view>
-            <view class="content">{{ formatDict(dataInfo.formatDict, 346) }}</view>
+            <!-- <view class="content">{{ formatDict(dataInfo.formatDict, 346) }}</view> -->
+            <view class="content">{{ formatDict(dataInfo.inundationRange, 346) }}</view>
+
           </view>
         </uni-col>
       </uni-row>

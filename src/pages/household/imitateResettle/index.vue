@@ -129,6 +129,7 @@ const getDataRequest = async () => {
   try {
     const data = await getResettleDetail(OtherDataType.settleAddressList)
     dataList.value = data
+    console.log(dataList.value,'安置点数据')
   } catch (error) {
     console.log('error', error);
   }
