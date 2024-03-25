@@ -155,7 +155,7 @@
           <view class="td td-3">
             <view v-if="item.isUpdate === '0'">{{ formatStr(item.totalPrice) }}</view>
                <view v-else-if="item.isUpdate === '1'&&item.isSum === '0'">{{ computedTotalPrice(item) }}</view>
-            <view v-if="item.isSum === '1'"> {{ getSummaries(item) }} </view>
+            <view v-else-if="item.isSum === '1'"> {{ getSummaries(item) }} </view>
           </view>
           <view class="td td-4">{{ formatStr(item.remark) }}</view>
         </view>
@@ -269,7 +269,7 @@ const getSummaries = (row: any) => {
       sumIndex = index
     }
   })
-  const arr = tableData.value.filter((item, index) => item && index !== sumIndex)
+  const arr = tableData.value.filter((item, index) => item && index !== sumIndex &&item.type==row.type)
   sums = arr.reduce((totalPrice, currentItem) => {
     return totalPrice + computedTotalPrice(currentItem)
   }, 0)
