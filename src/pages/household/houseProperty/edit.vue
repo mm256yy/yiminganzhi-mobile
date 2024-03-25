@@ -83,7 +83,7 @@ class="input-txt" placeholder="请输入" type="number" v-model="formData.landAr
         </uni-row>
         <uni-row>
           <uni-col :span="24">
-            <uni-forms-item label="中心经纬度"  name="formData.longitude" required :label-width="150" label-align="right">
+            <uni-forms-item label="地理位置"  name="formData.longitude" required :label-width="150" label-align="right">
               <view class="lg-txt-wrapper">
                 <!-- <uni-data-checkbox v-model="check" :localdata="lgTagList" /> -->
                 <view class="position" @click="gotoMap">

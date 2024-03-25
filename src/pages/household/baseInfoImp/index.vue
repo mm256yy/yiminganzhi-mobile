@@ -91,7 +91,7 @@
       <uni-row>
         <uni-col :span="24">
           <view class="col">
-            <view class="label">中心经纬度:</view>
+            <view class="label">地理位置:</view>
             <view class="lg-txt-wrapper">
               <!-- <uni-data-checkbox v-model="check" :localdata="lgTagList" /> -->
               <view class="position" @click="gotoMap">
