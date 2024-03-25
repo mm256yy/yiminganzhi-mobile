@@ -47,7 +47,7 @@
           <view class="col">
             <view class="label">家庭总人口：</view>
             <view class="content">
-              {{ formatStr(dataInfo.demographicList.length) }}
+              {{ formatStr(dataInfo.demographicList.filter((item:any)=>item.name!='增计人口').length) }}
             </view>
           </view>
         </uni-col>
@@ -170,12 +170,23 @@ import { onShow } from '@dcloudio/uni-app'
 import { formatDict, formatStr, routerForward } from '@/utils'
 import { getCompensationCardConfigApi } from '@/service'
 import { apartmentArea, resettleArea } from '@/config'
-import { getLandlordItemApi } from '@/service'
+import { getLandlordItemApi, getResettleDetail } from '@/service'
+import { OtherDataType } from '@/database'
+
 interface PropsType {
   dataInfo: any
   dataList: any[]
 }
-
+let dataLists:any=ref([])
+const getDataRequest = async () => {
+  try {
+    const datas = await getResettleDetail(OtherDataType.settleAddressList)
+    dataLists.value = datas
+    // resettleArea.value=dataLists.value.filter((item) => item.id == props.immigrantSettle.settleAddress)
+  } catch (error) {
+    console.log('error', error)
+  }
+}
 const props = defineProps<PropsType>()
 const tableData = ref<any[]>([])
 const dataList = computed(() => {
@@ -207,14 +218,15 @@ const getCompensationCardConfig = async () => {
 
 onShow(() => {
   getCompensationCardConfig()
+  getDataRequest()
 })
 
 const getSettleAddressText = (settleAddress?: string) => {
   console.log(settleAddress, 'settleAddress')
   if (!settleAddress) return '-'
   return (
-    resettleArea.find((item) => item.id === settleAddress)?.name ||
-    apartmentArea.find((item) => item.id === settleAddress)?.name
+     dataLists.value.find((item:any) => item.id === settleAddress)?.name ||
+     dataLists.value.find((item:any) => item.id === settleAddress)?.name
   )
 }
 /**

@@ -495,7 +495,7 @@ export interface LocationType{
   name: string,
   residential: string,
   structure: string,
-  landSpace: any,
+  ?landSpace: any,
   floorSpace: any,
   greeningRate: any,
   buildingDensity: any,

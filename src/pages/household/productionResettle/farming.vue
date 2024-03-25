@@ -32,7 +32,7 @@
         <uni-col :span="12">
           <view class="col">
             <view class="label">地块编号：</view>
-            <view class="content"> {{ landInfo.landNo }} </view>
+            <view class="content"> {{ landInfo.landNoText }} </view>
           </view>
         </uni-col>
       </uni-row>
@@ -71,17 +71,28 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { LandlordType } from '@/types/sync'
 import { routerForward } from '@/utils'
 import { apartmentArea, resettleArea } from '@/config'
-
+import { getChooseConfigApi, getResettleDetail } from '@/service'
+import { OtherDataType } from '@/database'
 interface PropsType {
   dataInfo: LandlordType
 }
 
 const props = defineProps<PropsType>()
-
+let LandNoList: any = ref([])
+const dataLists = ref<any>([])
+const getDataRequest = async () => {
+  try {
+    const datas = await getResettleDetail(OtherDataType.settleAddressList)
+    dataLists.value = datas
+    // resettleArea.value=dataLists.value.filter((item) => item.id == props.immigrantSettle.settleAddress)
+  } catch (error) {
+    console.log('error', error)
+  }
+}
 // 安置状态
 const farmingResettleStatus = computed(() => {
   // 安置状态
@@ -100,7 +111,11 @@ const hasFarmingResettle = computed(() => {
 
 // 生产用地信息
 const landInfo = computed(() => {
-  const land = props.dataInfo && props.dataInfo.immigrantLand ? props.dataInfo.immigrantLand : {}
+  let land: any = props.dataInfo && props.dataInfo.immigrantLand ? props.dataInfo.immigrantLand : {}
+  land.landNoText = LandNoList.value.filter((item: any) => {
+    return item.id == land.landNo
+  })[0].name
+  console.log(land, '测试数据2')
   return land
 })
 
@@ -113,11 +128,18 @@ const archivesUpload = () => {
 
 const getSettleAddressText = (settleAddress?: string) => {
   if (!settleAddress) return '-'
-  return (
-    resettleArea.find((item) => item.id === settleAddress)?.name ||
-    apartmentArea.find((item) => item.id === settleAddress)?.name
-  )
+  const str = dataLists.value.filter((item: any) => item.id == settleAddress)
+  console.log(str, '测试数据')
+  return str[0]?.name
 }
+const getLandNoList = async () => {
+  let res = await getChooseConfigApi()
+  LandNoList.value = res
+}
+onMounted(() => {
+  getLandNoList()
+  getDataRequest()
+})
 </script>
 
 <style lang="scss" scoped>

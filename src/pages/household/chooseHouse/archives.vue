@@ -231,11 +231,13 @@ import {
   getChooseConfigApi,
   getHouseConfigApi,
   updateImpLandlordChooseHouseBatchApi,
-  getImpLandlordItemApi
+  getImpLandlordItemApi,
+  getResettleDetail
 } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
 import UploadFiles from '@/components/UploadFile/index.vue'
+import { OtherDataType } from '@/database'
 
 const commonParams = ref<any>({})
 const formData = ref<any[]>([]) // 表单数据
@@ -244,13 +246,23 @@ const landNoList = ref<any[]>([]) // 地块编号选项列表
 const storeroomNoList = ref<any[]>([]) // 储藏室编号选项列表
 const carNoList = ref<any[]>([]) // 车位号选项列表
 const roomNoList = ref<any[]>([]) // 幢号-房号 选项列表
-
+let dataLists=ref([])
+const getDataRequest = async () => {
+  try {
+    const datas = await getResettleDetail(OtherDataType.settleAddressList)
+    dataLists.value = datas
+    // resettleArea.value=dataLists.value.filter((item) => item.id == props.immigrantSettle.settleAddress)
+  } catch (error) {
+    console.log('error', error)
+  }
+}
 onLoad((option: any) => {
   if (option) {
     commonParams.value = JSON.parse(option.params)
     getLandlordDetail()
     getChooseConfig()
     getHouseConfig()
+    getDataRequest()
   }
 })
 
@@ -287,7 +299,7 @@ const getSettleAddress = (data: string, type: string) => {
     // type: flat 公寓房的安置方式, homestead 宅基地的安置方式
     if (type === 'flat') {
       let str = ''
-      apartmentArea.map((item: any) => {
+      dataLists.value.map((item: any) => {
         if (item.id === data) {
           str = item.name
         }
@@ -295,7 +307,7 @@ const getSettleAddress = (data: string, type: string) => {
       return str
     } else if (type === 'homestead') {
       let str = ''
-      resettleArea.map((item: any) => {
+      dataLists.value.map((item: any) => {
         if (item.id === data) {
           str = item.name
         }

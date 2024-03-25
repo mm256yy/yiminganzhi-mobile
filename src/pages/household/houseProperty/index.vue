@@ -1,7 +1,7 @@
 <template>
   <view class="house-info-wrapper">
     <!-- 居民户实施 —— 房屋产权 -->
-    <view class="btn-wrapper" v-if="props.dataList && props.dataList.length > 0&&props.dataInfo.immigrantFilling.propertyStatus == '0'">
+    <view class="btn-wrapper" v-if="props.dataList && props.dataList.length > 0&&props.dataInfo.immigrantFilling.propertyStatus != '1'">
       <view class="btns green" @click="onFilled">
         <image class="icon" src="@/static/images/icon_sign_white.png" mode="scaleToFill" />
         <text class="txt">填报完成</text>

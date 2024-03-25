@@ -36,7 +36,7 @@
               <th align="left" class="uTitle">备注</th>
             </tr>
             <!-- 表格数据行 -->
-            <tr v-for="(item, index) in dataList" :key="index">
+            <tr v-for="(item, index) in dataList.filter(item=>item.name!='增计人口')" :key="index">
               <td align="left" class="uTd">{{ formatStr(item.name) }}</td>
               <td align="left" class="uTd">{{ formatDict(item.relation, 307) }}</td>
               <td align="left" class="uTd">{{ formatStr(item.card) }}</td>
@@ -312,13 +312,13 @@
             </tr>
             <tr v-if="baseInfo.type == 'PeasantHousehold'">
               <td align="center" class="uTd">户内人口</td>
-              <td align="center" class="uTd"> {{ baseInfo.familyNum }}</td>
+              <td align="center" class="uTd"> {{ baseInfo.demographicList?.length }}</td>
               <td align="center" class="uTd">联系方式</td>
               <td align="center" class="uTd">{{ baseInfo.phone }}</td>
             </tr>
             <tr>
               <td align="center" class="uTd">迁出地</td>
-              <td align="center" class="uTd" colspan="3"> {{ baseInfo.locationTypeText }}</td>
+              <td align="center" class="uTd" colspan="3"> {{ baseInfo.address }}</td>
             </tr>
             <tr>
               <td align="center" class="uTd" colspan="4"

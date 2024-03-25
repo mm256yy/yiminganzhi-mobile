@@ -26,8 +26,14 @@
               <view class="label">地块编号：</view>
               <view class="content">
                 <!-- <uni-data-select v-model="formData.landNo" :localdata="landNoList" /> -->
-                <muti-select v-model="formData.landNo" :value="formData.landNo" :list="landNoList" label-key="text"
-                  value-key="value" ref="childSelect" />
+                <muti-select
+                  v-model="formData.landNo"
+                  :value="formData.landNo"
+                  :list="landNoList"
+                  label-key="text"
+                  value-key="value"
+                  ref="childSelect"
+                />
               </view>
             </view>
           </uni-col>
@@ -37,8 +43,14 @@
               <view class="label">面积：</view>
               <view class="content">
                 <view :class="['input-wrapper', focusIndex === 1 ? 'focus' : '']">
-                  <input class="input-txt" placeholder="请输入" type="number" v-model="formData.landArea"
-                    @focus="inputFocus(1)" @blur="inputBlur" />
+                  <input
+                    class="input-txt"
+                    placeholder="请输入"
+                    type="number"
+                    v-model="formData.landArea"
+                    @focus="inputFocus(1)"
+                    @blur="inputBlur"
+                  />
                   <view class="unit">亩</view>
                 </view>
               </view>
@@ -51,15 +63,25 @@
             <view class="col">
               <view class="label">相关凭证：</view>
               <view class="content">
-                <upload-file v-model="landPicStr" :file-list="landPicStr" :limit="20" show-type="grid"
-                  :accepts="['.jpg', '.png']" />
+                <upload-file
+                  v-model="landPicStr"
+                  :file-list="landPicStr"
+                  :limit="20"
+                  show-type="grid"
+                  :accepts="['.jpg', '.png']"
+                />
               </view>
             </view>
           </uni-col>
         </uni-row>
       </view>
 
-      <image class="btn submit" src="@/static/images/icon_submit.png" mode="scaleToFill" @click="submit" />
+      <image
+        class="btn submit"
+        src="@/static/images/icon_submit.png"
+        mode="scaleToFill"
+        @click="submit"
+      />
     </view>
 
     <view class="null-wrapper" v-if="!hasFarmingResettle">
@@ -92,7 +114,7 @@ const childSelect = ref<any>()
 // 获得焦点的输入框下标
 const focusIndex = ref<number>(-1)
 import { getResettleDetail } from '@/service'
-import { OtherDataType } from '@/database';
+import { OtherDataType } from '@/database'
 import type { LocationType } from '@/types/datafill'
 
 const dataLists = ref<LocationType[]>([])
@@ -102,7 +124,7 @@ const getDataRequest = async () => {
     dataLists.value = datas
     // resettleArea.value=dataLists.value.filter((item) => item.id == props.immigrantSettle.settleAddress)
   } catch (error) {
-    console.log('error', error);
+    console.log('error', error)
   }
 }
 watch(
@@ -111,8 +133,7 @@ watch(
     if (val) {
       formData.value = { ...val }
       // formData.value.landNo='111,222,333'
-      console.log(val, '测试数据1')
-      console.log(props.baseInfo, '测试数据2')
+      console.log(formData.value, '测试数据1')
       const { landPic } = formData.value
       if (landPic) {
         landPicStr.value = landPic
@@ -156,7 +177,7 @@ const getSettleAddress = (data: string) => {
       // }
       const str = dataLists.value.filter((item: any) => item.id == data)
       console.log(str, '测试数据')
-      return str[0].name
+      return str[0]?.name
     } else {
       return ''
     }
@@ -173,6 +194,7 @@ const getLandNoList = () => {
   getChooseConfigApi().then((res: any) => {
     let arr: any = []
     if (res && res.length) {
+      console.log(res, '测试下拉数据0')
       res.map((item: any) => {
         if (item.type === '1') {
           arr.push({
@@ -183,8 +205,10 @@ const getLandNoList = () => {
         }
       })
       const arrList = [...arr]
+      console.log(arrList, '测试下拉数据1')
+
       landNoList.value = arrList.filter((item: any) => {
-        return item.disable === false
+        return item.disable === false || item.text === formData.value.landNo
       })
       console.log(landNoList.value, '测试下拉数据')
     }

@@ -4,36 +4,42 @@
       <view class="title">
         <text class="title">安置点详情</text>
       </view>
-      <image class="close" @click="close" src="@/static/images/resettle_close.png" mode="scaleToFill" />
+      <image
+        class="close"
+        @click="close"
+        src="@/static/images/resettle_close.png"
+        mode="scaleToFill"
+      />
     </view>
 
     <view class="area-box" v-loading="loading">
       <view class="tabs">
         <view
-class="tab-item" :class="{ active: tabId === item.id }" v-for="item in tabs" :key="item.id"
-          @click="tabChange(item.id)">
-          <text class="txt" :style="{ 'color': tabId === item.id ? '#3e73ec' : '#333' }">{{ item.name }}</text>
+          class="tab-item"
+          :class="{ active: tabId === item.id }"
+          v-for="item in tabs"
+          :key="item.id"
+          @click="tabChange(item.id)"
+        >
+          <text class="txt" :style="{ color: tabId === item.id ? '#3e73ec' : '#333' }">{{
+            item.name
+          }}{{ Number(tabId) }}</text>
         </view>
       </view>
 
       <view>
-        <LocationDetail v-if="tabId === 0" :item="dataList[0]" />
-        <LocationDetail v-if="tabId === 1" :item="dataList[1]" />
-        <LocationDetail v-if="tabId === 2" :item="dataList[2]" />
-        <LocationDetail v-if="tabId === 3" :item="dataList[3]" />
-        <LocationDetail v-if="tabId === 4" :item="dataList[4]" />
+        <LocationDetail :item="dataList[Number(tabId)]" />
       </view>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { OtherDataType } from '@/database';
-import { getResettleDetail } from '@/service'
-import LocationDetail from '@/pages/household/components/LocationDetail.vue'
-import type { LocationType } from '@/types/datafill'
-
+import { ref, onMounted } from 'vue'
+import { OtherDataType } from '../../database'
+import { getResettleDetail } from '../../service'
+import LocationDetail from '../../pages/household/components/LocationDetail.vue'
+import type { LocationType } from '../../types/datafill'
 const tabId = ref(0)
 const tabs = ref<any[]>([])
 const dataList = ref<LocationType[]>([])
@@ -44,7 +50,10 @@ const getDataRequest = async () => {
   try {
     const data = await getResettleDetail(OtherDataType.settleAddressList)
     dataList.value = data
-    console.log('data数据', dataList.value)
+    console.error(
+      'data数据======================================================================================================',
+      dataList.value
+    )
     tabs.value = data.map((item, index) => {
       return {
         id: index,
@@ -54,11 +63,12 @@ const getDataRequest = async () => {
     loading.value = false
   } catch (error) {
     loading.value = false
-    console.log('error', error);
+    console.log('error', error)
   }
 }
-
-getDataRequest()
+onMounted(() => {
+  getDataRequest()
+})
 
 const tabChange = (id: any) => {
   tabId.value = id

@@ -272,16 +272,19 @@ const editLandlords = () => {
 //     return 'collective'
 //   }
 // }
-let ismap=ref(false)
+let ismap = ref(false)
+let options: any = ref({
+  longitude: null,
+  latitude: null,
+  phone: null
+})
 watch(
   () => props.dataInfo,
   (val) => {
-    if (val && !ismap.value) {
-      console.log(val,'再次监听');
-      
+    if (val) {
+      console.log(val, '再次监听')
+
       dataList.value = val
-      getList()
-      getLists()
       const { householdPic, familyPic, housePic, resettlePic, longitude, latitude, phone } = val
       if (householdPic) {
         householdPicStr.value = householdPic
@@ -295,18 +298,20 @@ watch(
       if (resettlePic) {
         resettlePicStr.value = resettlePic
       }
-      if (longitude) {
-        options.value.longitude = longitude
-      }
-      if (latitude) {
-        options.value.latitude = latitude
-      }
-      if (phone) {
-         options.value.phone = phone
+      if (!ismap.value) {
+        if (longitude) {
+          options.value.longitude = longitude
+        }
+        if (latitude) {
+          options.value.latitude = latitude
+        }
+        if (phone) {
+          options.value.phone = phone
+        }
       }
     }
   },
-  { deep: true }
+  { deep: true, immediate: true }
 )
 //企业
 const getList = async () => {
@@ -368,7 +373,7 @@ const grantList: any = computed(() => {
   return props.dataInfo.immigrantCompensationCardList.filter((item) => item.grantStatus == '0')
 })
 const gotoMap = () => {
-  ismap.value=true
+  ismap.value = true
   routerForward('map', {
     longitude: props.dataInfo.longitude,
     latitude: props.dataInfo.latitude
@@ -386,14 +391,10 @@ watch(
 //   getList()
 //   getLists()
 // })
-let options: any = ref({
-  longitude: null,
-  latitude: null,
-  phone: null
-})
+
 const mapChooseCallBack = (data: any) => {
-  console.log(data,'地理位置');
-  
+  console.log(data, '地理位置')
+
   if (data && data.longitude && data.latitude) {
     options.value.longitude = data.longitude.toFixed(6)
     options.value.latitude = data.latitude.toFixed(6)
@@ -401,7 +402,9 @@ const mapChooseCallBack = (data: any) => {
 }
 
 onMounted(() => {
-   ismap.value=false
+  getList()
+  getLists()
+  ismap.value = false
   uni.$on('chooseMap', mapChooseCallBack)
 })
 

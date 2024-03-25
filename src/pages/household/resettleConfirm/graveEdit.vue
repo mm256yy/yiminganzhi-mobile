@@ -109,10 +109,10 @@
               label="备注："
               :label-width="150"
               label-align="right"
-              name="formData.settingRemark"
+              name="formData.remark"
             >
               <uni-easyinput
-                v-model="formData.settingRemark"
+                v-model="formData.remark"
                 type="textarea"
                 placeholder="请输入"
               />
@@ -157,7 +157,7 @@ const formData = ref<any>({
   handleWay: '',
   settingGrave: '',
   settingAddress: '',
-  settingRemark: ''
+  remark: ''
 })
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)

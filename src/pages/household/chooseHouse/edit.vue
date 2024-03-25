@@ -196,13 +196,24 @@ import {
   getChooseConfigApi,
   getHouseConfigApi,
   updateImpLandlordChooseHouseApi,
-  getImpLandlordItemApi
+  getImpLandlordItemApi,
+  getResettleDetail
 } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
+import { OtherDataType } from '@/database'
 
 const commonParams = ref<any>({})
-
+let dataLists=ref([])
+const getDataRequest = async () => {
+  try {
+    const datas = await getResettleDetail(OtherDataType.settleAddressList)
+    dataLists.value = datas
+    // resettleArea.value=dataLists.value.filter((item) => item.id == props.immigrantSettle.settleAddress)
+  } catch (error) {
+    console.log('error', error)
+  }
+}
 // 表单数据
 const formData = ref<any>({
   doorNo: commonParams.value.doorNo,
@@ -229,6 +240,7 @@ onLoad((option: any) => {
     getLandlordDetail()
     getChooseConfig()
     getHouseConfig()
+    getDataRequest()
   }
 })
 
@@ -256,7 +268,7 @@ const getSettleAddress = (data: string, type: string) => {
     // type: flat 公寓房的安置方式, homestead 宅基地的安置方式
     if (type === 'flat') {
       let str = ''
-      apartmentArea.map((item: any) => {
+      dataLists.value.map((item: any) => {
         if (item.id === data) {
           str = item.name
         }
@@ -264,7 +276,7 @@ const getSettleAddress = (data: string, type: string) => {
       return str
     } else if (type === 'homestead') {
       let str = ''
-      resettleArea.map((item: any) => {
+      dataLists.value.map((item: any) => {
         if (item.id === data) {
           str = item.name
         }

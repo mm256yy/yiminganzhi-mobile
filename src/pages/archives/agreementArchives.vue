@@ -72,8 +72,10 @@ watch(
   () => props.immigrantDocumentation,
   (val) => {
     if (val) {
+      console.log(val, '动迁档案')
+
       agreementPic.value = fmtPicUrl(val.agreementPic)
-      agreementOtherPic.value = fmtPicUrl(val.agricultureOtherPic)
+      agreementOtherPic.value = fmtPicUrl(val.agreementOtherPic)
     }
   },
   { immediate: true, deep: true }

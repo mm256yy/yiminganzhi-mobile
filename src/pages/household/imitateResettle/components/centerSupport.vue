@@ -17,7 +17,7 @@
           <view class="info-item">
             <view class="label">迁出地址：</view>
             <view class="value">
-              {{ resettlePeopleInfo.householder ? resettlePeopleInfo.householder.address : '' }}
+              {{ resettlePeopleInfo.householder ? resettlePeopleInfo.householder.censusRegister : '' }}
             </view>
           </view>
         </view>
@@ -43,13 +43,9 @@
 
       <view class="info-text"> 该户选择集中供养 </view>
       <uni-col :span="12">
-            <uni-forms-item
-              label="养老院:"
-              label-align="right"
-              name='beadhouselist.beadhouse'
-            >
-              <uni-data-select  v-model="beadhouselist.beadhouse" :localdata="dict[416]" />
-            </uni-forms-item>
+        <uni-forms-item label="养老院:" label-align="right" name="beadhouselist.beadhouse">
+          <uni-data-select v-model="beadhouselist.beadhouse" :localdata="dict[416]" />
+        </uni-forms-item>
       </uni-col>
       <view class="btn-wrap">
         <view class="btn" @click="submitResettle">{{
@@ -61,7 +57,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed,ref } from 'vue'
+import { computed, ref } from 'vue'
 import { HouseAreaType } from '@/types/common'
 import { getStorage, StorageKey } from '@/utils'
 interface PropsType {
@@ -75,16 +71,17 @@ const dict = getStorage(StorageKey.DICT)
 const emit = defineEmits(['submit'])
 const props = defineProps<PropsType>()
 const beadhouselist = ref<any>({
-  beadhouse:""
+  beadhouse: ''
 })
 const resettlePeopleInfo = computed(() => {
   let householder: any = null
   if (props.data && props.data.length) {
     householder = props.data.find((item: any) => item.relation === '1')
   }
-
+  console.log(householder,'模拟集中供养');
+  
   return {
-    total: props.data.length,
+    total: props.data.filter((item: any) => item.name != '增计人口').length,
     householder
   }
 })

@@ -180,8 +180,8 @@
 import { ref, onMounted, computed } from 'vue'
 import { formatStr, routerForward, dictOption } from '@/utils'
 import { apartmentArea, resettleArea } from '@/config'
-import { getChooseConfigApi, getHouseConfigApi } from '@/service'
-
+import { getChooseConfigApi, getHouseConfigApi,getResettleDetail } from '@/service'
+import { OtherDataType } from '@/database'
 interface PropsType {
   dataList: any[]
   baseInfo: any
@@ -192,6 +192,16 @@ const landNoList = ref<any[]>([]) // 地块编号选项列表
 const storeroomNoList = ref<any[]>([]) // 储藏室编号选项列表
 const carNoList = ref<any[]>([]) // 车位号选项列表
 const roomNoList = ref<any[]>([]) // 幢号-房号 选项列表
+let dataLists=ref([])
+const getDataRequest = async () => {
+  try {
+    const datas = await getResettleDetail(OtherDataType.settleAddressList)
+    dataLists.value = datas
+    // resettleArea.value=dataLists.value.filter((item) => item.id == props.immigrantSettle.settleAddress)
+  } catch (error) {
+    console.log('error', error)
+  }
+}
 const houseAreaType = computed(() => {
   return props.dataList && props.dataList[0] && props.dataList[0].houseAreaType
 })
@@ -205,7 +215,7 @@ const getSettleAddress = (data: string) => {
     // 选择了公寓房的安置方式
     if (houseAreaType.value === 'flat') {
       let str = ''
-      apartmentArea.map((item: any) => {
+      dataLists.value.map((item: any) => {
         if (item.id === data) {
           str = item.name
         }
@@ -213,7 +223,7 @@ const getSettleAddress = (data: string) => {
       return str
     } else if (houseAreaType.value === 'homestead') {
       let str = ''
-      resettleArea.map((item: any) => {
+      dataLists.value.map((item: any) => {
         if (item.id === data) {
           str = item.name
         }
@@ -310,6 +320,7 @@ const handleClick = () => {
 onMounted(() => {
   getChooseConfig()
   getHouseConfig()
+  getDataRequest()
 })
 </script>
 
