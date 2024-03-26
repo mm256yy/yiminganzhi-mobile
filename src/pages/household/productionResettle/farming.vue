@@ -32,7 +32,7 @@
         <uni-col :span="12">
           <view class="col">
             <view class="label">地块编号：</view>
-            <view class="content"> {{ landInfo.landNoText }} </view>
+            <view class="content"> {{ landInfo.landNo }} </view>
           </view>
         </uni-col>
       </uni-row>

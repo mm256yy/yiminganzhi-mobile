@@ -17,7 +17,9 @@
           <view class="info-item">
             <view class="label">迁出地址：</view>
             <view class="value">
-              {{ resettlePeopleInfo.householder ? resettlePeopleInfo.householder.censusRegister : '' }}
+              {{
+                resettlePeopleInfo.householder ? resettlePeopleInfo.householder.censusRegister : ''
+              }}
             </view>
           </view>
         </view>
@@ -78,10 +80,10 @@ const resettlePeopleInfo = computed(() => {
   if (props.data && props.data.length) {
     householder = props.data.find((item: any) => item.relation === '1')
   }
-  console.log(householder,'模拟集中供养');
-  
+  console.log(householder, '模拟集中供养')
+
   return {
-    total: props.data.filter((item: any) => item.name != '增计人口').length,
+    total: props.data.filter((item: any) => item.name != '增计人口' && item.isDelete != '1').length,
     householder
   }
 })
