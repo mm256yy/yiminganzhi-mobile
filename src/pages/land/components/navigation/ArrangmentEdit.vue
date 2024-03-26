@@ -119,7 +119,6 @@ onLoad((option: any) => {
     const { type, num } = commonParams.value
     typeInfo.value = type
     numCount.value = num
-    console.log('OOOO:::KKKK', dict[375])
     productionOptions.value = getProductionMethodOptions()
     if (type === 'edit') {
       title.value = '生产安置人口编辑'
@@ -136,7 +135,7 @@ const getProductionMethodOptions = () => {
   if (numCount.value && numCount.value > 0) {
     return dict[375].filter((item: any) => item.value !== '1')
   } else {
-    const options = dict[375].filter((item: any) => item.value !== '2')
+    const options = dict[375].filter((item: any) => item.value === '3')
     return options
   }
 }

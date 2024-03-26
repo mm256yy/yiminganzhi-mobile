@@ -79,11 +79,16 @@ const checkSelectedStr = ref<string>('0')
 const checkSelected = ref<boolean>(false)
 
 const handleItemCLick = () => {
-  checkSelected.value = !checkSelected.value
-  emit('itemChecked', {
-    isChecked: checkSelected.value,
-    index: props.index
-  })
+  // 判断是否已关联
+  if (props.data.relationFlag === '1') {
+    estimate()
+  } else {
+    checkSelected.value = !checkSelected.value
+    emit('itemChecked', {
+      isChecked: checkSelected.value,
+      index: props.index
+    })
+  }
 }
 
 // 跳转评估页面

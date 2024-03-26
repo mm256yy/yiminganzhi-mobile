@@ -299,7 +299,7 @@ const currentYear = ref<any>('')
 // 获取年份
 const getYear = () => {
   if (formData.value.year) {
-    return formData.value.year
+    return dayjs(formData.value.year).format('YYYY')
   } else {
     return dayjs().year()
   }
@@ -317,9 +317,9 @@ const getLandlordDetail = () => {
       let obj: any = arr.filter((item: any) => item.uid === itemUid)[0]
       formData.value = {
         ...obj,
-        year: obj.year ? dayjs(obj.year) : ''
+        year: obj.year ? dayjs(obj.year).format('YYYY') : ''
       }
-      currentYear.value = obj.year ? dayjs(obj.year) : ''
+      currentYear.value = obj.year ? dayjs(obj.year).format('YYYY') : ''
     }
   })
 }
@@ -354,6 +354,7 @@ const inputBlur = () => {
  */
 const dateChange = (e: any) => {
   formData.value.year = e.detail.value
+  console.log('KKK:::Picker ', e.detail.value)
 }
 
 // 计算评估价格

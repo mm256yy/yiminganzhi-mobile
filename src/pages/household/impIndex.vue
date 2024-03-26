@@ -41,7 +41,7 @@ onLoad((option) => {
 const getLandlordDetail = (uid: string) => {
   getImpLandlordItemApi(uid).then((res: any) => {
     dataInfo.value = { ...res }
-    console.log(res, '测试数据')
+    console.log('测试数据-获取业主详情', res)
   })
 }
 </script>
