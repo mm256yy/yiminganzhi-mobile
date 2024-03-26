@@ -71,6 +71,7 @@ interface PropsType {
   fromResettleConfirm?: boolean
   dataList:any
   data:any
+  flag:any
 }
 
 const emit = defineEmits(['submit'])
@@ -143,13 +144,18 @@ watch(
 watch(
   () => props.data,
   (val) => {
-    if (val) {
+    if (val&&!props.flag) {
        console.log(val,'测试数据')
-           const datas=val.filter((item:any)=> item.relation == '1')
+      const datas = val.filter((item: any) => item.relation == '1')
+      console.log(datas,'测试数据datas')
       if (datas[0].settingWay == '1') {
-        areaList.value = props.dataList.filter((item: any) => item.type === '1' && item.isProductionLand === '1')
+        console.log(props.dataList,'数据')
+        areaList.value = props.dataList.filter((item: any) => item.type == '1' && item.isProductionLand == '1')
+        console.log(areaList.value,'areaList')
       }else if (datas[0].settingWay == '2') {
-      const areaList = props.dataList.filter((item:any) => item.type === '1'&&item.isProductionLand==='2')
+        console.log(props.dataList,'数据')
+      areaList.value = props.dataList.filter((item:any) => item.type == '1'&&item.isProductionLand=='2')
+        console.log(areaList.value,'areaList')
       }
     }
   },
@@ -161,8 +167,8 @@ watch(
 watch(
   () => props.dataList,
   (val) => {
-    if (val) {
-       areaList.value = val.filter((item:any) => item.type === '1')
+    if (val&&props.flag) {
+       areaList.value = val.filter((item:any) => item.type == '1')
     }
   },
   {

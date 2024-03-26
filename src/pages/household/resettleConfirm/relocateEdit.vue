@@ -23,6 +23,7 @@
           :fromResettleConfirm="true"
           :dataList="dataList"
           :data="demographicList"
+          :flag='false'
           @submit="immigrantSettleSubmit"
         />
         <apartment
@@ -129,6 +130,7 @@ const getLandlordDetail = async () => {
     if (res) {
       dataInfo.value = res
       demographicList.value = res.demographicList
+      console.log(res.demographicList,'demographicList')
       doorNo.value = res.doorNo
       console.log(res.immigrantSettle, 'immigrantSettle')
       immigrantSettle.value = res.immigrantSettle || {}

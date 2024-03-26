@@ -49,16 +49,16 @@
             :dataInfo="(dataInfo as any)"
             @update-data="updateData"
           />
-
-          <!-- 生产安置 -->
-          <produce-resettle-confirm
+         
+          <!-- 搬迁安置 -->
+          <relocate-resettle-confirm
             v-if="tabVal === 7"
             :dataInfo="(dataInfo as any)"
             @update-data="updateData"
           />
 
-          <!-- 搬迁安置 -->
-          <relocate-resettle-confirm
+          <!-- 生产安置 -->
+          <produce-resettle-confirm
             v-if="tabVal === 8"
             :dataInfo="(dataInfo as any)"
             @update-data="updateData"
@@ -242,14 +242,15 @@ const tabList = computed(() => {
     if (immigrantFilling.landStatus === '1') {
       arr[1].list[1].list[1].filled = true
     }
-
-    // 生产安置状态
-    if (immigrantFilling.productionArrangementStatus === '1') {
+    
+   
+    // 搬迁安置状态
+    if (immigrantFilling.relocateArrangementStatus === '1') {
       arr[1].list[3].list[0].filled = true
     }
 
-    // 搬迁安置状态
-    if (immigrantFilling.relocateArrangementStatus === '1') {
+    // 生产安置状态
+    if (immigrantFilling.productionArrangementStatus === '1') {
       arr[1].list[3].list[1].filled = true
     }
 

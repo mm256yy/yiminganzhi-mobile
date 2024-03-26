@@ -230,6 +230,7 @@ const onImportDataPre = async () => {
 
 // 导入数据
 const onImportData = () => {
+  console.log(mockImmigrantSettle.value,'导入的模拟数据搬迁安置')
   // 拿到模拟安置的配置
   const {
     houseAreaType,

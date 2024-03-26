@@ -198,6 +198,7 @@ const getDataRequest = async () => {
   try {
     const datas = await getResettleDetail(OtherDataType.settleAddressList)
     dataLists.value = datas
+    console.log(dataLists.value,'选房数据')
     // resettleArea.value=dataLists.value.filter((item) => item.id == props.immigrantSettle.settleAddress)
   } catch (error) {
     console.log('error', error)
@@ -217,7 +218,7 @@ const getSettleAddress = (data: string) => {
     if (houseAreaType.value === 'flat') {
       let str = ''
       dataLists.value.map((item: any) => {
-        if (item.id === data) {
+        if (item.id == data) {
           str = item.name
         }
       })
@@ -225,7 +226,7 @@ const getSettleAddress = (data: string) => {
     } else if (houseAreaType.value === 'homestead') {
       let str = ''
       dataLists.value.map((item: any) => {
-        if (item.id === data) {
+        if (item.id == data) {
           str = item.name
         }
       })

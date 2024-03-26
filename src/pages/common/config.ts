@@ -167,14 +167,14 @@ export const householdSidebarList = [
         filled: false,
         list: [
           {
-            label: '生产安置',
+            label: '搬迁安置',
             value: 7,
             filled: false,
             iconDef: iconScazDef,
             iconSel: iconScazSel
           },
           {
-            label: '搬迁安置',
+            label: '生产安置',
             value: 8,
             filled: false,
             iconDef: iconBqazDef,
