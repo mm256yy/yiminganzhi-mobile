@@ -6,7 +6,7 @@
     </view>
     <view style="font-size: 7rpx">
       使用权人
-      {{props.dataInfo.name}}，属坝址周边村只征地不搬迁农户及单位，青苗评估共有{{ num}}个地块，面积{{numss}}亩，株数{{nums}}株，金额{{numsss}}元。
+      {{props.dataInfo.name}}，属坝址周边村只征地不搬迁农户及单位，青苗评估共有{{ num}}个地块，面积{{numss}}m²，株数{{nums}}株，金额{{numsss}}元。
       <div>详见地块明细如下:</div>
     </view>
     <view class="table-wrap">
