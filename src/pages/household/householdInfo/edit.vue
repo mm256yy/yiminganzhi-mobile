@@ -33,7 +33,7 @@
                   @open="initNaturalVillageData"
                   @confirm="confirmSelectNaturalVillage"
                 />
-                <view class="add-btn" @click="addNaturalVillage">添加自然村</view>
+                <view class="add-btn" @click="addNaturalVillage">添加自然村1</view>
               </view>
             </uni-forms-item>
           </uni-col>

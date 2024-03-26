@@ -90,17 +90,14 @@ const getTitle = () => {
 
 const getTreeData = async () => {
   let res: any = null
-  if (props.type === 'land') {
-    if (props.showOther) {
-      res = await getLandVirutalVillageTreeApi()
-      res.push({
-        name: '其他',
-        code: '1'
-      })
-    } else {
-      res = await getVirutalVillageTreeApi()
-    }
+  if (props.type === 'land' && props.showOther) {
+    res = await getLandVirutalVillageTreeApi()
+    res.push({
+      name: '其他',
+      code: '1'
+    })
   } else {
+    res = await getVirutalVillageTreeApi()
   }
   treeData.value = res || []
   console.log('resTree:', res)

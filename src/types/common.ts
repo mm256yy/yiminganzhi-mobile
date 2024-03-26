@@ -203,7 +203,7 @@ export interface LandlordSearchType {
   doorNo?: string
   areaCode?: string
   townCode?: string
-  villageCode?: string
+  villageCode?: any
   virutalVillageCode?: string
   page?: number
   pageSize?: number

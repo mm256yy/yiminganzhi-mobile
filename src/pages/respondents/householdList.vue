@@ -176,7 +176,7 @@ const isEnd = ref<boolean>(false)
 const page = ref<number>(1)
 const pageSize = ref<number>(50)
 const sourceType = ref<string | null>(null) // 源类型 0已完成  1 预警 2 滞后
-const pgType = ref<string | null>(null)  // 源类型 0未评估  1 已评估 2 我的评估
+const pgType = ref<string | null>(null) // 源类型 0未评估  1 已评估 2 我的评估
 const statusCount = ref<number>(0)
 
 // 角色类型，不同角色跳转不同的页面，默认为实物采集页面
@@ -188,7 +188,7 @@ onLoad((options: any) => {
   }
   if (options && options.types) {
     pgType.value = options.types
-    console.log(pgType.value,'type是什么?')
+    console.log(pgType.value, 'type是什么?')
   }
   statusCount.value = options.count || 0
   if (options && options.name) {
@@ -246,7 +246,8 @@ const getList = () => {
       name: unref(keyWords),
       type: unref(tabType),
       page: page.value,
-      pageSize: pageSize.value
+      pageSize: pageSize.value,
+      villageCode: villageCode.value.length > 0 ? villageCode.value : null
     }
     console.log('传输的数据', params)
     if (sourceType.value) {
@@ -271,24 +272,30 @@ const getList = () => {
         const res = dataList.filter((item: any) => item.warnStatus != '1' && item.warnStatus != '2')
         getListCommon(res)
       }
-    }else if (pgType.value) {
+    } else if (pgType.value) {
       // params.houseAllStatus = pgType.value
       if (pgType.value == '0') {
-        const res = await getLandlordListBySearchApi({ ...params ,houseAllStatus:'0'}).catch(() => {
-          isLoading.value = false
-        })
+        const res = await getLandlordListBySearchApi({ ...params, houseAllStatus: '0' }).catch(
+          () => {
+            isLoading.value = false
+          }
+        )
         getListCommon(res)
       } else if (pgType.value == '1') {
-        const res = await getLandlordListBySearchApi({ ...params ,houseAllStatus:'1,2'}).catch(() => {
-          isLoading.value = false
-        })
+        const res = await getLandlordListBySearchApi({ ...params, houseAllStatus: '1,2' }).catch(
+          () => {
+            isLoading.value = false
+          }
+        )
         console.log(res, 'dataList数据')
         getListCommon(res)
       } else if (pgType.value == '2') {
-        const res = await getLandlordListBySearchApi({ ...params ,houseAllStatus:'2'}).catch(() => {
-          isLoading.value = false
-        })
-          console.log(res, 'dataList数据')
+        const res = await getLandlordListBySearchApi({ ...params, houseAllStatus: '2' }).catch(
+          () => {
+            isLoading.value = false
+          }
+        )
+        console.log(res, 'dataList数据')
         getListCommon(res)
       }
     } else {
@@ -298,18 +305,18 @@ const getList = () => {
       console.log(res, '数据列表res')
       getListCommon(res)
     }
-    const realList = villageCode.value.filter((item) => !!item)
-    if (realList.length) {
-      if (realList.length === 1) {
-        params.areaCode = unref(villageCode)[0] || ''
-      } else if (realList.length === 2) {
-        params.townCode = unref(villageCode)[1] || ''
-      } else if (realList.length === 3) {
-        params.villageCode = unref(villageCode)[2] || ''
-      } else if (realList.length === 4) {
-        params.virutalVillageCode = unref(villageCode)[3] || ''
-      }
-    }
+    // const realList = villageCode.value.filter((item) => !!item)
+    // if (realList.length) {
+    //   if (realList.length === 1) {
+    //     params.areaCode = unref(villageCode)[0] || ''
+    //   } else if (realList.length === 2) {
+    //     params.townCode = unref(villageCode)[1] || ''
+    //   } else if (realList.length === 3) {
+    //     params.villageCode = unref(villageCode)[2] || ''
+    //   } else if (realList.length === 4) {
+    //     params.virutalVillageCode = unref(villageCode)[3] || ''
+    //   }
+    // }
   })
   console.log('居民户列表', list.value)
 }
@@ -317,7 +324,7 @@ const getListCommon = (res: any) => {
   if (res && res.length) {
     if (page.value === 1) {
       list.value = res || []
-      console.log(list.value,'list是什么')
+      console.log(list.value, 'list是什么')
     } else {
       list.value = list.value.concat(res)
     }

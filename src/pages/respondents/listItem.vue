@@ -34,7 +34,7 @@
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">所在位置:</view>
-        <view class="value">{{ getLocationText(props.data.locationType) }}</view>
+        <view class="value">{{ formatDict(props.data.locationType, 326) }}</view>
       </view>
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
@@ -56,7 +56,7 @@
 </template>
 
 <script lang="ts" setup>
-import { dictOption } from '@/utils'
+import { dictOption, formatDict } from '@/utils'
 import { getLocationText, yesAndNoEnums } from '@/config/common'
 import { LandlordType } from '@/types/sync'
 import { MainType } from '@/types/common'
