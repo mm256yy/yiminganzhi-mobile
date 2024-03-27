@@ -96,9 +96,9 @@ export class landEstimateDtoListFills extends Common {
           sql += ` and virutalVillageCode = '${virutalVillageCode}'`
         }
         if (ownershipUnitIsNull == 1) {
-          sql += ` and areaCode = ''`
-          sql += ` and townCode = ''`
-          sql += ` and villageCode = ''`
+          sql += ` and areaCode = 'null'`
+          sql += ` and townCode = 'null'`
+          sql += ` and villageCode = 'null'`
           console.log(sql, '124')
         }
         sql += ` limit ${pageSize} offset ${(page - 1) * pageSize}`

@@ -1495,7 +1495,7 @@ class ImpDataFill extends ImpLandlord {
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           landlordItem.landEstimateDtoList = landlordItem.landEstimateDtoList.map((item) => {
-            if (item.uid === data.uid) {
+            if (item.id === data.id) {
               item = { ...item, ...data }
               item.isUpdate = '1'
             }

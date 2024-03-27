@@ -656,7 +656,7 @@ export default {
       if (row.number && row.price) {
         return Number(row.number) * Number(row.price)
       } else {
-        return 0
+        return row.totalPrice
       }
     },
     getSummaries(row) {
@@ -670,6 +670,7 @@ export default {
       const arr = this.tableData.filter(
         (item, index) => item && index !== sumIndex && item.type == row.type
       )
+      console.log(arr)
       sums = arr.reduce((totalPrice, currentItem) => {
         return totalPrice + this.computedTotalPrice(currentItem)
       }, 0)
@@ -697,14 +698,8 @@ export default {
     },
     sumball() {
       return this.tableData.reduce((totalPrice, currentItem) => {
-        if (currentItem.isUpdate == '0') {
-          totalPrice +=
-            this.formatStr(currentItem.totalPrice) == '-'
-              ? 0
-              : this.formatStr(currentItem.totalPrice)
-        } else if (currentItem.isUpdate == '1') {
-          totalPrice += this.computedTotalPrice(currentItem)
-        } else {
+        if (currentItem.name.includes('小计')) {
+          console.error(this.getSummaries(currentItem))
           totalPrice += this.getSummaries(currentItem)
         }
         return totalPrice

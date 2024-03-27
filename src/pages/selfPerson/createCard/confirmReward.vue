@@ -19,19 +19,35 @@
           <uni-td align="left" class="u-td">{{ item.name }}</uni-td>
           <uni-td align="left" class="u-td">{{ item.unit }}</uni-td>
           <!-- 数量 -->
-          <uni-td align="left" class="u-td">      
-            <input v-if="item.isVerify == '0'" class="input-txt" v-model="item.number" placeholder="请输入" />
-            <view v-if="item.isVerify == '1'||item.isVerify == null">{{ formatStr(item.number) }}</view>
+          <uni-td align="left" class="u-td">
+            <input
+              v-if="item.isVerify == '0'"
+              class="input-txt"
+              v-model="item.number"
+              placeholder="请输入"
+            />
+            <view v-if="item.isVerify == '1' || item.isVerify == null">{{
+              item.name == '奖励费小计' ? '-' : formatStr(item.number)
+            }}</view>
           </uni-td>
           <!-- 补偿单价 -->
           <uni-td align="left" class="u-td">
-            <input v-if="item.isVerify == '0'" class="input-txt" v-model="item.price" placeholder="请输入" />
-            <view v-if="item.isVerify == '1'||item.isVerify == null">{{ item.price }}</view>
+            <input
+              v-if="item.isVerify == '0'"
+              class="input-txt"
+              v-model="item.price"
+              placeholder="请输入"
+            />
+            <view v-if="item.isVerify == '1' || item.isVerify == null">{{
+              item.name == '奖励费小计' ? '-' : item.price
+            }}</view>
             <!-- <view v-if="item.isUpdate !== '1'"> - </view> -->
           </uni-td>
           <uni-td align="left" class="u-td">
-           <view v-if="item.isVerify != '1'&&item.isSum === '0'">{{ item.totalPrice }}</view>
-            <view v-if="item.isSum === '0'&&item.isVerify ==='1'">{{ computedTotalPrice(item) }}</view>
+            <view v-if="item.isVerify != '1' && item.isSum === '0'">{{ item.totalPrice }}</view>
+            <view v-if="item.isSum === '0' && item.isVerify === '1'">{{
+              computedTotalPrice(item)
+            }}</view>
             <view v-if="item.isSum === '1'"> {{ getSummaries(item) }} </view>
           </uni-td>
           <uni-td align="left" class="u-td">{{
@@ -39,11 +55,19 @@
           }}</uni-td>
           <!-- 备注 -->
           <uni-td align="left" class="u-td">
-            <input v-if="item.isVerify === '0'" class="input-txt" v-model="item.remark" placeholder="请输入" />
-            <view v-if="item.isVerify === '1'||item.isVerify == null">{{ item.remark }}</view>
+            <input
+              v-if="item.isVerify === '0'"
+              class="input-txt"
+              v-model="item.remark"
+              placeholder="请输入"
+            />
+            <view v-if="item.isVerify === '1' || item.isVerify == null">{{ item.remark }}</view>
           </uni-td>
           <uni-td class="u-td">
-            <view style="display: flex; align-items: center; justify-content: center">
+            <view
+              style="display: flex; align-items: center; justify-content: center"
+              v-if="item.name != '奖励费小计'"
+            >
               <!-- v-if="item.isVerify !== '1' && item.unit" -->
               <view size="mini" @click="onSave(item, '0')">编辑 </view>
               <view
@@ -91,7 +115,7 @@ const getCompensationCardConfig = async () => {
   if (res) {
     let data: any = await getLandlordItemApi(commonParams.value.uid)
     console.log(data)
-      dataList.value = data.immigrantCompensationCardList.filter((item: any) => item.type == '3')
+    dataList.value = data.immigrantCompensationCardList.filter((item: any) => item.type == '3')
     dataList.value.forEach((item: any) => {
       if (item.unit == '人' && item.type == '3' && item.isVerify != '1') {
         item.number = data.demographicList.length
@@ -110,11 +134,11 @@ const computedTotalPrice = (row: any) => {
   // if (row.totalPrice) {
   //   return Number(row.totalPrice)
   // } else {
-    if (row.number && row.price) {
-      return Number(row.number) * Number(row.price)
-    } else {
-      return 0
-    }
+  if (row.number && row.price) {
+    return Number(row.number) * Number(row.price)
+  } else {
+    return 0
+  }
   // }
 }
 
@@ -145,8 +169,7 @@ const onSave = (data: any, isVerify: any) => {
   console.log(data, '当前行数据')
   if (isVerify == 0) {
     data.isVerify = '0'
-  }
-   else if (isVerify == 1) {
+  } else if (isVerify == 1) {
     data.isVerify = '1'
     const { doorNo, uid } = commonParams.value
     console.log(uid, '当前数据')

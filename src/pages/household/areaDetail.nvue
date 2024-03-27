@@ -23,7 +23,7 @@
         >
           <text class="txt" :style="{ color: tabId === item.id ? '#3e73ec' : '#333' }">{{
             item.name
-          }}{{ Number(tabId) }}</text>
+          }}</text>
         </view>
       </view>
 

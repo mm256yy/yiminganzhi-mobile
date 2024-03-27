@@ -274,14 +274,16 @@ const focusIndex = ref<number>(-1)
  * @param(object) uid
  */
 const getLandlordDetail = () => {
-  const { uid } = commonParams.value
+  const { uid, id } = commonParams.value
   getEvaLandlordItemApi(uid).then((res: any) => {
     let arr: any = res.landEstimateDtoList || []
     if (arr && arr.length) {
-      let obj: any = arr[0]
-      console.log('===========================', obj)
+      let obj: any = arr.filter((item: any) => {
+        return item.id == id
+      })
+      console.log('===========================', obj, id)
 
-      formData.value = { ...obj }
+      formData.value = { ...obj[0] }
     }
   })
 }

@@ -204,7 +204,7 @@ import Back from '@/components/Back/Index.vue'
 import { OtherDataType } from '@/database'
 
 const commonParams = ref<any>({})
-let dataLists=ref([])
+let dataLists = ref([])
 const getDataRequest = async () => {
   try {
     const datas = await getResettleDetail(OtherDataType.settleAddressList)
@@ -264,12 +264,14 @@ const getLandlordDetail = () => {
  * @param data
  */
 const getSettleAddress = (data: string, type: string) => {
+  console.error(data, dataLists.value)
+
   if (data) {
     // type: flat 公寓房的安置方式, homestead 宅基地的安置方式
     if (type === 'flat') {
       let str = ''
       dataLists.value.map((item: any) => {
-        if (item.id === data) {
+        if (item.id == data) {
           str = item.name
         }
       })
@@ -277,7 +279,7 @@ const getSettleAddress = (data: string, type: string) => {
     } else if (type === 'homestead') {
       let str = ''
       dataLists.value.map((item: any) => {
-        if (item.id === data) {
+        if (item.id == data) {
           str = item.name
         }
       })

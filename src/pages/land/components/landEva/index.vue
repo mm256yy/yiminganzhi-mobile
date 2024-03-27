@@ -19,7 +19,7 @@
             />
           </view>
         </view>
-        <view class="list-2" @click="toLink('edit', item.uid)">
+        <view class="list-2" @click="toLink('edit', item.uid, item.id)">
           <uni-row>
             <uni-col :span="12">
               <view class="col">
@@ -142,9 +142,9 @@ const alertDialog = ref<any>(null)
 const currentItem = ref<any>({})
 const reason = ref<string>('') // 删除原因
 
-const toLink = (type: string, itemUid?: any) => {
+const toLink = (type: string, itemUid: any, id: any) => {
   const { uid, doorNo, landUid } = props.dataInfo
-  let params = { type, uid, doorNo, itemUid, landUid }
+  let params = { type, uid, doorNo, itemUid, landUid, id }
   routerForward('baseLandEvaEdit', {
     params: JSON.stringify(params)
   })
@@ -155,6 +155,8 @@ const toLink = (type: string, itemUid?: any) => {
  * @param {Object} data 当前行数据
  */
 const deleteLand = (data: any) => {
+  console.log(props.dataList)
+
   alertDialog.value?.open()
   currentItem.value = { ...data }
 }
