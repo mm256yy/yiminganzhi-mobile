@@ -253,7 +253,7 @@ const submit = async () => {
       showToast('类别不能为空')
       return
     }
-    if (!formData.value.virutalVillageCode) {
+    if (!formData.value.villageCode) {
       showToast('所属区域不能为空')
       return
     }

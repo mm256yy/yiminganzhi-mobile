@@ -122,7 +122,11 @@ const getUnit = (item: any) => {
 }
 
 const handleCheckBoxChange = (e: any) => {
-  handleItemCLick()
+  checkSelected.value = !checkSelected.value
+  emit('itemChecked', {
+    isChecked: checkSelected.value,
+    index: props.index
+  })
   console.log(e)
 }
 </script>
