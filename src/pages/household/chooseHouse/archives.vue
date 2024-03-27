@@ -64,7 +64,7 @@
             <uni-col :span="12">
               <uni-forms-item label="地块编号" :label-width="150" label-align="right" name="landNo">
                 <view class="content-txt">
-                  {{ dictOption(landNoList, item.landNo) }}
+                  {{ item.landNo }}
                 </view>
               </uni-forms-item>
             </uni-col>
@@ -246,7 +246,7 @@ const landNoList = ref<any[]>([]) // 地块编号选项列表
 const storeroomNoList = ref<any[]>([]) // 储藏室编号选项列表
 const carNoList = ref<any[]>([]) // 车位号选项列表
 const roomNoList = ref<any[]>([]) // 幢号-房号 选项列表
-let dataLists=ref([])
+let dataLists = ref([])
 const getDataRequest = async () => {
   try {
     const datas = await getResettleDetail(OtherDataType.settleAddressList)
@@ -300,7 +300,7 @@ const getSettleAddress = (data: string, type: string) => {
     if (type === 'flat') {
       let str = ''
       dataLists.value.map((item: any) => {
-        if (item.id === data) {
+        if (item.id == data) {
           str = item.name
         }
       })
@@ -308,7 +308,7 @@ const getSettleAddress = (data: string, type: string) => {
     } else if (type === 'homestead') {
       let str = ''
       dataLists.value.map((item: any) => {
-        if (item.id === data) {
+        if (item.id == data) {
           str = item.name
         }
       })

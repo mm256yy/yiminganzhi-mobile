@@ -11,7 +11,7 @@
           </view>
         </view>
         <view class="right">
-          <view class="btn green" @click="handleClick" >
+          <view class="btn green" @click="handleClick">
             <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
             <text class="txt">打印报表</text>
           </view>
@@ -47,7 +47,13 @@
           <view class="col">
             <view class="label">家庭总人口：</view>
             <view class="content">
-              {{ formatStr(dataInfo.demographicList.filter((item:any)=>item.name!='增计人口').length) }}
+              {{
+                formatStr(
+                  dataInfo.demographicList.filter(
+                    (item: any) => item.name != '增计人口' && item.isDelete != '1'
+                  ).length
+                )
+              }}
             </view>
           </view>
         </uni-col>
@@ -149,12 +155,16 @@
           <view class="td td-1">{{ getTypeStr(item.type) }}</view>
           <view class="td td-2">{{ formatStr(item.name) }}</view>
           <!-- formatDict(item.unit, 268) -->
-          <view class="td td-3">{{item.unit }}</view>
-          <view class="td td-3">{{ formatStr(item.number) }}</view>
+          <view class="td td-3">{{ item.unit }}</view>
+          <view class="td td-3">{{
+            item.name.includes('小计') ? '-' : formatStr(item.number)
+          }}</view>
           <view class="td td-3">{{ formatStr(item.price) }}</view>
           <view class="td td-3">
             <view v-if="item.isUpdate === '0'">{{ formatStr(item.totalPrice) }}</view>
-               <view v-else-if="item.isUpdate === '1'&&item.isSum === '0'">{{ computedTotalPrice(item) }}</view>
+            <view v-else-if="item.isUpdate === '1' && item.isSum === '0'">{{
+              computedTotalPrice(item)
+            }}</view>
             <view v-else-if="item.isSum === '1'"> {{ getSummaries(item) }} </view>
           </view>
           <view class="td td-4">{{ formatStr(item.remark) }}</view>
@@ -165,7 +175,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref,computed } from 'vue'
+import { ref, computed } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import { formatDict, formatStr, routerForward } from '@/utils'
 import { getCompensationCardConfigApi } from '@/service'
@@ -177,7 +187,7 @@ interface PropsType {
   dataInfo: any
   dataList: any[]
 }
-let dataLists:any=ref([])
+let dataLists: any = ref([])
 const getDataRequest = async () => {
   try {
     const datas = await getResettleDetail(OtherDataType.settleAddressList)
@@ -196,20 +206,22 @@ const dataList = computed(() => {
 const getCompensationCardConfig = async () => {
   let res = await getCompensationCardConfigApi()
   if (res) {
-    console.log(res,'res是什么？')
-    let datas=[]
-    datas = res.filter((item:any) => item.phType == 'Company' && (item.type == '3' ||item.type=='1'))
+    console.log(res, 'res是什么？')
+    let datas = []
+    datas = res.filter(
+      (item: any) => item.phType == 'Company' && (item.type == '3' || item.type == '1')
+    )
     console.log('获取移民建卡奖励费列表', datas)
     let data: any = await getLandlordItemApi(props.dataInfo.uid)
     console.log(data, '测试dada数据')
-    tableData.value =data.immigrantCompensationCardList
-    tableData.value.forEach((item:any)=>{
+    tableData.value = data.immigrantCompensationCardList
+    tableData.value.forEach((item: any) => {
       // && !item.hasOwnProperty('isVerify') 暂时去掉，需要的时候再使用
-      if (item.unit == '人' && item.type == '3'&& item.isVerify!='1') {
+      if (item.unit == '人' && item.type == '3' && item.isVerify != '1') {
         console.log('是否走了这个条件')
-        item.number=data.demographicList.length
-      }else if(item.unit=='项'&&item.type=='3'&& item.isVerify!='1'){
-        item.number=1
+        item.number = data.demographicList.length
+      } else if (item.unit == '项' && item.type == '3' && item.isVerify != '1') {
+        item.number = 1
       }
     })
     console.log('合并', tableData.value, res, data.immigrantCompensationCardList)
@@ -222,11 +234,11 @@ onShow(() => {
 })
 
 const getSettleAddressText = (settleAddress?: string) => {
-  console.log(settleAddress, 'settleAddress')
+  console.log(settleAddress, 'settleAddress', dataLists.value)
   if (!settleAddress) return '-'
   return (
-     dataLists.value.find((item:any) => item.id === settleAddress)?.name ||
-     dataLists.value.find((item:any) => item.id === settleAddress)?.name
+    dataLists.value.find((item: any) => item.id == settleAddress)?.name ||
+    dataLists.value.find((item: any) => item.id == settleAddress)?.name
   )
 }
 /**
@@ -261,11 +273,11 @@ const computedTotalPrice = (row: any) => {
   // if (row.totalPrice) {
   //   return Number(row.totalPrice)
   // } else {
-    if (row.number && row.price) {
-      return Number(row.number) * Number(row.price)
-    } else {
-      return 0
-    }
+  if (row.number && row.price) {
+    return Number(row.number) * Number(row.price)
+  } else {
+    return 0
+  }
   // }
 }
 
@@ -281,7 +293,9 @@ const getSummaries = (row: any) => {
       sumIndex = index
     }
   })
-  const arr = tableData.value.filter((item, index) => item && index !== sumIndex &&item.type==row.type)
+  const arr = tableData.value.filter(
+    (item, index) => item && index !== sumIndex && item.type == row.type
+  )
   sums = arr.reduce((totalPrice, currentItem) => {
     return totalPrice + computedTotalPrice(currentItem)
   }, 0)
@@ -296,7 +310,7 @@ const onArchives = () => {
   })
 }
 const handleClick = () => {
-    routerForward('pdf', {
+  routerForward('pdf', {
     type: 6,
     dataInfo: props.dataInfo.uid
   })
@@ -306,7 +320,7 @@ const toEdit = () => {
   routerForward('migrateCardEdit', {
     uid: props.dataInfo.uid
   })
-  console.log(props.dataInfo,props.dataList,'移民建卡传入数据')
+  console.log(props.dataInfo, props.dataList, '移民建卡传入数据')
 }
 
 // 奖励资费确认

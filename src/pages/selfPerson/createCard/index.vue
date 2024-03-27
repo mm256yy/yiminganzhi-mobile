@@ -162,12 +162,16 @@
           <view class="td td-1">{{ getTypeStr(item.type) }}</view>
           <view class="td td-2">{{ formatStr(item.name) }}</view>
           <view class="td td-3">{{ formatDict(item.unit, 268) }}</view>
-          <view class="td td-3">{{ formatStr(item.number) }}</view>
+          <view class="td td-3">{{
+            item.name.includes('小计') ? '-' : formatStr(item.number)
+          }}</view>
           <view class="td td-3">{{ formatStr(item.price) }}</view>
           <view class="td td-3">
-                <view v-if="item.isVerify != '1'&&item.isSum === '0'">{{ item.totalPrice }}</view>
-            <view v-if="item.isSum === '0'&&item.isVerify ==='1'">{{ computedTotalPrice(item) }}</view>
-            <view v-if="item.isSum === '1'"> {{ getSummaries(item) }} </view>
+            <view v-if="item.isUpdate === '0'">{{ formatStr(item.totalPrice) }}</view>
+            <view v-else-if="item.isUpdate === '1' && item.isSum === '0'">{{
+              computedTotalPrice(item)
+            }}</view>
+            <view v-else-if="item.isSum === '1'"> {{ getSummaries(item) }} </view>
           </view>
           <view class="td td-4">{{ formatStr(item.remark) }}</view>
         </view>
@@ -207,14 +211,14 @@ const getCompensationCardConfig = async () => {
   if (res) {
     let data: any = await getLandlordItemApi(props.dataInfo.uid)
     console.log(data, '测试dada数据')
-    tableData.value =data.immigrantCompensationCardList
-    tableData.value.forEach((item:any)=>{
+    tableData.value = data.immigrantCompensationCardList
+    tableData.value.forEach((item: any) => {
       // && !item.hasOwnProperty('isVerify') 暂时去掉，需要的时候再使用
-      if (item.unit == '人' && item.type == '3'&& item.isVerify!='1') {
+      if (item.unit == '人' && item.type == '3' && item.isVerify != '1') {
         console.log('是否走了这个条件')
-        item.number=data.demographicList.length
-      }else if(item.unit=='项'&&item.type=='3'&& item.isVerify!='1'){
-        item.number=1
+        item.number = data.demographicList.length
+      } else if (item.unit == '项' && item.type == '3' && item.isVerify != '1') {
+        item.number = 1
       }
     })
     console.log('合并', tableData.value, res, data.immigrantCompensationCardList)
@@ -262,14 +266,10 @@ const getTypeStr = (type: string) => {
  * @param row 当前行数据
  */
 const computedTotalPrice = (row: any) => {
-  if (row.totalPrice) {
-    return Number(row.totalPrice)
+  if (row.number && row.price) {
+    return Number(row.number) * Number(row.price)
   } else {
-    if (row.number && row.price) {
-      return Number(row.number) * Number(row.price)
-    } else {
-      return 0
-    }
+    return 0
   }
 }
 
@@ -285,7 +285,9 @@ const getSummaries = (row: any) => {
       sumIndex = index
     }
   })
-  const arr = tableData.value.filter((item, index) => item && index !== sumIndex)
+  const arr = tableData.value.filter(
+    (item, index) => item && index !== sumIndex && item.type == row.type
+  )
   sums = arr.reduce((totalPrice, currentItem) => {
     return totalPrice + computedTotalPrice(currentItem)
   }, 0)

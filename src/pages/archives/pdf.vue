@@ -72,7 +72,9 @@
                 {{
                   dataInfo.demographicList
                     ? formatStr(
-                        dataInfo.demographicList.filter((item) => item.name != '增计人口').length
+                        dataInfo.demographicList.filter(
+                          (item) => item.name != '增计人口' && item.isDelete != '1'
+                        ).length
                       )
                     : '-'
                 }}
@@ -94,7 +96,12 @@
               <th align="left" class="uTitle">备注</th>
             </tr>
             <!-- 表格数据行 -->
-            <tr v-for="(item, index) in dataList" :key="index">
+            <tr
+              v-for="(item, index) in dataList.filter(
+                (item) => item.name != '增计人口' && item.isDelete != '1'
+              )"
+              :key="index"
+            >
               <td align="left" class="uTd">{{ formatStr(item.name) }}</td>
               <td align="left" class="uTd">{{ formatDict(item.relation, 307) }}</td>
               <td align="left" class="uTd">{{ formatStr(item.card) }}</td>
@@ -137,8 +144,10 @@
               <td align="left" class="uTd">{{ formatStr(item.price) }}</td>
               <td align="left" class="uTd">
                 <view v-if="item.isUpdate === '0'">{{ formatStr(item.totalPrice) }}</view>
-                <view v-else-if="item.isUpdate === '1'">{{ computedTotalPrice(item) }}</view>
-                <view v-else-if="item.isUpdate === '2'">{{ getSummaries(item) }}</view>
+                <view v-else-if="item.isUpdate === '1' && item.isSum === '0'">{{
+                  computedTotalPrice(item)
+                }}</view>
+                <view v-else-if="item.isSum === '1'"> {{ getSummaries(item) }} </view>
               </td>
               <td align="left" class="uTd">{{ formatStr(item.remark) }}</td>
             </tr>
@@ -621,8 +630,8 @@ export default {
     getSettleAddressText(settleAddress) {
       if (!settleAddress) return '-'
       return (
-        this.dataLists.find((item) => item.id === settleAddress)?.name ||
-        this.dataLists.find((item) => item.id === settleAddress)?.name
+        this.dataLists.find((item) => item.id == settleAddress)?.name ||
+        this.dataLists.find((item) => item.id == settleAddress)?.name
       )
     },
     getTypeStr(type) {
@@ -644,14 +653,10 @@ export default {
       }
     },
     computedTotalPrice(row) {
-      if (row.totalPrice) {
-        return Number(row.totalPrice)
+      if (row.number && row.price) {
+        return Number(row.number) * Number(row.price)
       } else {
-        if (row.number && row.price) {
-          return Number(row.number) * Number(row.price)
-        } else {
-          return 0
-        }
+        return 0
       }
     },
     getSummaries(row) {
@@ -662,7 +667,9 @@ export default {
           sumIndex = index
         }
       })
-      const arr = this.tableData.filter((item, index) => item && index !== sumIndex)
+      const arr = this.tableData.filter(
+        (item, index) => item && index !== sumIndex && item.type == row.type
+      )
       sums = arr.reduce((totalPrice, currentItem) => {
         return totalPrice + this.computedTotalPrice(currentItem)
       }, 0)

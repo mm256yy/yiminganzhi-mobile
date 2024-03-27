@@ -36,7 +36,12 @@
               <th align="left" class="uTitle">备注</th>
             </tr>
             <!-- 表格数据行 -->
-            <tr v-for="(item, index) in dataList.filter(item=>item.name!='增计人口')" :key="index">
+            <tr
+              v-for="(item, index) in dataList.filter(
+                (item) => item.name != '增计人口' && item.isDelete != '1'
+              )"
+              :key="index"
+            >
               <td align="left" class="uTd">{{ formatStr(item.name) }}</td>
               <td align="left" class="uTd">{{ formatDict(item.relation, 307) }}</td>
               <td align="left" class="uTd">{{ formatStr(item.card) }}</td>
