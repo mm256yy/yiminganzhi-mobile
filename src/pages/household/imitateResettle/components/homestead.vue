@@ -102,24 +102,24 @@ const otherNum = computed(() => {
   return familyNum.value - ruralMigrantNum.value - unruralMigrantNum.value
 })
 
-const resettleArea = computed(() => {
-  const { dataList, data } = props
-  console.log(data, '测试数据data')
-  console.log(dataList,'测试数据dataList')
-  if(!data){
-      const areaList = dataList.filter((item:any) => item.type === '1')
-      return areaList
-  }else{
-    const datas=data.filter((item:any)=> item.relation === '1')
-  if(datas[0].settingWay=='1'){
-  const areaList = dataList.filter((item:any)=> item.type === '1'&&item.isProductionLand==='1')
-  return areaList
-  }else{
-  const areaList = dataList.filter((item:any) => item.type === '1'&&item.isProductionLand==='2')
-  return areaList
-  }
-}
-})
+// const resettleArea = computed(() => {
+//   const { dataList, data } = props
+//   console.log(data, '测试数据data')
+//   console.log(dataList,'测试数据dataList')
+//   if(!data){
+//       const areaList = dataList.filter((item:any) => item.type === '1')
+//       return areaList
+//   }else{
+//     const datas=data.filter((item:any)=> item.relation === '1')
+//   if(datas[0].settingWay=='1'){
+//   const areaList = dataList.filter((item:any)=> item.type === '1'&&item.isProductionLand==='1')
+//   return areaList
+//   }else{
+//   const areaList = dataList.filter((item:any) => item.type === '1'&&item.isProductionLand==='2')
+//   return areaList
+//   }
+// }
+// })
 // const resettleArea = computed(() => {
 //   const { dataList } = props
 //   const areaList = dataList.filter((item:any) => item.type === '1')
@@ -149,14 +149,16 @@ watch(
       const datas = val.filter((item: any) => item.relation == '1')
       console.log(datas,'测试数据datas')
       if (datas[0].settingWay == '1') {
-        console.log(props.dataList,'数据')
+        console.log(props.dataList, '数据')
         areaList.value = props.dataList.filter((item: any) => item.type == '1' && item.isProductionLand == '1')
-        console.log(areaList.value,'areaList')
-      }else if (datas[0].settingWay == '2') {
-        console.log(props.dataList,'数据')
-      areaList.value = props.dataList.filter((item:any) => item.type == '1'&&item.isProductionLand=='2')
-        console.log(areaList.value,'areaList')
-      }
+        console.log(areaList.value, 'areaList')
+      } else if (datas[0].settingWay == '2') {
+        console.log(props.dataList, '数据')
+        areaList.value = props.dataList.filter((item: any) => item.type == '1' && item.isProductionLand == '2')
+        console.log(areaList.value, 'areaList')
+      } else {
+        areaList.value = props.dataList.filter((item: any) => item.type == '1')
+      }    
     }
   },
   {

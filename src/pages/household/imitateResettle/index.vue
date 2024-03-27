@@ -54,6 +54,7 @@
           :immigrantSettle="simulateImmigrantSettle"
           :fromResettleConfirm="false"
           :dataList="dataList"
+          :flag='true'
           @submit="immigrantSettleSubmit"
         />
 

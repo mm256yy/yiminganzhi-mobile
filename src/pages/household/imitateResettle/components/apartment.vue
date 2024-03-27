@@ -210,13 +210,15 @@ interface PropsType {
   immigrantSettle: any
   fromResettleConfirm?: boolean
   dataList:any
-  data:any
+  data: any
+  flag:any
 }
 
 const emit = defineEmits(['submit'])
 const props = defineProps<PropsType>()
 const settleAddress = ref<string>('1')
 const areaSize = ref<any[]>(apartmentAreaSize)
+const apartmentArea=ref<any>()
 
 // 方案数据
 const tableData = ref<any>([])
@@ -246,22 +248,75 @@ const apartmentPlaceChange = (id: string) => {
 }
 
 
-const apartmentArea = computed(() => {
-  const { dataList,data } = props
-  if(!data){
-  const apartment = dataList.filter((item) => item.type === '2')
-  return apartment
-  }else{
-      const datas=data.filter((item) => item.relation === '1')
-  if(datas[0].settingWay=='1'){
-  const apartment = dataList.filter((item) => item.type === '2'&&item.isProductionLand==='1')
-  return apartment
-  }else{
-  const apartment = dataList.filter((item) => item.type === '2'&&item.isProductionLand==='2')
-  return apartment
+// const apartmentArea = computed(() => {
+//   const { dataList,data } = props
+//   if(!data){
+//   const apartment = dataList.filter((item) => item.type === '2')
+//   return apartment
+//   }else{
+//       const datas=data.filter((item) => item.relation === '1')
+//   if(datas[0].settingWay=='1'){
+//   const apartment = dataList.filter((item) => item.type === '2'&&item.isProductionLand==='1')
+//   return apartment
+//   }else{
+//   const apartment = dataList.filter((item) => item.type === '2'&&item.isProductionLand==='2')
+//   return apartment
+//   }
+//   }
+// })
+watch(
+  () => props.immigrantSettle,
+  (val) => {
+    if (val) {
+      // const { areaType: areaType, settleAddress: settleAddress } = val
+      // areaType.value = val.areaType
+      settleAddress.value = val.settleAddress
+      // console.log(areaType.value, 'areaType是什么')
+      console.log(settleAddress.value, 'settleArea是什么')
+    }
+  },
+  {
+    deep: true,
+    immediate: true
   }
+)
+watch(
+  () => props.data,
+  (val) => {
+    if (val&&!props.flag) {
+       console.log(val,'测试数据')
+      const datas = val.filter((item: any) => item.relation == '1')
+      console.log(datas,'测试数据datas')
+      if (datas[0].settingWay == '1') {
+        console.log(props.dataList, '数据')
+        apartmentArea.value = props.dataList.filter((item: any) => item.type == '2' && item.isProductionLand == '1')
+        console.log(apartmentArea.value, 'apartmentArea')
+      } else if (datas[0].settingWay == '2') {
+        console.log(props.dataList, '数据')
+        apartmentArea.value = props.dataList.filter((item: any) => item.type == '2' && item.isProductionLand == '2')
+        console.log(apartmentArea.value, 'apartmentArea')
+      } else {
+        apartmentArea.value = props.dataList.filter((item: any) => item.type == '2')
+      }    
+    }
+  },
+  {
+    deep: true,
+    immediate: true
   }
-})
+)
+watch(
+  () => props.dataList,
+  (val) => {
+    if (val&&props.flag) {
+       apartmentArea.value = val.filter((item:any) => item.type == '2')
+    }
+  },
+  {
+    deep: true,
+    immediate: true
+  }
+)
 // const apartmentArea=computed(() => {
 //   const { dataList } = props
 //   const apartment = dataList.filter((item:any) => item.type === '2')

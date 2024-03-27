@@ -34,6 +34,7 @@
           :fromResettleConfirm="true"
           :dataList="dataList"
           :data="demographicList"
+          :flag='false'
           @submit="immigrantSettleSubmit"
         />
         <centerSupport
