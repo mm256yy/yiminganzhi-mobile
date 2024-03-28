@@ -101,7 +101,7 @@
           <view class="td td-3">{{ formatStr(item.number) }}</view>
           <view class="td td-3">{{ formatStr(item.price) }}</view>
           <view class="td td-3">
-            <view v-if="item.isUpdate == '0'">{{ item.totalPrice }}</view>
+            <view v-if="item.isUpdate == '0'&&item.isSum == '0'">{{ item.totalPrice }}</view>
            <view v-else-if="item.isUpdate === '1' && item.isSum === '0'">{{
               computedTotalPrice(item)
             }}</view>
