@@ -301,7 +301,9 @@
                   ? '个体户名称'
                   : baseInfo.type == 'PeasantHousehold'
                   ? '户主姓名'
-                  : '村集体名称'
+                  : baseInfo.type == 'Village'
+                  ? '村集体名称'
+                  : '户主名称'
               }}</td>
               <td align="center" class="uTd">{{ baseInfo.name }}</td>
               <td align="center" class="uTd">{{
@@ -311,7 +313,9 @@
                   ? '个体户编码'
                   : baseInfo.type == 'PeasantHousehold'
                   ? '户号'
-                  : '村集体编码'
+                  : baseInfo.type == 'Village'
+                  ? '村集体编码'
+                  : '户号'
               }}</td>
               <td align="center" class="uTd">{{ baseInfo.showDoorNo || baseInfo.doorNo }}</td>
             </tr>
@@ -344,7 +348,9 @@
                   ? '个体户意见'
                   : baseInfo.type == 'PeasantHousehold'
                   ? '移民户主意见'
-                  : '村集体意见'
+                  : baseInfo.type == 'Village'
+                  ? '村集体意见'
+                  : '户主意见'
               }}</td>
               <td align="center" class="uTd" colspan="3" v-if="id == 7">{{
                 baseInfo.immigrantHouseEmpty ? baseInfo.immigrantHouseEmpty.houseEmptyOpinion : ''
@@ -365,7 +371,9 @@
                     ? '个体户盖章'
                     : baseInfo.type == 'PeasantHousehold'
                     ? '移民户主'
-                    : '村集体盖章'
+                    : baseInfo.type == 'Village'
+                    ? '村集体盖章'
+                    : '移民户主'
                 }}:<img id="signatureImg" class="signatureImgs" :src="path" v-if="path"
               /></td>
             </tr>
