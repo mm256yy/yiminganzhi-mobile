@@ -79,7 +79,7 @@
               label-align="right"
               name="formData.gravePosition"
             >
-              <uni-data-select v-model="formData.gravePosition" :localdata="dict[288]" />
+              <uni-data-select v-model="formData.gravePosition" :localdata="dict[326]" />
             </uni-forms-item>
           </uni-col>
         </uni-row>

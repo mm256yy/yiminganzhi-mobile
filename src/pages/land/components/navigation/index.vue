@@ -33,7 +33,7 @@
 import { ref, computed } from 'vue'
 import { onLoad, onShow } from '@dcloudio/uni-app'
 import { deepClone } from '@/utils'
-import { landNoMoveList, landNoMoveOtherList } from '../../../common/config.ts'
+import { landNoMoveList, landNoMoveOtherList } from '../../../common/config'
 import Report from './Report.vue' // 资产评估报告
 import Arrangement from './Arrangement.vue' // 安置确认
 import CompensateCard from './CompensateCard.vue' // 补偿卡
