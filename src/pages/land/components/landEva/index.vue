@@ -44,7 +44,8 @@
               <view class="col">
                 <view class="label">所在位置：</view>
                 <view class="content">
-                  {{ formatDict(props.dataInfo.locationType, 326) }}
+                  <!-- {{ formatDict(props.dataInfo.locationType, 326) }} -->
+                  {{ formatStr(item.areaText) }}
                 </view>
               </view>
             </uni-col>

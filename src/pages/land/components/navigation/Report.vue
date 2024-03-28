@@ -70,7 +70,7 @@ const emit = defineEmits(['updateData'])
 
 // 相关手续表
 const assetAppendantList = computed(() => {
-  return props.dataInfo.assetAppendantList || []
+  return props.dataInfo.assetAppendantList.filter((item:any) => item.isDelete == 0) || []
 })
 let num = ref(0)
 let nums = ref(0)
@@ -80,6 +80,7 @@ watch(
   () => props.dataInfo,
   (val) => {
     if (val) {
+      console.log('val', val.assetAppendantList)
       let map = new Map()
       val.assetAppendantList.forEach((item) => {
         map.set(item.landNumber, item)

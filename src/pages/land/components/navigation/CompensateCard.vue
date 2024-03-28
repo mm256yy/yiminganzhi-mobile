@@ -1,6 +1,6 @@
 <template>
   <view class="migrate-card-wrapper">
-    <!-- 居民户实施 —— 企业建卡（移民实施阶段） -->
+    <!-- 只征地不搬迁实施 —— 只征地不搬迁建卡（移民实施阶段） -->
     <view class="main">
       <view class="row-1">
         <view class="left">
@@ -101,11 +101,11 @@
           <view class="td td-3">{{ formatStr(item.number) }}</view>
           <view class="td td-3">{{ formatStr(item.price) }}</view>
           <view class="td td-3">
-            <view v-if="item.isVerify != '1' && item.isSum === '0'">{{ item.totalPrice }}</view>
-            <view v-if="item.isSum === '0' && item.isVerify === '1'">{{
+            <view v-if="item.isUpdate == '0'">{{ item.totalPrice }}</view>
+           <view v-else-if="item.isUpdate === '1' && item.isSum === '0'">{{
               computedTotalPrice(item)
             }}</view>
-            <view v-if="item.isSum === '1'"> {{ getSummaries(item) }} </view>
+            <view v-else-if="item.isSum === '1'"> {{ getSummaries(item) }} </view>
           </view>
           <view class="td td-4">{{ formatStr(item.remark) }}</view>
         </view>
@@ -118,7 +118,7 @@
 import { ref } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import { formatDict, formatStr, routerForward } from '@/utils'
-import { getCompensationCardConfigApi } from '@/service'
+// import { getCompensationCardConfigApi } from '@/service'
 import { getLandlordItemApi } from '@/service'
 interface PropsType {
   dataInfo: any
@@ -129,20 +129,9 @@ const tableData = ref<any[]>([])
 
 // 获取移民建卡奖励费列表
 const getCompensationCardConfig = async () => {
-  let res = await getCompensationCardConfigApi()
-  if (res) {
-    console.log('获取移民建卡奖励费列表', res)
     let data: any = await getLandlordItemApi(props.dataInfo.uid)
-
-    tableData.value = res.filter((item: any) => item.phType == 'LandNoMove')
-    tableData.value.forEach((item: any) => {
-      if (item.unit == '人' && item.type == '3' && item.isVerify != '1') {
-        item.number = data.demographicList.length
-      } else if (item.unit == '项' && item.type == '3' && item.isVerify != '1') {
-        item.number = 1
-      }
-    })
-  }
+    tableData.value = data.immigrantCompensationCardList.filter((item: any) => item.phType == 'LandNoMove')
+    console.log(tableData.value, '测试dada数据')
 }
 
 onShow(() => {
@@ -195,6 +184,20 @@ const computedTotalPrice = (row: any) => {
  * 获取奖励小计
  * @param row 当前行信息
  */
+// const getSummaries = (row: any) => {
+//   let sums = 0
+//   let sumIndex = 0
+//   tableData.value.forEach((column, index) => {
+//     if (column.name === row.name) {
+//       sumIndex = index
+//     }
+//   })
+//   const arr = tableData.value.filter((item, index) => item && index !== sumIndex)
+//   sums = arr.reduce((totalPrice, currentItem) => {
+//     return totalPrice + computedTotalPrice(currentItem)
+//   }, 0)
+//   return sums
+// }
 const getSummaries = (row: any) => {
   let sums = 0
   let sumIndex = 0
@@ -203,7 +206,10 @@ const getSummaries = (row: any) => {
       sumIndex = index
     }
   })
-  const arr = tableData.value.filter((item, index) => item && index !== sumIndex)
+  const arr = tableData.value.filter(
+    (item, index) => item && index !== sumIndex && item.type == row.type
+  )
+  console.log(arr,'arr是什么？')
   sums = arr.reduce((totalPrice, currentItem) => {
     return totalPrice + computedTotalPrice(currentItem)
   }, 0)

@@ -109,38 +109,20 @@ onLoad((option) => {
 
 // 获取移民建卡奖励费列表
 const getCompensationCardConfig = async () => {
-  let res = await getCompensationCardConfigApi()
-  if (res) {
-    console.log(res,'res是什么？')
-    let datas=[]
-    datas = res.filter((item:any) => item.phType == 'Company' && item.type == 3 ||item.type==1)
-    console.log('获取移民建卡奖励费列表', datas)
     let data: any = await getLandlordItemApi(commonParams.value.uid)
-    console.log(data)
-
+    console.log(data,'移民建卡奖励费列表')
     if (commonParams.value?.fromType === 'land') {
-      dataList.value = res.filter((item: any) => item.phType == 'LandNoMove')
+      dataList.value = data.immigrantCompensationCardList.filter((item: any) => item.phType == 'LandNoMove'&&item.isUpdate=='1')
     } else {
-      // data.immigrantCompensationCardList.forEach((item: any) => {
-      //   let index = res.findIndex((e: any) => e.id == item.id)
-      //   if (index > -1) {
-      //     res[index] = item
-      //   } else {
-      //     res.push(item)
-      //   }
-      // })
-      // dataList.value = res.filter((item: any) => item.phType == 'Company')
       dataList.value = data.immigrantCompensationCardList.filter((item: any) => item.type == '3')
     }
-
-    dataList.value.forEach((item: any) => {
-      if (item.unit == '人' && item.type == '3' && item.isVerify != '1') {
-        item.number = data.demographicList.length
-      } else if (item.unit == '项' && item.type == '3' && item.isVerify != '1') {
-        item.number = 1
-      }
-    })
-  }
+    // dataList.value.forEach((item: any) => {
+    //   if (item.unit == '人' && item.type == '3' && item.isVerify != '1') {
+    //     item.number = data.demographicList.length
+    //   } else if (item.unit == '项' && item.type == '3' && item.isVerify != '1') {
+    //     item.number = 1
+    //   }
+    // })
 }
 /**
  * 计算补偿金额

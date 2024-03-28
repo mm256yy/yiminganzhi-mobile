@@ -39,6 +39,7 @@
                   placeholder="请选择"
                   v-model="formData.landNumber"
                   :localdata="landNumberList"
+                  @change="landNumberChange"
                 />
               </uni-forms-item>
             </uni-col>
@@ -269,6 +270,8 @@ import Container from '@/components/Container/index.vue'
 const title = ref<string>('')
 const commonParams = ref<any>({})
 const landNumberList = ref<any[]>([])
+const landNumberListClone = ref<any[]>([])
+
 
 // 表单数据
 const formData = ref<any>({
@@ -306,7 +309,7 @@ const getLandlordDetail = () => {
     if (arr && arr.length) {
       let obj: any = arr.filter((item: any) => item.uid === itemUid)[0]
       formData.value = { ...obj }
-      formData.value.landNumber = formData.value.landName
+      // formData.value.landNumber = formData.value.landName
     }
   })
 }
@@ -318,10 +321,16 @@ onLoad((option: any) => {
     landNumberList.value = landEstimateDtoList.map((item: any) => {
       return {
         text: item.landNumber,
+        value: item.landNumber
+      }
+    })
+    landNumberListClone.value = landEstimateDtoList.map((item: any) => {
+      return {
+        text: item.landNumber,
         value: item.landName
       }
     })
-
+    console.log(landNumberList.value,'土地列表List')
     if (type === 'edit') {
       title.value = '土地青苗及附着物评估编辑'
       getLandlordDetail()
@@ -337,6 +346,9 @@ const findLandNumber = (val: any) => {
   return name
 }
 
+const landNumberChange = (index:any) => {
+  console.log(index,'当前的event值')
+}
 // 输入框获得焦点事件
 const inputFocus = (index: number) => {
   focusIndex.value = index
@@ -373,7 +385,7 @@ const submit = () => {
     ...formData.value,
     landNumber: findLandNumber(formData.value.landNumber)
   }
-
+  console.log(params,'测试传输数据')
   if (!formData.value.addReason && type === 'add') {
     showToast('请输入新增原因')
     return
@@ -442,7 +454,9 @@ watch(
   (val) => {
     const { type } = commonParams.value
     if (type === 'add') {
-      formData.value.landName = val
+      formData.value.landName = landNumberListClone.value?.find((item) => item.text == val).value
+      console.log(landNumberList.value, '1111111')
+      console.log(formData.value.landName, '2222222')
     }
   },
   {
