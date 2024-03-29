@@ -287,8 +287,7 @@
               <view :class="['input-wrapper', focusIndex === 8 ? 'focus' : '']">
                 <input
                   class="input-txt"
-                  placeholder="请输入
-"
+                  placeholder="请输入"
                   type="number"
                   v-model="formData.compensationAmount"
                   @focus="inputFocus(8)"
@@ -316,7 +315,6 @@
                   v-model="formData.occupyArea"
                   @focus="inputFocus(4)"
                   @blur="inputBlur"
-                  disabled
                 />
                 <view class="unit">㎡</view>
               </view>
@@ -400,7 +398,8 @@ const formData = ref<any>({
   valuationPrice: '',
   valuationAmount: '',
   compensationAmount: '',
-  remark: ''
+  remark: '',
+  occupyArea:''
 })
 
 // 获取数据字典
