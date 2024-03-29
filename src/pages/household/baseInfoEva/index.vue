@@ -54,7 +54,8 @@
               <view class="col">
                 <view class="label">所在位置：</view>
                 <view class="content">
-                  {{ dictOption(locationTypes, props.dataInfo.locationType) }}
+                  <!-- {{ dictOption(locationTypes, props.dataInfo.locationType) }} -->
+                   {{ formatDict(props.dataInfo.locationType, 326) }}
                 </view>
               </view>
             </uni-col>
@@ -129,7 +130,7 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { formatStr, dictOption, filterViewDoorNo } from '@/utils'
+import { formatStr, dictOption, filterViewDoorNo,formatDict } from '@/utils'
 import { locationTypes, yesAndNoEnums } from '@/config/common'
 
 const props = defineProps({
