@@ -83,8 +83,8 @@ const apartmentArea = ref<any>([])
 const getDataRequest = async (res: any) => {
   try {
     const data1 = await getResettleDetail(OtherDataType.settleAddressList)
-    const result1 = data1.filter((item) => item.type === '1')
-    const result2 = data1.filter((item) => item.type === '2')
+    const result1 = data1.filter((item:any) => item.type === '1')
+    const result2 = data1.filter((item:any) => item.type === '2')
     resettleArea.value = result1
     apartmentArea.value = result2
     console.log(result1, '接口数据1')
@@ -97,7 +97,7 @@ const getDataRequest = async (res: any) => {
         tableData.value = [
           {
             houseTypeText,
-            settleAddressText: resettleArea.value.find((item) => item.id == res.settleAddress)?.name,
+            settleAddressText: resettleArea.value.find((item:any) => item.id == res.settleAddress)?.name,
             area: homesteadAreaSize.find((item) => item.id === res.areaType)?.name,
             num: 1
           }
@@ -107,7 +107,7 @@ const getDataRequest = async (res: any) => {
         if (res.typeOneNum) {
           array.push({
             houseTypeText,
-            settleAddressText: apartmentArea.value.find((item) => item.id == res.settleAddress)?.name,
+            settleAddressText: apartmentArea.value.find((item:any) => item.id == res.settleAddress)?.name,
             area: apartmentAreaSize[0].name,
             num: res.typeOneNum
           })
@@ -115,7 +115,7 @@ const getDataRequest = async (res: any) => {
         if (res.typeTwoNum) {
           array.push({
             houseTypeText,
-            settleAddressText: apartmentArea.value.find((item) => item.id == res.settleAddress)?.name,
+            settleAddressText: apartmentArea.value.find((item:any) => item.id == res.settleAddress)?.name,
             area: apartmentAreaSize[1].name,
             num: res.typeTwoNum
           })
@@ -123,7 +123,7 @@ const getDataRequest = async (res: any) => {
         if (res.typeThreeNum) {
           array.push({
             houseTypeText,
-            settleAddressText: apartmentArea.value.find((item) => item.id == res.settleAddress)?.name,
+            settleAddressText: apartmentArea.value.find((item:any) => item.id == res.settleAddress)?.name,
             area: apartmentAreaSize[2].name,
             num: res.typeThreeNum
           })
@@ -131,7 +131,7 @@ const getDataRequest = async (res: any) => {
         if (res.typeFourNum) {
           array.push({
             houseTypeText,
-            settleAddressText: apartmentArea.value.find((item) => item.id == res.settleAddress)?.name,
+            settleAddressText: apartmentArea.value.find((item:any) => item.id == res.settleAddress)?.name,
             area: apartmentAreaSize[3].name,
             num: res.typeFourNum
           })

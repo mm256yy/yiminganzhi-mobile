@@ -132,7 +132,9 @@
         <div style="display: flex; justify-content: space-between">
           <div style="font-size: 16px">
             {{
-              `${baseInfo.areaCodeText||''} ${baseInfo.townCodeText||''} ${baseInfo.villageCodeText||''} ${baseInfo.name||''} 户号
+              `${baseInfo.areaCodeText || ''} ${baseInfo.townCodeText || ''} ${
+                baseInfo.villageCodeText || ''
+              } ${baseInfo.name || ''} 户号
                         ${baseInfo.showDoorNo} `
             }}</div
           >
@@ -157,7 +159,7 @@
               <td align="left" class="uTd">{{ getSettleAddress(item.settleAddress) }}</td>
               <td align="left" class="uTd">{{ formatStr(item.area) }} </td>
               <!-- <td align="left" class="uTd">{{ dictOption(landNoList, item.landNo) }}</td> -->
-              <td align="left" class="uTd">{{  formatStr(item.landNo) }}</td>
+              <td align="left" class="uTd">{{ formatStr(item.landNo) }}</td>
               <td align="left" class="uTd"></td>
             </tr>
             <tr style="height: 100px">
@@ -186,7 +188,9 @@
         <div style="display: flex; justify-content: space-between">
           <div style="font-size: 16px">
             {{
-              `${baseInfo.areaCodeText} ${baseInfo.townCodeText} ${baseInfo.villageCodeText} ${baseInfo.name} 户号
+              `${baseInfo.areaCodeText || ''} ${baseInfo.townCodeText || ''} ${
+                baseInfo.villageCodeText || ''
+              } ${baseInfo.name || ''} 户号
                         ${baseInfo.showDoorNo} `
             }}</div
           >
@@ -203,13 +207,36 @@
               <th align="left" class="uTitle">备注</th>
             </tr>
             <!-- 表格数据行 -->
-            <tr v-for="(item, index) in dataList" :key="index">
-              <td align="left" class="uTd">{{ index + 1 }}</td>
-              <td align="left" class="uTd">{{ item.settleAddressText }}</td>
-              <td align="left" class="uTd">{{ item.houseTypeText }} </td>
-              <td align="left" class="uTd">{{ item.area }}</td>
-              <td align="left" class="uTd"></td>
-            </tr>
+            <div v-if="baseInfo.houseAreaType == 'homestead' || baseInfo.houseAreaType == 'flat'">
+              <tr v-for="(item, index) in dataList" :key="index">
+                <td align="left" class="uTd">{{ index + 1 }}</td>
+                <td align="left" class="uTd">{{ item.settleAddressText }}</td>
+                <td align="left" class="uTd">{{ item.houseTypeText }} </td>
+                <td align="left" class="uTd">{{ item.area }}</td>
+                <td align="left" class="uTd"></td>
+              </tr>
+            </div>
+            <div
+              style="
+                height: 100px;
+                width: 100%;
+                display: flex;
+                justify-content: end;
+                align-items: center;
+                font-size: 16px;
+              "
+              v-else
+            >
+              <span>{{
+                baseInfo.houseAreaType == 'oneself'
+                  ? '该户选择自谋职业'
+                  : `该户选择集中供养（选择养老院:${formatDict(
+                      baseInfo.simulateImmigrantSettle.nursingHome,
+                      416
+                    )}）`
+              }}</span>
+            </div>
+
             <tr style="height: 100px">
               <td colspan="3">
                 <div style="display: flex; justify-content: space-between; align-items: center">
@@ -783,7 +810,7 @@ export default {
       dictOption,
       show: false,
       OtherDataType,
-      dataLists:[]
+      dataLists: []
     }
   },
   onLoad(option) {
@@ -879,7 +906,7 @@ export default {
       uni.navigateBack()
     },
     getSettleAddress(data) {
-      console.log(data,'选房数据123');
+      console.log(data, '选房数据123')
       if (data.settleAddress) {
         // 选择了公寓房的安置方式
         if (data.houseAreaType === 'flat') {
@@ -936,16 +963,16 @@ export default {
         }
       })
     },
-  async getDataRequest(){
-  try {
-    const datas = await getResettleDetail(OtherDataType.settleAddressList)
-    this.dataLists = datas
-    console.log(this.dataLists,'选房数据')
-    // resettleArea.value=dataLists.value.filter((item) => item.id == props.immigrantSettle.settleAddress)
-  } catch (error) {
-    console.log('error', error)
-  }
-}
+    async getDataRequest() {
+      try {
+        const datas = await getResettleDetail(OtherDataType.settleAddressList)
+        this.dataLists = datas
+        console.log(this.dataLists, '选房数据')
+        // resettleArea.value=dataLists.value.filter((item) => item.id == props.immigrantSettle.settleAddress)
+      } catch (error) {
+        console.log('error', error)
+      }
+    }
   }
 }
 </script>
