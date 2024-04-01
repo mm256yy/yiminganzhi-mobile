@@ -21,7 +21,7 @@
                 <view class="col">
                   <view class="label">户号：</view>
                   <view class="content">
-                    {{ formatStr(props.dataInfo.doorNo) }}
+                    {{ formatStr(props.dataInfo.showDoorNo) }}
                   </view>
                 </view>
               </uni-col>

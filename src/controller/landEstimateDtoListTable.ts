@@ -133,7 +133,9 @@ export class landEstimateDtoListFills extends Common {
             if (item.id == data.id) {
               console.log(item.doorNo)
               doorNos = item.doorNo
-              values = `doorNo='${item.doorNo}',householder='${item.name}',relationFlag='1'`
+              values = `doorNo='${item.doorNo}',householder='${
+                item.name
+              }',relationFlag='1',showDoorNo='${item.doorNo.slice(2)}'`
             }
           })
         } else {
@@ -142,6 +144,8 @@ export class landEstimateDtoListFills extends Common {
             console.log('户号校验失败')
             return
           }
+
+          data.doorNo = 'jl' + data.doorNo
           doorNos = data.doorNo
           addLandlordApi({
             doorNo: data.doorNo,
@@ -156,7 +160,9 @@ export class landEstimateDtoListFills extends Common {
           }).catch(() => {
             reject(false)
           })
-          values = `doorNo='${data.doorNo}',householder='${data.rightHolder}',relationFlag='1'`
+          values = `doorNo='${data.doorNo}',householder='${
+            data.rightHolder
+          }',relationFlag='1',showDoorNo='${data.doorNo.slice(2)}'`
         }
         const uids = data.uid.split(',')
         let listTds = []

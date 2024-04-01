@@ -19,6 +19,9 @@
       <view class="operate-segment">
         <text class="land-text">{{ `土地列表（共 ${total} 条土地数据）` }}</text>
         <view class="right-side">
+          <view class="btn blue-btn" @click="toTarget('database')">
+            <text class="txt">数据库</text>
+          </view>
           <view class="btn blue-btn" @click="onReset">
             <text class="txt">重置搜索</text>
           </view>
