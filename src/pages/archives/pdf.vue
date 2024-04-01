@@ -17,7 +17,7 @@
           </div>
           <div style="width: 30%">
             <span style="font-weight: bold; font-size: 12px">户号:</span>
-            <span style="margin-left: 5px; font-size: 12px">{{ dataInfo.doorNo }}</span>
+            <span style="margin-left: 5px; font-size: 12px">{{ dataInfo.showDoorNo }}</span>
           </div>
           <div style="width: 30%">
             <span style="font-weight: bold; font-size: 12px">联系方式:</span>

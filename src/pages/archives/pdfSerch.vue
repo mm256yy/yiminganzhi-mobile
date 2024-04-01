@@ -132,7 +132,7 @@
         <div style="display: flex; justify-content: space-between">
           <div style="font-size: 16px">
             {{
-              `${baseInfo.areaCodeText} ${baseInfo.townCodeText} ${baseInfo.villageCodeText} ${baseInfo.name} 户号
+              `${baseInfo.areaCodeText||''} ${baseInfo.townCodeText||''} ${baseInfo.villageCodeText||''} ${baseInfo.name||''} 户号
                         ${baseInfo.showDoorNo} `
             }}</div
           >
@@ -156,7 +156,7 @@
               <td align="left" class="uTd">{{ index + 1 }}</td>
               <td align="left" class="uTd">{{ getSettleAddress(item) }}</td>
               <td align="left" class="uTd">{{ formatStr(item.area) }} </td>
-              <td align="left" class="uTd">{{ dictOption(landNoList, item.landNo) }}</td>
+              <td align="left" class="uTd">{{ item.landNo }}</td>
               <td align="left" class="uTd"></td>
             </tr>
             <tr style="height: 100px">
@@ -754,9 +754,11 @@ import {
   getImpLandlordItemApi,
   getCompensationCardConfigApi,
   getLandlordItemApi,
-  getChooseConfigApi
+  getChooseConfigApi,
+  getResettleDetail
 } from '@/service'
 import { apartmentArea, resettleArea } from '@/config'
+import { OtherDataType } from '@/database'
 import dayjs from 'dayjs'
 export default {
   data() {
@@ -778,7 +780,9 @@ export default {
       storeroomNoList: [],
       carNoList: [],
       dictOption,
-      show: false
+      show: false,
+      OtherDataType,
+      dataLists:[]
     }
   },
   onLoad(option) {
@@ -786,6 +790,7 @@ export default {
     console.log(JSON.parse(option.dataInfo))
     this.dataList = option.data ? JSON.parse(option.data) : []
     this.baseInfo = option.dataInfo ? JSON.parse(option.dataInfo) : []
+    this.getDataRequest()
     if (
       this.dataList[0]?.houseAreaType == 'flat' ||
       this.dataList[0]?.houseAreaType == 'homestead'
@@ -873,20 +878,21 @@ export default {
       uni.navigateBack()
     },
     getSettleAddress(data) {
+      console.log(data,'选房数据123');
       if (data.settleAddress) {
         // 选择了公寓房的安置方式
         if (data.houseAreaType === 'flat') {
           let str = ''
-          this.apartmentArea.map((item) => {
-            if (item.id === data.settleAddress) {
+          this.dataLists.map((item) => {
+            if (item.id == data.settleAddress) {
               str = item.name
             }
           })
           return str
         } else if (data.houseAreaType === 'homestead') {
           let str = ''
-          this.resettleArea.map((item) => {
-            if (item.id === data.settleAddress) {
+          this.dataLists.map((item) => {
+            if (item.id == data.settleAddress) {
               str = item.name
             }
           })
@@ -928,7 +934,17 @@ export default {
           this.carNoList = [...arr3]
         }
       })
-    }
+    },
+  async getDataRequest(){
+  try {
+    const datas = await getResettleDetail(OtherDataType.settleAddressList)
+    this.dataLists = datas
+    console.log(this.dataLists,'选房数据')
+    // resettleArea.value=dataLists.value.filter((item) => item.id == props.immigrantSettle.settleAddress)
+  } catch (error) {
+    console.log('error', error)
+  }
+}
   }
 }
 </script>

@@ -1,10 +1,10 @@
 <template>
   <view class="farm-wrap">
     <view class="btn-box">
-      <view class="btn green-btn">
+      <!-- <view class="btn green-btn">
         <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
         <text class="txt">打印报表</text>
-      </view>
+      </view> -->
       <view class="btn blue-btn" v-if="hasFarmingResettle" @click="archivesUpload">
         <image class="icon" src="@/static/images/icon_dangan_upload.png" mode="scaleToFill" />
         <text class="txt">档案上传</text>

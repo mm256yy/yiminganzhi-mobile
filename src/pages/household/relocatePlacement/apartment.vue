@@ -5,10 +5,10 @@
       <view class="row">
         <view class="left" />
         <view class="right">
-          <view class="btn green">
+          <!-- <view class="btn green">
             <image class="icon" src="@/static/images/icon_print_white.png" mode="scaleToFill" />
             打印表格
-          </view>
+          </view> -->
           <view class="btn blue" @click="onArchives">
             <image class="icon" src="@/static/images/icon_upload_white.png" mode="scaleToFill" />
             档案上传
