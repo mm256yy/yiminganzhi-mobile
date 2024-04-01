@@ -154,9 +154,14 @@
             <!-- 表格数据行 -->
             <tr v-for="(item, index) in dataList" :key="index">
               <td align="left" class="uTd">{{ index + 1 }}</td>
-              <td align="left" class="uTd">{{ getSettleAddress(item) }}</td>
+              <td align="left" class="uTd">{{ getSettleAddress(item.settleAddress) }}</td>
               <td align="left" class="uTd">{{ formatStr(item.area) }} </td>
+<<<<<<< HEAD
               <td align="left" class="uTd">{{ item.landNo }}</td>
+=======
+              <!-- <td align="left" class="uTd">{{ dictOption(landNoList, item.landNo) }}</td> -->
+              <td align="left" class="uTd">{{  formatStr(item.landNo) }}</td>
+>>>>>>> 3059b79 (feat: 问题修复)
               <td align="left" class="uTd"></td>
             </tr>
             <tr style="height: 100px">

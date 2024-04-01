@@ -68,7 +68,12 @@ import type { LocationType } from '@/types/datafill'
 const dataLists = ref<LocationType[]>([])
 const getDataRequest = async () => {
   try {
-    const datas = await getResettleDetail(OtherDataType.settleAddressList)
+    console.log(props.type,'type是什么')
+    if (props.type||props.immigrantSettle.houseAreaType=="oneself"||props.immigrantSettle.houseAreaType=="concentrate") {
+               landNoList.value = dict[375].filter((item: any) => item.value != 1)
+        console.log( landNoList.value,'字典数据222')
+    }else{
+           const datas = await getResettleDetail(OtherDataType.settleAddressList)
     dataLists.value=datas
     console.log(props.immigrantSettle.settleAddress,'测试选择的东西')
     console.log(dataLists.value,'数据字典')
@@ -80,6 +85,7 @@ const getDataRequest = async () => {
       }else{
         landNoList.value=dict[375]
       }
+    }
   } catch (error) {
     console.log('error', error);
   }
@@ -91,7 +97,8 @@ interface PropsType {
   immigrantSettle?: any
   dataList?: any
   demographicLists?: any
-  flag?:any
+  flag?: any
+  type?:any
 }
 
 const emit = defineEmits(['submit'])

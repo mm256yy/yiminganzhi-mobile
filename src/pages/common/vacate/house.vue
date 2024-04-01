@@ -3,7 +3,8 @@
     <!-- 房屋腾空 -->
     <view class="btn-box">
       <view>
-        <view class="btn blue-btn" @click="handle"
+        <view
+class="btn blue-btn" @click="handle"
           v-if="!houseEmptyInfo.isHouseEmpty || houseEmptyInfo.isHouseEmpty === '1'">
           <image class="icon" src="@/static/images/icon_sign_white.png" mode="scaleToFill" />
           <text class="txt">办理</text>
@@ -55,7 +56,7 @@
         <uni-col :span="12">
           <view class="col">
             <view class="label">户内人口：</view>
-            <view class="content"> {{ dataInfo.demographicList.length }} </view>
+            <view class="content"> {{ props.dataInfo.demographicList.filter((item:any) => item.isDelete !== '1').length || 1}} </view>
           </view>
         </uni-col>
       </uni-row>

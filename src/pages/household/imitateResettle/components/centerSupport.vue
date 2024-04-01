@@ -77,6 +77,8 @@ const beadhouselist = ref<any>({
 })
 const resettlePeopleInfo = computed(() => {
   let householder: any = null
+  console.log(props.immigrantSettle, '模拟集中供养数据')
+  beadhouselist.value.beadhouse = props.immigrantSettle.beadhouse
   if (props.data && props.data.length) {
     householder = props.data.find((item: any) => item.relation === '1')
   }
@@ -91,7 +93,8 @@ const resettlePeopleInfo = computed(() => {
 const submitResettle = async () => {
   const params: any = {
     houseAreaType: HouseAreaType.concentrate,
-    doorNo: props.doorNo
+    doorNo: props.doorNo,
+    beadhouse: beadhouselist.value.beadhouse
   }
   if (props.immigrantSettle && props.immigrantSettle.uid) {
     params.uid = props.immigrantSettle.uid

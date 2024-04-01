@@ -87,6 +87,7 @@
           :dataList="dataList"
           :demographicLists="demographicList"
           :flag="true"
+          :type="(houseAreaType==HouseAreaType.concentrate||houseAreaType==HouseAreaType.oneself)?true:false"
           @submit="productionResettleSubmit"
         />
       </view>

@@ -146,14 +146,14 @@ export class ImpLandlord extends Common {
     }
 
     // 人口核定完成条件：人口性质设置成功
-    // if (this.isArrayAndNotNull(demographicList)) {
-    //   const res = demographicList.find((item) => !item.populationNature)
-    //   if (!res) {
-    //     landlordItem.immigrantFilling.populationStatus = '1'
-    //   } else {
-    //     landlordItem.immigrantFilling.populationStatus = '0'
-    //   }
-    // }
+    if (this.isArrayAndNotNull(demographicList)) {
+      const res = demographicList.find((item) => !item.populationNature)
+      if (!res) {
+        landlordItem.immigrantFilling.populationStatus = '1'
+      } else {
+        landlordItem.immigrantFilling.populationStatus = '0'
+      }
+    }
     // 房屋产权完成条件：列表中所有数据的是否合法均已设置完成
     // if (this.isArrayAndNotNull(immigrantHouseList)) {
     //   const res = immigrantHouseList.find((item) => item.isCompliance !== '1')
@@ -176,7 +176,7 @@ export class ImpLandlord extends Common {
     // 生产安置：列表所有安置方式设置完成，生产安置确认单上传完成
 
     if (this.isArrayAndNotNull(demographicList)) {
-      const res = demographicList.find((item) => !item.settingWay && item.name != '增计人口')
+      const res = demographicList.find((item) => !item.settingWay && item.name != '增计人口'&& item.isDelete != '1')
       console.log(res, '增计人口')
 
       if (!res && this.isNotNullPic(produceVerifyPic)) {
@@ -222,7 +222,7 @@ export class ImpLandlord extends Common {
 
     // 生产用地：生产安置确认里该户安置方式不是农业安置，文字提示，该节点自动完成
     if (landlordItem.settingWay !== '1') {
-      const res = demographicList.find((item) => !item.settingWay && item.name != '增计人口')
+      const res = demographicList.find((item) => !item.settingWay && item.name != '增计人口'&& item.isDelete != '1')
       if (!res && this.isNotNullPic(produceVerifyPic)) {
         landlordItem.immigrantFilling.landUseStatus = '1'
       } else {
@@ -468,7 +468,7 @@ export class ImpLandlord extends Common {
 
     // 农业安置
     if (this.isArrayAndNotNull(demographicList)) {
-      const res = demographicList.find((item) => !item.settingWay && item.name != '增计人口')
+      const res = demographicList.find((item) => !item.settingWay && item.name != '增计人口'&& item.isDelete != '1')
       if (res) {
         // 安置确认 没有选择
         landlordItem.immigrantFilling.agricultureArrangementStatus = '0'
@@ -489,7 +489,7 @@ export class ImpLandlord extends Common {
 
     // 养老保险
     if (this.isArrayAndNotNull(demographicList)) {
-      const res = demographicList.find((item) => !item.settingWay && item.name != '增计人口')
+      const res = demographicList.find((item) => !item.settingWay && item.name != '增计人口'&& item.isDelete != '1')
       if (res) {
         // 安置确认 没有选择
         landlordItem.immigrantFilling.retirementStatus = '0'
@@ -510,7 +510,7 @@ export class ImpLandlord extends Common {
     }
     // 自谋职业
     if (this.isArrayAndNotNull(demographicList)) {
-      const res = demographicList.find((item) => !item.settingWay && item.name != '增计人口')
+      const res = demographicList.find((item) => !item.settingWay && item.name != '增计人口'&& item.isDelete != '1')
       if (res) {
         // 安置确认 没有选择
         landlordItem.immigrantFilling.selfEmploymentStatus = '0'

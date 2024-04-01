@@ -26,7 +26,7 @@
         <uni-col :span="12">
           <view class="col">
             <view class="label">区块：</view>
-            <view class="content">{{ getSettleAddressText(landInfo.settleAddress) }}</view>
+            <view class="content">{{ getSettleAddressText(immigrantSettle.settleAddress) }}</view>
           </view>
         </uni-col>
         <uni-col :span="12">
@@ -80,10 +80,10 @@ import { OtherDataType } from '@/database'
 interface PropsType {
   dataInfo: LandlordType
 }
-
 const props = defineProps<PropsType>()
 let LandNoList: any = ref([])
 const dataLists = ref<any>([])
+const { immigrantSettle } = props.dataInfo as any
 const getDataRequest = async () => {
   try {
     const datas = await getResettleDetail(OtherDataType.settleAddressList)
