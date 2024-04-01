@@ -17,7 +17,8 @@
           <view class="col">
             <view class="label">户内人口：</view>
             <view class="content">
-              {{ formatStr(dataInfo?.demographicList?.length) }}
+              <!-- {{ formatStr(dataInfo?.demographicList?.length) }} -->
+              {{ props.dataInfo.demographicList.filter((item:any) => item.name != '增计人口' && item.isDelete !== '1').length || 1}}
             </view>
           </view>
         </uni-col>

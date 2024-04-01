@@ -225,7 +225,7 @@ const tableData = ref<any>([])
 
 // 总人口
 const familyNum = computed(() => {
-  return props.baseInfo.demographicList.filter((item:any) => item.isDelete !== '1').length || 1
+  return props.baseInfo.demographicList.filter((item:any) => item.name != '增计人口' &&item.isDelete !== '1').length || 1
 })
 
 // 农村移民
