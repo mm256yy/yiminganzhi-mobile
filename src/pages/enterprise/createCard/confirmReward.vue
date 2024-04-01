@@ -172,6 +172,7 @@ const onSave = (data: any, isVerify: any) => {
     data.isVerify = '1'
     const { doorNo, uid } = commonParams.value
     console.log(uid, '当前数据')
+    data.totalPrice=Number(data.number) * Number(data.price)
     let params = {
       ...data,
       doorNo,
