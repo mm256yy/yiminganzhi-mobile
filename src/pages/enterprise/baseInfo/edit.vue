@@ -1026,6 +1026,10 @@ onLoad((option: any) => {
         formData.value.townCode = option.townCode
         formData.value.villageCode = option.villageCode
       }
+        if (option.householderDoorNo && option.householderName) {
+        formData.value.householderDoorNo = option.householderDoorNo
+        formData.value.householderName = option.householderName
+      }
     }
   }
 })

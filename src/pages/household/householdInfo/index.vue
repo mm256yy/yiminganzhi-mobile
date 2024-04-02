@@ -249,13 +249,17 @@ const editLandlords = () => {
 const addLandlord = () => {
   const name = addRouterMap[tabType.value]
   routerForward(name, {
-    type: 'add'
+    type: 'add',
+    householderDoorNo: props.dataInfo.doorNo,
+    householderName: props.dataInfo.name
   })
 }
 const addLandlords = () => {
   const name = addRouterMap[tabTypes.value]
   routerForward(name, {
-    type: 'add'
+    type: 'add',
+    householderDoorNo: props.dataInfo.doorNo,
+    householderName: props.dataInfo.name
   })
 }
 const toLink = (type: string) => {

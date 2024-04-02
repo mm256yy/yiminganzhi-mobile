@@ -141,14 +141,26 @@
           </uni-col>
         </uni-row>
         <uni-row>
-           <uni-col :span="12">
-            <uni-forms-item label="关联居民户" :label-width="150" label-align="right" name="formData.householderDoorNo">
+          <uni-col :span="12">
+            <uni-forms-item
+              label="关联居民户"
+              :label-width="150"
+              label-align="right"
+              name="formData.householderDoorNo"
+            >
               <view class="flex-center">
-                <view :class="['name-wrapper', formData.householderName ? 'isSelected' : '']" @click="selectName">
+                <view
+                  :class="['name-wrapper', formData.householderName ? 'isSelected' : '']"
+                  @click="selectName"
+                >
                   {{ formData.householderName ? formData.householderName : '请选择' }}
                 </view>
                 <view @click="resetOwnersName">
-                  <image class="icon_img" src="@/static/images/icon_delete_mini.png" mode="scaleToFill" />
+                  <image
+                    class="icon_img"
+                    src="@/static/images/icon_delete_mini.png"
+                    mode="scaleToFill"
+                  />
                 </view>
               </view>
             </uni-forms-item>
@@ -668,16 +680,22 @@
         @click="submit"
       />
     </view>
-            <!-- 搜索选择户号 -->
+    <!-- 搜索选择户号 -->
     <search-list
-v-show="showSearch" :mainType="MainType.PeasantHousehold" type="multiple" stage="implementation" status="1"
-      @close="close" @confirm-select="confirmSelect" />
+      v-show="showSearch"
+      :mainType="MainType.PeasantHousehold"
+      type="multiple"
+      stage="implementation"
+      status="1"
+      @close="close"
+      @confirm-select="confirmSelect"
+    />
   </view>
 </template>
 
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
-import { ref,onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import dayjs from 'dayjs'
 import { routerBack, getStorage, StorageKey, fmtPicUrl, cardReg } from '@/utils'
 import { addLandlordApi, updateLandlordCompanyApi } from '@/service'
@@ -688,7 +706,7 @@ import UploadFile from '@/components/UploadFile/index.vue'
 import { MainType } from '@/types/common'
 import SearchList from '@/components/SearchList/Index.vue'
 const showSearch = ref<boolean>(false)
-import {  getImpLandlordListBySearchApi } from '@/service'
+import { getImpLandlordListBySearchApi } from '@/service'
 const getLandlordListBySearch = () => {
   let params = {
     type: MainType.PeasantHousehold,
@@ -697,10 +715,10 @@ const getLandlordListBySearch = () => {
   }
   getImpLandlordListBySearchApi(params).then((res) => {
     console.log(res, '居民户数据')
-    const list=res.filter((item:any)=> item.doorNo==formData.value.householderDoorNo)
-    formData.value.relateDoorName=list[0].name
-    console.log( formData.value.relateDoorName, '用户名字')
-    })
+    const list = res.filter((item: any) => item.doorNo == formData.value.householderDoorNo)
+    formData.value.relateDoorName = list[0]?.name
+    console.log(formData.value.relateDoorName, '用户名字')
+  })
 }
 // 表单数据
 const formData = ref<any>({
@@ -744,8 +762,7 @@ const formData = ref<any>({
   licensePic: '[]',
   otherPic: '[]',
   householderDoorNo: null,
-  householderName:null
-
+  householderName: null
 })
 
 // 获取数据字典
@@ -766,13 +783,19 @@ onLoad((option: any) => {
       formData.value = { ...params }
       title.value = '个体工商户基本概况编辑'
       uid.value = option.uid
-      console.log(uid.value,'测试传入的uid是什么？')
+      console.log(uid.value, '测试传入的uid是什么？')
     } else if (type.value === 'add') {
+      console.log(option)
+
       title.value = '添加个体工商户'
       if (option.areaCode && option.townCode && option.villageCode) {
         formData.value.areaCode = option.areaCode
         formData.value.townCode = option.townCode
         formData.value.villageCode = option.villageCode
+      }
+      if (option.householderDoorNo && option.householderName) {
+        formData.value.householderDoorNo = option.householderDoorNo
+        formData.value.householderName = option.householderName
       }
     }
   }
@@ -809,7 +832,7 @@ const confirmSelect = (data: any) => {
       nameArr.push(item.label)
     })
     formData.value.householderDoorNo = idArr.toString()
-    console.log(formData.value.householderDoorNo,'测试ID')
+    console.log(formData.value.householderDoorNo, '测试ID')
     formData.value.householderName = nameArr.toString()
   }
   close()
@@ -942,7 +965,7 @@ const submit = () => {
         ...baseInfo,
         company
       }
-      console.log(params,'测试传输数据')
+      console.log(params, '测试传输数据')
       updateLandlordCompanyApi(uid.value, params)
         .then((res) => {
           if (res) {
@@ -963,28 +986,28 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .flex-center {
-        display: flex;
-        align-items: center;
-      }
+  display: flex;
+  align-items: center;
+}
 .name-wrapper {
-        width: 200rpx;
-        height: 23rpx;
-        padding-left: 7rpx;
-        font-size: 9rpx;
-        line-height: 23rpx;
-        color: #999;
-        border: 1px solid #d9d9d9;
-        border-radius: 4px;
+  width: 200rpx;
+  height: 23rpx;
+  padding-left: 7rpx;
+  font-size: 9rpx;
+  line-height: 23rpx;
+  color: #999;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
 
-        &.isSelected {
-          color: #171718;
-        }
-      }
+  &.isSelected {
+    color: #171718;
+  }
+}
 .icon_img {
-        width: 23rpx;
-        height: 23rpx;
-        margin-left: 4rpx;
-      }
+  width: 23rpx;
+  height: 23rpx;
+  margin-left: 4rpx;
+}
 .form-wrapper {
   display: flex;
   flex-direction: column;
