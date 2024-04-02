@@ -93,6 +93,7 @@ class DataFill extends Landlord {
           landlordItem.demographicList = landlordItem.demographicList.map((item) => {
             if (item.uid === data.uid) {
               item = { ...item, ...data }
+              item.isUpdate='1'
             }
             return item
           })
@@ -131,6 +132,7 @@ class DataFill extends Landlord {
             if (item.uid === itemUid) {
               item.reason = reason || ''
               item.isPadDelete = '1'
+              item.isUpdate='1'
             }
             return item
           })
@@ -170,6 +172,7 @@ class DataFill extends Landlord {
               const itemUid = guid()
               item.uid = itemUid
               item.isPadDelete = '0'
+              item.isUpdate='1'
             }
             return item
           })
@@ -201,6 +204,7 @@ class DataFill extends Landlord {
           landlordItem.immigrantAppendantList = landlordItem.immigrantAppendantList.map((item) => {
             if (item.uid === itemUid) {
               item.isPadDelete = '1'
+              item.isUpdate='1'
             }
             return item
           })
@@ -290,6 +294,7 @@ class DataFill extends Landlord {
               const itemUid = guid()
               item.uid = itemUid
               item.isPadDelete = '0'
+              item.isUpdate='1'
             }
             return item
           })
@@ -322,6 +327,7 @@ class DataFill extends Landlord {
           landlordItem.immigrantTreeList = landlordItem.immigrantTreeList.map((item) => {
             if (item.uid === itemUid) {
               item.isPadDelete = '1'
+              item.isUpdate='1'
             }
             return item
           })
@@ -481,6 +487,7 @@ class DataFill extends Landlord {
           landlordItem.immigrantHouseList = landlordItem.immigrantHouseList.map((item) => {
             if (item.uid === data.uid) {
               item = { ...item, ...data }
+               item.isUpdate='1'
             }
             return item
           })
@@ -514,6 +521,7 @@ class DataFill extends Landlord {
             if (item.uid === itemUid) {
               item.reason = reason || ''
               item.isPadDelete = '1'
+              item.isUpdate='1'
             }
             return item
           })
