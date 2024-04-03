@@ -413,6 +413,9 @@ const gotoEdit = (data: any) => {
   } else if (data.code === -3) {
     // 业主失败
     // 填报
+    const role = getRole()
+    if ( role === RoleCodeType.implementation ||
+    role === RoleCodeType.implementleader) {
     const routerMap: any = {
       [MainType.PeasantHousehold]: 'householdImp',
       [MainType.IndividualHousehold]: 'selfPersonImp',
@@ -423,6 +426,29 @@ const gotoEdit = (data: any) => {
       uid: data.data.uid,
       type: 'edit'
     })
+    } else if(role === RoleCodeType.investigator) {
+      const routerMap: any = {
+      [MainType.PeasantHousehold]: 'household',
+      [MainType.IndividualHousehold]: 'selfPerson',
+      [MainType.Company]: 'enterprise',
+      [MainType.Village]: 'collective'
+    }
+    routerForward(routerMap[data.data.type], {
+      uid: data.data.uid,
+      type: 'edit'
+    })
+    } else if(role === RoleCodeType.assessor) {
+      const routerMap: any = {
+      [MainType.PeasantHousehold]: 'householdEva',
+      [MainType.IndividualHousehold]: 'selfPersonEva',
+      [MainType.Company]: 'enterpriseEva',
+      [MainType.Village]: 'collectiveEva'
+    }
+    routerForward(routerMap[data.data.type], {
+      uid: data.data.uid,
+      type: 'edit'
+    })
+    }
   }
 }
 
