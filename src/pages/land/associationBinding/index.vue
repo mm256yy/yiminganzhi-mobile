@@ -378,10 +378,12 @@ const inputBlur = () => {
 
 const getUidFromAPi = async () => {
   const requestParams = {
-    doorNo: checkSelected.value ? `${suffixNo()}${formData.value.doorNo}` : topDoorNo.value
+    doorNo: checkSelected.value ? `jl${suffixNo()}${formData.value.doorNo}` : topDoorNo.value
   }
   try {
     let result = await getLandlordListBySearchApi(requestParams)
+    console.error(requestParams, result)
+
     const routeName = 'landEvaIndex'
     const obj = {
       type: 'land',

@@ -135,9 +135,9 @@ export class landEstimateDtoListFills extends Common {
               doorNos = item.doorNo
               values = `doorNo='${item.doorNo}',householder='${
                 item.name
-              }',relationFlag='1',showDoorNo='${item.doorNo.slice(
-                2
-              )}',relationBy='资产评估-土地',householdType='${item.householdType}',remark=''`
+              }',relationFlag='1',showDoorNo='${
+                item.doorNo.indexOf('jl') != -1 ? item.doorNo.slice(2) : item.doorNo
+              }',relationBy='资产评估-土地',householdType='${item.householdType}',remark=''`
             }
           })
         } else {
@@ -191,12 +191,14 @@ export class landEstimateDtoListFills extends Common {
         console.log(userData, listTds, doorNos, '修改人')
         ImpDataFillController.updateLandlordAssetLandBatch(userData[0].uid, listTds)
         if (data.oldDoorNo.length > 0) {
-          console.log(data.oldDoorNo.length, '=================')
+          console.log(data.oldDoorNo, '=================')
 
           for (const element of data.oldDoorNo) {
             const oldUsers = await this.db.selectSql(
               `select * from ${LandlordTableName} where doorNo='${element}'`
             )
+            console.log(oldUsers)
+
             const oldUser = JSON.parse(oldUsers[0].content)
             console.log(oldUser)
 
