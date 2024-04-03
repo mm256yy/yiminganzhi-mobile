@@ -244,9 +244,12 @@ export class landEstimateDtoListFills extends Common {
           console.log('核心字段缺失')
           return
         }
+        const arr = data.uid.split(',')
+        console.log(arr,'数组')
         let values = ''
         values = `estimateFlag='1'`
-        const sql = `update ${landEstimateDtoListName} set ${values} where uid = '${data.uid}'`
+        const sql = `update ${landEstimateDtoListName} set ${values} where id in(${arr.map((item: any) => `'${item}'`).join(',')})`
+        console.log(sql,'sql数据')
         const res = await this.db.execteSql([sql])
         console.log('成功', res)
         if (res && res.code) {

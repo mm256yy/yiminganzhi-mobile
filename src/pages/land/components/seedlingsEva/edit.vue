@@ -308,6 +308,7 @@ const getLandlordDetail = () => {
     let arr: any = res && res.assetAppendantList ? res.assetAppendantList : []
     if (arr && arr.length) {
       let obj: any = arr.filter((item: any) => item.uid === itemUid)[0]
+      console.log(obj,'详情数据')
       formData.value = { ...obj }
       // formData.value.landNumber = formData.value.landName
     }
@@ -317,6 +318,7 @@ const getLandlordDetail = () => {
 onLoad((option: any) => {
   if (option && option.params) {
     commonParams.value = JSON.parse(option.params)
+    console.log(commonParams.value, 'commonParams数据')
     const { type, landEstimateDtoList } = commonParams.value
     landNumberList.value = landEstimateDtoList.map((item: any) => {
       return {
@@ -370,7 +372,7 @@ const countPrice = computed(() => {
 // 更新评估状态api
 const updateEstimateApi = async () => {
   try {
-    await updateEstimateFlag({ uid: commonParams.value?.landUid })
+    await updateEstimateFlag({ uid: commonParams.value?.idStr })
   } catch (error) {
     console.log(error)
   }

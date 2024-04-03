@@ -376,14 +376,14 @@
             "name" : "feedbackDetail",
             "path" : "pages/feedback/detail",
             "style" : {
-                "navigationBarTitleText" : "信息反馈详情"
+                "navigationBarTitleText" : "消息通知详情"
             }
         },
         {
             "name" : "NoticeDetail",
             "path" : "pages/home/components/NoticeDetail",
             "style" : {
-                "navigationBarTitleText" : "消息通知详情"
+                "navigationBarTitleText" : "信息反馈详情"
             }
         },
         {

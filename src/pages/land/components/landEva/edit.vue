@@ -229,10 +229,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch,nextTick } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { routerBack, getStorage, StorageKey } from '@/utils'
-import { updateImpLandlordAssetLandApi, getEvaLandlordItemApi, updateEstimateFlag } from '@/service'
+import { updateImpLandlordAssetLandApi, getEvaLandlordItemApi, updateEstimateFlag,getLandEstimateDtoListApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Container from '@/components/Container/index.vue'
 import { formatStr } from '@/utils'
@@ -291,6 +291,7 @@ const getLandlordDetail = () => {
 onLoad((option: any) => {
   if (option) {
     commonParams.value = JSON.parse(option.params)
+    console.log('传输的数据', commonParams.value)
     const { type } = commonParams.value
     if (type === 'edit') {
       title.value = '土地基本情况评估编辑'
@@ -345,7 +346,7 @@ const submit = () => {
 // 更新评估状态api
 const updateEstimateApi = async () => {
   try {
-    await updateEstimateFlag({ uid: commonParams.value?.landUid })
+    await updateEstimateFlag({ uid: commonParams.value?.idStr })
   } catch (error) {
     console.log(error)
   }

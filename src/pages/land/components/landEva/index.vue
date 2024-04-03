@@ -145,7 +145,9 @@ const reason = ref<string>('') // 删除原因
 
 const toLink = (type: string, itemUid: any, id: any) => {
   const { uid, doorNo, landUid } = props.dataInfo
-  let params = { type, uid, doorNo, itemUid, landUid, id }
+  const idStr = props.dataInfo.landEstimateDtoList.map((item: any) => item.id).join(',')
+  console.log(idStr,'数据集合')
+  let params = { type, uid, doorNo, itemUid, landUid, id,idStr }
   routerForward('baseLandEvaEdit', {
     params: JSON.stringify(params)
   })
