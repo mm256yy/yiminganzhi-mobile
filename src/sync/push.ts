@@ -37,7 +37,7 @@ class PushData {
       pullTime: '',
       villageList: [],
       immigrantGraveList: [],
-      feedbackDtoList:[]
+      feedbackDtoList: []
     }
   }
 
@@ -48,7 +48,7 @@ class PushData {
       pullTime: '',
       villageList: [],
       immigrantGraveList: [],
-      feedbackDtoList:[]
+      feedbackDtoList: []
     }
   }
 
@@ -126,8 +126,8 @@ class PushData {
                     (item: any) => item.isPadDelete !== '1'
                   )
                 }
-                if (landEstimateDtoList&& landEstimateDtoList.length) {
-                  landlordItem.landEstimateDtoList= landEstimateDtoList.filter(
+                if (landEstimateDtoList && landEstimateDtoList.length) {
+                  landlordItem.landEstimateDtoList = landEstimateDtoList.filter(
                     (item: any) => item.isPadDelete !== '1'
                   )
                 }
@@ -211,7 +211,7 @@ class PushData {
         db.selectTableData(OtherTableName, 'type', OtherDataType.PullTime)
           .then((res: any) => {
             this.state.pullTime = res.content
-             console.error('推送-时间数据', res.content)
+            console.error('推送-时间数据', res.content)
             resolve(Number(res.content) || '')
           })
           .catch(() => {
@@ -224,19 +224,15 @@ class PushData {
     })
   }
 
-// 单独推送FeedbackDtoList问题反馈数据
-   getFeedbackDtoList() {
-    return new Promise((resolve, reject) => {
+  // 单独推送FeedbackDtoList问题反馈数据
+  getFeedbackDtoList() {
+    return new Promise(async (resolve, reject) => {
       try {
-        db.selectTableData(OtherTableName, 'type', OtherDataType.FeedbackDtoList)
-          .then((res: any) => {
-            this.state.feedbackDtoList = res.content
-             console.error('推送-问题反馈数据', res.content)
-            resolve(res.content)
-          })
-          .catch(() => {
-            reject('')
-          })
+        const sql = `select * from ${OtherTableName} where type = '${OtherDataType.FeedbackDtoList}'`
+        const res = await this.db.selectSql(sql)
+        this.state.feedbackDtoList = JSON.parse(res[0].content)
+        console.error('推送-问题反馈数据', res, JSON.parse(res[0].content))
+        resolve(res[0].content)
       } catch (error) {
         reject('')
         console.log(error, 'getFeedbackDtoList')
@@ -534,7 +530,7 @@ class PushData {
               villageList,
               immigrantGraveList,
               pushStatus,
-              feedbackDtoList,
+              feedbackDtoList
             })
               .then((res) => {
                 console.log('推送: 接口suc:', res)
