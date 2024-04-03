@@ -135,7 +135,9 @@ export class landEstimateDtoListFills extends Common {
               doorNos = item.doorNo
               values = `doorNo='${item.doorNo}',householder='${
                 item.name
-              }',relationFlag='1',showDoorNo='${item.doorNo.slice(2)}'`
+              }',relationFlag='1',showDoorNo='${item.doorNo.slice(
+                2
+              )}',relationBy='资产评估-土地',householdType='${item.householdType}',remark=''`
             }
           })
         } else {
@@ -162,7 +164,9 @@ export class landEstimateDtoListFills extends Common {
           })
           values = `doorNo='${data.doorNo}',householder='${
             data.rightHolder
-          }',relationFlag='1',showDoorNo='${data.doorNo.slice(2)}'`
+          }',relationFlag='1',showDoorNo='${data.doorNo.slice(
+            2
+          )}',relationBy='资产评估-土地',householdType='LandNoMove',remark=''`
         }
         const uids = data.uid.split(',')
         let listTds = []
