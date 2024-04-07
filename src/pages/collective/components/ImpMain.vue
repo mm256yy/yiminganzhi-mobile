@@ -33,7 +33,7 @@
           <house-vacate v-if="tabVal === 4" :dataInfo="dataInfo" @update-data="updateData" />
 
           <!-- 动迁协议 -->
-          <relocation-agreement v-if="tabVal === 5" />
+          <relocation-agreement v-if="tabVal === 5" :dataInfo="dataInfo"/>
 
           <!-- 集体资产处置方法 -->
           <asset-disposal

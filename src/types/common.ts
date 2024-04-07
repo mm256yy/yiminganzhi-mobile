@@ -281,7 +281,7 @@ export interface CommentType {
   reader: any
   feedbackPic: any
   readerId: any
-  createdDate: any
+  createdDate: Date
   creater: string
   createdBy: string
   isSelf: any
