@@ -11,8 +11,8 @@
           </uni-col>
 
           <uni-col :span="12">
-            <uni-forms-item label="反馈阶段：" :label-width="150" label-align="right" name="formData.typeText">
-              <uni-data-select v-model="formData.typeText" :localdata="typeOptionsList" />
+            <uni-forms-item label="反馈阶段：" :label-width="150" label-align="right" name="formData.type">
+              <uni-data-select v-model="formData.type" :localdata="typeOptionsList" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -28,7 +28,8 @@
         <uni-row>
           <uni-col :span="24">
             <uni-forms-item label="附件：" :label-width="150" label-align="right" name="feedbackPic">
-              <uploadFiles v-model="flatOtherPicStr" :file-list="flatOtherPicStr" :limit="20"
+              <uploadFiles
+v-model="flatOtherPicStr" :file-list="flatOtherPicStr" :limit="20"
                 :accepts="['.jpg', '.png', '.pdf', '.jpeg']" show-type="grid" />
             </uni-forms-item>
           </uni-col>
@@ -71,6 +72,7 @@ onLoad((option) => {
   if (option) {
     const { name, type } = option
     typeOptionsList.value = feedbackStatusList(type)
+    console.log(typeOptionsList, 'typeOptionsList')
     formData.value.householder = name
   }
 })
@@ -92,7 +94,7 @@ const submit = async () => {
     showToast('户主不能为空')
     return
   }
-  if (!formData.value.typeText) {
+  if (!formData.value.type) {
     showToast('反馈阶段不能为空')
     return
   }
@@ -105,7 +107,7 @@ const submit = async () => {
     ...formData.value,
     feedbackPic: fmtPicUrl(flatOtherPicStr.value)
   }
-
+  console.log(params, 'params')
   try {
     const res = await addOtherItemApi(params)
     if (res) {

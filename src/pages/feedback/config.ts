@@ -2,39 +2,39 @@
 export const householdTypes = [
   {
     text: '资格认定',
-    value: '资格认定'
+    value: '1'
   },
   {
     text: '安置确认',
-    value: '安置确认'
+    value: '4'
   },
   {
     text: '择址确认',
-    value: '择址确认'
+    value: '5'
   },
   {
     text: '移民建卡',
-    value: '移民建卡'
+    value: '7'
   },
   {
     text: '动迁协议',
-    value: '动迁协议'
+    value: '6'
   },
   {
     text: '腾空过渡',
-    value: '腾空过渡'
+    value: '8'
   },
   {
     text: '搬迁安置',
-    value: '搬迁安置'
+    value: '9'
   },
   {
     text: '生产安置',
-    value: '生产安置'
+    value: '10'
   },
   {
     text: '相关手续',
-    value: '相关手续'
+    value: '11'
   }
 ]
 
@@ -42,19 +42,19 @@ export const householdTypes = [
 export const enterpriseTypes = [
   {
     text: '企业建卡',
-    value: '企业建卡'
+    value: '7'
   },
   {
     text: '动迁协议',
-    value: '动迁协议'
+    value: '6'
   },
   {
     text: '腾空过渡',
-    value: '腾空过渡'
+    value: '8'
   },
   {
     text: '相关手续',
-    value: '相关手续'
+    value: '11'
   }
 ]
 
@@ -62,19 +62,19 @@ export const enterpriseTypes = [
 export const individualTypes = [
   {
     text: '个体户建卡',
-    value: '个体户建卡'
+    value: '7'
   },
   {
     text: '动迁协议',
-    value: '动迁协议'
+    value: '6'
   },
   {
     text: '腾空过渡',
-    value: '腾空过渡'
+    value: '8'
   },
   {
     text: '相关手续',
-    value: '相关手续'
+    value: '11'
   }
 ]
 
@@ -82,10 +82,10 @@ export const individualTypes = [
 export const villageTypes = [
   {
     text: '腾空过渡',
-    value: '腾空过渡'
+    value: '8'
   },
   {
     text: '相关手续',
-    value: '相关手续'
+    value: '11'
   }
 ]

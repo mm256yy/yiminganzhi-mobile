@@ -28,7 +28,7 @@
           <uni-col :span="8" :push="1">
             <view class="item-field">
               <span class="item-label">工作阶段：</span>
-              <span class="item-value">{{ query?.typeText }}</span>
+              <span class="item-value">{{ query?.typeText? query?.typeText : householdTypes.find((item:any) => item.value == query?.type)?.text }}</span>
             </view>
           </uni-col>
           <uni-col :span="8" :push="1">
@@ -87,18 +87,25 @@ import Back from '@/components/Back/Index.vue'
 import { routerForward } from '@/utils'
 import type { CommentType } from '@/types/common'
 import dayjs from 'dayjs'
+import { householdTypes } from './config'
+interface DictType {
+  text: string,
+  value: string
+}
 
 
 // 获取数据字典
 const active = ref<number>(0)
 const query = ref<CommentType>()
 const list = ref<any[]>([])
-
+const typeOptionsList = ref<DictType[]>([])
 onLoad((option) => {
   if (option) {
     query.value = option as CommentType
     console.log('qery', query.value)
     list.value = JSON.parse(query.value.list)
+    typeOptionsList.value = householdTypes
+    console.log( typeOptionsList.value,'测试数据')
   }
 })
 
