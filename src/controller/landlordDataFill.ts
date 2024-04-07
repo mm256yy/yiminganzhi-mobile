@@ -132,7 +132,8 @@ class DataFill extends Landlord {
             if (item.uid === itemUid) {
               item.reason = reason || ''
               item.isPadDelete = '1'
-              item.isUpdate='1'
+              item.isUpdate = '1'
+              item.isDelete = '1'
             }
             return item
           })
@@ -204,7 +205,8 @@ class DataFill extends Landlord {
           landlordItem.immigrantAppendantList = landlordItem.immigrantAppendantList.map((item) => {
             if (item.uid === itemUid) {
               item.isPadDelete = '1'
-              item.isUpdate='1'
+              item.isUpdate = '1'
+              item.isDelete = '1'
             }
             return item
           })
@@ -327,7 +329,8 @@ class DataFill extends Landlord {
           landlordItem.immigrantTreeList = landlordItem.immigrantTreeList.map((item) => {
             if (item.uid === itemUid) {
               item.isPadDelete = '1'
-              item.isUpdate='1'
+              item.isUpdate = '1'
+              item.isDelete = '1'
             }
             return item
           })
@@ -521,7 +524,8 @@ class DataFill extends Landlord {
             if (item.uid === itemUid) {
               item.reason = reason || ''
               item.isPadDelete = '1'
-              item.isUpdate='1'
+              item.isUpdate = '1'
+              item.isDelete = '1'
             }
             return item
           })

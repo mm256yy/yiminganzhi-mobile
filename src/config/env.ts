@@ -10,8 +10,12 @@ const envMap = {
   //   apiBaseUrl: 'http://192.168.1.104:8880',
   //   apiBasePath: '/api'
   // },
+  // local: {
+  //   apiBaseUrl: 'http://192.168.1.119:8880',
+  //   apiBasePath: '/api'
+  // },
   local: {
-    apiBaseUrl: 'http://192.168.1.119:8880',
+    apiBaseUrl: 'http://rongdu.natapp1.cc',
     apiBasePath: '/api'
   },
   // local: {
