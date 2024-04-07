@@ -240,7 +240,6 @@ export class Landlord extends Common {
         data.reportStatus = ReportStatusEnum.UnReport
         data.reportUser = ''
         data.reportDate = ''
-
         data.company = data.company || {}
         if (data.type === MainType.Company || data.type === MainType.IndividualHousehold) {
           const companyUid = guid()
@@ -351,7 +350,7 @@ export class Landlord extends Common {
           reject(false)
           return
         }
-        const values = `padStatus = 'modify',isPadDelete = '1',updatedDate = '${getCurrentTimeStamp()}'`
+        const values = `padStatus = 'modify',isPadDelete = '1',isDelete='1',updatedDate = '${getCurrentTimeStamp()}'`
         const res = await this.db.updateTableData(LandlordTableName, values, 'uid', uid)
         if (res && res.code) {
           reject(false)

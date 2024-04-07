@@ -230,9 +230,14 @@ class PushData {
       try {
         const sql = `select * from ${OtherTableName} where type = '${OtherDataType.FeedbackDtoList}'`
         const res = await this.db.selectSql(sql)
-        this.state.feedbackDtoList = JSON.parse(res[0].content)
-        console.error('推送-问题反馈数据', res, JSON.parse(res[0].content))
-        resolve(res[0].content)
+        console.log(res,'res是啥？')
+        if (res.length>0) { 
+        this.state.feedbackDtoList = JSON.parse(res[0]?.content)
+          console.error('推送-问题反馈数据', res, JSON.parse(res[0]?.content))
+        resolve(res[0]?.content)
+        } else {
+          resolve('')
+        }
       } catch (error) {
         reject('')
         console.log(error, 'getFeedbackDtoList')
@@ -401,6 +406,8 @@ class PushData {
         const list: LandlordDDLType[] = await db.selectTableData(
           LandlordTableName,
           'isPadDelete',
+          '1',
+          'isDelete',
           '1'
         )
         if (this.isArrayAndNotNull(list)) {

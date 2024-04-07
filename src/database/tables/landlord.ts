@@ -60,12 +60,13 @@ create table if not exists ${LandlordTableName} (
   'padStatus' text DEFAULT 'default',
   'isPadDelete' text DEFAULT '0',
   'updatedDate' text DEFAULT NULL,
-  'houseAllStatus' text
+  'houseAllStatus' text,
+  'isDelete' text DEFAULT '0'
 );
 `
 
 // 需要更新的字段定义 和 字段赋值
-export const landlordFields = `'uid','id','padStatus','doorNo','type','name','reportStatus','reportDate','reportUser','signStatus','signDate','areaCode','townCode','villageCode','warnStatus','currentProgress','virutalVillageCode','content','longitude','latitude','card','updatedDate','isPadDelete','houseAllStatus'`
+export const landlordFields = `'uid','id','padStatus','doorNo','type','name','reportStatus','reportDate','reportUser','signStatus','signDate','areaCode','townCode','villageCode','warnStatus','currentProgress','virutalVillageCode','content','longitude','latitude','card','updatedDate','isPadDelete','houseAllStatus','isDelete'`
 // status 字段为 当前数据是否有变更的状态
 export const getLandlordValues = (item: LandlordType, status: 'default' | 'modify') =>
   `'${item.uid}','${item.id || null}','${status}','${item.doorNo}','${item.type}','${item.name}','${
@@ -78,7 +79,7 @@ export const getLandlordValues = (item: LandlordType, status: 'default' | 'modif
     item.currentProgress
   }','${item.virutalVillageCode}','${JSON.stringify(item)}','${item.longitude || ''}','${
     item.latitude || ''
-  }','${item.card}','${getCurrentTimeStamp()}','0','${item.houseAllStatus}'`
+  }','${item.card}','${getCurrentTimeStamp()}','0','${item.houseAllStatus}','${item.isDelete}'`
 
 // 获取 更新的sql值
 export const getLandlordSqlValues = (data: LandlordType) =>
@@ -94,4 +95,4 @@ export const getLandlordSqlValues = (data: LandlordType) =>
     data.virutalVillageCode || ''
   }',content = '${JSON.stringify(data)}',longitude = '${data.longitude || ''}',latitude = '${
     data.latitude || ''
-  }',card = '${data.card}',updatedDate = '${getCurrentTimeStamp()}',houseAllStatus = '${data.houseAllStatus}'`
+  }',card = '${data.card}',updatedDate = '${getCurrentTimeStamp()}',houseAllStatus = '${data.houseAllStatus}',isDelete = '${data.isDelete}'`
