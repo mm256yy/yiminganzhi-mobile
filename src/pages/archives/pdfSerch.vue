@@ -349,14 +349,26 @@
             </tr>
             <tr v-if="baseInfo.type == 'PeasantHousehold'">
               <td align="center" class="uTd">户内人口</td>
-              <td align="center" class="uTd"> {{ baseInfo.demographicList?.filter((item) => item.name != '增计人口' && item.isDelete !== '1').length || 1}}</td>
-              
+              <td align="center" class="uTd">
+                {{
+                  baseInfo.demographicList?.filter(
+                    (item) => item.name != '增计人口' && item.isDelete !== '1'
+                  ).length || 1
+                }}</td
+              >
+
               <td align="center" class="uTd">联系方式</td>
               <td align="center" class="uTd">{{ baseInfo.phone }}</td>
             </tr>
             <tr>
               <td align="center" class="uTd">迁出地</td>
-              <td align="center" class="uTd" colspan="3"> {{ baseInfo.address }}</td>
+              <td align="center" class="uTd" colspan="3">
+                {{
+                  baseInfo.type == 'PeasantHousehold'
+                    ? formatStr(baseInfo.address)
+                    : formatStr(baseInfo.beforeAddress)
+                }}</td
+              >
             </tr>
             <tr>
               <td align="center" class="uTd" colspan="4"

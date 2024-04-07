@@ -33,7 +33,7 @@
                   @open="initNaturalVillageData"
                   @confirm="confirmSelectNaturalVillage"
                 />
-                <view class="add-btn" @click="addNaturalVillage">添加自然村1</view>
+                <view class="add-btn" @click="addNaturalVillage">添加自然村</view>
               </view>
             </uni-forms-item>
           </uni-col>
@@ -305,15 +305,17 @@ const submit = () => {
     doorNo = formData.value.doorNo
   } else {
     if (compatibleOldSystems()) {
-      doorNo = String(formData.value.otherCode) + formData.value.suffixNo
+      doorNo = 'jl'+String(formData.value.otherCode) + formData.value.suffixNo
     } else {
       if (formData.value.villageCode) {
-        doorNo = String(formData.value.villageCode) + formData.value.suffixNo
+        doorNo = 'jl'+filterViewDoorNoWithBefore(formData.value.villageCode) + formData.value.suffixNo
       } else {
         doorNo = ''
       }
     }
   }
+  console.error(doorNo);
+  
   let params = {
     ...formData.value,
     doorNo: doorNo,
@@ -347,6 +349,8 @@ const submit = () => {
     return
   } else {
     if (type.value === 'add') {
+      console.error(params)
+
       addLandlordApi(params)
         .then((res) => {
           if (res) {
