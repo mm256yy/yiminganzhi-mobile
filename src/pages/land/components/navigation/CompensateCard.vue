@@ -7,7 +7,7 @@
           <view class="btn blue" @click="toConfirmReward"> 奖励费调整 </view>
         </view>
         <view class="right">
-          <view class="btn green">
+          <view class="btn green" @click="handleClick">
             <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
             <text class="txt">打印报表</text>
           </view>
@@ -231,6 +231,17 @@ const toEdit = () => {
   })
 }
 
+const handleClick = () => {
+  // routerForward('pdfSerch', {
+  //   data: JSON.stringify(demographicList.value),
+  //   dataInfo: JSON.stringify(props.dataInfo),
+  //   id: 1
+  // })
+    routerForward('pdfBC', {
+    type: 6,
+    dataInfo: props.dataInfo.uid
+  })
+}
 // 奖励资费确认
 const toConfirmReward = () => {
   const { uid, doorNo } = props.dataInfo
@@ -245,7 +256,7 @@ const getUnit = (item: any) => {
   let str1 = item?.cityCodeText ? item?.cityCodeText : ''
   let str2 = item?.areaCodeText ? item?.areaCodeText : ''
   let str3 = item?.townCodeText ? item?.townCodeText : ''
-  let str4 = item?.villageText ? item?.villageText : ''
+  let str4 = item?.villageCodeText ? item?.villageCodeText : ''
   return str1.concat(str2).concat(str3).concat(str4)
 }
 </script>

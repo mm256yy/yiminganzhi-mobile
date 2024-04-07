@@ -376,14 +376,14 @@
             "name" : "feedbackDetail",
             "path" : "pages/feedback/detail",
             "style" : {
-                "navigationBarTitleText" : "消息通知详情"
+                "navigationBarTitleText" : "信息反馈详情"
             }
         },
         {
             "name" : "NoticeDetail",
             "path" : "pages/home/components/NoticeDetail",
             "style" : {
-                "navigationBarTitleText" : "信息反馈详情"
+                "navigationBarTitleText" : "消息通知详情"
             }
         },
         {
@@ -433,6 +433,13 @@
             "path" : "pages/archives/pdf",
             "style" : {
                 "navigationBarTitleText" : "pdf预览-移民建卡"
+            }
+        },
+        {
+            "name" : "pdfBC",
+            "path" : "pages/archives/pdfBC",
+            "style" : {
+                "navigationBarTitleText" : "pdf预览-只征地不搬迁补偿卡"
             }
         },
         {

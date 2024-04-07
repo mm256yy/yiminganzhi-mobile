@@ -104,7 +104,8 @@ const toTarget = (item: any) => {
   })
 }
 
-const toNotify=  (item: any) => {
+const toNotify = (item: any) => {
+  console.log('item数据')
   const params = {
     ...item
   }

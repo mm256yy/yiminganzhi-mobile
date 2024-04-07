@@ -1,6 +1,6 @@
 <template>
   <view class="form-wrapper">
-    <Back title="信息反馈详情" needConfirm />
+    <Back title="消息通知详情" needConfirm />
     <view class="main">
        <rich-text :nodes="query.content"/>
     </view>
