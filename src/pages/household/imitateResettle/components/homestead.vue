@@ -141,12 +141,13 @@ watch(
     immediate: true
   }
 )
+
 watch(
-  () => props.data,
-  (val) => {
-    if (val&&!props.flag) {
-       console.log(val,'测试数据')
-      const datas = val.filter((item: any) => item.relation == '1')
+  () => props.dataList,
+  () => {
+    if (props.data&&!props.flag) {
+       console.log(props.data,'测试数据')
+      const datas = props.data.filter((item: any) => item.relation == '1')
       console.log(datas,'测试数据datas')
       if (datas[0].settingWay == '1') {
         console.log(props.dataList, '数据')
@@ -159,18 +160,6 @@ watch(
       } else {
         areaList.value = props.dataList.filter((item: any) => item.type == '1')
       }    
-    }
-  },
-  {
-    deep: true,
-    immediate: true
-  }
-)
-watch(
-  () => props.dataList,
-  (val) => {
-    if (val&&props.flag) {
-       areaList.value = val.filter((item:any) => item.type == '1')
     }
   },
   {

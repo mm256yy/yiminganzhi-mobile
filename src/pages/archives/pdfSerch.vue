@@ -207,7 +207,9 @@
               <th align="left" class="uTitle">备注</th>
             </tr>
             <!-- 表格数据行 -->
-            <div v-if="baseInfo.houseAreaType == 'homestead' || baseInfo.houseAreaType == 'flat'">
+            <template
+              v-if="baseInfo.houseAreaType == 'homestead' || baseInfo.houseAreaType == 'flat'"
+            >
               <tr v-for="(item, index) in dataList" :key="index">
                 <td align="left" class="uTd">{{ index + 1 }}</td>
                 <td align="left" class="uTd">{{ item.settleAddressText }}</td>
@@ -215,7 +217,8 @@
                 <td align="left" class="uTd">{{ item.area }}</td>
                 <td align="left" class="uTd"></td>
               </tr>
-            </div>
+            </template>
+
             <div
               style="
                 height: 100px;

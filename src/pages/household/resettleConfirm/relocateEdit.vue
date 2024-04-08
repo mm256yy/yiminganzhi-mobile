@@ -16,14 +16,14 @@
           </view>
         </view>
         <homestead
-          v-if="houseType === HouseAreaType.homestead"
+          v-if="houseType === HouseAreaType.homestead && demographicList.length > 0"
           :baseInfo="(dataInfo as LandlordType)"
           :doorNo="doorNo"
           :immigrantSettle="immigrantSettle"
           :fromResettleConfirm="true"
           :dataList="dataList"
           :data="demographicList"
-          :flag='false'
+          :flag="false"
           @submit="immigrantSettleSubmit"
         />
         <apartment
@@ -34,7 +34,7 @@
           :fromResettleConfirm="true"
           :dataList="dataList"
           :data="demographicList"
-          :flag='false'
+          :flag="false"
           @submit="immigrantSettleSubmit"
         />
         <centerSupport
@@ -61,7 +61,7 @@
 <script setup lang="ts">
 import { onLoad } from '@dcloudio/uni-app'
 import Container from '@/components/Container/index.vue'
-import { computed, ref,onMounted } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { HouseAreaType } from '@/types/common'
 import { PopulationType } from '@/types/datafill'
 import { ImmigrantSettleType } from '@/types/impDataFill'
@@ -76,16 +76,17 @@ import centerSupport from '../imitateResettle/components/centerSupport.vue'
 import findSelf from '../imitateResettle/components/findSelf.vue'
 import { LandlordType } from '@/types/sync'
 import { getResettleDetail } from '@/service'
-import { OtherDataType } from '@/database';
+import { OtherDataType } from '@/database'
 import type { LocationType } from '@/types/datafill'
 
 const dataList = ref<LocationType[]>([])
 const getDataRequest = async () => {
   try {
     const data = await getResettleDetail(OtherDataType.settleAddressList)
-    dataList.value=data
+    dataList.value = data
+    console.log(dataList.value, '安置点数据')
   } catch (error) {
-    console.log('error', error);
+    console.log('error', error)
   }
 }
 const uid = ref<string>('')
@@ -131,7 +132,7 @@ const getLandlordDetail = async () => {
     if (res) {
       dataInfo.value = res
       demographicList.value = res.demographicList
-      console.log(res.demographicList,'demographicList')
+      console.log(res.demographicList, 'demographicList')
       doorNo.value = res.doorNo
       console.log(res.immigrantSettle, 'immigrantSettle')
       immigrantSettle.value = res.immigrantSettle || {}

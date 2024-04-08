@@ -42,7 +42,8 @@
           :immigrantSettle="simulateImmigrantSettle"
           :fromResettleConfirm="false"
           :dataList="dataList"
-          :flag='true'
+          :flag="false"
+          :data="props.dataInfo.demographicList"
           @submit="immigrantSettleSubmit"
         />
 
@@ -54,7 +55,8 @@
           :immigrantSettle="simulateImmigrantSettle"
           :fromResettleConfirm="false"
           :dataList="dataList"
-          :flag='true'
+          :flag="true"
+          :data="demographicList"
           @submit="immigrantSettleSubmit"
         />
 
@@ -87,7 +89,11 @@
           :dataList="dataList"
           :demographicLists="demographicList"
           :flag="true"
-          :type="(houseAreaType==HouseAreaType.concentrate||houseAreaType==HouseAreaType.oneself)?true:false"
+          :type="
+            houseAreaType == HouseAreaType.concentrate || houseAreaType == HouseAreaType.oneself
+              ? true
+              : false
+          "
           @submit="productionResettleSubmit"
         />
       </view>
@@ -106,7 +112,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted, onBeforeUnmount,watch } from 'vue'
+import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import { StorageKey, getStorage } from '@/utils/storage'
 import resettleDesc from './resettleDesc.vue'
 import people from './components/people.vue'
@@ -124,7 +130,7 @@ import {
   updateImpLandlordSimulateImmigrantSettleApi
 } from '@/service'
 import { getResettleDetail } from '@/service'
-import { OtherDataType } from '@/database';
+import { OtherDataType } from '@/database'
 import type { LocationType } from '@/types/datafill'
 
 const dataList = ref<LocationType[]>([])
@@ -132,9 +138,9 @@ const getDataRequest = async () => {
   try {
     const data = await getResettleDetail(OtherDataType.settleAddressList)
     dataList.value = data
-    console.log(dataList.value,'安置点数据')
+    console.log(dataList.value, '安置点数据')
   } catch (error) {
-    console.log('error', error);
+    console.log('error', error)
   }
 }
 interface PropsType {
@@ -155,7 +161,7 @@ watch(
   () => props.dataInfo,
   (val) => {
     if (val) {
-      console.log(val.demographicList,'测试人口的数据')
+      console.log(val.demographicList, '测试人口的数据')
     }
   },
   { immediate: true, deep: true }
@@ -167,42 +173,44 @@ watch(
 //     :
 // 获取模拟安置 生产安置信息
 const simulateDemographic = computed(() => {
-//   return  props.dataInfo &&
-//  props.dataInfo.simulateDemographic &&
-//      props.dataInfo.simulateDemographic.length
-//     ? props.dataInfo.simulateDemographic
-//      :demographicList.value.map((item) => {
-//     const {
-//       id: demographicId,
-//       name,
-//       sex,
-//       relation,
-//       card,
-//       censusType,
-//       populationNature,
-//       settingWay,
-//       settingRemark,
-//       isDelete
-//     } = item
-//     return {
-//       demographicId,
-//       name,
-//       sex,
-//       relation,
-//       card,
-//       censusType,
-//       populationNature,
-//       settingWay,
-//       settingRemark,
-//       isDelete,
-//     }
-//   })
-  return props.dataInfo && props.dataInfo.simulateDemographic ? props.dataInfo.simulateDemographic : []
+  //   return  props.dataInfo &&
+  //  props.dataInfo.simulateDemographic &&
+  //      props.dataInfo.simulateDemographic.length
+  //     ? props.dataInfo.simulateDemographic
+  //      :demographicList.value.map((item) => {
+  //     const {
+  //       id: demographicId,
+  //       name,
+  //       sex,
+  //       relation,
+  //       card,
+  //       censusType,
+  //       populationNature,
+  //       settingWay,
+  //       settingRemark,
+  //       isDelete
+  //     } = item
+  //     return {
+  //       demographicId,
+  //       name,
+  //       sex,
+  //       relation,
+  //       card,
+  //       censusType,
+  //       populationNature,
+  //       settingWay,
+  //       settingRemark,
+  //       isDelete,
+  //     }
+  //   })
+  return props.dataInfo && props.dataInfo.simulateDemographic
+    ? props.dataInfo.simulateDemographic
+    : []
 })
 
 // 获取模拟安置 搬迁安置信息
 const simulateImmigrantSettle = computed(() => {
-  console.log(props.dataInfo,'搬迁安置信息')
+  console.log(props.dataInfo, '搬迁安置信息')
   return props.dataInfo && props.dataInfo.simulateImmigrantSettle
     ? props.dataInfo.simulateImmigrantSettle
     : {}
@@ -210,7 +218,7 @@ const simulateImmigrantSettle = computed(() => {
 
 //获取模拟安置 生产安置信息
 const simulateDemographics = computed(() => {
-  console.log(props.dataInfo,'生产安置信息')
+  console.log(props.dataInfo, '生产安置信息')
   return props.dataInfo && props.dataInfo.simulateDemographic
     ? props.dataInfo.simulateDemographic
     : {}
@@ -278,7 +286,7 @@ const houseAreaTypeChange = (item: any) => {
  * 生产安置确认
  */
 const productionResettleSubmit = async (data: any) => {
-  console.log(data,uid.value,'生产安置确认')
+  console.log(data, uid.value, '生产安置确认')
   const res = await updateImpLandlordSimulateDemographicApi(uid.value, data)
   if (res) {
     showToast('生产安置保存成功!')
@@ -290,7 +298,7 @@ const productionResettleSubmit = async (data: any) => {
  * 搬迁安置确认
  */
 const immigrantSettleSubmit = async (data: any) => {
-  console.log(data,'传过来的数据是啥?')
+  console.log(data, '传过来的数据是啥?')
   const res = await updateImpLandlordSimulateImmigrantSettleApi(uid.value, data)
   if (res) {
     showToast('搬迁安置保存成功!')

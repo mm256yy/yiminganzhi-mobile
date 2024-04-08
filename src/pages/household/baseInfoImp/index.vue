@@ -77,7 +77,7 @@
           <view class="col">
             <view class="label">所在位置：</view>
             <view class="content">
-              {{ dictOption(locationTypes, dataInfo.locationType) }}
+              {{formatDict(dataInfo.locationType, 326)}}
             </view>
           </view>
         </uni-col>

@@ -24,7 +24,7 @@
           />
 
           <!-- 设施设备评估报告 -->
-          <equipment-eva-report v-if="tabVal === 3" :dataInfo="dataInfo.immigrantEquipmentList" />
+          <equipment-eva-report v-if="tabVal === 3" :dataInfo="dataInfo.immigrantDocumentation" />
 
           <!-- 个体户建卡 -->
           <create-card

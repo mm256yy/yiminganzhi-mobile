@@ -138,7 +138,29 @@
             </uni-forms-item>
           </uni-col>
         </uni-row>
-
+         <uni-row>
+          <uni-col :span="12">
+            <uni-forms-item
+             required
+              label="补偿金额"
+              :label-width="150"
+              label-align="right"
+              name="formData.compensationAmount"
+            >
+              <view :class="['input-wrapper', focusIndex === 5 ? 'focus' : '']">
+                <input
+                  class="input-txt"
+                  placeholder="请输入"
+                  type="number"
+                  v-model="formData.compensationAmount"
+                  @focus="inputFocus(5)"
+                  @blur="inputBlur"
+                />
+                <view class="unit">元</view>
+              </view>
+            </uni-forms-item>
+          </uni-col>
+        </uni-row>
         <uni-row>
           <uni-col :span="24">
             <uni-forms-item
