@@ -199,7 +199,7 @@ const close = () => {
 const confirmSelect = (data: any) => {
   if (data) {
     formData.value.registrantName = data.label
-    formData.value.registrantDoorNo = data.value
+    formData.value.registrantDoorNo = data.value.slice(2)
     formData.value.registrantId = data.id
   }
   close()

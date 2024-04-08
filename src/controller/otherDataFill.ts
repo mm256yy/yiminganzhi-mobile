@@ -6,6 +6,8 @@ import { OtherTableName, OtherDataType } from '@/database'
 import { Common } from './common'
 import { getCurrentTimeStamp, guid } from '@/utils'
 import { OtherController } from '@/controller'
+import dayjs from 'dayjs'
+
 class FeedbackDto extends Common {
   constructor() {
     super()
@@ -19,7 +21,7 @@ class FeedbackDto extends Common {
           reject(false)
         }
         const uid = guid()
-        const createdDate = getCurrentTimeStamp()
+        const createdDate = dayjs()
         data.uid = uid
         data.createdDate = createdDate
         const list = await OtherController.getOtherWithType(OtherDataType.FeedbackDtoList)

@@ -34,7 +34,7 @@
           <uni-col :span="8" :push="1">
             <view class="item-field">
               <span class="item-label">提交时间：</span>
-              <span>{{ query?.createdDate ? dayjs(Number(query?.createdDate)).format('YYYY-MM-DD') : '--' }}</span>
+              <span>{{ query?.createdDate ? dayjs(query?.createdDate).format('YYYY-MM-DD') : '--' }}</span>
             </view>
           </uni-col>
         </uni-row>
@@ -105,7 +105,7 @@ onLoad((option) => {
     console.log('qery', query.value)
     list.value = JSON.parse(query.value.list)
     typeOptionsList.value = householdTypes
-    console.log( typeOptionsList.value,'测试数据')
+    console.log( typeOptionsList.value,'测试数据',dayjs('2024-04-08T06:25:10.348Z').format('YYYY-MM-DD'))
   }
 })
 

@@ -37,7 +37,7 @@
               <view class="col">
                 <view class="label">户号：</view>
                 <view class="content">
-                  {{ props.dataInfo.showDoorNo }}
+                  {{ props.dataInfo.doorNo.slice(2) }}
                 </view>
               </view>
             </uni-col>
