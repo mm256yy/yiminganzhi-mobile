@@ -80,10 +80,12 @@ export const getLandEstimateDtoListValues = (
     if (!item[key]) {
       item[key] == null
     }
-    if (key != 'isUpdate') {
+    if (key != 'isUpdate' && item[key]) {
       m = m + `'${item[key]}',`
-    } else {
+    } else if (key == 'isUpdate') {
       m = m + `'${item[key]}'`
+    } else {
+      m = m + `'',`
     }
   }
   return m
