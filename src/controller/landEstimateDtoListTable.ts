@@ -197,10 +197,9 @@ export class landEstimateDtoListFills extends Common {
             const oldUsers = await this.db.selectSql(
               `select * from ${LandlordTableName} where doorNo='${element}'`
             )
-            console.log(oldUsers)
 
             const oldUser = JSON.parse(oldUsers[0].content)
-            console.log(oldUser)
+            console.log(oldUser, '搬移土地资产')
 
             if (oldUser.landEstimateDtoList) {
               let m = false
@@ -217,13 +216,14 @@ export class landEstimateDtoListFills extends Common {
               }
             }
             if (oldUser.assetAppendantList) {
-              for (const key of oldUser.assetAppendantList) {
-                console.log(key, '土地信息')
-                console.log(landNumbers, '土地编号')
-
-                if (landNumbers.includes(key.landNumber)) {
-                  await addImpLandlordAssetAppendantApi(userData[0].uid, key)
-                  await deleteImpLandlordAssetAppendantApi(oldUser.uid, key.uid)
+              for (const keys of oldUser.assetAppendantList) {
+                if (landNumbers.includes(keys.landNumber)) {
+                  console.log(keys, '土地信息')
+                  console.log(landNumbers, '土地编号')
+                  await addImpLandlordAssetAppendantApi(userData[0].uid, keys)
+                  console.log(keys, '青苗')
+                  console.log(keys.uid, '青苗id')
+                  await deleteImpLandlordAssetAppendantApi(oldUser.uid, keys.uid)
                 }
               }
             }
@@ -247,11 +247,13 @@ export class landEstimateDtoListFills extends Common {
           return
         }
         const arr = data.uid.split(',')
-        console.log(arr,'数组')
+        console.log(arr, '数组')
         let values = ''
         values = `estimateFlag='1'`
-        const sql = `update ${landEstimateDtoListName} set ${values} where id in(${arr.map((item: any) => `'${item}'`).join(',')})`
-        console.log(sql,'sql数据')
+        const sql = `update ${landEstimateDtoListName} set ${values} where id in(${arr
+          .map((item: any) => `'${item}'`)
+          .join(',')})`
+        console.log(sql, 'sql数据')
         const res = await this.db.execteSql([sql])
         console.log('成功', res)
         if (res && res.code) {

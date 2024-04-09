@@ -854,13 +854,15 @@ class ImpDataFill extends ImpLandlord {
         }
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
-          landlordItem.immigrantInfrastructureList = landlordItem.immigrantInfrastructureList.map((item) => {
-            if (item.uid === data.uid) {
-              item = { ...item, ...data }
-              item.isUpdate = '1'
+          landlordItem.immigrantInfrastructureList = landlordItem.immigrantInfrastructureList.map(
+            (item) => {
+              if (item.uid === data.uid) {
+                item = { ...item, ...data }
+                item.isUpdate = '1'
+              }
+              return item
             }
-            return item
-          })
+          )
         } else {
           reject(false)
           console.log('调查对象信息查询失败')
@@ -886,14 +888,16 @@ class ImpDataFill extends ImpLandlord {
         }
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
-          landlordItem.immigrantInfrastructureList = landlordItem.immigrantInfrastructureList.map((item) => {
-            if (item.uid === itemUid) {
-              item.deleteReason = deleteReason || ''
-              item.isDelete = '1'
-              item.isUpdate = '1'
+          landlordItem.immigrantInfrastructureList = landlordItem.immigrantInfrastructureList.map(
+            (item) => {
+              if (item.uid === itemUid) {
+                item.deleteReason = deleteReason || ''
+                item.isDelete = '1'
+                item.isUpdate = '1'
+              }
+              return item
             }
-            return item
-          })
+          )
         } else {
           reject(false)
           console.log('调查对象信息查询失败')
@@ -1054,13 +1058,15 @@ class ImpDataFill extends ImpLandlord {
         }
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
-          landlordItem.immigrantInfrastructureList = landlordItem.immigrantInfrastructureList.map((item) => {
-            if (item.uid === data.uid) {
-              item = { ...item, ...data }
-              item.isUpdate = '1'
+          landlordItem.immigrantInfrastructureList = landlordItem.immigrantInfrastructureList.map(
+            (item) => {
+              if (item.uid === data.uid) {
+                item = { ...item, ...data }
+                item.isUpdate = '1'
+              }
+              return item
             }
-            return item
-          })
+          )
         } else {
           reject(false)
           console.log('调查对象信息查询失败')
@@ -1086,14 +1092,16 @@ class ImpDataFill extends ImpLandlord {
         }
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
-          landlordItem.immigrantInfrastructureList = landlordItem.immigrantInfrastructureList.map((item) => {
-            if (item.uid === itemUid) {
-              item.deleteReason = deleteReason || ''
-              item.isDelete = '1'
-              item.isUpdate = '1'
+          landlordItem.immigrantInfrastructureList = landlordItem.immigrantInfrastructureList.map(
+            (item) => {
+              if (item.uid === itemUid) {
+                item.deleteReason = deleteReason || ''
+                item.isDelete = '1'
+                item.isUpdate = '1'
+              }
+              return item
             }
-            return item
-          })
+          )
         } else {
           reject(false)
           console.log('调查对象信息查询失败')
@@ -1254,13 +1262,15 @@ class ImpDataFill extends ImpLandlord {
         }
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
-          landlordItem.immigrantInfrastructureList = landlordItem.immigrantInfrastructureList.map((item) => {
-            if (item.uid === data.uid) {
-              item = { ...item, ...data }
-              item.isUpdate = '1'
+          landlordItem.immigrantInfrastructureList = landlordItem.immigrantInfrastructureList.map(
+            (item) => {
+              if (item.uid === data.uid) {
+                item = { ...item, ...data }
+                item.isUpdate = '1'
+              }
+              return item
             }
-            return item
-          })
+          )
         } else {
           reject(false)
           console.log('调查对象信息查询失败')
@@ -1286,14 +1296,16 @@ class ImpDataFill extends ImpLandlord {
         }
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
-          landlordItem.immigrantInfrastructureList = landlordItem.immigrantInfrastructureList.map((item) => {
-            if (item.uid === itemUid) {
-              item.deleteReason = deleteReason || ''
-              item.isDelete = '1'
-              item.isUpdate = '1'
+          landlordItem.immigrantInfrastructureList = landlordItem.immigrantInfrastructureList.map(
+            (item) => {
+              if (item.uid === itemUid) {
+                item.deleteReason = deleteReason || ''
+                item.isDelete = '1'
+                item.isUpdate = '1'
+              }
+              return item
             }
-            return item
-          })
+          )
         } else {
           reject(false)
           console.log('调查对象信息查询失败')
@@ -1559,7 +1571,10 @@ class ImpDataFill extends ImpLandlord {
           return
         }
         const itemUid = guid()
-        data.uid = itemUid
+        if (!data.uid) {
+          data.uid = itemUid
+        }
+
         data.isDelete = '0'
         data.isUpdate = '1'
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
@@ -1669,7 +1684,10 @@ class ImpDataFill extends ImpLandlord {
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           landlordItem.assetAppendantList = landlordItem.assetAppendantList.map((item) => {
+            console.log(item, itemUid, '青苗删除数据')
+
             if (item.uid === itemUid) {
+              console.log(itemUid, '青苗删除数据成功')
               item.deleteReason = deleteReason || ''
               item.isDelete = '1'
               item.isUpdate = '1'
@@ -1821,7 +1839,7 @@ class ImpDataFill extends ImpLandlord {
             typeThreeNum,
             typeFourNum
           } = landlordItem.immigrantSettle
-          console.log(landlordItem.immigrantSettle,'测试这是什么')
+          console.log(landlordItem.immigrantSettle, '测试这是什么')
           if (houseAreaType === HouseAreaType.homestead || houseAreaType === HouseAreaType.flat) {
             const houseAreaTypeText = houseAreaType === HouseAreaType.flat ? '公寓房' : '宅基地'
 
@@ -1857,26 +1875,28 @@ class ImpDataFill extends ImpLandlord {
               array = [obj]
             } else {
               if (typeOneNum) {
-                for(let i=0;i<typeOneNum;i++){
-                array.push({
-                  uid: guid(),
-                  doorNo: landlordItem.doorNo,
-                  settleAddress,
-                  settleAddressText: apartmentArea.find((item) => item.id === settleAddress)?.name,
-                  houseAreaType,
-                  houseAreaTypeText,
-                  area: apartmentAreaSize[0].name,
-                  ...defaultChooseHouseObj
-                })
-              }
-              }
-              if (typeTwoNum) {
-                for(let i=0;i<typeTwoNum;i++){
+                for (let i = 0; i < typeOneNum; i++) {
                   array.push({
                     uid: guid(),
                     doorNo: landlordItem.doorNo,
                     settleAddress,
-                    settleAddressText: apartmentArea.find((item) => item.id === settleAddress)?.name,
+                    settleAddressText: apartmentArea.find((item) => item.id === settleAddress)
+                      ?.name,
+                    houseAreaType,
+                    houseAreaTypeText,
+                    area: apartmentAreaSize[0].name,
+                    ...defaultChooseHouseObj
+                  })
+                }
+              }
+              if (typeTwoNum) {
+                for (let i = 0; i < typeTwoNum; i++) {
+                  array.push({
+                    uid: guid(),
+                    doorNo: landlordItem.doorNo,
+                    settleAddress,
+                    settleAddressText: apartmentArea.find((item) => item.id === settleAddress)
+                      ?.name,
                     houseAreaType,
                     houseAreaTypeText,
                     area: apartmentAreaSize[1].name,
@@ -1885,32 +1905,34 @@ class ImpDataFill extends ImpLandlord {
                 }
               }
               if (typeThreeNum) {
-                for(let i=0;i<typeThreeNum;i++){
-                array.push({
-                  uid: guid(),
-                  doorNo: landlordItem.doorNo,
-                  settleAddress,
-                  settleAddressText: apartmentArea.find((item) => item.id === settleAddress)?.name,
-                  houseAreaType,
-                  houseAreaTypeText,
-                  area: apartmentAreaSize[2].name,
-                  ...defaultChooseHouseObj
-                })
-              }
+                for (let i = 0; i < typeThreeNum; i++) {
+                  array.push({
+                    uid: guid(),
+                    doorNo: landlordItem.doorNo,
+                    settleAddress,
+                    settleAddressText: apartmentArea.find((item) => item.id === settleAddress)
+                      ?.name,
+                    houseAreaType,
+                    houseAreaTypeText,
+                    area: apartmentAreaSize[2].name,
+                    ...defaultChooseHouseObj
+                  })
+                }
               }
               if (typeFourNum) {
-                for(let i=0;i<typeFourNum;i++){
-                array.push({
-                  uid: guid(),
-                  doorNo: landlordItem.doorNo,
-                  settleAddress,
-                  settleAddressText: apartmentArea.find((item) => item.id === settleAddress)?.name,
-                  houseAreaType,
-                  houseAreaTypeText,
-                  area: apartmentAreaSize[3].name,
-                  ...defaultChooseHouseObj
-                })
-              }
+                for (let i = 0; i < typeFourNum; i++) {
+                  array.push({
+                    uid: guid(),
+                    doorNo: landlordItem.doorNo,
+                    settleAddress,
+                    settleAddressText: apartmentArea.find((item) => item.id === settleAddress)
+                      ?.name,
+                    houseAreaType,
+                    houseAreaTypeText,
+                    area: apartmentAreaSize[3].name,
+                    ...defaultChooseHouseObj
+                  })
+                }
               }
             }
           } else {
