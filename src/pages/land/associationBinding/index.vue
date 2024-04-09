@@ -225,7 +225,7 @@ onLoad((option) => {
     landNo.value = `土地编号：${landMark.value}`
     formData.value.uid = checkList.value.map((item) => item.uid).join()
     oldDoorNo.value = checkList.value.reduce((pre, item) => {
-      if (item.doorNo != 'null') {
+      if (item.doorNo) {
         pre.push(item.doorNo)
       }
 
