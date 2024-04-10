@@ -56,7 +56,8 @@
         <uni-col :span="24">
           <view class="col">
             <view class="label">安置方式：</view>
-            <view class="content">{{ formatDict(formData.settingWay, 321) }}</view>
+            <!-- <view class="content">{{ formatDict(formData.settingWay, 321) }}</view> -->
+            <view class="content">{{ formData.settingWay=='1'?'集中供养':'--' }}</view>
           </view>
         </uni-col>
       </uni-row>
@@ -184,6 +185,7 @@ const getLandlordDetail = () => {
           ? dayjs(obj.relocateCompleteTime).format('YYYY-MM-DD')
           : getDate()
       }
+      console.log(formData.value,'formData.value测试数据')
       currentDate.value = obj.relocateCompleteTime
         ? dayjs(obj.relocateCompleteTime).format('YYYY-MM-DD')
         : getDate()

@@ -24,23 +24,7 @@
             <span style="margin-left: 5px; font-size: 12px">{{ getUnit(dataInfo) }}</span>
           </div>
         </div>
-        <!-- <uni-row class="m-b-10">
-          <uni-col :span="12">
-            <view class="col">
-              <view class="label">迁前地址：</view>
-              <view class="content">
-                {{ formatStr(dataInfo.address) }}
-              </view>
-            </view>
-          </uni-col>
-          <uni-col :span="12">
-            <view class="col">
-              <view class="label">安置住址：</view>
-              <view class="content">
-                {{ getSettleAddressText(dataInfo.immigrantSettle?.settleAddress) }}
-              </view>
-            </view>
-          </uni-col>
+        <uni-row class="m-b-10">
           <uni-col :span="12">
             <view class="col">
               <view class="label">开户名：</view>
@@ -65,23 +49,7 @@
               </view>
             </view>
           </uni-col>
-          <uni-col :span="12">
-            <view class="col">
-              <view class="label">家庭总人口：</view>
-              <view class="content">
-                {{
-                  dataInfo.demographicList
-                    ? formatStr(
-                        dataInfo.demographicList.filter(
-                          (item) => item.name != '增计人口' && item.isDelete != '1'
-                        ).length
-                      )
-                    : '-'
-                }}
-              </view>
-            </view>
-          </uni-col>
-        </uni-row> -->
+        </uni-row>
         <view class="row-2">
           <div style="text-align: center; font-size: 14px">生产安置情况</div>
           <table style="width: 100%" border="1" cellspacing="0" cellpadding="0">

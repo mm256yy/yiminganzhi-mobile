@@ -61,7 +61,7 @@
             <uni-col :span="24">
               <view class="col">
                 <view class="label">所处位置：</view>
-                <view class="content">{{ formatDict(item.gravePosition, 288) }}</view>
+                <view class="content">{{ formatDict(item.gravePosition, 326) }}</view>
               </view>
             </uni-col>
           </uni-row>
