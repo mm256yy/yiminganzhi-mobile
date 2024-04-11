@@ -57,7 +57,7 @@
           <view class="col">
             <view class="label">安置方式：</view>
             <!-- <view class="content">{{ formatDict(formData.settingWay, 321) }}</view> -->
-            <view class="content">{{ formData.settingWay=='1'?'集中供养':'--' }}</view>
+            <view class="content">集中供养</view>
           </view>
         </uni-col>
       </uni-row>
