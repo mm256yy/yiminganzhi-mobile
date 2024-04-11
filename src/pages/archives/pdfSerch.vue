@@ -80,7 +80,9 @@
         <div style="display: flex; justify-content: space-between">
           <div style="font-size: 16px">
             {{
-              `${baseInfo.areaCodeText} ${baseInfo.townCodeText} ${baseInfo.villageCodeText} ${baseInfo.name} 户号
+              `${baseInfo.areaCodeText || ''} ${baseInfo.townCodeText || ''} ${
+                baseInfo.villageCodeText || ''
+              } ${baseInfo.name || ''} 户号
                         ${baseInfo.showDoorNo} `
             }}</div
           >
@@ -128,7 +130,7 @@
           padding: 10px;
         "
       >
-        <h1 style="font-size: 24px; text-align: center">选址确认单</h1>
+        <h1 style="font-size: 24px; text-align: center">择址确认单</h1>
         <div style="display: flex; justify-content: space-between">
           <div style="font-size: 16px">
             {{

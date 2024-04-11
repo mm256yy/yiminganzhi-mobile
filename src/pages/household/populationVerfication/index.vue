@@ -16,7 +16,12 @@
     </view>
 
     <view class="list" v-if="props.dataList && props.dataList.length > 0">
-      <view class="list-item" v-for="item in props.dataList" :key="item.id">
+      <view
+        class="list-item"
+        v-for="item in props.dataList"
+        :key="item.id"
+        :style="{ background: item.isDelete == '1' ? '#dedede' : 'none' }"
+      >
         <view class="list-1">
           <view class="left">
             <view class="icon">{{ formatDict(item.relation, 307) }}</view>
