@@ -26,17 +26,14 @@
                 </view>
               </view>
             </uni-col>
-            <uni-col :span="12">
+            <!-- <uni-col :span="12">
               <view class="col">
                 <view class="label">折率：</view>
                 <view class="content">
                   {{ formatStr(item.discountRate) }}
                 </view>
               </view>
-            </uni-col>
-          </uni-row>
-
-          <uni-row>
+            </uni-col> -->
             <uni-col :span="12">
               <view class="col">
                 <view class="label">规格：</view>
@@ -45,6 +42,9 @@
                 </view>
               </view>
             </uni-col>
+          </uni-row>
+
+          <uni-row>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">单价(元)：</view>
@@ -53,9 +53,6 @@
                 </view>
               </view>
             </uni-col>
-          </uni-row>
-
-          <uni-row>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">单位：</view>
@@ -64,6 +61,9 @@
                 </view>
               </view>
             </uni-col>
+          </uni-row>
+
+          <uni-row>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">评估金额(元)：</view>
@@ -72,9 +72,6 @@
                 </view>
               </view>
             </uni-col>
-          </uni-row>
-
-          <uni-row>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">数量：</view>
@@ -83,6 +80,9 @@
                 </view>
               </view>
             </uni-col>
+          </uni-row>
+
+          <uni-row>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">补偿金额(元)：</view>

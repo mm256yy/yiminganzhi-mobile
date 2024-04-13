@@ -306,7 +306,7 @@
 
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import dayjs from 'dayjs'
 import {
   routerBack,
@@ -314,7 +314,8 @@ import {
   StorageKey,
   fmtOccupation,
   fmtOccupationStr,
-  cardReg
+  cardReg,
+  phoneReg
 } from '@/utils'
 import { addLandlordPeopleApi, updateLandlordPeopleApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
@@ -404,6 +405,7 @@ onLoad((option: any) => {
  */
 const bindDateChange = (e: any) => {
   formData.value.birthday = e.detail.value
+  console.log(e.detail.value, '日期选择')
 }
 
 // 选择职业（弹出职业选择框）
@@ -427,6 +429,22 @@ const confirmSelect = (currentSelect: any[], label: any[]) => {
 const handleClick=() => {
   childSelect.value.showType()
 }
+watch(
+  () => formData.value.card,
+  (val) => {
+      if (formData.value.card && cardReg.test(formData.value.card)) {
+        const genderCode = formData.value.card.slice(-2, -1); 
+        genderCode % 2 === 0?formData.value.sex='2':formData.value.sex = '1'
+        const birthDatePart = formData.value.card.substring(6, 14);  
+        const birthYearMonth = birthDatePart.substring(0, 4) + '-' + birthDatePart.substring(4, 6);  
+        formData.value.birthday=birthYearMonth
+    }     
+  },
+  {
+    immediate: true,
+    deep: true
+  }
+)
 // 表单提交
 const submit = () => {
   const params = {
@@ -436,7 +454,10 @@ const submit = () => {
   if (!formData.value.name) {
     showToast('请输入姓名')
     return
-  } else if (!formData.value.relation) {
+  }else if (formData.value.phone && !phoneReg.test(formData.value.phone)) {
+    showToast('请输入正确的手机号')
+    return
+  }else if (!formData.value.relation) {
     showToast('请选择与户主关系')
     return
   } else if (!formData.value.insuranceType) {

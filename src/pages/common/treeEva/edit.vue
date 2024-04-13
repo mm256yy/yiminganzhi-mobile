@@ -107,7 +107,7 @@
               </view>
             </uni-forms-item>
           </uni-col>
-          <uni-col :span="12">
+          <!-- <uni-col :span="12">
             <uni-forms-item
               label="折率"
               :label-width="150"
@@ -121,7 +121,7 @@
                 placeholder="请输入"
               />
             </uni-forms-item>
-          </uni-col>
+          </uni-col> -->
         </uni-row>
 
         <uni-row>
@@ -223,7 +223,7 @@ const formData = ref<any>({
   unit: '',
   number: '',
   price: '',
-  discountRate: '',
+  // discountRate: '',
   valuationAmount: '',
   compensationAmount: '',
   remark: ''
@@ -235,15 +235,15 @@ const dict = getStorage(StorageKey.DICT)
 // 获得焦点的输入框下标
 const focusIndex = ref<number>(-1)
 
-const inputChange = (value: any) => {
-  if (value) {
-    console.log(value, 'val')
-    var price = value.toString().replace(/(?<=\.[0-9]{2})\d+/, '')
-    nextTick(() => {
-      formData.value.discountRate = price
-    })
-  }
-}
+// const inputChange = (value: any) => {
+//   if (value) {
+//     console.log(value, 'val')
+//     var price = value.toString().replace(/(?<=\.[0-9]{2})\d+/, '')
+//     nextTick(() => {
+//       formData.value.discountRate = price
+//     })
+//   }
+// }
 /**
  * 获取业主详情
  * @param(object) uid
@@ -284,9 +284,9 @@ const inputBlur = () => {
 
 // 计算评估价格
 const countPrice = computed(() => {
-  const { number, price, discountRate } = formData.value
-  if (number && price && discountRate) {
-    return (number * price * discountRate).toFixed(2)
+  const { number, price } = formData.value
+  if (number && price ) {
+    return (number * price ).toFixed(2)
   }
   return '0'
 })
