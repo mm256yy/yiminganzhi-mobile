@@ -9,9 +9,18 @@
       <text class="right-btn" />
     </view>
     <view class="map-content">
-      <map id="map" class="map" :enable-satellite="true" :enable-overlooking="true" :latitude="centerLocation.latitude"
-        :longitude="centerLocation.longitude" :polygons="polygons" :markers="markers" :scale="14"
-        @markertap="markerTap"></map>
+      <map
+        id="map"
+        class="map"
+        :enable-satellite="true"
+        :enable-overlooking="true"
+        :latitude="centerLocation.latitude"
+        :longitude="centerLocation.longitude"
+        :polygons="polygons"
+        :markers="markers"
+        :scale="14"
+        @markertap="markerTap"
+      ></map>
     </view>
     <map-info v-if="show" :data-info="dataInfo" @close="close" />
   </view>
@@ -21,15 +30,15 @@
 import { ref, onMounted } from 'vue'
 import { onReady } from '@dcloudio/uni-app'
 import MapInfo from './components/MapInfo.vue'
-import { routerBack, hideStr, getStorage, StorageKey } from '@/utils'
+import { routerBack, hideStr, getStorage, StorageKey } from '../../utils'
 import {
   getVillageListApi,
   getLandlordListWithMapApi,
   getLandlordItemApi,
   getVillageItemApi
-} from '@/service'
+} from '../../service'
 import iconPath from './iconPath'
-import { MainType } from '@/types/common'
+import { MainType } from '../../types/common'
 
 interface LocationType {
   longitude: number
@@ -64,8 +73,8 @@ const initCenterPoints = (obj: any) => {
       return { longitude: arr[0], latitude: arr[1] }
     } else if (arr.length > 1) {
       let len = arr.length
-      let longitude = arr[len / 2][0]
-      let latitude = arr[len / 2][1]
+      let longitude = arr[(len / 2).toFixed()][0]
+      let latitude = arr[(len / 2).toFixed()][1]
       return { longitude: longitude, latitude: latitude }
     } else {
       return { longitude: 120.153576, latitude: 30.287459 }
@@ -326,7 +335,6 @@ onReady(() => {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 26rpx;
       height: 26rpx;
     }
 
