@@ -372,7 +372,9 @@
                   baseInfo.type == 'PeasantHousehold'
                     ? formatStr(baseInfo.address)
                     : baseInfo.type == 'Village'
-                    ? (baseInfo.areaCodeText || '') + (baseInfo.villageText || '')
+                    ? (baseInfo.areaCodeText || '') +
+                      (baseInfo.townCodeText || '') +
+                      (baseInfo.villageText || '')
                     : formatStr(baseInfo.beforeAddress)
                 }}</td
               >
