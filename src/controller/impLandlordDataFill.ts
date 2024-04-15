@@ -1817,10 +1817,11 @@ class ImpDataFill extends ImpLandlord {
             landlordItem.immigrantSettle = { ...landlordItem.immigrantSettle, ...data }
           } else {
             landlordItem.immigrantSettle = { ...data }
-          }
-          if (!landlordItem.immigrantSettle.uid) {
             landlordItem.immigrantSettle.uid = guid()
           }
+          // if (!landlordItem.immigrantSettle.uid) {
+          //   landlordItem.immigrantSettle.uid = guid()
+          // }
           landlordItem.immigrantSettle.isUpdate = '1'
 
           /**

@@ -913,7 +913,7 @@ import { ref, onMounted } from 'vue'
 import dayjs from 'dayjs'
 import { routerBack, getStorage, StorageKey, cardReg } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
-import { addLandlordApi, updateLandlordCompanyApi } from '@/service'
+import { addLandlordApi, updateLandlordCompanyApi,updateAssociation } from '@/service'
 import Back from '@/components/Back/Index.vue'
 import VillageSelectFormItem from '@/components/VillageSelectFormItem/index.vue'
 import UploadFile from '@/components/UploadFile/index.vue'
@@ -1220,6 +1220,7 @@ const submit = () => {
       addLandlordApi(params)
         .then((res) => {
           if (res) {
+            updateCommon()
             showToast(SUCCESS_MSG)
             routerBack()
           }
@@ -1236,6 +1237,7 @@ const submit = () => {
       updateLandlordCompanyApi(uid.value, params)
         .then((res) => {
           if (res) {
+            updateCommon()
             showToast(SUCCESS_MSG)
             routerBack()
           }
@@ -1245,6 +1247,20 @@ const submit = () => {
         })
     }
   }
+}
+const updateCommon=() => {
+      let values = {
+      type: MainType.PeasantHousehold,
+      doorNo:formData.value.householderDoorNo
+    }
+    getImpLandlordListBySearchApi(values).then((res) => {
+      console.log(res, '居民户数据')
+      let uid = res[0]?.uid
+      let relateCompanyName=formData.value.name
+      updateAssociation({uid:uid,relateCompanyName:relateCompanyName,type:'Company'}).then((res) => {
+      console.log(res, '更新关联成功')
+    })
+    })
 }
 onMounted(() => {
   getLandlordListBySearch()

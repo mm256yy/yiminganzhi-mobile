@@ -185,6 +185,15 @@ export const updateLandlordCompanyApi = (uid: string, data: any) => {
   return DataFillController.updateLandlordCompany(uid, data)
 }
 
+/**
+ * 更新企业/个体户关联
+ * @param uid 居民户uid
+ * @param data 居民户信息
+ * @returns
+ */
+export const updateAssociation = (data?: any) => {
+  return DataFillController.updateAssociation(data)
+}
 // ---------------
 
 /**

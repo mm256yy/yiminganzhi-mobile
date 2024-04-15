@@ -1,7 +1,9 @@
 /**
  * 提供业主 - 数据填报 相关的增删改功能
  */
-
+import {
+  LandlordTableName,
+} from '@/database'
 import { LandlordType } from '@/types/sync'
 import { guid } from '@/utils'
 import {
@@ -656,6 +658,46 @@ class DataFill extends Landlord {
       }
     })
   }
+  // 业主-企业/个体户 涉及关联回显问题
+    updateAssociation(data?: any): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!data || !data.uid) {
+          reject(false)
+          console.log('核心字段缺失')
+          return
+        }
+        const values = ''
+        // relateIndividualHouseholdName  个体户
+        // relateCompanyName  企业
+       let landlordItem = await this.getLandlordByUidNoFilter(data.uid)
+        if (landlordItem) {
+          if (data.type=='Company') {
+           landlordItem = {
+            ...landlordItem,
+            relateCompanyName:data.relateCompanyName
+          }
+          } else if (data.type=='IndividualHousehold') {
+           landlordItem = {
+            ...landlordItem,
+            relateIndividualHouseholdName:data.relateIndividualHouseholdName
+          }
+          }
+        } else {
+          reject(false)
+          console.log('业主信息查询失败')
+          return
+        }
+        // 更新数据
+        const updateRes = await this.updateLandlord(landlordItem as LandlordType)
+        updateRes ? resolve(true) : reject(false)
+      } catch (error) {
+        console.log(error, 'updateLandlordCompany-error')
+        reject(false)
+      }
+    })
+  }
+  
   // 业主-企业/个体户 删除操作
   deleteLandlordCompany(uid: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
