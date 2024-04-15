@@ -80,11 +80,9 @@ onMounted(() => {
 
   .tabs-list {
     display: flex;
-    flex-direction: row;
     align-items: center;
-    width: 520rpx;
+    width: 100%;
     height: 60rpx;
-    overflow-x: scroll;
 
     &.expand {
       width: 100%;
@@ -105,7 +103,8 @@ onMounted(() => {
       align-items: center;
       justify-content: center;
       flex: none;
-      width: 86rpx;
+      flex: 1;
+      max-width: 70rpx;
       height: 60rpx;
       margin-right: 6rpx;
       background: #e1f0ff;

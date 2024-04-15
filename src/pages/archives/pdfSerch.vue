@@ -159,7 +159,7 @@
             <tr v-for="(item, index) in dataList" :key="index">
               <td align="left" class="uTd">{{ index + 1 }}</td>
               <td align="left" class="uTd">{{ getSettleAddress(item) }}</td>
-              <td align="left" class="uTd">{{ formatStr(item.area) }} </td>
+              <td align="left" class="uTd">{{'宅基地'}} </td>
               <!-- <td align="left" class="uTd">{{ dictOption(landNoList, item.landNo) }}</td> -->
               <td align="left" class="uTd">{{ formatStr(item.landNo) }}</td>
               <td align="left" class="uTd"></td>
