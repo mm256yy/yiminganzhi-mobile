@@ -240,6 +240,7 @@ const genNewArr = (arr?: any[]) => {
 // 获取家庭收入信息配置列表
 const getRevenueList = async () => {
   const result = await getFamilyIncomeListApi()
+  console.log(result,'测试配置数据')
   genArr(result)
 }
 
