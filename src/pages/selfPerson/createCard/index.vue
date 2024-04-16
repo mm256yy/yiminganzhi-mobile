@@ -89,7 +89,7 @@
           <view class="col">
             <view class="label">营业执照编号：</view>
             <view class="content">
-              {{ formatStr(dataInfo.name) }}
+              {{formatStr(dataInfo.company?.licenceNo)}}
               <!-- 未知 暂无字段 -->
             </view>
           </view>

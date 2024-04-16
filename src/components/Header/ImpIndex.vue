@@ -29,7 +29,7 @@ export default {
   props: {
     dataInfo: {
       type: Object,
-      default: () => { }
+      default: () => {}
     }
   },
   computed: {
@@ -54,8 +54,12 @@ export default {
       }
     },
     fillNumber: function () {
+      try {
+      } catch (error) {
+        console.log(error)
+      }
       const { type, immigrantFilling } = this.dataInfo
-      console.log(type);
+      console.log(type)
 
       if (!immigrantFilling) {
         return 0
@@ -324,6 +328,7 @@ export default {
           fillCount++
         }
       }
+
       return fillCount
     },
     getProgressText: function () {
@@ -336,6 +341,21 @@ export default {
         }
       }
       const { type, immigrantFilling = {} } = this.dataInfo
+      if (!immigrantFilling) {
+        return {
+          count: 0,
+          total:
+            type === MainType.PeasantHousehold
+              ? 11
+              : type === MainType.Company
+              ? 5
+              : type === MainType.IndividualHousehold
+              ? 5
+              : type === MainType.Village
+              ? 4
+              : 0
+        }
+      }
       if (type === MainType.PeasantHousehold) {
         // 居民户信息
         if (immigrantFilling.householdPicStatus === '1') {
@@ -384,7 +404,11 @@ export default {
         total = 11
       } else if (type === MainType.Company) {
         // 资产评估
-        if (immigrantFilling.appendageStatus === '1' && immigrantFilling.landStatus === '1' && immigrantFilling.deviceStatus === '1') {
+        if (
+          immigrantFilling.appendageStatus === '1' &&
+          immigrantFilling.landStatus === '1' &&
+          immigrantFilling.deviceStatus === '1'
+        ) {
           count++
         }
         // 协议
@@ -406,7 +430,11 @@ export default {
         total = 5
       } else if (type === MainType.IndividualHousehold) {
         // 资产评估
-        if (immigrantFilling.appendageStatus === '1' && immigrantFilling.landStatus === '1' && immigrantFilling.deviceStatus === '1') {
+        if (
+          immigrantFilling.appendageStatus === '1' &&
+          immigrantFilling.landStatus === '1' &&
+          immigrantFilling.deviceStatus === '1'
+        ) {
           count++
         }
         // 协议
@@ -428,7 +456,11 @@ export default {
         total = 5
       } else if (type === MainType.Village) {
         // 资产评估
-        if (immigrantFilling.appendageStatus === '1' && immigrantFilling.landStatus === '1' && immigrantFilling.deviceStatus === '1') {
+        if (
+          immigrantFilling.appendageStatus === '1' &&
+          immigrantFilling.landStatus === '1' &&
+          immigrantFilling.deviceStatus === '1'
+        ) {
           count++
         }
         // 协议
@@ -454,6 +486,8 @@ export default {
   watch: {
     dataInfo: function (val, old) {
       // 切换业主时 清理缓存
+      console.log(val, '清理缓存')
+
       if (JSON.stringify(val) === JSON.stringify(old)) {
         return
       }
