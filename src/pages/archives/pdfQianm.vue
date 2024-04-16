@@ -5,8 +5,13 @@
     <!-- <view class="signature" v-show="showCanvas"> -->
     <view class="signature">
       <canvas
-class="mycanvas" canvas-id="mycanvas" @touchstart="touchstart" @touchmove="touchmove"
-        @touchend="touchend"></canvas>
+        class="mycanvas"
+        canvas-id="mycanvas"
+        id="cavans"
+        @touchstart="touchstart"
+        @touchmove="touchmove"
+        @touchend="touchend"
+      ></canvas>
       <view class="footer">
         <view class="close" @click="goBack">返回</view>
         <view class="right" @click="clear">清除</view>
@@ -18,72 +23,70 @@ class="mycanvas" canvas-id="mycanvas" @touchstart="touchstart" @touchmove="touch
     </view>
   </view>
 </template>
- 
+
 <script>
-var x = 20;
-var y = 20;
+var x = 20
+var y = 20
 import { routerForward } from '@/utils'
 export default {
   onLoad(option) {
     if (option.uid) {
-			this.uid=option.uid
-		}
-    this.createCanvas();
+      this.uid = option.uid
+    }
+    this.createCanvas()
   },
   data() {
     return {
       showCanvas: false,
-      ctx: '',         //绘图图像
-      points: [],       //路径点集合 
+      ctx: '', //绘图图像
+      points: [], //路径点集合
       signature: '',
       signImage: '@/static/images/icon_print.png',
-      uid:''
+      uid: ''
     }
   },
   methods: {
     //关闭并清空画布
     close: function () {
-      this.showCanvas = false;
-      this.clear();
-
+      this.showCanvas = false
+      this.clear()
     },
     //创建并显示画布
     createCanvas: function () {
-      this.showCanvas = true;
+      this.showCanvas = true
 
-      this.ctx = uni.createCanvasContext("mycanvas", this);   //创建绘图对象
+      this.ctx = uni.createCanvasContext('mycanvas', this) //创建绘图对象
 
       //设置画笔样式
-      this.ctx.lineWidth = 4;
-      this.ctx.lineCap = "round"
-      this.ctx.lineJoin = "round"
+      this.ctx.lineWidth = 4
+      this.ctx.lineCap = 'round'
+      this.ctx.lineJoin = 'round'
     },
     //触摸开始，获取到起点
     touchstart: function (e) {
-      let startX = e.changedTouches[0].x;
-      let startY = e.changedTouches[0].y;
-      let startPoint = { X: startX, Y: startY };
-      this.points.push(startPoint);
+      let startX = e.changedTouches[0].x
+      let startY = e.changedTouches[0].y
+      let startPoint = { X: startX, Y: startY }
+      this.points.push(startPoint)
       //每次触摸开始，开启新的路径
-      this.ctx.beginPath();
+      this.ctx.beginPath()
     },
 
     //触摸移动，获取到路径点
     touchmove: function (e) {
-      let moveX = e.changedTouches[0].x;
-      let moveY = e.changedTouches[0].y;
-      let movePoint = { X: moveX, Y: moveY };
-      this.points.push(movePoint);       //存点
-      let len = this.points.length;
+      let moveX = e.changedTouches[0].x
+      let moveY = e.changedTouches[0].y
+      let movePoint = { X: moveX, Y: moveY }
+      this.points.push(movePoint) //存点
+      let len = this.points.length
       if (len >= 2) {
-        this.draw();                   //绘制路径
+        this.draw() //绘制路径
       }
-
     },
 
     // 触摸结束，将未绘制的点清空防止对后续路径产生干扰
     touchend: function () {
-      this.points = [];
+      this.points = []
     },
 
     /* ***********************************************
@@ -104,24 +107,23 @@ export default {
 
     //清空画布
     clear: function () {
-      let that = this;
+      let that = this
       uni.getSystemInfo({
         success: function (res) {
-          let canvasw = res.windowWidth;
-          let canvash = res.windowHeight;
-          that.ctx.clearRect(0, 0, canvasw, canvash);
-          that.ctx.draw(true);
-        },
+          let canvasw = res.windowWidth
+          let canvash = res.windowHeight
+          that.ctx.clearRect(0, 0, canvasw, canvash)
+          that.ctx.draw(true)
+        }
       })
     },
     //完成绘画并保存到本地
     finish: function () {
-      let that = this;
+      let that = this
       uni.canvasToTempFilePath({
         canvasId: 'mycanvas',
         success: function (res) {
-
-          let paths = res.tempFilePath;
+          let paths = res.tempFilePath
           // that.signImage=path
           uni.$emit('id', { path: paths, dataInfo: that.uid, replace: true })
           uni.navigateBack({
@@ -142,7 +144,7 @@ export default {
       })
     },
     goBack() {
-     uni.navigateBack()
+      uni.navigateBack()
     },
     signDone() {
       this.finish()
@@ -150,7 +152,20 @@ export default {
   }
 }
 </script>
- 
+<script module="render" lang="renderjs">
+export default {
+	data() {
+		return {
+
+		}
+	},
+	mounted() {
+    document.querySelector('#cavans').addEventListener('touchmove', (event) => {
+    event.preventDefault();
+});
+  },
+  }
+</script>
 <style>
 .signature {
   position: fixed;
@@ -181,7 +196,7 @@ page {
   height: calc(100vh - 100upx);
   /* height: 42vh; */
   margin-top: 10rpx;
-  background-color: #ECECEC;
+  background-color: #ececec;
 }
 
 .footer {
@@ -205,7 +220,7 @@ page {
 }
 
 .left {
-  background: #007AFF;
+  background: #007aff;
 }
 
 .right {
@@ -213,7 +228,7 @@ page {
 }
 
 .close {
-  background: #A3A3A3;
+  background: #a3a3a3;
 }
 
 .signatureImg {

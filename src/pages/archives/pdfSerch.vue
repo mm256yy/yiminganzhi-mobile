@@ -1227,7 +1227,7 @@ export default {
 }
 
 .signatureImg {
-  width: 100px;
+  width: 200px;
   height: 100px;
   background-color: #fff;
   object-fit: contain;

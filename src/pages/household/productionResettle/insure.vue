@@ -7,8 +7,8 @@
     <view class="table-wrap">
       <uni-table class="table" ref="table" border stripe emptyText="该户无养老保险">
         <uni-tr>
-          <uni-th width="60rpx">姓名</uni-th>
-          <uni-th width="40rpx">与户主关系</uni-th>
+          <uni-th width="40rpx">姓名</uni-th>
+          <uni-th width="60rpx">与户主关系</uni-th>
           <uni-th width="32rpx">性别</uni-th>
           <uni-th width="100rpx">身份证号</uni-th>
           <uni-th width="60rpx">户籍册类别</uni-th>

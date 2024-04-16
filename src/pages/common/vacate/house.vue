@@ -3,11 +3,7 @@
     <!-- 房屋腾空 -->
     <view class="btn-box">
       <view>
-        <view
-          class="btn blue-btn"
-          @click="handle"
-          v-if="!houseEmptyInfo.isHouseEmpty || houseEmptyInfo.isHouseEmpty === '1'"
-        >
+        <view class="btn blue-btn" @click="handle">
           <image class="icon" src="@/static/images/icon_sign_white.png" mode="scaleToFill" />
           <text class="txt">办理</text>
         </view>

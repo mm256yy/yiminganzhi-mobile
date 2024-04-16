@@ -43,7 +43,7 @@
               <uni-col :span="12">
                 <view class="col">
                   <view class="label">户型/套型：</view>
-                  <view class="content">{{ formatStr(item.area) }}</view>
+                  <view class="content">{{ formatStr(item.area, '㎡') }}</view>
                 </view>
               </uni-col>
             </uni-row>
@@ -54,7 +54,7 @@
                   <view class="label">地块编号：</view>
                   <view class="content">
                     <!-- {{ dictOption(landNoList, item.landNo) }} -->
-                    {{  formatStr(item.landNo) }}
+                    {{ formatStr(item.landNo) }}
                   </view>
                 </view>
               </uni-col>
@@ -109,7 +109,7 @@
               <uni-col :span="12">
                 <view class="col">
                   <view class="label">户型/套型：</view>
-                  <view class="content">{{ formatStr(item.area) }}</view>
+                  <view class="content">{{ formatStr(item.area, '㎡') }}</view>
                 </view>
               </uni-col>
             </uni-row>
@@ -181,7 +181,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { formatStr, routerForward, dictOption } from '@/utils'
 import { apartmentArea, resettleArea } from '@/config'
-import { getChooseConfigApi, getHouseConfigApi,getResettleDetail } from '@/service'
+import { getChooseConfigApi, getHouseConfigApi, getResettleDetail } from '@/service'
 import { OtherDataType } from '@/database'
 interface PropsType {
   dataList: any[]
@@ -193,12 +193,12 @@ const landNoList = ref<any[]>([]) // 地块编号选项列表
 const storeroomNoList = ref<any[]>([]) // 储藏室编号选项列表
 const carNoList = ref<any[]>([]) // 车位号选项列表
 const roomNoList = ref<any[]>([]) // 幢号-房号 选项列表
-let dataLists=ref([])
+let dataLists = ref([])
 const getDataRequest = async () => {
   try {
     const datas = await getResettleDetail(OtherDataType.settleAddressList)
     dataLists.value = datas
-    console.log(dataLists.value,'选房数据')
+    console.log(dataLists.value, '选房数据')
     // resettleArea.value=dataLists.value.filter((item) => item.id == props.immigrantSettle.settleAddress)
   } catch (error) {
     console.log('error', error)

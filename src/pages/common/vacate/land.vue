@@ -3,12 +3,12 @@
     <!-- 土地腾让 -->
     <view class="btn-box">
       <view>
-        <view class="btn blue-btn" @click="handle" v-if="!landEmptyInfo.isLandEmpty || landEmptyInfo.isLandEmpty === '1'">
+        <view class="btn blue-btn" @click="handle">
           <image class="icon" src="@/static/images/icon_sign_white.png" mode="scaleToFill" />
           <text class="txt">办理</text>
         </view>
       </view>
-      <view style="display:flex">
+      <view style="display: flex">
         <view class="btn green-btn" @click="handleClick">
           <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
           <text class="txt">打印报表</text>
@@ -54,7 +54,13 @@
         <uni-col :span="12">
           <view class="col">
             <view class="label">户内人口：</view>
-            <view class="content"> {{ props.dataInfo.demographicList.filter((item:any) => item.name != '增计人口' && item.isDelete !== '1').length || 1}} </view>
+            <view class="content">
+              {{
+                props.dataInfo.demographicList.filter(
+                  (item: any) => item.name != '增计人口' && item.isDelete !== '1'
+                ).length || 1
+              }}
+            </view>
           </view>
         </uni-col>
       </uni-row>
@@ -95,8 +101,8 @@
         土地腾让办理已完成，腾空日期:
         {{
           landEmptyInfo.landEmptyDate
-          ? dayjs(landEmptyInfo.landEmptyDate).format('YYYY-MM-DD')
-          : '-'
+            ? dayjs(landEmptyInfo.landEmptyDate).format('YYYY-MM-DD')
+            : '-'
         }}
       </view>
     </view>

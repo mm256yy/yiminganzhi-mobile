@@ -44,7 +44,7 @@
               label-align="right"
               name="formData.area"
             >
-              <view class="content-txt"> {{ formData.area }} </view>
+              <view class="content-txt"> {{ formatStr(formData.area, '㎡') }} </view>
             </uni-forms-item>
           </uni-col>
 
@@ -116,7 +116,7 @@
               label-align="right"
               name="formData.area"
             >
-              <view class="content-txt"> {{ formData.area }} </view>
+              <view class="content-txt"> {{ formatStr(formData.area, '㎡') }} </view>
             </uni-forms-item>
           </uni-col>
 
@@ -190,7 +190,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { routerBack } from '@/utils'
+import { routerBack, formatStr } from '@/utils'
 import { apartmentArea, resettleArea } from '@/config'
 import {
   getChooseConfigApi,

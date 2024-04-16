@@ -35,7 +35,7 @@
             v-if="props.isEdit"
             class="select-wrap"
             v-model="item.settingWay"
-            :localdata="landNoList"
+            :localdata="filterWay(item)"
           />
           <text v-else>{{ formatDict(item.settingWay, 375) }}</text>
         </view>
@@ -56,49 +56,90 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch,onMounted } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { formatDict, getStorage, StorageKey } from '@/utils'
 import { PopulationType } from '@/types/datafill'
 import { showToast } from '@/config'
 import { SimulateDemographicType } from '@/types/impDataFill'
 import { getResettleDetail } from '@/service'
-import { OtherDataType } from '@/database';
+import { OtherDataType } from '@/database'
 import type { LocationType } from '@/types/datafill'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+dayjs.extend(relativeTime)
 
 const dataLists = ref<LocationType[]>([])
-const getDataRequest = async () => {
-  try {
-    console.log(props.type,'type是什么')
-    if (props.type||props.immigrantSettle.houseAreaType=="oneself"||props.immigrantSettle.houseAreaType=="concentrate") {
-               landNoList.value = dict[375].filter((item: any) => item.value != 1)
-        console.log( landNoList.value,'字典数据222')
-    }else{
-           const datas = await getResettleDetail(OtherDataType.settleAddressList)
-    dataLists.value=datas
-    console.log(props.immigrantSettle.settleAddress,'测试选择的东西')
-    console.log(dataLists.value,'数据字典')
-    const data=dataLists.value.filter((item) => item.id == props.immigrantSettle.settleAddress)
-    console.log(data,'选择的东西')
-    if(data[0].isProductionLand==2){
-      landNoList.value = dict[375].filter((item: any) => item.value != 1)
-        console.log( landNoList.value,'字典数据222')
-      }else{
-        landNoList.value=dict[375]
-      }
+// const getDataRequest = (e: any) => {
+//   try {
+//     console.log(props.type, 'type是什么')
+//     if (
+//       props.type ||
+//       props.immigrantSettle.houseAreaType == 'oneself' ||
+//       props.immigrantSettle.houseAreaType == 'concentrate'
+//     ) {
+//       const data = dataLists.value.filter((item) => item.id == props.immigrantSettle.settleAddress)
+//     } else {
+//       const data = dataLists.value.filter((item) => item.id == props.immigrantSettle.settleAddress)
+//       console.log(data, '选择的东西')
+//       if (data[0].isProductionLand == 2) {
+//         landNoList.value = dict[375].filter((item: any) => item.value != 1)
+//         console.log(landNoList.value, '字典数据222')
+//       } else {
+//         landNoList.value = dict[375]
+//       }
+//     }
+//   } catch (error) {
+//     console.log('error', error)
+//   }
+// }
+const filterWay = (data: any) => {
+  console.log(data, '‘数据')
+
+  let arr = JSON.parse(JSON.stringify(dict[375])).map((item: any) => {
+    // 农村移民的 其他性质
+    item.disable = false
+    const notFarmer = data.populationNature !== '1'
+    const datass: any = dataLists.value.filter(
+      (item) => item.id == props.immigrantSettle.settleAddress
+    )[0]
+    console.log(datass, '数据', props.immigrantSettle.houseAreaType)
+
+    if (notFarmer && item.value === '1') {
+      item.disable = true
     }
-  } catch (error) {
-    console.log('error', error);
-  }
+    if (item.value === '1' && datass?.isProductionLand != '1') {
+      item.disable = true
+    }
+    data.age = data.birthday ? parseInt(dayjs(data.birthday).fromNow().replace(/\D+/, '')) : 0
+    if (data.age < 14 && item.value !== '3' && item.value != '1') {
+      item.disable = true
+    }
+    if (
+      item.value == '1' &&
+      (props.immigrantSettle.houseAreaType == 'concentrate' ||
+        props.immigrantSettle.houseAreaType == 'oneself')
+    ) {
+      item.disable = true
+    }
+    return item
+  })
+  console.log(arr, '数据2')
+  arr = arr.filter((item: any) => !item.disable)
+  return arr
+}
+let getResettleDetailS = async () => {
+  const datas = await getResettleDetail(OtherDataType.settleAddressList)
+  dataLists.value = datas
 }
 interface PropsType {
   isEdit: boolean
   demographicList?: PopulationType[] | SimulateDemographicType[]
-  simulateDemographic?:any[]
+  simulateDemographic?: any[]
   immigrantSettle?: any
   dataList?: any
   demographicLists?: any
   flag?: any
-  type?:any
+  type?: any
 }
 
 const emit = defineEmits(['submit'])
@@ -106,21 +147,21 @@ const props = defineProps<PropsType>()
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
 const landNoList = ref<any[]>([])
-landNoList.value=dict[375]
+landNoList.value = dict[375]
 const tableData = ref<any[]>([])
 const datas = ref<any>([])
-const data=ref<any>([])
+const data = ref<any>([])
 
 // 监听安置确认数据问题
 watch(
   () => props.demographicList,
   (val) => {
     if (val) {
-      if(!props.flag){
-      datas.value=props.demographicList 
-      tableData.value=val.filter((item: any) => item.isDelete != '1'&&item.name != '增计人口')
-      console.log(tableData.value, '测试数据模拟安置')
-      console.log( props.demographicList,'测试传递数据')
+      if (!props.flag) {
+        datas.value = props.demographicList
+        tableData.value = val.filter((item: any) => item.isDelete != '1' && item.name != '增计人口')
+        console.log(tableData.value, '测试数据模拟安置')
+        console.log(props.demographicList, '测试传递数据')
       }
     }
   },
@@ -130,8 +171,9 @@ watch(
   () => props.immigrantSettle,
   (val) => {
     if (val) {
-      console.log(val,'测试选择前面的数据')
-      getDataRequest()
+      console.log(val, '测试选择前面的数据')
+      // getDataRequest()
+      getResettleDetailS()
     }
   },
   { immediate: true, deep: true }
@@ -142,16 +184,20 @@ watch(
   () => props.simulateDemographic,
   (val) => {
     if (val) {
-      console.log(val,'再次测试人口数据')
-      if(props.flag){
+      console.log(val, '再次测试人口数据')
+      if (props.flag) {
         if (props.simulateDemographic?.length == props.demographicLists?.length) {
           console.log('长度相等,用更改表')
-          datas.value=props.simulateDemographic 
-          tableData.value=val.filter((item: any) => item.isDelete != '1'&&item.name != '增计人口') 
+          datas.value = props.simulateDemographic
+          tableData.value = val.filter(
+            (item: any) => item.isDelete != '1' && item.name != '增计人口'
+          )
         } else {
           console.log('长度不相等,用人口表')
-          datas.value=props.demographicLists 
-          tableData.value=props.demographicLists.filter((item: any) => item.isDelete != '1'&&item.name != '增计人口')
+          datas.value = props.demographicLists
+          tableData.value = props.demographicLists.filter(
+            (item: any) => item.isDelete != '1' && item.name != '增计人口'
+          )
         }
       }
     }
@@ -165,13 +211,13 @@ const stepNext = async () => {
     showToast('请选择安置方式')
     return
   }
-  console.log(datas.value, '传递的测试数据111') 
+  console.log(datas.value, '传递的测试数据111')
   console.log(tableData.value, '测试数据222')
-  const data=datas.value
+  const data = datas.value
   emit('submit', data)
 }
 onMounted(() => {
-  getDataRequest()
+  // getDataRequest()
   console.log(333333)
 })
 </script>
@@ -268,5 +314,4 @@ onMounted(() => {
 ::v-deep.uni-input-placeholder {
   font-size: 9rpx !important;
 }
-
 </style>

@@ -1,7 +1,7 @@
 <template>
   <view class="produce-wrap">
     <view class="btn-box">
-      <view style="display: flex;">
+      <view style="display: flex">
         <view class="btn blue-btn" @click="importPre">
           <image class="icon" src="@/static/images/icon_import.png" mode="scaleToFill" />
           <text class="txt">导入模拟安置数据</text>
@@ -12,7 +12,7 @@
           <text class="txt">编辑</text>
         </view>
       </view>
-      <view style="display: flex;">
+      <view style="display: flex">
         <view class="btn green-btn" @click="handleClick">
           <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
           <text class="txt">打印报表</text>
@@ -35,13 +35,24 @@
     </view>
 
     <view class="content">
-      <PeopleList :isEdit="false" :demographic-list="demographicList" :demographiclists="demographicList" :flag="false"/>
+      <PeopleList
+        :isEdit="false"
+        :demographic-list="demographicList"
+        :demographiclists="demographicList"
+        :flag="false"
+      />
     </view>
 
     <uni-popup ref="alertDialog" type="dialog">
       <uni-popup-dialog
-type="warn" cancelText="取消" confirmText="确认" title="请确认是否导入？" content="导入模拟数据后，列表中的安置方式将被覆盖"
-        @confirm="dialogConfirm" @close="dialogClose" />
+        type="warn"
+        cancelText="取消"
+        confirmText="确认"
+        title="请确认是否导入？"
+        content="导入模拟数据后，列表中的安置方式将被覆盖"
+        @confirm="dialogConfirm"
+        @close="dialogClose"
+      />
     </uni-popup>
   </view>
 </template>
@@ -104,7 +115,7 @@ const editProduce = () => {
   console.log(props.dataInfo.immigrantSettle, '测试编辑')
   routerForward('peopleConfirm', {
     uid: props.dataInfo.uid,
-    immigrantSettle: JSON.stringify(props.dataInfo.simulateImmigrantSettle),
+    immigrantSettle: JSON.stringify(props.dataInfo.simulateImmigrantSettle)
   })
 }
 
@@ -136,7 +147,7 @@ const dialogConfirm = () => {
     }
     return item
   })
-  console.log(data,'最终传输的数据')
+  console.log(data, '最终传输的数据')
   produceSubmit(data)
 }
 

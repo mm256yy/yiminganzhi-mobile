@@ -594,7 +594,7 @@ export const collectiveSidebarList = [
             iconSel: iconTdfzwSel
           },
           {
-            label: '小型专项设备',
+            label: '小型专项设施',
             value: 3,
             filled: false,
             iconDef: iconMnazDef,
