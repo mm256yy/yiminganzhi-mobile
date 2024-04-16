@@ -3,7 +3,7 @@
     <Container :title="title">
       <view class="main">
         <uni-forms class="form" ref="form" :modelValue="formData">
-          <uni-row v-if="commonParams.type === 'add'">
+          <!-- <uni-row v-if="commonParams.type === 'add'">
             <uni-col :span="24">
               <uni-forms-item
                 required
@@ -24,8 +24,20 @@
                 </view>
               </uni-forms-item>
             </uni-col>
+          </uni-row> -->
+          <uni-row>
+            <uni-col :span="12">
+              <uni-forms-item
+                required
+                label="青苗户主"
+                :label-width="150"
+                label-align="right"
+                name="formData.householder"
+              >
+                <uni-easyinput v-model="formData.householder" type="text" placeholder="请输入" />
+              </uni-forms-item>
+            </uni-col>
           </uni-row>
-
           <uni-row>
             <uni-col :span="12">
               <uni-forms-item
@@ -207,7 +219,7 @@
               </uni-forms-item>
             </uni-col>
           </uni-row>
-          <uni-row>
+          <!-- <uni-row>
             <uni-col :span="12">
               <uni-forms-item
                 label="青苗户主"
@@ -218,7 +230,7 @@
                 <uni-easyinput v-model="formData.householder" type="text" placeholder="请输入" />
               </uni-forms-item>
             </uni-col>
-          </uni-row>
+          </uni-row> -->
 
           <uni-row>
             <uni-col :span="24">
@@ -277,7 +289,7 @@ const landNumberListClone = ref<any[]>([])
 const formData = ref<any>({
   doorNo: commonParams.value.doorNo,
   status: 'implementation',
-  addReason: '',
+  // addReason: '',
   landNumber: '',
   landName: '',
   breed: '',
@@ -388,8 +400,8 @@ const submit = () => {
     landNumber: findLandNumber(formData.value.landNumber)
   }
   console.log(params,'测试传输数据')
-  if (!formData.value.addReason && type === 'add') {
-    showToast('请输入新增原因')
+  if (!formData.value.householder) {
+    showToast('请输入青苗户主')
     return
   }
 
@@ -469,6 +481,7 @@ watch(
 watch(
   () => formData.value.valuationAmount,
   (newValue) => {
+    console.log(newValue, 'newValue')
     if (!formData.value.compensationAmount) {
       formData.value.compensationAmount = newValue
     }

@@ -70,7 +70,7 @@
         <view class="list-item">
           <image class="bg" src="@/static/images/head_2.png" mode="scaleToFill" />
           <view class="title" @click="jump(MainType.IndividualHousehold)">
-            <text class="tit">个体户</text>
+            <text class="tit">个体工商户</text>
             <image
               class="right-arrow"
               src="@/static/images/sync_right_arrow.png"
@@ -117,7 +117,7 @@
         <view class="list-item">
           <image class="bg" src="@/static/images/head_3.png" mode="scaleToFill" />
           <view class="title" @click="jump(MainType.Company)">
-            <text class="tit">企业</text>
+            <text class="tit">企（事）业单位</text>
             <image
               class="right-arrow"
               src="@/static/images/sync_right_arrow.png"
@@ -164,7 +164,7 @@
         <view class="list-item">
           <image class="bg" src="@/static/images/head_4.png" mode="scaleToFill" />
           <view class="title" @click="jump(MainType.Village)">
-            <text class="tit">村集体</text>
+            <text class="tit">村集体资产</text>
             <image
               class="right-arrow"
               src="@/static/images/sync_right_arrow.png"
@@ -472,7 +472,7 @@ uni-page-body {
     z-index: 2;
     display: flex;
     height: 100%;
-    padding: 10rpx 6rpx 5rpx;
+    padding: 10rpx 10rpx 5rpx;
     background-color: #fff;
     border: 1rpx solid #ffffff;
     border-radius: 5rpx;

@@ -128,11 +128,25 @@
 <script lang="ts" setup>
 import { ref, onMounted, computed } from 'vue'
 import { formatStr, routerForward, dictOption } from '@/utils'
-import { apartmentArea, resettleArea } from '@/config'
+// import { apartmentArea, resettleArea } from '@/config'
 import { getChooseConfigApi, getHouseConfigApi } from '@/service'
 import { LandlordType } from '@/types/sync'
 import { HouseAreaType } from '@/types/common'
+import { getResettleDetail } from '@/service'
+import { OtherDataType } from '@/database'
 
+const apartmentArea = ref<any>()  //公寓房
+const resettleArea = ref<any>()   //宅基地
+
+const getDataRequest = async () => {
+  try {
+    const data = await getResettleDetail(OtherDataType.settleAddressList)
+    resettleArea.value = data.filter((item: any) => item.type == '1')
+    apartmentArea.value = data.filter((item: any) => item.type == '2')
+  } catch (error) {
+    console.log('error', error)
+  }
+}
 interface PropsType {
   dataList: any[]
   dataInfo: LandlordType
@@ -161,16 +175,16 @@ const getSettleAddress = (data: string) => {
     if (immigrantSettle) {
       if (immigrantSettle.houseAreaType === 'flat') {
         let str = ''
-        apartmentArea.map((item: any) => {
-          if (item.id === data) {
+        apartmentArea.value.map((item: any) => {
+          if (item.id == data) {
             str = item.name
           }
         })
         return str
       } else {
         let str = ''
-        resettleArea.map((item: any) => {
-          if (item.id === data) {
+        resettleArea.value.map((item: any) => {
+          if (item.id == data) {
             str = item.name
           }
         })
@@ -258,6 +272,7 @@ const isHandled = computed(() => {
 onMounted(() => {
   getChooseConfig()
   getHouseConfig()
+  getDataRequest()
 })
 </script>
 

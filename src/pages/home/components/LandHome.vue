@@ -13,6 +13,9 @@
       <view class="search-btn-radius" @click="onSearchMore">
         <text class="search-txt">更多条件</text>
       </view>
+      <view class="search-btn-radius" @click="onReset">
+            <text class="search-txt">重置搜索</text>
+      </view>
     </view>
     <!-- 具体内容 -->
     <view class="main-enter">
@@ -21,9 +24,6 @@
         <view class="right-side">
           <view class="btn blue-btn" @click="toTarget('database')">
             <text class="txt">数据库</text>
-          </view>
-          <view class="btn blue-btn" @click="onReset">
-            <text class="txt">重置搜索</text>
           </view>
           <view class="btn blue-btn" @click="associatedBind">
             <text class="txt">关联绑定</text>

@@ -44,7 +44,7 @@
       </view>
       <view class="cont-item right">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
-        <view class="label">图幅号</view>
+        <view class="label">图幅号:</view>
         <view class="value">{{ formatEmptyText(props.data.sheetNumber) }}</view>
       </view>
       <view class="cont-item">

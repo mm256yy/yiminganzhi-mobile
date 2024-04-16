@@ -47,16 +47,16 @@ export class landEstimateDtoListFills extends Common {
           landLevelTwo = landLevel.split('-')[1]
         }
         if (doorNo) {
-          sql += ` and showDoorNo = '${doorNo}'`
+          sql += ` and showDoorNo like '%${doorNo}%'`
         }
         if (landNumber) {
-          sql += ` and landNumber = '${landNumber}'`
+          sql += ` and landNumber like '%${landNumber}%'`
         }
         if (rightHolder) {
-          sql += ` and rightHolder = '${rightHolder}'`
+          sql += ` and rightHolder like '%${rightHolder}%'`
         }
         if (landName) {
-          sql += ` and landName = '${landName}'`
+          sql += ` and landName like '%${landName}%'`
         }
         if (landNature) {
           sql += ` and landNature = '${landNature}'`
