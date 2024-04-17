@@ -10,7 +10,7 @@
           </view>
           <view class="right" />
         </view>
-        <view class="list-2">
+        <view class="list-2" style="border-bottom: 1rpx dotted #d0cbcb">
           <uni-row>
             <uni-col :span="12">
               <view class="col">
@@ -60,18 +60,20 @@
               </view>
             </uni-col>
           </uni-row>
+        </view>
 
+        <view class="list-2">
           <uni-row>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">房屋主体评估合计：</view>
-                <view class="content">{{ totalPriceObj.houseTotalAmount }}</view>
+                <view class="content">{{ formatStr(totalPriceObj.houseTotalAmount, '元') }}</view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">房屋装修评估合计：</view>
-                <view class="content">{{ totalPriceObj.fitUpTotalAmount }}</view>
+                <view class="content">{{ formatStr(totalPriceObj.fitUpTotalAmount, '元') }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -80,13 +82,15 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">房屋附属设施评估合计：</view>
-                <view class="content">{{ totalPriceObj.appendantTotalAmount }}</view>
+                <view class="content">{{
+                  formatStr(totalPriceObj.appendantTotalAmount, '元')
+                }}</view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">零星(林)果木评估合计：</view>
-                <view class="content">{{ totalPriceObj.treeTotalAmount }}</view>
+                <view class="content">{{ formatStr(totalPriceObj.treeTotalAmount, '元') }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -95,13 +99,15 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">土地基本情况评估合计：</view>
-                <view class="content">{{ totalPriceObj.landTotalAmount }}</view>
+                <view class="content">{{ formatStr(totalPriceObj.landTotalAmount, '元') }}</view>
               </view>
             </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">土地青苗及附着物评估合计：</view>
-                <view class="content">{{ totalPriceObj.assetAppendantTotalAmount }}</view>
+                <view class="content">{{
+                  formatStr(totalPriceObj.assetAppendantTotalAmount, '元')
+                }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -110,21 +116,23 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">小型专项设施评估合计：</view>
-                <view class="content">{{ totalPriceObj.specialTotalAmount }}</view>
+                <view class="content">{{ formatStr(totalPriceObj.specialTotalAmount, '元') }}</view>
               </view>
             </uni-col>
-              <uni-col :span="12">
+            <uni-col :span="12">
               <view class="col">
                 <view class="label">基础设施评估合计：</view>
-                <view class="content">{{ totalPriceObj.infrastructureAmount }}</view>
+                <view class="content">{{
+                  formatStr(totalPriceObj.infrastructureAmount, '元')
+                }}</view>
               </view>
             </uni-col>
           </uni-row>
           <uni-row>
-              <uni-col :span="24">
+            <uni-col :span="12">
               <view class="col">
                 <view class="label">资产评估合计：</view>
-                <view class="content">{{ totalPriceObj.totalAmount }}</view>
+                <view class="content">{{ formatStr(totalPriceObj.totalAmount, '元') }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -169,7 +177,7 @@ const totalPriceObj = computed(() => {
       landEstimateDtoList,
       assetAppendantList,
       immigrantFacilitiesList,
-      immigrantInfrastructureList,
+      immigrantInfrastructureList
     } = props.dataInfo
     // 房屋主体
     if (immigrantHouseList && immigrantHouseList.length) {
@@ -227,7 +235,7 @@ const totalPriceObj = computed(() => {
         }
       })
     }
-        // 基础设施评估
+    // 基础设施评估
     if (immigrantInfrastructureList && immigrantInfrastructureList.length) {
       immigrantInfrastructureList.forEach((item: any) => {
         if (item.compensationAmount > 0) {

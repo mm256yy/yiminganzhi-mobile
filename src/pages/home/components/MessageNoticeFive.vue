@@ -155,7 +155,7 @@ onMounted(() => {
   .echart-title {
     display: flex;
     height: 21rpx;
-    padding-left: 30rpx;
+    padding-left: 6rpx;
     margin-right: 8rpx;
     font-size: 10rpx;
     font-weight: 600;

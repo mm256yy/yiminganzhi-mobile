@@ -158,7 +158,8 @@ export class landEstimateDtoListFills extends Common {
             villageCode: data.villageCode,
             name: data.rightHolder,
             card: data.card,
-            landUserType: data.landUserType
+            landUserType: data.landUserType,
+            phone: data.phone
           }).catch(() => {
             reject(false)
           })

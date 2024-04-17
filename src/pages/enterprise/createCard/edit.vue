@@ -6,6 +6,16 @@
         <uni-row>
           <uni-col :span="24">
             <uni-forms-item
+              label="安置方式"
+              :label-width="150"
+              label-align="right"
+              name="formData.setaddrn"
+            >
+               <uni-data-select v-model="formData.setaddrn" :localdata="dict[422]" />
+            </uni-forms-item>
+          </uni-col>
+          <uni-col :span="24">
+            <uni-forms-item
               label="迁前厂址"
               :label-width="150"
               label-align="right"
@@ -14,7 +24,7 @@
               <uni-easyinput v-model="formData.beforeAddress" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
-          <uni-col :span="24">
+          <uni-col :span="24" v-if="formData.setaddrn=='2'" >
             <uni-forms-item
               label="安置厂址"
               :label-width="150"
@@ -26,7 +36,7 @@
           </uni-col>
           <uni-col :span="24">
             <uni-forms-item
-              label="企业总人口数"
+              label="员工总数"
               :label-width="150"
               label-align="right"
               name="formData.peopleNumber"
@@ -85,12 +95,13 @@
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
-import { routerBack } from '@/utils'
+import { routerBack,getStorage,StorageKey } from '@/utils'
 import { getImpLandlordItemApi, saveImpLandlordItemApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
 
 const uid = ref<string>('')
+const dict = getStorage(StorageKey.DICT)
 
 // 表单数据
 const formData = ref<any>({

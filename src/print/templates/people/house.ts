@@ -123,7 +123,7 @@ const getFooter = () => {
       alignment: 'justify',
       columns: [
         {
-          text: '户主签字：',
+          text: '权属人签字：',
           alignment: 'left'
         },
         {

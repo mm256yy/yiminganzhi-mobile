@@ -59,7 +59,7 @@ export const formatDict = (val: any, id: number) => {
  * @param(Object) unit 单位
  */
 export const formatStr = (str: any, unit?: string) => {
-  if (str) {
+  if (str || str == '0') {
     if (unit) {
       return str + unit
     } else {

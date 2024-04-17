@@ -5,7 +5,7 @@
         <view class="name">{{ dataInfo.name }}</view>
         <view class="account-no">{{ dataInfo.doorNo.slice(2) }} </view>
         <view class="fill-number">
-          填报进度&nbsp;
+          表单填报&nbsp;
           <text class="green">{{ fillNumber }}</text>
           /{{ totalFillNumber }}
         </view>
@@ -62,7 +62,7 @@
       </view>
     </uni-popup> -->
     <uni-popup ref="listDataPopup" :is-mask-click="false">
-      <view class="tips-wrapper">
+      <view class="tips-wrappers">
         <view class="tips-title">进度上报</view>
         <view class="tips-content">
           <view class="file-list" :prop="options" :change:prop="print.getPdf">
@@ -91,7 +91,7 @@
     </uni-popup>
     <!-- 填报完成 -->
     <uni-popup ref="reportDataPopup" :is-mask-click="false">
-      <view class="tips-wrapper">
+      <view class="tips-wrappers">
         <view class="tips-title">填报完成</view>
         <view :class="['tips-content', tipsList.length === 0 ? 'completed-report' : '']">
           <view class="tips-list" v-if="tipsList && tipsList.length">
@@ -799,6 +799,130 @@ export default {
 
 .tips-wrapper {
   width: 344rpx;
+  height: 321rpx;
+  margin: 0 auto;
+  vertical-align: middle;
+  background-color: #f6f7f9;
+  border-radius: 5rpx;
+
+  .tips-title {
+    width: 344rpx;
+    height: 33rpx;
+    font-size: 11rpx;
+    font-weight: 600;
+    line-height: 33rpx;
+    color: #000;
+    text-align: center;
+    background: #ffffff;
+    border-radius: 5rpx 5rpx 0 0;
+  }
+
+  .tips-content {
+    width: 344rpx;
+    height: 256rpx;
+    padding: 14rpx 40rpx;
+    background: #f6f7f9;
+    box-sizing: border-box;
+
+    &.completed-report {
+      height: 68rpx;
+      padding: 30rpx 59rpx;
+    }
+
+    .tips-list {
+      width: 264rpx;
+      height: 88rpx;
+      padding: 16rpx 19rpx;
+      overflow-y: scroll;
+      background-color: #fff;
+      box-sizing: border-box;
+
+      .tips-item {
+        display: flex;
+        font-size: 9rpx;
+        line-height: 1.5;
+        color: #131313;
+        align-items: center;
+        flex-direction: column;
+      }
+    }
+
+    .tips {
+      margin-top: 14rpx;
+      font-size: 9rpx;
+      color: #131313;
+    }
+
+    .file-list {
+      width: 264rpx;
+      height: 235rpx;
+      overflow-y: scroll;
+
+      .file-item {
+        display: flex;
+        width: 264rpx;
+        height: 40rpx;
+        padding: 0 14rpx;
+        margin-bottom: 7rpx;
+        background-color: #fff;
+        border-radius: 3rpx;
+        box-sizing: border-box;
+        align-items: center;
+        justify-content: space-between;
+
+        &.active {
+          border: 1rpx solid #3e73ec;
+        }
+
+        .name {
+          font-size: 9rpx;
+          color: #131313;
+        }
+
+        .btns {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 44rpx;
+
+          .icon {
+            width: 14rpx;
+            height: 14rpx;
+            margin-left: 8rpx;
+          }
+        }
+      }
+      .file-items {
+        display: flex;
+        width: 264rpx;
+        height: 40rpx;
+        padding: 0 14rpx;
+        margin-bottom: 7rpx;
+        background-color: #3e73ec;
+        border-radius: 3rpx;
+        box-sizing: border-box;
+        align-items: center;
+
+        &.active {
+          border: 1rpx solid #3e73ec;
+        }
+
+        .name {
+          font-size: 9rpx;
+          color: #f6f7f9;
+        }
+
+        .icon {
+          width: 14rpx;
+          height: 14rpx;
+          margin-left: 8rpx;
+        }
+      }
+    }
+  }
+}
+.tips-wrappers {
+  width: 344rpx;
   height: 221rpx;
   margin: 0 auto;
   vertical-align: middle;
@@ -921,7 +1045,6 @@ export default {
     }
   }
 }
-
 .device-wrapper {
   width: 344rpx;
   height: 221rpx;

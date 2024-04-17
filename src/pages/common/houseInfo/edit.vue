@@ -355,6 +355,23 @@
         <uni-row>
           <uni-col :span="24">
             <uni-forms-item
+              required
+              label="房屋照片"
+              :label-width="150"
+              label-align="right"
+              name="formData.homePic"
+            >
+              <upload-file
+                v-model="formData.homePic"
+                :file-list="formData.homePic"
+                :limit="20"
+                show-type="list"
+                :accepts="['.jpg', '.png']"
+              />
+            </uni-forms-item>
+          </uni-col>
+          <uni-col :span="24">
+            <uni-forms-item
               label="房屋平面示意图"
               :label-width="150"
               label-align="right"
@@ -388,7 +405,7 @@
           </uni-col>
           <uni-col :span="24">
             <uni-forms-item
-              label="房屋其他附件照片"
+              label="其他附件照片"
               :label-width="150"
               label-align="right"
               name="formData.otherPic"
@@ -396,22 +413,6 @@
               <upload-file
                 v-model="formData.otherPic"
                 :file-list="formData.otherPic"
-                :limit="20"
-                show-type="list"
-                :accepts="['.jpg', '.png']"
-              />
-            </uni-forms-item>
-          </uni-col>
-          <uni-col :span="24">
-            <uni-forms-item
-              label="房屋照片"
-              :label-width="150"
-              label-align="right"
-              name="formData.homePic"
-            >
-              <upload-file
-                v-model="formData.homePic"
-                :file-list="formData.homePic"
                 :limit="20"
                 show-type="list"
                 :accepts="['.jpg', '.png']"
@@ -502,6 +503,8 @@ const getDate = () => {
 const currentDate = ref<any>('')
 
 onLoad((option: any) => {
+  console.log(dict[284], '=========')
+
   if (option) {
     commonParams.value = JSON.parse(option.commonParams)
     type.value = commonParams.value?.type ? commonParams.value.type : ''
@@ -514,6 +517,7 @@ onLoad((option: any) => {
     } else if (type.value === 'add') {
       title.value = '新增房屋'
       currentDate.value = getDate()
+      formData.value.propertyType='2'
       if (commonParams.value.longitude && commonParams.value.latitude) {
         formData.value.longitude = commonParams.value.longitude
         formData.value.latitude = commonParams.value.latitude
@@ -601,6 +605,9 @@ const submit = () => {
     mainType.value === MainType.PeasantHousehold
   ) {
     showToast('请输入新增原因')
+    return
+  } else if (!formData.value.homePic) {
+    showToast('请上传房屋照片')
     return
   } else {
     if (type.value === 'add') {

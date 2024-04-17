@@ -178,6 +178,7 @@ export interface LandlordType {
   householderDoorNo: string
   immigrantFilling: Partial<ImmigrantFillingType>
   immigrantSelfSeeking: Partial<ImmigrantSelfSeekingType>
+  setaddrn: any
 }
 // 农户列表 含有状态
 export interface LandlordHasStatusType {

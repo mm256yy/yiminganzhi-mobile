@@ -79,6 +79,7 @@
         <uni-row v-show="checkSelected">
           <uni-col :span="12">
             <uni-forms-item
+              :required="formData.landUserType == 'PeasantHousehold'"
               label="身份证号："
               :label-width="150"
               label-align="right"
@@ -133,6 +134,17 @@
                   @blur="inputBlur"
                 />
               </view>
+            </uni-forms-item>
+          </uni-col>
+          <uni-col :span="12">
+            <uni-forms-item
+              required
+              label="联系方式"
+              :label-width="150"
+              label-align="right"
+              name="formData.phone"
+            >
+              <uni-easyinput v-model="formData.phone" :maxlength="18" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -268,6 +280,14 @@ const submit = async () => {
         showToast('户号后缀必须为4位')
         return
       }
+    }
+    if (formData.value.landUserType == 'PeasantHousehold' && !formData.value.card) {
+      showToast('身份证号不能为空')
+      return
+    }
+    if (!formData.value.phone) {
+      showToast('联系方式不能为空')
+      return
     }
 
     doorNoResult = `${suffixNo()}${formData.value.doorNo}`
