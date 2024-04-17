@@ -36,6 +36,7 @@
           </uni-col>
           <uni-col :span="24">
             <uni-forms-item
+              required
               label="开户名"
               :label-width="150"
               label-align="right"
@@ -47,6 +48,7 @@
 
           <uni-col :span="24">
             <uni-forms-item
+              required 
               label="开户行"
               :label-width="150"
               label-align="right"
@@ -58,6 +60,7 @@
 
           <uni-col :span="24">
             <uni-forms-item
+              required
               label="银行账号"
               :label-width="150"
               label-align="right"
@@ -118,6 +121,20 @@ const getLandlordDetail = () => {
 const submit = () => {
   let params = {
     ...formData.value
+  }
+  if (!formData.value.accountName) {
+    showToast('开户名不能为空')
+    return
+  }
+
+  if (!formData.value.bankName) {
+    showToast('开户行不能为空')
+    return
+  }
+
+  if (!formData.value.bankAccount) {
+    showToast('银行账号不能为空')
+    return
   }
   saveImpLandlordItemApi(params)
     .then((res) => {

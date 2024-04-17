@@ -113,7 +113,8 @@
                 label-align="right"
                 name="formData.getType"
               >
-                <uni-easyinput v-model="formData.getType" type="text" placeholder="请输入" />
+                <!-- <uni-easyinput v-model="formData.getType" type="text" placeholder="请输入" /> -->
+              <uni-data-select v-model="formData.getType" :localdata="dict[421]" />
               </uni-forms-item>
             </uni-col>
           </uni-row>

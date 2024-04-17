@@ -68,7 +68,7 @@
       <!-- 自谋出路办理 -->
       <SelfFindWay v-if="handleType === 8" :uid="query.uid" @submit="submitSuccess" />
       <!-- 只征地不搬迁土地腾让办理 -->
-      <LandNoMove v-if="handleType === 9" :uid="query.uid" @submit="submitSuccess" />
+      <LandNoMove v-if="handleType === 9" :uid="query.uid" :landEmptyDate="query.landEmptyDate" @submit="submitSuccess" />
     </view>
   </Container>
 </template>
@@ -112,6 +112,7 @@ interface QueryType {
   itemUid?: string // 列表中当前项 ID
   status?: string // 状态值
   data?: any // 其他参数
+  landEmptyDate?:any
 }
 
 const query = ref<any>({})

@@ -90,6 +90,7 @@ const archivesUpload = () => {
 const handle = () => {
   routerForward('attendto', {
     uid: props.dataInfo.uid,
+    landEmptyDate: landEmptyInfo.value.landEmptyDate,
     type: 9
   })
 }

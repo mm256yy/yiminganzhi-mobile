@@ -17,7 +17,14 @@
         }}</text>
       </view>
     </view>
-
+    <view class="btn-box">
+      <view>
+        <view class="btn blue" @click="submit">
+          <!-- <image class="icon" src="@/static/images/icon_plus.png" mode="scaleToFill" /> -->
+          <text class="txt">保存</text>
+        </view>
+      </view>
+    </view>
     <view class="row">
       <uni-row>
         <uni-col :span="12">
@@ -30,49 +37,32 @@
         </uni-col>
         <uni-col :span="12">
           <view class="col">
-            <view class="label">联系方式：</view>
-            <view class="content">
-              <!-- {{ formatStr(dataInfo.phone) }} -->
-              <!-- <uni-easyinput v-model="dataList.phone" type="text" size="small" placeholder="请输入" /> -->
-              <input
-                type="text"
-                placeholder="请输入电话号码"
-                style="border: 1px solid #dfe2e5; font-size: 9rpx; border-radius: 2rpx"
-                v-model="options.phone"
-              />
-            </view>
-          </view>
-        </uni-col>
-      </uni-row>
-      <uni-row>
-        <uni-col :span="12">
-          <view class="col">
             <view class="label">户籍所在地：</view>
             <view class="content">{{ formatStr(dataInfo.address) }}</view>
           </view>
         </uni-col>
+      </uni-row>
+      <uni-row>
         <uni-col :span="12">
           <view class="col">
             <view class="label">所属网格员：</view>
             <view class="content">{{ formatStr(dataInfo.gridmanName) }}</view>
           </view>
         </uni-col>
-      </uni-row>
-      <uni-row>
         <uni-col :span="12">
           <view class="col">
             <view class="label">行政村：</view>
             <view class="content">{{ formatStr(dataInfo.villageCodeText) }}</view>
           </view>
         </uni-col>
+      </uni-row>
+      <uni-row>
         <uni-col :span="12">
           <view class="col">
             <view class="label">自然村/村民小组：</view>
             <view class="content">{{ formatStr(dataInfo.virutalVillageCodeText) }}</view>
           </view>
         </uni-col>
-      </uni-row>
-      <uni-row>
         <uni-col :span="12">
           <view class="col">
             <view class="label">所在位置：</view>
@@ -81,6 +71,8 @@
             </view>
           </view>
         </uni-col>
+      </uni-row>
+      <uni-row>
         <uni-col :span="12">
           <view class="col">
             <view class="label">淹没范围：</view>
@@ -104,6 +96,23 @@
                     : '获取定位'
                 }}</text>
               </view>
+            </view>
+          </view>
+        </uni-col>
+      </uni-row>
+      <uni-row>
+        <uni-col :span="12">
+          <view class="col">
+            <view class="label"><text class="star">*</text>联系方式(户主)：</view>
+            <view class="content">
+              <!-- {{ formatStr(dataInfo.phone) }} -->
+              <!-- <uni-easyinput v-model="dataList.phone" type="text" size="small" placeholder="请输入" /> -->
+              <input
+                type="text"
+                placeholder="请输入电话号码"
+                style="border: 1px solid #dfe2e5; font-size: 9rpx; border-radius: 2rpx"
+                v-model="options.phone"
+              />
             </view>
           </view>
         </uni-col>
@@ -191,12 +200,12 @@
       </uni-row>
     </view>
 
-    <image
+    <!-- <image
       class="btn submit"
       src="@/static/images/icon_submit.png"
       mode="scaleToFill"
       @click="submit"
-    />
+    /> -->
   </view>
 </template>
 
@@ -344,6 +353,10 @@ const submit = () => {
     showToast('户主照片必传')
     return
   }
+  if (!options.value.phone) {
+    showToast('联系方式(户主)必填')
+    return
+  }
   const params: any = {
     ...props.dataInfo,
     householdPic: householdPicStr.value,
@@ -476,17 +489,17 @@ onBeforeUnmount(() => {
     }
   }
 
-  .btn {
-    position: fixed;
-    right: 25rpx;
-    width: 28rpx;
-    height: 28rpx;
-    border-radius: 50%;
+  // .btn {
+  //   position: fixed;
+  //   right: 25rpx;
+  //   width: 28rpx;
+  //   height: 28rpx;
+  //   border-radius: 50%;
 
-    &.submit {
-      bottom: 16rpx;
-    }
-  }
+  //   &.submit {
+  //     bottom: 16rpx;
+  //   }
+  // }
 }
 .lg-txt-wrapper {
   display: flex;
@@ -509,4 +522,39 @@ onBeforeUnmount(() => {
     }
   }
 }
+.btn-box {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    .btn {
+      display: flex;
+      height: 23rpx;
+      padding: 0 9rpx;
+      margin-left: 6rpx;
+      background: #3e73ec;
+      border-radius: 23rpx;
+      align-items: center;
+      justify-content: center;
+
+      &.green-btn {
+        background-color: #30a952;
+      }
+
+      &.blue-btn {
+        background: #3e73ec;
+      }
+
+      .icon {
+        width: 9rpx;
+        height: 9rpx;
+        margin-right: 3rpx;
+      }
+
+      .txt {
+        font-size: 9rpx;
+        line-height: 11rpx;
+        color: #ffffff;
+      }
+    }
+  }
 </style>

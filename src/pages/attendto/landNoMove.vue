@@ -61,6 +61,7 @@ import { LandlordType } from '@/types/sync'
 interface PropsType {
   uid: string
   immigrantLandEmpty: ImmigrantLandEmptyType
+  landEmptyDate:any
 }
 
 const props = defineProps<PropsType>()
@@ -90,6 +91,7 @@ watch(
   () => props.immigrantLandEmpty,
   (val: ImmigrantLandEmptyType) => {
     if (val) {
+      console.log(val,'测试数据1')
       formData.value = {
         ...val,
         landEmptyDate: val.landEmptyDate ? dayjs(val.landEmptyDate).format('YYYY-MM-DD') : getDate()
@@ -102,6 +104,18 @@ watch(
   { immediate: true, deep: true }
 )
 
+watch(
+  () => props.landEmptyDate,
+  (val) => {
+    if (val) {
+      console.log(val, '测试数据2')
+      if(!formData.value.landEmptyDate) {
+      formData.value.landEmptyDate = dayjs(val).format('YYYY-MM-DD')
+     }
+    }
+  },
+  { immediate: true, deep: true }
+)
 /**
  *日期选择
  */
