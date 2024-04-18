@@ -22,7 +22,7 @@
     <view class="search">
       <view class="search-input">
         <!-- <input type="text" placeholder="请输入户号、名称、联系方式" v-model.trim="seachName" /> -->
-        <input v-model="name" type="text" :confirm-type="'search'" placeholder="请输入" @confirm="confirm"/>
+        <input v-model="name" type="text" :confirm-type="'search'" placeholder="请输入户主姓名/户主" @confirm="confirm"/>
       </view>
       <view class="search-btn" @click="confirm">
         <image class="search-icon" src="@/static/images/icon_search_white.png" mode="aspectFit" />

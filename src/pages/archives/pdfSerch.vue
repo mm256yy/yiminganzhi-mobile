@@ -452,7 +452,7 @@
         <button class="reportButton" type="info" @click="render.headelReporst" v-else
           >导出PDF</button
         >
-        <button class="reportButton" type="info" @click="handleClick">户主签名</button>
+        <button class="reportButton" type="info" @click="handleClick">户主 签名</button>
         <button class="reportButton" type="info" @click="handleClickToymjk">返回</button>
       </div>
     </div>
@@ -833,6 +833,7 @@ export default {
     }
   },
   onLoad(option) {
+    console.log(option)
     this.id = option.id
     console.log(JSON.parse(option.dataInfo))
     this.dataList = option.data ? JSON.parse(option.data) : []

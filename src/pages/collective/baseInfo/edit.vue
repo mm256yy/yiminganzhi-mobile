@@ -78,6 +78,7 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="村集体联系方式"
               :label-width="170"
               label-align="right"
@@ -91,6 +92,7 @@
         <uni-row>
           <uni-col :span="24">
             <uni-forms-item
+              required
               label="所在位置"
               :label-width="170"
               label-align="right"
@@ -197,16 +199,12 @@ const submit = () => {
   } else if (!formData.value.doorNo) {
     showToast('请输入村集体编码')
     return
-    // } else if (!formData.value.doorNo && !formData.value.suffixNo) {
-    //   showToast('请输入村集体编码后四位')
-    //   return
-    // } else if (
-    //   !formData.value.doorNo &&
-    //   formData.value.suffixNo &&
-    //   formData.value.suffixNo.length !== 4
-    // ) {
-    //   showToast('村集体编码不全，请输入四位数字')
-    //   return
+  } else if (!formData.value.phone) {
+    showToast('村集体联系方式')
+    return
+  } else if (!formData.value.locationType) {
+    showToast('请选择所在位置')
+    return
   } else {
     if (type.value === 'add') {
       addLandlordApi(params)

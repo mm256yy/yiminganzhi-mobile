@@ -745,7 +745,7 @@ class PullData {
             })
           }
           const values = getLandlordValues(item, 'default')
-          console.log(values, `企业数据${index}`)
+          // console.log(values, `企业数据${index}`)
           db.insertOrReplaceData(LandlordTableName, values, landlordFields)
             .then((res) => {
               console.log(res, '插入业主')
@@ -1207,8 +1207,9 @@ class PullData {
         db.insertOrReplaceData(OtherTableName, values, fields)
       }
       //土地数据
+      console.error(landEstimateDtoList[0], '测试土地数据')
       if (landEstimateDtoList && landEstimateDtoList.length) {
-        console.log(landEstimateDtoList, '测试土地数据')
+        console.log(landEstimateDtoList[0], '测试土地数据')
         landEstimateDtoList.forEach((item) => {
           if (!item.uid) {
             item.uid = guid()

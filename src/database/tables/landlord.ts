@@ -96,7 +96,7 @@ export const getLandlordSqlValues = (data: LandlordType) =>
     data.virutalVillageCode || ''
   }',content = '${JSON.stringify(data)}',longitude = '${data.longitude || ''}',latitude = '${
     data.latitude || ''
-  }',card = '${data.card}',placementWay='${
+  }',card = '${data.card}',placementWay= '${
     data.placementWay
   }',updatedDate = '${getCurrentTimeStamp()}',houseAllStatus = '${
     data.houseAllStatus
