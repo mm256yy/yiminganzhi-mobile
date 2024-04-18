@@ -14,7 +14,7 @@
                 v-if="item.relocateStatus === '1'"
                 class="mini-btn"
                 @click="onHandle('view', item.uid)"
-                >查看</view
+                >编辑</view
               >
               <view v-else class="mini-btn" @click="onHandle('handle', item.uid)">办理</view>
             </view>

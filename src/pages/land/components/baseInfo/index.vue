@@ -91,7 +91,7 @@
               </uni-col>
             </uni-row>
           </view>
-          <view v-else class="list-2">
+          <view v-else class="list-2" style="border-bottom: 1rpx dotted #d0cbcb">
             <uni-row>
               <uni-col :span="12">
                 <view class="col">
@@ -149,18 +149,21 @@
                 </view>
               </uni-col>
             </uni-row>
-
+          </view>
+          <view class="list-2">
             <uni-row>
               <uni-col :span="12">
                 <view class="col">
                   <view class="label">土地基本情况评估合计：</view>
-                  <view class="content">{{ totalPriceObj.landTotalAmount }}</view>
+                  <view class="content">{{ formatStr(totalPriceObj.landTotalAmount, '元') }}</view>
                 </view>
               </uni-col>
               <uni-col :span="12">
                 <view class="col">
                   <view class="label">土地青苗及附着物评估合计：</view>
-                  <view class="content">{{ totalPriceObj.assetAppendantTotalAmount }}</view>
+                  <view class="content">{{
+                    formatStr(totalPriceObj.assetAppendantTotalAmount, '元')
+                  }}</view>
                 </view>
               </uni-col>
             </uni-row>
@@ -168,7 +171,7 @@
               <uni-col :span="12">
                 <view class="col">
                   <view class="label">资产评估合计：</view>
-                  <view class="content">{{ totalPriceObj.totalAmount }}</view>
+                  <view class="content">{{ formatStr(totalPriceObj.totalAmount, '元') }}</view>
                 </view>
               </uni-col>
             </uni-row>

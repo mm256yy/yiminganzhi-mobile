@@ -3,7 +3,7 @@
  */
 
 // 默认 dev 环境
-const apiEnv: ApiEnv = 'local'
+const apiEnv: ApiEnv = 'locals'
 
 const envMap = {
   local: {
@@ -14,11 +14,11 @@ const envMap = {
   //   apiBaseUrl: 'http://rongdu.natapp1.cc',
   //   apiBasePath: '/api'
   // },
-  // local: {
-  //   apiBaseUrl: 'http://ym.zdwp.local',
-  //   apiBasePath: '/api'
-  // },
-  dev: {                                                                                                 
+  locals: {
+    apiBaseUrl: 'http://ym.zdwp.local',
+    apiBasePath: '/api'
+  },
+  dev: {
     apiBaseUrl: 'https://r7r-ai.zdwp.net',
     apiBasePath: '/api'
   },

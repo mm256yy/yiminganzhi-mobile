@@ -62,7 +62,7 @@ create table if not exists ${LandlordTableName} (
   'updatedDate' text DEFAULT NULL,
   'houseAllStatus' text,
   'isDelete' text DEFAULT '0',
-  'setaddrn' text
+  'placementWay' text
 );
 `
 
@@ -96,8 +96,8 @@ export const getLandlordSqlValues = (data: LandlordType) =>
     data.virutalVillageCode || ''
   }',content = '${JSON.stringify(data)}',longitude = '${data.longitude || ''}',latitude = '${
     data.latitude || ''
-  }',card = '${data.card}',setaddrn='${
-    data.setaddrn
+  }',card = '${data.card}',placementWay='${
+    data.placementWay
   }',updatedDate = '${getCurrentTimeStamp()}',houseAllStatus = '${
     data.houseAllStatus
   }',isDelete = '${data.isDelete}'`

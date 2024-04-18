@@ -104,7 +104,7 @@ onMounted(() => {
       justify-content: center;
       flex: none;
       flex: 1;
-      max-width: 70rpx;
+      max-width: 90rpx;
       height: 60rpx;
       margin-right: 6rpx;
       background: #e1f0ff;

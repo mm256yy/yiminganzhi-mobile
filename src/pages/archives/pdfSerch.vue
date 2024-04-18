@@ -15,7 +15,7 @@
         <div style="display: flex; justify-content: space-between">
           <div style="font-size: 16px">
             {{
-              `${baseInfo.areaCodeText || ''} ${baseInfo.townCodeText || ''} ${
+              `${baseInfo.areaCodeText || ''}${baseInfo.townCodeText || ''}${
                 baseInfo.villageCodeText || ''
               } ${baseInfo.name || ''} 户号
                         ${baseInfo.showDoorNo || ''} `
@@ -27,13 +27,15 @@
           <table style="width: 100%" border="1" cellspacing="0" cellpadding="0">
             <!-- 表头行 -->
             <tr>
-              <th align="left" class="uTitle">姓名</th>
-              <th align="left" class="uTitle">与户主关系</th>
-              <th align="left" class="uTitle">身份证号</th>
-              <th align="left" class="uTitle" v-if="baseInfo.type != 'LandNoMove'">人口性质</th>
-              <th align="left" class="uTitle" v-else>联系方式</th>
-              <th align="left" class="uTitle">安置类型</th>
-              <th align="left" class="uTitle">备注</th>
+              <th align="center" width="50" class="uTitle">姓名</th>
+              <th align="center" width="100" class="uTitle">与户主关系</th>
+              <th align="center" width="140" class="uTitle">身份证号</th>
+              <th align="center" width="90" class="uTitle" v-if="baseInfo.type != 'LandNoMove'"
+                >人口性质</th
+              >
+              <th align="center" width="140" class="uTitle" v-else>联系方式</th>
+              <th align="center" width="90" class="uTitle">安置类型</th>
+              <th align="center" class="uTitle">备注</th>
             </tr>
             <!-- 表格数据行 -->
             <tr
@@ -42,18 +44,18 @@
               )"
               :key="index"
             >
-              <td align="left" class="uTd">{{ formatStr(item.name) }}</td>
-              <td align="left" class="uTd">{{ formatDict(item.relation, 307) }}</td>
-              <td align="left" class="uTd">{{ formatStr(item.card) }}</td>
-              <td align="left" class="uTd" v-if="baseInfo.type != 'LandNoMove'">{{
+              <td align="center" class="uTd">{{ formatStr(item.name) }}</td>
+              <td align="center" class="uTd">{{ formatDict(item.relation, 307) }}</td>
+              <td align="center" class="uTd">{{ formatStr(item.card) }}</td>
+              <td align="center" class="uTd" v-if="baseInfo.type != 'LandNoMove'">{{
                 formatDict(item.populationNature, 263)
               }}</td>
-              <td align="left" class="uTd" v-else>{{ formatStr(item.phone) }}</td>
-              <td align="left" class="uTd">{{ formatDict(item.settingWay, 375) }}</td>
-              <td align="left" class="uTd">{{ `` }}</td>
+              <td align="center" class="uTd" v-else>{{ formatStr(item.phone) }}</td>
+              <td align="center" class="uTd">{{ formatDict(item.settingWay, 375) }}</td>
+              <td align="center" class="uTd">{{ `` }}</td>
             </tr>
             <tr style="height: 100px">
-              <td colspan="3"
+              <td colspan="5"
                 >户主代表或收委托人(签名)：<img
                   id="signatureImg"
                   class="signatureImg"
@@ -61,7 +63,7 @@
                   v-if="path"
               /></td>
 
-              <td colspan="3">联系移民干部(签名)：</td>
+              <td colspan="1">联系移民干部(签名)：</td>
             </tr>
           </table>
         </view>
@@ -80,7 +82,7 @@
         <div style="display: flex; justify-content: space-between">
           <div style="font-size: 16px">
             {{
-              `${baseInfo.areaCodeText || ''} ${baseInfo.townCodeText || ''} ${
+              `${baseInfo.areaCodeText || ''}${baseInfo.townCodeText || ''}${
                 baseInfo.villageCodeText || ''
               } ${baseInfo.name || ''} 户号
                         ${baseInfo.showDoorNo} `
@@ -92,21 +94,23 @@
           <table style="width: 100%" border="1" cellspacing="0" cellpadding="0">
             <!-- 表头行 -->
             <tr>
-              <th align="left" class="uTitle">序号</th>
-              <th align="left" class="uTitle">区块</th>
-              <th align="left" class="uTitle">房型</th>
-              <th align="left" class="uTitle">幢号-室号</th>
-              <th align="left" class="uTitle">储藏室编号</th>
-              <th align="left" class="uTitle">车库编号</th>
+              <th align="center" class="uTitle">序号</th>
+              <th align="center" class="uTitle">区块</th>
+              <th align="center" class="uTitle">房型</th>
+              <th align="center" class="uTitle">幢号-室号</th>
+              <th align="center" class="uTitle">储藏室编号</th>
+              <th align="center" class="uTitle">车库编号</th>
             </tr>
             <!-- 表格数据行 -->
             <tr v-for="(item, index) in dataList" :key="index">
-              <td align="left" class="uTd">{{ index + 1 }}</td>
-              <td align="left" class="uTd">{{ getSettleAddress(item) }}</td>
-              <td align="left" class="uTd">{{ formatStr(item.area) }} </td>
-              <td align="left" class="uTd">{{ item.roomNo }}</td>
-              <td align="left" class="uTd"> {{ dictOption(storeroomNoList, item.storeroomNo) }}</td>
-              <td align="left" class="uTd">{{ dictOption(carNoList, item.carNo) }}</td>
+              <td align="center" class="uTd">{{ index + 1 }}</td>
+              <td align="center" class="uTd">{{ getSettleAddress(item) }}</td>
+              <td align="center" class="uTd">{{ formatStr(item.area) }} </td>
+              <td align="center" class="uTd">{{ item.roomNo }}</td>
+              <td align="center" class="uTd">
+                {{ dictOption(storeroomNoList, item.storeroomNo) }}</td
+              >
+              <td align="center" class="uTd">{{ dictOption(carNoList, item.carNo) }}</td>
             </tr>
             <tr style="height: 100px">
               <td colspan="3">
@@ -134,7 +138,7 @@
         <div style="display: flex; justify-content: space-between">
           <div style="font-size: 16px">
             {{
-              `${baseInfo.areaCodeText || ''} ${baseInfo.townCodeText || ''} ${
+              `${baseInfo.areaCodeText || ''}${baseInfo.townCodeText || ''}${
                 baseInfo.villageCodeText || ''
               } ${baseInfo.name || ''} 户号
                         ${baseInfo.showDoorNo} `
@@ -149,29 +153,29 @@
           <table style="width: 100%" border="1" cellspacing="0" cellpadding="0">
             <!-- 表头行 -->
             <tr>
-              <th align="left" class="uTitle">序号</th>
-              <th align="left" class="uTitle">区块</th>
-              <th align="left" class="uTitle">类型</th>
-              <th align="left" class="uTitle">地块编号</th>
-              <th align="left" class="uTitle">备注</th>
+              <th align="center" width="50" class="uTitle">序号</th>
+              <th align="center" width="120" class="uTitle">区块</th>
+              <th align="center" width="70" class="uTitle">类型</th>
+              <th align="center" width="120" class="uTitle">地块编号</th>
+              <th align="center" class="uTitle">备注</th>
             </tr>
             <!-- 表格数据行 -->
             <tr v-for="(item, index) in dataList" :key="index">
-              <td align="left" class="uTd">{{ index + 1 }}</td>
-              <td align="left" class="uTd">{{ getSettleAddress(item) }}</td>
-              <td align="left" class="uTd">{{'宅基地'}} </td>
-              <!-- <td align="left" class="uTd">{{ dictOption(landNoList, item.landNo) }}</td> -->
-              <td align="left" class="uTd">{{ formatStr(item.landNo) }}</td>
-              <td align="left" class="uTd"></td>
+              <td align="center" class="uTd">{{ index + 1 }}</td>
+              <td align="center" class="uTd">{{ getSettleAddress(item) }}</td>
+              <td align="center" class="uTd">{{ '宅基地' }} </td>
+              <!-- <td align="center" class="uTd">{{ dictOption(landNoList, item.landNo) }}</td> -->
+              <td align="center" class="uTd">{{ formatStr(item.landNo) }}</td>
+              <td align="center" class="uTd"></td>
             </tr>
             <tr style="height: 100px">
-              <td colspan="3">
+              <td colspan="4">
                 <div style="display: flex; justify-content: space-between; align-items: center">
                   <div>户主代表或收委托人(签名)：</div>
                   <img id="signatureImg" class="signatureImg" :src="path" v-if="path" />
                 </div>
               </td>
-              <td colspan="2">联系移民干部(签名)：</td>
+              <td colspan="1">联系移民干部(签名)：</td>
             </tr>
           </table>
         </view>
@@ -190,7 +194,7 @@
         <div style="display: flex; justify-content: space-between">
           <div style="font-size: 16px">
             {{
-              `${baseInfo.areaCodeText || ''} ${baseInfo.townCodeText || ''} ${
+              `${baseInfo.areaCodeText || ''}${baseInfo.townCodeText || ''}${
                 baseInfo.villageCodeText || ''
               } ${baseInfo.name || ''} 户号
                         ${baseInfo.showDoorNo} `
@@ -202,54 +206,47 @@
           <table style="width: 100%" border="1" cellspacing="0" cellpadding="0">
             <!-- 表头行 -->
             <tr>
-              <th align="left" class="uTitle">序号</th>
-              <th align="left" class="uTitle">区块</th>
-              <th align="left" class="uTitle">类型</th>
-              <th align="left" class="uTitle">户型/套型</th>
-              <th align="left" class="uTitle">备注</th>
+              <th align="center" width="50" class="uTitle">序号</th>
+              <th align="center" width="120" class="uTitle">区块</th>
+              <th align="center" width="90" class="uTitle">类型</th>
+              <th align="center" width="90" class="uTitle">户型/套型</th>
+              <th align="center" class="uTitle">备注</th>
             </tr>
             <!-- 表格数据行 -->
             <template
               v-if="baseInfo.houseAreaType == 'homestead' || baseInfo.houseAreaType == 'flat'"
             >
               <tr v-for="(item, index) in dataList" :key="index">
-                <td align="left" class="uTd">{{ index + 1 }}</td>
-                <td align="left" class="uTd">{{ item.settleAddressText }}</td>
-                <td align="left" class="uTd">{{ item.houseTypeText }} </td>
-                <td align="left" class="uTd">{{ item.area }}</td>
-                <td align="left" class="uTd"></td>
+                <td align="center" class="uTd">{{ index + 1 }}</td>
+                <td align="center" class="uTd">{{ item.settleAddressText }}</td>
+                <td align="center" class="uTd">{{ item.houseTypeText }} </td>
+                <td align="center" class="uTd">{{ item.area }}</td>
+                <td align="center" class="uTd"></td>
               </tr>
             </template>
-
-            <div
-              style="
-                height: 100px;
-                width: 100%;
-                display: flex;
-                justify-content: end;
-                align-items: center;
-                font-size: 16px;
-              "
-              v-else
-            >
-              <span>{{
-                baseInfo.houseAreaType == 'oneself'
-                  ? '该户选择自谋职业'
-                  : `该户选择集中供养（选择养老院:${formatDict(
-                      baseInfo.simulateImmigrantSettle?.nursingHome,
-                      416
-                    )}）`
-              }}</span>
-            </div>
+            <template v-else>
+              <tr>
+                <td style="font-size: 16px" colspan="5" align="center">
+                  <span>{{
+                    baseInfo.houseAreaType == 'oneself'
+                      ? '该户选择自谋职业'
+                      : `该户选择集中供养（选择养老院:${formatDict(
+                          baseInfo.simulateImmigrantSettle?.nursingHome,
+                          416
+                        )}）`
+                  }}</span>
+                </td></tr
+              >
+            </template>
 
             <tr style="height: 100px">
-              <td colspan="3">
+              <td colspan="4">
                 <div style="display: flex; justify-content: space-between; align-items: center">
                   <div>户主代表或收委托人(签名)：</div>
                   <img id="signatureImg" class="signatureImg" :src="path" v-if="path" />
                 </div>
               </td>
-              <td colspan="2">联系移民干部(签名)：</td>
+              <td colspan="1">联系移民干部(签名)：</td>
             </tr>
           </table>
         </view>
@@ -270,7 +267,7 @@
         <div style="display: flex; justify-content: space-between">
           <div style="font-size: 16px">
             {{
-              `${baseInfo.areaCodeText} ${baseInfo.townCodeText} ${baseInfo.villageCodeText} ${baseInfo.name} 户号
+              `${baseInfo.areaCodeText}${baseInfo.townCodeText}${baseInfo.villageCodeText} ${baseInfo.name} 户号
                         ${baseInfo.showDoorNo} `
             }}</div
           >
@@ -280,32 +277,32 @@
           <table style="width: 100%" border="1" cellspacing="0" cellpadding="0">
             <!-- 表头行 -->
             <tr>
-              <th align="left" class="uTitle">坟墓与登记人关系</th>
-              <th align="left" class="uTitle">数量</th>
-              <th align="left" class="uTitle">处理方式</th>
-              <th align="left" class="uTitle">安置公墓/择址地址</th>
-              <th align="left" class="uTitle">编号</th>
-              <th align="left" class="uTitle">备注</th>
+              <th align="center" width="120" class="uTitle">坟墓与登记人关系</th>
+              <th align="center" width="50" class="uTitle">数量</th>
+              <th align="center" width="100" class="uTitle">处理方式</th>
+              <th align="center" width="120" class="uTitle">安置公墓/择址地址</th>
+              <th align="center" width="50" class="uTitle">编号</th>
+              <th align="center" class="uTitle">备注</th>
             </tr>
             <!-- 表格数据行 -->
             <tr v-for="(item, index) in dataList" :key="index">
-              <td align="left" class="uTd">{{ formatDict(item.relation, 307) }}</td>
-              <td align="left" class="uTd">{{ item.number }}</td>
-              <td align="left" class="uTd">{{ formatDict(item.handleWay, 238) }} </td>
-              <td align="left" class="uTd">{{
+              <td align="center" class="uTd">{{ formatDict(item.relation, 307) }}</td>
+              <td align="center" class="uTd">{{ item.number }}</td>
+              <td align="center" class="uTd">{{ formatDict(item.handleWay, 238) }} </td>
+              <td align="center" class="uTd">{{
                 item.handleWay === '1' ? item.settingAddress : formatDict(item.settingGrave, 377)
               }}</td>
-              <td align="left" class="uTd">{{ formatStr(item.graveNo) }}</td>
-              <td align="left" class="uTd"></td>
+              <td align="center" class="uTd">{{ formatStr(item.graveNo) }}</td>
+              <td align="center" class="uTd"></td>
             </tr>
             <tr style="height: 100px">
-              <td colspan="3">
+              <td colspan="5">
                 <div style="display: flex; justify-content: space-between; align-items: center">
                   <div>户主代表或收委托人(签名)：</div>
                   <img id="signatureImg" class="signatureImg" :src="path" v-if="path" />
                 </div>
               </td>
-              <td colspan="2">联系移民干部(签名)：</td>
+              <td colspan="1">联系移民干部(签名)：</td>
             </tr>
           </table>
         </view>
@@ -413,7 +410,7 @@
               }}</td>
             </tr>
             <tr>
-              <td align="left" class="uTd" colspan="3"
+              <td align="center" class="uTd" colspan="3"
                 >{{
                   baseInfo.type == 'Company'
                     ? '企业盖章'
@@ -432,16 +429,16 @@
               <td align="center" class="uTd" colspan="3"></td>
             </tr>
             <tr>
-              <td align="left" class="uTd" colspan="2">验收人：</td>
-              <td align="left" class="uTd" colspan="1">验收时间:</td>
+              <td align="center" class="uTd" colspan="2">验收人：</td>
+              <td align="center" class="uTd" colspan="1">验收时间:</td>
             </tr>
             <tr>
               <td align="center" class="uTd" rowspan="2">乡镇街道审核意见</td>
               <td align="center" class="uTd" colspan="3"></td>
             </tr>
             <tr>
-              <td align="left" class="uTd" colspan="2">审核人：</td>
-              <td align="left" class="uTd" colspan="1">验收时间:</td>
+              <td align="center" class="uTd" colspan="2">审核人：</td>
+              <td align="center" class="uTd" colspan="1">验收时间:</td>
             </tr>
           </table>
         </view>

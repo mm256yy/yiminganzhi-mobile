@@ -9,9 +9,9 @@
               label="安置方式"
               :label-width="150"
               label-align="right"
-              name="formData.setaddrn"
+              name="formData.placementWay"
             >
-               <uni-data-select v-model="formData.setaddrn" :localdata="dict[422]" />
+               <uni-data-select v-model="formData.placementWay" :localdata="dict[422]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="24">
@@ -24,7 +24,7 @@
               <uni-easyinput v-model="formData.beforeAddress" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
-          <uni-col :span="24" v-if="formData.setaddrn=='2'" >
+          <uni-col :span="24" v-if="formData.placementWay=='2'" >
             <uni-forms-item
               label="安置厂址"
               :label-width="150"
@@ -125,6 +125,9 @@ onLoad((option: any) => {
 const getLandlordDetail = () => {
   getImpLandlordItemApi(uid.value).then((res: any) => {
     formData.value = { ...res }
+    if (!formData.value.placementWay) {
+      formData.value.placementWay='2'
+    }
   })
 }
 
