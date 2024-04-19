@@ -82,12 +82,11 @@
           </view>
         </uni-col>
       </uni-row>
-      <uni-row>
+      <!-- <uni-row>
         <uni-col :span="24">
           <view class="col">
             <view class="label">地理位置:</view>
             <view class="lg-txt-wrapper">
-              <!-- <uni-data-checkbox v-model="check" :localdata="lgTagList" /> -->
               <view class="position" @click="gotoMap">
                 <uni-icons type="map" color="#5D8CF7" size="14rpx" />
                 <text class="content">{{
@@ -99,14 +98,22 @@
             </view>
           </view>
         </uni-col>
+      </uni-row> -->
+      <uni-row>
+          <uni-col :span="12">
+            <uni-forms-item required label="宅基地总面积（㎡）" :label-width="150" label-align="right" name="options.homesteadArea" class="label">
+              <uni-easyinput v-model="options.homesteadArea" type="text" placeholder="请输入" />
+            </uni-forms-item>
+          </uni-col>
       </uni-row>
       <uni-row>
         <uni-col :span="12">
-          <view class="col">
+            <uni-forms-item required label="联系方式(户主)：" :label-width="150" label-align="right" name="options.phone" class="label">
+              <uni-easyinput v-model="options.phone" type="text" placeholder="请输入" />
+            </uni-forms-item>
+          <!-- <view class="col">
             <view class="label"><text class="star">*</text>联系方式(户主)：</view>
             <view class="content">
-              <!-- {{ formatStr(dataInfo.phone) }} -->
-              <!-- <uni-easyinput v-model="dataList.phone" type="text" size="small" placeholder="请输入" /> -->
               <input
                 type="text"
                 placeholder="请输入电话号码"
@@ -114,7 +121,7 @@
                 v-model="options.phone"
               />
             </view>
-          </view>
+          </view> -->
         </uni-col>
       </uni-row>
       <uni-row class="m-t-10">
@@ -287,7 +294,8 @@ let ismap = ref(false)
 let options: any = ref({
   longitude: null,
   latitude: null,
-  phone: null
+  phone: null,
+  homesteadArea: null
 })
 watch(
   () => props.dataInfo,
@@ -296,7 +304,7 @@ watch(
       console.log(val, '再次监听')
 
       dataList.value = val
-      const { householdPic, familyPic, housePic, resettlePic, longitude, latitude, phone } = val
+      const { householdPic, familyPic, housePic, resettlePic, longitude, latitude, phone,homesteadArea } = val
       if (householdPic) {
         householdPicStr.value = householdPic
       }
@@ -319,6 +327,9 @@ watch(
         if (phone) {
           options.value.phone = phone
         }
+        if (homesteadArea) {
+          options.value.homesteadArea = homesteadArea
+        }      
       }
     }
   },
@@ -355,6 +366,10 @@ const submit = () => {
   }
   if (!options.value.phone) {
     showToast('联系方式(户主)必填')
+    return
+  }
+  if (!options.value.homesteadArea) {
+    showToast('宅基地总面积（㎡）必填')
     return
   }
   const params: any = {
@@ -517,7 +532,7 @@ onBeforeUnmount(() => {
 
     .txt {
       margin-left: 6rpx;
-      font-size: 9rpx;
+      font-size: 18rpx;
       color: #171718;
     }
   }
@@ -528,11 +543,11 @@ onBeforeUnmount(() => {
     justify-content: right;
     .btn {
       display: flex;
-      height: 23rpx;
-      padding: 0 9rpx;
+      height: 33rpx;
+      padding: 0 20rpx;
       margin-left: 6rpx;
       background: #3e73ec;
-      border-radius: 23rpx;
+      border-radius: 33rpx;
       align-items: center;
       justify-content: center;
 

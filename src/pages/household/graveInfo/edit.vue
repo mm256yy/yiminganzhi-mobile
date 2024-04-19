@@ -74,7 +74,7 @@
           <uni-col :span="12">
             <uni-forms-item
               required
-              label="所处位置"
+              label="所在位置"
               :label-width="150"
               label-align="right"
               name="formData.gravePosition"
@@ -82,10 +82,21 @@
               <uni-data-select v-model="formData.gravePosition" :localdata="dict[326]" />
             </uni-forms-item>
           </uni-col>
+          <uni-col :span="12">
+            <uni-forms-item
+              required
+              label="淹没范围"
+              :label-width="150"
+              label-align="right"
+              name="formData.inundationRange"
+            >
+              <uni-data-select v-model="formData.inundationRange" :localdata="dict[346]" />
+            </uni-forms-item>
+          </uni-col>
         </uni-row>
 
         <uni-row>
-          <uni-col :span="12">
+          <!-- <uni-col :span="12">
             <uni-forms-item
               label="所属村集体"
               :label-width="150"
@@ -94,7 +105,7 @@
             >
               <uni-data-select v-model="formData.villageId" :localdata="collectiveList" />
             </uni-forms-item>
-          </uni-col>
+          </uni-col> -->
           <uni-col :span="12">
             <uni-forms-item
               label="备注"

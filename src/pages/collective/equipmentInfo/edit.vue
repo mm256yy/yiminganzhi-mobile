@@ -6,6 +6,7 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="设备名称"
               :label-width="150"
               label-align="right"
@@ -16,6 +17,7 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="设施类别"
               :label-width="150"
               label-align="right"
@@ -29,6 +31,7 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="设施编码"
               :label-width="150"
               label-align="right"
@@ -62,6 +65,7 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="数量"
               :label-width="150"
               label-align="right"
@@ -72,6 +76,7 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="单位"
               :label-width="150"
               label-align="right"
@@ -85,6 +90,7 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="所在位置"
               :label-width="150"
               label-align="right"
@@ -223,6 +229,7 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="淹没范围"
               :label-width="150"
               label-align="right"
@@ -336,6 +343,28 @@ const submit = () => {
       : null,
     workersNum: formData.value.workersNum ? Number(formData.value.workersNum) : null,
     completedTime: formData.value.completedTime ? dayjs(formData.value.completedTime) : null
+  }
+  if (!formData.value.facilitiesName) {
+    showToast('请输入设备名称')
+    return
+  } else if (!formData.value.facilitiesType) {
+    showToast('请输入设施类别')
+    return
+  } else if (!formData.value.facilitiesCode) {
+    showToast('请输入设施编码')
+    return
+  } else if (!formData.value.number) {
+    showToast('请输入数量')
+    return
+  } else if (!formData.value.unit) {
+    showToast('请输入单位')
+    return
+  } else if (!formData.value.locationType) {
+    showToast('请输入所在位置')
+    return
+  } else if (!formData.value.inundationRang) {
+    showToast('请输入淹没范围')
+    return
   }
   if (type === 'add') {
     addLandlordFacilitiesApi(uid, params)

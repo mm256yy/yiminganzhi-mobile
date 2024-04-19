@@ -393,7 +393,7 @@ const updateEstimateApi = async () => {
 // 表单提交
 const submit = () => {
   const { uid, doorNo, type } = commonParams.value
-  formData.value.valuationAmount = countPrice.value
+  // formData.value.valuationAmount = countPrice.value
   const params = {
     doorNo,
     ...formData.value,
@@ -479,11 +479,18 @@ watch(
   }
 )
 watch(
-  () => formData.value.valuationAmount,
+  () => countPrice.value,
   (newValue) => {
     console.log(newValue, 'newValue')
-    if (!formData.value.compensationAmount) {
+    const { type } = commonParams.value
+    if (type == 'add') { 
+      console.log('测试走到哪儿')
       formData.value.compensationAmount = newValue
+      console.log(formData.value.compensationAmount, '最终数据')
+    } else {
+        if (formData.value.compensationAmount == newValue) {
+          formData.value.compensationAmount = newValue
+        }
     }
   }
 )
