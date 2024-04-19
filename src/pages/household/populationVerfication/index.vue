@@ -146,12 +146,13 @@ const reason = ref<string>('') // 删除原因
 // 填报完成
 const onFilled = () => {
   const res = props.dataList.every((item) => item.populationNature != null)
+  console.log(props.dataInfo, '测试dataInfo')
   if (!res) {
     showToast('请检查带*号必填项')
     return
   }
   const { uid } = props.dataInfo
-  console.log(props.dataInfo, '测试dataInfo')
+
   let params = {
     populationStatus: '1'
   }
@@ -168,15 +169,15 @@ const onFilled = () => {
 }
 
 const toLink = (type: string, data?: any) => {
-  const { uid, doorNo } = props.dataInfo
+  const { uid, doorNo, phone } = props.dataInfo
   // 增计人口不允许编辑
   if (type === 'edit' && data.addReason !== '3') {
-    let params = { type, uid, doorNo, itemUid: data.uid }
+    let params = { type, uid, doorNo, itemUid: data.uid, phone }
     routerForward('populationVerficationEdit', {
       params: JSON.stringify(params)
     })
   } else if (type === 'add') {
-    let params = { type, uid, doorNo }
+    let params = { type, uid, doorNo, phone }
     routerForward('populationVerficationEdit', {
       params: JSON.stringify(params)
     })

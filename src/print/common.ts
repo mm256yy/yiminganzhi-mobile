@@ -79,7 +79,14 @@ export const getCompanyTableHead = (landlord: LandlordType, projectInfo: Project
             border: [true, true, false, false],
             stack: [
               {
-                text: `${projectInfo.name} 工程建设 征地${
+                text: `${projectInfo.name}工程建设征地`,
+                alignment: 'center',
+                fontSize: 16,
+                bold: true,
+                margin: [headMargin, 0, headMargin, 2]
+              },
+              {
+                text: `${
                   landlord.type === MainType.PeasantHousehold
                     ? '移民'
                     : landlord.type === MainType.Company
@@ -96,17 +103,7 @@ export const getCompanyTableHead = (landlord: LandlordType, projectInfo: Project
                 margin: [headMargin, 0, headMargin, 2]
               },
               {
-                text: `（${
-                  landlord.type === MainType.PeasantHousehold
-                    ? '移民'
-                    : landlord.type === MainType.Company
-                    ? '企业'
-                    : landlord.type === MainType.IndividualHousehold
-                    ? '个体工商户'
-                    : landlord.type === MainType.Village
-                    ? '村集体'
-                    : ''
-                } ${landlord.name} ${filterViewDoorNo(landlord) || ''} 号）`,
+                text: `（${landlord.name} ${filterViewDoorNo(landlord) || ''} 号）`,
                 alignment: 'center',
                 margin: [headMargin, 0, headMargin, 0]
               }
@@ -171,7 +168,14 @@ export const getCompanyBaseTableHead = (landlord: LandlordType, projectInfo: Pro
             border: [true, true, false, false],
             stack: [
               {
-                text: `${projectInfo.name} 工程建设 征地${
+                text: `${projectInfo.name}工程建设征地`,
+                alignment: 'center',
+                fontSize: 16,
+                bold: true,
+                margin: [headMargin, 27, headMargin, 2]
+              },
+              {
+                text: `${
                   landlord.type === MainType.PeasantHousehold
                     ? '移民'
                     : landlord.type === MainType.Company
@@ -282,14 +286,21 @@ export const getPeopleTableHead = (landlord: LandlordType, projectInfo: ProjectT
             border: [true, true, false, false],
             stack: [
               {
-                text: `${projectInfo.name || ''} 工程建设 征地移民实物调查表`,
+                text: `${projectInfo.name || ''}工程建设征地`,
                 alignment: 'center',
                 fontSize: 16,
                 bold: true,
                 margin: [headMargin, 0, headMargin, 2]
               },
               {
-                text: `（居民户 ${landlord.name || ''} ${filterViewDoorNo(landlord) || ''} 号）`,
+                text: `移民实物调查表`,
+                alignment: 'center',
+                fontSize: 16,
+                bold: true,
+                margin: [headMargin, 0, headMargin, 2]
+              },
+              {
+                text: `（${landlord.name || ''} ${filterViewDoorNo(landlord) || ''} 号）`,
                 alignment: 'center',
                 margin: [headMargin, 0, headMargin, 0]
               }
@@ -344,14 +355,21 @@ export const getCollectiveTableHead = (landlord: LandlordType, projectInfo: Proj
             border: [true, true, false, false],
             stack: [
               {
-                text: `${projectInfo.name || ''} 工程建设 征地移民实物调查表`,
+                text: `${projectInfo.name || ''}工程建设征地`,
                 alignment: 'center',
                 fontSize: 16,
                 bold: true,
                 margin: [headMargin, 0, headMargin, 2]
               },
               {
-                text: `（村集体 ${landlord.name || ''} ${landlord.doorNo || ''} 号）`,
+                text: `移民实物调查表`,
+                alignment: 'center',
+                fontSize: 16,
+                bold: true,
+                margin: [headMargin, 0, headMargin, 2]
+              },
+              {
+                text: `（${landlord.name || ''} ${landlord.doorNo || ''} 号）`,
                 alignment: 'center',
                 margin: [headMargin, 0, headMargin, 0]
               }
@@ -515,11 +533,11 @@ export const getHouseInfo = (landlord: LandlordType) => {
       ''
     ],
     [
-      { text: '幢号', style: 'td' },
+      { text: '房屋名称', style: 'td' },
       { text: '产别', style: 'td' },
-      { text: '房屋高程', style: 'td' },
+      { text: '房屋高程(m)', style: 'td' },
       { text: '层数', style: 'td' },
-      { text: '建筑面积', style: 'td' },
+      { text: '建筑面积(㎡)', style: 'td' },
       { text: '结构类型', style: 'td' },
       { text: '竣工年月', style: 'td' },
       { text: '房屋所有权证', style: 'td' },
@@ -586,7 +604,7 @@ export const getHouseInfo = (landlord: LandlordType) => {
   body.push([
     {
       // ㎡
-      text: str,
+      text: str + '。',
       colSpan: 10,
       alignment: 'left',
       style: 'td'
@@ -603,7 +621,7 @@ export const getHouseInfo = (landlord: LandlordType) => {
   ])
   return {
     table: {
-      widths: [20, 40, 40, 20, 40, 61, 61, 60, 60, 62],
+      widths: [39, 50, 45, 20, 50, 41, 57, 50, 55, 57],
       headerRows: 2,
       body
     },
@@ -670,6 +688,7 @@ export const getTree = (landlord: LandlordType) => {
       '',
       '',
       '',
+      '',
       ''
     ],
     [
@@ -677,6 +696,7 @@ export const getTree = (landlord: LandlordType) => {
       { text: '品种', style: 'td' },
       { text: '用途', style: 'td' },
       { text: '规格', style: 'td' },
+      { text: '单位', style: 'td' },
       { text: '数量', style: 'td' },
       { text: '备注', style: 'td' }
     ]
@@ -689,6 +709,7 @@ export const getTree = (landlord: LandlordType) => {
         { text: item.name || '', style: 'td' },
         { text: item.usageTypeText || '', style: 'td' },
         { text: item.sizeText || '', style: 'td' },
+        { text: item.unitText || '', style: 'td' },
         { text: item.number || '', style: 'td' },
         { text: item.remark || '', style: 'td' }
       ])
@@ -700,12 +721,13 @@ export const getTree = (landlord: LandlordType) => {
       { text: '', style: 'td' },
       { text: '', style: 'td' },
       { text: '', style: 'td' },
+      { text: '', style: 'td' },
       { text: '', style: 'td' }
     ])
   }
   return {
     table: {
-      widths: [20, 120, 120, 60, 60, 120],
+      widths: [20, 110, 110, 50, 50, 50, 100],
       headerRows: 2,
       body
     },
@@ -875,11 +897,11 @@ export const getVillageEquipment = (landlord: LandlordType) => {
     ],
     [
       { text: '序号', style: 'td' },
-      { text: '设施名称', style: 'td' },
-      { text: '设施类别', style: 'td' },
+      { text: '设施(设备)名称', style: 'td' },
+      { text: '设施(设备)类别', style: 'td' },
       { text: '所在位置', style: 'td' },
-      { text: '数量', style: 'td' },
       { text: '单位', style: 'td' },
+      { text: '数量', style: 'td' },
       { text: '具体位置', style: 'td' },
       { text: '备注', style: 'td' }
     ]
@@ -892,8 +914,8 @@ export const getVillageEquipment = (landlord: LandlordType) => {
         { text: item.facilitiesName || '', style: 'td' },
         { text: item.facilitiesTypeText || '', style: 'td' },
         { text: item.locationTypeText || '', style: 'td' },
-        { text: item.number || '', style: 'td' },
         { text: item.unitText || '', style: 'td' },
+        { text: item.number || '', style: 'td' },
         { text: item.specificLocation || '', style: 'td' },
         { text: item.remark || '', style: 'td' }
       ])

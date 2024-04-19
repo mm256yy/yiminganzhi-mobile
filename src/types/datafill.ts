@@ -44,7 +44,7 @@ export interface PopulationType {
   showDoorNo?: string
   longitude?: string
   latitude?: string
-  phone?: string
+  phone?: any
   locationType?: string
   reportStatus?: string
   fillStatus?: string

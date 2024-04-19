@@ -17,7 +17,108 @@
             </uni-forms-item>
           </uni-col>
         </uni-row>
-
+        <uni-row>
+          <uni-col :span="12">
+            <uni-forms-item
+              required
+              label="是否合法"
+              :label-width="150"
+              label-align="right"
+              name="formData.isCompliance"
+            >
+              <uni-data-select v-model="formData.isCompliance" :localdata="dict[371]" />
+            </uni-forms-item>
+          </uni-col>
+          <uni-col :span="12">
+            <uni-forms-item
+              label="地理位置"
+              name="formData.longitude"
+              required
+              :label-width="150"
+              label-align="right"
+            >
+              <view class="lg-txt-wrapper">
+                <!-- <uni-data-checkbox v-model="check" :localdata="lgTagList" /> -->
+                <view class="position" @click="gotoMap">
+                  <uni-icons type="map" color="#5D8CF7" size="14rpx" />
+                  <text class="txt">{{
+                    formData.longitude && formData.latitude
+                      ? `${formData.longitude},${formData.latitude}`
+                      : '获取定位'
+                  }}</text>
+                </view>
+              </view>
+            </uni-forms-item>
+          </uni-col>
+        </uni-row>
+        <uni-row>
+          <uni-col :span="12">
+            <uni-forms-item
+              required
+              label="房屋来源"
+              :label-width="150"
+              label-align="right"
+              name="formData.houseNature"
+            >
+              <!-- <uni-easyinput v-model="formData.houseNature" type="text" placeholder="请输入" /> -->
+              <uni-data-select v-model="formData.houseNature" :localdata="dict[304]" />
+            </uni-forms-item>
+          </uni-col>
+          <uni-col :span="12">
+            <uni-forms-item
+              required
+              label="房屋产权人"
+              :label-width="150"
+              label-align="right"
+              name="formData.demographicId"
+            >
+              <uni-data-select v-model="formData.demographicId" :localdata="demographicList" />
+            </uni-forms-item>
+          </uni-col>
+        </uni-row>
+        <uni-row>
+          <uni-col :span="12">
+            <uni-forms-item
+              label="共有人"
+              :label-width="150"
+              label-align="right"
+              name="formData.ownersSituation"
+            >
+              <view class="flex-center">
+                <view
+                  :class="['name-wrapper', formData.ownersName ? 'isSelected' : '']"
+                  @click="selectName"
+                >
+                  {{ formData.ownersName ? formData.ownersName : '请选择' }}
+                </view>
+                <view @click="resetOwnersName">
+                  <image
+                    class="icon_img"
+                    src="@/static/images/icon_delete_mini.png"
+                    mode="scaleToFill"
+                  />
+                </view>
+              </view>
+            </uni-forms-item>
+          </uni-col>
+        </uni-row>
+        <uni-row>
+          <uni-col :span="12">
+            <uni-forms-item
+              label="其他共有人"
+              :label-width="150"
+              label-align="right"
+              name="formData.outdoorOwners"
+            >
+              <uni-easyinput
+                v-model="formData.outdoorOwners"
+                maxlength="200"
+                type="textarea"
+                placeholder="请输入"
+              />
+            </uni-forms-item>
+          </uni-col>
+        </uni-row>
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
@@ -87,90 +188,64 @@
             </uni-forms-item>
           </uni-col>
         </uni-row>
-
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              required
-              label="房屋来源"
+              label="集体土地使用权证"
               :label-width="150"
               label-align="right"
-              name="formData.houseNature"
+              name="formData.landNo"
             >
-              <!-- <uni-easyinput v-model="formData.houseNature" type="text" placeholder="请输入" /> -->
-              <uni-data-select v-model="formData.houseNature" :localdata="dict[304]" />
+              <uni-easyinput v-model="formData.landNo" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
               required
-              label="房屋产权人"
+              label="土地证面积"
               :label-width="150"
               label-align="right"
-              name="formData.demographicId"
+              name="formData.landCardArea"
             >
-              <uni-data-select v-model="formData.demographicId" :localdata="demographicList" />
-            </uni-forms-item>
-          </uni-col>
-        </uni-row>
-
-        <uni-row>
-          <uni-col :span="12">
-            <uni-forms-item
-              required
-              label="是否合法"
-              :label-width="150"
-              label-align="right"
-              name="formData.isCompliance"
-            >
-              <uni-data-select v-model="formData.isCompliance" :localdata="dict[371]" />
-            </uni-forms-item>
-          </uni-col>
-          <uni-col :span="12">
-            <uni-forms-item
-              label="共有人"
-              :label-width="150"
-              label-align="right"
-              name="formData.ownersSituation"
-            >
-              <view class="flex-center">
-                <view
-                  :class="['name-wrapper', formData.ownersName ? 'isSelected' : '']"
-                  @click="selectName"
-                >
-                  {{ formData.ownersName ? formData.ownersName : '请选择' }}
-                </view>
-                <view @click="resetOwnersName">
-                  <image
-                    class="icon_img"
-                    src="@/static/images/icon_delete_mini.png"
-                    mode="scaleToFill"
-                  />
-                </view>
+              <view :class="['input-wrapper', focusIndex === 2 ? 'focus' : '']">
+                <input
+                  class="input-txt"
+                  placeholder="请输入"
+                  type="number"
+                  v-model="formData.landCardArea"
+                />
+                <view class="unit">㎡</view>
               </view>
             </uni-forms-item>
           </uni-col>
         </uni-row>
+
         <uni-row>
           <uni-col :span="24">
             <uni-forms-item
-              label="地理位置"
-              name="formData.longitude"
-              required
+              label="房屋所有权证"
               :label-width="150"
               label-align="right"
+              name="formData.propertyNo"
             >
-              <view class="lg-txt-wrapper">
-                <!-- <uni-data-checkbox v-model="check" :localdata="lgTagList" /> -->
-                <view class="position" @click="gotoMap">
-                  <uni-icons type="map" color="#5D8CF7" size="14rpx" />
-                  <text class="txt">{{
-                    formData.longitude && formData.latitude
-                      ? `${formData.longitude},${formData.latitude}`
-                      : '获取定位'
-                  }}</text>
-                </view>
-              </view>
+              <uni-easyinput v-model="formData.propertyNo" type="text" placeholder="请输入" />
+            </uni-forms-item>
+          </uni-col>
+        </uni-row>
+        <uni-row>
+          <uni-col :span="12">
+            <uni-forms-item
+              label="备注"
+              :label-width="150"
+              label-align="right"
+              name="formData.remark"
+            >
+              <uni-easyinput
+                v-model="formData.remark"
+                maxlength="200"
+                type="textarea"
+                placeholder="请输入"
+              />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -243,32 +318,6 @@
         </uni-row>
 
         <uni-row>
-          <uni-col :span="12">
-            <uni-forms-item
-              label="集体土地使用权证"
-              :label-width="150"
-              label-align="right"
-              name="formData.landNo"
-            >
-              <uni-easyinput v-model="formData.landNo" type="text" placeholder="请输入" />
-            </uni-forms-item>
-          </uni-col>
-        </uni-row>
-
-        <uni-row>
-          <uni-col :span="24">
-            <uni-forms-item
-              label="房屋所有权证"
-              :label-width="150"
-              label-align="right"
-              name="formData.propertyNo"
-            >
-              <uni-easyinput v-model="formData.propertyNo" type="text" placeholder="请输入" />
-            </uni-forms-item>
-          </uni-col>
-        </uni-row>
-
-        <uni-row>
           <uni-col :span="24">
             <uni-forms-item
               label="其他佐证材料"
@@ -286,24 +335,6 @@
             </uni-forms-item>
           </uni-col>
         </uni-row>
-        <uni-col :span="24">
-          <uni-forms-item
-            label="宅基地面积"
-            :label-width="150"
-            label-align="right"
-            name="formData.homesteadArea"
-          >
-            <view :class="['input-wrapper', focusIndex === 4 ? 'focus' : '']">
-              <input
-                class="input-txt"
-                placeholder="请输入"
-                type="number"
-                v-model="formData.homesteadArea"
-              />
-              <view class="unit">㎡</view>
-            </view>
-          </uni-forms-item>
-        </uni-col>
       </uni-forms>
 
       <image

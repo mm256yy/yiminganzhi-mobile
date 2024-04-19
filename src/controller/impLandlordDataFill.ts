@@ -34,6 +34,7 @@ import { ImpLandlord } from './impLandlord'
 import { defaultDocumentObj, defaultFillingObj } from './config'
 import { HouseAreaType } from '@/types/common'
 import { homesteadAreaSize, apartmentAreaSize, apartmentArea, resettleArea } from '@/config'
+import { saveImpLandlordItemApi } from '@/service'
 
 class ImpDataFill extends ImpLandlord {
   constructor() {
@@ -149,6 +150,11 @@ class ImpDataFill extends ImpLandlord {
           reject('调查对象信息查询失败')
           console.log('调查对象信息查询失败')
           return
+        }
+        if (data.relation == '1') {
+          landlordItem.phone = data.phone
+          const bbq: any = landlordItem
+          saveImpLandlordItemApi(bbq)
         }
         // 更新数据
         const updateRes = await this.updateLandlord(landlordItem)

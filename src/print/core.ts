@@ -132,9 +132,11 @@ class PrintCore {
           reject('业主信息为空')
           return
         }
+        console.log(landlord)
         const stringArray: string[] = []
         if (templateIds.includes(1)) {
           const definition = getPeopleInfoDefinition(landlord, projectInfo)
+
           const dataUrl = await this.getBase64(definition).catch(() => {
             reject('生成居民户基本信息pdf失败')
             console.error('生成居民户基本信息pdf失败')
@@ -306,6 +308,8 @@ class PrintCore {
         }
         if (templateIds.includes(101)) {
           const definition = getSelfemployedInfoDefinition(landlord, projectInfo)
+          console.log(definition)
+
           const dataUrl = await this.getBase64(definition).catch(() => {
             reject('生成企业调查信息pdf失败')
             console.error('生成企业调查信息pdf失败')

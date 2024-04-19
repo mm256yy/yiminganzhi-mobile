@@ -417,6 +417,8 @@ export default {
           }
         })
         this.fileList = arr
+        console.log(res);
+        
       }
     },
 
@@ -661,7 +663,7 @@ export default {
           templateIds,
           type
         } = newValue
-        console.log(newValue,'数据信息')
+        console.log(landlords,projectInfo,templateIds,type,'数据信息')
         if (!landlords || !landlords.length) {
           console.log('landlords数据为空')
           return
@@ -672,7 +674,8 @@ export default {
         }
 
         const promiseArray = []
-        landlords.forEach((landlord) => {
+        if(landlords){
+              landlords.forEach((landlord) => {
           if (type === 'print') {
             promiseArray.push(printPdf.createPeople(templateIds, landlord, projectInfo))
           } else if (type === 'printIndividualHousehold') {
@@ -683,6 +686,8 @@ export default {
 						promiseArray.push(printPdf.createCollective(templateIds, landlord, projectInfo))
 					}
         })
+        }
+
         // 并行生成
         Promise.all(promiseArray)
           .then((result) => {

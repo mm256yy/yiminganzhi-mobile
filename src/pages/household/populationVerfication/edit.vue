@@ -6,19 +6,49 @@
       <uni-forms class="form" ref="form" :modelValue="formData">
         <uni-row>
           <uni-col :span="12" v-if="commonParams.type === 'add'">
-            <uni-forms-item required label="新增原因" :label-width="150" label-align="right" name="formData.addReason">
+            <uni-forms-item
+              required
+              label="新增原因"
+              :label-width="150"
+              label-align="right"
+              name="formData.addReason"
+            >
               <uni-data-select v-model="formData.addReason" :localdata="dict[370]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12" v-if="formData.addReason !== '3'">
-            <uni-forms-item required label="人口性质" :label-width="150" label-align="right" name="formData.populationNature">
+            <uni-forms-item
+              required
+              label="人口性质"
+              :label-width="150"
+              label-align="right"
+              name="formData.populationNature"
+            >
               <uni-data-select
-:disabled="formData.addReason === '3'" v-model="formData.populationNature"
-                :localdata="dict[263]" />
+                :disabled="formData.addReason === '3'"
+                v-model="formData.populationNature"
+                :localdata="dict[263]"
+              />
+            </uni-forms-item>
+          </uni-col>
+          <uni-col :span="12">
+            <uni-forms-item
+              :required="formData?.relation == '1' ? true : false"
+              label="联系方式"
+              :label-width="150"
+              label-align="right"
+              name="formData.phone"
+            >
+              <uni-easyinput v-model="formData.phone" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="24">
-            <uni-forms-item label="备注" :label-width="150" label-align="right" name="formData.checkRemark">
+            <uni-forms-item
+              label="备注"
+              :label-width="150"
+              label-align="right"
+              name="formData.checkRemark"
+            >
               <uni-easyinput v-model="formData.checkRemark" type="textarea" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
@@ -26,12 +56,24 @@
 
         <uni-row v-if="formData.addReason !== '3'">
           <uni-col :span="12">
-            <uni-forms-item required label="姓名" :label-width="150" label-align="right" name="formData.name">
+            <uni-forms-item
+              required
+              label="姓名"
+              :label-width="150"
+              label-align="right"
+              name="formData.name"
+            >
               <uni-easyinput v-model="formData.name" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
-            <uni-forms-item required label="性别" :label-width="150" label-align="right" name="formData.sex">
+            <uni-forms-item
+              required
+              label="性别"
+              :label-width="150"
+              label-align="right"
+              name="formData.sex"
+            >
               <uni-data-select v-model="formData.sex" :localdata="dict[292]" />
             </uni-forms-item>
           </uni-col>
@@ -39,12 +81,24 @@
 
         <uni-row v-if="formData.addReason !== '3'">
           <uni-col :span="12">
-            <uni-forms-item required label="身份证号" :label-width="150" label-align="right" name="formData.card">
+            <uni-forms-item
+              required
+              label="身份证号"
+              :label-width="150"
+              label-align="right"
+              name="formData.card"
+            >
               <uni-easyinput v-model="formData.card" type="idcard" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
-            <uni-forms-item required label="与户主关系" :label-width="150" label-align="right" name="formData.relation">
+            <uni-forms-item
+              required
+              label="与户主关系"
+              :label-width="150"
+              label-align="right"
+              name="formData.relation"
+            >
               <uni-data-select v-model="formData.relation" :localdata="dict[307]" />
             </uni-forms-item>
           </uni-col>
@@ -52,12 +106,24 @@
 
         <uni-row v-if="formData.addReason !== '3'">
           <uni-col :span="12">
-            <uni-forms-item required label="婚姻状况" :label-width="150" label-align="right" name="formData.marital">
+            <uni-forms-item
+              required
+              label="婚姻状况"
+              :label-width="150"
+              label-align="right"
+              name="formData.marital"
+            >
               <uni-data-select v-model="formData.marital" :localdata="dict[260]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
-            <uni-forms-item required label="户籍册类别" :label-width="150" label-align="right" name="formData.censusType">
+            <uni-forms-item
+              required
+              label="户籍册类别"
+              :label-width="150"
+              label-align="right"
+              name="formData.censusType"
+            >
               <uni-data-select v-model="formData.censusType" :localdata="dict[249]" />
             </uni-forms-item>
           </uni-col>
@@ -65,34 +131,70 @@
 
         <uni-row v-if="formData.addReason !== '3'">
           <uni-col :span="24">
-            <uni-forms-item required label="身份证照片" :label-width="150" label-align="right" name="formData.cardPic">
+            <uni-forms-item
+              required
+              label="身份证照片"
+              :label-width="150"
+              label-align="right"
+              name="formData.cardPic"
+            >
               <view class="display-flex">
                 <upload-file
-v-model="formData.cardPic" :file-list="formData.cardPic" :limit="2" uploadType="IdCard"
-                  show-type="list" :accepts="['.jpg', '.png']" style="width:100%" />
+                  v-model="formData.cardPic"
+                  :file-list="formData.cardPic"
+                  :limit="2"
+                  uploadType="IdCard"
+                  show-type="list"
+                  :accepts="['.jpg', '.png']"
+                  style="width: 100%"
+                />
               </view>
             </uni-forms-item>
           </uni-col>
 
           <uni-col :span="24">
-            <uni-forms-item required label="户口本照片" :label-width="150" label-align="right" name="formData.householdPic">
+            <uni-forms-item
+              required
+              label="户口本照片"
+              :label-width="150"
+              label-align="right"
+              name="formData.householdPic"
+            >
               <upload-file
-v-model="formData.householdPic" :file-list="formData.householdPic" :limit="10" show-type="list"
-                :accepts="['.jpg', '.png']" />
+                v-model="formData.householdPic"
+                :file-list="formData.householdPic"
+                :limit="10"
+                show-type="list"
+                :accepts="['.jpg', '.png']"
+              />
             </uni-forms-item>
           </uni-col>
 
           <uni-col :span="24">
-            <uni-forms-item label="其他照片" :label-width="150" label-align="right" name="formData.otherPic">
+            <uni-forms-item
+              label="其他照片"
+              :label-width="150"
+              label-align="right"
+              name="formData.otherPic"
+            >
               <upload-file
-v-model="formData.otherPic" :file-list="formData.otherPic" :limit="10" show-type="list"
-                :accepts="['.jpg', '.png']" />
+                v-model="formData.otherPic"
+                :file-list="formData.otherPic"
+                :limit="10"
+                show-type="list"
+                :accepts="['.jpg', '.png']"
+              />
             </uni-forms-item>
           </uni-col>
         </uni-row>
       </uni-forms>
 
-      <image class="submit-btn" src="@/static/images/icon_submit.png" mode="scaleToFill" @click="submit" />
+      <image
+        class="submit-btn"
+        src="@/static/images/icon_submit.png"
+        mode="scaleToFill"
+        @click="submit"
+      />
     </view>
   </view>
 </template>
@@ -100,7 +202,7 @@ v-model="formData.otherPic" :file-list="formData.otherPic" :limit="10" show-type
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { routerBack, getStorage, StorageKey, fmtPicUrl,cardReg } from '@/utils'
+import { routerBack, getStorage, StorageKey, fmtPicUrl, cardReg } from '@/utils'
 import {
   addImpLandlordPeopleApi,
   updateImpLandlordPeopleApi,
@@ -119,7 +221,8 @@ const dict = getStorage(StorageKey.DICT)
 onLoad((option: any) => {
   if (option) {
     commonParams.value = JSON.parse(option.params)
-    const { type } = commonParams.value
+    const { type, phone } = commonParams.value
+    formData.value.phone = phone
     if (type === 'edit') {
       title.value = '人口核定编辑'
       getLandlordDetail()
@@ -147,7 +250,6 @@ const formData = ref<any>({
   otherPic: '[]' // 其他照片
 })
 
-
 /**
  * 获取业主详情
  * @param(object) uid
@@ -160,6 +262,7 @@ const getLandlordDetail = () => {
       let obj: any = arr.filter((item: any) => item.uid === itemUid)[0]
       formData.value = {
         ...obj,
+        phone: obj.phone ? obj.phone : commonParams.value.phone,
         cardPic: fmtPicUrl(obj.cardPic),
         householdPic: fmtPicUrl(obj.householdPic),
         otherPic: fmtPicUrl(obj.otherPic)
