@@ -148,14 +148,14 @@ const currentItem = ref<any>({})
 const reason = ref<string>('') // 删除原因
 
 const toLink = (type: string, itemUid?: any) => {
-  const { uid, doorNo } = props.dataInfo
+  const { uid, doorNo,immigrantHouseList } = props.dataInfo
   if (type === 'edit') {
-    let params = { type, uid, doorNo, itemUid }
+    let params = { type, uid, doorNo, itemUid,immigrantHouseList }
     routerForward('houseDecorationEvaEdit', {
       params: JSON.stringify(params)
     })
   } else if (type === 'add') {
-    let params = { type, uid, doorNo }
+    let params = { type, uid, doorNo,immigrantHouseList }
     routerForward('houseDecorationEvaEdit', {
       params: JSON.stringify(params)
     })
@@ -186,6 +186,7 @@ const dialogConfirm = (data: any) => {
 const dialogClose = () => {
   alertDialog.value.close()
 }
+
 </script>
 
 <style lang="scss" scoped>

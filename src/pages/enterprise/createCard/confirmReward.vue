@@ -42,8 +42,8 @@
             <!-- <view v-if="item.isUpdate !== '1'"> - </view> -->
           </uni-td>
           <uni-td align="left" class="u-td">
-            <view v-if="item.isVerify != '1' && item.isSum === '0'">{{ item.totalPrice }}</view>
-            <view v-if="item.isSum === '0' && item.isVerify === '1'">{{
+            <view v-if="item.isUpdate === '0' && item.isSum === '0'">{{ item.totalPrice }}</view>
+            <view v-if="item.isSum === '0' && item.isUpdate === '1'">{{
               computedTotalPrice(item)
             }}</view>
             <view v-if="item.isSum === '1'"> {{ getSummaries(item) }} </view>

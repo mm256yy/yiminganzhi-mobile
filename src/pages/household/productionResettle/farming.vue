@@ -7,7 +7,7 @@
       </view> -->
       <view class="btn blue-btn" v-if="hasFarmingResettle" @click="archivesUpload">
         <image class="icon" src="@/static/images/icon_dangan_upload.png" mode="scaleToFill" />
-        <text class="txt">档案上传</text>
+        <text class="txt">进度汇报</text>
       </view>
 
       <!-- <view class="btn blue-btn">

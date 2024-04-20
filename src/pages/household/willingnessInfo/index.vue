@@ -66,19 +66,19 @@
     <view class="sub-title">搬迁安置方式</view>
     <view class="row-3 b-b-1">
       <radio-group v-if="configLength > 0" @change="homesteadChange">
-        <view class="label m-t-5">宅基地安置：</view>
+        <!-- <view class="label m-t-5">宅基地安置：</view> -->
         <label v-for="item in homesteadData" :key="item.value">
           <radio :value="item.value" :checked="item.value === formData.removalType">
             {{ item.name }}
           </radio>
         </label>
-        <view class="line" />
+        <!-- <view class="line" />
         <view class="label m-t-5">公寓房安置：</view>
         <label v-for="item in apartmentData" :key="item.value">
           <radio :value="item.value" :checked="item.value === formData.removalType">
             {{ item.name }}
           </radio>
-        </label>
+        </label> -->
       </radio-group>
       <radio-group v-else @change="homesteadChange">
         <view class="label m-t-5">默认：</view>
@@ -219,14 +219,14 @@ const genArr = (arr: any[]) => {
         ...commonParams
       })
     } else if (item.type === '搬迁安置') {
-      if (item.way === '宅基地安置') {
+      if (item.way === '') {
         homesteadData.value.push({
           name: item.area,
           value: item.area,
           ...item,
           ...commonParams
         })
-      } else if (item.way === '公寓安置') {
+      } else if (item.way === '') {
         apartmentData.value.push({
           name: item.area,
           value: item.area,
@@ -244,7 +244,9 @@ const initData = () => {
     // 已经有配置了
     formData.value = {
       ...props.willData,
-      familyNum: props.dataInfo.demographicList.length
+      familyNum: props.dataInfo.demographicList.length,
+      countryNum: props.dataInfo.demographicList.filter((item:any)=> item.censusType == '1').length,
+      unCountryNum:props.dataInfo.demographicList.filter((item:any) => item.censusType != '1').length
     }
     // 生产安置方式 有配置数据时 重新赋值
     productModeData.value = props.willData.immigrantWillProductionList
@@ -252,8 +254,8 @@ const initData = () => {
     // 没有任何配置
     formData.value = {
       familyNum: props.dataInfo.demographicList.length, // 家庭总人数
-      countryNum: '', // 农村移民人数
-      unCountryNum: '', // 非农移民人数
+      // countryNum: '', // 农村移民人数
+      // unCountryNum: '', // 非农移民人数
       immigrantWillProductionList: [], // 生产安置
       removalType: '', // 搬迁安置方式
       opinion: '' // 备注

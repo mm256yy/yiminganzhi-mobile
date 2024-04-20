@@ -19,7 +19,7 @@
 
         <view class="btn blue-btn" @click="archivesUpload">
           <image class="icon" src="@/static/images/icon_dangan_upload.png" mode="scaleToFill" />
-          <text class="txt">档案上传</text>
+          <text class="txt">进度汇报</text>
         </view>
         <view class="btn blue-btn" @click="notHandle" v-if="!excessInfo.isExcess">
           <image class="icon" src="@/static/images/icon_not_handle.png" mode="scaleToFill" />

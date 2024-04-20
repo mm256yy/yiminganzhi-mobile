@@ -3,7 +3,7 @@
     <Back :title="title" needConfirm />
     <view class="main">
       <uni-forms class="form" ref="form" :modelValue="formData">
-        <uni-row v-if="commonParams.type === 'add'">
+        <!-- <uni-row v-if="commonParams.type === 'add'">
           <uni-col :span="24">
             <uni-forms-item
               required
@@ -24,7 +24,7 @@
               </view>
             </uni-forms-item>
           </uni-col>
-        </uni-row>
+        </uni-row> -->
 
         <uni-row>
           <uni-col :span="12">
@@ -35,7 +35,12 @@
               label-align="right"
               name="formData.houseNo"
             >
-              <uni-easyinput v-model="formData.houseNo" type="text" placeholder="请输入" />
+              <!-- <uni-easyinput v-model="formData.houseNo" type="text" placeholder="请输入" /> -->
+              <uni-data-select
+                v-model="formData.houseNo"
+                :localdata="buildingNumberList"
+                @change="change"
+              />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -62,6 +67,7 @@
               :label-width="150"
               label-align="right"
               name="formData.fitUpType"
+              v-if="formData.isBuyItNow === '0'"
             >
               <uni-data-select
                 v-model="formData.fitUpType"
@@ -76,6 +82,7 @@
               :label-width="150"
               label-align="right"
               name="formData.fitUpName"
+              v-if="formData.isBuyItNow === '0'"
             >
               <uni-easyinput
                 v-model="formData.fitUpName"
@@ -131,7 +138,7 @@
                 :class="[
                   'input-wrapper',
                   focusIndex === 2 ? 'focus' : '',
-                  formData.isBuyItNow === '1' ? 'disabled' : ''
+                  // formData.isBuyItNow === '1' ? 'disabled' : ''
                 ]"
               >
                 <input
@@ -139,7 +146,6 @@
                   placeholder="请输入"
                   type="number"
                   v-model="formData.price"
-                  :disabled="formData.isBuyItNow === '1'"
                   @focus="inputFocus(2)"
                   @blur="inputBlur"
                 />
@@ -153,6 +159,7 @@
               :label-width="150"
               label-align="right"
               name="formData.discountRate"
+              v-if="formData.isBuyItNow === '0'"
             >
               <uni-easyinput
                 v-model="formData.discountRate"
@@ -177,7 +184,7 @@
                 :class="[
                   'input-wrapper',
                   focusIndex === 3 ? 'focus' : '',
-                  formData.isBuyItNow === '1' ? 'disabled' : ''
+                  formData.isBuyItNow === '0' ? 'disabled' : ''
                 ]"
               >
                 <input
@@ -272,11 +279,12 @@ const fixedPriceOptions = ref<any>([
     value: '0'
   }
 ])
+const buildingNumberList= ref<any>([])
 // 表单数据
 const formData = ref<any>({
   doorNo: commonParams.value.doorNo,
   status: 'implementation',
-  addReason: '',
+  // addReason: '',
   houseNo: '',
   isBuyItNow: '',
   fitUpType: '',
@@ -323,7 +331,14 @@ const getLandlordDetail = () => {
 onLoad((option: any) => {
   if (option) {
     commonParams.value = JSON.parse(option.params)
-    const { type } = commonParams.value
+    const { type, immigrantHouseList } = commonParams.value
+    console.log(immigrantHouseList, '主体评估数据')
+    buildingNumberList.value=immigrantHouseList.map((item: any) => {
+      return {
+        text: item.houseNo,
+        value: item.houseNo
+      }
+    })
     if (type === 'edit') {
       title.value = '房屋装修评估编辑'
       getLandlordDetail()
@@ -350,13 +365,23 @@ const inputBlur = () => {
 const change = (val: any) => {
   // 当选择了一口价时，以下部分字段置为空
   if (val === '1') {
+    console.log('选择了一口价,是')
     formData.value.fitUpType = ''
     formData.value.fitUpName = ''
-    formData.value.unit = ''
-    formData.value.number = ''
-    formData.value.price = ''
+    // formData.value.unit = ''
+    formData.value.unit = '16'
+    // formData.value.number = ''
+    // formData.value.price = ''
     formData.value.discountRate = ''
     formData.value.valuationAmount = ''
+    commonParams.value.immigrantHouseList.map((item: any) => {
+      if (item.houseNo == formData.value.houseNo) {
+         formData.value.number = item.landArea
+      }
+    })
+  } else {
+    console.log('选择了一口价,否')
+    // formData.value.unit = 'm²'
   }
 }
 
@@ -365,6 +390,9 @@ const countPrice = computed(() => {
   const { number, price, discountRate } = formData.value
   if (number && price && discountRate) {
     return (number * price * discountRate).toFixed(2)
+  } else if (number && price) {
+    return (number * price).toFixed(2)
+    
   }
   return '0'
 })
@@ -377,12 +405,8 @@ const submit = () => {
     doorNo,
     ...formData.value
   }
-
-  if (!formData.value.addReason && type === 'add') {
-    showToast('请输入新增原因')
-    return
-  } else if (!formData.value.houseNo) {
-    showToast('请输入幢号')
+  if (!formData.value.houseNo) {
+    showToast('请选择幢号')
     return
   } else if (!formData.value.isBuyItNow) {
     showToast('请选择是否一口价')
