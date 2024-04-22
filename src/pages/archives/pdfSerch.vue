@@ -363,7 +363,7 @@
               <td align="center" class="uTd">{{ baseInfo.phone }}</td>
             </tr>
             <tr>
-              <td align="center" class="uTd">迁出地</td>
+              <td align="center" class="uTd">地块号</td>
               <td align="center" class="uTd" colspan="3">
                 {{
                   baseInfo.type == 'PeasantHousehold'
@@ -371,7 +371,7 @@
                     : baseInfo.type == 'Village'
                     ? (baseInfo.areaCodeText || '') +
                       (baseInfo.townCodeText || '') +
-                      (baseInfo.villageText || '')
+                      (baseInfo.villageCodeText || '')
                     : formatStr(baseInfo.beforeAddress)
                 }}</td
               >

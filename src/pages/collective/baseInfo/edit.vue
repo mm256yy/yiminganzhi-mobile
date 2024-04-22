@@ -79,7 +79,7 @@
           <uni-col :span="12">
             <uni-forms-item
               required
-              label="村集体联系方式"
+              label="联系方式"
               :label-width="170"
               label-align="right"
               name="formData.phone"

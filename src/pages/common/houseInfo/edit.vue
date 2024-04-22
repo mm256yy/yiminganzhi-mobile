@@ -530,7 +530,7 @@ onLoad((option: any) => {
       }
     }
     if (!formData.value.propertyType) {
-      formData.value.propertyType = '3'
+      formData.value.propertyType = mainType.value === MainType.Village ? '2' : '3'
     }
   }
 })

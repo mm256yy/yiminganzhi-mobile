@@ -73,7 +73,8 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              label="企业联系方式"
+              required
+              label="联系方式"
               :label-width="170"
               label-align="right"
               name="formData.phone"
@@ -146,23 +147,6 @@
               name="formData.legalPersonCard"
             >
               <uni-easyinput v-model="formData.legalPersonCard" type="text" placeholder="请输入" />
-            </uni-forms-item>
-          </uni-col>
-        </uni-row>
-
-        <uni-row>
-          <uni-col :span="24">
-            <uni-forms-item
-              label="法人联系方式"
-              :label-width="170"
-              label-align="right"
-              name="formData.legalPersonPhone"
-            >
-              <uni-easyinput
-                v-model="formData.legalPersonPhone"
-                type="number"
-                placeholder="请输入"
-              />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -1195,10 +1179,16 @@ const submit = () => {
     return
   } else if (!formData.value.taxLicenceCompany) {
     showToast('请输入税务许可证颁布单位')
+    return
   } else if (!formData.value.taxPeriodValidity) {
     showToast('请输入税务许可证有效期')
+    return
   } else if (!formData.value.taxLicenceNo) {
     showToast('请输入税务许可证编号')
+    return
+  } else if (!formData.value.phone) {
+    showToast('请输入联系方式')
+    return
   } else {
     if (type.value === 'add') {
       let params = {

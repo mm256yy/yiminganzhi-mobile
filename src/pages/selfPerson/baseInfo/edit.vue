@@ -36,17 +36,13 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              label="法人联系方式"
+              required
+              label="联系方式"
               :label-width="170"
               label-align="right"
-              name="formData.legalPersonPhone"
+              name="formData.phone"
             >
-              <uni-easyinput
-                v-model="formData.legalPersonPhone"
-                type="number"
-                :maxlength="11"
-                placeholder="请输入"
-              />
+              <uni-easyinput v-model="formData.phone" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -131,18 +127,6 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              label="个体工商户联系方式"
-              :label-width="170"
-              label-align="right"
-              name="formData.phone"
-            >
-              <uni-easyinput v-model="formData.phone" type="text" placeholder="请输入" />
-            </uni-forms-item>
-          </uni-col>
-        </uni-row>
-        <uni-row>
-          <uni-col :span="12">
-            <uni-forms-item
               label="关联居民户"
               :label-width="150"
               label-align="right"
@@ -166,6 +150,7 @@
             </uni-forms-item>
           </uni-col>
         </uni-row>
+
         <view class="title-wrapper">
           <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
           <view class="title">个体工商户证照信息</view>
@@ -916,10 +901,16 @@ const submit = () => {
     return
   } else if (!formData.value.taxLicenceCompany) {
     showToast('请输入税务许可证颁布单位')
+    return
   } else if (!formData.value.taxPeriodValidity) {
     showToast('请输入税务许可证有效期')
+    return
   } else if (!formData.value.taxLicenceNo) {
     showToast('请输入税务许可证编号')
+    return
+  } else if (!formData.value.phone) {
+    showToast('请输入联系方式')
+    return
   } else {
     if (type.value === 'add') {
       let params = {
