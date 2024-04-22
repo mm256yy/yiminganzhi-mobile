@@ -364,6 +364,7 @@ export interface StateType {
   villageList: VillageType[]
   collectList: CollectType[]
   professionalTree: LabelValueChildrenType[]
+  populationSortTree: any[]
   upgradation: AppVersionDtoType | null
   immigrantGraveList: GraveType[]
   top5Statistic: Top5Type | null

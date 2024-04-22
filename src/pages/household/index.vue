@@ -7,6 +7,7 @@
         <Main
           :dataInfo="dataInfo"
           :occupationOptions="occupationOptions"
+          :populationSortTree="populationSortTree"
           @update-data="getLandlordDetail"
         />
       </view>
@@ -28,7 +29,7 @@ const pageHeight = screenHeight - statusBarHeight
 const dataInfo = ref<any>({})
 // 职业选项
 const occupationOptions = ref<any>([])
-
+const populationSortTree = ref<any>([])
 onShow(() => {
   if (dataInfo.value.uid) {
     getLandlordDetail(dataInfo.value.uid)
@@ -61,6 +62,11 @@ const initOccpationData = async () => {
   const res = await getOtherItemApi(OtherDataType.ProfessionalTree)
   if (res && res.length > 0) {
     occupationOptions.value = res
+  }
+  const ress = await getOtherItemApi(OtherDataType.populationSortTree)
+  if (ress && ress.length > 0) {
+    populationSortTree.value = ress
+    console.log(ress, '====================')
   }
 }
 </script>

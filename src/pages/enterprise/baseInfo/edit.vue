@@ -171,7 +171,52 @@
           <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
           <view class="title">企业证照信息</view>
         </view>
+        <uni-row>
+          <uni-col :span="12">
+            <uni-forms-item
+              required
+              label="税务许可证编号"
+              :label-width="170"
+              label-align="right"
+              name="formData.taxLicenceNo"
+            >
+              <uni-easyinput v-model="formData.taxLicenceNo" type="text" placeholder="请输入" />
+            </uni-forms-item>
+          </uni-col>
+          <uni-col :span="12">
+            <uni-forms-item
+              required
+              label="税务许可证有效期"
+              :label-width="170"
+              label-align="right"
+              name="formData.taxPeriodValidity"
+            >
+              <uni-easyinput
+                v-model="formData.taxPeriodValidity"
+                type="text"
+                placeholder="请输入"
+              />
+            </uni-forms-item>
+          </uni-col>
+        </uni-row>
 
+        <uni-row>
+          <uni-col :span="24">
+            <uni-forms-item
+              required
+              label="税务许可证颁布单位"
+              :label-width="170"
+              label-align="right"
+              name="formData.taxLicenceCompany"
+            >
+              <uni-easyinput
+                v-model="formData.taxLicenceCompany"
+                type="text"
+                placeholder="请输入"
+              />
+            </uni-forms-item>
+          </uni-col>
+        </uni-row>
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
@@ -218,50 +263,6 @@
           </uni-col>
         </uni-row>
 
-        <uni-row>
-          <uni-col :span="12">
-            <uni-forms-item
-              label="税务许可证编号"
-              :label-width="170"
-              label-align="right"
-              name="formData.taxLicenceNo"
-            >
-              <uni-easyinput v-model="formData.taxLicenceNo" type="text" placeholder="请输入" />
-            </uni-forms-item>
-          </uni-col>
-          <uni-col :span="12">
-            <uni-forms-item
-              label="税务许可证有效期"
-              :label-width="170"
-              label-align="right"
-              name="formData.taxPeriodValidity"
-            >
-              <uni-easyinput
-                v-model="formData.taxPeriodValidity"
-                type="text"
-                placeholder="请输入"
-              />
-            </uni-forms-item>
-          </uni-col>
-        </uni-row>
-
-        <uni-row>
-          <uni-col :span="24">
-            <uni-forms-item
-              label="税务许可证颁布单位"
-              :label-width="170"
-              label-align="right"
-              name="formData.taxLicenceCompany"
-            >
-              <uni-easyinput
-                v-model="formData.taxLicenceCompany"
-                type="text"
-                placeholder="请输入"
-              />
-            </uni-forms-item>
-          </uni-col>
-        </uni-row>
-
         <view class="title-wrapper">
           <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
           <view class="title">企业工商信息</view>
@@ -270,6 +271,7 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="登记注册类型"
               :label-width="170"
               label-align="right"
@@ -336,29 +338,6 @@
               name="formData.industryType"
             >
               <uni-data-select v-model="formData.industryType" :localdata="dict[215]" />
-            </uni-forms-item>
-          </uni-col>
-          <uni-col :span="12">
-            <uni-forms-item
-              label="企业所属分类"
-              :label-width="170"
-              label-align="right"
-              name="formData.companyType"
-            >
-              <uni-data-select v-model="formData.companyType" :localdata="dict[216]" />
-            </uni-forms-item>
-          </uni-col>
-        </uni-row>
-
-        <uni-row>
-          <uni-col :span="12">
-            <uni-forms-item
-              label="经济性质"
-              :label-width="170"
-              label-align="right"
-              name="formData.economicNature"
-            >
-              <uni-easyinput v-model="formData.economicNature" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -614,7 +593,7 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              label="企业涉及情况"
+              label="企业影响情况"
               :label-width="170"
               label-align="right"
               name="formData.informationInvolved"
@@ -913,7 +892,7 @@ import { ref, onMounted } from 'vue'
 import dayjs from 'dayjs'
 import { routerBack, getStorage, StorageKey, cardReg } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
-import { addLandlordApi, updateLandlordCompanyApi,updateAssociation } from '@/service'
+import { addLandlordApi, updateLandlordCompanyApi, updateAssociation } from '@/service'
 import Back from '@/components/Back/Index.vue'
 import VillageSelectFormItem from '@/components/VillageSelectFormItem/index.vue'
 import UploadFile from '@/components/UploadFile/index.vue'
@@ -1026,10 +1005,13 @@ onLoad((option: any) => {
         formData.value.townCode = option.townCode
         formData.value.villageCode = option.villageCode
       }
-        if (option.householderDoorNo && option.householderName) {
+      if (option.householderDoorNo && option.householderName) {
         formData.value.householderDoorNo = option.householderDoorNo
         formData.value.householderName = option.householderName
       }
+    }
+    if (!formData.value.registerType) {
+      formData.value.registerType = '14'
     }
   }
 })
@@ -1192,9 +1174,9 @@ const submit = () => {
   } else if (!formData.value.doorNo) {
     showToast('请输入企业编码')
     return
-    // } else if (!formData.value.doorNo && !formData.value.suffixNo) {
-    //   showToast('请输入企业编码后四位')
-    //   return
+  } else if (!formData.value.registerType) {
+    showToast('请选择登记注册类型')
+    return
     // } else if (
     //   !formData.value.doorNo &&
     //   formData.value.suffixNo &&
@@ -1211,6 +1193,12 @@ const submit = () => {
   } else if (!cardReg.test(formData.value.legalPersonCard)) {
     showToast('请输入正确的法人身份证号')
     return
+  } else if (!formData.value.taxLicenceCompany) {
+    showToast('请输入税务许可证颁布单位')
+  } else if (!formData.value.taxPeriodValidity) {
+    showToast('请输入税务许可证有效期')
+  } else if (!formData.value.taxLicenceNo) {
+    showToast('请输入税务许可证编号')
   } else {
     if (type.value === 'add') {
       let params = {
@@ -1248,19 +1236,21 @@ const submit = () => {
     }
   }
 }
-const updateCommon=() => {
-      let values = {
-      type: MainType.PeasantHousehold,
-      doorNo:formData.value.householderDoorNo
-    }
-    getImpLandlordListBySearchApi(values).then((res) => {
-      console.log(res, '居民户数据')
-      let uid = res[0]?.uid
-      let relateCompanyName=formData.value.name
-      updateAssociation({uid:uid,relateCompanyName:relateCompanyName,type:'Company'}).then((res) => {
-      console.log(res, '更新关联成功')
-    })
-    })
+const updateCommon = () => {
+  let values = {
+    type: MainType.PeasantHousehold,
+    doorNo: formData.value.householderDoorNo
+  }
+  getImpLandlordListBySearchApi(values).then((res) => {
+    console.log(res, '居民户数据')
+    let uid = res[0]?.uid
+    let relateCompanyName = formData.value.name
+    updateAssociation({ uid: uid, relateCompanyName: relateCompanyName, type: 'Company' }).then(
+      (res) => {
+        console.log(res, '更新关联成功')
+      }
+    )
+  })
 }
 onMounted(() => {
   getLandlordListBySearch()

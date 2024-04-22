@@ -17,6 +17,7 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="穴位"
               :label-width="150"
               label-align="right"
@@ -30,6 +31,7 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="数量"
               :label-width="150"
               label-align="right"
@@ -50,6 +52,7 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="材料"
               :label-width="150"
               label-align="right"
@@ -82,17 +85,6 @@
               <uni-data-select v-model="formData.gravePosition" :localdata="dict[326]" />
             </uni-forms-item>
           </uni-col>
-          <uni-col :span="12">
-            <uni-forms-item
-              required
-              label="淹没范围"
-              :label-width="150"
-              label-align="right"
-              name="formData.inundationRange"
-            >
-              <uni-data-select v-model="formData.inundationRange" :localdata="dict[346]" />
-            </uni-forms-item>
-          </uni-col>
         </uni-row>
 
         <uni-row>
@@ -106,6 +98,17 @@
               <uni-data-select v-model="formData.villageId" :localdata="collectiveList" />
             </uni-forms-item>
           </uni-col> -->
+          <uni-col :span="12">
+            <uni-forms-item
+              required
+              label="淹没范围"
+              :label-width="150"
+              label-align="right"
+              name="formData.inundationRange"
+            >
+              <uni-data-select v-model="formData.inundationRange" :localdata="dict[346]" />
+            </uni-forms-item>
+          </uni-col>
           <uni-col :span="12">
             <uni-forms-item
               label="备注"
@@ -183,6 +186,12 @@ const submit = () => {
   } else if (!formData.value.gravePosition) {
     showToast('请选择所处位置')
     return
+  } else if (!formData.value.graveType) {
+    showToast('请选择穴位')
+  } else if (!formData.value.number) {
+    showToast('请输入数量')
+  } else if (!formData.value.materials) {
+    showToast('请选择材料')
   } else {
     const { uid } = commonParams.value
     let params = {

@@ -17,6 +17,7 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="身份证号"
               :label-width="150"
               label-align="right"
@@ -25,9 +26,16 @@
               <uni-easyinput v-model="formData.card" type="idcard" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
+
           <uni-col :span="12">
-            <uni-forms-item label="性别" :label-width="150" label-align="right" name="formData.sex">
-              <uni-data-select v-model="formData.sex" :localdata="dict[292]" />
+            <uni-forms-item
+              required
+              label="与户主关系"
+              :label-width="150"
+              label-align="right"
+              name="formData.relation"
+            >
+              <uni-data-select v-model="formData.relation" :localdata="dict[307]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -62,14 +70,8 @@
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
-            <uni-forms-item
-              required
-              label="与户主关系"
-              :label-width="150"
-              label-align="right"
-              name="formData.relation"
-            >
-              <uni-data-select v-model="formData.relation" :localdata="dict[307]" />
+            <uni-forms-item label="性别" :label-width="150" label-align="right" name="formData.sex">
+              <uni-data-select v-model="formData.sex" :localdata="dict[292]" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -142,7 +144,7 @@
             >
               <view
                 :class="['name-wrapper', selectedData ? 'isSelected' : '']"
-                @click="selectOccupation"
+                @click="selectOccupation('1')"
               >
                 {{ selectedData ? selectedData : '请选择' }}
               </view>
@@ -171,7 +173,12 @@
               label-align="right"
               name="formData.populationSort"
             >
-              <uni-data-select v-model="formData.populationSort" :localdata="dict[274]" />
+              <view
+                :class="['name-wrapper', selectedData2 ? 'isSelected' : '']"
+                @click="selectOccupation('2')"
+              >
+                {{ selectedData2 ? selectedData2 : '请选择' }}
+              </view>
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -294,9 +301,9 @@
 
     <cascade-select
       v-if="showSelect"
-      :data-list="occupationOptions"
-      :value="selectValue"
-      :label="selectLabel"
+      :data-list="optionType == '1' ? occupationOptions : populationSortTree"
+      :value="optionType == '1' ? selectValue : selectValue2"
+      :label="optionType == '1' ? selectLabel : selectLabel2"
       :select-any="true"
       @on-close="showSelect = false"
       @on-confirm="confirmSelect"
@@ -360,10 +367,15 @@ const title = ref<string>('')
 const uid = ref<string>('')
 const showSelect = ref<boolean>(false)
 const occupationOptions = ref<any>([])
+const populationSortTree = ref<any>([])
 const selectValue = ref<any>([])
 const selectLabel = ref<any>([])
 const selectedData = ref<string>('')
-const childSelect=ref<any>()
+const selectValue2 = ref<any>([])
+const selectLabel2 = ref<any>([])
+const selectedData2 = ref<string>('')
+const childSelect = ref<any>()
+let optionType = ref<any>()
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
 
@@ -383,6 +395,9 @@ onLoad((option: any) => {
     type.value = option.type
     uid.value = option.uid
     occupationOptions.value = JSON.parse(option.occupationOptions)
+    populationSortTree.value = JSON.parse(option.populationSortTree)
+    console.log(option, '=================')
+
     if (option.type === 'edit') {
       formData.value = JSON.parse(option.params)
       selectValue.value = formData.value.occupation ? JSON.parse(formData.value.occupation) : []
@@ -390,11 +405,21 @@ onLoad((option: any) => {
       selectedData.value = formData.value.occupation
         ? fmtOccupationStr(occupationOptions.value, formData.value.occupation, 1)
         : ''
+      selectValue2.value = formData.value.populationSort
+        ? JSON.parse(formData.value.populationSort)
+        : []
+      selectLabel2.value = fmtOccupation(populationSortTree.value, formData.value.populationSort)
+      selectedData2.value = formData.value.populationSort
+        ? fmtOccupationStr(populationSortTree.value, formData.value.populationSort, 1)
+        : ''
       title.value = '个人信息编辑'
       currentDate.value = getDate()
     } else if (option.type === 'add') {
       title.value = '新增个人信息'
       currentDate.value = getDate()
+    }
+    if (!formData.value.nation) {
+      formData.value.nation = '1'
     }
   }
 })
@@ -409,36 +434,49 @@ const bindDateChange = (e: any) => {
 }
 
 // 选择职业（弹出职业选择框）
-const selectOccupation = () => {
+const selectOccupation = (e: any) => {
   showSelect.value = true
+  optionType.value = e
 }
 
 // 确认选择职业
 const confirmSelect = (currentSelect: any[], label: any[]) => {
-  if (currentSelect && currentSelect.length > 0) {
-    selectValue.value = currentSelect
-    formData.value.occupation = JSON.stringify(currentSelect)
+  if (optionType.value == '1') {
+    if (currentSelect && currentSelect.length > 0) {
+      selectValue.value = currentSelect
+      formData.value.occupation = JSON.stringify(currentSelect)
+    }
+    if (label && label.length > 0) {
+      selectLabel.value = label
+      selectedData.value = label.toString()
+    }
+  } else {
+    if (currentSelect && currentSelect.length > 0) {
+      selectValue2.value = currentSelect
+      formData.value.populationSort = JSON.stringify(currentSelect)
+    }
+    if (label && label.length > 0) {
+      selectLabel2.value = label
+      selectedData2.value = label.toString()
+    }
   }
-  if (label && label.length > 0) {
-    selectLabel.value = label
-    selectedData.value = label.toString()
-  }
+
   showSelect.value = false
 }
 
-const handleClick=() => {
+const handleClick = () => {
   childSelect.value.showType()
 }
 watch(
   () => formData.value.card,
   (val) => {
-      if (formData.value.card && cardReg.test(formData.value.card)) {
-        const genderCode = formData.value.card.slice(-2, -1); 
-        genderCode % 2 === 0?formData.value.sex='2':formData.value.sex = '1'
-        const birthDatePart = formData.value.card.substring(6, 14);  
-        const birthYearMonth = birthDatePart.substring(0, 4) + '-' + birthDatePart.substring(4, 6);  
-        formData.value.birthday=birthYearMonth
-    }     
+    if (formData.value.card && cardReg.test(formData.value.card)) {
+      const genderCode = formData.value.card.slice(-2, -1)
+      genderCode % 2 === 0 ? (formData.value.sex = '2') : (formData.value.sex = '1')
+      const birthDatePart = formData.value.card.substring(6, 14)
+      const birthYearMonth = birthDatePart.substring(0, 4) + '-' + birthDatePart.substring(4, 6)
+      formData.value.birthday = birthYearMonth
+    }
   },
   {
     immediate: true,
@@ -454,10 +492,10 @@ const submit = () => {
   if (!formData.value.name) {
     showToast('请输入姓名')
     return
-  }else if (formData.value.phone && !phoneReg.test(formData.value.phone)) {
+  } else if (formData.value.phone && !phoneReg.test(formData.value.phone)) {
     showToast('请输入正确的手机号')
     return
-  }else if (!formData.value.relation) {
+  } else if (!formData.value.relation) {
     showToast('请选择与户主关系')
     return
   } else if (!formData.value.insuranceType) {

@@ -95,6 +95,7 @@ class PullData {
       villageList: [],
       collectList: [],
       professionalTree: [],
+      populationSortTree: [],
       upgradation: null,
       immigrantGraveList: [],
       top5Statistic: null,
@@ -250,7 +251,7 @@ class PullData {
       districtTree,
       districtList,
       professionalTree,
-
+      populationSortTree,
       homeReportTop,
       homeReportTopToday,
       homeSignTop,
@@ -273,6 +274,7 @@ class PullData {
     this.state.districtTree = districtTree
     this.state.districtList = districtList
     this.state.professionalTree = professionalTree
+    this.state.populationSortTree = populationSortTree
     this.state.immigrantAppendantConfigList = immigrantAppendantOptionList
     this.state.top5Statistic = {
       homeReportTop,
@@ -330,6 +332,7 @@ class PullData {
       // 重置 释放缓存
       this.state.districtTree = []
       this.state.professionalTree = []
+      this.state.populationSortTree = []
       this.state.top5Statistic = null
 
       this.state.chooseConfig = []
@@ -1042,6 +1045,7 @@ class PullData {
       const {
         districtTree,
         professionalTree,
+        populationSortTree,
         top5Statistic,
         chooseConfig,
         houseConfig,
@@ -1087,6 +1091,14 @@ class PullData {
         const fields = "'type','content','updatedDate'"
         const values = `'${OtherDataType.ProfessionalTree}','${JSON.stringify(
           professionalTree
+        )}','${getCurrentTimeStamp()}'`
+        db.insertOrReplaceData(OtherTableName, values, fields)
+      }
+      if (populationSortTree && populationSortTree.length) {
+        // 人口类别树
+        const fields = "'type','content','updatedDate'"
+        const values = `'${OtherDataType.populationSortTree}','${JSON.stringify(
+          populationSortTree
         )}','${getCurrentTimeStamp()}'`
         db.insertOrReplaceData(OtherTableName, values, fields)
       }

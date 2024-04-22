@@ -41,6 +41,7 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="层数"
               :label-width="150"
               label-align="right"
@@ -75,6 +76,7 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="房屋类别"
               :label-width="150"
               label-align="right"
@@ -190,22 +192,13 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              label="建筑面积"
+              required
+              label="所在位置"
               :label-width="150"
               label-align="right"
-              name="formData.landArea"
+              name="formData.locationType"
             >
-              <view :class="['input-wrapper', focusIndex === 2 ? 'focus' : '']">
-                <input
-                  class="input-txt"
-                  placeholder="请输入"
-                  type="number"
-                  v-model="formData.landArea"
-                  @focus="inputFocus(2)"
-                  @blur="inputBlur"
-                />
-                <view class="unit">m²</view>
-              </view>
+              <uni-data-select v-model="formData.locationType" :localdata="dict[326]" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -213,6 +206,7 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="结构类型"
               :label-width="150"
               label-align="right"
@@ -223,7 +217,7 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              required
+              :required="formData.locationType == `InfluenceArea`"
               label="房屋高程"
               :label-width="150"
               label-align="right"
@@ -247,6 +241,7 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="土地性质"
               :label-width="150"
               label-align="right"
@@ -276,6 +271,7 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="淹没范围"
               :label-width="150"
               label-align="right"
@@ -285,7 +281,7 @@
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
-            <uni-forms-item label="中心经纬度" :label-width="150" label-align="right">
+            <uni-forms-item required label="中心经纬度" :label-width="150" label-align="right">
               <view class="lg-txt-wrapper">
                 <!-- <uni-data-checkbox v-model="check" :localdata="lgTagList" /> -->
                 <view class="position" @click="gotoMap">
@@ -319,12 +315,23 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              label="所在位置"
+              required
+              label="建筑面积"
               :label-width="150"
               label-align="right"
-              name="formData.locationType"
+              name="formData.landArea"
             >
-              <uni-data-select v-model="formData.locationType" :localdata="dict[326]" />
+              <view :class="['input-wrapper', focusIndex === 2 ? 'focus' : '']">
+                <input
+                  class="input-txt"
+                  placeholder="请输入"
+                  type="number"
+                  v-model="formData.landArea"
+                  @focus="inputFocus(2)"
+                  @blur="inputBlur"
+                />
+                <view class="unit">m²</view>
+              </view>
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -517,11 +524,13 @@ onLoad((option: any) => {
     } else if (type.value === 'add') {
       title.value = '新增房屋'
       currentDate.value = getDate()
-      formData.value.propertyType='2'
       if (commonParams.value.longitude && commonParams.value.latitude) {
         formData.value.longitude = commonParams.value.longitude
         formData.value.latitude = commonParams.value.latitude
       }
+    }
+    if (!formData.value.propertyType) {
+      formData.value.propertyType = '3'
     }
   }
 })
@@ -567,36 +576,32 @@ const submit = () => {
   } else if (!formData.value.usageType) {
     showToast('请选择房屋用途')
     return
-  }
-  // else if (!formData.value.storeyHeight) {
-  //   showToast('请输入层高')
-  //   return
-  // }
-  // else if (!formData.value.storeyNumber) {
-  //   showToast('请输入层数')
-  //   return
-  // }
-  // else if (!formData.value.landArea) {
-  //   showToast('请输入建筑面积')
-  //   return
-  // }
-  // else if (!formData.value.locationType) {
-  //   showToast('请选择所在位置')
-  //   return
-  // }
-  // else if (!formData.value.constructionType) {
-  //   showToast('请选择结构类型')
-  //   return
-  // }
-  // else if (!formData.value.inundationRange) {
-  //   showToast('请选择淹没范围')
-  //   return
-  // }
-  else if (!formData.value.propertyType) {
+  } else if (!formData.value.houseType) {
+    showToast('请选择房屋类别')
+    return
+  } else if (!formData.value.storeyNumber) {
+    showToast('请输入层数')
+    return
+  } else if (!formData.value.landArea) {
+    showToast('请输入建筑面积')
+    return
+  } else if (!formData.value.landType) {
+    showToast('请选择土地性质')
+    return
+  } else if (!formData.value.constructionType) {
+    showToast('请选择结构类型')
+    return
+  } else if (!formData.value.inundationRange) {
+    showToast('请选择淹没范围')
+    return
+  } else if (!formData.value.propertyType) {
     showToast('请选择房屋产别')
     return
-  } else if (!formData.value.houseHeight) {
+  } else if (!formData.value.houseHeight && formData.value.locationType == `InfluenceArea`) {
     showToast('请输入房屋高程')
+    return
+  } else if (!formData.value.locationType) {
+    showToast('请选择所在位置')
     return
   } else if (
     !formData.value.addReason &&

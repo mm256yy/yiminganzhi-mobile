@@ -174,6 +174,10 @@ const props = defineProps({
   updateLogList: {
     type: Array as any,
     default: () => []
+  },
+  populationSortTree: {
+    type: Array as any,
+    default: () => []
   }
 })
 
@@ -188,12 +192,15 @@ const stage = projectInfo?.status ? projectInfo.status : MainStage.survey
 const showRecord = ref<boolean>(false)
 
 const toLink = (type: string, data?: any) => {
+  console.log(props.populationSortTree)
+
   const { uid } = props.dataInfo
   if (type === 'add') {
     routerForward('demographicInfoEdit', {
       type,
       uid,
-      occupationOptions: JSON.stringify(props.occupationOptions)
+      occupationOptions: JSON.stringify(props.occupationOptions),
+      populationSortTree: JSON.stringify(props.populationSortTree)
     })
   } else if (type === 'edit') {
     let params = {
@@ -206,6 +213,7 @@ const toLink = (type: string, data?: any) => {
     routerForward('demographicInfoEdit', {
       params: JSON.stringify(params),
       occupationOptions: JSON.stringify(props.occupationOptions),
+      populationSortTree: JSON.stringify(props.populationSortTree),
       type,
       uid
     })

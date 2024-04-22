@@ -33,6 +33,7 @@
                   :dataList="dataInfo.demographicList"
                   :dataInfo="dataInfo"
                   :occupationOptions="occupationOptions"
+                  :populationSortTree="populationSortTree"
                   :updateLogList="fmtUpdateLog(dataInfo.updateLogList, '人口信息')"
                   @delete-demographic="deleteDemographic"
                 />
@@ -168,7 +169,11 @@ const props = defineProps({
   occupationOptions: {
     type: Array as any,
     default: () => []
-  }
+  },
+  populationSortTree: {
+    type: Array as any,
+    default: () => []
+  },
 })
 
 const tabsList = computed(() => {
