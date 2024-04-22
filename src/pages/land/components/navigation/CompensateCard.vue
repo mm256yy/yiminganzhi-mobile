@@ -97,7 +97,7 @@
         <view class="tb-content" v-for="(item, index) in tableData" :key="index">
           <view class="td td-1">{{ getTypeStr(item.type) }}</view>
           <view class="td td-2">{{ formatStr(item.name) }}</view>
-          <view class="td td-3">{{ formatDict(item.unit, 268) }}</view>
+          <view class="td td-3">{{ formatStr(item.unit) }}</view>
           <view class="td td-3">{{ formatStr(item.number) }}</view>
           <view class="td td-3">{{ formatStr(item.price) }}</view>
           <view class="td td-3">
@@ -131,7 +131,7 @@ const tableData = ref<any[]>([])
 const getCompensationCardConfig = async () => {
     let data: any = await getLandlordItemApi(props.dataInfo.uid)
     tableData.value = data.immigrantCompensationCardList.filter((item: any) => item.phType == 'LandNoMove')
-    console.log(tableData.value, '测试dada数据')
+    console.log(tableData.value, '测试dada数据')  
 }
 
 onShow(() => {

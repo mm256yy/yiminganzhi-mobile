@@ -10,6 +10,18 @@
           /{{ totalFillNumber }}
         </view>
       </view>
+     <view class="title">
+            <view v-if="dataInfo.relateIndividualHouseholdName != ''">
+        关联个体户:<text style="color: blue" @click="editLandlords">{{
+          dataInfo.relateIndividualHouseholdName
+        }}</text>
+      </view>
+      <view v-if="dataInfo.relateCompanyName != ''">
+        关联企业:<text style="color: blue" @click="editLandlord">{{
+          dataInfo.relateCompanyName
+        }}</text>
+      </view>
+     </view>
       <view class="list-header-right" v-if="tabVal !== 0">
         <view class="btn-wrapper green" @click="onDocumentation">
           <image class="icon" src="@/static/images/icon_dangan_upload.png" mode="scaleToFill" />
@@ -23,7 +35,91 @@
     </view>
   </view>
 </template>
+<script lang="ts" setup>
+import { ref, watch, onMounted, unref } from 'vue'
+// import { filterViewDoorNo, routerForward, getStorage, StorageKey } from '@/utils'
+// import { MainType } from '@/types/common'
+import { getLandlordListBySearchApi } from '@/service'
+// import { RoleCodeType } from '@/types/common'
+import { LandlordType } from '@/types/sync'
+interface PropsType {
+  dataInfo: LandlordType
+}
+const props = defineProps<PropsType>()
+const tabType = ref<MainType>(MainType.Company)
+const tabTypes = ref<MainType>(MainType.IndividualHousehold)
+const companyUid = ref<any>()
+const individualHouseholdUid = ref<any>()
 
+// 填报
+const routerMap: any = {
+  [MainType.Company]: 'enterpriseEva',
+  // [MainType.PeasantHousehold]: 'peasantHousehold',
+  [MainType.IndividualHousehold]: 'selfPersonEva'
+  // [MainType.Village]: 'collective'
+}
+
+const dataList = ref<any>()
+//企业跳转
+const editLandlord = () => {
+  console.log('测试企业跳转')
+  const name = routerMap[tabType.value]
+  console.log(name, 'name是什么')
+  console.log(companyUid.value.uid, '企业uid是什么')
+  routerForward(name, {
+    type: 'edit',
+    uid: companyUid.value.uid
+  })
+}
+
+//个体户跳转
+const editLandlords = () => {
+  console.log('个体户跳转')
+  const name = routerMap[tabTypes.value]
+  console.log(individualHouseholdUid.value.uid, '个体工商户uid是什么')
+  routerForward(name, {
+    type: 'edit',
+    uid: individualHouseholdUid.value.uid
+  })
+}
+//企业
+const getList = async () => {
+  const params: any = {
+    type: unref(tabType),
+    page: 1,
+    pageSize: 10
+  }
+  const res = await getLandlordListBySearchApi(params).catch(() => {})
+  companyUid.value = res.find((item: any) => item.name == dataList.value.relateCompanyName)
+}
+
+//个体工商户
+const getLists = async () => {
+  const params: any = {
+    type: unref(tabTypes),
+    page: 1,
+    pageSize: 10
+  }
+  const res = await getLandlordListBySearchApi(params).catch(() => {})
+  individualHouseholdUid.value = res.find(
+    (item: any) => item.name == dataList.value.relateIndividualHouseholdName
+  )
+}
+watch(
+  () => props.dataInfo,
+  (val) => {
+    if (val) {
+      console.log(val, '再次监听')
+      dataList.value = val
+    }
+  },
+  { deep: true, immediate: true }
+)
+onMounted(() => {
+  getList()
+  getLists()
+})
+</script>
 <script lang="ts">
 import { filterViewDoorNo, routerForward, getStorage, StorageKey } from '@/utils'
 import { MainType } from '@/types/common'
@@ -286,6 +382,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .title {
+    display: flex;
+    height: 28rpx;
+    font-size: 9rpx;
+    color: #171718;
+    align-items: center;
+    flex: 1;
+    justify-content: space-between;
+    line-height:28rpx;
+  }
 .list-header {
   display: flex;
   height: 33rpx;

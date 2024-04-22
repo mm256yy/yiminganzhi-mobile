@@ -95,6 +95,7 @@ onShow(() => {
 
 const toTarget = (item: any) => {
   const list = JSON.stringify(item.feedbackMessageList)
+  console.log(list,'list传输数据')
   const params = {
     ...item,
     list
