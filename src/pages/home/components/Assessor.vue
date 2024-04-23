@@ -654,7 +654,7 @@ onMounted(() => {
 
 .group {
   display: flex;
-  height: 175rpx;
+  height: 155rpx;
   padding: 0 12rpx;
   align-items: center;
   margin-top: 15rpx;
