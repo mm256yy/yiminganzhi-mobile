@@ -188,10 +188,13 @@ const submit = () => {
     return
   } else if (!formData.value.graveType) {
     showToast('请选择穴位')
+    return
   } else if (!formData.value.number) {
     showToast('请输入数量')
+    return
   } else if (!formData.value.materials) {
     showToast('请选择材料')
+    return
   } else {
     const { uid } = commonParams.value
     let params = {
