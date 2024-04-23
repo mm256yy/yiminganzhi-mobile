@@ -513,7 +513,7 @@ const submit = () => {
   } else if (!formData.value.addReason && type.value === 'add' && stage === MainStage.review) {
     showToast('请输入新增原因')
     return
-  } else if (formData.value.card && !cardReg.test(formData.value.card)) {
+  } else if (!formData.value.card || !cardReg.test(formData.value.card)) {
     showToast('请输入正确的身份证号')
     return
   } else {

@@ -995,7 +995,7 @@ onLoad((option: any) => {
       }
     }
     if (!formData.value.registerType) {
-      formData.value.registerType = '14'
+      formData.value.registerType = '1'
     }
   }
 })
@@ -1244,6 +1244,7 @@ const updateCommon = () => {
 }
 onMounted(() => {
   getLandlordListBySearch()
+  console.log(dict[219], '=================')
 })
 </script>
 

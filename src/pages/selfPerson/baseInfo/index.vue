@@ -195,21 +195,7 @@
                 <view class="content">{{ formatStr(props.dataInfo.companyAddress) }}</view>
               </view>
             </uni-col>
-            <uni-col :span="12">
-              <view class="col">
-                <view class="label">所属分类：</view>
-                <view class="content">{{ formatDict(props.dataInfo.companyType, 216) }}</view>
-              </view>
-            </uni-col>
-          </uni-row>
 
-          <uni-row>
-            <uni-col :span="12">
-              <view class="col">
-                <view class="label">经济性质：</view>
-                <view class="content">{{ formatStr(props.dataInfo.economicNature) }}</view>
-              </view>
-            </uni-col>
             <uni-col :span="12">
               <view class="col">
                 <view class="label">其他权证情况：</view>
@@ -436,7 +422,17 @@ const props = defineProps({
 })
 
 const toLink = (type: string) => {
-  const { uid, name, doorNo, areaCode, townCode, villageCode, locationType, phone,householderName } = props.baseInfo
+  const {
+    uid,
+    name,
+    doorNo,
+    areaCode,
+    townCode,
+    villageCode,
+    locationType,
+    phone,
+    householderName
+  } = props.baseInfo
 
   const { establishDate } = props.dataInfo
 

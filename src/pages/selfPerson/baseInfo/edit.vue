@@ -763,7 +763,7 @@ onLoad((option: any) => {
       }
     }
     if (!formData.value.registerType) {
-      formData.value.registerType = '31'
+      formData.value.registerType = '10'
     }
   }
 })
