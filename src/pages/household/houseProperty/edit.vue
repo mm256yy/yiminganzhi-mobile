@@ -158,7 +158,7 @@
           <uni-col :span="12">
             <uni-forms-item
               required
-              label="建筑面积"
+              label="建筑面积（m²）"
               :label-width="150"
               label-align="right"
               name="formData.landArea"
@@ -202,7 +202,7 @@
           <uni-col :span="12">
             <uni-forms-item
               required
-              label="土地证面积(m²)"
+              label="土地使用权证面积(m²)"
               :label-width="150"
               label-align="right"
               name="formData.landCardArea"

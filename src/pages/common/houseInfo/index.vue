@@ -25,7 +25,7 @@
             </uni-col>
             <uni-col :span="8">
               <view class="col">
-                <view class="label">层高：</view>
+                <view class="label">层高（m）：</view>
                 <view class="content">
                   {{ formatNum(item.storeyHeight, '（米）') }}
                 </view>
@@ -44,7 +44,7 @@
           <uni-row>
             <uni-col :span="8">
               <view class="col">
-                <view class="label">房屋高程：</view>
+                <view class="label">房屋高程（m）：</view>
                 <view class="content">
                   {{ formatNum(item.houseHeight, '（米）') }}
                 </view>

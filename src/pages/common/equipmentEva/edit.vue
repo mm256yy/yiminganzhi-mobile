@@ -29,6 +29,7 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="名称"
               :label-width="150"
               label-align="right"
@@ -52,6 +53,7 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="单位"
               :label-width="150"
               label-align="right"
@@ -62,6 +64,7 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="数量"
               :label-width="150"
               label-align="right"
@@ -379,7 +382,16 @@ const submit = () => {
   if (!formData.value.addReason && type === 'add') {
     showToast('请输入新增原因')
     return
-  } else {
+  } else if (!formData.value.number) {
+    showToast('请输入数量')
+    return
+  } else if (!formData.value.unit) {
+    showToast('请选择单位')
+    return
+  } else if (!formData.value.name) {
+    showToast('请输入名称')
+    return
+  } else{
     if (type === 'add') {
       addImpLandlordEquipmentApi(uid, params)
         .then((res) => {

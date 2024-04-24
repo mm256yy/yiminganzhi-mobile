@@ -29,7 +29,8 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              label="设施编号"
+              required
+              label="设施（设备）编号"
               :label-width="150"
               label-align="right"
               name="formData.facilitiesCode"
@@ -39,7 +40,8 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              label="设施名称"
+              required
+              label="设施（设备）名称"
               :label-width="150"
               label-align="right"
               name="formData.facilitiesName"
@@ -52,7 +54,8 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              label="设施类别"
+              required
+              label="设施（设备）类别"
               :label-width="150"
               label-align="right"
               name="formData.facilitiesType"
@@ -62,6 +65,7 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="单位"
               :label-width="150"
               label-align="right"
@@ -75,6 +79,7 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="数量"
               :label-width="150"
               label-align="right"
@@ -291,7 +296,22 @@ const submit = () => {
   if (!formData.value.addReason && type === 'add') {
     showToast('请输入新增原因')
     return
-  } else {
+  }else if (!formData.value.facilitiesCode) {
+    showToast('请输入设施设备编号')
+    return
+  }else if (!formData.value.facilitiesName) {
+    showToast('请输入设施设备名称')
+    return
+  }else if (!formData.value.facilitiesType) {
+    showToast('请选择设施设备类别')
+    return
+  }else if (!formData.value.unit) {
+    showToast('请输入单位')
+    return
+  }else if (!formData.value.number) {
+    showToast('请输入数量')
+    return
+  }else {
     if (type === 'add') {
       addImpLandlordFacilitiesApi(uid, params)
         .then((res) => {

@@ -154,10 +154,11 @@ const toLink = (type: string, itemUid?: any) => {
   if (type === 'edit') {
     let params = { type, uid, doorNo, itemUid,immigrantHouseList }
     routerForward('houseDecorationEvaEdit', {
-      params: JSON.stringify(params)
+      params:JSON.stringify(params)
     })
   } else if (type === 'add') {
     let params = { type, uid, doorNo, immigrantHouseList }
+    console.log(params, '参数')
     routerForward('houseDecorationEvaEdit', {
       params: JSON.stringify(params),
       dataList:JSON.stringify(props.dataList)

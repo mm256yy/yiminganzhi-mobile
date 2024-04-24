@@ -31,7 +31,7 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              label="层高"
+              label="层高（m）"
               :label-width="150"
               label-align="right"
               name="formData.storeyHeight"
@@ -218,7 +218,7 @@
           <uni-col :span="12">
             <uni-forms-item
               :required="formData.locationType == `InfluenceArea`"
-              label="房屋高程"
+              label="房屋高程（m）"
               :label-width="150"
               label-align="right"
               name="formData.houseHeight"
@@ -316,7 +316,7 @@
           <uni-col :span="12">
             <uni-forms-item
               required
-              label="建筑面积"
+              label="建筑面积（m²）"
               :label-width="150"
               label-align="right"
               name="formData.landArea"

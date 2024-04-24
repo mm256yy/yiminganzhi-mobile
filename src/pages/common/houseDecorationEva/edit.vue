@@ -280,6 +280,7 @@ const fixedPriceOptions = ref<any>([
     value: '0'
   }
 ])
+const cfNoList=ref<any>()
 const buildingNumberList= ref<any>([])
 // 表单数据
 const formData = ref<any>({
@@ -331,34 +332,42 @@ const getLandlordDetail = () => {
 
 onLoad((option: any) => {
   if (option) {
-    commonParams.value = JSON.parse(option.params)
-    list.value=JSON.parse(option.dataList)
+    commonParams.value =JSON.parse(option.params)
     const { type, immigrantHouseList } = commonParams.value
+    console.log(commonParams.value, '传过来的数据')
     console.log(immigrantHouseList, '主体评估数据')
     console.log(list.value, '房屋装修评估数据')
-    let dataList = list.value.filter((item: any) => item.isBuyItNow == '1')
-    console.log(dataList, 'dataList数据')
-    // if () {
-
-    // }
-    let cfList=dataList.map((item:any)=>{
-      return item.houseNo
-    })
-    console.log(cfList, 'cfList')
+    if (type === 'edit') {
+      console.log('编辑')
+      title.value = '房屋装修评估编辑'
     buildingNumberList.value=immigrantHouseList.map((item: any) => {
       return {
         text: item.houseNo,
         value: item.houseNo
       }
     })
-    // let filteredArray = arrayOfObjects.filter(obj => !idsToDelete.includes(obj.id));
-    buildingNumberList.value = buildingNumberList.value.filter((item: any) => !cfList.includes(item.value))
-    console.log(buildingNumberList.value, 'buildingNumberList.value下拉数据')
-    if (type === 'edit') {
-      title.value = '房屋装修评估编辑'
       getLandlordDetail()
     } else if (type === 'add') {
+      list.value=JSON.parse(option.dataList)
       title.value = '新增房屋装修评估'
+       let dataListIsBuyItNow = list.value.filter((item: any) => item.isBuyItNow == '1')
+    let dataListNoBuyItNow = list.value.filter((item: any) => item.isBuyItNow == '0')
+    let cfIsList=dataListIsBuyItNow.map((item:any)=>{
+      return item.houseNo
+    })
+     cfNoList.value=dataListNoBuyItNow.map((item:any)=>{
+      return {
+        isBuyItNow: item.isBuyItNow,
+        houseNo: item.houseNo
+      }
+     })
+    buildingNumberList.value=immigrantHouseList.map((item: any) => {
+      return {
+        text: item.houseNo,
+        value: item.houseNo
+      }
+    })
+    buildingNumberList.value = buildingNumberList.value.filter((item: any) => !cfIsList.includes(item.value))
     }
   }
 })
@@ -379,6 +388,27 @@ const inputBlur = () => {
  */
 const change = (val: any) => {
   // 当选择了一口价时，以下部分字段置为空
+  const {type } = commonParams.value
+  if (type=='add') {
+  console.log(val, 'val')
+  cfNoList.value.forEach((item:any) => {
+    if (item.houseNo == val) {
+      fixedPriceOptions.value=[  {
+      text: '否',
+      value: '0'
+    }]
+    } else {
+      fixedPriceOptions.value=[  {
+      text: '是',
+      value: '1'
+    },
+    {
+      text: '否',
+      value: '0'
+    }]
+    }
+  });
+  }
   if (val === '1') {
     console.log('选择了一口价,是')
     formData.value.fitUpType = ''

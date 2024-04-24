@@ -2,6 +2,7 @@
   <!-- 房屋主体评估 -->
   <view class="house-subject-wrapper">
     <view class="list" v-if="props.dataList && props.dataList.length">
+    <view class='title'>*若修改房屋基本信息，请联系指挥部工作人员</view>
       <view class="list-item" v-for="item in props.dataList" :key="item.id">
         <view class="list-1">
           <view class="left">
@@ -173,7 +174,14 @@ const toLink = (type: string, itemUid?: number) => {
 .house-subject-wrapper {
   width: 100%;
   overflow-y: scroll;
-
+  .title{
+    display: flex;
+    color:red;
+    font-size: 9rpx;
+    justify-content: left;
+    align-items: center;
+    margin: 10rpx 0;
+  }
   .list {
     width: 100%;
 

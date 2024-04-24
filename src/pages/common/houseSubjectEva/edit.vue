@@ -12,7 +12,7 @@
               label-align="right"
               name="formData.houseNo"
             >
-              <uni-easyinput v-model="formData.houseNo" type="text" placeholder="请输入" />
+              <uni-easyinput v-model="formData.houseNo" type="text" placeholder="请输入" :disabled="true"/>
             </uni-forms-item>
           </uni-col>
           <!-- <uni-col :span="12">
@@ -58,7 +58,7 @@
               label-align="right"
               name="formData.constructionType"
             >
-              <uni-data-select v-model="formData.constructionType" :localdata="dict[252]" />
+              <uni-data-select v-model="formData.constructionType" :localdata="dict[252]" :disabled="true"/>
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -76,6 +76,7 @@
                   v-model="formData.storeyNumber"
                   @focus="inputFocus(1)"
                   @blur="inputBlur"
+                  disabled
                 />
                 <view class="unit">层</view>
               </view>
@@ -99,7 +100,7 @@
                   v-model="formData.landArea"
                   @focus="inputFocus(2)"
                   @blur="inputBlur"
-                  disabled
+                  :disabled='true'
                 />
                 <view class="unit">m²</view>
               </view>
@@ -126,7 +127,7 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              label="房屋高程"
+              label="房屋高程（m）"
               :label-width="150"
               label-align="right"
               name="formData.houseHeight"
@@ -272,6 +273,7 @@
                   :value="countPrice"
                   @focus="inputFocus(7)"
                   @blur="inputBlur"
+                  disabled
                 />
                 <view class="unit">元</view>
               </view>
