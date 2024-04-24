@@ -71,7 +71,7 @@
             <image class="img" src="@/static/images/company_enter.png" />
           </view>
           <view class="enter-title">
-            <text class="title-txt">企业</text>
+            <text class="title-txt">企(事)业单位</text>
             <view class="flex">
               <text class="count-num"> {{ homeCollect.companyNum }} </text>
               <text class="count-unit"> 家 </text>
@@ -118,10 +118,10 @@
             <image class="img" src="@/static/images/single_enter.png" />
           </view>
           <view class="enter-title">
-            <text class="title-txt">个体户</text>
+            <text class="title-txt">个体工商户</text>
             <view class="flex">
               <text class="count-num">{{ homeCollect.individualNum }}</text>
-              <text class="count-unit"> 户 </text>
+              <text class="count-unit"> 家 </text>
             </view>
           </view>
         </view>
@@ -168,7 +168,7 @@
             <text class="title-txt">村集体</text>
             <view class="flex">
               <text class="count-num">{{ homeCollect.villageNum }}</text>
-              <text class="count-unit">户</text>
+              <text class="count-unit">个</text>
             </view>
           </view>
         </view>

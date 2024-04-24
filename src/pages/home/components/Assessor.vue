@@ -94,10 +94,10 @@
             <image class="img" src="@/static/images/single_enter.png" />
           </view>
           <view class="enter-title">
-            <text class="title-txt">个体工商户（家）</text>
+            <text class="title-txt">个体工商户</text>
             <view class="flex">
               <text class="count-num">{{ homeCollect.individualCount }}</text>
-              <text class="count-unit"> 户 </text>
+              <text class="count-unit"> 家 </text>
             </view>
           </view>
         </view>
@@ -132,10 +132,10 @@
             <image class="img" src="@/static/images/icon_village.png" />
           </view>
           <view class="enter-title">
-            <text class="title-txt">村集体（个）</text>
+            <text class="title-txt">村集体</text>
             <view class="flex">
               <text class="count-num">{{ homeCollect.villageCount }}</text>
-              <text class="count-unit">户</text>
+              <text class="count-unit">个</text>
             </view>
           </view>
         </view>
