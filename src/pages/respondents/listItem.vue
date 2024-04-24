@@ -51,6 +51,16 @@
         <view class="label">自然村名称:</view>
         <view class="value">{{ props.data.virutalVillageCodeText || '' }}</view>
       </view>
+      <view class="cont-item">
+        <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
+        <view class="label">填报人:</view>
+        <view class="value">{{ props.data.reportUserName }}</view>
+      </view>
+      <view class="cont-item">
+        <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
+        <view class="label">填报时间:</view>
+        <view class="value">{{ props.data.reportDate }}</view>
+      </view>
     </view>
   </view>
 </template>

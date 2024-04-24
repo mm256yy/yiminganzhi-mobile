@@ -4,7 +4,7 @@
     <view class="main">
       <view class="list-header">
         <view class="list-header-rt">
-          <view class="list-header-right">
+          <view class="list-header-right" v-if="query?.status=='0'">
             <view class="btn blue-btn" @click="fillComments">
               <image class="icon" src="@/static/images/icon_dqxy_sel.png" mode="scaleToFill" />
               <text class="txt">填写意见</text>
@@ -99,11 +99,14 @@ const active = ref<number>(0)
 const query = ref<CommentType>()
 const list = ref<any[]>([])
 const typeOptionsList = ref<DictType[]>([])
+const flag=ref<any>()
 onLoad((option) => {
   if (option) {
     query.value = option as CommentType
     console.log('qery', query.value)
     list.value = JSON.parse(query.value.list)
+    flag.value=list.value.some((item:any)=>item.status == '1')
+    console.log(list.value,'测试数据呀')
     typeOptionsList.value = householdTypes
     console.log( typeOptionsList.value,'测试数据',dayjs('2024-04-08T06:25:10.348Z').format('YYYY-MM-DD'))
   }

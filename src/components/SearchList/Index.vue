@@ -35,6 +35,10 @@
           <view class="left">
             <view class="label">{{ item.label }}</view>
             <view class="value">{{ item.value.substring(2) }}</view>
+            <view class="value">{{ item.areaCodeText}}</view>
+            <view class="value">{{ item.townCodeText }}</view>
+            <view class="value">{{ item.villageCodeText}}</view>
+
           </view>
           <view class="right">
             <image
@@ -92,7 +96,10 @@ const getLandlordListBySearch = (name: string, type: any) => {
             id: item.id,
             label: item.name,
             value: item.doorNo,
-            checked: item.checked
+            checked: item.checked,
+            areaCodeText:item.areaCodeText,
+            townCodeText:item.townCodeText,
+            villageCodeText:item.villageCodeText
           })
         })
         dataList.value = [...arr]
@@ -108,7 +115,10 @@ const getLandlordListBySearch = (name: string, type: any) => {
             id: item.id,
             label: item.name,
             value: item.doorNo,
-            checked: item.checked
+            checked: item.checked,
+            areaCodeText:item.areaCodeText,
+            townCodeText:item.townCodeText,
+            villageCodeText:item.villageCodeText
           })
         })
         dataList.value = [...arr]

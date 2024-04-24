@@ -269,6 +269,7 @@ import Back from '@/components/Back/Index.vue'
 
 const title = ref<string>('')
 const commonParams = ref<any>({})
+const list = ref<any>([])
 const fixedPriceOptions = ref<any>([
   {
     text: '是',
@@ -331,14 +332,28 @@ const getLandlordDetail = () => {
 onLoad((option: any) => {
   if (option) {
     commonParams.value = JSON.parse(option.params)
+    list.value=JSON.parse(option.dataList)
     const { type, immigrantHouseList } = commonParams.value
     console.log(immigrantHouseList, '主体评估数据')
+    console.log(list.value, '房屋装修评估数据')
+    let dataList = list.value.filter((item: any) => item.isBuyItNow == '1')
+    console.log(dataList, 'dataList数据')
+    // if () {
+
+    // }
+    let cfList=dataList.map((item:any)=>{
+      return item.houseNo
+    })
+    console.log(cfList, 'cfList')
     buildingNumberList.value=immigrantHouseList.map((item: any) => {
       return {
         text: item.houseNo,
         value: item.houseNo
       }
     })
+    // let filteredArray = arrayOfObjects.filter(obj => !idsToDelete.includes(obj.id));
+    buildingNumberList.value = buildingNumberList.value.filter((item: any) => !cfList.includes(item.value))
+    console.log(buildingNumberList.value, 'buildingNumberList.value下拉数据')
     if (type === 'edit') {
       title.value = '房屋装修评估编辑'
       getLandlordDetail()

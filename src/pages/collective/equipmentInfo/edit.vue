@@ -7,7 +7,7 @@
           <uni-col :span="12">
             <uni-forms-item
               required
-              label="设备名称"
+              label="设施（设备）名称"
               :label-width="150"
               label-align="right"
               name="formData.facilitiesName"
@@ -18,7 +18,7 @@
           <uni-col :span="12">
             <uni-forms-item
               required
-              label="设施类别"
+              label="设施（设备）类别"
               :label-width="150"
               label-align="right"
               name="formData.facilitiesType"
@@ -32,7 +32,7 @@
           <uni-col :span="12">
             <uni-forms-item
               required
-              label="设施编码"
+              label="设施（设备）编码"
               :label-width="150"
               label-align="right"
               name="formData.facilitiesCode"
@@ -252,6 +252,25 @@
             </uni-forms-item>
           </uni-col>
         </uni-row>
+        <uni-row>
+          <uni-col :span="24">
+              <uni-forms-item
+                label="设施（设备）照片"
+                :label-width="150"
+                label-align="right"
+                name="formData.facilitiesPic"
+                required
+              >
+                <upload-file
+                  v-model="formData.facilitiesPic"
+                  :file-list="formData.facilitiesPic"
+                  :limit="20"
+                  show-type="list"
+                  :accepts="['.jpg', '.png']"
+              />
+              </uni-forms-item>
+            </uni-col>
+        </uni-row>
       </uni-forms>
 
       <image
@@ -272,6 +291,7 @@ import { addLandlordFacilitiesApi, updateLandlordFacilitiesApi } from '@/service
 import { routerBack, getStorage, StorageKey, formatNum } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config'
 import Back from '@/components/Back/Index.vue'
+import UploadFile from '@/components/UploadFile/index.vue'
 
 // 表单数据
 const formData = ref<any>({})
@@ -342,7 +362,8 @@ const submit = () => {
       ? Number(formatNum(formData.value.originalInvest))
       : null,
     workersNum: formData.value.workersNum ? Number(formData.value.workersNum) : null,
-    completedTime: formData.value.completedTime ? dayjs(formData.value.completedTime) : null
+    completedTime: formData.value.completedTime ? dayjs(formData.value.completedTime) : null,
+    facilitiesPic: fmtPicUrl(formData.value.facilitiesPic),
   }
   if (!formData.value.facilitiesName) {
     showToast('请输入设备名称')
@@ -364,6 +385,9 @@ const submit = () => {
     return
   } else if (!formData.value.inundationRang) {
     showToast('请输入淹没范围')
+    return
+  } else if (!formData.value.facilitiesPic) {
+    showToast('请上传设施设备照片')
     return
   }
   if (type === 'add') {

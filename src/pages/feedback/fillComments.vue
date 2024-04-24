@@ -82,6 +82,7 @@ const submit = async () => {
     ...formData.value,
     uid: uidVal.value
   }
+  console.log(params,'params')
   try {
     const res = await updateOtherItemApi(params)
     if (res) {

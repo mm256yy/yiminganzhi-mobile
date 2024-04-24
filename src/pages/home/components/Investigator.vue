@@ -165,11 +165,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref,onBeforeMount } from 'vue'
 import Echart from './Echart.vue'
 import { onShow } from '@dcloudio/uni-app'
 import { getStorage, StorageKey } from '@/utils'
-import { getHomeCollectionApi } from '@/service'
+import { getHomeCollectionApi,getHomeCollectionApis } from '@/service'
 
 interface CollectionType {
   hasReport: number
@@ -189,13 +189,32 @@ const loginIn = () => {
   emit('loginIn')
 }
 
+const role=ref<any>()
 onShow(() => {
   const user = getStorage(StorageKey.USERINFO)
   userInfo.value = user
-
-  getHomeCollectionApi().then((res) => {
+  if (role.value == 'reviewer') {
+    //采集数据
+      getHomeCollectionApi().then((res) => {
     collection.value = res || null
   })
+  } else if (role.value == 'investigator') {
+    //调查数据
+      getHomeCollectionApis().then((res) => {  
+    console.log(res,'测试resshih')
+  })
+  }
+  // getHomeCollectionApi().then((res) => {
+  //   collection.value = res || null
+  // })
+  // getHomeCollectionApis().then((res) => {
+  //   console.log(res,'测试resshih')
+  // })
+})
+onBeforeMount(() => {
+  // 不同角色展示不同的首页视图
+  const role = getStorage(StorageKey.USERROLE)
+  console.log(role, '目前是什么角色')
 })
 </script>
 

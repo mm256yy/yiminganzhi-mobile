@@ -11,14 +11,19 @@
         </view>
       </view>
      <view class="title">
-            <view v-if="dataInfo.relateIndividualHouseholdName != ''">
+            <view v-if="dataInfo.relateIndividualHouseholdName">
         关联个体户:<text style="color: blue" @click="editLandlords">{{
           dataInfo.relateIndividualHouseholdName
         }}</text>
       </view>
-      <view v-if="dataInfo.relateCompanyName != ''">
+      <view v-if="dataInfo.relateCompanyName">
         关联企业:<text style="color: blue" @click="editLandlord">{{
           dataInfo.relateCompanyName
+        }}</text>
+      </view>
+      <view v-if="dataInfo.householderName">
+        关联居民户:<text style="color: blue" @click="editLandlordss">{{
+          dataInfo.householderName
         }}</text>
       </view>
      </view>
@@ -48,13 +53,14 @@ interface PropsType {
 const props = defineProps<PropsType>()
 const tabType = ref<MainType>(MainType.Company)
 const tabTypes = ref<MainType>(MainType.IndividualHousehold)
+const tabTypess = ref<MainType>(MainType.PeasantHousehold)
 const companyUid = ref<any>()
 const individualHouseholdUid = ref<any>()
-
+const PeasantHouseholdUid = ref<any>()
 // 填报
 const routerMap: any = {
   [MainType.Company]: 'enterpriseEva',
-  // [MainType.PeasantHousehold]: 'peasantHousehold',
+  [MainType.PeasantHousehold]: 'householdEva',
   [MainType.IndividualHousehold]: 'selfPersonEva'
   // [MainType.Village]: 'collective'
 }
@@ -82,6 +88,16 @@ const editLandlords = () => {
     uid: individualHouseholdUid.value.uid
   })
 }
+//居民户跳转
+const editLandlordss = () => {
+  console.log('居民户跳转')
+  const name = routerMap[tabTypes.value]
+  console.log(PeasantHouseholdUid.value.uid, '居民户uid是什么')
+  routerForward(name, {
+    type: 'edit',
+    uid: PeasantHouseholdUid.value.uid
+  })
+}
 //企业
 const getList = async () => {
   const params: any = {
@@ -105,6 +121,22 @@ const getLists = async () => {
     (item: any) => item.name == dataList.value.relateIndividualHouseholdName
   )
 }
+
+//居民户
+const getListss = async () => {
+  const params: any = {
+    type: unref(tabTypess),
+    page: 1,
+    pageSize: 10
+  }
+  const res = await getLandlordListBySearchApi(params).catch(() => { })
+  console.log(res, '居民户')
+  console.log(dataList.value, '主体数据')
+  PeasantHouseholdUid.value = res.find(
+    (item: any) => item.name == dataList.value.householderName
+  )
+  console.log(PeasantHouseholdUid.value, '居民户Uid数据')
+}
 watch(
   () => props.dataInfo,
   (val) => {
@@ -118,6 +150,7 @@ watch(
 onMounted(() => {
   getList()
   getLists()
+  getListss()
 })
 </script>
 <script lang="ts">
@@ -385,11 +418,11 @@ export default {
   .title {
     display: flex;
     height: 28rpx;
-    font-size: 9rpx;
+    font-size: 11rpx;
     color: #171718;
     align-items: center;
     flex: 1;
-    justify-content: space-between;
+    justify-content: space-around;
     line-height:28rpx;
   }
 .list-header {

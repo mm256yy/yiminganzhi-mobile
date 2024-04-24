@@ -11,13 +11,13 @@ const envMap = {
     apiBasePath: '/api'
   },
   // local: {
-  //   apiBaseUrl: 'http://rongdu.natapp1.cc',
+  //   apiBaseUrl: 'http://10.10.1.206:80',
   //   apiBasePath: '/api'
   // },
-  locals: {
-    apiBaseUrl: 'http://ym.zdwp.local',
-    apiBasePath: '/api'
-  },
+  // locals: {
+  //   apiBaseUrl: 'http://ym.zdwp.local',
+  //   apiBasePath: '/api'
+  // },
   dev: {
     apiBaseUrl: 'https://r7r-ai.zdwp.net',
     apiBasePath: '/api'

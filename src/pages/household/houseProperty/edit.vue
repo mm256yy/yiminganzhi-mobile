@@ -202,7 +202,7 @@
           <uni-col :span="12">
             <uni-forms-item
               required
-              label="土地证面积"
+              label="土地证面积(m²)"
               :label-width="150"
               label-align="right"
               name="formData.landCardArea"
@@ -441,7 +441,7 @@ const getLandlordDetail = () => {
     if (demographicArr && demographicArr.length) {
       let arr: any = []
       demographicArr.map((item: any) => {
-        if (item.name != '增计人口') {
+        if (item.name != '增计人口'&& item.isDelete != '1') {
           arr.push({
             text: item.name,
             value: item.id

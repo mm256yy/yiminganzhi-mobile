@@ -98,7 +98,7 @@
             <!-- 表格数据行 -->
             <tr
               v-for="(item, index) in dataList.filter(
-                (item) => item.name != '增计人口' && item.isDelete != '1'
+                (item) => item.isDelete != '1'
               )"
               :key="index"
             >

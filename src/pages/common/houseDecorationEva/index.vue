@@ -148,16 +148,19 @@ const currentItem = ref<any>({})
 const reason = ref<string>('') // 删除原因
 
 const toLink = (type: string, itemUid?: any) => {
-  const { uid, doorNo,immigrantHouseList } = props.dataInfo
+  console.log(props.dataInfo,'props.dataInfo数剧是什么？')
+  const { uid, doorNo, immigrantHouseList } = props.dataInfo
+  console.log(props.dataList,'房屋装修评估数据')
   if (type === 'edit') {
     let params = { type, uid, doorNo, itemUid,immigrantHouseList }
     routerForward('houseDecorationEvaEdit', {
       params: JSON.stringify(params)
     })
   } else if (type === 'add') {
-    let params = { type, uid, doorNo,immigrantHouseList }
+    let params = { type, uid, doorNo, immigrantHouseList }
     routerForward('houseDecorationEvaEdit', {
-      params: JSON.stringify(params)
+      params: JSON.stringify(params),
+      dataList:JSON.stringify(props.dataList)
     })
   }
 }

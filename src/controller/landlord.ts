@@ -837,13 +837,14 @@ export class Landlord extends Common {
       }
     })
   }
-  // 获取首页统计数据
+  // 获取首页统计数据（采集）
   getHomeCollection(): Promise<any> {
     return new Promise(async (resolve, reject) => {
       try {
         const userInfo = getStorage(StorageKey.USERINFO)
         // 更新上报相关字段
         const reportUser = userInfo ? userInfo.id : ''
+        console.log(reportUser,'填报用户是谁1？')
         if (!reportUser) {
           reject(null)
           return
@@ -864,6 +865,46 @@ export class Landlord extends Common {
         const obj = res ? res[0] : {}
         const obj2 = res2 ? res2[0] : {}
         resolve({ ...obj, ...obj2 })
+      } catch (error) {
+        console.log(error, 'getHomeCollection-error')
+        reject(null)
+      }
+    })
+  }
+
+    // 获取首页统计数据 （复核）
+     getHomeCollections(): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const userInfo = getStorage(StorageKey.USERINFO)
+        // 更新上报相关字段
+        const reportUser = userInfo ? userInfo.id : ''
+        console.log(reportUser,'填报用户是谁2？')
+        if (!reportUser) {
+          reject(null)
+          return
+        }
+      // 今日填报
+      const sql =  `select count(reviewReportStatus = 'ReportSucceed' and reviewReportDate Between '${dayjs()
+          .startOf('day')
+          .format(this.format)}' and '${dayjs()
+          .endOf('day')
+          .format(this.format)}' or null) as todayReport
+      from ${LandlordTableName} where reviewReportUser = '${reportUser}'`  
+
+        const res: LandlordDDLType[] = await this.db.selectSql(sql)
+       // 未填报
+        const sql2 = `select count(reportStatus != 'ReportSucceed' or null) as noReport from ${LandlordTableName}`
+        const res2: LandlordDDLType[] = await this.db.selectSql(sql2)
+        // 历史填报
+        const sql3 = `select count(reportStatus = 'ReportSucceed' or null) as hasReport from ${LandlordTableName} where reportUser = '${reportUser}'`
+        const res3: LandlordDDLType[] = await this.db.selectSql(sql3)
+
+        console.log(res, res2,res3, '填报数据')
+        const obj = res ? res[0] : {}
+        const obj2 = res2 ? res2[0] : {}
+        const obj3 = res3 ? res3[0] : {}
+        resolve({ ...obj, ...obj2,...obj3 })
       } catch (error) {
         console.log(error, 'getHomeCollection-error')
         reject(null)

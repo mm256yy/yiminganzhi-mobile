@@ -57,6 +57,16 @@
         <view class="label">土地性质:</view>
         <view class="value">{{ formatEmptyText(props.data.landNatureText) || '' }}</view>
       </view>
+      <view class="cont-item">
+        <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
+        <view class="label">填报人:</view>
+        <view class="value">{{ formatEmptyText(props.data.reportUserName) }}</view>
+      </view>
+      <view class="cont-item right">
+        <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
+        <view class="label">填报时间:</view>
+        <view class="value">{{ formatEmptyText(props.data.reportDate) || '' }}</view>
+      </view>
     </view>
   </view>
 </template>

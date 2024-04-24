@@ -58,9 +58,14 @@ export const getLandlordListBySearchApiTwo = (data?: LandlordSearchType) => {
   return LandlordController.getLandlordListBySearchTwo(data)
 }
 
-// 首页统计信息
+// 首页统计信息（采集）
 export const getHomeCollectionApi = () => {
   return LandlordController.getHomeCollection()
+}
+
+// 首页统计信息（复核）
+export const getHomeCollectionApis = () => {
+  return LandlordController.getHomeCollections()
 }
 
 // 填报完成

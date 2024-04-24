@@ -34,6 +34,16 @@
           <view class="label">行政村名称:</view>
           <view class="value">{{ props.data.villageCodeText }}</view>
         </view>
+        <view class="cont-item">
+          <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
+          <view class="label">填报人:</view>
+          <view class="value">{{ props.data.reportUserName }}</view>
+        </view>
+        <view class="cont-item">
+          <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
+          <view class="label">填报时间:</view>
+          <view class="value">{{ props.data.reportDate }}</view>
+        </view>
       </template>
       <template v-else>
         <view class="cont-item">
@@ -47,6 +57,16 @@
           <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
           <view class="label">户籍地址:</view>
           <view class="value">{{ props.data.address }}</view>
+        </view>
+        <view class="cont-item">
+          <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
+          <view class="label">填报人:</view>
+          <view class="value">{{ props.data.reportUserName }}</view>
+        </view>
+        <view class="cont-item">
+          <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
+          <view class="label">填报时间:</view>
+          <view class="value">{{ props.data.reportDate }}</view>
         </view>
       </template>
     </view>

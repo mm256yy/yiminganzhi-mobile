@@ -93,6 +93,16 @@
               </view>
             </uni-col>
           </uni-row>
+          <uni-row>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">是否合法：</view>
+                <view class="content">
+                  {{formatDict(item.isCompliance, 371) }} 
+                </view>
+              </view>
+            </uni-col>
+          </uni-row>
         </view>
       </view>
     </view>
