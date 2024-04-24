@@ -1147,7 +1147,8 @@ const submit = () => {
     remark: formData.value.remark,
     licensePic: formData.value.licensePic,
     otherPic: formData.value.otherPic,
-    householderDoorNo: formData.value.householderDoorNo
+    householderDoorNo: formData.value.householderDoorNo,
+    type:formData.value.type
   }
   if (!formData.value.name) {
     showToast('请输入企业名称')

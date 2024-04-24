@@ -34,7 +34,7 @@
             </uni-col>
             <uni-col :span="12">
               <view class="col">
-                <view class="label">企业联系方式：</view>
+                <view class="label">联系方式：</view>
                 <view class="content">{{ formatStr(props.baseInfo.phone) }}</view>
               </view>
             </uni-col>
@@ -78,14 +78,6 @@
             </uni-col>
           </uni-row>
 
-          <uni-row>
-            <uni-col :span="24">
-              <view class="col">
-                <view class="label">法人联系方式：</view>
-                <view class="content">{{ formatStr(props.dataInfo.legalPersonPhone) }}</view>
-              </view>
-            </uni-col>
-          </uni-row>
         </view>
       </view>
 

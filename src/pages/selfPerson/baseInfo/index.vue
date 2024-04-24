@@ -26,16 +26,11 @@
           <uni-row>
             <uni-col :span="12">
               <view class="col">
-                <view class="label">法人联系方式：</view>
-                <view class="content">{{ formatStr(props.dataInfo.legalPersonPhone) }}</view>
-              </view>
-            </uni-col>
-            <uni-col :span="12">
-              <view class="col">
                 <view class="label">个体工商户名称：</view>
                 <view class="content">{{ formatStr(props.baseInfo.name) }}</view>
               </view>
             </uni-col>
+            <uni-col :span="12" />
           </uni-row>
 
           <uni-row>
@@ -58,7 +53,7 @@
           <uni-row>
             <uni-col :span="12">
               <view class="col">
-                <view class="label">个体工商户联系方式：</view>
+                <view class="label">联系方式：</view>
                 <view class="content">{{ formatStr(props.baseInfo.phone) }}</view>
               </view>
             </uni-col>
