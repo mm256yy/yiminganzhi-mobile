@@ -41,6 +41,7 @@
           <uni-col :span="12">
             <uni-forms-item
               label="联系方式"
+              :required="formData.relation == '1'"
               :label-width="150"
               label-align="right"
               name="formData.phone"
@@ -492,7 +493,7 @@ const submit = () => {
   if (!formData.value.name) {
     showToast('请输入姓名')
     return
-  } else if (formData.value.phone && !phoneReg.test(formData.value.phone)) {
+  } else if (formData.value.relation == '1' && !phoneReg.test(formData.value.phone)) {
     showToast('请输入正确的手机号')
     return
   } else if (!formData.value.relation) {

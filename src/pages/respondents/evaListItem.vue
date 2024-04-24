@@ -53,7 +53,9 @@
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">填报时间:</view>
-        <view class="value">{{ props.data.reportDate }}</view>
+        <view class="value">{{
+          props.data.reportDate ? dayjs(props.data.reportDate).format('YYYY-MM-DD HH:mm:ss') : '-'
+        }}</view>
       </view>
       <view class="cont-item" v-if="props.data.type === MainType.PeasantHousehold">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
@@ -65,11 +67,12 @@
 </template>
 
 <script lang="ts" setup>
-import { dictOption,formatDict} from '@/utils'
+import { dictOption, formatDict } from '@/utils'
 import { getLocationText, yesAndNoEnums } from '@/config/common'
 import { LandlordType } from '@/types/sync'
 import { MainType } from '@/types/common'
 import { computed } from 'vue'
+import dayjs from 'dayjs'
 
 interface PropsType {
   data: LandlordType

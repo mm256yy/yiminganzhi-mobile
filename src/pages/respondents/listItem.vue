@@ -59,7 +59,9 @@
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">填报时间:</view>
-        <view class="value">{{ props.data.reportDate }}</view>
+        <view class="value">{{
+          props.data.reportDate ? dayjs(props.data.reportDate).format('YYYY-MM-DD HH:mm:ss') : '-'
+        }}</view>
       </view>
     </view>
   </view>
@@ -70,6 +72,7 @@ import { dictOption, formatDict } from '@/utils'
 import { getLocationText, yesAndNoEnums } from '@/config/common'
 import { LandlordType } from '@/types/sync'
 import { MainType } from '@/types/common'
+import dayjs from 'dayjs'
 
 interface PropsType {
   data: LandlordType

@@ -1185,7 +1185,7 @@ export default {
 
   .uTitle {
     font-size: 12px;
-    font-weight: 400;
+    font-weight: bold;
     color: #737374;
   }
 

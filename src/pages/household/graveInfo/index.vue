@@ -55,18 +55,11 @@
                 <view class="content">
                   <!-- {{ formatDict(item.gravePosition, 288) }} -->
                   <!-- 暂时改成326 有问题再改回288 -->
-                  {{ formatDict(item.gravePosition, 326)  }}  
+                  {{ formatDict(item.gravePosition, 326) }}
                 </view>
               </view>
             </uni-col>
-            <uni-col :span="8">
-              <view class="col">
-                <view class="label">所属村集体：</view>
-                <view class="content">
-                  {{ formatStr(item.villageName) }}
-                </view>
-              </view>
-            </uni-col>
+            <uni-col :span="8" />
           </uni-row>
 
           <uni-row>

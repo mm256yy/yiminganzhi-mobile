@@ -529,7 +529,9 @@ onLoad((option: any) => {
         formData.value.latitude = commonParams.value.latitude
       }
     }
-    if (!formData.value.propertyType) {
+    if (!formData.value.propertyType && mainType.value) {
+      console.log(mainType.value)
+
       formData.value.propertyType = mainType.value === MainType.Village ? '2' : '3'
     }
   }

@@ -6,27 +6,27 @@
         <view class="account-no">{{ dataInfo.showDoorNo }}</view>
         <view class="fill-number">
           表单填报&nbsp;
-          <text class="green">{{ fillNumber }}</text>
-          /{{ totalFillNumber }}
+          <text class="green">{{ fillNumber() }}</text>
+          /{{ totalFillNumber() }}
         </view>
       </view>
-     <view class="title">
-            <view v-if="dataInfo.relateIndividualHouseholdName">
-        关联个体户:<text style="color: blue" @click="editLandlords">{{
-          dataInfo.relateIndividualHouseholdName
-        }}</text>
+      <view class="title">
+        <view v-if="dataInfo.relateIndividualHouseholdName">
+          关联个体户:<text style="color: blue" @click="editLandlords">{{
+            dataInfo.relateIndividualHouseholdName
+          }}</text>
+        </view>
+        <view v-if="dataInfo.relateCompanyName">
+          关联企业:<text style="color: blue" @click="editLandlord">{{
+            dataInfo.relateCompanyName
+          }}</text>
+        </view>
+        <view v-if="dataInfo.householderName">
+          关联居民户:<text style="color: blue" @click="editLandlordss">{{
+            dataInfo.householderName
+          }}</text>
+        </view>
       </view>
-      <view v-if="dataInfo.relateCompanyName">
-        关联企业:<text style="color: blue" @click="editLandlord">{{
-          dataInfo.relateCompanyName
-        }}</text>
-      </view>
-      <view v-if="dataInfo.householderName">
-        关联居民户:<text style="color: blue" @click="editLandlordss">{{
-          dataInfo.householderName
-        }}</text>
-      </view>
-     </view>
       <view class="list-header-right" v-if="tabVal !== 0">
         <view class="btn-wrapper green" @click="onDocumentation">
           <image class="icon" src="@/static/images/icon_dangan_upload.png" mode="scaleToFill" />
@@ -41,14 +41,21 @@
   </view>
 </template>
 <script lang="ts" setup>
-import { ref, watch, onMounted, unref } from 'vue'
+import { ref, watch, onMounted, unref, computed } from 'vue'
 // import { filterViewDoorNo, routerForward, getStorage, StorageKey } from '@/utils'
 // import { MainType } from '@/types/common'
 import { getLandlordListBySearchApi } from '@/service'
 // import { RoleCodeType } from '@/types/common'
 import { LandlordType } from '@/types/sync'
+import { filterViewDoorNo, routerForward, getStorage, StorageKey } from '@/utils'
+import { MainType } from '@/types/common'
+import { updateImpLandlordImmigrantFillingApi } from '@/service'
+import { showToast, SUCCESS_MSG, ERROR_MSG } from '@/config'
+import { RoleCodeType } from '@/types/common'
 interface PropsType {
   dataInfo: LandlordType
+  type: any
+  tabVal: any
 }
 const props = defineProps<PropsType>()
 const tabType = ref<MainType>(MainType.Company)
@@ -64,7 +71,7 @@ const routerMap: any = {
   [MainType.IndividualHousehold]: 'selfPersonEva'
   // [MainType.Village]: 'collective'
 }
-
+const emit = defineEmits(['updateData'])
 const dataList = ref<any>()
 //企业跳转
 const editLandlord = () => {
@@ -129,13 +136,174 @@ const getListss = async () => {
     page: 1,
     pageSize: 10
   }
-  const res = await getLandlordListBySearchApi(params).catch(() => { })
+  const res = await getLandlordListBySearchApi(params).catch(() => {})
   console.log(res, '居民户')
   console.log(dataList.value, '主体数据')
-  PeasantHouseholdUid.value = res.find(
-    (item: any) => item.name == dataList.value.householderName
-  )
+  PeasantHouseholdUid.value = res.find((item: any) => item.name == dataList.value.householderName)
   console.log(PeasantHouseholdUid.value, '居民户Uid数据')
+}
+let totalFillNumber = () => {
+  const role: RoleCodeType = getStorage(StorageKey.USERROLE)
+  switch (props.type) {
+    case MainType.PeasantHousehold:
+      return role === RoleCodeType.assessor ? 5 : 3
+      break
+    case MainType.Company:
+      return role === RoleCodeType.assessor ? 8 : 3
+      break
+    case MainType.IndividualHousehold:
+      return role === RoleCodeType.assessor ? 8 : 3
+      break
+    case MainType.Village:
+      return role === RoleCodeType.assessor ? 7 : 3
+      break
+    case MainType.LandNoMove:
+      return 3
+      break
+    default:
+      return 8
+      break
+  }
+}
+let fillNumber = () => {
+  const { immigrantFilling, type } = props.dataInfo
+  const role: RoleCodeType = getStorage(StorageKey.USERROLE)
+  let fillCount = 1
+
+  if (role === RoleCodeType.assessor) {
+    const {
+      houseMainStatus,
+      houseRenovationStatus,
+      appendageStatus,
+      treeStatus,
+      deviceStatus,
+      specialStatus,
+      infrastructureStatus, // 基础设施评估
+      otherStatus // 其他评估
+    } = immigrantFilling
+
+    // 资产评估-房屋角色
+    if (houseMainStatus === '1') {
+      fillCount++
+    }
+    if (houseRenovationStatus === '1') {
+      fillCount++
+    }
+    if (appendageStatus === '1') {
+      fillCount++
+    }
+    if (treeStatus === '1') {
+      fillCount++
+    }
+
+    if (type === MainType.IndividualHousehold || type === MainType.Company) {
+      // 个体户 企业
+      if (deviceStatus === '1') {
+        fillCount++
+      }
+
+      if (infrastructureStatus === '1') {
+        fillCount++
+      }
+
+      if (otherStatus === '1') {
+        fillCount++
+      }
+    }
+
+    if (type === MainType.Village) {
+      // 村集体
+      if (specialStatus === '1') {
+        fillCount++
+      }
+
+      if (infrastructureStatus === '1') {
+        fillCount++
+      }
+    }
+  } else {
+    const { landStatus, landSeedlingStatus } = immigrantFilling
+    // 资产评估-土地角色
+    if (landStatus === '1') {
+      fillCount++
+    }
+    if (landSeedlingStatus === '1') {
+      fillCount++
+    }
+  }
+  return fillCount
+}
+let isNotNullArray = (arr: any) => {
+  return arr && Array.isArray(arr) && arr.length
+}
+// 档案上传
+let onDocumentation = () => {
+  routerForward('archives', {
+    type: 12,
+    uid: props.dataInfo.uid,
+    mainTypes: props.type
+  })
+}
+// 填报完成
+let onFilled = () => {
+  const { uid } = props.dataInfo
+  let params = {}
+
+  if (props.tabVal === 1) {
+    params = {
+      houseMainStatus: '1' // 房屋主体评估
+    }
+  } else if (props.tabVal === 2) {
+    params = {
+      houseRenovationStatus: '1' // 房屋装修评估
+    }
+  } else if (props.tabVal === 3) {
+    params = {
+      appendageStatus: '1' // 房屋附属设施评估
+    }
+  } else if (props.tabVal === 4) {
+    params = {
+      treeStatus: '1' // 零星(林)果木评估
+    }
+  } else if (props.tabVal === 8) {
+    params = {
+      landStatus: '1' // 土地基本情况评估
+    }
+  } else if (props.tabVal === 9) {
+    params = {
+      landSeedlingStatus: '1' // 土地青苗及附着物评估
+    }
+  } else if (
+    props.tabVal === 5 &&
+    (props.type === MainType.Company || props.type === MainType.IndividualHousehold)
+  ) {
+    params = {
+      deviceStatus: '1' // 设施设备评估
+    }
+  } else if (props.tabVal === 6) {
+    params = {
+      infrastructureStatus: '1' // 基础设施评估
+    }
+  } else if (props.tabVal === 7) {
+    params = {
+      otherStatus: '1' // 其他评估
+    }
+  } else if (props.tabVal === 5 && props.type === MainType.Village) {
+    params = {
+      specialStatus: '1' // 农村小型专项及农副业设施评估
+    }
+  }
+
+  updateImpLandlordImmigrantFillingApi(uid, params)
+    .then((res) => {
+      if (res) {
+        showToast(SUCCESS_MSG)
+        emit('updateData')
+      }
+    })
+    .catch(() => {
+      showToast(ERROR_MSG)
+    })
 }
 watch(
   () => props.dataInfo,
@@ -153,210 +321,13 @@ onMounted(() => {
   getListss()
 })
 </script>
-<script lang="ts">
+<!-- <script lang="ts">
 import { filterViewDoorNo, routerForward, getStorage, StorageKey } from '@/utils'
 import { MainType } from '@/types/common'
 import { updateImpLandlordImmigrantFillingApi } from '@/service'
 import { showToast, SUCCESS_MSG, ERROR_MSG } from '@/config'
 import { RoleCodeType } from '@/types/common'
-
-export default {
-  props: {
-    dataInfo: {
-      type: Object,
-      default: () => {}
-    },
-    type: {
-      type: String,
-      default: ''
-    },
-    tabVal: {
-      type: Number,
-      default: 0
-    }
-  },
-  computed: {
-    totalFillNumber: function () {
-      const role: RoleCodeType = getStorage(StorageKey.USERROLE)
-      switch (this.type) {
-        case MainType.PeasantHousehold:
-          return role === RoleCodeType.assessor ? 5 : 3
-          break
-        case MainType.Company:
-          return role === RoleCodeType.assessor ? 8 : 3
-          break
-        case MainType.IndividualHousehold:
-          return role === RoleCodeType.assessor ? 8 : 3
-          break
-        case MainType.Village:
-          return role === RoleCodeType.assessor ? 7 : 3
-          break
-        case MainType.LandNoMove:
-          return 3
-          break
-        default:
-          return 8
-          break
-      }
-    },
-    fillNumber: function () {
-      const { immigrantFilling, type } = this.dataInfo
-
-      const role: RoleCodeType = getStorage(StorageKey.USERROLE)
-      let fillCount = 1
-
-      if (role === RoleCodeType.assessor) {
-        const {
-          houseMainStatus,
-          houseRenovationStatus,
-          appendageStatus,
-          treeStatus,
-          deviceStatus,
-          specialStatus,
-          infrastructureStatus, // 基础设施评估
-          otherStatus // 其他评估
-        } = immigrantFilling
-
-        // 资产评估-房屋角色
-        if (houseMainStatus === '1') {
-          fillCount++
-        }
-        if (houseRenovationStatus === '1') {
-          fillCount++
-        }
-        if (appendageStatus === '1') {
-          fillCount++
-        }
-        if (treeStatus === '1') {
-          fillCount++
-        }
-
-        if (type === MainType.IndividualHousehold || type === MainType.Company) {
-          // 个体户 企业
-          if (deviceStatus === '1') {
-            fillCount++
-          }
-
-          if (infrastructureStatus === '1') {
-            fillCount++
-          }
-
-          if (otherStatus === '1') {
-            fillCount++
-          }
-        }
-
-        if (type === MainType.Village) {
-          // 村集体
-          if (specialStatus === '1') {
-            fillCount++
-          }
-
-          if (infrastructureStatus === '1') {
-            fillCount++
-          }
-        }
-      } else {
-        const { landStatus, landSeedlingStatus } = immigrantFilling
-        // 资产评估-土地角色
-        if (landStatus === '1') {
-          fillCount++
-        }
-        if (landSeedlingStatus === '1') {
-          fillCount++
-        }
-      }
-      return fillCount
-    }
-  },
-  watch: {
-    dataInfo: function (val, old) {
-      // 切换业主时 清理缓存
-      if (JSON.stringify(val) === JSON.stringify(old)) {
-        return
-      }
-    }
-  },
-  methods: {
-    filterViewDoorNoMd(data: any) {
-      return filterViewDoorNo(data)
-    },
-    // 是否为空数组
-    isNotNullArray(arr: any) {
-      return arr && Array.isArray(arr) && arr.length
-    },
-    // 档案上传
-    onDocumentation() {
-      routerForward('archives', {
-        type: 12,
-        uid: this.dataInfo.uid,
-        mainTypes: this.type
-      })
-    },
-    // 填报完成
-    onFilled() {
-      const { uid } = this.dataInfo
-      let params = {}
-
-      if (this.tabVal === 1) {
-        params = {
-          houseMainStatus: '1' // 房屋主体评估
-        }
-      } else if (this.tabVal === 2) {
-        params = {
-          houseRenovationStatus: '1' // 房屋装修评估
-        }
-      } else if (this.tabVal === 3) {
-        params = {
-          appendageStatus: '1' // 房屋附属设施评估
-        }
-      } else if (this.tabVal === 4) {
-        params = {
-          treeStatus: '1' // 零星(林)果木评估
-        }
-      } else if (this.tabVal === 8) {
-        params = {
-          landStatus: '1' // 土地基本情况评估
-        }
-      } else if (this.tabVal === 9) {
-        params = {
-          landSeedlingStatus: '1' // 土地青苗及附着物评估
-        }
-      } else if (
-        this.tabVal === 5 &&
-        (this.type === MainType.Company || this.type === MainType.IndividualHousehold)
-      ) {
-        params = {
-          deviceStatus: '1' // 设施设备评估
-        }
-      } else if (this.tabVal === 6) {
-        params = {
-          infrastructureStatus: '1' // 基础设施评估
-        }
-      } else if (this.tabVal === 7) {
-        params = {
-          otherStatus: '1' // 其他评估
-        }
-      } else if (this.tabVal === 5 && this.type === MainType.Village) {
-        params = {
-          specialStatus: '1' // 农村小型专项及农副业设施评估
-        }
-      }
-
-      updateImpLandlordImmigrantFillingApi(uid, params)
-        .then((res) => {
-          if (res) {
-            showToast(SUCCESS_MSG)
-            this.$emit('updateData')
-          }
-        })
-        .catch(() => {
-          showToast(ERROR_MSG)
-        })
-    }
-  }
-}
-</script>
+</script> -->
 
 <script module="print" lang="renderjs">
 import { printPdf } from '@/print'
@@ -415,16 +386,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .title {
-    display: flex;
-    height: 28rpx;
-    font-size: 11rpx;
-    color: #171718;
-    align-items: center;
-    flex: 1;
-    justify-content: space-around;
-    line-height:28rpx;
-  }
+.title {
+  display: flex;
+  height: 28rpx;
+  font-size: 11rpx;
+  color: #171718;
+  align-items: center;
+  flex: 1;
+  justify-content: space-around;
+  line-height: 28rpx;
+}
 .list-header {
   display: flex;
   height: 33rpx;

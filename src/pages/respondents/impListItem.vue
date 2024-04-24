@@ -66,7 +66,9 @@
         <view class="cont-item">
           <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
           <view class="label">填报时间:</view>
-          <view class="value">{{ props.data.reportDate }}</view>
+          <view class="value">{{
+            props.data.reportDate ? dayjs(props.data.reportDate).format('YYYY-MM-DD HH:mm:ss') : '-'
+          }}</view>
         </view>
       </template>
     </view>
@@ -78,6 +80,7 @@ import { dictOption } from '@/utils'
 import { LandlordType } from '@/types/sync'
 import { yesAndNoEnums } from '@/config/common'
 import { MainType } from '@/types/common'
+import dayjs from 'dayjs'
 // import {getLandlordListBySearchApi,getImpLandlordItemApi} from '@/service'
 // const getTables =  () => {
 //     getLandlordListBySearchApi({type:MainType.LandNoMove}).then((res:any) => {
@@ -364,7 +367,7 @@ const getProgressText = (data: LandlordType) => {
       font-size: 7rpx;
       font-weight: 400;
       line-height: 14rpx;
-      color: #FFFFFF;
+      color: #ffffff;
       text-align: center;
       background: #00a400;
       border-radius: 14rpx;
@@ -372,9 +375,12 @@ const getProgressText = (data: LandlordType) => {
   }
 
   .cont {
+    display: flex;
+    flex-wrap: wrap;
     .cont-item {
       display: flex;
       height: 16rpx;
+      min-width: 50%;
       margin-top: 6rpx;
       align-items: center;
       flex-direction: row;

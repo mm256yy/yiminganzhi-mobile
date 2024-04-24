@@ -32,6 +32,7 @@
                   :dataList="dataInfo.immigrantHouseList"
                   :dataInfo="dataInfo"
                   @delete-house="deleteHouse"
+                  :mainType="MainType.Village"
                 />
 
                 <!-- 零星（林）果木信息 -->
