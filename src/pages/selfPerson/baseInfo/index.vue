@@ -54,7 +54,7 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">联系方式：</view>
-                <view class="content">{{ formatStr(props.baseInfo.phone) }}</view>
+                <view class="content">{{ formatStr(props.dataInfo.legalPersonPhone) }}</view>
               </view>
             </uni-col>
             <uni-col :span="12">

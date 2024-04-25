@@ -14,7 +14,7 @@
           v-model="name"
           type="text"
           :confirm-type="'search'"
-          placeholder="请输入户主姓名/户主"
+          placeholder="请输入户主姓名/户号"
           @input="searchInput"
           @focus="searchInput"
           @confirm="confirm"

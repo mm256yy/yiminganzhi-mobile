@@ -69,7 +69,11 @@
           <view class="col">
             <view class="label">迁前地址：</view>
             <view class="content">
-              {{ formatStr(dataInfo.address) }}
+              {{
+                (dataInfo.areaCodeText || '') +
+                (dataInfo.townCodeText || '') +
+                (dataInfo.villageText || '')
+              }}
             </view>
           </view>
         </uni-col>
@@ -155,7 +159,7 @@
           <view class="td td-1">{{ getTypeStr(item.type) }}</view>
           <view class="td td-2">{{ formatStr(item.name) }}</view>
           <!-- formatDict(item.unit, 268) -->
-          <view class="td td-3">{{ item.unit?item.unit:'-' }}</view>
+          <view class="td td-3">{{ item.unit ? item.unit : '-' }}</view>
           <view class="td td-3">{{
             item.name.includes('小计') ? '-' : formatStr(item.number)
           }}</view>

@@ -40,9 +40,9 @@
               label="联系方式"
               :label-width="170"
               label-align="right"
-              name="formData.phone"
+              name="formData.legalPersonPhone"
             >
-              <uni-easyinput v-model="formData.phone" type="text" placeholder="请输入" />
+              <uni-easyinput v-model="formData.legalPersonPhone" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -661,7 +661,7 @@
 import { onLoad } from '@dcloudio/uni-app'
 import { ref, onMounted } from 'vue'
 import dayjs from 'dayjs'
-import { routerBack, getStorage, StorageKey, fmtPicUrl, cardReg } from '@/utils'
+import { routerBack, getStorage, StorageKey, fmtPicUrl, cardReg, phoneReg } from '@/utils'
 import { addLandlordApi, updateLandlordCompanyApi, updateAssociation } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
@@ -825,7 +825,7 @@ const submit = () => {
     townCode: formData.value.townCode,
     villageCode: formData.value.villageCode,
     locationType: formData.value.locationType,
-    phone: formData.value.phone,
+    phone: formData.value.legalPersonPhone,
     type: MainType.IndividualHousehold,
     householderDoorNo: formData.value.householderDoorNo,
     householderName: formData.value.householderName
@@ -908,7 +908,7 @@ const submit = () => {
   } else if (!formData.value.taxLicenceNo) {
     showToast('请输入税务许可证编号')
     return
-  } else if (!formData.value.phone) {
+  } else if (!phoneReg.test(formData.value.legalPersonPhone)) {
     showToast('请输入联系方式')
     return
   } else {

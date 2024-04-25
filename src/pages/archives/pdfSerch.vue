@@ -154,10 +154,9 @@
             <!-- 表头行 -->
             <tr>
               <th align="center" width="50" class="uTitle">序号</th>
-              <th align="center" width="120" class="uTitle">区块</th>
-              <th align="center" width="70" class="uTitle">类型</th>
-              <th align="center" width="120" class="uTitle">地块编号</th>
-              <th align="center" class="uTitle">备注</th>
+              <th align="center" class="uTitle">区块</th>
+              <th align="center" class="uTitle">类型</th>
+              <th align="center" class="uTitle">地块编号</th>
             </tr>
             <!-- 表格数据行 -->
             <tr v-for="(item, index) in dataList" :key="index">
@@ -166,16 +165,15 @@
               <td align="center" class="uTd">{{ '宅基地' }} </td>
               <!-- <td align="center" class="uTd">{{ dictOption(landNoList, item.landNo) }}</td> -->
               <td align="center" class="uTd">{{ formatStr(item.landNo) }}</td>
-              <td align="center" class="uTd"></td>
             </tr>
             <tr style="height: 100px">
-              <td colspan="4">
+              <td colspan="2">
                 <div style="display: flex; justify-content: space-between; align-items: center">
                   <div>户主代表或收委托人(签名)：</div>
                   <img id="signatureImg" class="signatureImg" :src="path" v-if="path" />
                 </div>
               </td>
-              <td colspan="1">联系移民干部(签名)：</td>
+              <td colspan="2">联系移民干部(签名)：</td>
             </tr>
           </table>
         </view>
@@ -281,7 +279,7 @@
               <th align="center" width="50" class="uTitle">数量</th>
               <th align="center" width="100" class="uTitle">处理方式</th>
               <th align="center" width="120" class="uTitle">安置公墓/择址地址</th>
-              <th align="center" width="50" class="uTitle">编号</th>
+              <th align="center" width="50" class="uTitle" v-if="id == 6">编号</th>
               <th align="center" class="uTitle">备注</th>
             </tr>
             <!-- 表格数据行 -->
@@ -292,11 +290,11 @@
               <td align="center" class="uTd">{{
                 item.handleWay === '1' ? item.settingAddress : formatDict(item.settingGrave, 377)
               }}</td>
-              <td align="center" class="uTd">{{ formatStr(item.graveNo) }}</td>
+              <td align="center" class="uTd" v-if="id == 6">{{ formatStr(item.graveNo) }}</td>
               <td align="center" class="uTd"></td>
             </tr>
             <tr style="height: 100px">
-              <td colspan="5">
+              <td :colspan="id == 6 ? '5' : '4'">
                 <div style="display: flex; justify-content: space-between; align-items: center">
                   <div>户主代表或收委托人(签名)：</div>
                   <img id="signatureImg" class="signatureImg" :src="path" v-if="path" />
@@ -366,17 +364,16 @@
               <td align="center" class="uTd">{{
                 baseInfo.type == 'LandNoMove' ? '地块号' : '迁出地'
               }}</td>
-              <td align="center" class="uTd" colspan="3">
+              <td align="center" class="uTd" colspan="3"
+                >
                 {{
-                  baseInfo.type == 'PeasantHousehold'
-                    ? formatStr(baseInfo.address)
-                    : baseInfo.type == 'Village'
+                  baseInfo.type == 'LandNoMove'
+                    ? formatStr(baseInfo.landNumbers)
+                    : baseInfo.type == 'PeasantHousehold'
                     ? (baseInfo.areaCodeText || '') +
                       (baseInfo.townCodeText || '') +
-                      (baseInfo.villageCodeText || '')
-                    : baseInfo.type == 'LandNoMove'
-                    ? formatStr(baseInfo.landNumbers)
-                    : formatStr(baseInfo.beforeAddress)
+                      (baseInfo.villageText || '')
+                    : baseInfo.beforeAddress
                 }}</td
               >
             </tr>

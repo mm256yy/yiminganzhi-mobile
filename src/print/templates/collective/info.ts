@@ -7,8 +7,8 @@ import {
   getHouseInfo,
   getFushuwu,
   getTree,
-  getVillageEquipment
-  // getGrave
+  getVillageEquipment,
+  getGrave
 } from '../../common'
 
 // 村集体基本信息 模版
@@ -315,7 +315,8 @@ export const getCollectiveInfoDefinition = (landlord: LandlordType, projectInfo:
       getHouseInfo(landlord),
       getFushuwu(landlord),
       getTree(landlord),
-      getVillageEquipment(landlord)
+      getVillageEquipment(landlord),
+      getGrave(landlord)
     ],
     footer: getFooter
   }

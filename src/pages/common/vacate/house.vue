@@ -69,7 +69,11 @@
         <uni-col :span="12">
           <view class="col">
             <view class="label">迁出地址：</view>
-            <view class="content">{{ dataInfo.address }}</view>
+            <view class="content">{{
+              (dataInfo.areaCodeText || '') +
+              (dataInfo.townCodeText || '') +
+              (dataInfo.villageText || '')
+            }}</view>
           </view>
         </uni-col>
         <uni-col :span="12">

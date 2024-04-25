@@ -6,12 +6,13 @@
         <uni-row>
           <uni-col :span="24">
             <uni-forms-item
+              required
               label="安置方式"
               :label-width="150"
               label-align="right"
               name="formData.placementWay"
             >
-               <uni-data-select v-model="formData.placementWay" :localdata="dict[422]" />
+              <uni-data-select v-model="formData.placementWay" :localdata="dict[422]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="24">
@@ -24,7 +25,7 @@
               <uni-easyinput v-model="formData.beforeAddress" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
-          <uni-col :span="24" v-if="formData.placementWay=='2'" >
+          <uni-col :span="24" v-if="formData.placementWay == '2'">
             <uni-forms-item
               label="安置厂址"
               :label-width="150"
@@ -95,7 +96,7 @@
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
-import { routerBack,getStorage,StorageKey } from '@/utils'
+import { routerBack, getStorage, StorageKey } from '@/utils'
 import { getImpLandlordItemApi, saveImpLandlordItemApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
@@ -126,7 +127,7 @@ const getLandlordDetail = () => {
   getImpLandlordItemApi(uid.value).then((res: any) => {
     formData.value = { ...res }
     if (!formData.value.placementWay) {
-      formData.value.placementWay='2'
+      formData.value.placementWay = '2'
     }
   })
 }

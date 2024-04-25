@@ -6,6 +6,7 @@
         <uni-row>
           <uni-col :span="24">
             <uni-forms-item
+              required
               label="安置方式"
               :label-width="150"
               label-align="right"
@@ -36,7 +37,7 @@
           </uni-col>
           <uni-col :span="24">
             <uni-forms-item
-              label="企业总人口数"
+              label="员工总数"
               :label-width="150"
               label-align="right"
               name="formData.peopleNumber"
