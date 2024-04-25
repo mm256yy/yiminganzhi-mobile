@@ -169,7 +169,8 @@ const toLink = (type: string, data?: any) => {
       workersNum: null,
       altitude: null,
       inundationRang: '',
-      remark: ''
+      remark: '',
+      facilitiesPic:'[]'
     }
     routerForward('collectiveEquipmentInfoEdit', {
       params: JSON.stringify(params),

@@ -288,7 +288,7 @@ import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import dayjs from 'dayjs'
 import { addLandlordFacilitiesApi, updateLandlordFacilitiesApi } from '@/service'
-import { routerBack, getStorage, StorageKey, formatNum } from '@/utils'
+import { routerBack, getStorage, StorageKey, formatNum,fmtPicUrl } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config'
 import Back from '@/components/Back/Index.vue'
 import UploadFile from '@/components/UploadFile/index.vue'
@@ -321,6 +321,7 @@ onLoad((option: any) => {
     commonParams.value = JSON.parse(option.commonParams)
     let params = JSON.parse(option.params)
     formData.value = { ...params }
+    console.log(formData.value, 'params')
     currentDate.value = getDate()
     if (commonParams.value.type === 'edit') {
       title.value = '农村小型专项及农副业设施信息编辑'
