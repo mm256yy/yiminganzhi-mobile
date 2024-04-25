@@ -241,6 +241,7 @@ const genArr = (arr: any[]) => {
 // 页面数据初始化
 const initData = () => {
   if (props.willData && props.willData.uid) {
+    console.log(props.dataInfo.demographicList,'人口信息1')
     // 已经有配置了
     formData.value = {
       ...props.willData,
@@ -251,11 +252,12 @@ const initData = () => {
     // 生产安置方式 有配置数据时 重新赋值
     productModeData.value = props.willData.immigrantWillProductionList
   } else {
+     console.log(props.dataInfo.demographicList,'人口信息2')
     // 没有任何配置
     formData.value = {
       familyNum: props.dataInfo.demographicList.length, // 家庭总人数
-      // countryNum: '', // 农村移民人数
-      // unCountryNum: '', // 非农移民人数
+      countryNum: props.dataInfo.demographicList.filter((item:any)=> item.censusType == '1').length, //农村移民
+      unCountryNum:props.dataInfo.demographicList.filter((item:any) => item.censusType != '1').length,  //非农村移民
       immigrantWillProductionList: [], // 生产安置
       removalType: '', // 搬迁安置方式
       opinion: '' // 备注

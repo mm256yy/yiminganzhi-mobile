@@ -77,11 +77,11 @@
               label-align="right"
               name="formData.suffixNo"
             >
-              <view v-if="!formData.id" :class="['input-wrapper', isFocus ? 'focus' : '']">
+              <view v-if="type == 'add'" :class="['input-wrapper', isFocus ? 'focus' : '']">
                 <view class="pre-txt">
                   {{
                     compatibleOldSystems()
-                      ? formData.otherCode
+                      ? filterViewDoorNoWithBeforeOther(formData.villageCode)
                       : filterViewDoorNoWithBefore(formData.villageCode)
                   }}
                 </view>
@@ -200,6 +200,7 @@ import {
   routerForward,
   filterViewDoorNo,
   filterViewDoorNoWithBefore,
+  filterViewDoorNoWithBeforeOther,
   formatDict
 } from '@/utils'
 import { addLandlordApi, updateLandlordApi } from '@/service'
@@ -301,11 +302,13 @@ const addNaturalVillage = () => {
 // 表单提交
 const submit = () => {
   let doorNo = ''
+  console.log( (getStorage(StorageKey.PROJECTINFO) || {}).reservoirCode,'账号是什么？')
   if (formData.value.id && formData.value.doorNo) {
     doorNo = formData.value.doorNo
   } else {
     if (compatibleOldSystems()) {
-      doorNo = 'jl'+String(formData.value.otherCode) + formData.value.suffixNo
+      // doorNo = 'jl'+String(formData.value.otherCode) + formData.value.suffixNo
+      doorNo = 'jl'+filterViewDoorNoWithBeforeOther(formData.value.villageCode) + formData.value.suffixNo
     } else {
       if (formData.value.villageCode) {
         doorNo = 'jl'+filterViewDoorNoWithBefore(formData.value.villageCode) + formData.value.suffixNo

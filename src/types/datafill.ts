@@ -53,6 +53,7 @@ export interface PopulationType {
   householdNumber?: string
   reportDate?: string
   reportUser?: number
+  reportUserName?:any
   signDate?: string
   signUser?: number
   uid?: string

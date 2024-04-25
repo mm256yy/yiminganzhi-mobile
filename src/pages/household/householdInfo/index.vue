@@ -207,6 +207,7 @@ const getLists = () => {
   nextTick(async () => {
     const res = await getLandlordListBySearchApi(params).catch(() => {})
     console.log(res, '个体工商户res是什么')
+    console.log(props.dataInfo,'主体数据是什么？')
     individualHouseholdUid.value = res.find(
       (item: any) => item.name == props.dataInfo.relateIndividualHouseholdName
     )

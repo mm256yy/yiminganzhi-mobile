@@ -81,6 +81,7 @@ export interface LandlordType {
   householdNumber: any
   reportDate: any
   reportUser: number
+  reportUserName:any
   fillingUpdateDate: string
   inundationRange: string
   altitude?: number

@@ -284,6 +284,14 @@ export const filterViewDoorNoWithBefore = (doorNo: string) => {
   return `${doorNo[5]}${doorNo[7]}${doorNo[8]}`
 }
 
+// 户号后四位之前的显示  除了镜岭和佛香显示3位 其他显示5位
+export const filterViewDoorNoWithBeforeOther = (doorNo: string) => {
+  if (!doorNo) {
+    return ''
+  }
+  return `${doorNo[5]}${doorNo[7]}${doorNo[8]}${doorNo[10]}${doorNo[11]}`
+}
+
 // 显示doorNo
 export const filterViewDoorNo = (data: any): string => {
   const { doorNo, type } = data || {}
