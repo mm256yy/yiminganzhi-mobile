@@ -60,7 +60,7 @@ export default {
       }
       const { type, immigrantFilling } = this.dataInfo
       console.log(type)
-
+      console.log(immigrantFilling,'测试状态数据')
       if (!immigrantFilling) {
         return 0
       }
@@ -224,7 +224,7 @@ export default {
         }
 
         // 土地/附着物评估状态
-        if (landStatus === '1') {
+        if (landStatus === '1'||!landStatus) {
           fillCount++
         }
 
@@ -264,7 +264,7 @@ export default {
         }
 
         // 土地/附着物评估状态
-        if (landStatus === '1') {
+        if (landStatus === '1'||!landStatus) {
           fillCount++
         }
 
@@ -304,7 +304,7 @@ export default {
         }
 
         // 土地/附着物评估状态
-        if (landStatus === '1') {
+        if (landStatus === '1'||!landStatus) {
           fillCount++
         }
 
@@ -341,6 +341,7 @@ export default {
         }
       }
       const { type, immigrantFilling = {} } = this.dataInfo
+      console.log(immigrantFilling, 'immigrantFilling')
       if (!immigrantFilling) {
         return {
           count: 0,
@@ -406,7 +407,7 @@ export default {
         // 资产评估
         if (
           immigrantFilling.appendageStatus === '1' &&
-          immigrantFilling.landStatus === '1' &&
+          // immigrantFilling.landStatus === '1' &&  宗浩说不要土地纳入状态总计
           immigrantFilling.deviceStatus === '1'
         ) {
           count++
@@ -432,7 +433,7 @@ export default {
         // 资产评估
         if (
           immigrantFilling.appendageStatus === '1' &&
-          immigrantFilling.landStatus === '1' &&
+          // immigrantFilling.landStatus === '1' &&  宗浩说不要土地纳入状态总计
           immigrantFilling.deviceStatus === '1'
         ) {
           count++
@@ -458,8 +459,8 @@ export default {
         // 资产评估
         if (
           immigrantFilling.appendageStatus === '1' &&
-          immigrantFilling.landStatus === '1' &&
-          immigrantFilling.deviceStatus === '1'
+          // immigrantFilling.landStatus === '1' &&  宗浩说不要土地纳入状态总计
+          immigrantFilling.specialStatus === '1'
         ) {
           count++
         }

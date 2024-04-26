@@ -108,7 +108,7 @@
               </view> -->
               <view v-if="type== 'add'" :class="['code-wrapper', focusIndex === 1 ? 'focus' : '']">
                 <view class="pre-txt">
-                  {{ formData.villageCode ? 'GT' + formData.villageCode : '' }}
+                  {{ formData.villageCode ? 'GT' + filterViewDoorNoWithBeforeOther(formData.villageCode) : '' }}
                 </view>
                 <input
                   class="input-txt"
@@ -671,6 +671,8 @@ import { MainType } from '@/types/common'
 import SearchList from '@/components/SearchList/Index.vue'
 const showSearch = ref<boolean>(false)
 import { getImpLandlordListBySearchApi } from '@/service'
+import {filterViewDoorNoWithBeforeOther} from '@/utils'
+
 const getLandlordListBySearch = () => {
   let params = {
     type: MainType.PeasantHousehold,
@@ -818,7 +820,7 @@ const submit = () => {
       formData.value.id && formData.value.doorNo
         ? formData.value.doorNo
         : formData.value.suffixNo
-        ? 'GT' + formData.value.villageCode + formData.value.suffixNo
+        ? 'GT' + filterViewDoorNoWithBeforeOther(formData.value.villageCode) + formData.value.suffixNo
         : '',
     // doorNo: formData.value.doorNo,
     areaCode: formData.value.areaCode,
@@ -836,7 +838,7 @@ const submit = () => {
       formData.value.id && formData.value.doorNo
         ? formData.value.doorNo
         : formData.value.suffixNo
-        ? 'GT' + formData.value.villageCode + formData.value.suffixNo
+        ? 'GT' + filterViewDoorNoWithBeforeOther(formData.value.villageCode) + formData.value.suffixNo
         : '',
     // doorNo: formData.value.doorNo,
     legalPersonName: formData.value.legalPersonName,

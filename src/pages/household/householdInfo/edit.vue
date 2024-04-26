@@ -302,7 +302,7 @@ const addNaturalVillage = () => {
 // 表单提交
 const submit = () => {
   let doorNo = ''
-  console.log( (getStorage(StorageKey.PROJECTINFO) || {}).reservoirCode,'账号是什么？')
+  console.log((getStorage(StorageKey.PROJECTINFO) || {}).reservoirCode, '账号是什么？')
   if (formData.value.id && formData.value.doorNo) {
     doorNo = formData.value.doorNo
   } else {

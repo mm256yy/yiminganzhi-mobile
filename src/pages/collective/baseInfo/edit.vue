@@ -59,7 +59,7 @@
               </view> -->
               <view v-if="type == 'add'" :class="['code-wrapper', focusIndex === 1 ? 'focus' : '']">
                 <view class="pre-txt">
-                  {{ formData.villageCode ? 'JT' + formData.villageCode : '' }}
+                  {{ formData.villageCode ? 'JT' + filterViewDoorNoWithBeforeOther(formData.villageCode) : '' }}
                 </view>
                 <input
                   class="input-txt"
@@ -138,7 +138,7 @@ import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { MainType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
 import VillageSelectFormItem from '@/components/VillageSelectFormItem/index.vue'
-
+import {filterViewDoorNoWithBeforeOther} from '@/utils'
 // 表单数据
 const formData = ref<any>({
   name: '',
@@ -200,7 +200,7 @@ const submit = () => {
       formData.value.id && formData.value.doorNo
         ? formData.value.doorNo
         : formData.value.suffixNo
-        ? 'JT' + formData.value.villageCode + formData.value.suffixNo
+        ? 'JT' + filterViewDoorNoWithBeforeOther(formData.value.villageCode) + formData.value.suffixNo
         : '',
     type: MainType.Village
   }

@@ -280,7 +280,8 @@ const getList = () => {
       name: unref(keyWords),
       type: unref(tabType),
       page: page.value,
-      pageSize: pageSize.value
+      pageSize: pageSize.value,
+      villageCode: villageCode.value.length > 0 ? villageCode.value : null
     }
     console.log('传输的数据', params)
     if (sourceType.value) {

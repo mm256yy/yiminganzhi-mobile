@@ -76,7 +76,7 @@ import iconXgsxDef from '@/static/images/icon_xgsx_def.png' // 引入相关手�
 import iconXgsxSel from '@/static/images/icon_xgsx_sel.png' // 引入相关手续选中时 icon
 
 export const compatibleOldSystems = () =>
-  (getStorage(StorageKey.PROJECTINFO) || {}).reservoirCode != 'fxsk'||(getStorage(StorageKey.PROJECTINFO) || {}).reservoirCode != 'jlsk'
+  (getStorage(StorageKey.PROJECTINFO) || {}).reservoirCode != 'fxsk'&&(getStorage(StorageKey.PROJECTINFO) || {}).reservoirCode != 'jlsk'
 
 // 居民户移民实施左侧边栏选项列表
 export const householdSidebarList = [

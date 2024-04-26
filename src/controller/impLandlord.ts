@@ -83,9 +83,9 @@ export class ImpLandlord extends Common {
     if (this.isNotNullPic(landlordItem.householdPic)) {
       landlordItem.immigrantFilling.householdPicStatus = '1'
     } else {
-      landlordItem.immigrantFilling.householdPicStatus = '0'
+      landlordItem.immigrantFilling.householdPicStatus = '0'      
     }
-
+    console.log(role,'測試角色')
     // 资产评估 - 填报状态 为报告上传完成
     if (role === RoleCodeType.assessor) {
       // 资产评估-房屋

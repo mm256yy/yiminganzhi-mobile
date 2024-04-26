@@ -53,10 +53,15 @@
             {{ dictOption(yesAndNoEnums, props.data.hasPropertyAccount) }}
           </view>
         </view>
-        <view class="cont-item">
+        <!-- <view class="cont-item">
           <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
           <view class="label">户籍地址:</view>
           <view class="value">{{ props.data.address }}</view>
+        </view> -->
+        <view class="cont-item">
+          <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
+          <view class="label">所属区域:</view>
+          <view class="value">{{ props.data.areaCodeText }}/{{ props.data.townCodeText }}/{{ props.data.villageCodeText }}</view>
         </view>
         <view class="cont-item">
           <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
@@ -168,7 +173,7 @@ const getProgressText = (data: LandlordType) => {
   const { type, immigrantFilling } = data
   let count = 0
   let total = 0
-
+  console.log(immigrantFilling,'immigrantFilling')
   if (type === MainType.PeasantHousehold) {
     // 居民户信息
     if (immigrantFilling) {
@@ -233,7 +238,7 @@ const getProgressText = (data: LandlordType) => {
         count++
       }
       // 腾空
-      if (immigrantFilling.excessSoarStatus === '1') {
+      if (immigrantFilling.houseSoarStatus === '1' && immigrantFilling.landSoarStatus === '1') {
         count++
       }
       // 相关手续
@@ -257,7 +262,7 @@ const getProgressText = (data: LandlordType) => {
         count++
       }
       // 腾空
-      if (immigrantFilling.excessSoarStatus === '1') {
+      if (immigrantFilling.houseSoarStatus === '1' && immigrantFilling.landSoarStatus === '1') {
         count++
       }
       // 相关手续
@@ -277,7 +282,10 @@ const getProgressText = (data: LandlordType) => {
         count++
       }
       // 移民剪卡
-      if (immigrantFilling.cardStatus === '1') {
+      // if (immigrantFilling.cardStatus === '1') {
+      //   count++
+      // }
+      if (immigrantFilling.houseSoarStatus === '1') {
         count++
       }
       // 集体资产
