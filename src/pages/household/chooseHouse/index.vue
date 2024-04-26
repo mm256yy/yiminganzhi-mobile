@@ -43,7 +43,11 @@
               <uni-col :span="12">
                 <view class="col">
                   <view class="label">户型/套型(㎡)：</view>
-                  <view class="content">{{ formatStr(item.area) }}</view>
+                  <view class="content">{{
+                    item.area > 10
+                      ? formatStr(item.area)
+                      : homesteadAreaSize.find((v) => v.id === item.area)?.name
+                  }}</view>
                 </view>
               </uni-col>
             </uni-row>
@@ -183,6 +187,8 @@ import { formatStr, routerForward, dictOption } from '@/utils'
 import { apartmentArea, resettleArea } from '@/config'
 import { getChooseConfigApi, getHouseConfigApi, getResettleDetail } from '@/service'
 import { OtherDataType } from '@/database'
+import { resettleHouseType, apartmentAreaSize, homesteadAreaSize } from '@/config'
+
 interface PropsType {
   dataList: any[]
   baseInfo: any
