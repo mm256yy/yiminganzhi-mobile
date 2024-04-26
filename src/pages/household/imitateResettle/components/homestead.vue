@@ -4,21 +4,43 @@
       <view class="item">
         <view class="label" v-if="familyNum">宅基地安置人数：</view>
         <view class="value-box">
-          <text class="red">{{ familyNum }}</text><text>人，</text>
-          <text v-if="ruralMigrantNum">其中该户农村移民：<text class="red">{{ ruralMigrantNum }}</text><text>人，</text></text>
-          <text v-if="unruralMigrantNum">非农村移民<text class="red">{{ unruralMigrantNum }}</text><text>人，</text></text>
-          <text v-if="farmingMigrantNum">农业随迁<text class="red">{{ farmingMigrantNum }}</text><text>人，</text></text>
-          <text v-if="unfarmingMigrantNum">非农业随迁<text class="red">{{ unfarmingMigrantNum }}</text><text>人，</text></text>
-          <text v-if="addPopulationNum">增计人口<text class="red">{{ addPopulationNum }}</text><text>人，</text></text>
-          <text v-if="propertyNum">财产户<text class="red">{{ propertyNum }}</text><text>人，</text></text>
-          <text v-if="otherNum">其他人口<text class="red">{{ otherNum }}</text><text>人</text></text>
+          <text class="red">{{ familyNum }}</text
+          ><text>人，</text>
+          <text v-if="ruralMigrantNum"
+            >其中该户农村移民：<text class="red">{{ ruralMigrantNum }}</text
+            ><text>人，</text></text
+          >
+          <text v-if="unruralMigrantNum"
+            >非农村移民<text class="red">{{ unruralMigrantNum }}</text
+            ><text>人，</text></text
+          >
+          <text v-if="farmingMigrantNum"
+            >农业随迁<text class="red">{{ farmingMigrantNum }}</text
+            ><text>人，</text></text
+          >
+          <text v-if="unfarmingMigrantNum"
+            >非农业随迁<text class="red">{{ unfarmingMigrantNum }}</text
+            ><text>人，</text></text
+          >
+          <text v-if="addPopulationNum"
+            >增计人口<text class="red">{{ addPopulationNum }}</text
+            ><text>人，</text></text
+          >
+          <text v-if="propertyNum"
+            >财产户<text class="red">{{ propertyNum }}</text
+            ><text>人，</text></text
+          >
+          <text v-if="otherNum"
+            >其他人口<text class="red">{{ otherNum }}</text
+            ><text>人</text></text
+          >
         </view>
       </view>
 
       <view class="item">
         <view class="label flex-start">选择地块：</view>
         <view class="value-box">
-          <view class="flex-row" style="flex-wrap: wrap;">
+          <view class="flex-row" style="flex-wrap: wrap">
             <view
               class="area-item"
               :class="{ active: settleAddress == item.id }"
@@ -44,8 +66,8 @@
           <view class="flex-row box-wrap">
             <view
               class="check-item"
-              :class="{ active: areaType == item.id }"
-              @click="homesteadAreaChange(item.id)"
+              :class="{ active: areaType == item.name }"
+              @click="homesteadAreaChange(item.name)"
               v-for="item in areaSizeArray"
               :key="item.id"
             >
@@ -65,7 +87,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch,onMounted } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { HouseAreaType } from '@/types/common'
 import { homesteadAreaSize } from '@/config'
 import { LandlordType } from '@/types/sync'
@@ -74,56 +96,70 @@ interface PropsType {
   doorNo: string
   immigrantSettle: any
   fromResettleConfirm?: boolean
-  dataList:any
-  data:any
-  flag:any
+  dataList: any
+  data: any
+  flag: any
 }
 
 const emit = defineEmits(['submit'])
 const props = defineProps<PropsType>()
 
 const settleAddress = ref('1')
-const areaType = ref('1')
+const areaType: any = ref('1')
 
-const areaList=ref<any>()
+const areaList = ref<any>()
 
 // 总人口
 const familyNum = computed(() => {
-  return props.baseInfo.demographicList.filter((item:any) =>item.isDelete !== '1').length
+  return props.baseInfo.demographicList.filter((item: any) => item.isDelete !== '1').length
 })
 
 // 农村移民
 const ruralMigrantNum = computed(() => {
-  return props.baseInfo.demographicList.filter((item) => item.populationNature === '1'&&item.isDelete !== '1').length
+  return props.baseInfo.demographicList.filter(
+    (item) => item.populationNature === '1' && item.isDelete !== '1'
+  ).length
 })
 
 // 非农移民
 const unruralMigrantNum = computed(() => {
-  return props.baseInfo.demographicList.filter((item) => item.populationNature === '2'&&item.isDelete !== '1').length
+  return props.baseInfo.demographicList.filter(
+    (item) => item.populationNature === '2' && item.isDelete !== '1'
+  ).length
 })
 
 // 农业随迁
 const farmingMigrantNum = computed(() => {
-  return props.baseInfo.demographicList.filter((item) => item.populationNature === '3'&&item.isDelete !== '1').length
+  return props.baseInfo.demographicList.filter(
+    (item) => item.populationNature === '3' && item.isDelete !== '1'
+  ).length
 })
 
 // 非农业随迁
 const unfarmingMigrantNum = computed(() => {
-  return props.baseInfo.demographicList.filter((item) => item.populationNature === '4'&&item.isDelete !== '1').length
+  return props.baseInfo.demographicList.filter(
+    (item) => item.populationNature === '4' && item.isDelete !== '1'
+  ).length
 })
 
 // 增计人口
 const addPopulationNum = computed(() => {
-  return props.baseInfo.demographicList.filter((item) => item.populationNature === '5'&&item.isDelete !== '1').length
+  return props.baseInfo.demographicList.filter(
+    (item) => item.populationNature === '5' && item.isDelete !== '1'
+  ).length
 })
 // 财产户
 const propertyNum = computed(() => {
-   return props.baseInfo.demographicList.filter((item) => item.populationNature === '6'&&item.isDelete !== '1').length
+  return props.baseInfo.demographicList.filter(
+    (item) => item.populationNature === '6' && item.isDelete !== '1'
+  ).length
 })
 // 其他人口
 const otherNum = computed(() => {
   // return familyNum.value - ruralMigrantNum.value - unruralMigrantNum.value
-   return props.baseInfo.demographicList.filter((item) => item.populationNature === '7'&&item.isDelete !== '1').length
+  return props.baseInfo.demographicList.filter(
+    (item) => item.populationNature === '7' && item.isDelete !== '1'
+  ).length
 })
 
 // const resettleArea = computed(() => {
@@ -169,21 +205,25 @@ watch(
 watch(
   () => props.dataList,
   () => {
-    if (props.data&&!props.flag) {
-       console.log(props.data,'测试数据')
+    if (props.data && !props.flag) {
+      console.log(props.data, '测试数据')
       const datas = props.data.filter((item: any) => item.relation == '1')
-      console.log(datas,'测试数据datas')
+      console.log(datas, '测试数据datas')
       if (datas[0].settingWay == '1') {
         console.log(props.dataList, '数据')
-        areaList.value = props.dataList.filter((item: any) => item.type == '1' && item.isProductionLand == '1')
+        areaList.value = props.dataList.filter(
+          (item: any) => item.type == '1' && item.isProductionLand == '1'
+        )
         console.log(areaList.value, 'areaList')
       } else if (datas[0].settingWay == '2') {
         console.log(props.dataList, '数据')
-        areaList.value = props.dataList.filter((item: any) => item.type == '1' && item.isProductionLand == '2')
+        areaList.value = props.dataList.filter(
+          (item: any) => item.type == '1' && item.isProductionLand == '2'
+        )
         console.log(areaList.value, 'areaList')
       } else {
         areaList.value = props.dataList.filter((item: any) => item.type == '1')
-      }    
+      }
     }
   },
   {
@@ -219,7 +259,7 @@ const submitResettle = async () => {
 }
 
 // 宅基地面积选择
-const homesteadAreaChange = (id: string) => {
+const homesteadAreaChange = (id: any) => {
   areaType.value = id
 }
 

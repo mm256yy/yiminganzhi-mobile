@@ -72,7 +72,7 @@
               {{
                 (dataInfo.areaCodeText || '') +
                 (dataInfo.townCodeText || '') +
-                (dataInfo.villageText || '')
+                (dataInfo.villageCodeText || '')
               }}
             </view>
           </view>

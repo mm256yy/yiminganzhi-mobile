@@ -25,17 +25,17 @@
             </uni-col>
             <uni-col :span="8">
               <view class="col">
-                <view class="label">层高（m）：</view>
+                <view class="label">层高(m):</view>
                 <view class="content">
-                  {{ formatNum(item.storeyHeight, '（米）') }}
+                  {{ formatNum(item.storeyHeight) }}
                 </view>
               </view>
             </uni-col>
             <uni-col :span="8">
               <view class="col">
-                <view class="label">层数：</view>
+                <view class="label">层数(层):</view>
                 <view class="content">
-                  {{ formatNum(item.storeyNumber, '（层）') }}
+                  {{ formatNum(item.storeyNumber) }}
                 </view>
               </view>
             </uni-col>
@@ -44,17 +44,17 @@
           <uni-row>
             <uni-col :span="8">
               <view class="col">
-                <view class="label">房屋高程（m）：</view>
+                <view class="label">房屋高程(m):</view>
                 <view class="content">
-                  {{ formatNum(item.houseHeight, '（米）') }}
+                  {{ formatNum(item.houseHeight) }}
                 </view>
               </view>
             </uni-col>
             <uni-col :span="8">
               <view class="col">
-                <view class="label">建筑面积：</view>
+                <view class="label">建筑面积(㎡):</view>
                 <view class="content">
-                  {{ formatNum(item.landArea, '（㎡）') }}
+                  {{ formatNum(item.landArea) }}
                 </view>
               </view>
             </uni-col>

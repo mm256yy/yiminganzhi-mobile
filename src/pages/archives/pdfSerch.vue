@@ -364,15 +364,14 @@
               <td align="center" class="uTd">{{
                 baseInfo.type == 'LandNoMove' ? '地块号' : '迁出地'
               }}</td>
-              <td align="center" class="uTd" colspan="3"
-                >
+              <td align="center" class="uTd" colspan="3">
                 {{
                   baseInfo.type == 'LandNoMove'
                     ? formatStr(baseInfo.landNumbers)
-                    : baseInfo.type == 'PeasantHousehold'
+                    : baseInfo.type == 'PeasantHousehold' || baseInfo.type == 'Village'
                     ? (baseInfo.areaCodeText || '') +
                       (baseInfo.townCodeText || '') +
-                      (baseInfo.villageText || '')
+                      (baseInfo.villageCodeText || '')
                     : baseInfo.beforeAddress
                 }}</td
               >

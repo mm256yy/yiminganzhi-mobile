@@ -33,9 +33,11 @@
           <view class="col">
             <view class="label">迁出地址：</view>
             <view class="content">{{
-              (dataInfo?.areaCodeText || '') +
-              (dataInfo?.townCodeText || '') +
-              (dataInfo?.villageText || '')
+              dataInfo.type == 'PeasantHousehold' || dataInfo.type == 'Village'
+                ? (dataInfo.areaCodeText || '') +
+                  (dataInfo.townCodeText || '') +
+                  (dataInfo.villageCodeText || '')
+                : formatStr(dataInfo.beforeAddress)
             }}</view>
           </view>
         </uni-col>

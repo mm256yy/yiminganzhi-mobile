@@ -17,7 +17,13 @@
           <view class="col">
             <view class="label">户内人口：</view>
             <!-- <view class="content"> {{ formatStr(dataInfo?.demographicList?.length) }} </view> -->
-            <view class="content"> {{ props.dataInfo.demographicList.filter((item:any) => item.name != '增计人口' && item.isDelete !== '1').length || 1}}</view>
+            <view class="content">
+              {{
+                props.dataInfo.demographicList.filter(
+                  (item: any) => item.name != '增计人口' && item.isDelete !== '1'
+                ).length || 1
+              }}</view
+            >
           </view>
         </uni-col>
       </uni-row>
@@ -26,7 +32,11 @@
         <uni-col :span="12">
           <view class="col">
             <view class="label">迁出地址：</view>
-            <view class="content">{{ formatStr(dataInfo?.address) }}</view>
+            <view class="content">{{
+              (dataInfo.areaCodeText || '') +
+              (dataInfo.townCodeText || '') +
+              (dataInfo.villageCodeText || '')
+            }}</view>
           </view>
         </uni-col>
         <uni-col :span="12">

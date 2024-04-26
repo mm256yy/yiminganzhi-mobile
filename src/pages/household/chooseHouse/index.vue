@@ -42,8 +42,8 @@
               </uni-col>
               <uni-col :span="12">
                 <view class="col">
-                  <view class="label">户型/套型：</view>
-                  <view class="content">{{ formatStr(item.area, '㎡') }}</view>
+                  <view class="label">户型/套型(㎡)：</view>
+                  <view class="content">{{ formatStr(item.area) }}</view>
                 </view>
               </uni-col>
             </uni-row>
@@ -108,8 +108,8 @@
               </uni-col>
               <uni-col :span="12">
                 <view class="col">
-                  <view class="label">户型/套型：</view>
-                  <view class="content">{{ formatStr(item.area, '㎡') }}</view>
+                  <view class="label">户型/套型(㎡)：</view>
+                  <view class="content">{{ formatStr(item.area) }}</view>
                 </view>
               </uni-col>
             </uni-row>

@@ -1,7 +1,7 @@
 import { MainType, ProjectType } from '@/types/common'
 import { LandlordType } from '@/types/sync'
 import { imgHeight, layout } from './config'
-import { filterViewDoorNo } from '@/utils'
+import { filterViewDoorNoShow } from '@/utils'
 
 /**
  * 公共模块
@@ -103,7 +103,7 @@ export const getCompanyTableHead = (landlord: LandlordType, projectInfo: Project
                 margin: [headMargin, 0, headMargin, 2]
               },
               {
-                text: `（${landlord.name} ${filterViewDoorNo(landlord) || ''} 号）`,
+                text: `（${landlord.name} ${filterViewDoorNoShow(landlord) || ''} 号）`,
                 alignment: 'center',
                 margin: [headMargin, 0, headMargin, 0]
               }
@@ -247,7 +247,7 @@ export const getCompanyBaseTableHead = (landlord: LandlordType, projectInfo: Pro
             style: 'td'
           },
           {
-            text: filterViewDoorNo(landlord) || '',
+            text: filterViewDoorNoShow(landlord) || '',
             style: 'td'
           }
         ],
@@ -300,7 +300,7 @@ export const getPeopleTableHead = (landlord: LandlordType, projectInfo: ProjectT
                 margin: [headMargin, 0, headMargin, 2]
               },
               {
-                text: `（${landlord.name || ''} ${filterViewDoorNo(landlord) || ''} 号）`,
+                text: `（${landlord.name || ''} ${filterViewDoorNoShow(landlord) || ''} 号）`,
                 alignment: 'center',
                 margin: [headMargin, 0, headMargin, 0]
               }

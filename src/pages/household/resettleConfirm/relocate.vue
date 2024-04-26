@@ -2,7 +2,7 @@
   <!-- 安置确认 搬迁安置 -->
   <view class="relocate-wrap">
     <view class="btn-box">
-      <view style="display: flex;">
+      <view style="display: flex">
         <view class="btn blue-btn" @click="onImportDataPre">
           <image class="icon" src="@/static/images/icon_import.png" mode="scaleToFill" />
           <text class="txt">导入模拟安置数据</text>
@@ -13,7 +13,7 @@
           <text class="txt">编辑</text>
         </view>
       </view>
-      <view style="display: flex;">
+      <view style="display: flex">
         <view class="btn green-btn" @click="handleClick">
           <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
           <text class="txt">打印报表</text>
@@ -36,7 +36,14 @@
     </view>
 
     <view class="table-wrap">
-      <uni-table class="table" ref="table" :loading="loading" border stripe :emptyText="emptyText || '暂无更多数据'">
+      <uni-table
+        class="table"
+        ref="table"
+        :loading="loading"
+        border
+        stripe
+        :emptyText="emptyText || '暂无更多数据'"
+      >
         <uni-tr>
           <uni-th>安置区域</uni-th>
           <uni-th>户型</uni-th>
@@ -55,8 +62,14 @@
 
     <uni-popup ref="alertDialog" type="dialog">
       <uni-popup-dialog
-type="warn" cancelText="取消" confirmText="确认" title="请确认是否导入？" content="导入模拟数据后，列表中的安置方式将被覆盖"
-        @confirm="onConfirm" @close="onClose" />
+        type="warn"
+        cancelText="取消"
+        confirmText="确认"
+        title="请确认是否导入？"
+        content="导入模拟数据后，列表中的安置方式将被覆盖"
+        @confirm="onConfirm"
+        @close="onClose"
+      />
     </uni-popup>
   </view>
 </template>
@@ -66,25 +79,21 @@ import { ref, computed, watch } from 'vue'
 import { LandlordType } from '@/types/sync'
 import { HouseAreaType } from '@/types/common'
 import { ImmigrantSettleType } from '@/types/impDataFill'
-import {
-  resettleHouseType,
-  apartmentAreaSize,
-  homesteadAreaSize
-} from '@/config'
+import { resettleHouseType, apartmentAreaSize, homesteadAreaSize } from '@/config'
 import { updateImpLandlordRelocateResettleApi } from '@/service'
 import { routerBack, routerForward } from '@/utils'
 import { getResettleDetail } from '@/service'
-import { OtherDataType } from '@/database';
+import { OtherDataType } from '@/database'
 // import type { LocationType } from '@/types/datafill'
 
-const resettleArea = ref<any>([])	
+const resettleArea = ref<any>([])
 const apartmentArea = ref<any>([])
 
 const getDataRequest = async (res: any) => {
   try {
     const data1 = await getResettleDetail(OtherDataType.settleAddressList)
-    const result1 = data1.filter((item:any) => item.type === '1')
-    const result2 = data1.filter((item:any) => item.type === '2')
+    const result1 = data1.filter((item: any) => item.type === '1')
+    const result2 = data1.filter((item: any) => item.type === '2')
     resettleArea.value = result1
     apartmentArea.value = result2
     console.log(result1, '接口数据1')
@@ -97,8 +106,9 @@ const getDataRequest = async (res: any) => {
         tableData.value = [
           {
             houseTypeText,
-            settleAddressText: resettleArea.value.find((item:any) => item.id == res.settleAddress)?.name,
-            area: homesteadAreaSize.find((item) => item.id === res.areaType)?.name,
+            settleAddressText: resettleArea.value.find((item: any) => item.id == res.settleAddress)
+              ?.name,
+            area: res.areaType,
             num: 1
           }
         ]
@@ -107,7 +117,8 @@ const getDataRequest = async (res: any) => {
         if (res.typeOneNum) {
           array.push({
             houseTypeText,
-            settleAddressText: apartmentArea.value.find((item:any) => item.id == res.settleAddress)?.name,
+            settleAddressText: apartmentArea.value.find((item: any) => item.id == res.settleAddress)
+              ?.name,
             area: apartmentAreaSize[0].name,
             num: res.typeOneNum
           })
@@ -115,7 +126,8 @@ const getDataRequest = async (res: any) => {
         if (res.typeTwoNum) {
           array.push({
             houseTypeText,
-            settleAddressText: apartmentArea.value.find((item:any) => item.id == res.settleAddress)?.name,
+            settleAddressText: apartmentArea.value.find((item: any) => item.id == res.settleAddress)
+              ?.name,
             area: apartmentAreaSize[1].name,
             num: res.typeTwoNum
           })
@@ -123,7 +135,8 @@ const getDataRequest = async (res: any) => {
         if (res.typeThreeNum) {
           array.push({
             houseTypeText,
-            settleAddressText: apartmentArea.value.find((item:any) => item.id == res.settleAddress)?.name,
+            settleAddressText: apartmentArea.value.find((item: any) => item.id == res.settleAddress)
+              ?.name,
             area: apartmentAreaSize[2].name,
             num: res.typeThreeNum
           })
@@ -131,7 +144,8 @@ const getDataRequest = async (res: any) => {
         if (res.typeFourNum) {
           array.push({
             houseTypeText,
-            settleAddressText: apartmentArea.value.find((item:any) => item.id == res.settleAddress)?.name,
+            settleAddressText: apartmentArea.value.find((item: any) => item.id == res.settleAddress)
+              ?.name,
             area: apartmentAreaSize[3].name,
             num: res.typeFourNum
           })
@@ -148,7 +162,7 @@ const getDataRequest = async (res: any) => {
       tableData.value = []
     }
   } catch (error) {
-    console.log('error', error);
+    console.log('error', error)
   }
 }
 interface PropsType {
@@ -168,7 +182,6 @@ const dataType = ref<any>()
 // const demographicList = computed(() => {
 //   return props.dataInfo && props.dataInfo.demographicList ? props.dataInfo.demographicList.filter((item) => item.name !== '增计人口'): []
 // })
-
 
 // 搬迁安置
 const immigrantSettle = computed(() => {
@@ -215,7 +228,6 @@ const handleClick = () => {
 //   }
 // )
 
-
 const archivesUpload = () => {
   routerForward('archives', {
     type: 2,
@@ -230,7 +242,7 @@ const onImportDataPre = async () => {
 
 // 导入数据
 const onImportData = () => {
-  console.log(mockImmigrantSettle.value,'导入的模拟数据搬迁安置')
+  console.log(mockImmigrantSettle.value, '导入的模拟数据搬迁安置')
   // 拿到模拟安置的配置
   const {
     houseAreaType,

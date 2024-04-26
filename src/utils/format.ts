@@ -311,3 +311,10 @@ export const filterViewDoorNo = (data: any): string => {
 export const formatEmptyText = (text: string) => {
   return text ? (text === 'null' ? '' : text) : ''
 }
+export const filterViewDoorNoShow = (data: any): string => {
+  const { doorNo, type } = data || {}
+  if (!doorNo) {
+    return ''
+  }
+  return doorNo.includes('jl') ? doorNo.substr(2) : doorNo
+}

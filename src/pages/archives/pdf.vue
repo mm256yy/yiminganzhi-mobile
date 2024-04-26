@@ -29,7 +29,11 @@
             <view class="col">
               <view class="label">迁前地址：</view>
               <view class="content">
-                {{ formatStr(dataInfo.address) }}
+                {{
+                  (dataInfo.areaCodeText || '') +
+                  (dataInfo.townCodeText || '') +
+                  (dataInfo.villageCodeText || '')
+                }}
               </view>
             </view>
           </uni-col>
@@ -97,9 +101,7 @@
             </tr>
             <!-- 表格数据行 -->
             <tr
-              v-for="(item, index) in dataList.filter(
-                (item) => item.isDelete != '1'
-              )"
+              v-for="(item, index) in dataList.filter((item) => item.isDelete != '1')"
               :key="index"
             >
               <td align="left" class="uTd">{{ formatStr(item.name) }}</td>

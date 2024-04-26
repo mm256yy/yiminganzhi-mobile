@@ -72,7 +72,7 @@
             <view class="content">{{
               (dataInfo.areaCodeText || '') +
               (dataInfo.townCodeText || '') +
-              (dataInfo.villageText || '')
+              (dataInfo.villageCodeText || '')
             }}</view>
           </view>
         </uni-col>

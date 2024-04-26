@@ -34,7 +34,9 @@
             <view class="label">迁出地址：</view>
             <view class="content">{{
               dataInfo.type == 'PeasantHousehold'
-                ? formatStr(dataInfo.address)
+                ? (dataInfo.areaCodeText || '') +
+                  (dataInfo.townCodeText || '') +
+                  (dataInfo.villageCodeText || '')
                 : formatStr(dataInfo.beforeAddress)
             }}</view>
           </view>
