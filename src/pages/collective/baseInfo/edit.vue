@@ -57,7 +57,7 @@
               <view v-else class="code-wrapper">
                 <input class="input-txt disabled" v-model="formData.doorNo" disabled />
               </view> -->
-              <view v-if="type=='add'" :class="['code-wrapper', focusIndex === 1 ? 'focus' : '']">
+              <view v-if="type == 'add'" :class="['code-wrapper', focusIndex === 1 ? 'focus' : '']">
                 <view class="pre-txt">
                   {{ formData.villageCode ? 'JT' + formData.villageCode : '' }}
                 </view>
@@ -90,7 +90,7 @@
         </uni-row>
 
         <uni-row>
-          <uni-col :span="24">
+          <uni-col :span="12">
             <uni-forms-item
               required
               label="所在位置"
@@ -98,7 +98,22 @@
               label-align="right"
               name="formData.locationType"
             >
-              <uni-data-select v-model="formData.locationType" :localdata="dict[326]" />
+              <uni-data-select
+                v-model="formData.locationType"
+                :localdata="dict[326]"
+                @change="change"
+              />
+            </uni-forms-item>
+          </uni-col>
+          <uni-col :span="12">
+            <uni-forms-item
+              required
+              label="淹没范围"
+              :label-width="170"
+              label-align="right"
+              name="formData.inundationRange"
+            >
+              <uni-data-select v-model="formData.inundationRange" :localdata="dict[346]" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -118,7 +133,7 @@
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 import { addLandlordApi, updateLandlordApi } from '@/service'
-import { routerBack, getStorage, StorageKey } from '@/utils'
+import { routerBack, getStorage, StorageKey, setlocationType } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { MainType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
@@ -197,12 +212,12 @@ const submit = () => {
     showToast('请选择所属区域')
     return
   } else if (
-      !formData.value.doorNo &&
-      formData.value.suffixNo &&
-      formData.value.suffixNo.length !== 4
-    ) {
-      showToast('村集体编码不全，请输入四位数字')
-      return
+    !formData.value.doorNo &&
+    formData.value.suffixNo &&
+    formData.value.suffixNo.length !== 4
+  ) {
+    showToast('村集体编码不全，请输入四位数字')
+    return
   }
   // else if (!formData.value.doorNo) {
   //   showToast('请输入村集体编码')
@@ -238,6 +253,11 @@ const submit = () => {
           showToast(ERROR_MSG)
         })
     }
+  }
+}
+let change = (e: any) => {
+  if (type.value === 'add') {
+    formData.value.inundationRange = setlocationType(e)
   }
 }
 </script>

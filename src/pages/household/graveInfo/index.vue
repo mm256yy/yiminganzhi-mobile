@@ -91,7 +91,7 @@
       class="btn add"
       src="@/static/images/icon_add.png"
       mode="scaleToFill"
-      @click="toLink('add')"
+      @click="toLink('add', {})"
     />
 
     <!-- 删除确认弹框 -->
@@ -198,6 +198,21 @@ const closeModifyRecords = () => {
  */
 const toLink = (type: string, data?: any) => {
   const { uid, doorNo, name, id } = props.dataInfo
+  if (props.dataInfo.immigrantHouseList) {
+    let m: any = []
+    props.dataInfo.immigrantHouseList.forEach((item: any) => {
+      if (item.id) {
+        m.push(item.id)
+      }
+    })
+    m.sort()
+    console.log(m, props.dataInfo.immigrantHouseList)
+    if (!data.gravePosition) {
+      data.gravePosition = props.dataInfo.immigrantHouseList.filter(
+        (bbq: any) => bbq.id == m[0]
+      )[0]?.locationType
+    }
+  }
   let commonParams = { type, uid, id, collectiveList: collectiveList.value }
   if (type === 'edit') {
     const currentVillage = collectiveList.value.find(
@@ -222,7 +237,7 @@ const toLink = (type: string, data?: any) => {
       number: null,
       materials: '',
       graveYear: '',
-      gravePosition: '',
+      gravePosition: data.gravePosition,
       remark: ''
     }
     routerForward('householdGraveInfoEdit', {

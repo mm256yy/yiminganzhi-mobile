@@ -82,7 +82,11 @@
               label-align="right"
               name="formData.gravePosition"
             >
-              <uni-data-select v-model="formData.gravePosition" :localdata="dict[326]" />
+              <uni-data-select
+                v-model="formData.gravePosition"
+                :localdata="dict[326]"
+                @change="change"
+              />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -135,7 +139,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { routerBack, getStorage, StorageKey } from '@/utils'
+import { routerBack, getStorage, StorageKey, setlocationType } from '@/utils'
 import { addLandlordGraveApi, updateLandlordGraveApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config'
 import Back from '@/components/Back/Index.vue'
@@ -230,6 +234,11 @@ const submit = () => {
           showToast(ERROR_MSG)
         })
     }
+  }
+}
+let change = (e: any) => {
+  if (commonParams.value.type === 'add') {
+    formData.value.inundationRange = setlocationType(e)
   }
 }
 </script>

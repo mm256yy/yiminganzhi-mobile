@@ -87,7 +87,7 @@
       class="add-btn"
       src="@/static/images/icon_add.png"
       mode="scaleToFill"
-      @click="toLink('add')"
+      @click="toLink('add', {})"
     />
 
     <uni-popup ref="alertDialog" type="dialog">
@@ -148,6 +148,21 @@ const dialogClose = () => {
 const toLink = (type: string, data?: any) => {
   const { uid, id, villageCode, doorNo } = props.dataInfo
   let commonParams = { type, uid, villageCode }
+  if (props.dataInfo.immigrantHouseList) {
+    let m: any = []
+    props.dataInfo.immigrantHouseList.forEach((item: any) => {
+      if (item.id) {
+        m.push(item.id)
+      }
+    })
+    m.sort()
+    console.log(m, props.dataInfo.immigrantHouseList)
+    if (!data.gravePosition) {
+      data.gravePosition = props.dataInfo.immigrantHouseList.filter(
+        (bbq: any) => bbq.id == m[0]
+      )[0]?.locationType
+    }
+  }
   if (type === 'edit') {
     routerForward('collectiveGraveInfoEdit', {
       params: JSON.stringify(data),
@@ -163,7 +178,7 @@ const toLink = (type: string, data?: any) => {
       number: null,
       materials: '',
       graveYear: '',
-      gravePosition: '',
+      gravePosition: data.gravePosition,
       remark: ''
     }
     routerForward('collectiveGraveInfoEdit', {

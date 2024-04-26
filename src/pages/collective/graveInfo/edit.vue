@@ -106,17 +106,31 @@
           <uni-col :span="12">
             <uni-forms-item
               required
-              label="所处位置"
+              label="所在位置"
               :label-width="150"
               label-align="right"
               name="formData.gravePosition"
             >
-              <uni-data-select v-model="formData.gravePosition" :localdata="dict[326]" />
+              <uni-data-select
+                v-model="formData.gravePosition"
+                :localdata="dict[326]"
+                @change="change"
+              />
             </uni-forms-item>
           </uni-col>
         </uni-row>
 
         <uni-row>
+          <uni-col :span="12">
+            <uni-forms-item
+              label="淹没范围"
+              :label-width="150"
+              label-align="right"
+              name="formData.inundationRange"
+            >
+              <uni-data-select v-model="formData.inundationRange" :localdata="dict[346]" />
+            </uni-forms-item>
+          </uni-col>
           <uni-col :span="12">
             <uni-forms-item
               label="备注"
@@ -152,7 +166,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { routerBack, getStorage, StorageKey } from '@/utils'
+import { routerBack, getStorage, StorageKey, setlocationType } from '@/utils'
 import { addLandlordGraveApi, updateLandlordGraveApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config'
 import { MainType } from '@/types/common'
@@ -271,6 +285,11 @@ const submit = () => {
           showToast(ERROR_MSG)
         })
     }
+  }
+}
+let change = (e: any) => {
+  if (commonParams.value.type === 'add') {
+    formData.value.inundationRange = setlocationType(e)
   }
 }
 </script>

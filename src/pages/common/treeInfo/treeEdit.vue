@@ -8,6 +8,7 @@
               <view class="col">序号</view>
               <view class="col w-63">品种名称</view>
               <view class="col w-63">用途</view>
+              <view class="col w-67">所在位置</view>
               <view class="col w-63">淹没范围</view>
               <view class="col w-64">规格</view>
               <view class="col w-64">单位</view>
@@ -25,9 +26,21 @@
             <view class="col w-63">
               <uni-data-select v-model="item.usageType" :localdata="dict[325]" />
             </view>
+            <view class="col w-67">
+              <uni-data-select
+                v-model="item.locationType"
+                :localdata="dict[326]"
+                @change="
+                  (e:any) => {
+                    return change(e, index)
+                  }
+                "
+              />
+            </view>
             <view class="col w-63">
               <uni-data-select v-model="item.inundationRange" :localdata="dict[346]" />
             </view>
+
             <view class="col w-64">
               <uni-data-select v-model="item.size" :localdata="dict[269]" />
             </view>
@@ -105,7 +118,7 @@
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 import Container from '@/components/Container/index.vue'
-import { getStorage, StorageKey, routerBack, deepClone } from '@/utils'
+import { getStorage, StorageKey, routerBack, deepClone, setlocationType } from '@/utils'
 import { updateLandlordTreeApi, deleteLandlordTreeApi, getLandlordItemApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 
@@ -128,6 +141,7 @@ const defaultRow = {
   unit: '1', // 默认株
   number: '',
   remark: '',
+  locationType: '',
   isAdd: true
 }
 
@@ -139,6 +153,20 @@ const getLandlordDetail = () => {
   getLandlordItemApi(uid.value).then((res: any) => {
     dataInfo.value = deepClone(res)
     formData.value = res && res.immigrantTreeList ? res.immigrantTreeList : []
+    if (dataInfo.value.immigrantHouseList) {
+      let m: any = []
+      dataInfo.value.immigrantHouseList.forEach((item: any) => {
+        if (item.id) {
+          m.push(item.id)
+        }
+      })
+      m.sort()
+      console.log(m, dataInfo.value.immigrantHouseList)
+
+      defaultRow.locationType = dataInfo.value.immigrantHouseList.filter(
+        (bbq: any) => bbq.id == m[0]
+      )[0]?.locationType
+    }
   })
 }
 
@@ -206,7 +234,16 @@ const addTree = () => {
 // 表单提交
 const submit = () => {
   const params = [...formData.value]
-
+  let key = false
+  formData.value.forEach((item: any) => {
+    if (!item.locationType) {
+      key = true
+    }
+  })
+  if (key) {
+    showToast('所在位置必填')
+    return
+  }
   updateLandlordTreeApi(dataInfo.value.uid, params)
     .then((res) => {
       if (res) {
@@ -234,6 +271,9 @@ const liveDialogConfirm = () => {
 
 const liveDialogClose = () => {
   liveDialog.value?.close()
+}
+let change = (e: any, index: any) => {
+  formData.value[index].inundationRange = setlocationType(e)
 }
 </script>
 

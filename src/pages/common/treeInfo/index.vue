@@ -7,6 +7,7 @@
           <view class="col w-63">品种名称</view>
           <view class="col w-63">用途</view>
           <view class="col w-63">淹没范围</view>
+          <view class="col w-67">所在位置</view>
           <view class="col w-64">规格</view>
           <view class="col w-64">单位</view>
           <view class="col w-64">数量</view>
@@ -24,6 +25,9 @@
         </view>
         <view class="col w-63">
           {{ formatDict(item.inundationRange, 346) }}
+        </view>
+         <view class="col w-67">
+          {{ formatDict(item.locationType, 326) }}
         </view>
         <view class="col w-64">
           {{ formatDict(item.size, 269) }}

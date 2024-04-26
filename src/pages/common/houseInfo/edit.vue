@@ -198,7 +198,11 @@
               label-align="right"
               name="formData.locationType"
             >
-              <uni-data-select v-model="formData.locationType" :localdata="dict[326]" />
+              <uni-data-select
+                v-model="formData.locationType"
+                :localdata="dict[326]"
+                @change="change"
+              />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -443,7 +447,7 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import dayjs from 'dayjs'
-import { routerBack, getStorage, StorageKey, routerForward } from '@/utils'
+import { routerBack, getStorage, StorageKey, routerForward, setlocationType } from '@/utils'
 import { addLandlordHouseApi, updateLandlordHouseApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
@@ -649,7 +653,11 @@ const mapChooseCallBack = (data: any) => {
     formData.value.latitude = data.latitude
   }
 }
-
+let change = (e: any) => {
+  if (type.value === 'add') {
+    formData.value.inundationRange = setlocationType(e)
+  }
+}
 onMounted(() => {
   uni.$on('chooseMap', mapChooseCallBack)
 })
