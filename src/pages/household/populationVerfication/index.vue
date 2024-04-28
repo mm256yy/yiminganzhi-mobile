@@ -145,7 +145,10 @@ const reason = ref<string>('') // 删除原因
 
 // 填报完成
 const onFilled = () => {
-  const res = props.dataList.every((item) => item.populationNature != null)
+  const dataList=props.dataList.filter((item) => item.isDelete != '1')
+  const res = dataList.every((item) => item.populationNature != null)
+  console.log(dataList, '测试dataList')
+  console.log(res, '测试res')
   console.log(props.dataInfo, '测试dataInfo')
   if (!res) {
     showToast('请检查带*号必填项')

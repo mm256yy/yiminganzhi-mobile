@@ -146,14 +146,15 @@ export class ImpLandlord extends Common {
     }
 
     // 人口核定完成条件：人口性质设置成功
-    if (this.isArrayAndNotNull(demographicList)) {
-      const res = demographicList.find((item) => !item.populationNature)
-      if (!res) {
-        landlordItem.immigrantFilling.populationStatus = '1'
-      } else {
-        landlordItem.immigrantFilling.populationStatus = '0'
-      }
-    }
+    // if (this.isArrayAndNotNull(demographicList)) {
+    //   const res = demographicList.find((item) => !item.populationNature)
+    //   if (!res) {
+    //     landlordItem.immigrantFilling.populationStatus = '1'
+    //   } else {
+    //     landlordItem.immigrantFilling.populationStatus = '0'
+    //   }
+    // } 宗浩说要手动点击填报 不能自动
+    
     // 房屋产权完成条件：列表中所有数据的是否合法均已设置完成
     // if (this.isArrayAndNotNull(immigrantHouseList)) {
     //   const res = immigrantHouseList.find((item) => item.isCompliance !== '1')
