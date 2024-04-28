@@ -78,7 +78,7 @@ const beadhouselist = ref<any>({
 const resettlePeopleInfo = () => {
   let householder: any = null
   console.log(props.immigrantSettle, '模拟集中供养数据')
-  beadhouselist.value.nursingHome = props.immigrantSettle.nursingHome.toString()
+  beadhouselist.value.nursingHome = props.immigrantSettle.nursingHome?.toString()
   console.log(beadhouselist.value.nursingHome, '赋值的数据')
   if (props.data && props.data.length) {
     householder = props.data.find((item: any) => item.relation === '1')
