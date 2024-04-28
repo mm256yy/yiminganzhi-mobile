@@ -66,11 +66,14 @@ export interface landEstimateDtoListDDLType {
   cbNum: any
   getTypeText: any
   isUpdate: any
+  reportUserDate: any
+  reportUserName: any
+  estimateDate:any
 }
 
 export const landEstimateDtoListName = 'landEstimateDtoList'
 // 需要更新的字段定义 和 字段赋值
-export const landEstimateDtoListlds = `'createdBy','createdDate','lastModifiedBy','lastModifiedDate','id','projectId','status','householdId','householdType','doorNo','showDoorNo','householder','area','inundationRange','sheetNumber','landNumber','landName','cityCode','areaCode','townCode','villageCode','villagerGroup','rightHolder','landNature','xzdw','landLevelOne','landLevelTwo','shapeArea','shapeLeng','avgElevat','minElevat','maxElevat','avgX','minX','maxX','avgY','minY','maxY','remark','isDelete','relationFlag','estimateFlag','relationBy','landOwner','getType','landSea','valuationPrice','valuationAmount','compensationAmount','uid','addReason','deleteReason','evalIsDelete','areaText','inundationRangeText','cityCodeText','areaCodeText','townCodeText','villageCodeText','landNatureText','landLevelOneText','landLevelTwoText','landTypeText','cbRate','cbNum','getTypeText','isUpdate'`
+export const landEstimateDtoListlds = `'createdBy','createdDate','lastModifiedBy','lastModifiedDate','id','projectId','status','householdId','householdType','doorNo','showDoorNo','householder','area','inundationRange','sheetNumber','landNumber','landName','cityCode','areaCode','townCode','villageCode','villagerGroup','rightHolder','landNature','xzdw','landLevelOne','landLevelTwo','shapeArea','shapeLeng','avgElevat','minElevat','maxElevat','avgX','minX','maxX','avgY','minY','maxY','remark','isDelete','relationFlag','estimateFlag','relationBy','landOwner','getType','landSea','valuationPrice','valuationAmount','compensationAmount','uid','addReason','deleteReason','evalIsDelete','areaText','inundationRangeText','cityCodeText','areaCodeText','townCodeText','villageCodeText','landNatureText','landLevelOneText','landLevelTwoText','landTypeText','cbRate','cbNum','getTypeText','isUpdate','reportUserDate','reportUserName','estimateDate'`
 export const getLandEstimateDtoListValues = (
   item: landEstimateDtoListDDLType,
   status: 'default' | 'modify'
@@ -161,5 +164,8 @@ create table if not exists ${landEstimateDtoListName} (
   'cbNum' text,
   'getTypeText' text,
   'isUpdate' text
+  'reportUserDate' text
+  'reportUserName' text
+  'estimateDate' text
 );
 `

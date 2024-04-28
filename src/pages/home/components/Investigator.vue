@@ -180,7 +180,6 @@ interface CollectionType {
 const emit = defineEmits(['toLink', 'loginIn'])
 const userInfo = ref<any>(null)
 const collection = ref<CollectionType | null>(null)
-
 const toLink = (name: string) => {
   emit('toLink', name)
 }
@@ -193,23 +192,26 @@ const role=ref<any>()
 onShow(() => {
   const user = getStorage(StorageKey.USERINFO)
   userInfo.value = user
-  if (role.value == 'reviewer') {
-    //采集数据
-      getHomeCollectionApi().then((res) => {
-    collection.value = res || null
-  })
-  } else if (role.value == 'investigator') {
-    //调查数据
-      getHomeCollectionApis().then((res) => {  
-    console.log(res,'测试resshih')
-  })
-  }
-  // getHomeCollectionApi().then((res) => {
+  console.log(user, 'userInfo')
+  // if (role.value == 'reviewer') {
+  //   //采集数据
+  //   console.log('采集数据')
+  //     getHomeCollectionApi().then((res) => {
   //   collection.value = res || null
   // })
-  // getHomeCollectionApis().then((res) => {
-  //   console.log(res,'测试resshih')
+  // } else if (role.value == 'investigator') {
+  //   //调查数据
+  //   console.log('调查数据')
+  //     getHomeCollectionApis().then((res) => {  
+  //       console.log(res, '测试resshih')
+  //       collection.value = res || null
   // })
+  // }
+  console.log(role.value,'role是什么')
+  getHomeCollectionApis().then((res) => {  
+        console.log(res, '测试resshih')
+        collection.value = res || null
+  })
 })
 onBeforeMount(() => {
   // 不同角色展示不同的首页视图

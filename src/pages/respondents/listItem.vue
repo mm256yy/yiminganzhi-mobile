@@ -51,6 +51,7 @@
         <view class="label">自然村名称:</view>
         <view class="value">{{ props.data.virutalVillageCodeText || '' }}</view>
       </view>
+      <view v-if="role=='investigator'">
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">填报人:</view>
@@ -60,8 +61,9 @@
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">填报时间:</view>
         <view class="value">{{
-          props.data.reportDate ? dayjs(props.data.reportDate).format('YYYY-MM-DD HH:mm:ss') : '-'
+          props.data.reportUserDate ? dayjs(props.data.reportUserDate).format('YYYY-MM-DD HH:mm:ss') : '-'
         }}</view>
+      </view>
       </view>
     </view>
   </view>
@@ -73,6 +75,8 @@ import { getLocationText, yesAndNoEnums } from '@/config/common'
 import { LandlordType } from '@/types/sync'
 import { MainType } from '@/types/common'
 import dayjs from 'dayjs'
+import {getStorage, StorageKey } from '@/utils'
+import { RoleCodeType } from '@/types/common'
 
 interface PropsType {
   data: LandlordType
@@ -84,6 +88,8 @@ const emit = defineEmits(['delete'])
 const deleteItem = () => {
   emit('delete')
 }
+const role: RoleCodeType = getStorage(StorageKey.USERROLE)
+console.log(role,'role是什么？')
 </script>
 
 <style lang="scss" scoped>

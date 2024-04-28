@@ -23,7 +23,7 @@
             <uni-row>
               <uni-col :span="12">
                 <view class="col">
-                  <view class="label">身份证号1：</view>
+                  <view class="label">身份证号：</view>
                   <view class="content">
                     {{ formatStr(item.card) }}
                   </view>

@@ -57,15 +57,17 @@
         <view class="label">土地性质:</view>
         <view class="value">{{ formatEmptyText(props.data.landNatureText) || '' }}</view>
       </view>
+      <view v-if="role=='assessorland'">    
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
-        <view class="label">填报人:</view>
+        <view class="label">评估人:</view>
         <view class="value">{{ formatEmptyText(props.data.reportUserName) }}</view>
       </view>
       <view class="cont-item right">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
-        <view class="label">填报时间:</view>
-        <view class="value">{{ formatEmptyText(props.data.reportDate) || '' }}</view>
+        <view class="label">评估时间:</view>
+        <view class="value">{{ formatEmptyText(props.data.reportUserDate) || '' }}</view>
+      </view>
       </view>
     </view>
   </view>
@@ -77,6 +79,8 @@ import { LandlordType } from '@/types/sync'
 import { routerForward, formatStr } from '@/utils'
 import { formatEmptyText } from '@/utils/format'
 import { getLandlordListBySearchApi } from '@/service'
+import {getStorage, StorageKey } from '@/utils'
+import { RoleCodeType } from '@/types/common'
 
 interface PropsType {
   index: number
@@ -139,6 +143,8 @@ const handleCheckBoxChange = (e: any) => {
   })
   console.log(e)
 }
+const role: RoleCodeType = getStorage(StorageKey.USERROLE)
+console.log(role,'role是什么？')
 </script>
 
 <style lang="scss" scoped>

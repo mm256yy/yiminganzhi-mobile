@@ -16,6 +16,7 @@ export interface LandlordDDLType {
   type: MainType
   reportStatus: ReportStatusEnum
   reportDate: string
+  reportUserDate: string
   reportUser: string
   reportUserName:string
   reviewReportStatus:ReportStatusEnum
@@ -48,6 +49,7 @@ create table if not exists ${LandlordTableName} (
   'type' text,
   'reportStatus' text,
   'reportDate' text,
+  'reportUserDate' text,
   'reportUser' text,
   'reportUserName' text,
   'reviewReportStatus' text,
@@ -75,12 +77,12 @@ create table if not exists ${LandlordTableName} (
 `
 
 // 需要更新的字段定义 和 字段赋值
-export const landlordFields = `'uid','id','padStatus','doorNo','type','name','reportStatus','reportDate','reportUser','reportUserName','reviewReportStatus','reviewReportDate','reviewReportUser','signStatus','signDate','areaCode','townCode','villageCode','warnStatus','currentProgress','virutalVillageCode','content','longitude','latitude','card','updatedDate','isPadDelete','houseAllStatus','isDelete'`
+export const landlordFields = `'uid','id','padStatus','doorNo','type','name','reportStatus','reportDate','reportUserDate','reportUser','reportUserName','reviewReportStatus','reviewReportDate','reviewReportUser','signStatus','signDate','areaCode','townCode','villageCode','warnStatus','currentProgress','virutalVillageCode','content','longitude','latitude','card','updatedDate','isPadDelete','houseAllStatus','isDelete'`
 // status 字段为 当前数据是否有变更的状态
 export const getLandlordValues = (item: LandlordType, status: 'default' | 'modify') =>
   `'${item.uid}','${item.id || null}','${status}','${item.doorNo}','${item.type}','${item.name}','${
     item.reportStatus
-  }','${item.reportDate ? dayjs(item.reportDate).format('YYYY-MM-DD HH:mm:ss') : ''}','${
+  }','${item.reportDate ? dayjs(item.reportDate).format('YYYY-MM-DD HH:mm:ss') : ''}','${item.reportUserDate ? dayjs(item.reportUserDate).format('YYYY-MM-DD HH:mm:ss') : ''}','${
     item.reportUser
   }','${
     item.reportUserName
@@ -100,7 +102,7 @@ export const getLandlordValues = (item: LandlordType, status: 'default' | 'modif
 export const getLandlordSqlValues = (data: LandlordType) =>
   `padStatus = 'modify',type = '${data.type}',name = '${data.name}',doorNo = '${
     data.doorNo
-  }',reportStatus = '${data.reportStatus}',reportDate = '${data.reportDate}',reportUser = '${
+  }',reportStatus = '${data.reportStatus}',reportDate = '${data.reportDate}',reportUserDate = '${data.reportUserDate}',reportUser = '${
     data.reportUser
   }',reportUserName = '${
     data.reportUserName

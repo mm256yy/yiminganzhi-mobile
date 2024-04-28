@@ -45,18 +45,20 @@
         <view class="label">行政村名称:</view>
         <view class="value">{{ props.data.villageCodeText }}</view>
       </view>
+    <view v-if="role=='assessor'">
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
-        <view class="label">填报人:</view>
+        <view class="label">评估人:</view>
         <view class="value">{{ props.data.reportUserName }}</view>
       </view>
       <view class="cont-item">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
-        <view class="label">填报时间:</view>
+        <view class="label">评估时间:</view>
         <view class="value">{{
-          props.data.reportDate ? dayjs(props.data.reportDate).format('YYYY-MM-DD HH:mm:ss') : '-'
+          props.data.reportUserDate ? dayjs(props.data.reportUserDate).format('YYYY-MM-DD HH:mm:ss') : '-'
         }}</view>
       </view>
+    </view>
       <view class="cont-item" v-if="props.data.type === MainType.PeasantHousehold">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">自然村名称:</view>
@@ -73,7 +75,8 @@ import { LandlordType } from '@/types/sync'
 import { MainType } from '@/types/common'
 import { computed } from 'vue'
 import dayjs from 'dayjs'
-
+import {getStorage, StorageKey } from '@/utils'
+import { RoleCodeType } from '@/types/common'
 interface PropsType {
   data: LandlordType
 }
@@ -92,6 +95,8 @@ const filled = computed(() => {
 // const deleteItem = () => {
 //   emit('delete')
 // }
+const role: RoleCodeType = getStorage(StorageKey.USERROLE)
+
 </script>
 
 <style lang="scss" scoped>

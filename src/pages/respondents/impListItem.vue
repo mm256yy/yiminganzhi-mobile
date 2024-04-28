@@ -42,7 +42,7 @@
         <view class="cont-item">
           <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
           <view class="label">填报时间:</view>
-          <view class="value">{{ props.data.reportDate }}</view>
+          <view class="value">{{ props.data.reportUserDate }}</view>
         </view>
       </template>
       <template v-else>
@@ -63,7 +63,7 @@
           <view class="label">所属区域:</view>
           <view class="value">{{ props.data.areaCodeText }}/{{ props.data.townCodeText }}/{{ props.data.villageCodeText }}</view>
         </view>
-        <view class="cont-item">
+        <!-- <view class="cont-item">
           <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
           <view class="label">填报人:</view>
           <view class="value">{{ props.data.reportUserName }}</view>
@@ -72,9 +72,9 @@
           <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
           <view class="label">填报时间:</view>
           <view class="value">{{
-            props.data.reportDate ? dayjs(props.data.reportDate).format('YYYY-MM-DD HH:mm:ss') : '-'
+            props.data.reportUserDate ? dayjs(props.data.reportUserDate).format('YYYY-MM-DD HH:mm:ss') : '-'
           }}</view>
-        </view>
+        </view> -->
       </template>
     </view>
   </view>

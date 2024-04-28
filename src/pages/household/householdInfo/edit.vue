@@ -82,7 +82,7 @@
                   {{
                     compatibleOldSystems()
                       ? filterViewDoorNoWithBeforeOther(formData.villageCode)
-                      : filterViewDoorNoWithBefore(formData.villageCode)
+                      : formData.otherCode 
                   }}
                 </view>
                 <input
@@ -255,7 +255,7 @@ onLoad((option: any) => {
       formData.value.villageCode = option.villageCode
       formData.value.virutalVillageCode = option.virutalVillageCode ? option.virutalVillageCode : ''
     }
-    if (compatibleOldSystems() && option.otherCode) {
+    if (option.otherCode) {
       formData.value.otherCode = option.otherCode
     }
     formData.value.type = MainType.PeasantHousehold
@@ -307,11 +307,18 @@ const submit = () => {
     doorNo = formData.value.doorNo
   } else {
     if (compatibleOldSystems()) {
-      // doorNo = 'jl'+String(formData.value.otherCode) + formData.value.suffixNo
-      doorNo = 'jl'+filterViewDoorNoWithBeforeOther(formData.value.villageCode) + formData.value.suffixNo
+      if ((getStorage(StorageKey.PROJECTINFO) || {}).reservoirCode == 'jlsk') {
+        doorNo = 'jl' + filterViewDoorNoWithBeforeOther(formData.value.villageCode) + formData.value.suffixNo
+      } else{
+        doorNo = filterViewDoorNoWithBeforeOther(formData.value.villageCode) + formData.value.suffixNo
+      }
     } else {
       if (formData.value.villageCode) {
-        doorNo = 'jl'+filterViewDoorNoWithBefore(formData.value.villageCode) + formData.value.suffixNo
+        if ((getStorage(StorageKey.PROJECTINFO) || {}).reservoirCode == 'jlsk') {
+          doorNo = 'jl'+String(formData.value.otherCode)+ formData.value.suffixNo
+        } else{
+          doorNo = String(formData.value.otherCode)+ formData.value.suffixNo
+        }
       } else {
         doorNo = ''
       }
