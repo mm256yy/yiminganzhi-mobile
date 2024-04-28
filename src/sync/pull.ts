@@ -1226,11 +1226,10 @@ class PullData {
           if (!item.uid) {
             item.uid = guid()
           }
-          const fields = landEstimateDtoListlds
           const values = getLandEstimateDtoListValues(item, 'default')
-          console.log(values, fields)
+          console.log(values)
 
-          db.insertOrReplaceData(landEstimateDtoListName, values, fields)
+          db.insertOrReplaceData(landEstimateDtoListName, values.valiues, values.keys)
             .then((res) => {
               console.log(`成功`, res)
             })

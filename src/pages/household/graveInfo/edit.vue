@@ -163,6 +163,8 @@ onLoad((option: any) => {
     let params = JSON.parse(option.params)
     formData.value = { ...params }
     collectiveList.value = commonParams.value.collectiveList
+    console.log(collectiveList.value, '纯集体数据')
+
     if (commonParams.value.type === 'edit') {
       title.value = '坟墓信息编辑'
     } else if (commonParams.value.type === 'add') {

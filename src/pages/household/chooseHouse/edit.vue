@@ -39,12 +39,12 @@
           <uni-col :span="24">
             <uni-forms-item
               required
-              label="户型/套型"
+              label="户型/套型(㎡)"
               :label-width="150"
               label-align="right"
               name="formData.area"
             >
-              <view class="content-txt"> {{ formatStr(formData.area, '㎡') }} </view>
+              <view class="content-txt"> {{ formatStr(formData.area) }} </view>
             </uni-forms-item>
           </uni-col>
 

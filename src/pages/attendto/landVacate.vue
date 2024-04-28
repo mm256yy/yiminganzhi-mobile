@@ -78,7 +78,7 @@
         <uni-col :span="24">
           <uni-forms-item
             required
-            label="移民户主意见："
+            :label="dataInfo.type != 'LandNoMove' ? '移民户主意见：' : '使用权人意见'"
             :label-width="150"
             label-align="right"
             name="formData.landEmptyOpinion"

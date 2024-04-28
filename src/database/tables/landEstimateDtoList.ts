@@ -78,18 +78,27 @@ export const getLandEstimateDtoListValues = (
   item: landEstimateDtoListDDLType,
   status: 'default' | 'modify'
 ) => {
-  let m = ''
+  const m = { keys: '', valiues: '' }
   let key: keyof landEstimateDtoListDDLType
+  // for (key in item) {
+  //   if (!item[key]) {
+  //     item[key] == null
+  //   }
+  //   if (key != 'isUpdate' && item[key]) {
+  //     m = m + `'${item[key]}',`
+  //   } else if (key == 'isUpdate') {
+  //     m = m + `'${item[key]}'`
+  //   } else {
+  //     m = m + `'',`
+  //   }
+  // }
   for (key in item) {
-    if (!item[key]) {
-      item[key] == null
-    }
-    if (key != 'isUpdate' && item[key]) {
-      m = m + `'${item[key]}',`
-    } else if (key == 'isUpdate') {
-      m = m + `'${item[key]}'`
+    if (key != 'isUpdate') {
+      m.keys += `'${key}',`
+      m.valiues += `'${item[key]}',`
     } else {
-      m = m + `'',`
+      m.keys += `'${key}'`
+      m.valiues += `'${item[key]}'`
     }
   }
   return m
@@ -163,9 +172,9 @@ create table if not exists ${landEstimateDtoListName} (
   'cbRate' text,
   'cbNum' text,
   'getTypeText' text,
-  'reportUserDate' text
-  'reportUserName' text
+  'isUpdate' text,
+  'reportUserDate' text,
+  'reportUserName' text,
   'estimateDate' text
-  'isUpdate' text
 );
 `

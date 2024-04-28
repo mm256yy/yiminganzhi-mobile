@@ -53,7 +53,9 @@
 
         <uni-tr v-for="(item, index) in tableData" :key="index">
           <uni-td>{{ item.settleAddressText }}</uni-td>
-          <uni-td>{{ homesteadAreaSize.find((v) => v.id === item.area)?.name }}</uni-td>
+          <uni-td>{{
+            homesteadAreaSize.find((v) => v.id === item.area)?.name || item.area
+          }}</uni-td>
           <uni-td>{{ item.num }}</uni-td>
           <uni-td>{{ item.houseTypeText }}</uni-td>
         </uni-tr>

@@ -218,7 +218,11 @@
                 <td align="center" class="uTd">{{ index + 1 }}</td>
                 <td align="center" class="uTd">{{ item.settleAddressText }}</td>
                 <td align="center" class="uTd">{{ item.houseTypeText }} </td>
-                <td align="center" class="uTd">{{ item.area }}</td>
+                <td align="center" class="uTd">{{
+                  baseInfo.houseAreaType == 'homestead'
+                    ? homesteadAreaSize.find((v) => v.id === item.area)?.name
+                    : item.area
+                }}</td>
                 <td align="center" class="uTd"></td>
               </tr>
             </template>
@@ -807,6 +811,8 @@ import {
 import { apartmentArea, resettleArea } from '@/config'
 import { OtherDataType } from '@/database'
 import dayjs from 'dayjs'
+import { resettleHouseType, apartmentAreaSize, homesteadAreaSize } from '@/config'
+
 export default {
   data() {
     return {
@@ -829,7 +835,8 @@ export default {
       dictOption,
       show: false,
       OtherDataType,
-      dataLists: []
+      dataLists: [],
+      homesteadAreaSize
     }
   },
   onLoad(option) {
