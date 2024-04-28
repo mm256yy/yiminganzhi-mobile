@@ -45,8 +45,8 @@
 
       <view class="info-text"> 该户选择集中供养 </view>
       <uni-col :span="12">
-        <uni-forms-item label="养老院:" label-align="right" name="beadhouselist.beadhouse">
-          <uni-data-select v-model="beadhouselist.beadhouse" :localdata="dict[416]" />
+        <uni-forms-item label="养老院:" label-align="right" name="beadhouselist.nursingHome">
+          <uni-data-select v-model="beadhouselist.nursingHome" :localdata="dict[416]" />
         </uni-forms-item>
       </uni-col>
       <view class="btn-wrap">
@@ -59,7 +59,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
+import { computed, ref,onMounted } from 'vue'
 import { HouseAreaType } from '@/types/common'
 import { getStorage, StorageKey } from '@/utils'
 interface PropsType {
@@ -73,12 +73,13 @@ const dict = getStorage(StorageKey.DICT)
 const emit = defineEmits(['submit'])
 const props = defineProps<PropsType>()
 const beadhouselist = ref<any>({
-  beadhouse: ''
+  nursingHome: ''
 })
 const resettlePeopleInfo = () => {
   let householder: any = null
   console.log(props.immigrantSettle, '模拟集中供养数据')
-  beadhouselist.value.beadhouse = props.immigrantSettle.beadhouse
+  beadhouselist.value.nursingHome = props.immigrantSettle.nursingHome.toString()
+  console.log(beadhouselist.value.nursingHome, '赋值的数据')
   if (props.data && props.data.length) {
     householder = props.data.find((item: any) => item.relation === '1')
   }
@@ -94,13 +95,18 @@ const submitResettle = async () => {
   const params: any = {
     houseAreaType: HouseAreaType.concentrate,
     doorNo: props.doorNo,
-    beadhouse: beadhouselist.value.beadhouse
+    nursingHome: beadhouselist.value.nursingHome
   }
   if (props.immigrantSettle && props.immigrantSettle.uid) {
     params.uid = props.immigrantSettle.uid
   }
+  console.log(params, '模拟集中供养传输数据')
   emit('submit', params)
 }
+
+onMounted(() => {
+  resettlePeopleInfo()
+})
 </script>
 
 <style lang="scss" scoped>

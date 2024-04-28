@@ -66,7 +66,9 @@
       <view class="cont-item right">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">评估时间:</view>
-        <view class="value">{{ formatEmptyText(props.data.reportUserDate) || '' }}</view>
+        <view class="value">{{
+          props.data.reportUserDate ? dayjs(props.data.reportUserDate).format('YYYY-MM-DD HH:mm:ss') : '-'
+        }}</view>
       </view>
       </view>
     </view>
@@ -81,6 +83,7 @@ import { formatEmptyText } from '@/utils/format'
 import { getLandlordListBySearchApi } from '@/service'
 import {getStorage, StorageKey } from '@/utils'
 import { RoleCodeType } from '@/types/common'
+import dayjs from 'dayjs'
 
 interface PropsType {
   index: number
