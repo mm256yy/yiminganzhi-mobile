@@ -208,7 +208,8 @@ export interface LandlordSearchType {
   page?: number
   pageSize?: number
   warnStatus?: string
-  houseAllStatus?:string
+  houseAllStatus?: string
+  uid?:any
 }
 
 // 分页类型

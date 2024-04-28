@@ -11,14 +11,14 @@
           <view class="info-item">
             <view class="label">户主：</view>
             <view class="value">
-              {{ resettlePeopleInfo.householder ? resettlePeopleInfo.householder.name : '' }}</view
+              {{ resettlePeopleInfo().householder ? resettlePeopleInfo().householder.name : '' }}</view
             >
           </view>
           <view class="info-item">
             <view class="label">迁出地址：</view>
             <view class="value">
               {{
-                resettlePeopleInfo.householder ? resettlePeopleInfo.householder.censusRegister : ''
+                resettlePeopleInfo().householder ? resettlePeopleInfo().householder.censusRegister : ''
               }}
             </view>
           </view>
@@ -27,12 +27,12 @@
         <view class="base-column">
           <view class="info-item">
             <view class="label">户内人口：</view>
-            <view class="value">{{ resettlePeopleInfo.total }}</view>
+            <view class="value">{{ resettlePeopleInfo().total }}</view>
           </view>
           <view class="info-item">
             <view class="label">联系方式：</view>
             <view class="value">
-              {{ resettlePeopleInfo.householder ? resettlePeopleInfo.householder.phone : '' }}</view
+              {{ resettlePeopleInfo().householder ? resettlePeopleInfo().householder.phone : '' }}</view
             >
           </view>
         </view>
@@ -75,7 +75,7 @@ const props = defineProps<PropsType>()
 const beadhouselist = ref<any>({
   beadhouse: ''
 })
-const resettlePeopleInfo = computed(() => {
+const resettlePeopleInfo = () => {
   let householder: any = null
   console.log(props.immigrantSettle, '模拟集中供养数据')
   beadhouselist.value.beadhouse = props.immigrantSettle.beadhouse
@@ -88,7 +88,7 @@ const resettlePeopleInfo = computed(() => {
     total: props.data.filter((item: any) => item.name != '增计人口' && item.isDelete != '1').length,
     householder
   }
-})
+}
 
 const submitResettle = async () => {
   const params: any = {

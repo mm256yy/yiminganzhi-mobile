@@ -202,16 +202,19 @@ const getLists = () => {
   const params: any = {
     type: unref(tabTypes),
     page: 1,
-    pageSize: 10
+    pageSize: 9999
   }
   nextTick(async () => {
     const res = await getLandlordListBySearchApi(params).catch(() => {})
     console.log(res, '个体工商户res是什么')
-    console.log(props.dataInfo,'主体数据是什么？')
+    console.log(props.dataInfo, '主体数据是什么？')
     individualHouseholdUid.value = res.find(
       (item: any) => item.name == props.dataInfo.relateIndividualHouseholdName
     )
-    console.log(individualHouseholdUid.value.uid, '个体工商户uid是什么')
+    const ress = await getLandlordListBySearchApi({ uid: individualHouseholdUid.value.uid }).catch(
+      () => {}
+    )
+    console.log(ress, '个体工商户uid是什么')
   })
 }
 // 填报

@@ -63,7 +63,11 @@
               label-align="right"
               name="formData.locationType"
             >
-              <uni-data-select v-model="formData.locationType" :localdata="dict[326]" />
+              <uni-data-select
+                v-model="formData.locationType"
+                :localdata="dict[326]"
+                @change="change"
+              />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -82,7 +86,7 @@
                   {{
                     compatibleOldSystems()
                       ? filterViewDoorNoWithBeforeOther(formData.villageCode)
-                      : formData.otherCode 
+                      : formData.otherCode
                   }}
                 </view>
                 <input
@@ -201,7 +205,8 @@ import {
   filterViewDoorNo,
   filterViewDoorNoWithBefore,
   filterViewDoorNoWithBeforeOther,
-  formatDict
+  formatDict,
+  setlocationType
 } from '@/utils'
 import { addLandlordApi, updateLandlordApi } from '@/service'
 import { locationTypes, yesAndNoEnums } from '@/config/common'
@@ -308,24 +313,28 @@ const submit = () => {
   } else {
     if (compatibleOldSystems()) {
       if ((getStorage(StorageKey.PROJECTINFO) || {}).reservoirCode == 'jlsk') {
-        doorNo = 'jl' + filterViewDoorNoWithBeforeOther(formData.value.villageCode) + formData.value.suffixNo
-      } else{
-        doorNo = filterViewDoorNoWithBeforeOther(formData.value.villageCode) + formData.value.suffixNo
+        doorNo =
+          'jl' +
+          filterViewDoorNoWithBeforeOther(formData.value.villageCode) +
+          formData.value.suffixNo
+      } else {
+        doorNo =
+          filterViewDoorNoWithBeforeOther(formData.value.villageCode) + formData.value.suffixNo
       }
     } else {
       if (formData.value.villageCode) {
         if ((getStorage(StorageKey.PROJECTINFO) || {}).reservoirCode == 'jlsk') {
-          doorNo = 'jl'+String(formData.value.otherCode)+ formData.value.suffixNo
-        } else{
-          doorNo = String(formData.value.otherCode)+ formData.value.suffixNo
+          doorNo = 'jl' + String(formData.value.otherCode) + formData.value.suffixNo
+        } else {
+          doorNo = String(formData.value.otherCode) + formData.value.suffixNo
         }
       } else {
         doorNo = ''
       }
     }
   }
-  console.error(doorNo);
-  
+  console.error(doorNo)
+
   let params = {
     ...formData.value,
     doorNo: doorNo,
@@ -393,7 +402,11 @@ const mapChooseCallBack = (data: any) => {
     formData.value.latitude = data.latitude
   }
 }
-
+let change = (e: any) => {
+  if (type.value === 'add') {
+    formData.value.inundationRange = setlocationType(e)
+  }
+}
 onMounted(() => {
   uni.$on('chooseMap', mapChooseCallBack)
 })

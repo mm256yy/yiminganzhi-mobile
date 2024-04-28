@@ -350,6 +350,16 @@ export class Landlord extends Common {
           reject(false)
           return
         }
+        const user: any = await this.getLandlordListBySearch({ uid })
+        if (user[0].householderDoorNo) {
+          const olduser = await this.getLandlordListBySearch({ doorNo: user[0].householderDoorNo })
+          if (user[0].type == 'IndividualHousehold') {
+            await this.updateBaseLandlord({ ...olduser[0], relateIndividualHouseholdName: '' })
+          }
+          if (user[0].type == 'Company') {
+            await this.updateBaseLandlord({ ...olduser[0], relateCompanyName: '' })
+          }
+        }
         const values = `padStatus = 'modify',isPadDelete = '1',isDelete='1',updatedDate = '${getCurrentTimeStamp()}'`
         const res = await this.db.updateTableData(LandlordTableName, values, 'uid', uid)
         if (res && res.code) {
@@ -696,12 +706,16 @@ export class Landlord extends Common {
           doorNo,
           houseAllStatus,
           pageSize = 10,
-          page = 1
+          page = 1,
+          uid
         } = data || {}
         const array: LandlordType[] = []
         let sql = `select * from ${LandlordTableName} where isPadDelete = '0'`
         if (type) {
           sql += ` and type = '${type}'`
+        }
+        if (uid) {
+          sql += ` and uid = '${uid}'`
         }
         if (name) {
           sql += ` and (name like '%${name}%' or doorNo like '%${name.slice(
@@ -710,7 +724,9 @@ export class Landlord extends Common {
           )}%' or content like '%${name}%')`
         }
         if (villageCode) {
-          sql += ` and areaCode = '${villageCode[0]}'`
+          if (villageCode[0]) {
+            sql += ` and areaCode = '${villageCode[0]}'`
+          }
           if (villageCode[1]) {
             sql += ` and townCode = '${villageCode[1]}'`
           }
@@ -844,7 +860,7 @@ export class Landlord extends Common {
         const userInfo = getStorage(StorageKey.USERINFO)
         // 更新上报相关字段
         const reportUser = userInfo ? userInfo.id : ''
-        console.log(reportUser,'填报用户是谁1？')
+        console.log(reportUser, '填报用户是谁1？')
         if (!reportUser) {
           reject(null)
           return
@@ -872,39 +888,39 @@ export class Landlord extends Common {
     })
   }
 
-    // 获取首页统计数据 （复核）
-     getHomeCollections(): Promise<any> {
+  // 获取首页统计数据 （复核）
+  getHomeCollections(): Promise<any> {
     return new Promise(async (resolve, reject) => {
       try {
         const userInfo = getStorage(StorageKey.USERINFO)
         // 更新上报相关字段
         const reportUser = userInfo ? userInfo.id : ''
-        console.log(reportUser,'填报用户是谁2？')
+        console.log(reportUser, '填报用户是谁2？')
         if (!reportUser) {
           reject(null)
           return
         }
-      // 今日填报
-      const sql =  `select count(reviewReportStatus = 'ReportSucceed' and reviewReportDate Between '${dayjs()
+        // 今日填报
+        const sql = `select count(reviewReportStatus = 'ReportSucceed' and reviewReportDate Between '${dayjs()
           .startOf('day')
           .format(this.format)}' and '${dayjs()
           .endOf('day')
           .format(this.format)}' or null) as todayReport
-      from ${LandlordTableName} where reviewReportUser = '${reportUser}'`  
+      from ${LandlordTableName} where reviewReportUser = '${reportUser}'`
 
         const res: LandlordDDLType[] = await this.db.selectSql(sql)
-       // 未填报
+        // 未填报
         const sql2 = `select count(reportStatus != 'ReportSucceed' or null) as noReport from ${LandlordTableName}`
         const res2: LandlordDDLType[] = await this.db.selectSql(sql2)
         // 历史填报
         const sql3 = `select count(reportStatus = 'ReportSucceed' or null) as hasReport from ${LandlordTableName} where reportUser = '${reportUser}'`
         const res3: LandlordDDLType[] = await this.db.selectSql(sql3)
 
-        console.log(res, res2,res3, '填报数据')
+        console.log(res, res2, res3, '填报数据')
         const obj = res ? res[0] : {}
         const obj2 = res2 ? res2[0] : {}
         const obj3 = res3 ? res3[0] : {}
-        resolve({ ...obj, ...obj2,...obj3 })
+        resolve({ ...obj, ...obj2, ...obj3 })
       } catch (error) {
         console.log(error, 'getHomeCollection-error')
         reject(null)

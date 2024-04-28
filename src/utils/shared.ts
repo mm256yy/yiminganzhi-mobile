@@ -213,7 +213,7 @@ export function deepClone(target: any, map?: any) {
 }
 export function setlocationType(target: any) {
   if (target == 'SubmergedArea') {
-    return '2'
+    return '1'
   } else if (target == 'InfluenceArea') {
     return ''
   } else {

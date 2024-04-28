@@ -22,7 +22,13 @@
     <view class="search">
       <view class="search-input">
         <!-- <input type="text" placeholder="请输入户号、名称、联系方式" v-model.trim="seachName" /> -->
-        <input v-model="name" type="text" :confirm-type="'search'" placeholder="请输入户主姓名/户号" @confirm="confirm"/>
+        <input
+          v-model="name"
+          type="text"
+          :confirm-type="'search'"
+          placeholder="请输入户主姓名/户号"
+          @confirm="confirm"
+        />
       </view>
       <view class="search-btn" @click="confirm">
         <image class="search-icon" src="@/static/images/icon_search_white.png" mode="aspectFit" />
@@ -35,10 +41,9 @@
           <view class="left">
             <view class="label">{{ item.label }}</view>
             <view class="value">{{ item.value.substring(2) }}</view>
-            <view class="value">{{ item.areaCodeText}}</view>
+            <view class="value">{{ item.areaCodeText }}</view>
             <view class="value">{{ item.townCodeText }}</view>
-            <view class="value">{{ item.villageCodeText}}</view>
-
+            <view class="value">{{ item.villageCodeText }}</view>
           </view>
           <view class="right">
             <image
@@ -66,7 +71,8 @@ interface PropsType {
   mainType: MainType
   type: 'single' | 'multiple'
   stage: 'survey' | 'implementation'
-  status?:any
+  status?: any
+  villageCode?: any
 }
 
 const props = defineProps<PropsType>()
@@ -84,11 +90,12 @@ const getLandlordListBySearch = (name: string, type: any) => {
     name,
     type: props.mainType,
     page: 1,
-    pageSize: 50
+    pageSize: 50,
+    villageCode: props.villageCode
   }
   if (props.stage === 'survey') {
     getLandlordListBySearchApi(params).then((res) => {
-       console.log(res,'测试数据111')
+      console.log(res, '测试数据111')
       if (res && res.length > 0) {
         let arr: any = []
         res.map((item: any) => {
@@ -97,9 +104,9 @@ const getLandlordListBySearch = (name: string, type: any) => {
             label: item.name,
             value: item.doorNo,
             checked: item.checked,
-            areaCodeText:item.areaCodeText,
-            townCodeText:item.townCodeText,
-            villageCodeText:item.villageCodeText
+            areaCodeText: item.areaCodeText,
+            townCodeText: item.townCodeText,
+            villageCodeText: item.villageCodeText
           })
         })
         dataList.value = [...arr]
@@ -107,7 +114,7 @@ const getLandlordListBySearch = (name: string, type: any) => {
     })
   } else if (props.stage === 'implementation') {
     getImpLandlordListBySearchApi(params).then((res) => {
-       console.log(res,'测试数据222')
+      console.log(res, '测试数据222')
       if (res && res.length > 0) {
         let arr: any = []
         res.map((item: any) => {
@@ -116,9 +123,9 @@ const getLandlordListBySearch = (name: string, type: any) => {
             label: item.name,
             value: item.doorNo,
             checked: item.checked,
-            areaCodeText:item.areaCodeText,
-            townCodeText:item.townCodeText,
-            villageCodeText:item.villageCodeText
+            areaCodeText: item.areaCodeText,
+            townCodeText: item.townCodeText,
+            villageCodeText: item.villageCodeText
           })
         })
         dataList.value = [...arr]
@@ -140,7 +147,7 @@ const confirm = (e: any) => {
 
 // 选择
 const select = (index: any) => {
-  if (props.type === 'single'||props.status=='1') {
+  if (props.type === 'single' || props.status == '1') {
     dataList.value.map((item: any, idx: any) => {
       if (index === idx) {
         item.checked = !item.checked

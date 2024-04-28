@@ -91,7 +91,7 @@ const handle = () => {
   routerForward('attendto', {
     uid: props.dataInfo.uid,
     landEmptyDate: landEmptyInfo.value.landEmptyDate,
-    type: 9
+    type: 5
   })
 }
 

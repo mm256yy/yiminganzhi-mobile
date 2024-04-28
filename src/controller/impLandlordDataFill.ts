@@ -1876,7 +1876,7 @@ class ImpDataFill extends ImpLandlord {
                 settleAddressText: resettleArea.find((item) => item.id === settleAddress)?.name,
                 houseAreaType,
                 houseAreaTypeText,
-                area: areaType,
+                area: homesteadAreaSize.find((item) => item.id === areaType)?.name,
                 ...defaultChooseHouseObj
               }
               array = [obj]

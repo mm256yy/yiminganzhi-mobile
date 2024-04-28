@@ -52,9 +52,13 @@
               <view v-else class="code-wrapper">
                 <input class="input-txt disabled" v-model="formData.doorNo" disabled />
               </view> -->
-              <view v-if="type== 'add'" :class="['code-wrapper', focusIndex === 1 ? 'focus' : '']">
+              <view v-if="type == 'add'" :class="['code-wrapper', focusIndex === 1 ? 'focus' : '']">
                 <view class="pre-txt">
-                  {{ formData.villageCode ? 'QY' + filterViewDoorNoWithBeforeOther(formData.villageCode) : '' }}
+                  {{
+                    formData.villageCode
+                      ? 'QY' + filterViewDoorNoWithBeforeOther(formData.villageCode)
+                      : ''
+                  }}
                 </view>
                 <input
                   class="input-txt"
@@ -372,7 +376,13 @@
             </uni-forms-item>
           </uni-col>
         </uni-row>
-
+        <uni-row>
+          <uni-col span="24">
+            <div style="color: red; font-size: 9rpx; display: flex; justify-content: end"
+              >*注:修改“企业类别”会导致该户已存在的补偿卡数据重置，修改前请告知实施组长!</div
+            >
+          </uni-col>
+        </uni-row>
         <view class="title-wrapper">
           <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
           <view class="title">企业资产信息</view>
@@ -887,7 +897,7 @@ import UploadFile from '@/components/UploadFile/index.vue'
 import { MainType } from '@/types/common'
 import SearchList from '@/components/SearchList/Index.vue'
 import { getImpLandlordListBySearchApi } from '@/service'
-import {filterViewDoorNoWithBeforeOther} from '@/utils'
+import { filterViewDoorNoWithBeforeOther } from '@/utils'
 
 const getLandlordListBySearch = () => {
   let params = {
@@ -1082,7 +1092,9 @@ const submit = () => {
       formData.value.id && formData.value.doorNo
         ? formData.value.doorNo
         : formData.value.villageCode
-        ? 'QY' + filterViewDoorNoWithBeforeOther(formData.value.villageCode) + formData.value.suffixNo
+        ? 'QY' +
+          filterViewDoorNoWithBeforeOther(formData.value.villageCode) +
+          formData.value.suffixNo
         : '',
     areaCode: formData.value.areaCode,
     townCode: formData.value.townCode,
@@ -1100,7 +1112,9 @@ const submit = () => {
       formData.value.id && formData.value.doorNo
         ? formData.value.doorNo
         : formData.value.villageCode
-        ? 'QY' + filterViewDoorNoWithBeforeOther(formData.value.villageCode) + formData.value.suffixNo
+        ? 'QY' +
+          filterViewDoorNoWithBeforeOther(formData.value.villageCode) +
+          formData.value.suffixNo
         : '',
     legalPersonName: formData.value.legalPersonName,
     legalPersonCard: formData.value.legalPersonCard,
@@ -1170,13 +1184,13 @@ const submit = () => {
   else if (!formData.value.registerType) {
     showToast('请选择登记注册类型')
     return
-    } else if (
-      !formData.value.doorNo &&
-      formData.value.suffixNo &&
-      formData.value.suffixNo.length !== 4
-    ) {
-      showToast('企业编码不全，请输入四位数字')
-      return
+  } else if (
+    !formData.value.doorNo &&
+    formData.value.suffixNo &&
+    formData.value.suffixNo.length !== 4
+  ) {
+    showToast('企业编码不全，请输入四位数字')
+    return
   } else if (!formData.value.legalPersonName) {
     showToast('请输入法人姓名')
     return

@@ -159,6 +159,7 @@
       stage="survey"
       @close="close"
       @confirm-select="confirmSelect"
+      :villageCode="['', '', commonParams.villageCode, '']"
     />
   </view>
 </template>
@@ -189,6 +190,8 @@ const dict = getStorage(StorageKey.DICT)
 onLoad((option: any) => {
   if (option) {
     commonParams.value = JSON.parse(option.commonParams)
+    console.log('=============', commonParams.value)
+
     let params = JSON.parse(option.params)
     formData.value = { ...params }
     if (commonParams.value.type === 'edit') {

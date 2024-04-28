@@ -29,7 +29,7 @@
       </uni-row>
 
       <uni-row>
-        <uni-col :span="12">
+        <uni-col :span="12" v-if="dataInfo.type != 'LandNoMove'">
           <view class="col">
             <view class="label">迁出地址：</view>
             <view class="content">{{

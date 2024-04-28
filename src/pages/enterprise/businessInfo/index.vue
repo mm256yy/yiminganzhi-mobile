@@ -1117,6 +1117,8 @@ const genNewArr = (arr?: any[]) => {
 // 获取经营现状信息配置列表
 const getBusinessList = async () => {
   const result = await getFamilyIncomeListApi()
+  console.error(result)
+
   genArr(result)
 }
 

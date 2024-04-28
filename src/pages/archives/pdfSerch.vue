@@ -229,7 +229,7 @@
                     baseInfo.houseAreaType == 'oneself'
                       ? '该户选择自谋职业'
                       : `该户选择集中供养（选择养老院:${formatDict(
-                          baseInfo.simulateImmigrantSettle?.nursingHome,
+                          baseInfo.immigrantSettle?.beadhouse,
                           416
                         )}）`
                   }}</span>

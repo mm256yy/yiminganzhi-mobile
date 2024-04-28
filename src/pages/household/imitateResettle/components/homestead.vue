@@ -66,8 +66,8 @@
           <view class="flex-row box-wrap">
             <view
               class="check-item"
-              :class="{ active: areaType == item.name }"
-              @click="homesteadAreaChange(item.name)"
+              :class="{ active: areaType == item.id }"
+              @click="homesteadAreaChange(item.id)"
               v-for="item in areaSizeArray"
               :key="item.id"
             >
