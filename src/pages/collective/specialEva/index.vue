@@ -18,7 +18,7 @@
           <uni-row>
             <uni-col :span="12">
               <view class="col">
-                <view class="label">设施名称：</view>
+                <view class="label">设施（设备）名称：</view>
                 <view class="content">{{ formatStr(item.facilitiesName) }}</view>
               </view>
             </uni-col>
@@ -225,7 +225,7 @@ const dialogClose = () => {
           flex-direction: row;
 
           .label {
-            width: 80rpx;
+            width: 90rpx;
             height: 16rpx;
             margin-left: 9rpx;
             font-size: 9rpx;

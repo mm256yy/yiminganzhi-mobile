@@ -37,7 +37,24 @@
               label-align="right"
               name="formData.facilitiesCode"
             >
-              <uni-easyinput v-model="formData.facilitiesCode" placeholder="请输入" />
+              <!-- <uni-easyinput v-model="formData.facilitiesCode" placeholder="请输入" /> -->
+              <view v-if="commonParams.type=='add'" :class="['code-wrapper', focusIndex === 1 ? 'focus' : '']">
+                <view class="pre-txt">
+                  {{ commonParams.doorNo ? 'SS' + commonParams.doorNo.substr(2,5) : '' }}
+                </view>
+                <input
+                  class="input-txt"
+                  type="number"
+                  placeholder="请输入"
+                  :maxlength="4"
+                  v-model="formData.suffixNo"
+                  @focus="inputFocus(1)"
+                  @blur="inputBlur"
+                />
+              </view>
+              <view v-else class="code-wrapper">
+                <input class="input-txt disabled" v-model="formData.facilitiesCode" disabled />
+              </view>
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -320,7 +337,7 @@ onLoad((option: any) => {
   if (option) {
     commonParams.value = JSON.parse(option.commonParams)
     let params = JSON.parse(option.params)
-    formData.value = { ...params }
+    formData.value = { ...params,formData:''}
     console.log(formData.value, 'params')
     currentDate.value = getDate()
     if (commonParams.value.type === 'edit') {
@@ -352,7 +369,7 @@ const bindDateChange = (e: any) => {
 // 表单提交
 const submit = () => {
   const { type, uid, doorNo } = commonParams.value
-  const params = {
+  const params = {  
     doorNo,
     ...formData.value,
     number: formData.value.number ? Number(formData.value.number) : null,
@@ -365,6 +382,7 @@ const submit = () => {
     workersNum: formData.value.workersNum ? Number(formData.value.workersNum) : null,
     completedTime: formData.value.completedTime ? dayjs(formData.value.completedTime) : null,
     facilitiesPic: fmtPicUrl(formData.value.facilitiesPic),
+    facilitiesCode: 'SS' + commonParams.value.doorNo.substr(2,5)+ formData.value.suffixNo
   }
   if (!formData.value.facilitiesName) {
     showToast('请输入设备名称')
@@ -372,10 +390,10 @@ const submit = () => {
   } else if (!formData.value.facilitiesType) {
     showToast('请输入设施类别')
     return
-  } else if (!formData.value.facilitiesCode) {
-    showToast('请输入设施编码')
+  }else if (!formData.value.suffixNo) {
+    showToast('设施（设备）编码不全')
     return
-  } else if (!formData.value.number) {
+  }else if (!formData.value.number) {
     showToast('请输入数量')
     return
   } else if (!formData.value.unit) {
@@ -425,7 +443,6 @@ const submit = () => {
   height: 100vh;
   background: url('../../../static/images/common_bg.png') no-repeat;
   background-size: 100% 100%;
-
   .main {
     height: calc(100vh - 33rpx);
     padding: 6rpx;
@@ -527,6 +544,43 @@ const submit = () => {
           text-align: center;
           background-color: #f5f7fa;
           border-left: 1px solid #d9d9d9;
+        }
+      }
+      .code-wrapper {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 200rpx;
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+
+        &.focus {
+          border-color: rgb(41, 121, 255);
+        }
+
+        .pre-txt {
+          width: 104rpx;
+          height: 35px;
+          padding-left: 7rpx;
+          font-size: 9rpx;
+          line-height: 35px;
+          color: #171718;
+          background-color: #f5f7fa;
+          border-right: 1px solid #d9d9d9;
+        }
+
+        .input-txt {
+          width: 84rpx;
+          height: 35px;
+          padding-left: 11rpx;
+          font-size: 9rpx;
+          line-height: 35px;
+          color: #171718;
+
+          &.disabled {
+            width: 200rpx;
+            background-color: #f5f7fa;
+          }
         }
       }
     }

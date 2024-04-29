@@ -170,7 +170,7 @@ const toLink = (type: string, data?: any) => {
       altitude: null,
       inundationRang: '',
       remark: '',
-      facilitiesPic:'[]'
+      facilitiesPic: '[]'
     }
     routerForward('collectiveEquipmentInfoEdit', {
       params: JSON.stringify(params),
@@ -236,7 +236,7 @@ const toLink = (type: string, data?: any) => {
           flex-direction: row;
 
           .label {
-            width: 70rpx;
+            width: 90rpx;
             height: 16rpx;
             margin-left: 9rpx;
             font-size: 9rpx;
