@@ -151,6 +151,8 @@ const showRecord = ref<boolean>(false)
  */
 const getCollectiveList = (data: any) => {
   getLandlordListApi(MainType.Village).then((res: any) => {
+    console.log(res[0], '纯集体数据', props.dataInfo)
+
     collectiveList.value = initCollectiveData(res)
   })
 }
@@ -169,6 +171,7 @@ const initCollectiveData = (data: any) => {
         doorNo: item.doorNo,
         text: item.name,
         value: item.uid,
+        villageCode: item.villageCode,
         disable: false
       })
     })
@@ -197,7 +200,7 @@ const closeModifyRecords = () => {
  * @param data type 为 edit 时，当前行数据
  */
 const toLink = (type: string, data?: any) => {
-  const { uid, doorNo, name, id } = props.dataInfo
+  const { uid, doorNo, name, id, villageCode } = props.dataInfo
   if (props.dataInfo.immigrantHouseList) {
     let m: any = []
     props.dataInfo.immigrantHouseList.forEach((item: any) => {
@@ -213,7 +216,7 @@ const toLink = (type: string, data?: any) => {
       )[0]?.locationType
     }
   }
-  let commonParams = { type, uid, id, collectiveList: collectiveList.value }
+  let commonParams = { type, uid, id, collectiveList: collectiveList.value, villageCode }
   if (type === 'edit') {
     const currentVillage = collectiveList.value.find(
       (colItem: any) => colItem.doorNo === data.villageDoorNo

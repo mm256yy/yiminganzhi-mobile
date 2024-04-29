@@ -202,13 +202,11 @@ const submit = () => {
     showToast('请选择材料')
     return
   } else {
-    const { uid } = commonParams.value
+    const { uid, villageCode } = commonParams.value
     let params = {
       ...formData.value
     }
-    let itemData = collectiveList.value?.find(
-      (item: any) => item.value === formData.value.villageId
-    )
+    let itemData = collectiveList.value?.find((item: any) => item.villageCode === villageCode)
     params.villageDoorNo = itemData ? itemData.doorNo : ''
     params.villageId = itemData ? itemData.id : ''
     params.villageName = itemData ? itemData.text : ''
