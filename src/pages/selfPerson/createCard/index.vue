@@ -29,6 +29,14 @@
       </view>
 
       <uni-row class="m-b-10">
+          <uni-col :span="12">
+          <view class="col">
+            <view class="label">安置方式：</view>
+            <view class="content">
+              {{ formatDict(dataInfo.placementWay,422) }}
+            </view>
+          </view>
+        </uni-col>
         <uni-col :span="12">
           <view class="col">
             <view class="label">迁前厂址：</view>
@@ -47,7 +55,7 @@
         </uni-col>
         <uni-col :span="12">
           <view class="col">
-            <view class="label">企业总人口数：</view>
+            <view class="label">员工总数：</view>
             <view class="content">
               {{ formatStr(dataInfo.peopleNumber) }}
             </view>

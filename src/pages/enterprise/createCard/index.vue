@@ -31,6 +31,14 @@
       <uni-row class="m-b-10">
         <uni-col :span="12">
           <view class="col">
+            <view class="label">安置方式：</view>
+            <view class="content">
+              {{ formatDict(dataInfo.placementWay, 422) }}
+            </view>
+          </view>
+        </uni-col>
+        <uni-col :span="12">
+          <view class="col">
             <view class="label">迁前厂址：</view>
             <view class="content">
               {{ formatStr(dataInfo.beforeAddress) }}
@@ -47,7 +55,7 @@
         </uni-col>
         <uni-col :span="12">
           <view class="col">
-            <view class="label">企业总人口数：</view>
+            <view class="label">员工总数：</view>
             <view class="content">
               {{ formatStr(dataInfo.peopleNumber) }}
             </view>
@@ -162,7 +170,9 @@
           <view class="td td-1">{{ getTypeStr(item.type) }}</view>
           <view class="td td-2">{{ formatStr(item.name) }}</view>
           <view class="td td-3">{{ formatDict(item.unit, 268) }}</view>
-          <view class="td td-3">{{ item.name.includes('小计') ? '-' : formatStr(item.number) }}</view>
+          <view class="td td-3">{{
+            item.name.includes('小计') ? '-' : formatStr(item.number)
+          }}</view>
           <view class="td td-3">{{ formatStr(item.price) }}</view>
           <view class="td td-3">
             <view v-if="item.isUpdate === '0'">{{ formatStr(item.totalPrice) }}</view>
