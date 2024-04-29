@@ -57,7 +57,7 @@
 
 <script lang="ts" setup>
 import { ref, watch, onMounted } from 'vue'
-import { formatDict, getStorage, StorageKey } from '@/utils'
+import { formatDict,calculateAgeFromIdCard, getStorage, StorageKey } from '@/utils'
 import { PopulationType } from '@/types/datafill'
 import { showToast } from '@/config'
 import { SimulateDemographicType } from '@/types/impDataFill'
@@ -94,7 +94,7 @@ const dataLists = ref<LocationType[]>([])
 // }
 const filterWay = (data: any) => {
   console.log(data, '‘数据')
-
+  console.log(dict[375])
   let arr = JSON.parse(JSON.stringify(dict[375])).map((item: any) => {
     // 农村移民的 其他性质
     item.disable = false
@@ -110,7 +110,7 @@ const filterWay = (data: any) => {
     if (item.value === '1' && datass?.isProductionLand != '1') {
       item.disable = true
     }
-    data.age = data.birthday ? parseInt(dayjs(data.birthday).fromNow().replace(/\D+/, '')) : 0
+    data.age = data.card ? calculateAgeFromIdCard(data.card): 0
     if (data.age < 14 && item.value !== '3' && item.value != '1') {
       item.disable = true
     }
@@ -119,6 +119,9 @@ const filterWay = (data: any) => {
       (props.immigrantSettle.houseAreaType == 'concentrate' ||
         props.immigrantSettle.houseAreaType == 'oneself')
     ) {
+      item.disable = true
+    }
+    if(!data.populationNature){
       item.disable = true
     }
     return item
@@ -188,7 +191,18 @@ watch(
       if (props.flag) {
         if (props.simulateDemographic?.length == props.demographicLists?.length) {
           console.log('长度相等,用更改表')
+          props.demographicLists.forEach((item: any, index: any) => {
+            val[index].demographicId = item.id
+          })
           datas.value = props.simulateDemographic
+          let keysToCopy = ['name', 'relation','sex','card','censusType','populationNature','isDelete','bi']; 
+          props.demographicLists.forEach((item:any, index:any) => {  
+            keysToCopy.forEach(key => {  
+              if (item.hasOwnProperty(key)) {  
+                val[index][key] = item[key];  
+              }  
+            });  
+          });
           tableData.value = val.filter(
             (item: any) => item.isDelete != '1' && item.name != '增计人口'
           )

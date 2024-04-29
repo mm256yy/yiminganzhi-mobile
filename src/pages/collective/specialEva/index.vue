@@ -24,7 +24,7 @@
             </uni-col>
             <uni-col :span="12">
               <view class="col">
-                <view class="label">设施类别：</view>
+                <view class="label">设施（设备）类别：</view>
                 <view class="content">{{ formatDict(item.facilitiesType, 236) }}</view>
               </view>
             </uni-col>

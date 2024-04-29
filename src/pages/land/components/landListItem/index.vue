@@ -56,20 +56,18 @@
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">土地性质:</view>
         <view class="value">{{ formatEmptyText(props.data.landNatureText) || '' }}</view>
-      </view>
-      <view v-if="role=='assessorland'">    
-      <view class="cont-item">
+      </view>  
+      <view class="cont-item" v-if="role=='assessorland'">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">评估人:</view>
         <view class="value">{{ formatEmptyText(props.data.reportUserName) }}</view>
       </view>
-      <view class="cont-item right">
+      <view class="cont-item right" v-if="role=='assessorland'">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">评估时间:</view>
         <view class="value">{{
-          props.data.reportUserDate ? dayjs(props.data.reportUserDate).format('YYYY-MM-DD HH:mm:ss') : '-'
+          props.data.reportUserDate ? dayjs(props.data.reportUserDate).format('YYYY-MM-DD') : '-'
         }}</view>
-      </view>
       </view>
     </view>
   </view>

@@ -51,19 +51,17 @@
         <view class="label">自然村名称:</view>
         <view class="value">{{ props.data.virutalVillageCodeText || '' }}</view>
       </view>
-      <view v-if="role=='investigator'">
-      <view class="cont-item">
+      <view class="cont-item" v-if="role=='investigator'">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">填报人:</view>
         <view class="value">{{ props.data.reportUserName }}</view>
       </view>
-      <view class="cont-item">
+      <view class="cont-item" v-if="role=='investigator'">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">填报时间:</view>
         <view class="value">{{
-          props.data.reportUserDate ? dayjs(props.data.reportUserDate).format('YYYY-MM-DD HH:mm:ss') : '-'
+          props.data.reportUserDate ? dayjs(props.data.reportUserDate).format('YYYY-MM-DD') : '-'
         }}</view>
-      </view>
       </view>
     </view>
   </view>

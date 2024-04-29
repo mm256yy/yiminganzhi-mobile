@@ -45,20 +45,18 @@
         <view class="label">行政村名称:</view>
         <view class="value">{{ props.data.villageCodeText }}</view>
       </view>
-    <view v-if="role=='assessor'">
-      <view class="cont-item">
+      <view class="cont-item" v-if="role=='assessor'">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">评估人:</view>
         <view class="value">{{ props.data.reportUserName }}</view>
       </view>
-      <view class="cont-item">
+      <view class="cont-item" v-if="role=='assessor'">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">评估时间:</view>
         <view class="value">{{
-          props.data.reportUserDate ? dayjs(props.data.reportUserDate).format('YYYY-MM-DD HH:mm:ss') : '-'
+          props.data.reportUserDate ? dayjs(props.data.reportUserDate).format('YYYY-MM-DD') : '-'
         }}</view>
       </view>
-    </view>
       <view class="cont-item" v-if="props.data.type === MainType.PeasantHousehold">
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">自然村名称:</view>

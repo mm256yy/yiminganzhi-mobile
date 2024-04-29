@@ -59,7 +59,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref,onMounted } from 'vue'
+import { computed, ref,onMounted,watch } from 'vue'
 import { HouseAreaType } from '@/types/common'
 import { getStorage, StorageKey } from '@/utils'
 interface PropsType {
@@ -78,8 +78,8 @@ const beadhouselist = ref<any>({
 const resettlePeopleInfo = () => {
   let householder: any = null
   console.log(props.immigrantSettle, '模拟集中供养数据')
-  beadhouselist.value.nursingHome = props.immigrantSettle.nursingHome?.toString()
-  console.log(beadhouselist.value.nursingHome, '赋值的数据')
+  // beadhouselist.value.nursingHome = props.immigrantSettle.nursingHome?.toString()
+  // console.log(beadhouselist.value.nursingHome, '赋值的数据')
   if (props.data && props.data.length) {
     householder = props.data.find((item: any) => item.relation === '1')
   }
@@ -90,12 +90,20 @@ const resettlePeopleInfo = () => {
     householder
   }
 }
-
+watch(
+  () => props.immigrantSettle,
+  (val) => {
+    if (val) {
+      beadhouselist.value.nursingHome = props.immigrantSettle.nursingHome?.toString()   
+    }
+  },
+  { immediate: true, deep: true }
+)
 const submitResettle = async () => {
   const params: any = {
     houseAreaType: HouseAreaType.concentrate,
     doorNo: props.doorNo,
-    nursingHome: beadhouselist.value.nursingHome
+    nursingHome: beadhouselist.value?.nursingHome
   }
   if (props.immigrantSettle && props.immigrantSettle.uid) {
     params.uid = props.immigrantSettle.uid
