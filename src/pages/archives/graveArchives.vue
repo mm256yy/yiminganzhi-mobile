@@ -10,7 +10,7 @@
         <uni-col :span="24">
           <uni-forms-item
             required
-            label="坟墓确认单："
+            label="坟墓确认单（盖章/签字）："
             :label-width="150"
             label-align="right"
             name="graveVerifyPicStr"
@@ -18,7 +18,7 @@
             <uploadFiles
               v-model="graveVerifyPicStr"
               :file-list="graveVerifyPicStr"
-              :limit="20"
+              :limit="20" 
               :accepts="['.jpg', '.png', '.pdf', '.jpeg']"
               show-type="grid"
             />

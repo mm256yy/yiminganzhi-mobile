@@ -10,7 +10,7 @@
         <uni-col :span="24">
           <uni-forms-item
             required
-            label="土地腾让确认单："
+            label="土地腾让确认单（盖章/签字）："
             :label-width="150"
             label-align="right"
             name="landEmptyPicStr"

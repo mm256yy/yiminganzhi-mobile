@@ -9,7 +9,7 @@
       <uni-row>
         <uni-col :span="24">
           <uni-forms-item
-            label="交房协议："
+            label="交房协议（盖章/签字）："
             :label-width="150"
             label-align="right"
             name="flatAgreementPicStr"

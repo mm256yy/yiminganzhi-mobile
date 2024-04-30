@@ -177,7 +177,7 @@
             <uni-col :span="12">
               <uni-forms-item
                 required
-                :label="commonParams.type === 'homestead' ? '择址确认单' : '择房确认单'"
+                :label="commonParams.type === 'homestead' ? '择址确认单（盖章/签字）' : '择房确认单（盖章/签字）'"
                 :label-width="150"
                 label-align="right"
                 name="settleAddress"

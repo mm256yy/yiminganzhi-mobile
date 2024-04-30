@@ -111,7 +111,7 @@
     />
 
     <!-- 删除确认框 -->
-    <uni-popup ref="alertDialog" type="dialog">
+    <!-- <uni-popup ref="alertDialog" type="dialog">
       <uni-popup-dialog
         type="warn"
         mode="input"
@@ -123,7 +123,7 @@
         @confirm="dialogConfirm"
         @close="dialogClose"
       />
-    </uni-popup>
+    </uni-popup> -->
   </view>
 </template>
 <script lang="ts" setup>
@@ -171,25 +171,26 @@ const toLink = (type: string, itemUid?: any) => {
  * @param {Object} data 当前行数据
  */
 const deleteRowData = (data: any) => {
-  alertDialog.value?.open()
-  currentItem.value = { ...data }
+  // alertDialog.value?.open()
+  // currentItem.value = { ...data }
+  emit('deleteHouseDecoration', data)
 }
 
-const dialogConfirm = (data: any) => {
-  if (!data) {
-    showToast('请输入删除原因')
-    return
-  }
-  let params = {
-    ...currentItem.value,
-    reason: data
-  }
-  emit('deleteHouseDecoration', params)
-}
+// const dialogConfirm = (data: any) => {
+//   if (!data) {
+//     showToast('请输入删除原因')
+//     return
+//   }
+//   let params = {
+//     ...currentItem.value,
+//     reason: data
+//   }
+//   emit('deleteHouseDecoration', params)
+// }
 
-const dialogClose = () => {
-  alertDialog.value.close()
-}
+// const dialogClose = () => {
+//   alertDialog.value.close()
+// }
 
 </script>
 

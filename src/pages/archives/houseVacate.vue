@@ -10,7 +10,7 @@
         <uni-col :span="24">
           <uni-forms-item
             required
-            label="房屋腾空确认单："
+            label="房屋腾空确认单（盖章/签字）："
             :label-width="150"
             label-align="right"
             name="houseEmptyPicStr"

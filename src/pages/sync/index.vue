@@ -70,7 +70,7 @@
         <view class="list-item">
           <image class="bg" src="@/static/images/head_2.png" mode="scaleToFill" />
           <view class="title" @click="jump(MainType.IndividualHousehold)">
-            <text class="tit">个体工商户</text>
+            <text class="tit">个体工商户1</text>
             <image
               class="right-arrow"
               src="@/static/images/sync_right_arrow.png"
@@ -426,7 +426,7 @@ uni-page-body {
   .list-item {
     position: relative;
     display: flex;
-    width: 214rpx;
+    width: 254rpx;
     padding: 0 6rpx 5rpx;
     margin-right: 6rpx;
     overflow: hidden;
@@ -441,7 +441,7 @@ uni-page-body {
     top: 0;
     left: 0;
     z-index: 0;
-    width: 214rpx;
+    width: 254rpx;
     height: 70rpx;
   }
 
@@ -496,11 +496,12 @@ uni-page-body {
   }
 
   .td {
-    flex: 25%;
+    flex:25%;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    // width: 80px;
   }
 
   .txt {

@@ -6,7 +6,7 @@
       <view class="right">
         <view class="btn blue" @click="onArchives">
           <image class="icon" src="@/static/images/icon_upload_white.png" mode="scaleToFill" />
-          档案上传
+          进度汇报
         </view>
         <view class="btn green" @click="handleClick">
           <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
