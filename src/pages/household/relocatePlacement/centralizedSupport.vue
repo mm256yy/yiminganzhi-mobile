@@ -124,7 +124,9 @@ const getRelocationResettlement = computed(() => {
 })
 
 const dataList = computed(() => {
-  return props.dataList.filter((item) => item.isDelete !== '1')
+  console.log(props.dataList)
+
+  return props.dataList.filter((item) => item.isDelete !== '1' && item.addReason != '3')
 })
 /**
  * 办理/查看

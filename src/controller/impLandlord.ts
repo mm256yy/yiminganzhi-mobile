@@ -83,9 +83,9 @@ export class ImpLandlord extends Common {
     if (this.isNotNullPic(landlordItem.householdPic)) {
       landlordItem.immigrantFilling.householdPicStatus = '1'
     } else {
-      landlordItem.immigrantFilling.householdPicStatus = '0'      
+      landlordItem.immigrantFilling.householdPicStatus = '0'
     }
-    console.log(role,'測試角色')
+    console.log(role, '測試角色')
     // 资产评估 - 填报状态 为报告上传完成
     if (role === RoleCodeType.assessor) {
       // 资产评估-房屋
@@ -154,7 +154,7 @@ export class ImpLandlord extends Common {
     //     landlordItem.immigrantFilling.populationStatus = '0'
     //   }
     // } 宗浩说要手动点击填报 不能自动
-    
+
     // 房屋产权完成条件：列表中所有数据的是否合法均已设置完成
     // if (this.isArrayAndNotNull(immigrantHouseList)) {
     //   const res = immigrantHouseList.find((item) => item.isCompliance !== '1')
@@ -422,7 +422,9 @@ export class ImpLandlord extends Common {
 
     // 集中供养
     if (immigrantSettle && immigrantSettle.houseAreaType === HouseAreaType.concentrate) {
-      const res = demographicList.find((item) => item.relocateStatus !== '1')
+      const res = demographicList.find(
+        (item) => item.relocateStatus !== '1' && item.addReason != '3'
+      )
       if (!res) {
         landlordItem.immigrantFilling.centralizedSupportStatus = '1'
       } else {
