@@ -11,12 +11,12 @@
       <view style="display: flex">
         <view class="btn green-btn" @click="handleClick">
           <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
-          <text class="txt">打印报表</text>
+          <text class="txt">打印</text>
         </view>
 
         <view class="btn blue-btn" @click="archivesUpload">
           <image class="icon" src="@/static/images/icon_dangan_upload.png" mode="scaleToFill" />
-          <text class="txt">进度汇报</text>
+          <text class="txt">进度上报</text>
         </view>
         <!-- <view
         class="btn blue-btn"

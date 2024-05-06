@@ -13,7 +13,7 @@
         </view>
         <view class="btn blue" @click="onArchives">
           <image class="icon" src="@/static/images/icon_upload_white.png" mode="scaleToFill" />
-          进度汇报
+          进度上报
         </view>
       </view>
     </view>

@@ -413,6 +413,8 @@ export interface ImmigrantFillingType {
   isUpdate?: string
   infrastructureStatus: string // 基础设施评估
   otherStatus: string // 其他评估
+  agreementStatusTime?: any //动迁协议确认时间
+  arrangementStatusTime?: any //安置确认时间
 }
 
 // 自谋出路

@@ -35,6 +35,13 @@
                   : '（实物采集）'
                 : '（移民实施）'
             }}
+            {{
+              env.apiEnv == 'locals'
+                ? '当前版本：local'
+                : env.apiEnv == 'local'
+                ? '当前版本：119'
+                : ''
+            }}
           </view>
         </view>
 
@@ -146,6 +153,7 @@ import Implementation from './components/Implementation.vue'
 import { OtherDataType } from '@/database'
 import dayjs from 'dayjs'
 import SyncCompont from '@/components/Sync/Index.vue'
+import { env } from '@/config/env'
 
 const roleType = ref<RoleCodeType>(getStorage(StorageKey.USERROLE))
 const userInfo = ref<any>(null)

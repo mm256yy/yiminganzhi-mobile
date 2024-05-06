@@ -2,7 +2,7 @@
  * 部分实施阶段 数据填报
  */
 
-import { guid } from '@/utils'
+import { guid, getCurrentTimeStamp } from '@/utils'
 import {
   HouseType,
   PopulationType,
@@ -920,7 +920,7 @@ class ImpDataFill extends ImpLandlord {
   }
 
   // 调查对象-企业其他评估新增操作
-  addOther(uid: string, data: EquipmentType): Promise<boolean> {
+  addOther(uid: string, data: any): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!uid) {
@@ -954,7 +954,7 @@ class ImpDataFill extends ImpLandlord {
     })
   }
   // 调查对象-企业其他评估修改操作
-  updateOther(uid: string, data: EquipmentType): Promise<boolean> {
+  updateOther(uid: string, data: any): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!uid) {
@@ -1124,7 +1124,7 @@ class ImpDataFill extends ImpLandlord {
   }
 
   // 调查对象-个体户其他评估新增操作
-  addSepOther(uid: string, data: EquipmentType): Promise<boolean> {
+  addSepOther(uid: string, data: any): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!uid) {
@@ -1158,7 +1158,7 @@ class ImpDataFill extends ImpLandlord {
     })
   }
   // 调查对象-个体户其他评估修改操作
-  updateSepOther(uid: string, data: EquipmentType): Promise<boolean> {
+  updateSepOther(uid: string, data: any): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!uid) {
@@ -1748,6 +1748,19 @@ class ImpDataFill extends ImpLandlord {
           if (!landlordItem.immigrantDocumentation.uid) {
             landlordItem.immigrantDocumentation.uid = guid()
           }
+          if (data.agreementPic) {
+            landlordItem.immigrantFilling.agreementStatusTime = getCurrentTimeStamp()
+          }
+          if (data.produceVerifyPic || data.graveVerifyPic || data.relocateVerifyPic) {
+            if (
+              landlordItem.immigrantDocumentation.produceVerifyPic &&
+              landlordItem.immigrantDocumentation.graveVerifyPic &&
+              landlordItem.immigrantDocumentation.relocateVerifyPic
+            ) {
+              landlordItem.immigrantFilling.arrangementStatusTime = getCurrentTimeStamp()
+            }
+          }
+          console.log(landlordItem)
         } else {
           reject(false)
           console.log('调查对象信息查询失败')

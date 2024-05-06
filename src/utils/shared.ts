@@ -219,5 +219,4 @@ export function setlocationType(target: any) {
   } else {
     return '3'
   }
- 
 }

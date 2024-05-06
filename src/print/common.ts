@@ -79,7 +79,7 @@ export const getCompanyTableHead = (landlord: LandlordType, projectInfo: Project
             border: [true, true, false, false],
             stack: [
               {
-                text: `${projectInfo.name}工程建设征地`,
+                text: `${projectInfo.showName}工程建设征地`,
                 alignment: 'center',
                 fontSize: 16,
                 bold: true,
@@ -168,7 +168,7 @@ export const getCompanyBaseTableHead = (landlord: LandlordType, projectInfo: Pro
             border: [true, true, false, false],
             stack: [
               {
-                text: `${projectInfo.name}工程建设征地`,
+                text: `${projectInfo.showName}工程建设征地`,
                 alignment: 'center',
                 fontSize: 16,
                 bold: true,
@@ -286,7 +286,7 @@ export const getPeopleTableHead = (landlord: LandlordType, projectInfo: ProjectT
             border: [true, true, false, false],
             stack: [
               {
-                text: `${projectInfo.name || ''}工程建设征地`,
+                text: `${projectInfo.showName || ''}工程建设征地`,
                 alignment: 'center',
                 fontSize: 16,
                 bold: true,
@@ -355,7 +355,7 @@ export const getCollectiveTableHead = (landlord: LandlordType, projectInfo: Proj
             border: [true, true, false, false],
             stack: [
               {
-                text: `${projectInfo.name || ''}工程建设征地`,
+                text: `${projectInfo.showName || ''}工程建设征地`,
                 alignment: 'center',
                 fontSize: 16,
                 bold: true,

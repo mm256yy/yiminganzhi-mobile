@@ -3,7 +3,9 @@
     <view class="list-header-rt">
       <view class="list-header-left">
         <view class="name">{{ dataInfo.name }}</view>
-        <view class="account-no">{{ dataInfo.doorNo.includes('jl')?dataInfo.doorNo.slice(2):dataInfo.doorNo }} </view>
+        <view class="account-no"
+          >{{ dataInfo.doorNo.includes('jl') ? dataInfo.doorNo.slice(2) : dataInfo.doorNo }}
+        </view>
         <view class="fill-number">
           表单填报&nbsp;
           <text class="green">{{ fillNumber }}</text>
@@ -339,6 +341,8 @@ export default {
       ref.open()
     },
     signConfirm() {
+      console.log(getStorage(StorageKey.PROJECTINFO) || {})
+
       signDataApi(this.dataInfo.uid)
         .then((res) => {
           if (res) {
@@ -417,8 +421,7 @@ export default {
           }
         })
         this.fileList = arr
-        console.log(res);
-        
+        console.log(res)
       }
     },
 
@@ -663,7 +666,7 @@ export default {
           templateIds,
           type
         } = newValue
-        console.log(landlords,projectInfo,templateIds,type,'数据信息')
+        console.log(projectInfo,'数据信息')
         if (!landlords || !landlords.length) {
           console.log('landlords数据为空')
           return
@@ -687,7 +690,7 @@ export default {
 					}
         })
         }
-
+        console.log(promiseArray);
         // 并行生成
         Promise.all(promiseArray)
           .then((result) => {

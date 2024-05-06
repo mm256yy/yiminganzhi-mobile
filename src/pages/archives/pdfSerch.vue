@@ -414,7 +414,7 @@
               }}</td>
             </tr>
             <tr>
-              <td align="center" class="uTd" colspan="3"
+              <td class="uTd" colspan="3"
                 >{{
                   baseInfo.type == 'Company'
                     ? '企业盖章'
@@ -433,16 +433,16 @@
               <td align="center" class="uTd" colspan="3"></td>
             </tr>
             <tr>
-              <td align="center" class="uTd" colspan="2">验收人：</td>
-              <td align="center" class="uTd" colspan="1">验收时间:</td>
+              <td class="uTd" colspan="1">验收人：</td>
+              <td class="uTd" colspan="2">验收时间:</td>
             </tr>
             <tr>
               <td align="center" class="uTd" rowspan="2">乡镇街道审核意见</td>
               <td align="center" class="uTd" colspan="3"></td>
             </tr>
             <tr>
-              <td align="center" class="uTd" colspan="2">审核人：</td>
-              <td align="center" class="uTd" colspan="1">验收时间:</td>
+              <td class="uTd" colspan="1">审核人：</td>
+              <td class="uTd" colspan="2">验收时间:</td>
             </tr>
           </table>
         </view>

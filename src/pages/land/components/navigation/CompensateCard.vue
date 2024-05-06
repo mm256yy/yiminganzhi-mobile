@@ -9,11 +9,11 @@
         <view class="right">
           <view class="btn green" @click="handleClick">
             <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
-            <text class="txt">打印报表</text>
+            <text class="txt">打印</text>
           </view>
           <view class="btn blue" @click="onArchives">
             <image class="icon" src="@/static/images/icon_upload_white.png" mode="scaleToFill" />
-            进度汇报
+            进度上报
           </view>
         </view>
       </view>
