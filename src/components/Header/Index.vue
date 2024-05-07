@@ -16,7 +16,7 @@
       <view class="list-header-right">
         <view class="btn-wrapper print" v-if="showPrint" @click="printFile">
           <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
-          <text class="txt">打印表格</text>
+          <text class="txt">打印</text>
         </view>
         <view
           v-if="
@@ -117,10 +117,10 @@
       </view>
     </uni-popup>
 
-    <!-- 打印表格 -->
+    <!-- 打印 -->
     <uni-popup ref="printPopup" :is-mask-click="false">
       <view class="tips-wrapper">
-        <view class="tips-title">打印表格</view>
+        <view class="tips-title">打印</view>
         <view class="tips-content">
           <view class="file-list" :prop="options" :change:prop="print.getPdf">
             <view v-for="(item, index) in fileList" :key="item.uid" class="file-item">

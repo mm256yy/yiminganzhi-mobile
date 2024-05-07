@@ -6,7 +6,7 @@
       <view class="right">
         <view class="btn green" @click="handleClick">
           <image class="icon" src="@/static/images/icon_print_white.png" mode="scaleToFill" />
-          打印表格
+          打印
         </view>
         <view class="btn blue" @click="onArchives">
           <image class="icon" src="@/static/images/icon_upload_white.png" mode="scaleToFill" />

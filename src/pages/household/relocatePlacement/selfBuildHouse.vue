@@ -6,7 +6,7 @@
         <view class="right">
           <!-- <view class="btn green">
             <image class="icon" src="@/static/images/icon_print_white.png" mode="scaleToFill" />
-            打印表格
+            打印
           </view> -->
           <view class="btn blue" @click="onArchives">
             <image class="icon" src="@/static/images/icon_upload_white.png" mode="scaleToFill" />
@@ -33,7 +33,8 @@
             <view class="left">
               <view class="icon-box">
                 <view v-if="item.isComplete === '0'" class="disabled" />
-                <image v-if="item.isComplete === '1'" class="icon" src="@/static/images/icon_finished.png"
+                <image
+v-if="item.isComplete === '1'" class="icon" src="@/static/images/icon_finished.png"
                   mode="scaleToFill" />
                 <view v-if="item.isComplete === '2'" class="hollow" />
               </view>
@@ -49,7 +50,8 @@
                   <view class="mini-btn" v-if="item.type === '1'" @click="onPrint(item)">
                     打印
                   </view>
-                  <view v-if="item.type !== '1' && item.isComplete !== '1'"
+                  <view
+v-if="item.type !== '1' && item.isComplete !== '1'"
                     :class="['mini-btn', item.isComplete === '0' ? 'disabled' : '']" @click="onFill(item)">
                     填写
                   </view>
