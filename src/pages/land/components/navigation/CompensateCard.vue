@@ -21,7 +21,8 @@
       <view class="title-wrap m-t-5">
         <view class="left">
           <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-          使用权人信息
+          <text>使用权人信息</text>
+          <text style="color: red;" v-if="targ">*账户信息未填写完整,请补全账户信息后再进度上报！</text>
         </view>
         <view class="right" @click="toEdit">编辑</view>
       </view>
@@ -126,7 +127,7 @@ interface PropsType {
 
 const props = defineProps<PropsType>()
 const tableData = ref<any[]>([])
-
+const targ=ref(false)
 // 获取移民建卡奖励费列表
 const getCompensationCardConfig = async () => {
     let data: any = await getLandlordItemApi(props.dataInfo.uid)
@@ -218,10 +219,15 @@ const getSummaries = (row: any) => {
 
 // 档案上传
 const onArchives = () => {
-  routerForward('archives', {
+  if (!props.dataInfo.accountName || !props.dataInfo.accountName || !props.dataInfo.accountName) {
+    targ.value=true
+  } else {
+    targ.value=false
+    routerForward('archives', {
     type: 6,
     uid: props.dataInfo.uid
   })
+  }
 }
 
 // 编辑

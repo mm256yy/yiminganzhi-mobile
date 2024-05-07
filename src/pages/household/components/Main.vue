@@ -191,6 +191,7 @@ const tabsList = computed(() => {
     immigrantWill,
     immigrantFile
   } = props.dataInfo
+  console.log(props.dataInfo,'测试主体数据')
   return [
     {
       label: '居民户信息',

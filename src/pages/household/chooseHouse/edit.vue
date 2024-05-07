@@ -122,7 +122,7 @@
 
           <uni-col :span="24">
             <uni-forms-item
-              label="幢号-房号"
+              label="幢号-房号111"
               :label-width="150"
               label-align="right"
               name="formData.roomNo"
@@ -333,11 +333,12 @@ const getChooseConfig = () => {
 const getHouseConfig = () => {
   getHouseConfigApi().then((res: any) => {
     let arr: any = []
+    console.log(res, '测试数据下拉列表res')
     if (res && res.length) {
       res.map((item: any) => {
-        if (item.level === '2') {
+        if (item.level === '3') {
           arr.push({
-            text: item.code,
+            text: item.showName,
             value: item.code,
             disable: item.isOccupy === '0' ? false : true // '0' 可选，'1' 已选
           })

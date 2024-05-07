@@ -2143,7 +2143,7 @@ class ImpDataFill extends ImpLandlord {
         if (landlordItem) {
           landlordItem.immigrantChooseHouseList = landlordItem.immigrantChooseHouseList.map(
             (item) => {
-              if (item.uid === data.uid) {
+              if (item.uid == data.uid) {
                 item = { ...item, ...data }
                 item.isUpdate = '1'
               }
