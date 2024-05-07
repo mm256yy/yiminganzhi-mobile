@@ -6,15 +6,23 @@
         <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
         家庭情况
       </view>
-      <view v-if="dataInfo.relateIndividualHouseholdName != ''">
-        关联个体户:<text style="color: blue" @click="editLandlords">{{
-          dataInfo.relateIndividualHouseholdName
-        }}</text>
+      <view
+        v-if="dataInfo.relateIndividualHouseholdName != ''"
+        style="display: flex; align-items: center"
+      >
+        关联个体户:
+        <view
+          v-for="(item, index) in props.dataInfo.relateIndividualHouseholdName.split(',')"
+          :key="index"
+        >
+          <text @click="editLandlords(index)" style="color: blue">{{ item }},</text>
+        </view>
       </view>
-      <view v-if="dataInfo.relateCompanyName != ''">
-        关联企业:<text style="color: blue" @click="editLandlord">{{
-          dataInfo.relateCompanyName
-        }}</text>
+      <view v-if="dataInfo.relateCompanyName != ''" style="display: flex; align-items: center">
+        关联企业:
+        <view v-for="(item, index) in props.dataInfo.relateCompanyName.split(',')" :key="index">
+          <text @click="editLandlord(index)" style="color: blue">{{ item }},</text>
+        </view>
       </view>
     </view>
     <view class="btn-box">
@@ -67,7 +75,7 @@
           <view class="col">
             <view class="label">所在位置：</view>
             <view class="content">
-              {{formatDict(dataInfo.locationType, 326)}}
+              {{ formatDict(dataInfo.locationType, 326) }}
             </view>
           </view>
         </uni-col>
@@ -78,7 +86,6 @@
             <view class="label">淹没范围：</view>
             <!-- <view class="content">{{ formatDict(dataInfo.formatDict, 346) }}</view> -->
             <view class="content">{{ formatDict(dataInfo.inundationRange, 346) }}</view>
-
           </view>
         </uni-col>
       </uni-row>
@@ -100,17 +107,31 @@
         </uni-col>
       </uni-row> -->
       <uni-row>
-          <uni-col :span="12">
-            <uni-forms-item required label="宅基地总面积（㎡）" :label-width="150" label-align="right" name="options.homesteadArea" class="label">
-              <uni-easyinput v-model="options.homesteadArea" type="text" placeholder="请输入" />
-            </uni-forms-item>
-          </uni-col>
+        <uni-col :span="12">
+          <uni-forms-item
+            required
+            label="宅基地总面积（㎡）"
+            :label-width="150"
+            label-align="right"
+            name="options.homesteadArea"
+            class="label"
+          >
+            <uni-easyinput v-model="options.homesteadArea" type="text" placeholder="请输入" />
+          </uni-forms-item>
+        </uni-col>
       </uni-row>
       <uni-row>
         <uni-col :span="12">
-            <uni-forms-item required label="联系方式(户主)：" :label-width="150" label-align="right" name="options.phone" class="label">
-              <uni-easyinput v-model="options.phone" type="text" placeholder="请输入" />
-            </uni-forms-item>
+          <uni-forms-item
+            required
+            label="联系方式(户主)："
+            :label-width="150"
+            label-align="right"
+            name="options.phone"
+            class="label"
+          >
+            <uni-easyinput v-model="options.phone" type="text" placeholder="请输入" />
+          </uni-forms-item>
           <!-- <view class="col">
             <view class="label"><text class="star">*</text>联系方式(户主)：</view>
             <view class="content">
@@ -253,11 +274,21 @@ const routerMap: any = {
 
 const dataList = ref<any>()
 //企业跳转
-const editLandlord = () => {
-  console.log('测试企业跳转')
+const editLandlord = async (index: any) => {
+  const params: any = {
+    type: unref(tabType),
+    page: 1,
+    pageSize: 9999
+  }
+  console.log(params, '1')
+  const res = await getLandlordListBySearchApi(params).catch(() => {})
+  console.log(props.dataInfo.relateCompanyName.split(',')[index], '2')
+  console.log(res, '企业res是什么')
+  companyUid.value = res.filter(
+    (item: any) => item.name == props.dataInfo.relateCompanyName.split(',')[index]
+  )
+  console.log(companyUid.value[0], '企业uid是什么')
   const name = routerMap[tabType.value]
-  console.log(name, 'name是什么')
-  console.log(companyUid.value.uid, '企业uid是什么')
   routerForward(name, {
     type: 'edit',
     uid: companyUid.value.uid
@@ -265,8 +296,16 @@ const editLandlord = () => {
 }
 
 //个体户跳转
-const editLandlords = () => {
-  console.log('个体户跳转')
+const editLandlords = async (index: any) => {
+  const params: any = {
+    type: unref(tabTypes),
+    page: 1,
+    pageSize: 9999
+  }
+  const res = await getLandlordListBySearchApi(params).catch(() => {})
+  individualHouseholdUid.value = res.find(
+    (item: any) => item.name == props.dataInfo.relateIndividualHouseholdName.split(',')[index]
+  )
   const name = routerMap[tabTypes.value]
   console.log(individualHouseholdUid.value.uid, '个体工商户uid是什么')
   routerForward(name, {
@@ -304,7 +343,16 @@ watch(
       console.log(val, '再次监听')
 
       dataList.value = val
-      const { householdPic, familyPic, housePic, resettlePic, longitude, latitude, phone,homesteadArea } = val
+      const {
+        householdPic,
+        familyPic,
+        housePic,
+        resettlePic,
+        longitude,
+        latitude,
+        phone,
+        homesteadArea
+      } = val
       if (householdPic) {
         householdPicStr.value = householdPic
       }
@@ -329,7 +377,7 @@ watch(
         }
         if (homesteadArea) {
           options.value.homesteadArea = homesteadArea
-        }      
+        }
       }
     }
   },
@@ -432,8 +480,8 @@ const mapChooseCallBack = (data: any) => {
 }
 
 onMounted(() => {
-  getList()
-  getLists()
+  // getList()
+  // getLists()
   ismap.value = false
   uni.$on('chooseMap', mapChooseCallBack)
 })
@@ -538,38 +586,38 @@ onBeforeUnmount(() => {
   }
 }
 .btn-box {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  .btn {
     display: flex;
+    height: 33rpx;
+    padding: 0 20rpx;
+    margin-left: 6rpx;
+    background: #3e73ec;
+    border-radius: 33rpx;
     align-items: center;
-    justify-content: right;
-    .btn {
-      display: flex;
-      height: 33rpx;
-      padding: 0 20rpx;
-      margin-left: 6rpx;
+    justify-content: center;
+
+    &.green-btn {
+      background-color: #30a952;
+    }
+
+    &.blue-btn {
       background: #3e73ec;
-      border-radius: 33rpx;
-      align-items: center;
-      justify-content: center;
+    }
 
-      &.green-btn {
-        background-color: #30a952;
-      }
+    .icon {
+      width: 9rpx;
+      height: 9rpx;
+      margin-right: 3rpx;
+    }
 
-      &.blue-btn {
-        background: #3e73ec;
-      }
-
-      .icon {
-        width: 9rpx;
-        height: 9rpx;
-        margin-right: 3rpx;
-      }
-
-      .txt {
-        font-size: 9rpx;
-        line-height: 11rpx;
-        color: #ffffff;
-      }
+    .txt {
+      font-size: 9rpx;
+      line-height: 11rpx;
+      color: #ffffff;
     }
   }
+}
 </style>

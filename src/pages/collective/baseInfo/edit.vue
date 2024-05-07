@@ -59,7 +59,11 @@
               </view> -->
               <view v-if="type == 'add'" :class="['code-wrapper', focusIndex === 1 ? 'focus' : '']">
                 <view class="pre-txt">
-                  {{ formData.villageCode ? 'JT' + filterViewDoorNoWithBeforeOther(formData.villageCode) : '' }}
+                  {{
+                    formData.villageCode
+                      ? 'JT' + filterViewDoorNoWithBeforeOther(formData.villageCode)
+                      : ''
+                  }}
                 </view>
                 <input
                   class="input-txt"
@@ -117,6 +121,22 @@
             </uni-forms-item>
           </uni-col>
         </uni-row>
+        <uni-row>
+          <uni-col :span="24">
+            <uni-forms-item label="中心经纬度" :label-width="150" label-align="right">
+              <view class="lg-txt-wrapper">
+                <view class="position" @click="gotoMap">
+                  <uni-icons type="map" color="#5D8CF7" size="14rpx" />
+                  <text class="txt">{{
+                    formData.longitude && formData.latitude
+                      ? `${formData.longitude},${formData.latitude}`
+                      : '获取定位'
+                  }}</text>
+                </view>
+              </view>
+            </uni-forms-item>
+          </uni-col>
+        </uni-row>
       </uni-forms>
 
       <image
@@ -131,14 +151,14 @@
 
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
-import { ref } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { addLandlordApi, updateLandlordApi } from '@/service'
-import { routerBack, getStorage, StorageKey, setlocationType } from '@/utils'
+import { routerBack, getStorage, StorageKey, setlocationType, routerForward } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { MainType } from '@/types/common'
 import Back from '@/components/Back/Index.vue'
 import VillageSelectFormItem from '@/components/VillageSelectFormItem/index.vue'
-import {filterViewDoorNoWithBeforeOther} from '@/utils'
+import { filterViewDoorNoWithBeforeOther } from '@/utils'
 // 表单数据
 const formData = ref<any>({
   name: '',
@@ -200,7 +220,9 @@ const submit = () => {
       formData.value.id && formData.value.doorNo
         ? formData.value.doorNo
         : formData.value.suffixNo
-        ? 'JT' + filterViewDoorNoWithBeforeOther(formData.value.villageCode) + formData.value.suffixNo
+        ? 'JT' +
+          filterViewDoorNoWithBeforeOther(formData.value.villageCode) +
+          formData.value.suffixNo
         : '',
     type: MainType.Village
   }
@@ -260,6 +282,26 @@ let change = (e: any) => {
     formData.value.inundationRange = setlocationType(e)
   }
 }
+const gotoMap = () => {
+  routerForward('map', {
+    longitude: formData.value.longitude,
+    latitude: formData.value.latitude
+  })
+}
+// 地图选择经纬度后回调返回经纬度
+const mapChooseCallBack = (data: any) => {
+  if (data && data.longitude && data.latitude) {
+    formData.value.longitude = data.longitude
+    formData.value.latitude = data.latitude
+  }
+}
+onMounted(() => {
+  uni.$on('chooseMap', mapChooseCallBack)
+})
+
+onBeforeUnmount(() => {
+  uni.$off('chooseMap', mapChooseCallBack)
+})
 </script>
 
 <style lang="scss" scoped>
@@ -421,6 +463,28 @@ let change = (e: any) => {
       width: 36rpx;
       height: 36rpx;
       border-radius: 50%;
+    }
+  }
+}
+.lg-txt-wrapper {
+  display: flex;
+  flex-direction: column;
+
+  .position {
+    display: flex;
+    width: 200rpx;
+    height: 23rpx;
+    margin-top: 5rpx;
+    background: #ffffff;
+    border: 1px solid #d9d9d9;
+    border-radius: 2rpx;
+    align-items: center;
+    justify-content: center;
+
+    .txt {
+      margin-left: 6rpx;
+      font-size: 9rpx;
+      color: #171718;
     }
   }
 }

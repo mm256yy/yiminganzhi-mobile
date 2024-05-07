@@ -70,6 +70,20 @@
               </view>
             </uni-col>
           </uni-row>
+          <uni-row>
+            <uni-col :span="24">
+              <view class="col">
+                <view class="label">中心经纬度:</view>
+                <view class="content">
+                  {{
+                    props.baseInfo.longitude && props.baseInfo.latitude
+                      ? `${props.baseInfo.longitude},${props.baseInfo.latitude}`
+                      : '-'
+                  }}
+                </view>
+              </view>
+            </uni-col>
+          </uni-row>
         </view>
       </view>
 
@@ -426,7 +440,9 @@ const toLink = (type: string) => {
     villageCode,
     locationType,
     phone,
-    householderName
+    householderName,
+    longitude,
+    latitude
   } = props.baseInfo
 
   const { establishDate } = props.dataInfo
@@ -444,7 +460,9 @@ const toLink = (type: string) => {
     // suffixNo: splitStr(doorNo, 13, 17),
     establishDate: establishDate ? dayjs(establishDate).format('YYYY-MM-DD') : null,
     licensePic: fmtPicUrl(props.dataInfo.licensePic),
-    otherPic: fmtPicUrl(props.dataInfo.otherPic)
+    otherPic: fmtPicUrl(props.dataInfo.otherPic),
+    longitude,
+    latitude
   }
 
   routerForward('selfBaseInfoEdit', {

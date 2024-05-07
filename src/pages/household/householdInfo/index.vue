@@ -11,11 +11,14 @@
             </view>
           </view>
           <view style="display: flex; align-items: center">
-            <view class="name" style="display: flex;" >
+            <view class="name" style="display: flex">
               <view>关联个体户：</view>
-                <view v-for="(item, index) in props.dataInfo.relateIndividualHouseholdName.split(',')" :key="index" >
-                  <text  @click="editLandlords(index)" style="color: blue">{{ item }}</text>
-                </view>
+              <view
+                v-for="(item, index) in props.dataInfo.relateIndividualHouseholdName.split(',')"
+                :key="index"
+              >
+                <text @click="editLandlords(index)" style="color: blue">{{ item }}</text>
+              </view>
             </view>
             <view class="btn-wrapper report" v-if="!props.dataInfo.relateIndividualHouseholdName">
               <text class="txt" @click="addLandlords">添加</text>
@@ -27,11 +30,14 @@
                 formatStr(props.dataInfo.relateCompanyName)
               }}</text>
             </view> -->
-            <view class="name" style="display: flex;">
+            <view class="name" style="display: flex">
               <view>关联企业：</view>
-                <view v-for="(item, index) in props.dataInfo.relateCompanyName.split(',')" :key="index">
-                  <text  @click="editLandlord(index)" style="color: blue">{{ item }}</text>
-                </view>
+              <view
+                v-for="(item, index) in props.dataInfo.relateCompanyName.split(',')"
+                :key="index"
+              >
+                <text @click="editLandlord(index)" style="color: blue">{{ item }}</text>
+              </view>
             </view>
             <view class="btn-wrapper report" v-if="!props.dataInfo.relateCompanyName">
               <text class="txt" @click="addLandlord">添加</text>
@@ -141,8 +147,10 @@ import {
 import { locationTypes, yesAndNoEnums } from '@/config/common'
 import { compatibleOldSystems } from '@/pages/common/config'
 import { MainType, RoleCodeType } from '@/types/common'
-import { ref, unref, nextTick, onMounted } from 'vue'
+import { ref, unref, nextTick, onMounted, watch } from 'vue'
 import { getLandlordListBySearchApi } from '@/service'
+import { onShow } from '@dcloudio/uni-app'
+
 const tabType = ref<MainType>(MainType.Company)
 const tabTypes = ref<MainType>(MainType.IndividualHousehold)
 const companyUid = ref<any>()
@@ -154,7 +162,7 @@ const props = defineProps({
   }
 })
 const roleType = ref<RoleCodeType>(getStorage(StorageKey.USERROLE))
-
+const emit = defineEmits(['updateData'])
 /**
  * 获取页面跳转的路由 name
  * @params {Object} roleType 角色类型
@@ -240,37 +248,37 @@ const addRouterMap: any = {
 }
 
 //企业跳转
-const editLandlord = async(index:any) => {
+const editLandlord = async (index: any) => {
   const params: any = {
-  type: unref(tabType),
-  page: 1,
-  pageSize: 9999
+    type: unref(tabType),
+    page: 1,
+    pageSize: 9999
   }
-  console.log(params,'1')
+  console.log(params, '1')
   const res = await getLandlordListBySearchApi(params).catch(() => {})
   console.log(props.dataInfo.relateCompanyName.split(',')[index], '2')
   console.log(res, '企业res是什么')
   companyUid.value = res.filter(
-      (item: any) => item.name == props.dataInfo.relateCompanyName.split(',')[index]
+    (item: any) => item.name == props.dataInfo.relateCompanyName.split(',')[index]
   )
-  console.log(individualHouseholdUid.value[0].uid, '企业uid是什么')
+  console.log(companyUid.value[0], '企业uid是什么')
   const name = routerMap[tabType.value]
   routerForward(name, {
     type: 'edit',
-    uid: companyUid.value.uid
+    uid: companyUid.value[0].uid
   })
 }
 
 //个体户跳转
-const editLandlords = async(index:any) => {
-    const params: any = {
+const editLandlords = async (index: any) => {
+  const params: any = {
     type: unref(tabTypes),
     page: 1,
     pageSize: 9999
   }
   const res = await getLandlordListBySearchApi(params).catch(() => {})
-    individualHouseholdUid.value = res.find(
-      (item: any) => item.name == props.dataInfo.relateIndividualHouseholdName.split(',')[index]
+  individualHouseholdUid.value = res.find(
+    (item: any) => item.name == props.dataInfo.relateIndividualHouseholdName.split(',')[index]
   )
   console.log(individualHouseholdUid.value.uid, '个体工商户uid是什么')
   const name = routerMap[tabTypes.value]
@@ -326,10 +334,21 @@ const toLink = (type: string) => {
     type
   })
 }
-onMounted(() => {
-  // getList()
-  // getLists()
+
+onShow(() => {
+  console.log(111)
+  setTimeout(() => {
+    emit('updateData')
+  }, 1000)
 })
+watch(
+  () => props.dataInfo,
+  (newValue, oldValue) => {
+    console.log(newValue, 'newValue')
+    console.log(oldValue, 'oldValue')
+  },
+  { deep: true }
+)
 </script>
 
 <style lang="scss" scoped>

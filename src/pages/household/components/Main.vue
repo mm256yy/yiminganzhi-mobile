@@ -25,7 +25,11 @@
                 v-touch:swipe.right="touchRight"
               >
                 <!-- 居民户信息 -->
-                <household-info v-if="tabVal === 0" :dataInfo="dataInfo" />
+                <household-info
+                  v-if="tabVal === 0"
+                  :dataInfo="dataInfo"
+                  @update-data="updateData"
+                />
 
                 <!-- 人口信息 -->
                 <demographic-info
@@ -173,7 +177,7 @@ const props = defineProps({
   populationSortTree: {
     type: Array as any,
     default: () => []
-  },
+  }
 })
 
 const tabsList = computed(() => {
@@ -289,7 +293,7 @@ const touchRight = () => {
  * @param{Object} reason 删除原因（填报阶段没有此参数，复核阶段有此参数）
  */
 const deleteDemographic = (data: any, reason?: string) => {
-  console.log(data,reason,'删除的是什么')
+  console.log(data, reason, '删除的是什么')
   deleteLandlordPeopleApi(props.dataInfo.uid, data.uid, reason)
     .then((res) => {
       if (res) {

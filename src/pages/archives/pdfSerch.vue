@@ -433,7 +433,7 @@
               <td align="center" class="uTd" colspan="3"></td>
             </tr>
             <tr>
-              <td class="uTd" colspan="1">验收人：</td>
+              <td class="uTd bbq" colspan="1">验收人：</td>
               <td class="uTd" colspan="2">验收时间:</td>
             </tr>
             <tr>
@@ -1252,9 +1252,24 @@ export default {
       width: 100%;
       height: 50px; //每一行高度
 
-      td {
+      td:nth-child(1) {
         width: 25%; // 因为我的一行分了五个，所以是20%
         // 下面设置每个格子边框，右下
+      }
+       td:nth-child(2) {
+        width: 40%; // 因为我的一行分了五个，所以是20%
+        // 下面设置每个格子边框，右下
+      }
+         td:nth-child(3) {
+        width: 15%; // 因为我的一行分了五个，所以是20%
+        // 下面设置每个格子边框，右下
+      }
+         td:nth-child(4) {
+        width: 20%; // 因为我的一行分了五个，所以是20%
+        // 下面设置每个格子边框，右下
+      }
+      .bbq {
+        width: 40%;
       }
     }
   }

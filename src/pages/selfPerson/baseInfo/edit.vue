@@ -106,9 +106,13 @@
               <view v-else class="code-wrapper">
                 <input class="input-txt disabled" v-model="formData.doorNo" disabled />
               </view> -->
-              <view v-if="type== 'add'" :class="['code-wrapper', focusIndex === 1 ? 'focus' : '']">
+              <view v-if="type == 'add'" :class="['code-wrapper', focusIndex === 1 ? 'focus' : '']">
                 <view class="pre-txt">
-                  {{ formData.villageCode ? 'GT' + filterViewDoorNoWithBeforeOther(formData.villageCode) : '' }}
+                  {{
+                    formData.villageCode
+                      ? 'GT' + filterViewDoorNoWithBeforeOther(formData.villageCode)
+                      : ''
+                  }}
                 </view>
                 <input
                   class="input-txt"
@@ -150,7 +154,22 @@
             </uni-forms-item>
           </uni-col>
         </uni-row>
-
+        <uni-row>
+          <uni-col :span="24">
+            <uni-forms-item label="中心经纬度" :label-width="150" label-align="right">
+              <view class="lg-txt-wrapper">
+                <view class="position" @click="gotoMap">
+                  <uni-icons type="map" color="#5D8CF7" size="14rpx" />
+                  <text class="txt">{{
+                    formData.longitude && formData.latitude
+                      ? `${formData.longitude},${formData.latitude}`
+                      : '获取定位'
+                  }}</text>
+                </view>
+              </view>
+            </uni-forms-item>
+          </uni-col>
+        </uni-row>
         <view class="title-wrapper">
           <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
           <view class="title">个体工商户证照信息</view>
@@ -659,9 +678,17 @@
 
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import dayjs from 'dayjs'
-import { routerBack, getStorage, StorageKey, fmtPicUrl, cardReg, phoneReg } from '@/utils'
+import {
+  routerBack,
+  getStorage,
+  StorageKey,
+  fmtPicUrl,
+  cardReg,
+  phoneReg,
+  routerForward
+} from '@/utils'
 import { addLandlordApi, updateLandlordCompanyApi, updateAssociation } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
@@ -671,7 +698,7 @@ import { MainType } from '@/types/common'
 import SearchList from '@/components/SearchList/Index.vue'
 const showSearch = ref<boolean>(false)
 import { getImpLandlordListBySearchApi } from '@/service'
-import {filterViewDoorNoWithBeforeOther} from '@/utils'
+import { filterViewDoorNoWithBeforeOther } from '@/utils'
 
 const getLandlordListBySearch = () => {
   let params = {
@@ -820,7 +847,9 @@ const submit = () => {
       formData.value.id && formData.value.doorNo
         ? formData.value.doorNo
         : formData.value.suffixNo
-        ? 'GT' + filterViewDoorNoWithBeforeOther(formData.value.villageCode) + formData.value.suffixNo
+        ? 'GT' +
+          filterViewDoorNoWithBeforeOther(formData.value.villageCode) +
+          formData.value.suffixNo
         : '',
     // doorNo: formData.value.doorNo,
     areaCode: formData.value.areaCode,
@@ -830,7 +859,9 @@ const submit = () => {
     phone: formData.value.legalPersonPhone,
     type: MainType.IndividualHousehold,
     householderDoorNo: formData.value.householderDoorNo,
-    householderName: formData.value.householderName
+    householderName: formData.value.householderName,
+    longitude: formData.value.longitude,
+    latitude: formData.value.latitude
   }
 
   let company: any = {
@@ -838,7 +869,9 @@ const submit = () => {
       formData.value.id && formData.value.doorNo
         ? formData.value.doorNo
         : formData.value.suffixNo
-        ? 'GT' + filterViewDoorNoWithBeforeOther(formData.value.villageCode) + formData.value.suffixNo
+        ? 'GT' +
+          filterViewDoorNoWithBeforeOther(formData.value.villageCode) +
+          formData.value.suffixNo
         : '',
     // doorNo: formData.value.doorNo,
     legalPersonName: formData.value.legalPersonName,
@@ -895,14 +928,14 @@ const submit = () => {
   } else if (!formData.value.villageCode) {
     showToast('请选择所属区域')
     return
-  }else if (
-      !formData.value.doorNo &&
-      formData.value.suffixNo &&
-      formData.value.suffixNo.length !== 4
-    ) {
-      showToast('个体户编码不全，请输入四位数字')
-      return
-  } 
+  } else if (
+    !formData.value.doorNo &&
+    formData.value.suffixNo &&
+    formData.value.suffixNo.length !== 4
+  ) {
+    showToast('个体户编码不全，请输入四位数字')
+    return
+  }
   // else if (!formData.value.doorNo) {
   //   showToast('请输入个体工商户编码')
   //   return
@@ -982,9 +1015,26 @@ const updateCommon = () => {
     })
   })
 }
-
+const gotoMap = () => {
+  routerForward('map', {
+    longitude: formData.value.longitude,
+    latitude: formData.value.latitude
+  })
+}
+// 地图选择经纬度后回调返回经纬度
+const mapChooseCallBack = (data: any) => {
+  if (data && data.longitude && data.latitude) {
+    formData.value.longitude = data.longitude
+    formData.value.latitude = data.latitude
+  }
+}
 onMounted(() => {
   getLandlordListBySearch()
+  uni.$on('chooseMap', mapChooseCallBack)
+})
+
+onBeforeUnmount(() => {
+  uni.$off('chooseMap', mapChooseCallBack)
 })
 </script>
 
@@ -1174,6 +1224,28 @@ onMounted(() => {
       width: 36rpx;
       height: 36rpx;
       border-radius: 50%;
+    }
+  }
+}
+.lg-txt-wrapper {
+  display: flex;
+  flex-direction: column;
+
+  .position {
+    display: flex;
+    width: 200rpx;
+    height: 23rpx;
+    margin-top: 5rpx;
+    background: #ffffff;
+    border: 1px solid #d9d9d9;
+    border-radius: 2rpx;
+    align-items: center;
+    justify-content: center;
+
+    .txt {
+      margin-left: 6rpx;
+      font-size: 9rpx;
+      color: #171718;
     }
   }
 }

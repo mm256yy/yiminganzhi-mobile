@@ -57,6 +57,20 @@
               </view>
             </uni-col>
           </uni-row>
+          <uni-row>
+            <uni-col :span="24">
+              <view class="col">
+                <view class="label">中心经纬度:</view>
+                <view class="content">
+                  {{
+                    props.dataInfo.longitude && props.dataInfo.latitude
+                      ? `${props.dataInfo.longitude},${props.dataInfo.latitude}`
+                      : '-'
+                  }}
+                </view>
+              </view>
+            </uni-col>
+          </uni-row>
         </view>
       </view>
     </view>
@@ -91,7 +105,9 @@ const toLink = (type: string) => {
     phone: props.dataInfo.phone,
     areaCode: props.dataInfo.areaCode, // 区/县
     townCode: props.dataInfo.townCode, // 镇/街道
-    villageCode: props.dataInfo.villageCode // 行政村
+    villageCode: props.dataInfo.villageCode, // 行政村
+    longitude: props.dataInfo.longitude,
+    latitude: props.dataInfo.latitude
   }
 
   routerForward('collectiveBaseInfoEdit', {
