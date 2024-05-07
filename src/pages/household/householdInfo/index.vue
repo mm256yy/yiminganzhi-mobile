@@ -11,20 +11,27 @@
             </view>
           </view>
           <view style="display: flex; align-items: center">
-            <view class="name">
-              关联个体户：<text @click="editLandlords" style="color: blue">{{
-                formatStr(props.dataInfo.relateIndividualHouseholdName)
-              }}</text>
+            <view class="name" style="display: flex;" >
+              <view>关联个体户：</view>
+                <view v-for="(item, index) in props.dataInfo.relateIndividualHouseholdName.split(',')" :key="index" >
+                  <text  @click="editLandlords(index)" style="color: blue">{{ item }}</text>
+                </view>
             </view>
             <view class="btn-wrapper report" v-if="!props.dataInfo.relateIndividualHouseholdName">
               <text class="txt" @click="addLandlords">添加</text>
             </view>
           </view>
           <view style="display: flex; align-items: center">
-            <view class="name">
+            <!-- <view class="name">
               关联企业：<text @click="editLandlord" style="color: blue">{{
                 formatStr(props.dataInfo.relateCompanyName)
               }}</text>
+            </view> -->
+            <view class="name" style="display: flex;">
+              <view>关联企业：</view>
+                <view v-for="(item, index) in props.dataInfo.relateCompanyName.split(',')" :key="index">
+                  <text  @click="editLandlord(index)" style="color: blue">{{ item }}</text>
+                </view>
             </view>
             <view class="btn-wrapper report" v-if="!props.dataInfo.relateCompanyName">
               <text class="txt" @click="addLandlord">添加</text>
@@ -182,41 +189,41 @@ const getRouterName = (roleType: string) => {
     return 'selfPerson'
   }
 }
-//企业
-const getList = () => {
-  const params: any = {
-    type: unref(tabType),
-    page: 1,
-    pageSize: 10
-  }
-  nextTick(async () => {
-    const res = await getLandlordListBySearchApi(params).catch(() => {})
-    console.log(res, '企业res是什么')
-    companyUid.value = res.find((item: any) => item.name == props.dataInfo.relateCompanyName)
-    console.log(companyUid.value.uid, '企业uid是什么')
-  })
-}
+// //企业
+// const getList = () => {
+//   const params: any = {
+//     type: unref(tabType),
+//     page: 1,
+//     pageSize: 10
+//   }
+//   nextTick(async () => {
+//     const res = await getLandlordListBySearchApi(params).catch(() => {})
+//     console.log(res, '企业res是什么')
+//     companyUid.value = res.find((item: any) => item.name == props.dataInfo.relateCompanyName)
+//     console.log(companyUid.value.uid, '企业uid是什么')
+//   })
+// }
 
-//个体工商户
-const getLists = () => {
-  const params: any = {
-    type: unref(tabTypes),
-    page: 1,
-    pageSize: 9999
-  }
-  nextTick(async () => {
-    const res = await getLandlordListBySearchApi(params).catch(() => {})
-    console.log(res, '个体工商户res是什么')
-    console.log(props.dataInfo, '主体数据是什么？')
-    individualHouseholdUid.value = res.find(
-      (item: any) => item.name == props.dataInfo.relateIndividualHouseholdName
-    )
-    const ress = await getLandlordListBySearchApi({ uid: individualHouseholdUid.value.uid }).catch(
-      () => {}
-    )
-    console.log(ress, '个体工商户uid是什么')
-  })
-}
+// //个体工商户
+// const getLists = () => {
+//   const params: any = {
+//     type: unref(tabTypes),
+//     page: 1,
+//     pageSize: 9999
+//   }
+//   nextTick(async () => {
+//     const res = await getLandlordListBySearchApi(params).catch(() => {})
+//     console.log(res, '个体工商户res是什么')
+//     console.log(props.dataInfo, '主体数据是什么？')
+//     individualHouseholdUid.value = res.find(
+//       (item: any) => item.name == props.dataInfo.relateIndividualHouseholdName
+//     )
+//     const ress = await getLandlordListBySearchApi({ uid: individualHouseholdUid.value.uid }).catch(
+//       () => {}
+//     )
+//     console.log(ress, '个体工商户uid是什么')
+//   })
+// }
 // 填报
 const routerMap: any = {
   // [MainType.Village]: getRouterName(roleType.value)
@@ -233,7 +240,20 @@ const addRouterMap: any = {
 }
 
 //企业跳转
-const editLandlord = () => {
+const editLandlord = async(index:any) => {
+  const params: any = {
+  type: unref(tabType),
+  page: 1,
+  pageSize: 9999
+  }
+  console.log(params,'1')
+  const res = await getLandlordListBySearchApi(params).catch(() => {})
+  console.log(props.dataInfo.relateCompanyName.split(',')[index], '2')
+  console.log(res, '企业res是什么')
+  companyUid.value = res.filter(
+      (item: any) => item.name == props.dataInfo.relateCompanyName.split(',')[index]
+  )
+  console.log(individualHouseholdUid.value[0].uid, '企业uid是什么')
   const name = routerMap[tabType.value]
   routerForward(name, {
     type: 'edit',
@@ -242,7 +262,17 @@ const editLandlord = () => {
 }
 
 //个体户跳转
-const editLandlords = () => {
+const editLandlords = async(index:any) => {
+    const params: any = {
+    type: unref(tabTypes),
+    page: 1,
+    pageSize: 9999
+  }
+  const res = await getLandlordListBySearchApi(params).catch(() => {})
+    individualHouseholdUid.value = res.find(
+      (item: any) => item.name == props.dataInfo.relateIndividualHouseholdName.split(',')[index]
+  )
+  console.log(individualHouseholdUid.value.uid, '个体工商户uid是什么')
   const name = routerMap[tabTypes.value]
   routerForward(name, {
     type: 'edit',
@@ -297,8 +327,8 @@ const toLink = (type: string) => {
   })
 }
 onMounted(() => {
-  getList()
-  getLists()
+  // getList()
+  // getLists()
 })
 </script>
 

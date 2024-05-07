@@ -70,7 +70,7 @@
         <view class="list-item">
           <image class="bg" src="@/static/images/head_2.png" mode="scaleToFill" />
           <view class="title" @click="jump(MainType.IndividualHousehold)">
-            <text class="tit">个体工商户1</text>
+            <text class="tit">个体工商户</text>
             <image
               class="right-arrow"
               src="@/static/images/sync_right_arrow.png"
