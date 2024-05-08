@@ -122,7 +122,7 @@
 
           <uni-col :span="24">
             <uni-forms-item
-              label="幢号-房号111"
+              label="幢号-房号"
               :label-width="150"
               label-align="right"
               name="formData.roomNo"

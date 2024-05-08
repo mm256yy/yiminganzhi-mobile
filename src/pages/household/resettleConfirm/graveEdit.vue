@@ -55,16 +55,16 @@
               label-align="right"
               name="formData.number"
             >
-              <view v-if="query.actionType === 'edit'" class="value">
-                {{ formData.number }}
+              <view class="value">
+                <!-- {{ formData.number }} -->1
               </view>
-              <uni-easyinput
+              <!-- <uni-easyinput
                 v-else
                 placeholder="请输入"
                 :style="{ width: '166rpx' }"
                 type="number"
                 v-model="formData.number"
-              />
+              /> -->
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -187,6 +187,7 @@ const getDetail = async () => {
 }
 
 const submit = async () => {
+  formData.value.number = 1
   if (query.value.actionType === 'edit') {
     let params = {
       ...formData.value,

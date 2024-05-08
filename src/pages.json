@@ -535,6 +535,13 @@
       }
     },
     {
+      "name": "collectiveCardEdit",
+      "path": "pages/collective/createCard/edit",
+      "style": {
+        "navigationBarTitleText": "村集体建卡用户信息编辑"
+      }
+    },
+    {
       "name": "confirmReward",
       "path": "pages/household/migrateCard/confirmReward",
       "style": {

@@ -122,7 +122,7 @@
           </uni-col>
         </uni-row>
         <uni-row>
-          <uni-col :span="24">
+          <uni-col :span="12">
             <uni-forms-item label="中心经纬度" :label-width="150" label-align="right">
               <view class="lg-txt-wrapper">
                 <view class="position" @click="gotoMap">
@@ -134,6 +134,17 @@
                   }}</text>
                 </view>
               </view>
+            </uni-forms-item>
+          </uni-col>
+          <uni-col :span="12">
+            <uni-forms-item
+              label="村集体属性"
+              :label-width="170"
+              label-align="right"
+              name="formData.villageType"
+            >
+              <div class="value">{{ formData.villageType=='asset'?'集体资产':formData.villageType=='grave'?'坟墓':'-' }}</div>
+              <!-- <input class="input-txt disabled" v-model="villageTypes" disabled /> -->
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -151,7 +162,7 @@
 
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount,computed } from 'vue'
 import { addLandlordApi, updateLandlordApi } from '@/service'
 import { routerBack, getStorage, StorageKey, setlocationType, routerForward } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
@@ -188,6 +199,7 @@ onLoad((option: any) => {
       formData.value = { ...params }
       title.value = '村集体基本情况编辑'
     } else if (type.value === 'add') {
+      formData.value.villageType=''
       title.value = '添加村集体'
       if (option.areaCode && option.townCode && option.villageCode) {
         formData.value.areaCode = option.areaCode
@@ -210,7 +222,13 @@ const inputFocus = (index: number) => {
 const inputBlur = () => {
   focusIndex.value = -1
 }
-
+const villageTypes = computed(() => {
+  return formData.value.villageType == 'asset'
+      ? '集体资产'
+      : formData.value.villageType == 'grave'
+      ? '坟墓'
+      : '-'
+})
 // 表单提交
 const submit = () => {
   let params = {
@@ -488,4 +506,9 @@ onBeforeUnmount(() => {
     }
   }
 }
+.value {
+    display: flex;
+    height: 100%;
+    align-items: center;
+  }
 </style>

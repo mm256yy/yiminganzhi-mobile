@@ -1,13 +1,11 @@
 <template>
   <view class="migrate-card-wrapper">
-    <!-- 只征地不搬迁实施 —— 只征地不搬迁建卡（移民实施阶段） -->
+    <!-- 居民户实施 —— 村集体建卡（移民实施阶段） -->
     <view class="main">
       <view class="row-1">
-        <view class="left">
-          <view class="btn blue" @click="toConfirmReward"> 奖励费调整 </view>
-        </view>
+        <view class="left" />
         <view class="right">
-          <view class="btn green" @click="handleClick">
+          <view class="btn green">
             <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
             <text class="txt">打印</text>
           </view>
@@ -21,7 +19,7 @@
       <view class="title-wrap m-t-5">
         <view class="left">
           <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-          <text>使用权人信息</text>
+          <text>村集体账户信息</text>
           <text style="color: red;" v-if="targ">*账户信息未填写完整,请补全账户信息后再进度上报！</text>
         </view>
         <view class="right" @click="toEdit">编辑</view>
@@ -30,25 +28,9 @@
       <uni-row class="m-b-10">
         <uni-col :span="12">
           <view class="col">
-            <view class="label">使用权人名：</view>
+            <view class="label">开户名：</view>
             <view class="content">
-              {{ formatStr(dataInfo.name) }}
-            </view>
-          </view>
-        </uni-col>
-        <uni-col :span="12">
-          <view class="col">
-            <view class="label">类别：</view>
-            <view class="content">
-              {{ formatDict(dataInfo.landUserType, 418) }}
-            </view>
-          </view>
-        </uni-col>
-        <uni-col :span="12">
-          <view class="col">
-            <view class="label">权属单位：</view>
-            <view class="content">
-              {{ formatStr(getUnit(dataInfo)) }}
+              {{ formatStr(dataInfo.accountName) }}
             </view>
           </view>
         </uni-col>
@@ -57,14 +39,6 @@
             <view class="label">开户行：</view>
             <view class="content">
               {{ formatStr(dataInfo.bankName) }}
-            </view>
-          </view>
-        </uni-col>
-        <uni-col :span="12">
-          <view class="col">
-            <view class="label">开户名：</view>
-            <view class="content">
-              {{ formatStr(dataInfo.accountName) }}
             </view>
           </view>
         </uni-col>
@@ -82,6 +56,7 @@
           <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
           费用补偿情况
         </view>
+        <view class="right confirm" @click="toConfirmReward">奖励费确认</view>
       </view>
 
       <view class="row-3">
@@ -98,12 +73,14 @@
         <view class="tb-content" v-for="(item, index) in tableData" :key="index">
           <view class="td td-1">{{ getTypeStr(item.type) }}</view>
           <view class="td td-2">{{ formatStr(item.name) }}</view>
-          <view class="td td-3">{{ formatStr(item.unit) }}</view>
-          <view class="td td-3">{{ formatStr(item.number) }}</view>
+          <view class="td td-3">{{ formatDict(item.unit, 268) }}</view>
+          <view class="td td-3">{{
+            item.name.includes('小计') ? '-' : formatStr(item.number)
+          }}</view>
           <view class="td td-3">{{ formatStr(item.price) }}</view>
           <view class="td td-3">
-            <view v-if="item.isUpdate == '0'&&item.isSum == '0'">{{ item.totalPrice }}</view>
-           <view v-else-if="item.isUpdate == '1' && item.isSum == '0'">{{
+            <view v-if="item.isUpdate == '0'&&item.isSum == '0'">{{ formatStr(item.totalPrice) }}</view>
+            <view v-else-if="item.isUpdate == '1' && item.isSum == '0'">{{
               computedTotalPrice(item)
             }}</view>
             <view v-else-if="item.isSum == '1'"> {{ getSummaries(item) }} </view>
@@ -117,12 +94,15 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
+import dayjs from 'dayjs'
 import { onShow } from '@dcloudio/uni-app'
 import { formatDict, formatStr, routerForward } from '@/utils'
-// import { getCompensationCardConfigApi } from '@/service'
+import { getCompensationCardConfigApi } from '@/service'
+import { apartmentArea, resettleArea } from '@/config'
 import { getLandlordItemApi } from '@/service'
 interface PropsType {
   dataInfo: any
+  dataList: any[]
 }
 
 const props = defineProps<PropsType>()
@@ -130,17 +110,26 @@ const tableData = ref<any[]>([])
 const targ=ref(false)
 // 获取移民建卡奖励费列表
 const getCompensationCardConfig = async () => {
+  let res = await getCompensationCardConfigApi()
+  if (res) {
     let data: any = await getLandlordItemApi(props.dataInfo.uid)
-    tableData.value = data.immigrantCompensationCardList.filter((item: any) => item.phType == 'LandNoMove')
-    console.log(tableData.value, '测试dada数据')  
+    tableData.value = data.immigrantCompensationCardList
+    console.log('合并', tableData.value, res, data.immigrantCompensationCardList)
+  }
 }
 
 onShow(() => {
-  // 注册事件监听器
-  uni.$emit('customRefresh')
   getCompensationCardConfig()
 })
 
+const getSettleAddressText = (settleAddress?: string) => {
+  console.log(settleAddress, 'settleAddress')
+  if (!settleAddress) return '-'
+  return (
+    resettleArea.find((item) => item.id === settleAddress)?.name ||
+    apartmentArea.find((item) => item.id === settleAddress)?.name
+  )
+}
 /**
  * 获取金额类型
  * @param type 类型 1 补偿, 2 补助, 3 奖励, 4 其他
@@ -151,13 +140,10 @@ const getTypeStr = (type: string) => {
       return '补偿费'
       break
     case '2':
-      return '补助费'
-      break
-    case '3':
       return '奖励费'
       break
-    case '4':
-      return '其他费用'
+    case '3':
+      return '补助费'
       break
     default:
       return ''
@@ -185,20 +171,6 @@ const computedTotalPrice = (row: any) => {
  * 获取奖励小计
  * @param row 当前行信息
  */
-// const getSummaries = (row: any) => {
-//   let sums = 0
-//   let sumIndex = 0
-//   tableData.value.forEach((column, index) => {
-//     if (column.name === row.name) {
-//       sumIndex = index
-//     }
-//   })
-//   const arr = tableData.value.filter((item, index) => item && index !== sumIndex)
-//   sums = arr.reduce((totalPrice, currentItem) => {
-//     return totalPrice + computedTotalPrice(currentItem)
-//   }, 0)
-//   return sums
-// }
 const getSummaries = (row: any) => {
   let sums = 0
   let sumIndex = 0
@@ -208,9 +180,8 @@ const getSummaries = (row: any) => {
     }
   })
   const arr = tableData.value.filter(
-    (item, index) => item && index !== sumIndex && item.type == row.type
+    (item, index) => item && index !== sumIndex&& item.type == row.type
   )
-  console.log(arr,'arr是什么？')
   sums = arr.reduce((totalPrice, currentItem) => {
     return totalPrice + computedTotalPrice(currentItem)
   }, 0)
@@ -232,38 +203,18 @@ const onArchives = () => {
 
 // 编辑
 const toEdit = () => {
-  routerForward('migrateCardEdit', {
+  routerForward('collectiveCardEdit', {
     uid: props.dataInfo.uid
   })
 }
 
-const handleClick = () => {
-  // routerForward('pdfSerch', {
-  //   data: JSON.stringify(demographicList.value),
-  //   dataInfo: JSON.stringify(props.dataInfo),
-  //   id: 1
-  // })
-    routerForward('pdfBC', {
-    type: 6,
-    dataInfo: props.dataInfo.uid
-  })
-}
 // 奖励资费确认
 const toConfirmReward = () => {
   const { uid, doorNo } = props.dataInfo
-  let params = { uid, doorNo, fromType: 'land' }
+  let params = { uid, doorNo }
   routerForward('enterconfirmReward', {
     params: JSON.stringify(params)
   })
-}
-
-// 获取权属单位
-const getUnit = (item: any) => {
-  let str1 = item?.cityCodeText ? item?.cityCodeText : ''
-  let str2 = item?.areaCodeText ? item?.areaCodeText : ''
-  let str3 = item?.townCodeText ? item?.townCodeText : ''
-  let str4 = item?.villageCodeText ? item?.villageCodeText : ''
-  return str1.concat(str2).concat(str3).concat(str4)
 }
 </script>
 
@@ -282,6 +233,33 @@ const getUnit = (item: any) => {
     .right {
       display: flex;
       align-items: center;
+
+      .btn {
+        display: flex;
+        height: 23rpx;
+        padding: 0 9rpx;
+        margin-right: 6rpx;
+        font-size: 9rpx;
+        color: #fff;
+        border-radius: 23rpx;
+        box-sizing: border-box;
+        align-items: center;
+        justify-content: center;
+
+        &.green {
+          background-color: #30a952;
+        }
+
+        &.blue {
+          background-color: #3e73ec;
+        }
+
+        .icon {
+          width: 9rpx;
+          height: 9rpx;
+          margin-right: 2rpx;
+        }
+      }
     }
   }
 
@@ -431,33 +409,6 @@ const getUnit = (item: any) => {
           width: 143rpx;
         }
       }
-    }
-  }
-
-  .btn {
-    display: flex;
-    height: 23rpx;
-    padding: 0 9rpx;
-    margin-right: 6rpx;
-    font-size: 9rpx;
-    color: #fff;
-    border-radius: 23rpx;
-    box-sizing: border-box;
-    align-items: center;
-    justify-content: center;
-
-    &.green {
-      background-color: #30a952;
-    }
-
-    &.blue {
-      background-color: #3e73ec;
-    }
-
-    .icon {
-      width: 9rpx;
-      height: 9rpx;
-      margin-right: 2rpx;
     }
   }
 }

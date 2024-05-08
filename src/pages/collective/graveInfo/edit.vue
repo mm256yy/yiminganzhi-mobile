@@ -133,6 +133,29 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
+              label="身份证号"
+              :label-width="150"
+              label-align="right"
+              name="formData.card"
+            >
+              <uni-easyinput v-model="formData.card" type="text" placeholder="请输入" />
+            </uni-forms-item>
+          </uni-col>
+        </uni-row>
+        
+        <uni-row>
+          <uni-col :span="12">
+            <uni-forms-item
+              label="联系方式"
+              :label-width="150"
+              label-align="right"
+              name="formData.phone"
+            >
+              <uni-easyinput  v-model="formData.phone" type="text" placeholder="请输入" />
+            </uni-forms-item>
+          </uni-col>
+          <uni-col :span="12">
+            <uni-forms-item
               label="备注"
               :label-width="150"
               label-align="right"

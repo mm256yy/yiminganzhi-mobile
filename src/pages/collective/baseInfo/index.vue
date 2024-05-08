@@ -107,7 +107,8 @@ const toLink = (type: string) => {
     townCode: props.dataInfo.townCode, // 镇/街道
     villageCode: props.dataInfo.villageCode, // 行政村
     longitude: props.dataInfo.longitude,
-    latitude: props.dataInfo.latitude
+    latitude: props.dataInfo.latitude,
+    villageType: props.dataInfo.villageType, // 村类型
   }
 
   routerForward('collectiveBaseInfoEdit', {

@@ -28,16 +28,17 @@
             v-if="tabVal === 3"
             :dataInfo="dataInfo.immigrantDocumentation"
           />
-
+          <!-- 补偿卡 -->
+          <create-card v-if="tabVal === 4" :dataInfo="dataInfo" :dataList="dataInfo.demographicList" />
           <!-- 房屋腾空 -->
-          <house-vacate v-if="tabVal === 4" :dataInfo="dataInfo" @update-data="updateData" />
+          <house-vacate v-if="tabVal === 5" :dataInfo="dataInfo" @update-data="updateData" />
 
           <!-- 动迁协议 -->
-          <relocation-agreement v-if="tabVal === 5" :dataInfo="dataInfo"/>
+          <relocation-agreement v-if="tabVal === 6" :dataInfo="dataInfo"/>
 
           <!-- 集体资产处置方法 -->
           <asset-disposal
-            v-if="tabVal === 6"
+            v-if="tabVal === 7"
             :dataInfo="dataInfo.immigrantDocumentation"
             :uid="dataInfo.uid"
             @update-data="updateData"
@@ -63,6 +64,7 @@ import specialEquipmentEvaReport from '../specialEquipmentEvaReport/index.vue' /
 import houseVacate from '../../common/vacate/house.vue' // 引入腾空 -- 房屋腾空组件
 import relocationAgreement from '../relocationAgreement/index.vue' // 引入动迁协议组件
 import assetDisposal from '../assetDisposal/index.vue' // 引入集体资产处置方法组件
+import createCard from '../createCard/index.vue' // 引入村集体补偿卡组件
 
 interface PropsType {
   dataInfo: LandlordType

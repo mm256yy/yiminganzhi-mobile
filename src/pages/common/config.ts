@@ -603,12 +603,25 @@ export const collectiveSidebarList = [
         ]
       },
       {
+        title: '',
+        filled: false,
+        list: [
+          {
+            label: '补偿卡',
+            value: 4,
+            filled: false,
+            iconDef: iconDqxyDef,
+            iconSel: iconDqxySel
+          }
+        ]
+      },
+      {
         title: '腾空',
         filled: false,
         list: [
           {
             label: '房屋腾空',
-            value: 4,
+            value: 5,
             filled: false,
             iconDef: iconFwtkDef,
             iconSel: iconFwtkSel
@@ -621,7 +634,7 @@ export const collectiveSidebarList = [
         list: [
           {
             label: '动迁协议',
-            value: 5,
+            value: 6,
             filled: false,
             iconDef: iconDqxyDef,
             iconSel: iconDqxySel
@@ -640,7 +653,7 @@ export const collectiveSidebarList = [
         list: [
           {
             label: '集体资产处置',
-            value: 6,
+            value: 7,
             filled: false,
             iconDef: iconXgsxDef,
             iconSel: iconXgsxSel

@@ -282,9 +282,10 @@ const getProgressText = (data: LandlordType) => {
         count++
       }
       // 移民剪卡
-      // if (immigrantFilling.cardStatus === '1') {
-      //   count++
-      // }
+      if (immigrantFilling.cardStatus === '1') {
+        count++
+      }
+      // 腾空
       if (immigrantFilling.houseSoarStatus === '1') {
         count++
       }
@@ -293,7 +294,7 @@ const getProgressText = (data: LandlordType) => {
         count++
       }
     }
-    total = 4
+    total = 5
   }
   return `${count} / ${total}`
 }

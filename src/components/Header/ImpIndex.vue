@@ -468,7 +468,11 @@ export default {
         if (immigrantFilling.agreementStatus === '1') {
           count++
         }
-        // 移民剪卡
+        // 补偿卡
+        if (immigrantFilling.cardStatus === '1') {
+          count++
+        }
+        // 腾空
         if (immigrantFilling.houseSoarStatus === '1') {
           count++
         }
@@ -476,7 +480,7 @@ export default {
         if (immigrantFilling.disposalMeasuresStatus === '1') {
           count++
         }
-        total = 4
+        total = 5
       }
       return {
         count,

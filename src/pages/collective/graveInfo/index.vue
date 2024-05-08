@@ -56,12 +56,26 @@
               </view>
             </uni-col>
           </uni-row>
-
+          
           <uni-row>
-            <uni-col :span="24">
+            <uni-col :span="8">
               <view class="col">
                 <view class="label">所处位置：</view>
                 <view class="content">{{ formatDict(item.gravePosition, 326) }}</view>
+              </view>
+            </uni-col>
+            <uni-col :span="8">
+              <view class="col">
+                <view class="label">身份证号：</view>
+                <view class="content">{{ formatStr(item.card) }}</view>
+              </view>
+            </uni-col>
+            <uni-col :span="8">
+              <view class="col">
+                <view class="label">联系方式：</view>
+                <view class="content">
+                  {{ formatStr(item.phone) }}
+                </view>
               </view>
             </uni-col>
           </uni-row>
