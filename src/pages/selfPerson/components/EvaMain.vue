@@ -433,7 +433,7 @@ const deleteEquipment = (data: any) => {
  * 基础设施评估 - 删除
  * @param(Object) data 被删除的行信息
  */
-const deleteFoundation = (data: any) => {
+const  deleteOther = (data: any) => {
   deleteOtherEvaApi(props.dataInfo.uid, data.uid)
     .then((res: any) => {
       if (res) {
@@ -449,7 +449,7 @@ const deleteFoundation = (data: any) => {
  * 其他评估 - 删除
  * @param(Object) data 被删除的行信息
  */
-const deleteOther = (data: any) => {
+const deleteFoundation = (data: any) => {
   deleteInfrastructureEvaApi(props.dataInfo.uid, data.uid)
     .then((res: any) => {
       if (res) {

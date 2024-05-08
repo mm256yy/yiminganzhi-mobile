@@ -96,12 +96,9 @@
     <uni-popup ref="alertDialog" type="dialog">
       <uni-popup-dialog
         type="warn"
-        mode="input"
         cancelText="取消"
         confirmText="确认"
         title="确认删除？"
-        :value="deleteReason"
-        placeholder="请输入删除原因"
         @confirm="dialogConfirm"
         @close="dialogClose"
       />
@@ -161,10 +158,6 @@ const deleteEquipment = (data: any) => {
 }
 
 const dialogConfirm = (data: any) => {
-  if (!data) {
-    showToast('请输入删除原因')
-    return
-  }
   let params = {
     ...currentItem.value,
     deleteReason: data

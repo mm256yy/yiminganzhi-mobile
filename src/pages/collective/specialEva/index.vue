@@ -69,7 +69,7 @@
                 <view class="content">{{ formatStr(item.valuationAmount) }}</view>
               </view>
             </uni-col>
-              <uni-col :span="12">
+            <uni-col :span="12">
               <view class="col">
                 <view class="label">补偿金额(元)：</view>
                 <view class="content">{{ formatStr(item.compensationAmount) }}</view>
@@ -96,12 +96,9 @@
     <uni-popup ref="alertDialog" type="dialog">
       <uni-popup-dialog
         type="warn"
-        mode="input"
         cancelText="取消"
         confirmText="确认"
         title="确认删除？"
-        :value="deleteReason"
-        placeholder="请输入删除原因"
         @confirm="dialogConfirm"
         @close="dialogClose"
       />
@@ -155,10 +152,6 @@ const deleteSpecial = (data: any) => {
 }
 
 const dialogConfirm = (data: any) => {
-  if (!data) {
-    showToast('请输入删除原因')
-    return
-  }
   let params = {
     ...currentItem.value,
     deleteReason: data

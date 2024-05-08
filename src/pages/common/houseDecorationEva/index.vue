@@ -9,7 +9,11 @@
             幢号：{{ formatStr(item.houseNo) }}
           </view>
           <view class="right">
-            <div class="fixed-price">是否一口价：{{ item.isBuyItNow=='1'?'是':item.isBuyItNow=='0'?'否':'-' }}</div>
+            <div class="fixed-price"
+              >是否一口价：{{
+                item.isBuyItNow == '1' ? '是' : item.isBuyItNow == '0' ? '否' : '-'
+              }}</div
+            >
             <image
               class="icon m-r-10"
               src="@/static/images/icon_delete_mini.png"
@@ -111,19 +115,16 @@
     />
 
     <!-- 删除确认框 -->
-    <!-- <uni-popup ref="alertDialog" type="dialog">
+    <uni-popup ref="alertDialog" type="dialog">
       <uni-popup-dialog
         type="warn"
-        mode="input"
         cancelText="取消"
         confirmText="确认"
         title="确认删除？"
-        :value="reason"
-        placeholder="请输入删除原因"
         @confirm="dialogConfirm"
         @close="dialogClose"
       />
-    </uni-popup> -->
+    </uni-popup>
   </view>
 </template>
 <script lang="ts" setup>
@@ -148,20 +149,20 @@ const currentItem = ref<any>({})
 const reason = ref<string>('') // 删除原因
 
 const toLink = (type: string, itemUid?: any) => {
-  console.log(props.dataInfo,'props.dataInfo数剧是什么？')
+  console.log(props.dataInfo, 'props.dataInfo数剧是什么？')
   const { uid, doorNo, immigrantHouseList } = props.dataInfo
-  console.log(props.dataList,'房屋装修评估数据')
+  console.log(props.dataList, '房屋装修评估数据')
   if (type === 'edit') {
-    let params = { type, uid, doorNo, itemUid,immigrantHouseList }
+    let params = { type, uid, doorNo, itemUid, immigrantHouseList }
     routerForward('houseDecorationEvaEdit', {
-      params:JSON.stringify(params)
+      params: JSON.stringify(params)
     })
   } else if (type === 'add') {
     let params = { type, uid, doorNo, immigrantHouseList }
     console.log(params, '参数')
     routerForward('houseDecorationEvaEdit', {
       params: JSON.stringify(params),
-      dataList:JSON.stringify(props.dataList)
+      dataList: JSON.stringify(props.dataList)
     })
   }
 }
@@ -171,27 +172,22 @@ const toLink = (type: string, itemUid?: any) => {
  * @param {Object} data 当前行数据
  */
 const deleteRowData = (data: any) => {
-  // alertDialog.value?.open()
-  // currentItem.value = { ...data }
-  emit('deleteHouseDecoration', data)
+  alertDialog.value?.open()
+  currentItem.value = { ...data }
+  // emit('deleteHouseDecoration', data)
 }
 
-// const dialogConfirm = (data: any) => {
-//   if (!data) {
-//     showToast('请输入删除原因')
-//     return
-//   }
-//   let params = {
-//     ...currentItem.value,
-//     reason: data
-//   }
-//   emit('deleteHouseDecoration', params)
-// }
+const dialogConfirm = (data: any) => {
+  let params = {
+    ...currentItem.value,
+    reason: data
+  }
+  emit('deleteHouseDecoration', params)
+}
 
-// const dialogClose = () => {
-//   alertDialog.value.close()
-// }
-
+const dialogClose = () => {
+  alertDialog.value.close()
+}
 </script>
 
 <style lang="scss" scoped>

@@ -768,7 +768,11 @@ export class ImpLandlord extends Common {
               (item) => item.isDelete !== '1'
             )
           }
-
+          if (this.isArrayAndNotNull(res.immigrantAppendantList)) {
+            res.immigrantAppendantList = res.immigrantAppendantList.filter(
+              (item) => item.isDelete !== '1'
+            )
+          }
           if (this.isArrayAndNotNull(res.landEstimateDtoList)) {
             res.landEstimateDtoList = res.landEstimateDtoList.filter(
               (item) => item.isDelete !== '1'

@@ -317,7 +317,11 @@ class ImpDataFill extends ImpLandlord {
         const landlordItem = await this.getLandlordByUidNoFilter(uid)
         if (landlordItem) {
           landlordItem.immigrantAppendantList = landlordItem.immigrantAppendantList.map((item) => {
+            console.log(item.uid == itemUid)
+
             if (item.uid === itemUid) {
+              console.log(1)
+
               item.deleteReason = deleteReason || ''
               item.isDelete = '1'
               item.isUpdate = '1'
@@ -1101,6 +1105,8 @@ class ImpDataFill extends ImpLandlord {
           landlordItem.immigrantInfrastructureList = landlordItem.immigrantInfrastructureList.map(
             (item) => {
               if (item.uid === itemUid) {
+                console.log(item)
+
                 item.deleteReason = deleteReason || ''
                 item.isDelete = '1'
                 item.isUpdate = '1'
