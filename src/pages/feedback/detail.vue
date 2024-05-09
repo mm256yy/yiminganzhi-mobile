@@ -97,7 +97,7 @@ interface DictType {
 // 获取数据字典
 const active = ref<number>(0)
 const query = ref<CommentType>()
-const list = ref<any[]>([])
+const list = ref<any>([])
 const typeOptionsList = ref<DictType[]>([])
 const flag=ref<any>()
 onLoad((option) => {
@@ -136,7 +136,7 @@ const formatListData = (params: any) => {
 
   const stepList = params.map(item => {
     return {
-      title: query.value?.creater,
+      title: list.value?.creater,
       desc: item.remark
     }
   })

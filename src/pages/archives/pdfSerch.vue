@@ -106,7 +106,7 @@
               <td align="center" class="uTd">{{ index + 1 }}</td>
               <td align="center" class="uTd">{{ getSettleAddress(item) }}</td>
               <td align="center" class="uTd">{{ formatStr(item.area) }} </td>
-              <td align="center" class="uTd">{{ item.roomNo }}</td>
+              <td align="center" class="uTd">{{ dictOption(roomNoList, item.roomNo) }}</td>
               <td align="center" class="uTd">
                 {{ dictOption(storeroomNoList, item.storeroomNo) }}</td
               >
@@ -806,7 +806,8 @@ import {
   getCompensationCardConfigApi,
   getLandlordItemApi,
   getChooseConfigApi,
-  getResettleDetail
+  getResettleDetail,
+  getHouseConfigApi
 } from '@/service'
 import { apartmentArea, resettleArea } from '@/config'
 import { OtherDataType } from '@/database'
@@ -832,6 +833,7 @@ export default {
       landNoList: [],
       storeroomNoList: [],
       carNoList: [],
+      roomNoList:[],
       dictOption,
       show: false,
       OtherDataType,
@@ -846,6 +848,7 @@ export default {
     this.dataList = option.data ? JSON.parse(option.data) : []
     this.baseInfo = option.dataInfo ? JSON.parse(option.dataInfo) : []
     this.getDataRequest()
+    this.getHouseConfig()
     if (
       this.dataList[0]?.houseAreaType == 'flat' ||
       this.dataList[0]?.houseAreaType == 'homestead'
@@ -987,6 +990,24 @@ export default {
           this.landNoList = [...arr1]
           this.storeroomNoList = [...arr2]
           this.carNoList = [...arr3]
+        }
+      })
+    },
+    // 获取  幢号-房号 选项列表
+    getHouseConfig(){
+      getHouseConfigApi().then((res) => {
+        let arr = []
+        if (res && res.length) {
+          res.map((item) => {
+            if (item.level === '3') {
+              arr.push({
+                text: item.showName,
+                value: item.code,
+                disable: item.isOccupy === '0' ? false : true // '0' 可选，'1' 已选
+              })
+            }
+          })
+          this.roomNoList = [...arr]
         }
       })
     },

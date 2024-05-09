@@ -242,9 +242,9 @@ const getHouseConfig = () => {
     let arr: any = []
     if (res && res.length) {
       res.map((item: any) => {
-        if (item.level === '2') {
+        if (item.level === '3') {
           arr.push({
-            text: item.code,
+            text: item.showName,
             value: item.code,
             disable: item.isOccupy === '0' ? false : true // '0' 可选，'1' 已选
           })

@@ -80,7 +80,7 @@ const submit = async () => {
 
   let params = {
     ...formData.value,
-    uid: uidVal.value
+    uids: uidVal.value
   }
   console.log(params,'params')
   try {

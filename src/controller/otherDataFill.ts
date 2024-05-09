@@ -57,16 +57,18 @@ class FeedbackDto extends Common {
         data.createdDate = createdDate
         const list = await OtherController.getOtherWithType(OtherDataType.FeedbackDtoList)
         list.forEach((item: any) => {
-          // if (item.uid === data.uid) {
+          if (item.uid == data.uids) {
+            console.log('进入1')
             if (item.hasOwnProperty('feedbackMessageList')) {
               // item.feedbackMessageList = []
+              console.log('进入2')
               item.feedbackMessageList.push(data)
           }
           if (item.feedbackMessageList.some((item:any)=>item.status == '1')) {
             item.status = '1'
             item.statusText='已处理'
           }
-          // }
+          }
         })
         const values = `content='${JSON.stringify(list)}',updatedDate='${getCurrentTimeStamp()}'`
         const res = await this.db.updateTableData(
