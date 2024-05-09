@@ -5,7 +5,7 @@
       <view class="row-1">
         <view class="left" />
         <view class="right">
-          <view class="btn green">
+          <view class="btn green" @click="handleClick">
             <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
             <text class="txt">打印</text>
           </view>
@@ -20,7 +20,9 @@
         <view class="left">
           <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
           <text>村集体账户信息</text>
-          <text style="color: red;" v-if="targ">*账户信息未填写完整,请补全账户信息后再进度上报！</text>
+          <text style="color: red" v-if="targ"
+            >*账户信息未填写完整,请补全账户信息后再进度上报！</text
+          >
         </view>
         <view class="right" @click="toEdit">编辑</view>
       </view>
@@ -79,7 +81,9 @@
           }}</view>
           <view class="td td-3">{{ formatStr(item.price) }}</view>
           <view class="td td-3">
-            <view v-if="item.isUpdate == '0'&&item.isSum == '0'">{{ formatStr(item.totalPrice) }}</view>
+            <view v-if="item.isUpdate == '0' && item.isSum == '0'">{{
+              formatStr(item.totalPrice)
+            }}</view>
             <view v-else-if="item.isUpdate == '1' && item.isSum == '0'">{{
               computedTotalPrice(item)
             }}</view>
@@ -107,7 +111,7 @@ interface PropsType {
 
 const props = defineProps<PropsType>()
 const tableData = ref<any[]>([])
-const targ=ref(false)
+const targ = ref(false)
 // 获取移民建卡奖励费列表
 const getCompensationCardConfig = async () => {
   let res = await getCompensationCardConfigApi()
@@ -180,24 +184,29 @@ const getSummaries = (row: any) => {
     }
   })
   const arr = tableData.value.filter(
-    (item, index) => item && index !== sumIndex&& item.type == row.type
+    (item, index) => item && index !== sumIndex && item.type == row.type
   )
   sums = arr.reduce((totalPrice, currentItem) => {
     return totalPrice + computedTotalPrice(currentItem)
   }, 0)
   return sums
 }
-
+const handleClick = () => {
+  routerForward('pdf', {
+    type: 7,
+    dataInfo: props.dataInfo.uid
+  })
+}
 // 档案上传
 const onArchives = () => {
   if (!props.dataInfo.accountName || !props.dataInfo.accountName || !props.dataInfo.accountName) {
-    targ.value=true
+    targ.value = true
   } else {
-    targ.value=false
+    targ.value = false
     routerForward('archives', {
-    type: 6,
-    uid: props.dataInfo.uid
-  })
+      type: 6,
+      uid: props.dataInfo.uid
+    })
   }
 }
 

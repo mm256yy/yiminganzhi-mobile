@@ -10,6 +10,15 @@
           /{{ getProgressText.total }}
         </view>
       </view>
+      <view
+        v-if="dataInfo.householderName"
+        style="display: flex; align-items: center; font-size: 9rpx"
+      >
+        关联居民户:
+        <view v-for="(item, index) in dataInfo.householderName?.split(',')" :key="index">
+          <text @click="editLandlords(index)" style="color: blue">{{ item }},</text>
+        </view>
+      </view>
       <view class="list-header-right">
         <view class="btn blue-btn" @click="infoFeedback">
           <image class="icon" src="@/static/images/icon_dqxy_sel.png" mode="scaleToFill" />
@@ -24,6 +33,8 @@
 import { filterViewDoorNo } from '@/utils'
 import { MainType } from '@/types/common'
 import { routerForward } from '@/utils'
+import { getLandlordListBySearchApi } from '@/service'
+import { showToast } from '@/config/msg'
 
 export default {
   props: {
@@ -60,7 +71,7 @@ export default {
       }
       const { type, immigrantFilling } = this.dataInfo
       console.log(type)
-      console.log(immigrantFilling,'测试状态数据')
+      console.log(immigrantFilling, '测试状态数据')
       if (!immigrantFilling) {
         return 0
       }
@@ -224,7 +235,7 @@ export default {
         }
 
         // 土地/附着物评估状态
-        if (landStatus === '1'||!landStatus) {
+        if (landStatus === '1' || !landStatus) {
           fillCount++
         }
 
@@ -264,7 +275,7 @@ export default {
         }
 
         // 土地/附着物评估状态
-        if (landStatus === '1'||!landStatus) {
+        if (landStatus === '1' || !landStatus) {
           fillCount++
         }
 
@@ -304,7 +315,7 @@ export default {
         }
 
         // 土地/附着物评估状态
-        if (landStatus === '1'||!landStatus) {
+        if (landStatus === '1' || !landStatus) {
           fillCount++
         }
 
@@ -513,6 +524,26 @@ export default {
         name,
         type
       })
+    },
+    async editLandlords(index: any) {
+      const params: any = {
+        type: 'PeasantHousehold',
+        page: 1,
+        pageSize: 9999
+      }
+      const res = await getLandlordListBySearchApi(params).catch(() => {})
+      let individualHouseholdUid = res.find(
+        (item: any) => item.name == this.dataInfo.householderName.split(',')[index]
+      )
+      if (individualHouseholdUid) {
+        routerForward('householdImp', {
+          type: 'edit',
+          uid: individualHouseholdUid.uid
+        })
+      } else {
+        showToast('查无此人')
+      }
+      // console.log(individualHouseholdUid.uid, '个体工商户uid是什么')
     }
   }
 }

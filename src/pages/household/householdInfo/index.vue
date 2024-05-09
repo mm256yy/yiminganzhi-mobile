@@ -13,11 +13,17 @@
           <view style="display: flex; align-items: center">
             <view class="name" style="display: flex">
               <view>关联个体户：</view>
-                <view v-if="props.dataInfo.hasOwnProperty('relateIndividualHouseholdName')">
-                   <view v-for="(item, index) in props.dataInfo?.relateIndividualHouseholdName.split(',')" :key="index" >
-                  <text  @click="editLandlords(index)" style="color: blue">{{ item }}</text>
+              <view
+                v-if="props.dataInfo.hasOwnProperty('relateIndividualHouseholdName')"
+                style="display: flex"
+              >
+                <view
+                  v-for="(item, index) in props.dataInfo?.relateIndividualHouseholdName.split(',')"
+                  :key="index"
+                >
+                  <text @click="editLandlords(index)" style="color: blue">{{ item }},</text>
                 </view>
-                </view>
+              </view>
             </view>
             <view class="btn-wrapper report" v-if="!props.dataInfo.relateIndividualHouseholdName">
               <text class="txt" @click="addLandlords">添加</text>
@@ -31,9 +37,12 @@
             </view> -->
             <view class="name" style="display: flex">
               <view>关联企业：</view>
-              <view v-if="props.dataInfo.hasOwnProperty('relateCompanyName')">
-                <view v-for="(item, index) in props.dataInfo?.relateCompanyName.split(',')" :key="index">
-                  <text  @click="editLandlord(index)" style="color: blue">{{ item }}</text>
+              <view v-if="props.dataInfo.hasOwnProperty('relateCompanyName')" style="display: flex">
+                <view
+                  v-for="(item, index) in props.dataInfo?.relateCompanyName.split(',')"
+                  :key="index"
+                >
+                  <text @click="editLandlord(index)" style="color: blue">{{ item }},</text>
                 </view>
               </view>
             </view>
@@ -145,7 +154,7 @@ import {
 import { locationTypes, yesAndNoEnums } from '@/config/common'
 import { compatibleOldSystems } from '@/pages/common/config'
 import { MainType, RoleCodeType } from '@/types/common'
-import { ref, unref, nextTick, onMounted,watch } from 'vue'
+import { ref, unref, nextTick, onMounted, watch } from 'vue'
 import { getLandlordListBySearchApi } from '@/service'
 import { onShow } from '@dcloudio/uni-app'
 
@@ -198,7 +207,7 @@ const getRouterName = (roleType: string) => {
 watch(
   () => props.dataInfo,
   (val) => {
-   console.log(val,'主体数据是什么？')
+    console.log(val, '主体数据是什么？')
   },
   {
     immediate: true,
@@ -267,7 +276,7 @@ const editLandlord = async (index: any) => {
   console.log(props.dataInfo?.relateCompanyName.split(',')[index], '2')
   console.log(res, '企业res是什么')
   companyUid.value = res.filter(
-      (item: any) => item.name == props.dataInfo?.relateCompanyName.split(',')[index]
+    (item: any) => item.name == props.dataInfo?.relateCompanyName.split(',')[index]
   )
   console.log(companyUid.value[0], '企业uid是什么')
   const name = routerMap[tabType.value]
@@ -285,8 +294,8 @@ const editLandlords = async (index: any) => {
     pageSize: 9999
   }
   const res = await getLandlordListBySearchApi(params).catch(() => {})
-    individualHouseholdUid.value = res.find(
-      (item: any) => item.name == props.dataInfo?.relateIndividualHouseholdName.split(',')[index]
+  individualHouseholdUid.value = res.find(
+    (item: any) => item.name == props.dataInfo?.relateIndividualHouseholdName.split(',')[index]
   )
   console.log(individualHouseholdUid.value.uid, '个体工商户uid是什么')
   const name = routerMap[tabTypes.value]

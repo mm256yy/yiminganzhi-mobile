@@ -2,7 +2,9 @@
   <view class="content" style="display: flex">
     <div class="report-text" id="printReport" style="display: flex">
       <div style="width: 50%; border: 1px solid #000000; display: flex; flex-direction: column">
-        <h1 style="font-size: 24px; text-align: center">移民协议补偿登记卡</h1>
+        <h1 style="font-size: 24px; text-align: center">{{
+          type == 6 ? '移民协议补偿登记卡' : '村集体协议补偿登记卡'
+        }}</h1>
         <div
           style="
             display: flex;
@@ -12,11 +14,15 @@
           "
         >
           <div style="width: 30%">
-            <span style="font-weight: bold; font-size: 12px">户主姓名:</span>
+            <span style="font-weight: bold; font-size: 12px"
+              >{{ type == 6 ? '户主姓名' : '村集体名称' }}:</span
+            >
             <span style="margin-left: 5px; font-size: 12px">{{ dataInfo.name }}</span>
           </div>
           <div style="width: 30%">
-            <span style="font-weight: bold; font-size: 12px">户号:</span>
+            <span style="font-weight: bold; font-size: 12px"
+              >{{ type == 6 ? '户号' : '村集体编号' }}:</span
+            >
             <span style="margin-left: 5px; font-size: 12px">{{ dataInfo.showDoorNo }}</span>
           </div>
           <div style="width: 30%">
@@ -25,7 +31,7 @@
           </div>
         </div>
         <uni-row class="m-b-10">
-          <uni-col :span="12">
+          <uni-col :span="12" v-if="type == 6">
             <view class="col">
               <view class="label">迁前地址：</view>
               <view class="content">
@@ -37,7 +43,7 @@
               </view>
             </view>
           </uni-col>
-          <uni-col :span="12">
+          <uni-col :span="12" v-if="type == 6">
             <view class="col">
               <view class="label">安置住址：</view>
               <view class="content">
@@ -69,7 +75,7 @@
               </view>
             </view>
           </uni-col>
-          <uni-col :span="12">
+          <uni-col :span="12" v-if="type == 6">
             <view class="col">
               <view class="label">家庭总人口：</view>
               <view class="content">
@@ -86,7 +92,7 @@
             </view>
           </uni-col>
         </uni-row>
-        <view class="row-2">
+        <view class="row-2" v-if="type == 6">
           <div style="text-align: center; font-size: 14px">家庭基本情况</div>
           <table style="width: 100%" border="1" cellspacing="0" cellpadding="0">
             <!-- 表头行 -->
@@ -163,7 +169,7 @@
             </tr>
           </table>
         </view>
-        <div style="display: flex; align-items: center; flex: 1">
+        <div style="display: flex; align-items: center; flex: 1" v-if="type == 6">
           <div style="font-size: 12px">移民户主：</div>
           <img id="signatureImg" class="signatureImg" :src="path" v-if="path" />
         </div>
@@ -537,12 +543,14 @@ export default {
       formatDict,
       apartmentArea,
       resettleArea,
-      dataLists: []
+      dataLists: [],
+      type: ''
     }
   },
   onLoad(option) {
     console.log(option)
     if (option.dataInfo) {
+      this.type = option.type
       this.uid = option.dataInfo
       this.getLandlordDetail(option.dataInfo)
       this.getCompensationCardConfig(option.dataInfo)

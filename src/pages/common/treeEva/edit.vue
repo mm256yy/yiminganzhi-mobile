@@ -3,7 +3,7 @@
     <Back :title="title" needConfirm />
     <view class="main">
       <uni-forms class="form" ref="form" :modelValue="formData">
-        <uni-row v-if="commonParams.type === 'add'">
+        <!-- <uni-row v-if="commonParams.type === 'add'">
           <uni-col :span="24">
             <uni-forms-item
               required
@@ -24,7 +24,7 @@
               </view>
             </uni-forms-item>
           </uni-col>
-        </uni-row>
+        </uni-row> -->
 
         <uni-row>
           <uni-col :span="12">
@@ -285,8 +285,8 @@ const inputBlur = () => {
 // 计算评估价格
 const countPrice = computed(() => {
   const { number, price } = formData.value
-  if (number && price ) {
-    return (number * price ).toFixed(2)
+  if (number && price) {
+    return (number * price).toFixed(2)
   }
   return '0'
 })
@@ -300,10 +300,7 @@ const submit = () => {
     ...formData.value
   }
 
-  if (!formData.value.addReason && type === 'add') {
-    showToast('请输入新增原因')
-    return
-  } else if (!formData.value.name) {
+  if (!formData.value.name) {
     showToast('请输入品种名称')
     return
   } else {

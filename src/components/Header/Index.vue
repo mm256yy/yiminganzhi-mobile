@@ -11,6 +11,15 @@
           <text class="green">{{ fillNumber }}</text>
           /{{ totalFillNumber }}
         </view>
+        <view
+          v-if="dataInfo.householderName"
+          style="display: flex; align-items: center; font-size: 9rpx"
+        >
+          关联居民户:
+          <view v-for="(item, index) in dataInfo.householderName?.split(',')" :key="index">
+            <text @click="editLandlords(index)" style="color: blue">{{ item }},</text>
+          </view>
+        </view>
       </view>
 
       <view class="list-header-right">
@@ -169,6 +178,9 @@ import { reportDataApi, getPrintTemplatesApi, getPrintLandlordApi, signDataApi }
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { MainType, PrintType } from '@/types/common'
 import { base64ToPath } from 'image-tools'
+import { getLandlordListBySearchApi } from '@/service'
+import { routerForward } from '@/utils'
+
 const YanYuprintPdf = uni.requireNativePlugin('YanYu-PrintPDF')
 
 interface PrintListType {
@@ -645,6 +657,27 @@ export default {
     },
     handelclose() {
       ;(this.$refs.listDataPopup as any)?.close()
+    },
+    async editLandlords(index: any) {
+      const params: any = {
+        type: 'PeasantHousehold',
+        doorNo:this.dataInfo.householderDoorNo.split(',')[index],
+        page: 1,
+        pageSize: 9999
+      }
+      const res = await getLandlordListBySearchApi(params).catch(() => {})
+      let individualHouseholdUid = res.find(
+        (item: any) => item.name == this.dataInfo.householderName.split(',')[index]
+      )
+      if (individualHouseholdUid) {
+        routerForward('household', {
+          type: 'edit',
+          uid: individualHouseholdUid.uid
+        })
+      } else {
+        showToast('查无此人')
+      }
+      // console.log(individualHouseholdUid.uid, '个体工商户uid是什么')
     }
   }
 }

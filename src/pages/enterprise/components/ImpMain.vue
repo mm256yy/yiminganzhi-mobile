@@ -12,16 +12,26 @@
 
         <view class="box">
           <!-- 房屋/附属物评估报告 -->
-          <house-accessory-eva-report v-if="tabVal === 1" :dataInfo="dataInfo.immigrantDocumentation" />
+          <house-accessory-eva-report
+            v-if="tabVal === 1"
+            :dataInfo="dataInfo.immigrantDocumentation"
+          />
 
           <!-- 土地/附着物评估报告 -->
-          <land-accessory-eva-report v-if="tabVal === 2" :dataInfo="dataInfo.immigrantDocumentation" />
+          <land-accessory-eva-report
+            v-if="tabVal === 2"
+            :dataInfo="dataInfo.immigrantDocumentation"
+          />
 
           <!-- 设施设备评估报告 -->
           <equipment-eva-report v-if="tabVal === 3" :dataInfo="dataInfo.immigrantDocumentation" />
 
           <!-- 企业建卡 -->
-          <create-card v-if="tabVal === 4" :dataInfo="dataInfo" :dataList="dataInfo.demographicList" />
+          <create-card
+            v-if="tabVal === 4"
+            :dataInfo="dataInfo"
+            :dataList="dataInfo.demographicList"
+          />
 
           <!-- 房屋腾空 -->
           <house-vacate v-if="tabVal === 5" :dataInfo="dataInfo" @update-data="updateData" />
@@ -30,12 +40,15 @@
           <land-vacate v-if="tabVal === 6" :dataInfo="dataInfo" @update-data="updateData" />
 
           <!-- 动迁协议 -->
-          <relocation-agreement v-if="tabVal === 7" :dataInfo="dataInfo"/>
+          <relocation-agreement v-if="tabVal === 7" :dataInfo="dataInfo" />
 
           <!-- 相关手续 -->
           <procedures
-v-if="tabVal === 8" :dataInfo="dataInfo.immigrantDocumentation" :uid="dataInfo.uid"
-            @update-data="updateData" />
+            v-if="tabVal === 8"
+            :dataInfo="dataInfo.immigrantDocumentation"
+            :uid="dataInfo.uid"
+            @update-data="updateData"
+          />
         </view>
       </view>
     </view>

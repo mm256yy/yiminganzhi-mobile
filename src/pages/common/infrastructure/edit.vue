@@ -3,7 +3,7 @@
     <Back :title="title" needConfirm />
     <view class="main">
       <uni-forms class="form" ref="form" :modelValue="formData">
-        <uni-row v-if="commonParams.type === 'add'">
+        <!-- <uni-row v-if="commonParams.type === 'add'">
           <uni-col :span="24">
             <uni-forms-item
               required
@@ -24,12 +24,12 @@
               </view>
             </uni-forms-item>
           </uni-col>
-        </uni-row>
+        </uni-row> -->
 
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-             required
+              required
               label="名称"
               :label-width="150"
               label-align="right"
@@ -40,7 +40,7 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-             required
+              required
               label="规格/型号"
               :label-width="150"
               label-align="right"
@@ -54,7 +54,7 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-             required
+              required
               label="单位"
               :label-width="150"
               label-align="right"
@@ -65,7 +65,7 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-             required
+              required
               label="数量"
               :label-width="150"
               label-align="right"
@@ -79,7 +79,7 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-             required
+              required
               label="评估单价"
               :label-width="150"
               label-align="right"
@@ -100,7 +100,7 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-             required
+              required
               label="成新率"
               :label-width="150"
               label-align="right"
@@ -114,7 +114,7 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-             required
+              required
               label="评估金额"
               :label-width="150"
               label-align="right"
@@ -136,7 +136,7 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-             required
+              required
               label="补偿金额"
               :label-width="150"
               label-align="right"
@@ -191,15 +191,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed,watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import dayjs from 'dayjs'
 import { routerBack, getStorage, StorageKey } from '@/utils'
-import {
-  addInfrastructureApi,
-  updateInfrastructureApi,
-  getEvaLandlordItemApi
-} from '@/service'
+import { addInfrastructureApi, updateInfrastructureApi, getEvaLandlordItemApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'
 
@@ -248,14 +244,14 @@ const getLandlordDetail = () => {
   const { uid, itemUid } = commonParams.value
   getEvaLandlordItemApi(uid).then((res: any) => {
     let arr: any = res && res.immigrantInfrastructureList ? res.immigrantInfrastructureList : []
-    console.log('',res);
+    console.log('', res)
     if (arr && arr.length) {
       let obj: any = arr.filter((item: any) => item.uid === itemUid)[0]
       formData.value = {
         ...obj,
         year: obj.year ? dayjs(obj.year) : ''
       }
-   
+
       currentYear.value = obj.year ? dayjs(obj.year) : ''
     }
   })
@@ -304,10 +300,10 @@ const submit = () => {
     year: formData.value.year ? dayjs(formData.value.year) : ''
   }
 
-  if (!formData.value.addReason) {
-    showToast('新增原因不能为空')
-    return
-  }
+  // if (!formData.value.addReason) {
+  //   showToast('新增原因不能为空')
+  //   return
+  // }
   if (!formData.value.name) {
     showToast('名称不能为空')
     return
@@ -341,37 +337,39 @@ const submit = () => {
     return
   }
 
-    if (type === 'add') {
-      addInfrastructureApi(uid, params)
-        .then((res) => {
-          if (res) {
-            showToast(SUCCESS_MSG)
-            routerBack()
-          }
-        })
-        .catch(() => {
-          showToast(ERROR_MSG)
-        })
-    } else if (type === 'edit') {
-      updateInfrastructureApi(uid, params)
-        .then((res) => {
-          if (res) {
-            showToast(SUCCESS_MSG)
-            routerBack()
-          }
-        })
-        .catch(() => {
-          showToast(ERROR_MSG)
-        })
-    }
+  if (type === 'add') {
+    addInfrastructureApi(uid, params)
+      .then((res) => {
+        if (res) {
+          showToast(SUCCESS_MSG)
+          routerBack()
+        }
+      })
+      .catch(() => {
+        showToast(ERROR_MSG)
+      })
+  } else if (type === 'edit') {
+    updateInfrastructureApi(uid, params)
+      .then((res) => {
+        if (res) {
+          showToast(SUCCESS_MSG)
+          routerBack()
+        }
+      })
+      .catch(() => {
+        showToast(ERROR_MSG)
+      })
+  }
 }
 
-watch(() => formData.value.valuationAmount, (newValue) => {
-  if (!formData.value.compensationAmount) {
-    formData.value.compensationAmount=newValue
+watch(
+  () => formData.value.valuationAmount,
+  (newValue) => {
+    if (!formData.value.compensationAmount) {
+      formData.value.compensationAmount = newValue
+    }
   }
-})
-
+)
 </script>
 
 <style lang="scss" scoped>

@@ -3,7 +3,7 @@
     <Back :title="title" needConfirm />
     <view class="main">
       <uni-forms class="form" ref="form" :modelValue="formData">
-        <uni-row v-if="commonParams.type === 'add'">
+        <!-- <uni-row v-if="commonParams.type === 'add'">
           <uni-col :span="24">
             <uni-forms-item
               required
@@ -24,7 +24,7 @@
               </view>
             </uni-forms-item>
           </uni-col>
-        </uni-row>
+        </uni-row> -->
 
         <uni-row>
           <uni-col :span="12">
@@ -143,10 +143,10 @@
             </uni-forms-item>
           </uni-col>
         </uni-row>
-         <uni-row>
+        <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-             required
+              required
               label="补偿金额"
               :label-width="150"
               label-align="right"
@@ -293,25 +293,22 @@ const submit = () => {
     ...formData.value
   }
 
-  if (!formData.value.addReason && type === 'add') {
-    showToast('请输入新增原因')
-    return
-  }else if (!formData.value.facilitiesCode) {
+  if (!formData.value.facilitiesCode) {
     showToast('请输入设施设备编号')
     return
-  }else if (!formData.value.facilitiesName) {
+  } else if (!formData.value.facilitiesName) {
     showToast('请输入设施设备名称')
     return
-  }else if (!formData.value.facilitiesType) {
+  } else if (!formData.value.facilitiesType) {
     showToast('请选择设施设备类别')
     return
-  }else if (!formData.value.unit) {
+  } else if (!formData.value.unit) {
     showToast('请输入单位')
     return
-  }else if (!formData.value.number) {
+  } else if (!formData.value.number) {
     showToast('请输入数量')
     return
-  }else {
+  } else {
     if (type === 'add') {
       addImpLandlordFacilitiesApi(uid, params)
         .then((res) => {
