@@ -23,7 +23,7 @@
             <uni-col :span="8">
               <view class="col">
                 <view class="label">户号：</view>
-                <view class="content">{{ formatStr(item.registrantDoorNo) }}</view>
+                <view class="content">{{ formatStr(item.registrantDoorNo.slice(2)) }}</view>
               </view>
             </uni-col>
             <uni-col :span="8">
@@ -56,7 +56,7 @@
               </view>
             </uni-col>
           </uni-row>
-          
+
           <uni-row>
             <uni-col :span="8">
               <view class="col">

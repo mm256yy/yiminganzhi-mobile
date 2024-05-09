@@ -27,7 +27,7 @@
               label-align="right"
               name="formData.registrantDoorNo"
             >
-              <uni-easyinput v-model="formData.registrantDoorNo" disabled placeholde="请选择" />
+              <uni-easyinput v-model="doonr" disabled placeholde="请选择" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -142,7 +142,7 @@
             </uni-forms-item>
           </uni-col>
         </uni-row>
-        
+
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
@@ -151,7 +151,7 @@
               label-align="right"
               name="formData.phone"
             >
-              <uni-easyinput  v-model="formData.phone" type="text" placeholder="请输入" />
+              <uni-easyinput v-model="formData.phone" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -216,6 +216,7 @@ onLoad((option: any) => {
     console.log('=============', commonParams.value)
 
     let params = JSON.parse(option.params)
+    doonr.value = params.registrantDoorNo.slice(2)
     formData.value = { ...params }
     if (commonParams.value.type === 'edit') {
       title.value = '坟墓信息编辑'
@@ -239,10 +240,12 @@ const close = () => {
  * 确认搜索户主姓名/户号
  * @param{Object} data
  */
+let doonr = ref('')
 const confirmSelect = (data: any) => {
   if (data) {
     formData.value.registrantName = data.label
-    formData.value.registrantDoorNo = data.value.slice(2)
+    formData.value.registrantDoorNo = data.value
+    doonr.value = data.value.slice(2)
     formData.value.registrantId = data.id
   }
   close()
