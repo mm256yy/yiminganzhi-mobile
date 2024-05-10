@@ -291,7 +291,7 @@ const editLandlord = async (index: any) => {
   const name = routerMap[tabType.value]
   routerForward(name, {
     type: 'edit',
-    uid: companyUid.value.uid
+    uid: companyUid.value[0].uid
   })
 }
 
