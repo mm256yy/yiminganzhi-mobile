@@ -211,6 +211,7 @@ const getDataRequest = async () => {
   }
 }
 const houseAreaType = computed(() => {
+  console.log(props.dataList,'测试选房主体来源数据')
   return props.dataList && props.dataList[0] && props.dataList[0].houseAreaType
 })
 

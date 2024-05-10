@@ -25,7 +25,8 @@
               (projectInfo && roleType == RoleCodeType.assessor) ||
               roleType == RoleCodeType.assessorland ||
               roleType == RoleCodeType.implementation ||
-              homeViewType === RoleCodeType.implementleader
+              homeViewType === RoleCodeType.implementleader||
+              roleType == RoleCodeType.investigator
             "
           >
             {{

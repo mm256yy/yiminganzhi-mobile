@@ -3,7 +3,7 @@
     <view class="inner">
       <view class="echart-title">
         <image src="@/static/images/statistic_head.png" class="icon" />
-        <view class="text">工作组TOP5</view>
+        <view class="text">工作进度晾晒</view>
       </view>
       <view class="top5-tabs">
         <view
@@ -18,6 +18,7 @@
       </view>
 
       <view class="echart-wrap">
+        <view class="txt">总计：<text>{{ sum }}</text>户</view>
         <view class="echart-item" v-for="item in echartOptions" :key="item.index">
           <view class="echart-item-lt">
             <image class="top-img" :src="item.img" mode="scaleToFill" />
@@ -38,7 +39,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref,computed } from 'vue'
 import { getStatisticApi } from '@/service'
 import { Top5Type, Top5ItemType } from '@/types/common'
 
@@ -140,7 +141,6 @@ const getStatisticData = (id?: number) => {
       img: getImg(index)
     }
   })
-
   echartOptions.value = options
 }
 
@@ -152,6 +152,11 @@ const tabChange = (id: number) => {
   getStatisticData(id)
 }
 
+const sum = computed(() => {
+  return echartOptions.value.reduce((acc:any, cur:any) => {
+    return acc + cur.number
+  }, 0)
+})
 onMounted(() => {
   getStatisticDataRequest()
 })
@@ -235,7 +240,7 @@ onMounted(() => {
   height: 79rpx;
   padding: 3rpx 6rpx 0;
   box-sizing: border-box;
-
+  overflow-y: auto;
   .echart-item {
     display: flex;
     align-items: center;
@@ -293,4 +298,9 @@ onMounted(() => {
     }
   }
 }
+     .txt {
+        font-size: 8rpx;
+        font-weight: 400;
+        color: #333333;
+      }
 </style>
