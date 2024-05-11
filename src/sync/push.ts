@@ -133,6 +133,7 @@ class PushData {
                 }
                 if (immigrantFilling) {
                   if (!immigrantFilling.uid) {
+                    console.log('没有UID,新创的')
                     immigrantFilling.uid = guid()
                   }
                 }

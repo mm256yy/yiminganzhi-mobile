@@ -2478,6 +2478,7 @@ class ImpDataFill extends ImpLandlord {
           }
           landlordItem.immigrantFilling = mergeObj
           if (!landlordItem.immigrantFilling.uid) {
+            console.log('没有UID,新创的')
             landlordItem.immigrantFilling.uid = guid()
           }
           landlordItem.immigrantFilling.isUpdate = '1'

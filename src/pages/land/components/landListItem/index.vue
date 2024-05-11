@@ -66,7 +66,7 @@
         <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
         <view class="label">评估时间:</view>
         <view class="value">{{
-          props.data.reportUserDate ? dayjs(props.data.reportUserDate).format('YYYY-MM-DD') : '-'
+          props.data.reportUserDate!='null'? dayjs(props.data.reportUserDate).format('YYYY-MM-DD') : '-'
         }}</view>
       </view>
     </view>
@@ -74,7 +74,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref,watch } from 'vue'
 import { LandlordType } from '@/types/sync'
 import { routerForward, formatStr } from '@/utils'
 import { formatEmptyText } from '@/utils/format'
@@ -105,7 +105,15 @@ const handleItemCLick = () => {
     })
   }
 }
-
+watch(
+  () => props.data,
+  (val) => {
+    if (val) {
+      console.log(val,'数据是什么')
+    }
+  },
+  { immediate: true, deep: true }
+)
 // 跳转评估页面
 const estimate = () => {
   getUidFromAPi()

@@ -16,7 +16,7 @@ export interface LandlordDDLType {
   type: MainType
   reportStatus: ReportStatusEnum
   reportDate: string
-  reportUserDate: string
+  reportUserDate: any
   reportUser: string
   reportUserName:string
   reviewReportStatus:ReportStatusEnum
