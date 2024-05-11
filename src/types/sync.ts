@@ -81,7 +81,7 @@ export interface LandlordType {
   householdNumber: any
   reportDate: any
   reportUser: number
-  reportUserName:any
+  reportUserName: any
   fillingUpdateDate: string
   inundationRange: string
   altitude?: number
@@ -366,6 +366,7 @@ export interface StateType {
   collectList: CollectType[]
   professionalTree: LabelValueChildrenType[]
   populationSortTree: any[]
+  treeConfigDtoList: any[]
   upgradation: AppVersionDtoType | null
   immigrantGraveList: GraveType[]
   top5Statistic: Top5Type | null

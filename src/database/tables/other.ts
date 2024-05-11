@@ -20,7 +20,8 @@ export enum OtherDataType {
   notifyDtoList = 'notifyDtoList', // 消息通知
   landEstimateDtoList = 'landEstimateDtoList', //土地列表
   landPeasantHouseholdDtoList = 'landPeasantHouseholdDtoList', //土地关联的用户（企业，村集体，居民户，只征地不搬迁）
-  populationSortTree='populationSortTree' //人口类别树
+  populationSortTree = 'populationSortTree', //人口类别树
+  treeConfigDtoList='treeConfigDtoList'//'果木树'
 }
 
 export interface OtherDDLType {

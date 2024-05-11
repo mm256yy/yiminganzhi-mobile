@@ -15,12 +15,14 @@
           <house-accessory-eva-report
             v-if="tabVal === 1"
             :dataInfo="dataInfo.immigrantDocumentation"
+            :baseInfo="dataInfo"
           />
 
           <!-- 土地/附着物评估报告 -->
           <land-accessory-eva-report
             v-if="tabVal === 2"
             :dataInfo="dataInfo.immigrantDocumentation"
+            :baseInfo="dataInfo"
           />
 
           <!-- 农村小型专项设施设备评估报告 -->
@@ -29,12 +31,16 @@
             :dataInfo="dataInfo.immigrantDocumentation"
           />
           <!-- 补偿卡 -->
-          <create-card v-if="tabVal === 4" :dataInfo="dataInfo" :dataList="dataInfo.demographicList" />
+          <create-card
+            v-if="tabVal === 4"
+            :dataInfo="dataInfo"
+            :dataList="dataInfo.demographicList"
+          />
           <!-- 房屋腾空 -->
           <house-vacate v-if="tabVal === 5" :dataInfo="dataInfo" @update-data="updateData" />
 
           <!-- 动迁协议 -->
-          <relocation-agreement v-if="tabVal === 6" :dataInfo="dataInfo"/>
+          <relocation-agreement v-if="tabVal === 6" :dataInfo="dataInfo" />
 
           <!-- 集体资产处置方法 -->
           <asset-disposal
@@ -92,7 +98,7 @@ const tabList = computed(() => {
     if (immigrantFilling.specialStatus === '1') {
       arr[0].list[0].list[2].filled = true
     }
-       // 移民建卡状态
+    // 移民建卡状态
     if (immigrantFilling.cardStatus === '1') {
       arr[0].list[1].list[0].filled = true
     }

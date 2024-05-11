@@ -96,6 +96,7 @@ class PullData {
       collectList: [],
       professionalTree: [],
       populationSortTree: [],
+      treeConfigDtoList: [],
       upgradation: null,
       immigrantGraveList: [],
       top5Statistic: null,
@@ -252,6 +253,7 @@ class PullData {
       districtList,
       professionalTree,
       populationSortTree,
+      treeConfigDtoList,
       homeReportTop,
       homeReportTopToday,
       homeSignTop,
@@ -275,6 +277,7 @@ class PullData {
     this.state.districtList = districtList
     this.state.professionalTree = professionalTree
     this.state.populationSortTree = populationSortTree
+    this.state.treeConfigDtoList = treeConfigDtoList
     this.state.immigrantAppendantConfigList = immigrantAppendantOptionList
     this.state.top5Statistic = {
       homeReportTop,
@@ -333,6 +336,7 @@ class PullData {
       this.state.districtTree = []
       this.state.professionalTree = []
       this.state.populationSortTree = []
+      this.state.treeConfigDtoList = []
       this.state.top5Statistic = null
 
       this.state.chooseConfig = []
@@ -1046,6 +1050,7 @@ class PullData {
         districtTree,
         professionalTree,
         populationSortTree,
+        treeConfigDtoList,
         top5Statistic,
         chooseConfig,
         houseConfig,
@@ -1099,6 +1104,15 @@ class PullData {
         const fields = "'type','content','updatedDate'"
         const values = `'${OtherDataType.populationSortTree}','${JSON.stringify(
           populationSortTree
+        )}','${getCurrentTimeStamp()}'`
+        db.insertOrReplaceData(OtherTableName, values, fields)
+      }
+
+      if (treeConfigDtoList && treeConfigDtoList.length) {
+        // 果木树
+        const fields = "'type','content','updatedDate'"
+        const values = `'${OtherDataType.treeConfigDtoList}','${JSON.stringify(
+          treeConfigDtoList
         )}','${getCurrentTimeStamp()}'`
         db.insertOrReplaceData(OtherTableName, values, fields)
       }

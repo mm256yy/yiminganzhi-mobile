@@ -1,7 +1,20 @@
 <template>
   <view class="household-wrapper">
     <view class="household-title"> 房屋估价报告 </view>
-    <view class="household-txt">吕发林户房屋出具评估报告结果如下</view>
+    <view class="household-txt"
+      >{{ datalist.immigrantHouseReportDto.name
+      }}{{
+        datalist.type == 'Company'
+          ? '个体工商户'
+          : datalist.type == 'IndividualHousehold'
+          ? '个体工商户'
+          : datalist.type == 'PeasantHousehold'
+          ? '户'
+          : datalist.type == 'Village'
+          ? '村集体'
+          : '户'
+      }}房屋出具评估报告结果如下</view
+    >
     <view class="household-txt">一、房屋情况</view>
     <view class="table-wrap">
       <table>
@@ -10,19 +23,29 @@
             <text>{{ item }} </text>
           </td>
         </tr>
-        <tr>
-          <td rowspan="3">吕发林</td>
-          <td rowspan="3">里镜屏村</td>
-          <td>泥木</td>
-          <td>78.17</td>
-          <td>39.08</td>
-          <td>36800</td>
-          <td rowspan="3">9519</td>
-          <td rowspan="3">2938</td>
-          <td rowspan="3">76727</td>
-          <td></td>
+        <tr v-for="(item, index) in datalist.immigrantHouseReportDto?.houseList" :key="index">
+          <td :rowspan="datalist.immigrantHouseReportDto?.houseList.length" v-if="index == 0">{{
+            item.name
+          }}</td>
+          <td :rowspan="datalist.immigrantHouseReportDto?.houseList.length" v-if="index == 0">{{
+            item.villageCodeText
+          }}</td>
+          <td>{{ item.constructionTypeText }}</td>
+          <td>{{ item.landArea }}</td>
+          <td>{{ item.occupyArea }}</td>
+          <td>{{ item.compensationAmount }}</td>
+          <td :rowspan="datalist.immigrantHouseReportDto?.houseList.length" v-if="index == 0">{{
+            datalist.immigrantHouseReportDto.zxAmount
+          }}</td>
+          <td :rowspan="datalist.immigrantHouseReportDto?.houseList.length" v-if="index == 0">{{
+            datalist.immigrantHouseReportDto.fswAmount
+          }}</td>
+          <td :rowspan="datalist.immigrantHouseReportDto?.houseList.length" v-if="index == 0">{{
+            datalist.immigrantHouseReportDto.totalAmount
+          }}</td>
+          <td>{{ item.remark }}</td>
         </tr>
-        <tr>
+        <!-- <tr>
           <td>砖混</td>
           <td>78.17</td>
           <td>39.08</td>
@@ -35,15 +58,15 @@
           <td>39.08</td>
           <td>36800</td>
           <td></td>
-        </tr>
+        </tr> -->
         <tr>
           <td colspan="3">合计</td>
-          <td>118.99</td>
-          <td>72.76</td>
-          <td>60700</td>
-          <td>9519</td>
-          <td>2938</td>
-          <td>76727</td>
+          <td>{{ submit('landArea') }}</td>
+          <td>{{ submit('occupyArea') }}</td>
+          <td>{{ submit('compensationAmount') }}</td>
+          <td>{{ datalist.immigrantHouseReportDto.zxAmount }}</td>
+          <td>{{ datalist.immigrantHouseReportDto.fswAmount }}</td>
+          <td>{{ datalist.immigrantHouseReportDto.totalAmount }}</td>
           <td></td>
         </tr>
       </table>
@@ -65,11 +88,14 @@
       <view class="household-txt">四、估价结果:</view>
       <view class="household-txt"
         >在分析现有资料的基础上，经过实地查勘，对房产价值影响因素的综合分析，确定房屋重置补偿:总金额为人民币：
-        73157 (元)</view
+        {{ submit('compensationAmount') }} (元)</view
       >
-      <view class="household-txt">大写人民币： 柒万叁仟壹佰伍拾柒元整</view>
+      <view class="household-txt">大写人民币： {{ datalist.immigrantHouseReportDto.capital }}</view>
       <view class="household-txt"
-        >其中：房屋价9519 (元) 装修价值：9519 (元) 附属物价值2938 (元)</view
+        >其中：房屋价{{ datalist.immigrantHouseReportDto.fwAmount }} (元) 装修价值：{{
+          datalist.immigrantHouseReportDto.zxAmount
+        }}
+        (元) 附属物价值{{ datalist.immigrantHouseReportDto.fswAmount }} (元)</view
       >
     </view>
   </view>
@@ -77,6 +103,11 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
+interface PropsType {
+  datalist: any
+}
+const props = defineProps<PropsType>()
+
 const headList = [
   '户主',
   '房屋坐落',
@@ -100,6 +131,11 @@ const tableList = [
     villageName: '下潘村'
   }
 ]
+let submit = (e: any) => {
+  return props.datalist.immigrantHouseReportDto?.houseList.reduce((pre: any, item: any) => {
+    return pre + item[e]
+  }, 0)
+}
 </script>
 
 <style lang="scss" scoped>

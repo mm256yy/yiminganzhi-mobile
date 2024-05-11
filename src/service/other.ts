@@ -174,3 +174,7 @@ export const getLandlordListBySearchTitleApi = () => {
 export const getOtherWithTypeSetApi = (data: any) => {
   return OtherController.getOtherWithTypeSet(data)
 }
+// 获取果木树
+export const gettreeConfigDtoListApi = () => {
+  return OtherController.getOtherWithType(OtherDataType.treeConfigDtoList)
+}

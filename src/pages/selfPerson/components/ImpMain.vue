@@ -15,16 +15,22 @@
           <house-accessory-eva-report
             v-if="tabVal === 1"
             :dataInfo="dataInfo.immigrantDocumentation"
+            :baseInfo="dataInfo"
           />
 
           <!-- 土地/附着物评估报告 -->
           <land-accessory-eva-report
             v-if="tabVal === 2"
             :dataInfo="dataInfo.immigrantDocumentation"
+            :baseInfo="dataInfo"
           />
 
           <!-- 设施设备评估报告 -->
-          <equipment-eva-report v-if="tabVal === 3" :dataInfo="dataInfo.immigrantDocumentation" />
+          <equipment-eva-report
+            v-if="tabVal === 3"
+            :dataInfo="dataInfo.immigrantDocumentation"
+            :baseInfo="dataInfo"
+          />
 
           <!-- 个体户建卡 -->
           <create-card

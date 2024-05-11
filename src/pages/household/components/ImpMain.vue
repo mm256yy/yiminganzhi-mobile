@@ -35,12 +35,14 @@
           <house-accessory-eva-report
             v-if="tabVal === 4"
             :dataInfo="dataInfo.immigrantDocumentation"
+            :baseInfo="dataInfo"
           />
 
           <!-- 土地/附着物评估报告 -->
           <land-accessory-eva-report
             v-if="tabVal === 5"
             :dataInfo="dataInfo.immigrantDocumentation"
+            :baseInfo="dataInfo"
           />
 
           <!-- 模拟安置 -->
@@ -49,7 +51,7 @@
             :dataInfo="(dataInfo as any)"
             @update-data="updateData"
           />
-         
+
           <!-- 搬迁安置 -->
           <relocate-resettle-confirm
             v-if="tabVal === 7"
@@ -204,6 +206,7 @@ import assessmentReport from '../procedures/assessmentReport.vue' // 引入评�
 import farming from '../productionResettle/farming.vue' // 引入生产安置 -- 农业安置组件
 import insure from '../productionResettle/insure.vue' // 引入生产安置 -- 养老保险组件
 import findSelf from '../productionResettle/findself.vue' // 引入生产安置 -- 自谋职业组件
+import { routerBack, routerForward } from '@/utils'
 
 interface PropsType {
   dataInfo: LandlordType
@@ -242,8 +245,7 @@ const tabList = computed(() => {
     if (immigrantFilling.landStatus === '1') {
       arr[1].list[1].list[1].filled = true
     }
-    
-   
+
     // 搬迁安置状态
     if (immigrantFilling.relocateArrangementStatus === '1') {
       arr[1].list[3].list[0].filled = true
@@ -348,6 +350,12 @@ const tabList = computed(() => {
 
 const switchTab = (item: any) => {
   tabVal.value = item.value
+  // if (item.value === 4) {
+  //   routerForward('pdfSerch', {
+  //     dataInfo: JSON.stringify(props.dataInfo),
+  //     id: 21
+  //   })
+  // }
 }
 
 /**

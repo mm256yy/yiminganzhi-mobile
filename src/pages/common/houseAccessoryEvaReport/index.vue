@@ -6,7 +6,7 @@
       房屋/附属物评估报告
     </view>
 
-    <view class="row" v-if="houseEstimatePicStr && houseEstimatePicStr !== '[]'">
+    <!-- <view class="row" v-if="houseEstimatePicStr && houseEstimatePicStr !== '[]'">
       <uni-row class="m-t-10">
         <uni-col :span="12">
           <view class="col">
@@ -24,21 +24,22 @@
           </view>
         </uni-col>
       </uni-row>
-    </view>
-
-    <view class="null-wrapper" v-else>
+    </view> -->
+    <HouseholdItem :datalist="baseInfo" />
+    <!-- <view class="null-wrapper" v-else>
       <image class="icon" src="@/static/images/icon_null_data.png" mode="scaleToFill" />
       <view class="tips">资产评估还未完成，无法查看评估报告</view>
-    </view>
+    </view> -->
   </view>
 </template>
 
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
 import UploadFile from '@/components/UploadFile/index.vue'
-
+import HouseholdItem from './household/index.vue'
 interface PropsType {
   dataInfo: any
+  baseInfo: any
 }
 
 const props = defineProps<PropsType>()

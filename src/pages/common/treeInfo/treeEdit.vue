@@ -21,7 +21,14 @@
           <view class="row" v-for="(item, index) in formData" :key="item.id">
             <view class="col">{{ index + 1 }}</view>
             <view class="col w-63">
-              <input class="remark" v-model="item.name" placeholder="请输入" />
+              <uni-combox
+                style="height: 28rpx"
+                :candidates="gmList"
+                placeholder="请选择品种"
+                v-model="item.name"
+                @input="(e:any) => {return handelgmList(e, item)}"
+              />
+              <!-- <input class="remark" v-model="item.name" placeholder="请输入" /> -->
             </view>
             <view class="col w-63">
               <uni-data-select v-model="item.usageType" :localdata="dict[325]" />
@@ -116,10 +123,15 @@
 
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import Container from '@/components/Container/index.vue'
 import { getStorage, StorageKey, routerBack, deepClone, setlocationType } from '@/utils'
-import { updateLandlordTreeApi, deleteLandlordTreeApi, getLandlordItemApi } from '@/service'
+import {
+  updateLandlordTreeApi,
+  deleteLandlordTreeApi,
+  getLandlordItemApi,
+  gettreeConfigDtoListApi
+} from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 
 // 调查对象详情
@@ -127,6 +139,11 @@ const dataInfo = ref<any>({})
 const uid = ref<string>('')
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
+let gmList = computed(() => {
+  return dict[250].map((item: any) => {
+    return item.text
+  })
+})
 const formData = ref<any>([])
 const alertDialog = ref<any>(null)
 const liveDialog = ref<any>(null)
@@ -175,6 +192,7 @@ onLoad((option) => {
     uid.value = option.uid
     getLandlordDetail()
   }
+  gettreeConfigDtoListApis()
 })
 
 /**
@@ -274,6 +292,21 @@ const liveDialogClose = () => {
 }
 let change = (e: any, index: any) => {
   formData.value[index].inundationRange = setlocationType(e)
+}
+let listGm: any = ref([])
+let handelgmList = (e: any, row: any) => {
+  console.log(e, row, listGm.value)
+  let m = listGm.value.filter((item: any) => {
+    return item.nameText == e
+  })
+  if (m.length) {
+    row.usageType = m[0].usageType
+    row.unit = m[0].unit
+  }
+}
+let gettreeConfigDtoListApis = async () => {
+  let data = await gettreeConfigDtoListApi()
+  listGm.value = data
 }
 </script>
 
