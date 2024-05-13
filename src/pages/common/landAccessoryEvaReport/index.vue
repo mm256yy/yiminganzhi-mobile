@@ -48,7 +48,17 @@
       <uni-table class="table" ref="table" border stripe emptyText="暂无更多数据">
         <uni-tr>
           <uni-th width="28rpx" align="center">序号</uni-th>
-          <uni-th width="50rpx" align="center">户主名称</uni-th>
+          <uni-th width="50rpx" align="center">{{
+            baseInfo.type == 'Company'
+              ? '个体工商户名称'
+              : baseInfo.type == 'IndividualHousehold'
+              ? '个体工商户名称'
+              : baseInfo.type == 'PeasantHousehold'
+              ? '户主名称'
+              : baseInfo.type == 'Village'
+              ? '村集体名称'
+              : '户'
+          }}</uni-th>
           <uni-th width="40rpx">图幅号</uni-th>
           <uni-th width="40rpx">编号</uni-th>
           <uni-th width="40rpx">地名</uni-th>

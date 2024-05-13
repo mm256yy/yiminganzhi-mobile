@@ -29,6 +29,7 @@
           <special-equipment-eva-report
             v-if="tabVal === 3"
             :dataInfo="dataInfo.immigrantDocumentation"
+            :baseInfo="dataInfo"
           />
           <!-- 补偿卡 -->
           <create-card

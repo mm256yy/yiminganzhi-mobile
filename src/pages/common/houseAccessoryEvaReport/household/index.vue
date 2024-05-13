@@ -20,7 +20,21 @@
       <table>
         <tr class="head-tr">
           <td class="column-w1 bold" v-for="(item, index) in headList" :key="index">
-            <text>{{ item }} </text>
+            <text
+              >{{
+                item != '户主'
+                  ? item
+                  : props.datalist.type == 'Company'
+                  ? '个体工商户名称'
+                  : props.datalist.type == 'IndividualHousehold'
+                  ? '个体工商户名称'
+                  : props.datalist.type == 'PeasantHousehold'
+                  ? '户主名称'
+                  : props.datalist.type == 'Village'
+                  ? '村集体名称'
+                  : '户'
+              }}
+            </text>
           </td>
         </tr>
         <tr v-for="(item, index) in datalist.immigrantHouseReportDto?.houseList" :key="index">
