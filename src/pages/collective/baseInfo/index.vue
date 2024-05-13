@@ -18,7 +18,7 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">村集体编码：</view>
-                <view class="content">{{ formatStr(props.dataInfo.doorNo) }}</view>
+                <view class="content">{{ props.dataInfo.showDoorNo ? props.dataInfo.showDoorNo:props.dataInfo.doorNo }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -99,6 +99,7 @@ const toLink = (type: string) => {
     id: props.dataInfo.id,
     uid: props.dataInfo.uid,
     doorNo: props.dataInfo.doorNo,
+    showDoorNo: props.dataInfo.showDoorNo,
     name: props.dataInfo.name,
     // suffixNo: splitStr(props.dataInfo.doorNo, 13, 17),
     locationType: props.dataInfo.locationType ? props.dataInfo.locationType : null,

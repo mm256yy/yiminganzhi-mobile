@@ -125,7 +125,7 @@
                 />
               </view>
               <view v-else class="code-wrapper">
-                <input class="input-txt disabled" v-model="formData.doorNo" disabled />
+                <input class="input-txt disabled" v-model="doorNo" disabled />
               </view>
             </uni-forms-item>
           </uni-col>
@@ -678,7 +678,7 @@
 
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount,computed } from 'vue'
 import dayjs from 'dayjs'
 import {
   routerBack,
@@ -766,7 +766,9 @@ const focusIndex = ref<number>(-1)
 const title = ref<string>('')
 const type = ref<string>('')
 const uid = ref<string>('')
-
+const doorNo=computed(() => {
+  return formData.value.showDoorNo?formData.value.showDoorNo:formData.value.doorNo
+})
 // 获取上个页面传递的参数，给表单赋值
 onLoad((option: any) => {
   if (option) {

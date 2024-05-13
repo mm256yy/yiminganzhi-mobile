@@ -71,7 +71,7 @@
                 />
               </view>
               <view v-else class="code-wrapper">
-                <input class="input-txt disabled" v-model="formData.doorNo" />
+                <input class="input-txt disabled" v-model="doorNo" />
               </view>
             </uni-forms-item>
           </uni-col>
@@ -901,7 +901,7 @@
 
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount,computed } from 'vue'
 import dayjs from 'dayjs'
 import { routerBack, getStorage, StorageKey, cardReg, phoneReg, routerForward } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
@@ -1030,7 +1030,9 @@ onLoad((option: any) => {
     }
   }
 })
-
+const doorNo=computed(() => {
+  return formData.value.showDoorNo?formData.value.showDoorNo:formData.value.doorNo
+})
 // 计算合计权属面积
 const computedTotalOwnershipArea = () => {
   let sum = 0

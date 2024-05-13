@@ -76,7 +76,7 @@
                 />
               </view>
               <view v-else class="code-wrapper">
-                <input class="input-txt disabled" v-model="formData.doorNo" disabled />
+                <input class="input-txt disabled" v-model="doorNo" disabled />
               </view>
             </uni-forms-item>
           </uni-col>
@@ -186,7 +186,6 @@ const formData = ref<any>({
 const focusIndex = ref<number>(-1)
 const title = ref<string>('')
 const type = ref<string>('')
-
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
 
@@ -228,6 +227,9 @@ const villageTypes = computed(() => {
       : formData.value.villageType == 'grave'
       ? '坟墓'
       : '-'
+})
+const doorNo=computed(() => {
+  return formData.value.showDoorNo?formData.value.showDoorNo:formData.value.doorNo
 })
 // 表单提交
 const submit = () => {

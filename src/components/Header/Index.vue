@@ -4,7 +4,7 @@
       <view class="list-header-left">
         <view class="name">{{ dataInfo.name }}</view>
         <view class="account-no"
-          >{{ dataInfo.doorNo.includes('jl') ? dataInfo.doorNo.slice(2) : dataInfo.doorNo }}
+          >{{ dataInfo.showDoorNo?dataInfo.showDoorNo:dataInfo.doorNo.includes('jl') ? dataInfo.doorNo.slice(2) : dataInfo.doorNo }}
         </view>
         <view class="fill-number">
           表单填报&nbsp;

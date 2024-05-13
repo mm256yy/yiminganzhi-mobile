@@ -18,7 +18,7 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">企业编码：</view>
-                <view class="content">{{ formatStr(props.baseInfo.doorNo) }}</view>
+                <view class="content">{{ props.dataInfo.showDoorNo ? props.dataInfo.showDoorNo:props.dataInfo.doorNo }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -566,7 +566,8 @@ const toLink = (type: string) => {
     phone,
     householderName,
     longitude,
-    latitude
+    latitude,
+    showDoorNo
   } = props.baseInfo
 
   const { establishDate } = props.dataInfo
@@ -575,6 +576,7 @@ const toLink = (type: string) => {
     ...props.dataInfo,
     name,
     doorNo,
+    showDoorNo,
     areaCode,
     townCode,
     villageCode,
