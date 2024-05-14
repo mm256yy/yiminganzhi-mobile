@@ -5,7 +5,7 @@
       <view class="row-1">
         <view class="left" />
         <view class="right">
-          <view class="btn green">
+          <view class="btn green" @click="handleClick">
             <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
             <text class="txt">打印</text>
           </view>
@@ -244,6 +244,13 @@ const getCompensationCardConfig = async () => {
 onShow(() => {
   getCompensationCardConfig()
 })
+
+const handleClick = () => {
+  routerForward('pdf', {
+    type: 9,
+    dataInfo: props.dataInfo.uid
+  })
+}
 
 const getSettleAddressText = (settleAddress?: string) => {
   console.log(settleAddress, 'settleAddress')

@@ -393,7 +393,7 @@ const updateEstimateApi = async () => {
 // 表单提交
 const submit = () => {
   const { uid, doorNo, type } = commonParams.value
-  // formData.value.valuationAmount = countPrice.value
+  formData.value.valuationAmount = countPrice.value
   const params = {
     doorNo,
     ...formData.value,
@@ -467,11 +467,11 @@ watch(
   () => formData.value.landNumber,
   (val) => {
     const { type } = commonParams.value
-    if (type === 'add') {
+    // if (type === 'add') {
       formData.value.landName = landNumberListClone.value?.find((item) => item.text == val).value
       console.log(landNumberList.value, '1111111')
       console.log(formData.value.landName, '2222222')
-    }
+    // }
   },
   {
     immediate: true,

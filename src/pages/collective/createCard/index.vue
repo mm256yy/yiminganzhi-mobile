@@ -191,12 +191,14 @@ const getSummaries = (row: any) => {
   }, 0)
   return sums
 }
+
 const handleClick = () => {
   routerForward('pdf', {
     type: 7,
     dataInfo: props.dataInfo.uid
   })
 }
+
 // 档案上传
 const onArchives = () => {
   if (!props.dataInfo.accountName || !props.dataInfo.accountName || !props.dataInfo.accountName) {

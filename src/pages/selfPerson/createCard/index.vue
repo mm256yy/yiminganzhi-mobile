@@ -5,7 +5,7 @@
       <view class="row-1">
         <view class="left" />
         <view class="right">
-          <view class="btn green">
+          <view class="btn green" @click="handleClick">
             <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
             <text class="txt">打印</text>
           </view>
@@ -233,6 +233,13 @@ const getCompensationCardConfig = async () => {
     })
     console.log('合并', tableData.value, res, data.immigrantCompensationCardList)
   }
+}
+
+const handleClick = () => {
+  routerForward('pdf', {
+    type: 8,
+    dataInfo: props.dataInfo.uid
+  })
 }
 
 onShow(() => {

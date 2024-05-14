@@ -159,7 +159,7 @@
                 label-align="right"
                 name="formData.valuationAmount"
               >
-                <view class="input-wrapper">
+                <!-- <view class="input-wrapper">
                   <input
                     class="input-txt"
                     placeholder="请输入"
@@ -170,11 +170,13 @@
                     @blur="inputBlur"
                   />
                   <view class="unit">元</view>
-                </view>
+                </view> -->
+                <text class="label-txt">{{ countPrice }}元 </text>
               </uni-forms-item>
             </uni-col>
             <uni-col :span="12">
               <uni-forms-item
+                required
                 label="补偿金额"
                 :label-width="150"
                 label-align="right"
@@ -322,6 +324,16 @@ const countPrice = computed(() => {
   return '0'
 })
 
+watch(
+  () => countPrice.value,
+  (newValue) => {
+    console.log(newValue, 'newValue')
+    if (!formData.value.compensationAmount) {
+      formData.value.compensationAmount = newValue
+    }
+  }
+)
+
 // 表单提交
 const submit = () => {
   const { uid, doorNo } = commonParams.value
@@ -330,7 +342,11 @@ const submit = () => {
     doorNo,
     ...formData.value
   }
-
+  if (!formData.value.compensationAmount) {
+    showToast('补偿金额不能为空')
+    return
+  }
+  console.log(params,'测试数据')
   updateImpLandlordAssetLandApi(uid, params)
     .then((res) => {
       if (res) {

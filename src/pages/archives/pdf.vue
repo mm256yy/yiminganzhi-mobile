@@ -3,7 +3,7 @@
     <div class="report-text" id="printReport" style="display: flex">
       <div style="width: 50%; border: 1px solid #000000; display: flex; flex-direction: column">
         <h1 style="font-size: 24px; text-align: center">{{
-          type == 6 ? '移民协议补偿登记卡' : '村集体协议补偿登记卡'
+          type == 6 ? '移民协议补偿登记卡' : type == 7 ? '村集体协议补偿登记卡':type == 8 ?'个体工商户协议补偿登记卡':type == 9? '企业协议补偿登记卡':'-'
         }}</h1>
         <div
           style="
@@ -13,25 +13,25 @@
             padding: 20px 0 20px 0;
           "
         >
-          <div style="width: 30%">
+          <div>
             <span style="font-weight: bold; font-size: 12px"
-              >{{ type == 6 ? '户主姓名' : '村集体名称' }}:</span
+              >{{ type == 6 ? '户主姓名' : type == 7 ? '村集体名称':type == 8 ?'法人代表姓名':type == 9? '法人代表姓名':'-' }}:</span
             >
             <span style="margin-left: 5px; font-size: 12px">{{ dataInfo.name }}</span>
           </div>
-          <div style="width: 30%">
+          <div>
             <span style="font-weight: bold; font-size: 12px"
-              >{{ type == 6 ? '户号' : '村集体编号' }}:</span
+              >{{ type == 6 ? '户号' : type == 7 ? '村集体编号':type == 8 ?'编码':type == 9? '编码':'-'  }}:</span
             >
             <span style="margin-left: 5px; font-size: 12px">{{ dataInfo.showDoorNo }}</span>
           </div>
-          <div style="width: 30%">
+          <div>
             <span style="font-weight: bold; font-size: 12px">联系方式:</span>
             <span style="margin-left: 5px; font-size: 12px">{{ dataInfo.phone }}</span>
           </div>
         </div>
         <uni-row class="m-b-10">
-          <uni-col :span="12" v-if="type == 6">
+          <uni-col :span="12" v-if="type == 6||type == 8||type==9">
             <view class="col">
               <view class="label">迁前地址：</view>
               <view class="content">
@@ -43,7 +43,7 @@
               </view>
             </view>
           </uni-col>
-          <uni-col :span="12" v-if="type == 6">
+          <uni-col :span="12" v-if="type == 6||type == 8||type==9">
             <view class="col">
               <view class="label">安置住址：</view>
               <view class="content">
@@ -75,7 +75,7 @@
               </view>
             </view>
           </uni-col>
-          <uni-col :span="12" v-if="type == 6">
+          <uni-col :span="12" v-if="type == 6||type == 8||type==9">
             <view class="col">
               <view class="label">家庭总人口：</view>
               <view class="content">
@@ -88,6 +88,61 @@
                       )
                     : '-'
                 }}
+              </view>
+            </view>
+          </uni-col>
+        </uni-row>
+        <uni-row class="m-b-10" v-if="type == 8||type==9">
+          <div style="text-align: center; font-size: 14px">工商、税务登记信息</div>
+          <uni-col :span="12" >
+            <view class="col">
+              <view class="label">营业执照编号：</view>
+              <view class="content">
+                {{formatStr(dataInfo.company?.licenceNo)}}
+              </view>
+            </view>
+          </uni-col>
+          <uni-col :span="12">
+            <view class="col">
+              <view class="label">注册资金：</view>
+              <view class="content">
+               {{ formatStr(dataInfo.company?.registeredAmount) }}
+              </view>
+            </view>
+          </uni-col>
+          <uni-col :span="12">
+            <view class="col">
+              <view class="label">税务登记编号：</view>
+              <view class="content">
+                {{ formatStr(dataInfo.company?.taxLicenceNo) }}
+              </view>
+            </view>
+          </uni-col>
+          <uni-col :span="12">
+            <view class="col">
+              <view class="label">登记注册类型：</view>
+              <view class="content">
+                {{ formatStr(dataInfo.company?.registerType) }}
+              </view>
+            </view>
+          </uni-col>
+          <uni-col :span="12">
+            <view class="col">
+              <view class="label">营业范围：</view>
+              <view class="content">
+                {{ formatStr(dataInfo.company?.natureBusiness) }}
+              </view>
+            </view>
+          </uni-col>
+          <uni-col :span="12">
+            <view class="col">
+              <view class="label">成立日期：</view>
+              <view class="content">
+                {{
+                dataInfo.company?.establishDate
+                  ? dayjs(dataInfo.company?.establishDate).format('YYYY-MM-YY')
+                  : '-'
+              }}
               </view>
             </view>
           </uni-col>
@@ -691,18 +746,21 @@ export default {
       if (res) {
         console.log('获取移民建卡奖励费列表', res)
         // tableData.value = res
+    //        let data: any = await getLandlordItemApi(props.dataInfo.uid)
+    // tableData.value = data.immigrantCompensationCardList
         let data = await getLandlordItemApi(e)
         console.log(data, '测试dada数据')
-        data.immigrantCompensationCardList.forEach((item) => {
-          let index = res.findIndex((e) => e.name == item.name)
-          if (index > -1) {
-            res[index] = item
-          } else {
-            res.push(item)
-          }
-        })
+        // data.immigrantCompensationCardList.forEach((item) => {
+        //   let index = res.findIndex((e) => e.name == item.name)
+        //   if (index > -1) {
+        //     res[index] = item
+        //   } else {
+        //     res.push(item)
+        //   }
+        // })
 
-        this.tableData = res.filter((item) => item.phType == 'PeasantHousehold')
+        // this.tableData = res.filter((item) => item.phType == 'PeasantHousehold')
+        this.tableData = data.immigrantCompensationCardList
         console.log('合并', this.tableData, res, data.immigrantCompensationCardList)
       }
     },
