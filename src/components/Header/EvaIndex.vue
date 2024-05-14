@@ -98,7 +98,7 @@ const editLandlords = () => {
 //居民户跳转
 const editLandlordss = () => {
   console.log('居民户跳转')
-  const name = routerMap[tabTypes.value]
+  const name = routerMap[tabTypess.value]
   console.log(PeasantHouseholdUid.value.uid, '居民户uid是什么')
   routerForward(name, {
     type: 'edit',
