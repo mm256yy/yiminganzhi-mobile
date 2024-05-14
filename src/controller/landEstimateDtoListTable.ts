@@ -96,9 +96,7 @@ export class landEstimateDtoListFills extends Common {
           sql += ` and virutalVillageCode = '${virutalVillageCode}'`
         }
         if (ownershipUnitIsNull == 1) {
-          sql += ` and areaCode = 'null'`
-          sql += ` and townCode = 'null'`
-          sql += ` and villageCode = 'null'`
+          sql += ` and cityCode is null`
           console.log(sql, '124')
         }
         sql += ` limit ${pageSize} offset ${(page - 1) * pageSize}`
@@ -147,7 +145,7 @@ export class landEstimateDtoListFills extends Common {
             return
           }
 
-          data.doorNo = 'jl' + data.doorNo
+          data.doorNo = data.doorNo
           doorNos = data.doorNo
           addLandlordApi({
             doorNo: data.doorNo,

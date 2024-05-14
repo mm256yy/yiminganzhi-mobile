@@ -4,7 +4,13 @@
       <view class="list-header-left">
         <view class="name">{{ dataInfo.name }}</view>
         <view class="account-no"
-          >{{ dataInfo.showDoorNo?dataInfo.showDoorNo:dataInfo.doorNo.includes('jl') ? dataInfo.doorNo.slice(2) : dataInfo.doorNo }}
+          >{{
+            dataInfo.showDoorNo
+              ? dataInfo.showDoorNo
+              : dataInfo.doorNo.includes('jl')
+              ? dataInfo.doorNo.slice(2)
+              : dataInfo.doorNo
+          }}
         </view>
         <view class="fill-number">
           表单填报&nbsp;
@@ -24,8 +30,7 @@
 
       <view class="list-header-right">
         <view class="btn-wrapper print" v-if="showPrint" @click="printFile">
-          <image class="icon" src="@/static/images/icon_print.png" mode="scaleToFill" />
-          <text class="txt">打印</text>
+          <text class="txt">搜索</text>
         </view>
         <view
           v-if="
@@ -661,7 +666,7 @@ export default {
     async editLandlords(index: any) {
       const params: any = {
         type: 'PeasantHousehold',
-        doorNo:this.dataInfo.householderDoorNo.split(',')[index],
+        doorNo: this.dataInfo.householderDoorNo.split(',')[index],
         page: 1,
         pageSize: 9999
       }

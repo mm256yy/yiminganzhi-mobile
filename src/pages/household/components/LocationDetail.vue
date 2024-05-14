@@ -10,34 +10,54 @@
         <view class="base-column">
           <view class="info-item">
             <view class="label"><text class="txt">小区名称：</text></view>
-            <view class="value"><text class="txt">{{ props.item?.residential?.trim() }}</text></view>
+            <view class="value"
+              ><text class="txt">{{ props.item?.residential?.trim() }}</text></view
+            >
           </view>
           <view class="info-item">
             <view class="label"><text class="txt">结构类型：</text></view>
-            <view class="value"><text class="txt">{{ props.item?.structure?.trim() }}</text></view>
+            <view class="value"
+              ><text class="txt">{{ props.item?.structure?.trim() }}</text></view
+            >
           </view>
           <view class="info-item">
             <view class="label"><text class="txt">用地面积(㎡)：</text></view>
-            <view class="value"><text class="txt">{{ props.item?.landSpace?.trim() }}</text></view>
+            <view class="value"
+              ><text class="txt">{{ props.item?.landSpace?.trim() }}</text></view
+            >
           </view>
           <view class="info-item">
             <view class="label"><text class="txt">地理位置：</text></view>
-            <view class="value"><text class="txt">{{ props.item?.address?.trim() }}</text></view>
+            <view class="value"
+              ><text class="txt">{{ props.item?.address?.trim() }}</text></view
+            >
+          </view>
+          <view class="info-item">
+            <view class="label"><text class="txt">安置点类型:</text></view>
+            <view class="value"
+              ><text class="txt">{{ props.item?.type == 1 ? '宅基地' : '公寓房' }}</text></view
+            >
           </view>
         </view>
 
         <view class="base-column">
           <view class="info-item">
             <view class="label"><text class="txt">绿化率：</text></view>
-            <view class="value"><text class="txt">{{ props.item?.greeningRate?.trim() }}</text></view>
+            <view class="value"
+              ><text class="txt">{{ props.item?.greeningRate?.trim() }}</text></view
+            >
           </view>
           <view class="info-item">
             <view class="label"><text class="txt">建筑密度：</text></view>
-            <view class="value"><text class="txt">{{ props.item?.buildingDensity?.trim() }}</text></view>
+            <view class="value"
+              ><text class="txt">{{ props.item?.buildingDensity?.trim() }}</text></view
+            >
           </view>
           <view class="info-item">
             <view class="label"><text class="txt">建筑面积（㎡）：</text></view>
-            <view class="value"><text class="txt">{{ props.item?.floorSpace?.trim() }}</text></view>
+            <view class="value"
+              ><text class="txt">{{ props.item?.floorSpace?.trim() }}</text></view
+            >
           </view>
         </view>
       </view>
@@ -50,22 +70,30 @@
       <view class="periphery">
         <view class="periphery-item">
           <view class="label"><text class="txt">交通：</text></view>
-          <view class="value"><text class="txt">{{ props.item?.traffic?.trim() }}</text></view>
+          <view class="value"
+            ><text class="txt">{{ props.item?.traffic?.trim() }}</text></view
+          >
         </view>
 
         <view class="periphery-item">
           <view class="label"><text class="txt">商业：</text></view>
-          <view class="value"><text class="txt">{{ props.item?.business?.trim() }}</text></view>
+          <view class="value"
+            ><text class="txt">{{ props.item?.business?.trim() }}</text></view
+          >
         </view>
 
         <view class="periphery-item">
           <view class="label"><text class="txt">教育：</text></view>
-          <view class="value"><text class="txt">{{ props.item?.education?.trim() }}</text></view>
+          <view class="value"
+            ><text class="txt">{{ props.item?.education?.trim() }}</text></view
+          >
         </view>
 
         <view class="periphery-item">
           <view class="label"><text class="txt">医院：</text></view>
-          <view class="value"><text class="txt">{{ props.item?.hospital?.trim() }}</text></view>
+          <view class="value"
+            ><text class="txt">{{ props.item?.hospital?.trim() }}</text></view
+          >
         </view>
       </view>
 

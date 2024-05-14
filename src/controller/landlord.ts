@@ -707,7 +707,8 @@ export class Landlord extends Common {
           houseAllStatus,
           pageSize = 10,
           page = 1,
-          uid
+          uid,
+          code
         } = data || {}
         const array: LandlordType[] = []
         let sql = `select * from ${LandlordTableName} where isPadDelete = '0'`
@@ -739,6 +740,9 @@ export class Landlord extends Common {
         }
         if (doorNo) {
           sql += ` and doorNo = '${doorNo}'`
+        }
+          if (code) {
+          sql += ` and villageCode = '${code}'`
         }
         if (houseAllStatus) {
           if (houseAllStatus.length > 1) {

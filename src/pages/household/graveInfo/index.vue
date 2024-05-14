@@ -59,7 +59,16 @@
                 </view>
               </view>
             </uni-col>
-            <uni-col :span="8" />
+            <uni-col :span="8">
+              <view class="col">
+                <view class="label">坟墓编号：</view>
+                <view class="content">
+                  <!-- {{ formatDict(item.gravePosition, 288) }} -->
+                  <!-- 暂时改成326 有问题再改回288 -->
+                  {{ item.graveAutoNo }}
+                </view>
+              </view>
+            </uni-col>
           </uni-row>
 
           <uni-row>
@@ -117,7 +126,7 @@ import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { formatStr, formatDict, getStorage, StorageKey, routerForward } from '@/utils'
 import { MainStage, MainType } from '@/types/common'
-import { getLandlordListApi } from '@/service'
+import { getLandlordListBySearchApi } from '@/service'
 import modifyRecords from '../../common/modifyRecords/index.vue' // 引入修改记录组件
 
 const props = defineProps({
@@ -150,7 +159,7 @@ const showRecord = ref<boolean>(false)
  * @param data
  */
 const getCollectiveList = (data: any) => {
-  getLandlordListApi(MainType.Village).then((res: any) => {
+  getLandlordListBySearchApi({ type: MainType.Village }).then((res: any) => {
     console.log(res[0], '纯集体数据', props.dataInfo)
 
     collectiveList.value = initCollectiveData(res)
@@ -172,7 +181,8 @@ const initCollectiveData = (data: any) => {
         text: item.name,
         value: item.uid,
         villageCode: item.villageCode,
-        disable: false
+        disable: false,
+        villageType: item.villageType
       })
     })
     return newArr

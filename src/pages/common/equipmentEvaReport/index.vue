@@ -141,10 +141,6 @@
       <view class="household-txt">二、估价依据</view>
       <view class="household-txt">1、《新昌县镜岭水库工程移民安置办法》</view>
       <view class="household-txt">2、《新吕县镜岭水库工程拆迁房屋重置价补偿标准》</view>
-      <view class="household-txt"
-        >3、浙江镜岭水库有限公司提供的有关资料《包括委估标的的产权、用途及面积》</view
-      >
-      <view class="household-txt">4、估价人员调查、收集的资料</view>
     </view>
   </view>
 </template>

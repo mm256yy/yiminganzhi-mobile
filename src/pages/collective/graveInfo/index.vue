@@ -1,8 +1,12 @@
 <template>
   <view class="grave-info-wrapper">
     <!-- 坟墓信息 -->
-    <view class="list" v-if="props.dataList && props.dataList.length > 0">
-      <view class="list-item" v-for="item in dataList" :key="item.id">
+    <view class="list" v-if="dataList && dataList.length > 0">
+      <view style="display: flex">
+        <input class="input-txt" placeholder="请输入登记人" v-model="sercher" />
+        <view class="btn-wrapper" @click="search"> <text class="txt">搜索</text></view>
+      </view>
+      <view class="list-item" v-for="item in sercherlist" :key="item.id">
         <view class="list-1">
           <view class="left">
             <view class="icon">登记人</view>
@@ -78,6 +82,16 @@
                 </view>
               </view>
             </uni-col>
+            <uni-col :span="8">
+              <view class="col">
+                <view class="label">坟墓编号：</view>
+                <view class="content">
+                  <!-- {{ formatDict(item.gravePosition, 288) }} -->
+                  <!-- 暂时改成326 有问题再改回288 -->
+                  {{ item.graveAutoNo }}
+                </view>
+              </view>
+            </uni-col>
           </uni-row>
 
           <uni-row>
@@ -121,6 +135,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { formatStr, formatDict, routerForward } from '@/utils'
+import { onLoad } from '@dcloudio/uni-app'
 
 const props = defineProps({
   dataList: {
@@ -136,7 +151,8 @@ const props = defineProps({
 const emit = defineEmits(['deleteGraveInfo'])
 const alertDialog = ref<any>(null)
 const currentItem = ref<any>({})
-
+let sercher = ref()
+let sercherlist: any = ref([])
 /**
  * 删除当前行信息
  * @param {Object} data 当前行数据
@@ -201,6 +217,15 @@ const toLink = (type: string, data?: any) => {
     })
   }
 }
+let search = () => {
+  console.log(1)
+  sercherlist.value = props.dataList.filter((item: any) => {
+    return item.registrantName.includes(sercher.value)
+  })
+}
+onLoad(() => {
+  sercherlist.value = props.dataList
+})
 </script>
 
 <style lang="scss" scoped>
@@ -316,6 +341,55 @@ const toLink = (type: string, data?: any) => {
     width: 28rpx;
     height: 28rpx;
     border-radius: 50%;
+  }
+}
+.input-txt {
+  width: 84rpx;
+  height: 35px;
+  padding-left: 11rpx;
+  font-size: 9rpx;
+  line-height: 35px;
+  color: #171718;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  margin-bottom: 10rpx;
+
+  &.disabled {
+    width: 200rpx;
+    background-color: #f5f7fa;
+  }
+}
+.btn-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 68rpx;
+  height: 23rpx;
+  border-radius: 11rpx;
+
+  &:active {
+    opacity: 0.7;
+  }
+
+  &.print {
+    background-color: #30a952;
+  }
+
+  &.report {
+    margin-left: 7rpx;
+    background-color: #3e73ec;
+  }
+
+  .icon {
+    width: 7rpx;
+    height: 7rpx;
+    margin-right: 3rpx;
+  }
+
+  .txt {
+    font-size: 9rpx;
+    color: #171718;
   }
 }
 </style>

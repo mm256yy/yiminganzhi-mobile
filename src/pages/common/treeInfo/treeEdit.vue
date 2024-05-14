@@ -183,6 +183,9 @@ const getLandlordDetail = () => {
       defaultRow.locationType = dataInfo.value.immigrantHouseList.filter(
         (bbq: any) => bbq.id == m[0]
       )[0]?.locationType
+      defaultRow.inundationRange = dataInfo.value.immigrantHouseList.filter(
+        (bbq: any) => bbq.id == m[0]
+      )[0]?.inundationRange
     }
   })
 }

@@ -124,6 +124,38 @@
             </uni-forms-item>
           </uni-col>
         </uni-row>
+        <uni-row>
+          <uni-col :span="12">
+            <uni-forms-item
+              required
+              label="坟墓编号"
+              :label-width="150"
+              label-align="right"
+              name="formData.graveAutoNo"
+            >
+              <view
+                v-if="commonParams?.type == 'add'"
+                :class="['input-wrappers', isFocus ? 'focus' : '']"
+              >
+                <view class="pre-txt">
+                  {{ leftDoor }}
+                </view>
+                <input
+                  class="input-txt"
+                  placeholder="请输入"
+                  type="number"
+                  :maxlength="4"
+                  v-model="formData.graveAutoNo"
+                  @focus="inputFocuss"
+                  @blur="inputBlurs"
+                />
+              </view>
+              <view v-else class="input-wrappers">
+                <input class="input-txt disabled" :value="formData.graveAutoNo" disabled />
+              </view>
+            </uni-forms-item>
+          </uni-col>
+        </uni-row>
       </uni-forms>
 
       <image
@@ -143,6 +175,8 @@ import { routerBack, getStorage, StorageKey, setlocationType } from '@/utils'
 import { addLandlordGraveApi, updateLandlordGraveApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config'
 import Back from '@/components/Back/Index.vue'
+import { getLandlordListBySearchApi } from '@/service'
+import { MainType } from '@/types/common'
 
 // 表单数据
 const formData = ref<any>({})
@@ -155,9 +189,9 @@ const collectiveList = ref<any>([])
 
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
-
+let leftDoor = ref('')
 // 获取上个页面传递的参数，给表单赋值
-onLoad((option: any) => {
+onLoad(async (option: any) => {
   if (option) {
     commonParams.value = JSON.parse(option.commonParams)
     let params = JSON.parse(option.params)
@@ -169,6 +203,22 @@ onLoad((option: any) => {
       title.value = '坟墓信息编辑'
     } else if (commonParams.value.type === 'add') {
       title.value = '添加坟墓'
+      let dataList = await getLandlordListBySearchApi({
+        code: commonParams.value.villageCode,
+        type: MainType.Village
+      })
+      dataList = dataList.filter((item: any) => {
+        return item.villageType == 'grave'
+      })
+      if (dataList.length > 0) {
+        leftDoor.value = 'FM' + dataList[0].doorNo
+      } else {
+        uni.showToast({
+          title: '该户所在行政村没有坟墓村集体，请联系信息管理员新增移民村村集体',
+          icon: 'none'
+        })
+      }
+      console.log(dataList, 'bbq')
     }
   }
 })
@@ -181,6 +231,16 @@ const inputFocus = (index: number) => {
 // 输入框失去焦点事件
 const inputBlur = () => {
   focusIndex.value = -1
+}
+let isFocus = ref(false)
+// 输入框获得焦点
+const inputFocuss = () => {
+  isFocus.value = true
+}
+
+// 输入框失去焦点
+const inputBlurs = () => {
+  isFocus.value = false
 }
 
 // 表单提交
@@ -201,12 +261,18 @@ const submit = () => {
   } else if (!formData.value.materials) {
     showToast('请选择材料')
     return
+  } else if (!formData.value.graveAutoNo) {
+    showToast('请输入坟墓编号')
+    return
   } else {
     const { uid, villageCode } = commonParams.value
     let params = {
-      ...formData.value
+      ...formData.value,
+      graveAutoNo: leftDoor.value + formData.value.graveAutoNo
     }
-    let itemData = collectiveList.value?.find((item: any) => item.villageCode === villageCode)
+    let itemData = collectiveList.value?.find(
+      (item: any) => item.villageCode === villageCode && item.villageType == 'grave'
+    )
     params.villageDoorNo = itemData ? itemData.doorNo : ''
     params.villageId = itemData ? itemData.id : ''
     params.villageName = itemData ? itemData.text : ''
@@ -345,6 +411,43 @@ let change = (e: any) => {
           text-align: center;
           background-color: #f5f7fa;
           border-left: 1px solid #d9d9d9;
+        }
+      }
+      .input-wrappers {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 200rpx;
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+
+        &.focus {
+          border-color: rgb(41, 121, 255);
+        }
+
+        .pre-txt {
+          width: 104rpx;
+          height: 35px;
+          padding-left: 7rpx;
+          font-size: 9rpx;
+          line-height: 35px;
+          color: #171718;
+          background-color: #f5f7fa;
+          border-right: 1px solid #d9d9d9;
+        }
+
+        .input-txt {
+          width: 84rpx;
+          height: 35px;
+          padding-left: 11rpx;
+          font-size: 9rpx;
+          line-height: 35px;
+          color: #171718;
+
+          &.disabled {
+            width: 200rpx;
+            background-color: #f5f7fa;
+          }
         }
       }
     }

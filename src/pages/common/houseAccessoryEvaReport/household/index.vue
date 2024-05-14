@@ -42,6 +42,9 @@
             item.name
           }}</td>
           <td :rowspan="datalist.immigrantHouseReportDto?.houseList.length" v-if="index == 0">{{
+            item.houseNo
+          }}</td>
+          <td :rowspan="datalist.immigrantHouseReportDto?.houseList.length" v-if="index == 0">{{
             item.villageCodeText
           }}</td>
           <td>{{ item.constructionTypeText }}</td>
@@ -74,7 +77,7 @@
           <td></td>
         </tr> -->
         <tr>
-          <td colspan="3">合计</td>
+          <td colspan="4">合计</td>
           <td>{{ submit('landArea') }}</td>
           <td>{{ submit('occupyArea') }}</td>
           <td>{{ submit('compensationAmount') }}</td>
@@ -102,7 +105,7 @@
       <view class="household-txt">四、估价结果:</view>
       <view class="household-txt"
         >在分析现有资料的基础上，经过实地查勘，对房产价值影响因素的综合分析，确定房屋重置补偿:总金额为人民币：
-        {{ submit('compensationAmount') }} (元)</view
+        {{ datalist.immigrantHouseReportDto.totalAmount }} (元)</view
       >
       <view class="household-txt">大写人民币： {{ datalist.immigrantHouseReportDto.capital }}</view>
       <view class="household-txt"
@@ -124,6 +127,7 @@ const props = defineProps<PropsType>()
 
 const headList = [
   '户主',
+  '幢号',
   '房屋坐落',
   '房屋结构',
   '建筑面积(㎡)',

@@ -48,7 +48,10 @@ const loading = ref<boolean>(false)
 const getDataRequest = async () => {
   loading.value = true
   try {
-    const data = await getResettleDetail(OtherDataType.settleAddressList)
+    let data = await getResettleDetail(OtherDataType.settleAddressList)
+    data.sort((a, b) => {
+      return a.type - b.type
+    })
     dataList.value = data
     console.error(
       'data数据======================================================================================================',
