@@ -83,7 +83,7 @@ import { HouseAreaType } from '@/types/common'
 import { ImmigrantSettleType } from '@/types/impDataFill'
 import { resettleHouseType, apartmentAreaSize, homesteadAreaSize } from '@/config'
 import { updateImpLandlordRelocateResettleApi } from '@/service'
-import { routerBack, routerForward } from '@/utils'
+import { routerBack, routerForward,formatDict } from '@/utils'
 import { getResettleDetail } from '@/service'
 import { OtherDataType } from '@/database'
 // import type { LocationType } from '@/types/datafill'
@@ -156,7 +156,10 @@ const getDataRequest = async (res: any) => {
       }
     } else {
       if (res.houseAreaType === HouseAreaType.concentrate) {
-        emptyText.value = '该户选择集中供养'
+        emptyText.value = '该户选择集中供养'+`（选择养老院:${formatDict(
+          props.dataInfo.immigrantSettle?.nursingHome,
+          416
+        )}）`
       }
       if (res.houseAreaType === HouseAreaType.oneself) {
         emptyText.value = '该户选择自谋职业'

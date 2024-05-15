@@ -176,6 +176,7 @@ export interface ImmigrantSettleType {
   preorderAmount: number
   compensationAmount: number
   differenceAmount: number
+  nursingHome?: any
 }
 
 // 生产用地 immigrantLand
