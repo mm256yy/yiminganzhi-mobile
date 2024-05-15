@@ -15,7 +15,7 @@
         >
           <div>
             <span style="font-weight: bold; font-size: 12px"
-              >{{ type == 6 ? '户主姓名' : type == 7 ? '村集体名称':type == 8 ?'法人代表姓名':type == 9? '法人代表姓名':'-' }}:</span
+              >{{ type == 6 ? '户主姓名' : type == 7 ? '村集体名称':type == 8 ?'个体户名称':type == 9? '企业名称':'-' }}:</span
             >
             <span style="margin-left: 5px; font-size: 12px">{{ dataInfo.name }}</span>
           </div>
@@ -31,7 +31,7 @@
           </div>
         </div>
         <uni-row class="m-b-10">
-          <uni-col :span="12" v-if="type == 6||type == 8||type==9">
+          <uni-col :span="12" v-if="type == 6">
             <view class="col">
               <view class="label">迁前地址：</view>
               <view class="content">
@@ -43,11 +43,27 @@
               </view>
             </view>
           </uni-col>
-          <uni-col :span="12" v-if="type == 6||type == 8||type==9">
+          <uni-col :span="12" v-if="type == 6">
             <view class="col">
               <view class="label">安置住址：</view>
               <view class="content">
                 {{ getSettleAddressText(dataInfo.immigrantSettle?.settleAddress) }}
+              </view>
+            </view>
+          </uni-col>
+          <uni-col :span="12" v-if="type == 8||type==9">
+            <view class="col">
+              <view class="label">迁前厂址：</view>
+              <view class="content">
+                {{ formatStr(dataInfo.beforeAddress) }}
+              </view>
+            </view>
+          </uni-col>
+          <uni-col :span="12" v-if="type == 8||type==9">
+            <view class="col">
+              <view class="label">安置厂址：</view>
+              <view class="content">
+                {{ formatStr(dataInfo.afterAddress) }}
               </view>
             </view>
           </uni-col>
@@ -77,7 +93,7 @@
           </uni-col>
           <uni-col :span="12" v-if="type == 6||type == 8||type==9">
             <view class="col">
-              <view class="label">家庭总人口：</view>
+              <view class="label">{{ type == 6 ? '家庭总人口':type == 8 ?'员工总数':type == 9? '员工总数':'-' }}：</view>
               <view class="content">
                 {{
                   dataInfo.demographicList
@@ -104,7 +120,7 @@
           </uni-col>
           <uni-col :span="12">
             <view class="col">
-              <view class="label">注册资金：</view>
+              <view class="label">注册资金（万元）：</view>
               <view class="content">
                {{ formatStr(dataInfo.company?.registeredAmount) }}
               </view>
@@ -122,7 +138,7 @@
             <view class="col">
               <view class="label">登记注册类型：</view>
               <view class="content">
-                {{ formatStr(dataInfo.company?.registerType) }}
+                {{ formatDict(dataInfo.company?.registerType,219) }}
               </view>
             </view>
           </uni-col>
@@ -138,7 +154,7 @@
             <view class="col">
               <view class="label">成立日期：</view>
               <view class="content">
-                {{
+              {{
                 dataInfo.company?.establishDate
                   ? dayjs(dataInfo.company?.establishDate).format('YYYY-MM-YY')
                   : '-'
@@ -219,7 +235,7 @@
               <th align="left" class="uTitle">/</th>
               <th align="left" class="uTitle">/</th>
               <th align="left" class="uTitle">/</th>
-              <th align="left" class="uTitle">{{ sumball() }}</th>
+              <th align="left" class="uTitle">{{ sumball().toFixed(2) }}</th>
               <th align="left" class="uTitle">/</th>
             </tr>
           </table>
@@ -233,7 +249,10 @@
     <div class="reportInstrument">
       <div class="reportInstrumentContent1">
         <button class="reportButton" type="info" @click="render.headelReport">导出PDF</button>
-        <button class="reportButton" type="info" @click="handleClick">户主签字</button>
+        <button class="reportButton" type="info" @click="handleClick">
+          <div>户主</div>
+          <div>签字</div>
+        </button>
         <button class="reportButton" type="info" @click="handleClickToymjk">返回</button>
       </div>
     </div>
@@ -585,6 +604,8 @@ import {
   getResettleDetail
 } from '@/service'
 import { apartmentArea, resettleArea } from '@/config'
+import dayjs from 'dayjs'
+
 export default {
   data() {
     return {
@@ -599,7 +620,8 @@ export default {
       apartmentArea,
       resettleArea,
       dataLists: [],
-      type: ''
+      type: '',
+      dayjs
     }
   },
   onLoad(option) {
@@ -889,13 +911,12 @@ export default {
 
   .label {
     font-size: 12px;
-    color: rgba(23, 23, 24, 0.6);
+    color: #171718;
   }
 
   .content {
     font-size: 12px;
-    color: #171718;
-
+    color: rgba(23, 23, 24, 0.6);
     &.blue {
       color: #3e73ec;
     }

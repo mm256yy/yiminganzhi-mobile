@@ -123,7 +123,7 @@
           <view class="col">
             <view class="label">登记注册类型：</view>
             <view class="content">
-              {{ formatStr(dataInfo.company?.registerType) }}
+              {{ formatDict(dataInfo.company?.registerType,219) }}
             </view>
           </view>
         </uni-col>

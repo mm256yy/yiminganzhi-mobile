@@ -280,7 +280,8 @@ const fixedPriceOptions = ref<any>([
     value: '0'
   }
 ])
-const cfNoList=ref<any>()
+const cfNoList = ref<any>()
+const cfIsList = ref<any>()
 const buildingNumberList= ref<any>([])
 // 表单数据
 const formData = ref<any>({
@@ -336,24 +337,15 @@ onLoad((option: any) => {
     const { type, immigrantHouseList } = commonParams.value
     console.log(commonParams.value, '传过来的数据')
     console.log(immigrantHouseList, '主体评估数据')
+    list.value = JSON.parse(option.dataList)
     console.log(list.value, '房屋装修评估数据')
-    if (type === 'edit') {
-      console.log('编辑')
-      title.value = '房屋装修评估编辑'
-    buildingNumberList.value=immigrantHouseList.map((item: any) => {
-      return {
-        text: item.houseNo,
-        value: item.houseNo
-      }
-    })
-      getLandlordDetail()
-    } else if (type === 'add') {
-      list.value=JSON.parse(option.dataList)
-      title.value = '新增房屋装修评估'
-       let dataListIsBuyItNow = list.value.filter((item: any) => item.isBuyItNow == '1')
+    let dataListIsBuyItNow = list.value.filter((item: any) => item.isBuyItNow == '1')
     let dataListNoBuyItNow = list.value.filter((item: any) => item.isBuyItNow == '0')
-    let cfIsList=dataListIsBuyItNow.map((item:any)=>{
-      return item.houseNo
+    cfIsList.value=dataListIsBuyItNow.map((item:any)=>{
+      return {
+        isBuyItNow: item.isBuyItNow,
+        houseNo: item.houseNo
+      }
     })
      cfNoList.value=dataListNoBuyItNow.map((item:any)=>{
       return {
@@ -364,10 +356,40 @@ onLoad((option: any) => {
     buildingNumberList.value=immigrantHouseList.map((item: any) => {
       return {
         text: item.houseNo,
-        value: item.houseNo
+        value: item.houseNo,
       }
     })
-    buildingNumberList.value = buildingNumberList.value.filter((item: any) => !cfIsList.includes(item.value))
+    console.log(buildingNumberList.value,'幢号下拉数据')
+    buildingNumberList.value = buildingNumberList.value.filter((item: any) => !cfIsList.value.includes(item.value))
+    if (type === 'edit') {
+      console.log('编辑')
+      title.value = '房屋装修评估编辑'
+    // buildingNumberList.value=immigrantHouseList.map((item: any) => {
+    //   return {
+    //     text: item.houseNo,
+    //     value: item.houseNo
+    //   }
+      // })
+    cfNoList.value.forEach((item:any) => {
+      if (item.houseNo == formData.value.houseNo) {
+        fixedPriceOptions.value=[  {
+        text: '否',
+        value: '0'
+      }]
+      } else {
+        fixedPriceOptions.value=[  {
+        text: '是',
+        value: '1'
+      },
+      {
+        text: '否',
+        value: '0'
+      }]
+      }
+    })
+      getLandlordDetail()
+    } else if (type === 'add') {
+      title.value = '新增房屋装修评估'
     }
   }
 })
@@ -389,7 +411,7 @@ const inputBlur = () => {
 const change = (val: any) => {
   // 当选择了一口价时，以下部分字段置为空
   const {type } = commonParams.value
-  if (type=='add') {
+  // if (type=='add') {
   console.log(val, 'val')
   cfNoList.value.forEach((item:any) => {
     if (item.houseNo == val) {
@@ -408,7 +430,7 @@ const change = (val: any) => {
     }]
     }
   });
-  }
+  // }
   if (val === '1') {
     console.log('选择了一口价,是')
     formData.value.fitUpType = ''
@@ -424,9 +446,17 @@ const change = (val: any) => {
          formData.value.number = item.landArea
       }
     })
+  // buildingNumberList.value.value=buildingNumberList.value.filter((itemA:any) => {  
+  //   return !fixedPriceOptions.value.some((itemB:any) => itemA.isBuyItNow == itemB.value);  
+  // });
+  console.log(buildingNumberList.value,'幢号数据-是')
   } else {
     console.log('选择了一口价,否')
     // formData.value.unit = 'm²'
+  // buildingNumberList.value.value=buildingNumberList.value.filter((itemA:any) => {  
+  //   return fixedPriceOptions.value.some((itemB:any) => itemA.isBuyItNow == itemB.value);  
+  // });
+  console.log(buildingNumberList.value,'幢号数据-否')
   }
 }
 
