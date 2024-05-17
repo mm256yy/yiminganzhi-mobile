@@ -40,7 +40,7 @@
               <!-- <uni-easyinput v-model="formData.facilitiesCode" placeholder="请输入" /> -->
               <view v-if="commonParams.type=='add'" :class="['code-wrapper', focusIndex === 1 ? 'focus' : '']">
                 <view class="pre-txt">
-                  {{ commonParams.doorNo ? 'SS' + commonParams.doorNo.substr(2,5) : '' }}
+                  {{ commonParams.doorNo ? 'SS' + commonParams.doorNo.replace("JT", "") : '' }}
                 </view>
                 <input
                   class="input-txt"
@@ -343,6 +343,7 @@ onLoad((option: any) => {
     if (commonParams.value.type === 'edit') {
       title.value = '农村小型专项及农副业设施信息编辑'
     } else if (commonParams.value.type === 'add') {
+      console.log(commonParams.value.doorNo,'测试户号数据')
       title.value = '添加农村小型专项及农副业设施'
     }
   }
@@ -382,7 +383,8 @@ const submit = () => {
     workersNum: formData.value.workersNum ? Number(formData.value.workersNum) : null,
     completedTime: formData.value.completedTime ? dayjs(formData.value.completedTime) : null,
     facilitiesPic: fmtPicUrl(formData.value.facilitiesPic),
-    facilitiesCode: 'SS' + commonParams.value.doorNo.substr(2,5)+ formData.value.suffixNo
+    facilitiesCode: 'SS' + commonParams.value.doorNo.replace("JT", "")+ formData.value.suffixNo,
+    suffixNo:formData.value.suffixNo
   }
   if (!formData.value.facilitiesName) {
     showToast('请输入设备名称')

@@ -342,10 +342,8 @@ onLoad((option: any) => {
     let dataListIsBuyItNow = list.value.filter((item: any) => item.isBuyItNow == '1')
     let dataListNoBuyItNow = list.value.filter((item: any) => item.isBuyItNow == '0')
     cfIsList.value=dataListIsBuyItNow.map((item:any)=>{
-      return {
-        isBuyItNow: item.isBuyItNow,
-        houseNo: item.houseNo
-      }
+      return item.houseNo
+      // isBuyItNow: item.isBuyItNow,
     })
      cfNoList.value=dataListNoBuyItNow.map((item:any)=>{
       return {
@@ -360,7 +358,7 @@ onLoad((option: any) => {
       }
     })
     console.log(buildingNumberList.value,'幢号下拉数据')
-    buildingNumberList.value = buildingNumberList.value.filter((item: any) => !cfIsList.value.includes(item.value))
+    // buildingNumberList.value = buildingNumberList.value.filter((item: any) => !cfIsList.includes(item.value))
     if (type === 'edit') {
       console.log('编辑')
       title.value = '房屋装修评估编辑'
@@ -370,8 +368,12 @@ onLoad((option: any) => {
     //     value: item.houseNo
     //   }
       // })
+      getLandlordDetail()
+      console.log(cfNoList.value, '测试没有否的数据')
+      console.log(formData.value,'幢号是什么')
     cfNoList.value.forEach((item:any) => {
       if (item.houseNo == formData.value.houseNo) {
+        console.log('否')
         fixedPriceOptions.value=[  {
         text: '否',
         value: '0'
@@ -387,9 +389,14 @@ onLoad((option: any) => {
       }]
       }
     })
-      getLandlordDetail()
+      let falg = cfNoList.value.some((item:any) => item.isBuyItNow == 1)
+      console.log(falg,'判断是否存在是的数据')
+      if (falg) {
+      buildingNumberList.value=buildingNumberList.value.filter((item:any) => item.isBuyItNow == 0)
+    }
     } else if (type === 'add') {
       title.value = '新增房屋装修评估'
+      buildingNumberList.value = buildingNumberList.value.filter((item: any) => !cfIsList.value.includes(item.value))
     }
   }
 })
@@ -413,19 +420,20 @@ const change = (val: any) => {
   const {type } = commonParams.value
   // if (type=='add') {
   console.log(val, 'val')
+  console.log( cfNoList.value,'否数据')
   cfNoList.value.forEach((item:any) => {
     if (item.houseNo == val) {
       fixedPriceOptions.value=[  {
       text: '否',
       value: '0'
     }]
-    } else {
+    }
+  });
+  console.log( cfIsList.value,'是数据')
+  cfIsList.value.forEach((item:any) => {
+    if (item == val) {
       fixedPriceOptions.value=[  {
       text: '是',
-      value: '1'
-    },
-    {
-      text: '否',
       value: '0'
     }]
     }

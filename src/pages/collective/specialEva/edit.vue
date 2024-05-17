@@ -35,7 +35,24 @@
               label-align="right"
               name="formData.facilitiesCode"
             >
-              <uni-easyinput v-model="formData.facilitiesCode" type="text" placeholder="请输入" />
+              <!-- <uni-easyinput v-model="formData.facilitiesCode" type="text" placeholder="请输入" /> -->
+             <view v-if="commonParams.type=='add'" :class="['code-wrapper', focusIndex === 1 ? 'focus' : '']">
+                <view class="pre-txt">
+                  {{ commonParams.doorNo ? 'SS' + commonParams.doorNo.replace("JT", "") : '' }}
+                </view>
+                <input
+                  class="input-txt"
+                  type="number"
+                  placeholder="请输入"
+                  :maxlength="4"
+                  v-model="formData.suffixNo"
+                  @focus="inputFocus(1)"
+                  @blur="inputBlur"
+                />
+              </view>
+              <view v-else class="code-wrapper">
+                <input class="input-txt disabled" v-model="formData.facilitiesCode" disabled />
+              </view>
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -290,14 +307,13 @@ const submit = () => {
   formData.value.valuationAmount = countPrice.value
   const params = {
     doorNo,
-    ...formData.value
+    ...formData.value,
+    facilitiesCode: 'SS' + commonParams.value.doorNo.replace("JT", "")+ formData.value.suffixNo,
+    suffixNo:formData.value.suffixNo
   }
 
-  if (!formData.value.facilitiesCode) {
-    showToast('请输入设施设备编号')
-    return
-  } else if (!formData.value.facilitiesName) {
-    showToast('请输入设施设备名称')
+  if (!formData.value.suffixNo) {
+    showToast('设施（设备）编码不全')
     return
   } else if (!formData.value.facilitiesType) {
     showToast('请选择设施设备类别')
@@ -493,6 +509,43 @@ const submit = () => {
 
           &.select {
             color: #999;
+          }
+        }
+      }
+      .code-wrapper {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 200rpx;
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+
+        &.focus {
+          border-color: rgb(41, 121, 255);
+        }
+
+        .pre-txt {
+          width: 104rpx;
+          height: 35px;
+          padding-left: 7rpx;
+          font-size: 9rpx;
+          line-height: 35px;
+          color: #171718;
+          background-color: #f5f7fa;
+          border-right: 1px solid #d9d9d9;
+        }
+
+        .input-txt {
+          width: 84rpx;
+          height: 35px;
+          padding-left: 11rpx;
+          font-size: 9rpx;
+          line-height: 35px;
+          color: #171718;
+
+          &.disabled {
+            width: 200rpx;
+            background-color: #f5f7fa;
           }
         }
       }

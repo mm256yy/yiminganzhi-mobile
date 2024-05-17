@@ -91,9 +91,9 @@
               </view>
             </view>
           </uni-col>
-          <uni-col :span="12" v-if="type == 6||type == 8||type==9">
+          <uni-col :span="12" v-if="type == 6">
             <view class="col">
-              <view class="label">{{ type == 6 ? '家庭总人口':type == 8 ?'员工总数':type == 9? '员工总数':'-' }}：</view>
+              <view class="label">家庭总人口：</view>
               <view class="content">
                 {{
                   dataInfo.demographicList
@@ -104,6 +104,14 @@
                       )
                     : '-'
                 }}
+              </view>
+            </view>
+          </uni-col>
+          <uni-col :span="12" v-if="type == 8||type==9">
+            <view class="col">
+              <view class="label">员工总数：</view>
+              <view class="content">
+                {{ formatStr(dataInfo.peopleNumber) }}
               </view>
             </view>
           </uni-col>

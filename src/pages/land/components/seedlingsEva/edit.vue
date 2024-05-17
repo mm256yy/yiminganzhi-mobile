@@ -107,6 +107,7 @@
                     v-model="formData.number"
                     @focus="inputFocus(2)"
                     @blur="inputBlur"
+                    @input="inputChange"
                   />
                   <view class="unit"> 株 </view>
                 </view>
@@ -127,6 +128,7 @@
                     v-model="formData.numPrice"
                     @focus="inputFocus(3)"
                     @blur="inputBlur"
+                    @input="inputChange"
                   />
                   <view class="unit"> 元／株 </view>
                 </view>
@@ -149,6 +151,7 @@
                     v-model="formData.area"
                     @focus="inputFocus(4)"
                     @blur="inputBlur"
+                    @input="inputChange"
                   />
                   <view class="unit">㎡</view>
                 </view>
@@ -169,6 +172,7 @@
                     v-model="formData.price"
                     @focus="inputFocus(5)"
                     @blur="inputBlur"
+                    @input="inputChange"
                   />
                   <view class="unit">元／㎡</view>
                 </view>
@@ -478,22 +482,41 @@ watch(
     deep: true
   }
 )
+// watch(
+//   () => countPrice.value,
+//   (newValue) => {
+//     console.log(newValue, 'newValue')
+//     const { type } = commonParams.value
+//     if (type == 'add') {
+//       console.log('测试走到哪儿')
+//       formData.value.compensationAmount = newValue
+//       console.log(formData.value.compensationAmount, '最终数据')
+//     } else {
+//         if (formData.value.compensationAmount == newValue) {
+//           formData.value.compensationAmount = newValue
+//         }
+//     }
+//   }
+// )
 watch(
-  () => countPrice.value,
+  () => formData.value.compensationAmount,
   (newValue) => {
-    console.log(newValue, 'newValue')
-    const { type } = commonParams.value
-    if (type == 'add') { 
-      console.log('测试走到哪儿')
+    console.log(newValue, 'valuationPriceCount')
+    if (!formData.value.compensationAmount) {
       formData.value.compensationAmount = newValue
-      console.log(formData.value.compensationAmount, '最终数据')
-    } else {
-        if (formData.value.compensationAmount == newValue) {
-          formData.value.compensationAmount = newValue
-        }
+      console.log(formData.value.compensationAmount,'补偿金额')
     }
   }
 )
+
+const inputChange = (e: any) => {
+  console.log('测试通值')
+  console.log(e.detail.value, '改变的值')
+  const { number, numPrice, area, price } = formData.value
+  // 评估金额＝　株树*单价（元/株） + 面积 * 单价（元/㎡）
+  const result = (number * numPrice + area * price).toFixed(2)
+  formData.value.compensationAmount = result
+}
 </script>
 
 <style lang="scss" scoped>

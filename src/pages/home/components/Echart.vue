@@ -19,9 +19,10 @@
 
       <view class="echart-wrap">
         <view class="txt">总计：<text>{{ sum }}</text>户</view>
-        <view class="echart-item" v-for="item in echartOptions" :key="item.index">
+        <view class="echart-item" v-for="(item,index) in echartOptions" :key="item.index">
           <view class="echart-item-lt">
-            <image class="top-img" :src="item.img" mode="scaleToFill" />
+            <!-- <image class="top-img" :src="item.img" mode="scaleToFill" /> -->
+            <text class="user-name" style="width: 12rpx;">{{ index+1 }}</text>
             <text class="user-name">{{ item.name }}</text>
           </view>
 
@@ -125,7 +126,7 @@ const getStatisticData = (id?: number) => {
   } else {
     arr = statisticData.value?.homeReportTop
   }
-  const top5Array = arr.slice(0, 5)
+  const top5Array = arr
   top5Array.sort(function (a: any, b: any) {
     return a.number < b.number ? 1 : -1
   })

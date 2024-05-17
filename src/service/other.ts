@@ -170,6 +170,10 @@ export const getDictObjsApi = (e: any) => {
 export const getLandlordListBySearchTitleApi = () => {
   return landEstimateDtoListFill.getLandlordListBySearchTitle()
 }
+// 获取资产评估-土地关联数量(已评估，未评估，我的评估)
+export const getLandlordListBySearchTitleTotleApi = (data?: any) => {
+  return landEstimateDtoListFill.getLandlordListBySearchTitleTotle(data)
+}
 // 农户模糊查询
 export const getOtherWithTypeSetApi = (data: any) => {
   return OtherController.getOtherWithTypeSet(data)

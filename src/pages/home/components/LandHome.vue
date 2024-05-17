@@ -20,7 +20,20 @@
     <!-- 具体内容 -->
     <view class="main-enter">
       <view class="operate-segment">
-        <text class="land-text">{{ `土地列表（共 ${total} 条土地数据）` }}</text>
+        <view style="display: flex;">
+        <text class="land-text">{{ types==''?`土地列表（共 ${total} 条土地数据）`:types=='0'?`土地列表（共 ${totals} 条未评估土地数据）`:types=='1'?`土地列表共（${totals} 条已评估土地数据）`:types=='2'?`土地列表共（${totals} 条我的评估土地数据）`:`土地列表（共 ${total} 条土地数据）` }}</text>
+        <view class="right-side">
+          <view class="btn linear-gradient" @click="onSearchs('1')">
+            <text class="txt">已评估</text>
+          </view>
+          <view class="btn linear-gradient" @click="onSearchs('0')">
+            <text class="txt">未评估</text>
+          </view>
+          <view class="btn linear-gradient" @click="onMySearch">
+            <text class="txt">我的评估</text>
+          </view>
+        </view>
+        </view>
         <view class="right-side">
           <view class="btn blue-btn" @click="toTarget('database')">
             <text class="txt">数据库</text>
@@ -91,11 +104,12 @@
 <script lang="ts" setup>
 import { ref, reactive, onMounted, nextTick, computed, onBeforeUnmount } from 'vue'
 import { onShow, onLoad } from '@dcloudio/uni-app'
-import { routerForward, debounce } from '@/utils'
+import { routerForward, debounce,getStorage,StorageKey } from '@/utils'
 import {
   getOtherItemApi,
   getLandEstimateDtoListApi,
-  getLandlordListBySearchTitleApi
+  getLandlordListBySearchTitleApi,
+  getLandlordListBySearchTitleTotleApi
 } from '@/service'
 import NoData from '@/components/NoData/index.vue'
 import LandListItem from '@/pages/land/components/landListItem/index.vue'
@@ -121,15 +135,37 @@ const checkList = ref<any[]>([])
 let searchParams = reactive({
   name: '',
   areaCode: '',
-  ownershipUnitIsNull: ''
+  ownershipUnitIsNull: '',
+  estimateFlag: '',
+  relationBy:''
 }) // 查询参数
 let total = ref(0)
-
+const types = ref<string>('')
+const totals =ref(0)
 const onSearch = () => {
   searchParams.name = searchName.value
   init()
 }
 
+const onSearchs = (type:any) => {
+  searchParams.estimateFlag = type
+  types.value = type
+  init()
+  nextTick(async () => {
+   totals.value = await getLandlordListBySearchTitleTotleApi(searchParams)
+    console.log(total,'统计的个数1')
+  })
+}
+const onMySearch = () => {
+   types.value = '2'
+  console.log(getStorage(StorageKey.USERINFO).username,'我的评估')
+  searchParams.relationBy = getStorage(StorageKey.USERINFO).username 
+  init()
+  nextTick(async () => {
+    totals.value = await getLandlordListBySearchTitleTotleApi(searchParams)
+    console.log(total,'统计的个数2')
+  })
+}
 const toTarget = (name: any) => {
   const params = {}
 
@@ -238,10 +274,13 @@ const onReset = () => {
   searchParams = {
     name: '',
     areaCode: '',
-    ownershipUnitIsNull: ''
+    ownershipUnitIsNull: '',
+    estimateFlag: '',
+    relationBy:''
   }
   searchName.value = ''
   init()
+  types.value=''
 }
 
 // 更多查询
@@ -467,6 +506,10 @@ onMounted(() => {
 
   &.red {
     background-color: #e43030;
+  }
+
+  &.linear-gradient {
+    background: linear-gradient(270deg, #ffb11a 0%, #ff9432 100%);
   }
 
   &.yellow {

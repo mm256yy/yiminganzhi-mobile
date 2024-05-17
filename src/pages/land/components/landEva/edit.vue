@@ -145,6 +145,7 @@
                     v-model="formData.valuationPrice"
                     @focus="inputFocus(5)"
                     @blur="inputBlur"
+                    @input="inputChange"
                   />
                   <view class="unit">元/㎡</view>
                 </view>
@@ -242,7 +243,6 @@ import { formatStr } from '@/utils'
 
 const title = ref<string>('')
 const commonParams = ref<any>({})
-
 // 表单数据
 const formData = ref<any>({
   doorNo: commonParams.value.doorNo,
@@ -324,12 +324,32 @@ const countPrice = computed(() => {
   return '0'
 })
 
+// watch(
+//   () => formData.value.valuationPrice,
+//   (val) => {
+//     console.log(val, 'valuationPriceCount')
+//     console.log(countPrice.value,'评估金额')
+//     // if (!formData.value.compensationAmount||formData.value.compensationAmount==countPrice.value) {
+//         const {shapeArea } = formData.value
+//         formData.value.compensationAmount=(val * shapeArea).toFixed(2)
+//     // }
+//   }
+// )
+
+const inputChange = (e: any) => {
+  console.log('测试通值')
+  console.log(e.detail.value, '改变的值')
+  const {shapeArea } = formData.value
+  formData.value.compensationAmount = (e.detail.value * shapeArea).toFixed(2)
+}
+
 watch(
-  () => countPrice.value,
+  () => formData.value.compensationAmount,
   (newValue) => {
-    console.log(newValue, 'newValue')
+    console.log(newValue, 'valuationPriceCount')
     if (!formData.value.compensationAmount) {
       formData.value.compensationAmount = newValue
+      console.log(formData.value.compensationAmount,'补偿金额')
     }
   }
 )
