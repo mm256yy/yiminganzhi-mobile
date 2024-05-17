@@ -183,8 +183,7 @@ const dict = getStorage(StorageKey.DICT)
 const naturalVillage = ref<any>(null)
 
 onLoad((option) => {
-  if (option) {
-  }
+  console.log(dict, 'dict')
 })
 
 // 初始化自然村/村民小组组件数据
@@ -264,6 +263,7 @@ const getDictData = async () => {
 
 onMounted(() => {
   getDictData()
+  console.log(dict, 'dict')
 })
 </script>
 

@@ -97,16 +97,16 @@ export class landEstimateDtoListFills extends Common {
           sql += ` and virutalVillageCode = '${virutalVillageCode}'`
         }
         if (ownershipUnitIsNull == 1) {
-          sql += ` and cityCode is null`
+          sql += ` and cityCode is ''`
           console.log(sql, '124')
         }
-        if(relationBy){
+        if (relationBy) {
           sql += ` and relationBy = '${relationBy}'`
         }
         sql += ` limit ${pageSize} offset ${(page - 1) * pageSize}`
         // console.log('sql', sql)
         const list: any[] = await this.db.selectSql(sql)
-        console.log(list.length,'筛选后的长度')
+        console.log(list.length, '筛选后的长度')
         array = list
         resolve(array)
       } catch (error) {
@@ -288,22 +288,19 @@ export class landEstimateDtoListFills extends Common {
   }
   getLandlordListBySearchTitleTotle(data?: any): Promise<any> {
     return new Promise(async (resolve, reject) => {
-     try {
-        const {
-          estimateFlag,
-          relationBy
-        } = data || {}
+      try {
+        const { estimateFlag, relationBy } = data || {}
         let array: any[] = []
         let sql = `select * from ${landEstimateDtoListName} where 1=1`
-     
+
         if (estimateFlag) {
           sql += ` and estimateFlag = '${estimateFlag}'`
         }
-        if(relationBy){
+        if (relationBy) {
           sql += ` and relationBy = '${relationBy}'`
         }
         const list: any[] = await this.db.selectSql(sql)
-        console.log(list.length,'筛选后的长度')
+        console.log(list.length, '筛选后的长度')
         array = list.length
         resolve(array)
       } catch (error) {
