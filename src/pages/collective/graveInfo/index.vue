@@ -5,6 +5,7 @@
       <view style="display: flex">
         <input class="input-txt" placeholder="请输入登记人" v-model="sercher" />
         <view class="btn-wrapper" @click="search"> <text class="txt">搜索</text></view>
+        <view class="btn-wrapper" @click="searchs"> <text class="txt">重置</text></view>
       </view>
       <view class="list-item" v-for="item in sercherlist" :key="item.id">
         <view class="list-1">
@@ -133,7 +134,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref,watch } from 'vue'
 import { formatStr, formatDict, routerForward } from '@/utils'
 import { onLoad } from '@dcloudio/uni-app'
 
@@ -148,7 +149,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['deleteGraveInfo'])
+const emit = defineEmits(['deleteGraveInfo', 'updateData'])
 const alertDialog = ref<any>(null)
 const currentItem = ref<any>({})
 let sercher = ref()
@@ -219,13 +220,28 @@ const toLink = (type: string, data?: any) => {
 }
 let search = () => {
   console.log(1)
+  console.log(props.dataList)
+
   sercherlist.value = props.dataList.filter((item: any) => {
-    return item.registrantName.includes(sercher.value)
+    return item.registrantName?.includes(sercher.value)
   })
 }
+let searchs = () => {
+  console.log(1)
+  sercher.value = null
+  sercherlist.value = props.dataList
+}
 onLoad(() => {
+  emit('updateData')
   sercherlist.value = props.dataList
 })
+watch(
+  () => props.dataList,
+  (val) => {
+    sercherlist.value = val
+  },
+  { deep: true }
+)
 </script>
 
 <style lang="scss" scoped>

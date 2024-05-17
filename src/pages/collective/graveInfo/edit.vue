@@ -6,7 +6,6 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              required
               label="登记人"
               :label-width="150"
               label-align="right"
@@ -323,10 +322,7 @@ const inputBlurs = () => {
 // 表单提交
 const submit = () => {
   const { type } = commonParams.value
-  if (!formData.value.registrantName) {
-    showToast('请选择登记人')
-    return
-  } else if (!formData.value.relation) {
+  if (!formData.value.relation) {
     showToast('请选择与登记人关系')
     return
   } else if (!formData.value.gravePosition) {
@@ -343,6 +339,12 @@ const submit = () => {
     return
   } else if (!formData.value.graveAutoNo) {
     showToast('请输入坟墓编号')
+    return
+  } else if (leftDoor.value.length < 18) {
+    uni.showToast({
+      title: '该户所在行政村没有坟墓村集体，请联系信息管理员新增移民村村集体',
+      icon: 'none'
+    })
     return
   } else {
     if (type === 'add') {
@@ -503,7 +505,7 @@ let change = (e: any) => {
         }
 
         .pre-txt {
-          width: 104rpx;
+          width: 124rpx;
           height: 35px;
           padding-left: 7rpx;
           font-size: 9rpx;

@@ -264,6 +264,12 @@ const submit = () => {
   } else if (!formData.value.graveAutoNo) {
     showToast('请输入坟墓编号')
     return
+  } else if (leftDoor.value.length < 15) {
+    uni.showToast({
+      title: '该户所在行政村没有坟墓村集体，请联系信息管理员新增移民村村集体',
+      icon: 'none'
+    })
+    return
   } else {
     const { uid, villageCode } = commonParams.value
     let params = {
@@ -426,7 +432,7 @@ let change = (e: any) => {
         }
 
         .pre-txt {
-          width: 104rpx;
+          width: 120rpx;
           height: 35px;
           padding-left: 7rpx;
           font-size: 9rpx;

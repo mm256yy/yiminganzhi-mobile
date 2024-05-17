@@ -56,6 +56,7 @@
                   :dataList="dataInfo.immigrantGraveList"
                   :dataInfo="dataInfo"
                   @delete-grave-info="deleteGraveInfo"
+                  @update-data="updateData"
                 />
 
                 <!-- 农村专项及设施 -->
@@ -142,113 +143,113 @@ const tabsList = computed(() => {
     immigrantFacilitiesList,
     immigrantFile
   } = props.dataInfo
-    if (props.dataInfo.villageType=='asset') {
+  if (props.dataInfo.villageType == 'asset') {
     return [
-    {
-      label: '村集体基本情况',
-      value: 0,
-      filled: true,
-      defIcon: iconBaseDef,
-      selIcon: iconBaseSel
-    },
-    {
-      label: '房屋信息',
-      value: 1,
-      filled: isNotNullArray(immigrantHouseList),
-      defIcon: iconHouseDef,
-      selIcon: iconHouseSel
-    },
-    {
-      label: '零星 (林) 果木',
-      value: 2,
-      filled: isNotNullArray(immigrantTreeList),
-      defIcon: iconTreeDef,
-      selIcon: iconTreeSel
-    },
-    {
-      label: '附属物信息',
-      value: 3,
-      filled: isNotNullArray(immigrantAppendantList),
-      defIcon: iconAppurtenanceDef,
-      selIcon: iconAppurtenanceSel
-    },
-    {
-      label: '农村专项及设施',
-      value: 5,
-      filled: isNotNullArray(immigrantFacilitiesList),
-      defIcon: iconEquipmentDef,
-      selIcon: iconEquipmentSel
-    },
-    {
-      label: '照片上传',
-      value: 6,
-      filled: immigrantFile && immigrantFile.otherPic && immigrantFile.otherPic !== '[]',
-      defIcon: iconPhotoDef,
-      selIcon: iconPhotoSel
-    }
-  ]
-  } else if(props.dataInfo.villageType=='grave') {
+      {
+        label: '村集体基本情况',
+        value: 0,
+        filled: true,
+        defIcon: iconBaseDef,
+        selIcon: iconBaseSel
+      },
+      {
+        label: '房屋信息',
+        value: 1,
+        filled: isNotNullArray(immigrantHouseList),
+        defIcon: iconHouseDef,
+        selIcon: iconHouseSel
+      },
+      {
+        label: '零星 (林) 果木',
+        value: 2,
+        filled: isNotNullArray(immigrantTreeList),
+        defIcon: iconTreeDef,
+        selIcon: iconTreeSel
+      },
+      {
+        label: '附属物信息',
+        value: 3,
+        filled: isNotNullArray(immigrantAppendantList),
+        defIcon: iconAppurtenanceDef,
+        selIcon: iconAppurtenanceSel
+      },
+      {
+        label: '农村专项及设施',
+        value: 5,
+        filled: isNotNullArray(immigrantFacilitiesList),
+        defIcon: iconEquipmentDef,
+        selIcon: iconEquipmentSel
+      },
+      {
+        label: '照片上传',
+        value: 6,
+        filled: immigrantFile && immigrantFile.otherPic && immigrantFile.otherPic !== '[]',
+        defIcon: iconPhotoDef,
+        selIcon: iconPhotoSel
+      }
+    ]
+  } else if (props.dataInfo.villageType == 'grave') {
     return [
-    {
-      label: '坟墓信息',
-      value: 4,
-      filled: isNotNullArray(immigrantGraveList),
-      defIcon: iconGraveDef,
-      selIcon: iconGraveSel
-    }
-  ]
-    } else {
-      return [
-    {
-      label: '村集体基本情况',
-      value: 0,
-      filled: true,
-      defIcon: iconBaseDef,
-      selIcon: iconBaseSel
-    },
-    {
-      label: '房屋信息',
-      value: 1,
-      filled: isNotNullArray(immigrantHouseList),
-      defIcon: iconHouseDef,
-      selIcon: iconHouseSel
-    },
-    {
-      label: '零星 (林) 果木',
-      value: 2,
-      filled: isNotNullArray(immigrantTreeList),
-      defIcon: iconTreeDef,
-      selIcon: iconTreeSel
-    },
-    {
-      label: '附属物信息',
-      value: 3,
-      filled: isNotNullArray(immigrantAppendantList),
-      defIcon: iconAppurtenanceDef,
-      selIcon: iconAppurtenanceSel
-    },
-    {
-      label: '坟墓信息',
-      value: 4,
-      filled: isNotNullArray(immigrantGraveList),
-      defIcon: iconGraveDef,
-      selIcon: iconGraveSel
-    },
-    {
-      label: '农村专项及设施',
-      value: 5,
-      filled: isNotNullArray(immigrantFacilitiesList),
-      defIcon: iconEquipmentDef,
-      selIcon: iconEquipmentSel
-    },
-    {
-      label: '照片上传',
-      value: 6,
-      filled: immigrantFile && immigrantFile.otherPic && immigrantFile.otherPic !== '[]',
-      defIcon: iconPhotoDef,
-      selIcon: iconPhotoSel
-    }
-  ]
+      {
+        label: '坟墓信息',
+        value: 4,
+        filled: isNotNullArray(immigrantGraveList),
+        defIcon: iconGraveDef,
+        selIcon: iconGraveSel
+      }
+    ]
+  } else {
+    return [
+      {
+        label: '村集体基本情况',
+        value: 0,
+        filled: true,
+        defIcon: iconBaseDef,
+        selIcon: iconBaseSel
+      },
+      {
+        label: '房屋信息',
+        value: 1,
+        filled: isNotNullArray(immigrantHouseList),
+        defIcon: iconHouseDef,
+        selIcon: iconHouseSel
+      },
+      {
+        label: '零星 (林) 果木',
+        value: 2,
+        filled: isNotNullArray(immigrantTreeList),
+        defIcon: iconTreeDef,
+        selIcon: iconTreeSel
+      },
+      {
+        label: '附属物信息',
+        value: 3,
+        filled: isNotNullArray(immigrantAppendantList),
+        defIcon: iconAppurtenanceDef,
+        selIcon: iconAppurtenanceSel
+      },
+      {
+        label: '坟墓信息',
+        value: 4,
+        filled: isNotNullArray(immigrantGraveList),
+        defIcon: iconGraveDef,
+        selIcon: iconGraveSel
+      },
+      {
+        label: '农村专项及设施',
+        value: 5,
+        filled: isNotNullArray(immigrantFacilitiesList),
+        defIcon: iconEquipmentDef,
+        selIcon: iconEquipmentSel
+      },
+      {
+        label: '照片上传',
+        value: 6,
+        filled: immigrantFile && immigrantFile.otherPic && immigrantFile.otherPic !== '[]',
+        defIcon: iconPhotoDef,
+        selIcon: iconPhotoSel
+      }
+    ]
   }
 })
 
