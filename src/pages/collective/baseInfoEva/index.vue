@@ -21,7 +21,7 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">村集体编码：</view>
-                <view class="content">{{ formatStr(props.dataInfo.doorNo) }}</view>
+                <view class="content">{{ props.dataInfo.showDoorNo ? props.dataInfo.showDoorNo:props.dataInfo.doorNo }}</view>
               </view>
             </uni-col>
           </uni-row>

@@ -4,7 +4,7 @@
     <view class="list" v-if="props.dataList && props.dataList.length">
       <view class="list-item" v-for="item in props.dataList" :key="item.id">
         <view class="list-1">
-          <view class="left"> 设施编号：{{ formatStr(item.facilitiesCode) }} </view>
+          <view class="left"> 设施（设备）编号：{{ formatStr(item.facilitiesCode) }} </view>
           <view class="right">
             <image
               class="icon m-r-10"

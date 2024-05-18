@@ -19,9 +19,12 @@
         <view class="status" :class="[props.data.estimateFlag === '1' ? 'success' : '']"
           ><text class="circle" />{{ props.data.estimateFlag === '1' ? '已评估' : '未评估' }}</view
         >
-        <view v-show="props.data.relationFlag === '1'" class="btn blue-btn" @click.stop="estimate">
+        <view v-if="props.data.relationFlag === '1'" class="btn blue-btn" @click.stop="estimate">
           <text class="txt">评估</text>
         </view>
+        <!-- <view v-else class="btn blue-btn" @click.stop="bind">
+          <text class="txt">绑定</text>
+        </view> -->
       </view>
     </view>
     <view class="cont">
@@ -119,6 +122,9 @@ const estimate = () => {
   getUidFromAPi()
 }
 
+const bind = () => {
+  console.log('11111')
+}
 const getUidFromAPi = async () => {
   try {
     let result = await getLandlordListBySearchApi({
