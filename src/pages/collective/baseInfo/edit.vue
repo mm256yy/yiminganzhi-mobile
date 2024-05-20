@@ -261,8 +261,6 @@ const submit = () => {
     showToast('请选择所属区域')
     return
   } else if (
-    !formData.value.doorNo &&
-    formData.value.suffixNo &&
     formData.value.suffixNo.length !== 4
   ) {
     showToast('请输入村集体编号后四位数字')

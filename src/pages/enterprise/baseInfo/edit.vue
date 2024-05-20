@@ -1122,7 +1122,8 @@ const submit = () => {
     householderDoorNo: formData.value.householderDoorNo,
     householderName: formData.value.householderName,
     longitude: formData.value.longitude,
-    latitude: formData.value.latitude
+    latitude: formData.value.latitude,
+    suffixNo: formData.value.suffixNo
   }
 
   let company: any = {
@@ -1187,7 +1188,8 @@ const submit = () => {
     licensePic: formData.value.licensePic,
     otherPic: formData.value.otherPic,
     householderDoorNo: formData.value.householderDoorNo,
-    type: formData.value.type
+    type: formData.value.type,
+    suffixNo: formData.value.suffixNo
   }
   if (!formData.value.name) {
     showToast('请输入企业名称')
@@ -1204,8 +1206,8 @@ const submit = () => {
     showToast('请选择登记注册类型')
     return
   } else if (
-    !formData.value.doorNo &&
-    formData.value.suffixNo &&
+    // !formData.value.doorNo &&
+    // formData.value.suffixNo &&
     formData.value.suffixNo.length !== 4
   ) {
     showToast('请输入企业编号后四位数字')

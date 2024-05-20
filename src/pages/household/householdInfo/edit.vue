@@ -344,7 +344,8 @@ const submit = () => {
     //     : formData.value.villageCode
     //     ? String(formData.value.villageCode) + formData.value.suffixNo
     //     : '',
-    type: MainType.PeasantHousehold
+    type: MainType.PeasantHousehold,
+    suffixNo: formData.value.suffixNo
   }
 
   if (!formData.value.name) {
@@ -357,8 +358,8 @@ const submit = () => {
     showToast('请输入户号后四位')
     return
   } else if (
-    !formData.value.doorNo &&
-    formData.value.suffixNo &&
+    // !formData.value.doorNo &&
+    // formData.value.suffixNo &&
     formData.value.suffixNo.length !== 4
   ) {
     showToast('户号不全，请输入四位数字')

@@ -863,7 +863,8 @@ const submit = () => {
     householderDoorNo: formData.value.householderDoorNo,
     householderName: formData.value.householderName,
     longitude: formData.value.longitude,
-    latitude: formData.value.latitude
+    latitude: formData.value.latitude,
+    suffixNo: formData.value.suffixNo
   }
 
   let company: any = {
@@ -912,7 +913,8 @@ const submit = () => {
     remark: formData.value.remark,
     licensePic: fmtPicUrl(formData.value.licensePic),
     otherPic: fmtPicUrl(formData.value.otherPic),
-    householderDoorNo: formData.value.householderDoorNo
+    householderDoorNo: formData.value.householderDoorNo,
+    suffixNo: formData.value.suffixNo
   }
 
   if (!formData.value.legalPersonName) {
@@ -931,8 +933,8 @@ const submit = () => {
     showToast('请选择所属区域')
     return
   } else if (
-    !formData.value.doorNo &&
-    formData.value.suffixNo &&
+    // !formData.value.doorNo &&
+    // formData.value.suffixNo &&
     formData.value.suffixNo.length !== 4
   ) {
     showToast('请输入个体工商户编号后四位数字')
