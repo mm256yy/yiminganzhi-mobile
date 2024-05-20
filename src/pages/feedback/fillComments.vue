@@ -5,7 +5,12 @@
       <uni-forms class="form" ref="form" :modelValue="formData">
         <uni-row>
           <uni-col :span="22">
-            <uni-forms-item label="意见描述：" :label-width="150" label-align="right" name="formData.remark">
+            <uni-forms-item
+              label="意见描述："
+              :label-width="150"
+              label-align="right"
+              name="formData.remark"
+            >
               <uni-easyinput v-model="formData.remark" type="textarea" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
@@ -13,7 +18,12 @@
 
         <uni-row v-if="isSelfVal">
           <uni-col :span="24">
-            <uni-forms-item label="是否解决：" :label-width="150" label-align="right" name="feedbackPic">
+            <uni-forms-item
+              label="是否解决："
+              :label-width="150"
+              label-align="right"
+              name="feedbackPic"
+            >
               <radio-group @change="radioChange" class="group-segment">
                 <label class="group-segment">
                   <view>
@@ -26,7 +36,6 @@
                     <radio value="1" :checked="radioChecked" class="radio-dot" />
                   </view>
                   <view class="radio-txt">已解决</view>
-
                 </label>
               </radio-group>
             </uni-forms-item>
@@ -34,7 +43,12 @@
         </uni-row>
       </uni-forms>
 
-      <image class="submit-btn" src="@/static/images/icon_submit.png" mode="scaleToFill" @click="submit" />
+      <image
+        class="submit-btn"
+        src="@/static/images/icon_submit.png"
+        mode="scaleToFill"
+        @click="submit"
+      />
     </view>
   </view>
 </template>
@@ -46,9 +60,7 @@ import Back from '@/components/Back/Index.vue'
 import { routerBack } from '@/utils'
 import { showToast, SUCCESS_MSG } from '@/config/msg'
 
-import {
-  updateOtherItemApi
-} from '@/service'
+import { updateOtherItemApi } from '@/service'
 
 const formData = ref<any>({
   remark: '',
@@ -82,17 +94,15 @@ const submit = async () => {
     ...formData.value,
     uids: uidVal.value
   }
-  console.log(params,'params')
+  console.log(params, 'params')
   try {
     const res = await updateOtherItemApi(params)
-    if (res) {
-      showToast(SUCCESS_MSG)
-      routerBack()
-      // 触发自定义事件
-      uni.$emit('customRefresh');
-    }
-  } catch {
-  }
+
+    showToast(SUCCESS_MSG)
+    routerBack()
+    // 触发自定义事件
+    uni.$emit('customRefresh')
+  } catch {}
 }
 </script>
 
@@ -129,7 +139,7 @@ const submit = async () => {
         }
 
         .radio-dot {
-          transform: scale(0.7)
+          transform: scale(0.7);
         }
 
         .radio-txt {
@@ -138,7 +148,6 @@ const submit = async () => {
         }
       }
     }
-
 
     .submit-btn {
       position: fixed;

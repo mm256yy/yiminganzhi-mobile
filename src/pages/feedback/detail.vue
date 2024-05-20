@@ -4,7 +4,7 @@
     <view class="main">
       <view class="list-header">
         <view class="list-header-rt">
-          <view class="list-header-right" v-if="query?.status=='0'">
+          <view class="list-header-right" v-if="query?.status == '0'">
             <view class="btn blue-btn" @click="fillComments">
               <image class="icon" src="@/static/images/icon_dqxy_sel.png" mode="scaleToFill" />
               <text class="txt">填写意见</text>
@@ -28,13 +28,19 @@
           <uni-col :span="8" :push="1">
             <view class="item-field">
               <span class="item-label">工作阶段：</span>
-              <span class="item-value">{{ query?.typeText? query?.typeText : householdTypes.find((item:any) => item.value == query?.type)?.text }}</span>
+              <span class="item-value">{{
+                query?.typeText
+                  ? query?.typeText
+                  : householdTypes.find((item: any) => item.value == query?.type)?.text
+              }}</span>
             </view>
           </uni-col>
           <uni-col :span="8" :push="1">
             <view class="item-field">
               <span class="item-label">提交时间：</span>
-              <span>{{ query?.createdDate ? dayjs(query?.createdDate).format('YYYY-MM-DD') : '--' }}</span>
+              <span>{{
+                query?.createdDate ? dayjs(query?.createdDate).format('YYYY-MM-DD') : '--'
+              }}</span>
             </view>
           </uni-col>
         </uni-row>
@@ -46,11 +52,11 @@
             </view>
           </uni-col>
         </uni-row>
-        <uni-row :gutter="5" class="row-block">
-          <uni-col :span="24" :push="1">
-            <view class="item-field">
-              <span class="item-label">处理结果：</span>
-              <span class="item-value">{{ query?.statusText }}</span>
+        <uni-row :gutter = "5" class  = "row-block">
+        <uni-col :span   = "24" :push = "1">
+        <view    class   = "item-field">
+        <span    class   = "item-label">处理结果：</span>
+        <span    class   = "item-value">{{ query?.statusText }}</span>
             </view>
           </uni-col>
         </uni-row>
@@ -73,7 +79,12 @@
           <text>领导意见</text>
         </view>
         <view class="comment-segment">
-          <uni-steps :options="formatListData(list)" active-color="#007AFF" :active="active" direction="column" />
+          <uni-steps
+            :options="formatListData(list)"
+            active-color="#007AFF"
+            :active="active"
+            direction="column"
+          />
         </view>
       </view>
     </view>
@@ -89,26 +100,29 @@ import type { CommentType } from '@/types/common'
 import dayjs from 'dayjs'
 import { householdTypes } from './config'
 interface DictType {
-  text: string,
+  text: string
   value: string
 }
-
 
 // 获取数据字典
 const active = ref<number>(0)
 const query = ref<CommentType>()
 const list = ref<any>([])
 const typeOptionsList = ref<DictType[]>([])
-const flag=ref<any>()
+const flag = ref<any>()
 onLoad((option) => {
   if (option) {
     query.value = option as CommentType
     console.log('qery', query.value)
     list.value = JSON.parse(query.value.list)
-    flag.value=list.value.some((item:any)=>item.status == '1')
-    console.log(list.value,'测试数据呀')
+    flag.value = list.value.some((item: any) => item.status == '1')
+    console.log(list.value, '测试数据呀')
     typeOptionsList.value = householdTypes
-    console.log( typeOptionsList.value,'测试数据',dayjs('2024-04-08T06:25:10.348Z').format('YYYY-MM-DD'))
+    console.log(
+      typeOptionsList.value,
+      '测试数据',
+      dayjs('2024-04-08T06:25:10.348Z').format('YYYY-MM-DD')
+    )
   }
 })
 
@@ -123,7 +137,6 @@ const formatData = (params: any) => {
   return params
 }
 
-
 // 格式化列表数据
 const formatListData = (params: any) => {
   if (!params) {
@@ -134,7 +147,7 @@ const formatListData = (params: any) => {
     return []
   }
 
-  const stepList = params.map(item => {
+  const stepList = params.map((item) => {
     return {
       title: list.value?.creater,
       desc: item.remark
@@ -252,8 +265,6 @@ const fillComments = () => {
   display: flex;
   align-items: center;
   font-size: 10rpx;
-
-
 }
 
 .fill-block {
@@ -281,12 +292,12 @@ const fillComments = () => {
   }
 
   .leader-comment {
-    background-color: #F8F9FC;
+    background-color: #f8f9fc;
     border-radius: 10rpx;
     padding-bottom: 5rpx;
 
     .comment-txt {
-      color: #757A90;
+      color: #757a90;
       font-size: 9rpx;
     }
   }

@@ -270,6 +270,9 @@ const submit = () => {
       icon: 'none'
     })
     return
+  } else if (!formData.value.inundationRange) {
+    showToast('请选择淹没范围')
+    return
   } else {
     const { uid, villageCode } = commonParams.value
     let params = {

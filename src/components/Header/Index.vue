@@ -30,7 +30,7 @@
 
       <view class="list-header-right">
         <view class="btn-wrapper print" v-if="showPrint" @click="printFile">
-          <text class="txt">搜索</text>
+          <text class="txt">打印</text>
         </view>
         <view
           v-if="

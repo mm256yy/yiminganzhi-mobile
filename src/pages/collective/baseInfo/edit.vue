@@ -143,7 +143,13 @@
               label-align="right"
               name="formData.villageType"
             >
-              <div class="value">{{ formData.villageType=='asset'?'集体资产':formData.villageType=='grave'?'坟墓':'-' }}</div>
+              <div class="value">{{
+                formData.villageType == 'asset'
+                  ? '集体资产'
+                  : formData.villageType == 'grave'
+                  ? '坟墓'
+                  : '-'
+              }}</div>
               <!-- <input class="input-txt disabled" v-model="villageTypes" disabled /> -->
             </uni-forms-item>
           </uni-col>
@@ -162,7 +168,7 @@
 
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
-import { ref, onMounted, onBeforeUnmount,computed } from 'vue'
+import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
 import { addLandlordApi, updateLandlordApi } from '@/service'
 import { routerBack, getStorage, StorageKey, setlocationType, routerForward } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
@@ -198,7 +204,7 @@ onLoad((option: any) => {
       formData.value = { ...params }
       title.value = '村集体基本情况编辑'
     } else if (type.value === 'add') {
-      formData.value.villageType=''
+      formData.value.villageType = ''
       title.value = '添加村集体'
       if (option.areaCode && option.townCode && option.villageCode) {
         formData.value.areaCode = option.areaCode
@@ -223,13 +229,13 @@ const inputBlur = () => {
 }
 const villageTypes = computed(() => {
   return formData.value.villageType == 'asset'
-      ? '集体资产'
-      : formData.value.villageType == 'grave'
-      ? '坟墓'
-      : '-'
+    ? '集体资产'
+    : formData.value.villageType == 'grave'
+    ? '坟墓'
+    : '-'
 })
-const doorNo=computed(() => {
-  return formData.value.showDoorNo?formData.value.showDoorNo:formData.value.doorNo
+const doorNo = computed(() => {
+  return formData.value.showDoorNo ? formData.value.showDoorNo : formData.value.doorNo
 })
 // 表单提交
 const submit = () => {
@@ -270,6 +276,9 @@ const submit = () => {
     return
   } else if (!formData.value.locationType) {
     showToast('请选择所在位置')
+    return
+  } else if (!formData.value.inundationRange) {
+    showToast('请选择淹没范围')
     return
   } else {
     if (type.value === 'add') {
@@ -509,8 +518,8 @@ onBeforeUnmount(() => {
   }
 }
 .value {
-    display: flex;
-    height: 100%;
-    align-items: center;
-  }
+  display: flex;
+  height: 100%;
+  align-items: center;
+}
 </style>

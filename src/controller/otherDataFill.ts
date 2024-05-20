@@ -24,6 +24,7 @@ class FeedbackDto extends Common {
         const createdDate = dayjs()
         data.uid = uid
         data.createdDate = createdDate
+        data.status='0'
         const list = await OtherController.getOtherWithType(OtherDataType.FeedbackDtoList)
         list.push(data)
         const values = `content='${JSON.stringify(list)}',updatedDate='${getCurrentTimeStamp()}'`
