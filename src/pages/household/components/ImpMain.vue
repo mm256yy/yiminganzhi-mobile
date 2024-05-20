@@ -218,6 +218,7 @@ const emit = defineEmits(['updateData'])
 
 const tabList = computed(() => {
   const { immigrantFilling = {} } = props.dataInfo
+  console.log(props.dataInfo, 'dataInfo')
   const arr: any = deepClone(householdSidebarList)
   console.log(immigrantFilling, '什么状态')
   if (immigrantFilling) {

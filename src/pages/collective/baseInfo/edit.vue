@@ -182,7 +182,7 @@ const formData = ref<any>({
   areaCode: '',
   townCode: '',
   villageCode: '',
-  // suffixNo: '',
+  suffixNo: '',
   collectiveCode: '',
   phone: '',
   locationType: null
@@ -250,7 +250,8 @@ const submit = () => {
           filterViewDoorNoWithBeforeOther(formData.value.villageCode) +
           formData.value.suffixNo
         : '',
-    type: MainType.Village
+    type: MainType.Village,
+    suffixNo: formData.value.suffixNo
   }
 
   if (!formData.value.name) {

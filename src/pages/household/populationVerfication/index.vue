@@ -176,6 +176,7 @@ const toLink = (type: string, data?: any) => {
   // 增计人口不允许编辑
   if (type === 'edit' && data.addReason !== '3') {
     let params = { type, uid, doorNo, itemUid: data.uid, phone }
+    console.log(params,'传递的参数是什么？')
     routerForward('populationVerficationEdit', {
       params: JSON.stringify(params)
     })

@@ -262,7 +262,8 @@ const getLandlordDetail = () => {
       let obj: any = arr.filter((item: any) => item.uid === itemUid)[0]
       formData.value = {
         ...obj,
-        phone: obj.phone ? obj.phone : commonParams.value.phone,
+        // phone: obj.phone ? obj.phone : commonParams.value.phone,
+        phone:commonParams.value.phone,
         cardPic: fmtPicUrl(obj.cardPic),
         householdPic: fmtPicUrl(obj.householdPic),
         otherPic: fmtPicUrl(obj.otherPic)
