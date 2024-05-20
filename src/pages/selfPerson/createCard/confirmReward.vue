@@ -226,6 +226,9 @@ const onSave = (data: any, isVerify: any) => {
         height: 19rpx;
         font-size: 9rpx;
         color: 171718;
+        border: 2px solid #007BFF;
+        background-color: #F2F2F2;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
       }
 
       .mini-btn {

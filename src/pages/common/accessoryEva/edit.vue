@@ -54,6 +54,7 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
+              required 
               label="单位"
               :label-width="150"
               label-align="right"
@@ -64,6 +65,7 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
+              required
               label="数量"
               :label-width="150"
               label-align="right"
