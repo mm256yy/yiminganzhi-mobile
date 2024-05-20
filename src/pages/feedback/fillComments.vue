@@ -97,12 +97,17 @@ const submit = async () => {
   console.log(params, 'params')
   try {
     const res = await updateOtherItemApi(params)
+    console.log(res, '回来')
 
-    showToast(SUCCESS_MSG)
-    routerBack()
-    // 触发自定义事件
-    uni.$emit('customRefresh')
-  } catch {}
+    if (res) {
+      showToast(SUCCESS_MSG)
+      routerBack()
+      // 触发自定义事件
+      uni.$emit('customRefresh')
+    }
+  } catch (error) {
+    console.log(error)
+  }
 }
 </script>
 

@@ -24,7 +24,7 @@ class FeedbackDto extends Common {
         const createdDate = dayjs()
         data.uid = uid
         data.createdDate = createdDate
-        data.status='0'
+        data.status = '0'
         const list = await OtherController.getOtherWithType(OtherDataType.FeedbackDtoList)
         list.push(data)
         const values = `content='${JSON.stringify(list)}',updatedDate='${getCurrentTimeStamp()}'`
@@ -49,9 +49,9 @@ class FeedbackDto extends Common {
   updateFeedbackDtoList(data: any): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
-        if (!data.uid) {
-          reject(false)
-        }
+        // if (!data.uids) {
+        //   reject(false)
+        // }
         const createdDate = getCurrentTimeStamp()
         const uid = guid()
         data.uid = uid
@@ -59,16 +59,23 @@ class FeedbackDto extends Common {
         const list = await OtherController.getOtherWithType(OtherDataType.FeedbackDtoList)
         list.forEach((item: any) => {
           if (item.uid == data.uids) {
-            console.log('进入1')
+            console.log('进入1', item)
             if (item.hasOwnProperty('feedbackMessageList')) {
               // item.feedbackMessageList = []
               console.log('进入2')
               item.feedbackMessageList.push(data)
-          }
-          if (item.feedbackMessageList.some((item:any)=>item.status == '1')) {
-            item.status = '1'
-            item.statusText='已处理'
-          }
+              if (item.feedbackMessageList.some((items: any) => items.status == '1')) {
+                item.status = '1'
+                item.statusText = '已处理'
+              }
+            } else {
+              item.feedbackMessageList = []
+              item.feedbackMessageList.push(data)
+              if (item.feedbackMessageList.some((items: any) => items.status == '1')) {
+                item.status = '1'
+                item.statusText = '已处理'
+              }
+            }
           }
         })
         const values = `content='${JSON.stringify(list)}',updatedDate='${getCurrentTimeStamp()}'`
@@ -78,10 +85,14 @@ class FeedbackDto extends Common {
           'type',
           OtherDataType.FeedbackDtoList
         )
-        if (res && res.code) {
-          reject(false)
-        }
-        resolve(true)
+        console.log(res)
+
+        // if (res && res.code) {
+        //   reject(false)
+        //   return
+        // }
+        // resolve(true)
+        res ? resolve(true) : reject(false)
       } catch (error) {
         console.log(error, 'updateVillage-error')
         reject(false)
