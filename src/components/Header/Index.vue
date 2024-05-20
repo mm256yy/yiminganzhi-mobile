@@ -90,14 +90,14 @@
               <image class="icon" src="@/static/images/qianzi_icon.png" mode="scaleToFill" />
               <view class="name">报表签字</view>
             </view>
-            <view
+            <!-- <view
               class="file-items"
               v-if="!dataInfo.reportStatus || dataInfo.reportStatus === 'UnReport'"
               @click="reportDataCheck"
             >
               <image class="icon" src="@/static/images/icon_report.png" mode="scaleToFill" />
               <view class="name">填报完成</view>
-            </view>
+            </view> -->
           </view>
         </view>
         <view class="btn-wrapper">

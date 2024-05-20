@@ -68,7 +68,7 @@
                 <input
                   class="input-txt"
                   type="number"
-                  placeholder="请输入"
+                  placeholder="请输入四位数字"
                   :maxlength="4"
                   v-model="formData.suffixNo"
                   @focus="inputFocus(1)"
@@ -258,7 +258,7 @@ const submit = () => {
     formData.value.suffixNo &&
     formData.value.suffixNo.length !== 4
   ) {
-    showToast('村集体编码不全，请输入四位数字')
+    showToast('请输入村集体编号后四位数字')
     return
   }
   // else if (!formData.value.doorNo) {

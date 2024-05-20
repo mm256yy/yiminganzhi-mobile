@@ -371,11 +371,33 @@ export class ImpLandlord extends Common {
       landlordItem.immigrantFilling.excessStatus = '0'
     }
 
-    // 腾空过渡 总状态
+    // 腾空过渡 总状态 （居民户）
     if (
       landlordItem.immigrantFilling.houseSoarStatus === '1' &&
       landlordItem.immigrantFilling.landSoarStatus === '1' &&
-      landlordItem.immigrantFilling.excessStatus === '1'
+      landlordItem.immigrantFilling.excessStatus === '1' &&
+      type === MainType.PeasantHousehold
+    ) {
+      landlordItem.immigrantFilling.excessSoarStatus = '1'
+    } else {
+      landlordItem.immigrantFilling.excessSoarStatus = '0'
+    }
+
+        // 腾空过渡 总状态 （企业和个体工商户）
+    if (
+      landlordItem.immigrantFilling.houseSoarStatus === '1' &&
+      landlordItem.immigrantFilling.landSoarStatus === '1' &&
+      (type === MainType.Company || type === MainType.IndividualHousehold)
+    ) {
+      landlordItem.immigrantFilling.excessSoarStatus = '1'
+    } else {
+      landlordItem.immigrantFilling.excessSoarStatus = '0'
+    }
+
+        // 腾空过渡 总状态 （村集体）
+    if (
+      landlordItem.immigrantFilling.houseSoarStatus === '1' &&
+      type === MainType.Village
     ) {
       landlordItem.immigrantFilling.excessSoarStatus = '1'
     } else {

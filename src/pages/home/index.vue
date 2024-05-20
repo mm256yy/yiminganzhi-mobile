@@ -177,7 +177,7 @@ const homeViewType = ref<RoleCodeType>(RoleCodeType.assessorland)
 const toLink = (name: string) => {
   // 判断是否为数据同步
   if (name === 'sync') {
-    if (homeViewType.value === RoleCodeType.implementation) {
+    if (homeViewType.value === RoleCodeType.implementation|| homeViewType.value === RoleCodeType.implementleader) {
       openConfirmDialog()
       return
     }
