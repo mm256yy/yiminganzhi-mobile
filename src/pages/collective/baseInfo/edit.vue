@@ -243,8 +243,8 @@ const submit = () => {
     ...formData.value,
     // doorNo: formData.value.doorNo,
     doorNo:
-      formData.value.id && formData.value.doorNo
-        ? formData.value.doorNo
+      doorNo.value
+        ? doorNo.value
         : formData.value.suffixNo
         ? 'JT' +
           filterViewDoorNoWithBeforeOther(formData.value.villageCode) +
@@ -253,7 +253,7 @@ const submit = () => {
     type: MainType.Village,
     suffixNo: formData.value.suffixNo
   }
-
+  console.log(params,'传输的是什么？')
   if (!formData.value.name) {
     showToast('请输入村集体名称')
     return
@@ -261,7 +261,7 @@ const submit = () => {
     showToast('请选择所属区域')
     return
   } else if (
-    formData.value.suffixNo.length !== 4
+    type.value == 'add'&&formData.value.suffixNo.length !== 4
   ) {
     showToast('请输入村集体编号后四位数字')
     return

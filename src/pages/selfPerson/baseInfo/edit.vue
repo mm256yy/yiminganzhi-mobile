@@ -846,8 +846,8 @@ const submit = () => {
     uid: uid.value,
     name: formData.value.name,
     doorNo:
-      formData.value.id && formData.value.doorNo
-        ? formData.value.doorNo
+      doorNo.value
+        ? doorNo.value
         : formData.value.suffixNo
         ? 'GT' +
           filterViewDoorNoWithBeforeOther(formData.value.villageCode) +
@@ -869,8 +869,8 @@ const submit = () => {
 
   let company: any = {
     doorNo:
-      formData.value.id && formData.value.doorNo
-        ? formData.value.doorNo
+      doorNo.value
+        ? doorNo.value
         : formData.value.suffixNo
         ? 'GT' +
           filterViewDoorNoWithBeforeOther(formData.value.villageCode) +
@@ -916,7 +916,8 @@ const submit = () => {
     householderDoorNo: formData.value.householderDoorNo,
     suffixNo: formData.value.suffixNo
   }
-
+  formData.value.suffixNo==undefined?formData.value.suffixNo='':formData.value.suffixNo 
+  console.log(formData.value.suffixNo,'四位数')
   if (!formData.value.legalPersonName) {
     showToast('请输入法人姓名')
     return
@@ -935,7 +936,7 @@ const submit = () => {
   } else if (
     // !formData.value.doorNo &&
     // formData.value.suffixNo &&
-    formData.value.suffixNo.length !== 4
+    type.value === 'add'&&formData.value.suffixNo.length !== 4
   ) {
     showToast('请输入个体工商户编号后四位数字')
     return
@@ -965,6 +966,7 @@ const submit = () => {
         ...baseInfo,
         company
       }
+      console.log(params, '测试传输数据')
       addLandlordApi(params)
         .then((res) => {
           if (res) {

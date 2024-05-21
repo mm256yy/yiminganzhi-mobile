@@ -5,7 +5,7 @@
       >{{ datalist.immigrantHouseReportDto.name
       }}{{
         datalist.type == 'Company'
-          ? '个体工商户'
+          ? '企事业单位'
           : datalist.type == 'IndividualHousehold'
           ? '个体工商户'
           : datalist.type == 'PeasantHousehold'
@@ -25,7 +25,7 @@
                 item != '户主'
                   ? item
                   : props.datalist.type == 'Company'
-                  ? '个体工商户名称'
+                  ? '企业名称'
                   : props.datalist.type == 'IndividualHousehold'
                   ? '个体工商户名称'
                   : props.datalist.type == 'PeasantHousehold'

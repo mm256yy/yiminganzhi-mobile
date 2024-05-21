@@ -110,8 +110,10 @@ const toLink = (type: string) => {
     longitude: props.dataInfo.longitude,
     latitude: props.dataInfo.latitude,
     villageType: props.dataInfo.villageType, // 村类型
+    inundationRange: props.dataInfo.inundationRange,
   }
-
+  console.log(props.dataInfo,'dataInfo')
+  console.log(params,'传输的参数')
   routerForward('collectiveBaseInfoEdit', {
     params: JSON.stringify(params),
     type

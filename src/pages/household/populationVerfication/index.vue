@@ -88,7 +88,7 @@
             <uni-col :span="12" v-if="item.deleteReason">
               <view class="col">
                 <view class="label">删除原因：</view>
-                <view class="content">{{ formatStr(item.deleteReason) }}</view>
+                <view class="content"> {{formatDict(item.deleteReason, 367)}}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -110,8 +110,8 @@
     />
 
     <!-- 删除确认弹框 -->
-    <uni-popup ref="alertDialog" type="dialog">
-      <uni-popup-dialog
+    <!-- <uni-popup ref="alertDialog" type="dialog">
+       <uni-popup-dialog
         type="warn"
         mode="input"
         cancelText="取消"
@@ -121,7 +121,19 @@
         placeholder="请输入删除原因"
         @confirm="dialogConfirm"
         @close="dialogClose"
-      />
+      /> 
+    </uni-popup> -->
+    <uni-popup :show="true" type="center" ref="alertDialog">
+      <!-- 提示框主体 -->
+      <view class="popup-container">
+        <text style=" font-size: 9rpx;line-height:11rpx;color:rgba(23, 23, 24, 1);text-align: center;">确认删除？</text>
+        <!-- 下拉框 -->
+        <uni-data-select v-model="reason" :localdata="dict[367]" />
+        <view class="btn-group">
+          <button @click="dialogConfirm">确认</button>
+          <button @click="dialogClose" style="color:#fff;">取消</button>
+        </view>
+      </view>
     </uni-popup>
   </view>
 </template>
@@ -131,18 +143,17 @@ import { ref } from 'vue'
 import { updateImpLandlordImmigrantFillingApi } from '@/service'
 import { formatDict, formatStr, routerForward } from '@/utils'
 import { showToast, SUCCESS_MSG, ERROR_MSG } from '@/config'
-
+import { getStorage, StorageKey} from '@/utils'
 interface PropsType {
   dataList: any[]
   dataInfo: any
 }
-
+const dict = getStorage(StorageKey.DICT)
 const props = defineProps<PropsType>()
 const emit = defineEmits(['deletePopulation', 'updateData'])
 const alertDialog = ref<any>(null)
 const currentItem = ref<any>({})
 const reason = ref<string>('') // 删除原因
-
 // 填报完成
 const onFilled = () => {
   const dataList=props.dataList.filter((item) => item.isDelete != '1')
@@ -197,17 +208,18 @@ const deletePopulation = (data: any) => {
   currentItem.value = { ...data }
 }
 
-const dialogConfirm = (data: any) => {
-  if (!data) {
+const dialogConfirm = () => {
+  if (!reason.value) {
     showToast('请输入删除原因')
     return
   }
   let params = {
     ...currentItem.value,
-    deleteReason: data
+    deleteReason: reason.value
   }
   console.log(params, '测试params')
   emit('deletePopulation', params)
+  alertDialog.value.close()
 }
 
 const dialogClose = () => {
@@ -374,5 +386,24 @@ const dialogClose = () => {
       bottom: 54rpx;
     }
   }
+  .popup-container {
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: white;
+  border-radius: 15%;
+  width:200%
+}
+ 
+.btn-group {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+ 
+.btn-group button {
+  margin-left: 10px;
+  background-color: #3e73ec;
+  font-size: 9rpx
+}
 }
 </style>

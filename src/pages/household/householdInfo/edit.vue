@@ -91,7 +91,7 @@
                 </view>
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  placeholder="请输入四位数"
                   type="number"
                   :maxlength="4"
                   v-model="formData.suffixNo"
@@ -308,7 +308,7 @@ const addNaturalVillage = () => {
 const submit = () => {
   let doorNo = ''
   console.log((getStorage(StorageKey.PROJECTINFO) || {}).reservoirCode, '账号是什么？')
-  if (formData.value.id && formData.value.doorNo) {
+  if (formData.value.doorNo) {
     doorNo = formData.value.doorNo
   } else {
     if (compatibleOldSystems()) {
@@ -347,7 +347,7 @@ const submit = () => {
     type: MainType.PeasantHousehold,
     suffixNo: formData.value.suffixNo
   }
-
+  console.log(params,'传输的是什么？')
   if (!formData.value.name) {
     showToast('请输入户主姓名')
     return
@@ -360,7 +360,7 @@ const submit = () => {
   } else if (
     // !formData.value.doorNo &&
     // formData.value.suffixNo &&
-    formData.value.suffixNo.length !== 4
+    type.value === 'add'&&formData.value.suffixNo.length !== 4
   ) {
     showToast('户号不全，请输入四位数字')
     return
