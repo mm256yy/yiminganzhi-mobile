@@ -41,13 +41,10 @@
           <uni-td />
           <uni-td />
           <uni-td>{{
-            submit(baseInfo.facilitiesAndOtherReportDto.immigrantEquipmentList, 'price')
+            submit(baseInfo.facilitiesAndOtherReportDto.facilitiesList, 'price')
           }}</uni-td>
           <uni-td>{{
-            submit(
-              baseInfo.facilitiesAndOtherReportDto.immigrantEquipmentList,
-              'compensationAmount'
-            )
+            submit(baseInfo.facilitiesAndOtherReportDto.facilitiesList, 'compensationAmount')
           }}</uni-td>
           <uni-td />
         </uni-tr>
