@@ -38,9 +38,12 @@
               name="formData.facilitiesCode"
             >
               <!-- <uni-easyinput v-model="formData.facilitiesCode" placeholder="请输入" /> -->
-              <view v-if="commonParams.type=='add'" :class="['code-wrapper', focusIndex === 1 ? 'focus' : '']">
+              <view
+                v-if="commonParams.type == 'add'"
+                :class="['code-wrapper', focusIndex === 1 ? 'focus' : '']"
+              >
                 <view class="pre-txt">
-                  {{ commonParams.doorNo ? 'SS' + commonParams.doorNo.replace("JT", "") : '' }}
+                  {{ commonParams.doorNo ? 'SS' + commonParams.doorNo.replace('JT', '') : '' }}
                 </view>
                 <input
                   class="input-txt"
@@ -113,17 +116,22 @@
               label-align="right"
               name="formData.locationType"
             >
-              <uni-data-select v-model="formData.locationType" :localdata="dict[326]" />
+              <uni-data-select
+                v-model="formData.locationType"
+                :localdata="dict[326]"
+                @change="change"
+              />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              label="具体位置"
+              required
+              label="淹没范围"
               :label-width="150"
               label-align="right"
-              name="formData.specificLocation"
+              name="formData.inundationRang"
             >
-              <uni-easyinput v-model="formData.specificLocation" placeholder="请输入" />
+              <uni-data-select v-model="formData.inundationRang" :localdata="dict[346]" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -244,15 +252,15 @@
               </view>
             </uni-forms-item>
           </uni-col>
+
           <uni-col :span="12">
             <uni-forms-item
-              required
-              label="淹没范围"
+              label="具体位置"
               :label-width="150"
               label-align="right"
-              name="formData.inundationRang"
+              name="formData.specificLocation"
             >
-              <uni-data-select v-model="formData.inundationRang" :localdata="dict[346]" />
+              <uni-easyinput v-model="formData.specificLocation" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -271,22 +279,22 @@
         </uni-row>
         <uni-row>
           <uni-col :span="24">
-              <uni-forms-item
-                label="设施（设备）照片"
-                :label-width="150"
-                label-align="right"
-                name="formData.facilitiesPic"
-                required
-              >
-                <upload-file
-                  v-model="formData.facilitiesPic"
-                  :file-list="formData.facilitiesPic"
-                  :limit="20"
-                  show-type="list"
-                  :accepts="['.jpg', '.png']"
+            <uni-forms-item
+              label="设施（设备）照片"
+              :label-width="150"
+              label-align="right"
+              name="formData.facilitiesPic"
+              required
+            >
+              <upload-file
+                v-model="formData.facilitiesPic"
+                :file-list="formData.facilitiesPic"
+                :limit="20"
+                show-type="list"
+                :accepts="['.jpg', '.png']"
               />
-              </uni-forms-item>
-            </uni-col>
+            </uni-forms-item>
+          </uni-col>
         </uni-row>
       </uni-forms>
 
@@ -305,7 +313,7 @@ import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import dayjs from 'dayjs'
 import { addLandlordFacilitiesApi, updateLandlordFacilitiesApi } from '@/service'
-import { routerBack, getStorage, StorageKey, formatNum,fmtPicUrl } from '@/utils'
+import { routerBack, getStorage, StorageKey, formatNum, fmtPicUrl, setlocationType } from '@/utils'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config'
 import Back from '@/components/Back/Index.vue'
 import UploadFile from '@/components/UploadFile/index.vue'
@@ -337,13 +345,13 @@ onLoad((option: any) => {
   if (option) {
     commonParams.value = JSON.parse(option.commonParams)
     let params = JSON.parse(option.params)
-    formData.value = { ...params,formData:''}
+    formData.value = { ...params, formData: '' }
     console.log(formData.value, 'params')
     currentDate.value = getDate()
     if (commonParams.value.type === 'edit') {
       title.value = '农村小型专项及农副业设施信息编辑'
     } else if (commonParams.value.type === 'add') {
-      console.log(commonParams.value.doorNo,'测试户号数据')
+      console.log(commonParams.value.doorNo, '测试户号数据')
       title.value = '添加农村小型专项及农副业设施'
     }
   }
@@ -366,11 +374,13 @@ const inputBlur = () => {
 const bindDateChange = (e: any) => {
   formData.value.completedTime = e.detail.value
 }
-
+let change = (e: any) => {
+  formData.value.inundationRang = setlocationType(e)
+}
 // 表单提交
 const submit = () => {
   const { type, uid, doorNo } = commonParams.value
-  const params = {  
+  const params = {
     doorNo,
     ...formData.value,
     number: formData.value.number ? Number(formData.value.number) : null,
@@ -383,8 +393,8 @@ const submit = () => {
     workersNum: formData.value.workersNum ? Number(formData.value.workersNum) : null,
     completedTime: formData.value.completedTime ? dayjs(formData.value.completedTime) : null,
     facilitiesPic: fmtPicUrl(formData.value.facilitiesPic),
-    facilitiesCode: 'SS' + commonParams.value.doorNo.replace("JT", "")+ formData.value.suffixNo,
-    suffixNo:formData.value.suffixNo
+    facilitiesCode: 'SS' + commonParams.value.doorNo.replace('JT', '') + formData.value.suffixNo,
+    suffixNo: formData.value.suffixNo
   }
   if (!formData.value.facilitiesName) {
     showToast('请输入设备名称')
@@ -392,10 +402,10 @@ const submit = () => {
   } else if (!formData.value.facilitiesType) {
     showToast('请输入设施类别')
     return
-  }else if (!formData.value.suffixNo) {
+  } else if (!formData.value.suffixNo) {
     showToast('设施（设备）编码不全')
     return
-  }else if (!formData.value.number) {
+  } else if (!formData.value.number) {
     showToast('请输入数量')
     return
   } else if (!formData.value.unit) {
