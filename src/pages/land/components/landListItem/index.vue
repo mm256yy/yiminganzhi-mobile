@@ -130,6 +130,7 @@ const getUidFromAPi = async () => {
     let result = await getLandlordListBySearchApi({
       doorNo: props.data.doorNo
     })
+    console.log(result, 'result')
     const routeName = 'landEvaIndex'
     const obj = {
       type: 'land',

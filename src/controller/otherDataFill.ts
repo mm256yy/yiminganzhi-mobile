@@ -26,7 +26,8 @@ class FeedbackDto extends Common {
         data.createdDate = createdDate
         data.status = '0'
         const list = await OtherController.getOtherWithType(OtherDataType.FeedbackDtoList)
-        list.push(data)
+        // list.push(data)
+        list.unshift(data)
         const values = `content='${JSON.stringify(list)}',updatedDate='${getCurrentTimeStamp()}'`
         const res = await this.db.updateTableData(
           OtherTableName,

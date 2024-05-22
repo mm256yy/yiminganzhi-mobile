@@ -322,6 +322,14 @@ export const filterViewDoorNoWithBeforeOther = (doorNo: string) => {
   return `${doorNo[5]}${doorNo[7]}${doorNo[8]}${doorNo[10]}${doorNo[11]}`
 }
 
+// // 显示showDoorNo 公共方法
+// export const filterViewShowDoorNoWithBeforeOther = (doorNo: string) => {
+//   if (!doorNo) {
+//     return ''
+//   }
+//   return `${doorNo[5]}${doorNo[7]}${doorNo[8]}${doorNo[10]}${doorNo[11]}`
+// }
+
 // 显示doorNo
 export const filterViewDoorNo = (data: any): string => {
   const { doorNo, type } = data || {}

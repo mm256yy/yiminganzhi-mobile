@@ -144,7 +144,7 @@ export class landEstimateDtoListFills extends Common {
             }
           })
         } else {
-          if (data.doorNo && data.doorNo.length != 9) {
+          if (data.doorNo && data.doorNo.length != 11) {
             reject('户号校验失败')
             console.log('户号校验失败')
             return

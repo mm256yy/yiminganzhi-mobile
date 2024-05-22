@@ -309,10 +309,10 @@ const submit = () => {
     doorNo,
     ...formData.value,
     facilitiesCode: 'SS' + commonParams.value.doorNo.replace("JT", "")+ formData.value.suffixNo,
-    suffixNo:formData.value.suffixNo
+    suffixNo:formData.value.suffixNo==undefined?'':formData.value.suffixNo
   }
-
-  if (!formData.value.suffixNo) {
+  console.log(params,'传输的是什么')
+  if (!formData.value.suffixNo&&type=='add') {
     showToast('设施（设备）编码不全')
     return
   } else if (!formData.value.facilitiesType) {

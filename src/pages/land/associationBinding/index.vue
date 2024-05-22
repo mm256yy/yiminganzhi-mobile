@@ -120,13 +120,13 @@
               label-align="right"
               name="formData.doorNo"
             >
-              <view :class="['input-wrapper', isFocus ? 'focus' : '']">
+              <view :class="['code-wrapper', focusIndex === 1 ? 'focus' : '']">
                 <view class="pre-txt" style="padding-left: 8rpx">
                   {{ suffixNo() }}
                 </view>
                 <input
                   class="input-txt"
-                  placeholder="请输入"
+                  placeholder="请输入四位数"
                   type="number"
                   :maxlength="4"
                   v-model="formData.doorNo"
@@ -197,6 +197,7 @@ import { compatibleOldSystems } from '@/pages/common/config'
 import { showToast } from '@/config/msg'
 import { getLandlordListBySearchApi } from '@/service'
 import SearchList from '../components/searchList/index.vue'
+import { filterViewDoorNoWithBeforeOther } from '@/utils'
 
 const formData = ref<any>({
   id: '', // 户名
@@ -228,6 +229,7 @@ const showSearch = ref<boolean>(false)
 const doorNoList = ref<any[]>([])
 let oldDoorNo = ref([])
 const topDoorNo = ref<string>('') // 顶部户名
+const focusIndex = ref<number>(-1)
 
 onLoad((option) => {
   if (option && option.params) {
@@ -247,11 +249,10 @@ onLoad((option) => {
 })
 
 const suffixNo = () => {
-  return compatibleOldSystems()
-    ? `ZD${formData.value.otherCode}`
-    : `ZD${filterViewDoorNoWithBefore(formData.value.villageCode)}`
+  return formData.value.villageCode
+    ? 'ZD' + filterViewDoorNoWithBeforeOther(formData.value.villageCode)
+    : ''
 }
-
 const resetOwnersName = () => {
   formData.value.name = ''
 }
@@ -277,7 +278,7 @@ const submit = async () => {
       return
     } else {
       if (formData.value.doorNo?.length < 4) {
-        showToast('户号后缀必须为4位')
+        showToast('请输入只征地不搬迁编号后四位数字')
         return
       }
     }
@@ -386,19 +387,28 @@ const close = () => {
   showSearch.value = false
 }
 
+// // 输入框获得焦点
+// const inputFocus = () => {
+//   isFocus.value = true
+// }
+
+// // 输入框失去焦点
+// const inputBlur = () => {
+//   isFocus.value = false
+// }
+
 // 输入框获得焦点
-const inputFocus = () => {
-  isFocus.value = true
+const inputFocus = (index: number) => {
+  focusIndex.value = index
 }
 
 // 输入框失去焦点
 const inputBlur = () => {
-  isFocus.value = false
+  focusIndex.value = -1
 }
-
 const getUidFromAPi = async () => {
   const requestParams = {
-    doorNo: checkSelected.value ? `jl${suffixNo()}${formData.value.doorNo}` : topDoorNo.value
+    doorNo: checkSelected.value ? `${suffixNo()}${formData.value.doorNo}` : topDoorNo.value
   }
   try {
     let result = await getLandlordListBySearchApi(requestParams)
@@ -600,5 +610,42 @@ onMounted(() => {
       }
     }
   }
+  .code-wrapper {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 200rpx;
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+
+        &.focus {
+          border-color: rgb(41, 121, 255);
+        }
+
+        .pre-txt {
+          width: 104rpx;
+          height: 35px;
+          padding-left: 7rpx;
+          font-size: 9rpx;
+          line-height: 35px;
+          color: #171718;
+          background-color: #f5f7fa;
+          border-right: 1px solid #d9d9d9;
+        }
+
+        .input-txt {
+          width: 84rpx;
+          height: 35px;
+          padding-left: 11rpx;
+          font-size: 9rpx;
+          line-height: 35px;
+          color: #171718;
+
+          &.disabled {
+            width: 200rpx;
+            background-color: #f5f7fa;
+          }
+        }
+      }
 }
 </style>

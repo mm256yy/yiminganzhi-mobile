@@ -62,7 +62,7 @@
             <view v-if="item.isVerify === '1' || item.isVerify == null">{{ item.remark }}</view>
           </uni-td>
           <uni-td class="u-td">
-            <view style="display: flex; align-items: center; justify-content: center">
+            <view style="display: flex; align-items: center; justify-content: center" v-if="item.name != '奖励费小计'">
               <!-- v-if="item.isVerify !== '1' && item.unit" -->
               <view size="mini" @click="onSave(item, '0')">编辑 </view>
               <view

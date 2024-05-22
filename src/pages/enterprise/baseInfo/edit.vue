@@ -1109,8 +1109,7 @@ const submit = () => {
       doorNo.value
         ? doorNo.value
         : formData.value.villageCode
-        ? 'QY' +
-          filterViewDoorNoWithBeforeOther(formData.value.villageCode) +
+        ? 'QY' + formData.value.villageCode +
           formData.value.suffixNo
         : '',
     areaCode: formData.value.areaCode,
@@ -1123,7 +1122,9 @@ const submit = () => {
     householderName: formData.value.householderName,
     longitude: formData.value.longitude,
     latitude: formData.value.latitude,
-    suffixNo: formData.value.suffixNo
+    suffixNo: formData.value.suffixNo,
+    showDoorNo: 'QY' + filterViewDoorNoWithBeforeOther(formData.value.villageCode)+formData.value.suffixNo
+
   }
 
   let company: any = {
@@ -1132,8 +1133,7 @@ const submit = () => {
       doorNo.value
         ? doorNo.value
         : formData.value.villageCode
-        ? 'QY' +
-          filterViewDoorNoWithBeforeOther(formData.value.villageCode) +
+        ? 'QY' + formData.value.villageCode +
           formData.value.suffixNo
         : '',
     legalPersonName: formData.value.legalPersonName,
@@ -1189,7 +1189,9 @@ const submit = () => {
     otherPic: formData.value.otherPic,
     householderDoorNo: formData.value.householderDoorNo,
     type: formData.value.type,
-    suffixNo: formData.value.suffixNo
+    suffixNo: formData.value.suffixNo,
+    showDoorNo: 'QY' + filterViewDoorNoWithBeforeOther(formData.value.villageCode)+formData.value.suffixNo
+
   }
   formData.value.suffixNo==undefined?formData.value.suffixNo='':formData.value.suffixNo 
   if (!formData.value.name) {

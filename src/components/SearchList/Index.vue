@@ -41,9 +41,11 @@
           <view class="left">
             <view class="label">{{ item.label }}</view>
             <view class="value">{{ item.value.substring(2) }}</view>
-            <view class="value">{{ item.areaCodeText }}</view>
-            <view class="value">{{ item.townCodeText }}</view>
-            <view class="value">{{ item.villageCodeText }}</view>
+            <view style="margin-left: 10px;display: flex;">
+              <view class="values">{{ item.areaCodeText }}</view>
+              <view class="values">{{ item.townCodeText }}</view>
+              <view class="values">{{ item.villageCodeText }}</view>
+            </view>
           </view>
           <view class="right">
             <image
@@ -350,10 +352,12 @@ const confirmSelect = () => {
           .value {
             font-size: 10rpx;
             color: #171718;
+            margin-left: 10rpx;
           }
 
-          .value {
-            margin-left: 10rpx;
+          .values {
+            font-size: 10rpx;
+            color: #171718;
           }
         }
 

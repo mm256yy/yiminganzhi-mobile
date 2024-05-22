@@ -849,8 +849,7 @@ const submit = () => {
       doorNo.value
         ? doorNo.value
         : formData.value.suffixNo
-        ? 'GT' +
-          filterViewDoorNoWithBeforeOther(formData.value.villageCode) +
+        ? 'GT' +formData.value.villageCode +
           formData.value.suffixNo
         : '',
     // doorNo: formData.value.doorNo,
@@ -864,7 +863,9 @@ const submit = () => {
     householderName: formData.value.householderName,
     longitude: formData.value.longitude,
     latitude: formData.value.latitude,
-    suffixNo: formData.value.suffixNo
+    suffixNo: formData.value.suffixNo,
+    showDoorNo: 'GT' + filterViewDoorNoWithBeforeOther(formData.value.villageCode)+formData.value.suffixNo
+
   }
 
   let company: any = {
@@ -872,8 +873,7 @@ const submit = () => {
       doorNo.value
         ? doorNo.value
         : formData.value.suffixNo
-        ? 'GT' +
-          filterViewDoorNoWithBeforeOther(formData.value.villageCode) +
+        ? 'GT' + formData.value.villageCode +
           formData.value.suffixNo
         : '',
     // doorNo: formData.value.doorNo,
@@ -914,7 +914,8 @@ const submit = () => {
     licensePic: fmtPicUrl(formData.value.licensePic),
     otherPic: fmtPicUrl(formData.value.otherPic),
     householderDoorNo: formData.value.householderDoorNo,
-    suffixNo: formData.value.suffixNo
+    suffixNo: formData.value.suffixNo,
+    showDoorNo: 'GT' + filterViewDoorNoWithBeforeOther(formData.value.villageCode)+formData.value.suffixNo
   }
   formData.value.suffixNo==undefined?formData.value.suffixNo='':formData.value.suffixNo 
   console.log(formData.value.suffixNo,'四位数')

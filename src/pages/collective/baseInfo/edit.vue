@@ -246,12 +246,12 @@ const submit = () => {
       doorNo.value
         ? doorNo.value
         : formData.value.suffixNo
-        ? 'JT' +
-          filterViewDoorNoWithBeforeOther(formData.value.villageCode) +
+        ? 'JT' + formData.value.villageCode +
           formData.value.suffixNo
         : '',
     type: MainType.Village,
-    suffixNo: formData.value.suffixNo
+    suffixNo: formData.value.suffixNo,
+    showDoorNo: 'JT' + filterViewDoorNoWithBeforeOther(formData.value.villageCode)+formData.value.suffixNo
   }
   console.log(params,'传输的是什么？')
   if (!formData.value.name) {

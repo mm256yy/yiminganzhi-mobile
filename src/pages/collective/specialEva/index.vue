@@ -128,9 +128,10 @@ const currentItem = ref<any>({})
 const deleteReason = ref<string>('') // 删除原因
 
 const toLink = (type: string, itemUid?: any) => {
+  console.log(props.dataInfo,'数据是什么！')
   const { uid, doorNo } = props.dataInfo
   if (type === 'edit') {
-    let params = { type, uid, doorNo, itemUid }
+    let params = { type, uid, doorNo, itemUid}
     routerForward('specialEvaEdit', {
       params: JSON.stringify(params)
     })

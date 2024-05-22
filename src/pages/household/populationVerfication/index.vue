@@ -126,11 +126,11 @@
     <uni-popup :show="true" type="center" ref="alertDialog">
       <!-- 提示框主体 -->
       <view class="popup-container">
-        <text style=" font-size: 9rpx;line-height:11rpx;color:rgba(23, 23, 24, 1);text-align: center;">确认删除？</text>
+        <text style=" font-size: 12rpx;line-height:11rpx;color:rgba(23, 23, 24, 1);text-align: center;font-weight: border">确认删除？</text>
         <!-- 下拉框 -->
         <uni-data-select v-model="reason" :localdata="dict[367]" />
         <view class="btn-group">
-          <button @click="dialogConfirm">确认</button>
+          <button @click="dialogConfirm" style="color:#fff;">确认</button>
           <button @click="dialogClose" style="color:#fff;">取消</button>
         </view>
       </view>
@@ -387,16 +387,15 @@ const dialogClose = () => {
     }
   }
   .popup-container {
-  padding: 20px;
+  padding: 10px;
   box-sizing: border-box;
   background-color: white;
-  border-radius: 15%;
-  width:200%
-}
- 
+  border-radius: 2%;
+  width:150%
+  }
 .btn-group {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-top: 20px;
 }
  
