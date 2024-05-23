@@ -92,7 +92,9 @@
             </view>
             <view
               class="file-items"
-              v-if="!dataInfo.reportStatus || dataInfo.reportStatus === 'UnReport' || type=='survey'"
+              v-if="
+                !dataInfo.reportStatus || dataInfo.reportStatus === 'UnReport' || type == 'survey'
+              "
               @click="reportDataCheck"
             >
               <image class="icon" src="@/static/images/icon_report.png" mode="scaleToFill" />
@@ -187,10 +189,10 @@ import { getLandlordListBySearchApi } from '@/service'
 import { routerForward } from '@/utils'
 import { ref } from 'vue'
 const projectInfo = getStorage(StorageKey.PROJECTINFO)
-const type=ref<any>()
-type.value = projectInfo.status
-  // survey 采集 review 复核
-console.log(type.value,'当前阶段是什么？')
+const type = ref<any>()
+type.value = projectInfo?.status
+// survey 采集 review 复核
+console.log(type.value, '当前阶段是什么？')
 const YanYuprintPdf = uni.requireNativePlugin('YanYu-PrintPDF')
 
 interface PrintListType {
@@ -392,7 +394,7 @@ export default {
         isCheck: true,
         type: this.type as MainType
       }
-      console.log(query,'传输的是什么？')
+      console.log(query, '传输的是什么？')
       reportDataApi(query)
         .then((res: any) => {
           if (res) {
