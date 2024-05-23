@@ -78,6 +78,7 @@ export class ImpLandlord extends Common {
     } = landlordItem.immigrantFilling
     // 判断初始化
     landlordItem.immigrantFilling = { ...defaultFillingObj, ...immigrantFilling }
+    const roles: RoleCodeType = getStorage(StorageKey.FULLUSERINFO)
 
     // 居民户信息填报完成
     if (this.isNotNullPic(landlordItem.householdPic)) {
@@ -85,7 +86,7 @@ export class ImpLandlord extends Common {
     } else {
       landlordItem.immigrantFilling.householdPicStatus = '0'
     }
-    console.log(role, '測試角色')
+    console.log(roles, '測試角色')
     // 资产评估 - 填报状态 为报告上传完成
     if (role === RoleCodeType.assessor) {
       // 资产评估-房屋
@@ -383,7 +384,7 @@ export class ImpLandlord extends Common {
       landlordItem.immigrantFilling.excessSoarStatus = '0'
     }
 
-        // 腾空过渡 总状态 （企业和个体工商户）
+    // 腾空过渡 总状态 （企业和个体工商户）
     if (
       landlordItem.immigrantFilling.houseSoarStatus === '1' &&
       landlordItem.immigrantFilling.landSoarStatus === '1' &&
@@ -394,11 +395,8 @@ export class ImpLandlord extends Common {
       landlordItem.immigrantFilling.excessSoarStatus = '0'
     }
 
-        // 腾空过渡 总状态 （村集体）
-    if (
-      landlordItem.immigrantFilling.houseSoarStatus === '1' &&
-      type === MainType.Village
-    ) {
+    // 腾空过渡 总状态 （村集体）
+    if (landlordItem.immigrantFilling.houseSoarStatus === '1' && type === MainType.Village) {
       landlordItem.immigrantFilling.excessSoarStatus = '1'
     } else {
       landlordItem.immigrantFilling.excessSoarStatus = '0'
@@ -623,6 +621,7 @@ export class ImpLandlord extends Common {
         const graveList = await GraveController.getImpListWithLandlord(res.type, res.doorNo)
         if (res && res.uid) {
           // 赋值坟墓信息
+          res.immigrantConfirmReportList = res.immigrantConfirmReportList || []
           res.immigrantGraveList = graveList || []
           console.log('res坟墓信息', res.immigrantGraveList)
           // if (this.isArrayAndNotNull(res.demographicList)) {
@@ -1051,6 +1050,56 @@ export class ImpLandlord extends Common {
       } catch (error) {
         console.log(error, 'getLandlordListBySearch-error')
         reject([])
+      }
+    })
+  }
+  // 调查对象-修改确认图片信息
+  updatepic(data: any): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!data || !data.fuid || !data.type) {
+          reject(false)
+          console.log('核心字段缺失')
+          return
+        }
+        const landlord = await this.getLandlordByUidNoFilter(data.fuid)
+        const role: any = getStorage(StorageKey.FULLUSERINFO)
+
+        if (landlord) {
+          const newData = { ...landlord }
+          const nolist = {
+            doorNo: landlord.doorNo,
+            uid: guid(),
+            projectId: role.projectUsers[0].projectId,
+            status: 'implementation',
+            createdBy: role.userName,
+            createdDate: new Date().toISOString,
+            ...data
+          }
+          console.log(nolist, '更新了')
+
+          // 更新了
+          let list = []
+          list = newData.immigrantConfirmReportList.filter((item: any) => {
+            return item.type !== data.type
+          })
+          list.push(nolist)
+          newData.immigrantConfirmReportList = list
+          const values = getLandlordSqlValues(newData)
+          const sql = `update ${LandlordTableName} set ${values} where uid = '${newData.uid}'`
+          const res = await this.db.execteSql([sql])
+          if (res && res.code) {
+            reject(false)
+            return
+          }
+          resolve(true)
+        } else {
+          reject(false)
+          console.log('调查对象信息查询失败')
+        }
+      } catch (error) {
+        console.log(error, 'updateBaseLandlord-error')
+        reject(false)
       }
     })
   }

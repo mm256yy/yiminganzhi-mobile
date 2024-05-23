@@ -34,8 +34,11 @@
               <view class="icon-box">
                 <view v-if="item.isComplete === '0'" class="disabled" />
                 <image
-v-if="item.isComplete === '1'" class="icon" src="@/static/images/icon_finished.png"
-                  mode="scaleToFill" />
+                  v-if="item.isComplete === '1'"
+                  class="icon"
+                  src="@/static/images/icon_finished.png"
+                  mode="scaleToFill"
+                />
                 <view v-if="item.isComplete === '2'" class="hollow" />
               </view>
               <view v-if="item.isComplete === '0' && item.type !== '9'" class="line disabled" />
@@ -51,11 +54,17 @@ v-if="item.isComplete === '1'" class="icon" src="@/static/images/icon_finished.p
                     打印
                   </view>
                   <view
-v-if="item.type !== '1' && item.isComplete !== '1'"
-                    :class="['mini-btn', item.isComplete === '0' ? 'disabled' : '']" @click="onFill(item)">
+                    v-if="item.type !== '1' && item.isComplete !== '1'"
+                    :class="['mini-btn', item.isComplete === '0' ? 'disabled' : '']"
+                    @click="onFill(item)"
+                  >
                     填写
                   </view>
-                  <view v-if="item.type !== '1' && item.isComplete === '1'" class="mini-btn" @click="onFill(item)">
+                  <view
+                    v-if="item.type !== '1' && item.isComplete === '1'"
+                    class="mini-btn"
+                    @click="onFill(item)"
+                  >
                     查看
                   </view>
                 </view>

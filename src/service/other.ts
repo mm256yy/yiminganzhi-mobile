@@ -13,7 +13,8 @@ import {
   PrintController,
   ImageController,
   FeedbackDtoListController,
-  landEstimateDtoListFill
+  landEstimateDtoListFill,
+  ImpLandlordController
 } from '@/controller'
 import { OtherDataType } from '@/database'
 import { MainType, PrintType } from '@/types/common'
@@ -181,4 +182,7 @@ export const getOtherWithTypeSetApi = (data: any) => {
 // 获取果木树
 export const gettreeConfigDtoListApi = () => {
   return OtherController.getOtherWithType(OtherDataType.treeConfigDtoList)
+}
+export const updatepic = (data: any) => {
+  return ImpLandlordController.updatepic(data)
 }

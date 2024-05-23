@@ -39,7 +39,7 @@
           : '户主名称'
       }}{{ baseInfo.showDoorNo }}，属坝址周边村移民，青苗评估共有{{
         baseInfo.assetAppendantReportDto.landNum
-      }}个地块，面积{{ (baseInfo.assetAppendantReportDto.landArea / 666.67).toFixed(2) }}亩，株数{{
+      }}个地块，面积{{ baseInfo.assetAppendantReportDto.landArea }}㎡，株数{{
         baseInfo.assetAppendantReportDto.znum
       }}株，金额{{ baseInfo.assetAppendantReportDto.amount }}元。
     </view>

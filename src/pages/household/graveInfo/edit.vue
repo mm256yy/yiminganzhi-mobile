@@ -264,7 +264,7 @@ const submit = () => {
   } else if (!formData.value.graveAutoNo) {
     showToast('请输入坟墓编号')
     return
-  } else if (leftDoor.value.length < 15) {
+  } else if (leftDoor.value.length < 15 && commonParams.value.type === 'add') {
     uni.showToast({
       title: '该户所在行政村没有坟墓村集体，请联系信息管理员新增移民村村集体',
       icon: 'none'
@@ -277,7 +277,10 @@ const submit = () => {
     const { uid, villageCode } = commonParams.value
     let params = {
       ...formData.value,
-      graveAutoNo: leftDoor.value + formData.value.graveAutoNo
+      graveAutoNo:
+        commonParams.value.type === 'add'
+          ? leftDoor.value + formData.value.graveAutoNo
+          : formData.value.graveAutoNo
     }
     let itemData = collectiveList.value?.find(
       (item: any) => item.villageCode === villageCode && item.villageType == 'grave'

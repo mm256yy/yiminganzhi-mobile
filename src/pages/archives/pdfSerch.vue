@@ -807,9 +807,11 @@ import {
   getLandlordItemApi,
   getChooseConfigApi,
   getResettleDetail,
-  getHouseConfigApi
+  getHouseConfigApi,
+  batchUploadImgApi,
+  updatepic
 } from '@/service'
-import { apartmentArea, resettleArea } from '@/config'
+import { apartmentArea, resettleArea, imageUrlAndBase64Map } from '@/config'
 import { OtherDataType } from '@/database'
 import dayjs from 'dayjs'
 import { resettleHouseType, apartmentAreaSize, homesteadAreaSize } from '@/config'
@@ -833,12 +835,24 @@ export default {
       landNoList: [],
       storeroomNoList: [],
       carNoList: [],
-      roomNoList:[],
+      roomNoList: [],
       dictOption,
       show: false,
       OtherDataType,
       dataLists: [],
-      homesteadAreaSize
+      homesteadAreaSize,
+      confing: [
+        { value: 'household_placement_demographic', id: 1 },
+        { value: 'household_placement_settleAddress', id: 4 },
+        { value: 'household_placement_grave', id: 5 },
+        { value: 'household_address_house', id: 2 },
+        { value: 'household_address_grave', id: 6 },
+        { value: 'household_empty_house', id: 7 },
+        { value: 'household_empty_land', id: 8 },
+        { value: 'household_move_selfhouse', id: 3 }
+      ],
+      imageUrlAndBase64Map,
+      urls: ''
     }
   },
   onLoad(option) {
@@ -861,6 +875,46 @@ export default {
     if (option.show) {
       this.show = true
     }
+    if (this.baseInfo.immigrantConfirmReportList.length > 0) {
+      let nevurl = this.baseInfo.immigrantConfirmReportList.filter(
+        (item) => item.type == this.confing.filter((item) => item.id == this.id)[0].value
+      )
+      if (nevurl.length > 0 && imageUrlAndBase64Map[JSON.parse(nevurl[0].signFile)[0].url]) {
+        console.log(JSON.parse(nevurl[0].signFile)[0].path, '直接进入')
+        this.saveImage(JSON.parse(nevurl[0].signFile)[0].path)
+      } else if (nevurl.length > 0) {
+        console.log(JSON.parse(nevurl[0].signFile)[0].url, '下载打印')
+
+        JSON.parse(nevurl[0].signFile)[0].url
+        uni.downloadFile({
+          url: JSON.parse(nevurl[0].signFile)[0].url, //下载地址接口返回
+          timeout: 10000,
+          success: (data) => {
+            console.log(data)
+            if (data.statusCode == 200) {
+              uni.showLoading({
+                title: '导出中'
+              })
+              this.saveImage(data.tempFilePath)
+            } else {
+              uni.showToast({
+                title: '下载失败,请返回上一页，重新进入',
+                icon: 'none'
+              })
+            }
+          },
+          fail: (err) => {
+            console.log(err)
+            uni.showToast({
+              icon: 'none',
+              mask: true,
+              title: '失败请重新下载'
+            })
+          }
+        })
+      }
+      console.log(this.urls)
+    }
   },
   onShow() {
     let that = this
@@ -880,7 +934,7 @@ export default {
     })
   },
   methods: {
-    savePDF(base64) {
+    async savePDF(base64) {
       uni.showLoading({
         title: '导出中'
       })
@@ -901,15 +955,43 @@ export default {
       // 		}
       // 	});
       // })
-      base64ToPath(base64)
-        .then((path) => {
-          console.log(path, 'path')
-          this.saveImage(path)
-        })
-        .catch((error) => {
-          console.error('临时路径转换出错了：', error)
-          uni.hideLoading()
-        })
+      // console.error(base64, 'base64')
+      let path = await base64ToPath(base64)
+      try {
+        if (this.path) {
+          let res = await batchUploadImgApi([path])
+          console.log(res, '格式处理')
+          if (res && res.length) {
+            const files = res.map((item) => {
+              const name = item.path?.split('/').pop() || ''
+              imageUrlAndBase64Map[item.url] = {
+                base64: '',
+                path: item.path || ''
+              }
+              return {
+                base64: '',
+                path: item.path || '',
+                name,
+                url: item.url || ''
+              }
+            })
+
+            console.log(files, '格式处理')
+
+            await updatepic({
+              signFile: JSON.stringify(files),
+              type: this.confing.filter((item) => item.id == this.id)[0].value,
+              fuid: this.baseInfo.uid
+            })
+          }
+        }
+      } catch (error) {
+        console.log(error, '错误')
+        reject(false)
+      }
+
+      console.log(path, 'path')
+      this.saveImage(path)
     },
     handleClick() {
       routerForward('pdfqianm', { uid: this.uid })
@@ -994,7 +1076,7 @@ export default {
       })
     },
     // 获取  幢号-房号 选项列表
-    getHouseConfig(){
+    getHouseConfig() {
       getHouseConfigApi().then((res) => {
         let arr = []
         if (res && res.length) {
@@ -1277,15 +1359,15 @@ export default {
         width: 25%; // 因为我的一行分了五个，所以是20%
         // 下面设置每个格子边框，右下
       }
-       td:nth-child(2) {
+      td:nth-child(2) {
         width: 40%; // 因为我的一行分了五个，所以是20%
         // 下面设置每个格子边框，右下
       }
-         td:nth-child(3) {
+      td:nth-child(3) {
         width: 15%; // 因为我的一行分了五个，所以是20%
         // 下面设置每个格子边框，右下
       }
-         td:nth-child(4) {
+      td:nth-child(4) {
         width: 20%; // 因为我的一行分了五个，所以是20%
         // 下面设置每个格子边框，右下
       }
