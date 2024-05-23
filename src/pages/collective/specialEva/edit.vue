@@ -265,6 +265,14 @@ const getLandlordDetail = () => {
     if (arr && arr.length) {
       let obj: any = arr.filter((item: any) => item.uid === itemUid)[0]
       formData.value = { ...obj }
+      // formData.value.suffixNo=formData.value.suffixNo
+      // immigrantFacilitiesList
+      console.log(formData.value, '编辑传过来的数据1')
+      let suffixNo ='suffixNo'
+      if (!(suffixNo in formData.value)) {
+          formData.value[suffixNo]=formData.value.facilitiesCode.slice(-4)
+        }
+      console.log(formData.value, '编辑传过来的数据2')
     }
   })
 }
@@ -337,6 +345,8 @@ const submit = () => {
           showToast(ERROR_MSG)
         })
     } else if (type === 'edit') {
+      // params.suffixNo == '' ? params.facilitiesCode.slice(-4) : params.suffixNo
+      // console.log(params.facilitiesCode.slice(-4))
       updateImpLandlordFacilitiesApi(uid, params)
         .then((res) => {
           if (res) {
