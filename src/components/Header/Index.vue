@@ -189,10 +189,8 @@ import { getLandlordListBySearchApi } from '@/service'
 import { routerForward } from '@/utils'
 import { ref } from 'vue'
 const projectInfo = getStorage(StorageKey.PROJECTINFO)
-const type = ref<any>()
-type.value = projectInfo?.status
 // survey 采集 review 复核
-console.log(type.value, '当前阶段是什么？')
+// console.log(type.value, '当前阶段是什么？')
 const YanYuprintPdf = uni.requireNativePlugin('YanYu-PrintPDF')
 
 interface PrintListType {
@@ -220,7 +218,7 @@ export default {
       options: {}, // 打印配置
       pdfFileCache: {}, // 生成的pdf缓存
       actionType: 'preview', // 操作类型 预览/打印
-      currentPdfItem: null
+      currentPdfItem: null,
     } as DataType
   },
   props: {
@@ -261,6 +259,9 @@ export default {
           return 9
           break
       }
+    },
+    type: function () {
+      return projectInfo?.status
     },
     fillNumber: function () {
       const {
