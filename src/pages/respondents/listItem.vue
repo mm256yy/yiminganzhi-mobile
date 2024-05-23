@@ -9,7 +9,7 @@
       <view class="head-rt">
         <view class="status" :class="[props.data.reportStatus === 'ReportSucceed' ? 'success' : '']"
           ><text class="circle" />{{
-            props.data.reportStatus === 'ReportSucceed' ? '已填报' : '未填报'
+            props.data.reportStatus === 'ReportSucceed' ? '已填报1' : '未填报2'
           }}</view
         >
         <view class="edit-box" @click.stop="deleteItem">

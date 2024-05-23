@@ -142,6 +142,7 @@ export interface SimulateImmigrantSettleType {
   preorderAmount: number
   compensationAmount: number
   differenceAmount: number
+  nursingHome:any
 }
 
 // 模拟安置 生产安置

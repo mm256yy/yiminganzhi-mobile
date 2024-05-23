@@ -327,6 +327,25 @@ const getLandlordDetail = () => {
     if (arr && arr.length) {
       let obj: any = arr.filter((item: any) => item.uid === itemUid)[0]
       formData.value = { ...obj }
+      console.log(formData.value, '编辑的数据是什么')
+      cfNoList.value.forEach((item:any) => {
+      if (item.houseNo == formData.value.houseNo) {
+        console.log('否')
+        fixedPriceOptions.value=[  {
+        text: '否',
+        value: '0'
+      }]
+        }    
+      })
+          cfIsList.value.forEach((item:any) => {
+      if (item == formData.value.houseNo) {
+        console.log('是')
+        fixedPriceOptions.value=[  {
+        text: '是',
+        value: '1'
+      }]
+        }
+    })
     }
   })
 }
@@ -369,26 +388,9 @@ onLoad((option: any) => {
     //   }
       // })
       getLandlordDetail()
-      console.log(cfNoList.value, '测试没有否的数据')
+      console.log(cfNoList.value, '测试否的数据')
+      console.log(cfIsList.value,'测试是的数据')
       console.log(formData.value,'幢号是什么')
-    cfNoList.value.forEach((item:any) => {
-      if (item.houseNo == formData.value.houseNo) {
-        console.log('否')
-        fixedPriceOptions.value=[  {
-        text: '否',
-        value: '0'
-      }]
-      } else {
-        fixedPriceOptions.value=[  {
-        text: '是',
-        value: '1'
-      },
-      {
-        text: '否',
-        value: '0'
-      }]
-      }
-    })
       let falg = cfNoList.value.some((item:any) => item.isBuyItNow == 1)
       console.log(falg,'判断是否存在是的数据')
       if (falg) {

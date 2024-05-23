@@ -257,7 +257,8 @@ const onImportData = () => {
     typeFourNum,
     settleAddress,
     doorNo,
-    areaType
+    areaType,
+    nursingHome
   } = mockImmigrantSettle.value
   if (houseAreaType) {
     const data = {
@@ -268,7 +269,8 @@ const onImportData = () => {
       typeFourNum,
       settleAddress,
       doorNo,
-      areaType
+      areaType,
+      nursingHome
     }
     houseType.value = houseAreaType as HouseAreaType
     immigrantSettleSubmit(data as Partial<ImmigrantSettleType>)

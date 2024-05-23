@@ -33,7 +33,6 @@ import dayjs from 'dayjs'
 import { imageUrlAndBase64Map } from '@/config'
 import { pathToBase64 } from 'image-tools'
 import { GraveController } from './grave'
-
 export class Landlord extends Common {
   public format: string
   constructor() {
@@ -237,7 +236,9 @@ export class Landlord extends Common {
         const uid = guid()
         data.uid = uid
         // 预设字段
-        data.reportStatus = ReportStatusEnum.UnReport
+        const projectInfo = getStorage(StorageKey.PROJECTINFO)
+        // survey 采集 review 复核
+        data.reportStatus = projectInfo.status=='survey'?ReportStatusEnum.UnReport:ReportStatusEnum.ReportSucceed
         data.reportUser = ''
         data.reportDate = ''
         data.company = data.company || {}
@@ -1042,7 +1043,8 @@ export class Landlord extends Common {
           ReportStatusEnum.ReportSucceed
         }',reportDate = '${dayjs().format(this.format)}',reportUser = '${
           realData.reportUser
-        }',content = '${JSON.stringify(realData)}',updatedDate = '${getCurrentTimeStamp()}'`
+          }',content = '${JSON.stringify(realData)}',updatedDate = '${getCurrentTimeStamp()}'`
+        console.log(values,'测试传值？')
         const sql = `update ${LandlordTableName} set ${values} where uid = '${realData.uid}' and isPadDelete = '0'`
         const res = await this.db.execteSql([sql])
         if (res && res.code) {
