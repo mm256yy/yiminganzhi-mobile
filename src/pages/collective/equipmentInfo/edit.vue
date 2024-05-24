@@ -396,6 +396,7 @@ const submit = () => {
     facilitiesCode: 'SS' + commonParams.value.doorNo.replace('JT', '') + formData.value.suffixNo,
     suffixNo: formData.value.suffixNo
   }
+  console.log(params, '测试传输数据')
   if (!formData.value.facilitiesName) {
     showToast('请输入设备名称')
     return
@@ -417,7 +418,7 @@ const submit = () => {
   } else if (!formData.value.inundationRang) {
     showToast('请输入淹没范围')
     return
-  } else if (!formData.value.facilitiesPic) {
+  } else if (formData.value.facilitiesPic.length==2) {
     showToast('请上传设施设备照片')
     return
   }

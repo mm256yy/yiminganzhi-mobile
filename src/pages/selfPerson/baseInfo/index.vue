@@ -443,7 +443,8 @@ const toLink = (type: string) => {
     phone,
     householderName,
     longitude,
-    latitude
+    latitude,
+    suffixNo
   } = props.baseInfo
 
   const { establishDate } = props.dataInfo
@@ -464,7 +465,8 @@ const toLink = (type: string) => {
     licensePic: fmtPicUrl(props.dataInfo.licensePic),
     otherPic: fmtPicUrl(props.dataInfo.otherPic),
     longitude,
-    latitude
+    latitude,
+    suffixNo
   }
 
   routerForward('selfBaseInfoEdit', {

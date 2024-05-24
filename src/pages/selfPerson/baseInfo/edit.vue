@@ -846,8 +846,8 @@ const submit = () => {
     uid: uid.value,
     name: formData.value.name,
     doorNo:
-      doorNo.value
-        ? doorNo.value
+      formData.value.doorNo
+        ? formData.value.doorNo
         : formData.value.suffixNo
         ? 'GT' +formData.value.villageCode +
           formData.value.suffixNo

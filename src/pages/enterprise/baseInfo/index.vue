@@ -237,7 +237,7 @@
       <view class="list-item">
         <view class="list-1">
           <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
-          <view class="title">企业资产信息2</view>
+          <view class="title">企业资产信息</view>
         </view>
         <view class="list-2">
           <uni-row>
@@ -567,7 +567,8 @@ const toLink = (type: string) => {
     householderName,
     longitude,
     latitude,
-    showDoorNo
+    showDoorNo,
+    suffixNo
   } = props.baseInfo
 
   const { establishDate } = props.dataInfo
@@ -588,7 +589,8 @@ const toLink = (type: string) => {
     licensePic: fmtPicUrl(props.dataInfo.licensePic),
     otherPic: fmtPicUrl(props.dataInfo.otherPic),
     longitude,
-    latitude
+    latitude,
+    suffixNo
   }
 
   routerForward('baseInfoEdit', {

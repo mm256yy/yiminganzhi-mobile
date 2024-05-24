@@ -111,6 +111,7 @@ const toLink = (type: string) => {
     latitude: props.dataInfo.latitude,
     villageType: props.dataInfo.villageType, // 村类型
     inundationRange: props.dataInfo.inundationRange,
+    suffixNo: props.dataInfo.suffixNo,
   }
   console.log(props.dataInfo,'dataInfo')
   console.log(params,'传输的参数')

@@ -243,8 +243,8 @@ const submit = () => {
     ...formData.value,
     // doorNo: formData.value.doorNo,
     doorNo:
-      doorNo.value
-        ? doorNo.value
+      formData.value.doorNo
+        ? formData.value.doorNo
         : formData.value.suffixNo
         ? 'JT' + formData.value.villageCode +
           formData.value.suffixNo

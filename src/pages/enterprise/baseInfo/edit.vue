@@ -1106,8 +1106,8 @@ const submit = () => {
     name: formData.value.name,
     // doorNo: formData.value.doorNo,
     doorNo:
-      doorNo.value
-        ? doorNo.value
+      formData.value.doorNo
+        ? formData.value.doorNo
         : formData.value.villageCode
         ? 'QY' + formData.value.villageCode +
           formData.value.suffixNo
@@ -1130,8 +1130,8 @@ const submit = () => {
   let company: any = {
     // doorNo: formData.value.doorNo,
     doorNo:
-      doorNo.value
-        ? doorNo.value
+      formData.value.doorNo
+        ? formData.value.doorNo
         : formData.value.villageCode
         ? 'QY' + formData.value.villageCode +
           formData.value.suffixNo
