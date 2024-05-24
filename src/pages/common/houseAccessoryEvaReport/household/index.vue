@@ -41,9 +41,7 @@
           <td :rowspan="datalist.immigrantHouseReportDto?.houseList.length" v-if="index == 0">{{
             item.name
           }}</td>
-          <td :rowspan="datalist.immigrantHouseReportDto?.houseList.length" v-if="index == 0">{{
-            item.houseNo
-          }}</td>
+          <td>{{ item.houseNo }}</td>
           <td :rowspan="datalist.immigrantHouseReportDto?.houseList.length" v-if="index == 0">{{
             item.villageCodeText
           }}</td>
