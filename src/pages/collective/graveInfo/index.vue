@@ -28,7 +28,7 @@
             <uni-col :span="8">
               <view class="col">
                 <view class="label">户号：</view>
-                <view class="content">{{ formatStr(item.registrantDoorNo.slice(2)) }}</view>
+                <view class="content">{{ formatStr(item.registrantShowDoorNo) }}</view>
               </view>
             </uni-col>
             <uni-col :span="8">
@@ -134,7 +134,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref,watch } from 'vue'
+import { ref, watch } from 'vue'
 import { formatStr, formatDict, routerForward } from '@/utils'
 import { onLoad } from '@dcloudio/uni-app'
 

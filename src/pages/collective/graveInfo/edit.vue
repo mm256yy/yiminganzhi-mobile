@@ -26,7 +26,7 @@
               label-align="right"
               name="formData.registrantDoorNo"
             >
-              <uni-easyinput v-model="doonr" disabled placeholde="请选择" />
+              <uni-easyinput v-model="formData.registrantShowDoorNo" disabled placeholde="请选择" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -291,10 +291,13 @@ const close = () => {
  */
 let doonr = ref('')
 const confirmSelect = (data: any) => {
+  console.log(data)
+
   if (data) {
     formData.value.registrantName = data.label
     formData.value.registrantDoorNo = data.value
     doonr.value = data.value.slice(2)
+    formData.value.registrantShowDoorNo=data.showDoorNo
     formData.value.registrantId = data.id
   }
   close()

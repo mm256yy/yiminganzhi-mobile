@@ -210,7 +210,7 @@ const closeModifyRecords = () => {
  * @param data type 为 edit 时，当前行数据
  */
 const toLink = (type: string, data?: any) => {
-  const { uid, doorNo, name, id, villageCode } = props.dataInfo
+  const { uid, doorNo, name, id, villageCode,showDoorNo } = props.dataInfo
   if (props.dataInfo.immigrantHouseList) {
     let m: any = []
     props.dataInfo.immigrantHouseList.forEach((item: any) => {
@@ -243,6 +243,7 @@ const toLink = (type: string, data?: any) => {
     const params = {
       registrantId: id || '', // 居民户 ID
       registrantDoorNo: doorNo, // 居民户户号
+      registrantShowDoorNo:showDoorNo,
       registrantName: name, // 居民户名称
       villageId: '', // 村集体 ID
       villageDoorNo: '', // 村集体户号

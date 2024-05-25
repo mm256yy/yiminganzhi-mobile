@@ -108,7 +108,8 @@ const getLandlordListBySearch = (name: string, type: any) => {
             checked: item.checked,
             areaCodeText: item.areaCodeText,
             townCodeText: item.townCodeText,
-            villageCodeText: item.villageCodeText
+            villageCodeText: item.villageCodeText,
+            showDoorNo:item.showDoorNo
           })
         })
         dataList.value = [...arr]
