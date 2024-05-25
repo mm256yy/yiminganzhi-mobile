@@ -371,7 +371,7 @@ export class ImpLandlord extends Common {
     } else {
       landlordItem.immigrantFilling.excessStatus = '0'
     }
-
+    console.log(type,'type是什么？')
     // 腾空过渡 总状态 （居民户）
     if (
       landlordItem.immigrantFilling.houseSoarStatus === '1' &&
@@ -379,26 +379,15 @@ export class ImpLandlord extends Common {
       landlordItem.immigrantFilling.excessStatus === '1' &&
       type === MainType.PeasantHousehold
     ) {
+      console.log('腾空过渡 总状态 （居民户）')
       landlordItem.immigrantFilling.excessSoarStatus = '1'
-    } else {
-      landlordItem.immigrantFilling.excessSoarStatus = '0'
-    }
-
-    // 腾空过渡 总状态 （企业和个体工商户）
-    if (
-      landlordItem.immigrantFilling.houseSoarStatus === '1' &&
-      landlordItem.immigrantFilling.landSoarStatus === '1' &&
-      (type === MainType.Company || type === MainType.IndividualHousehold)
-    ) {
+    } else if (landlordItem.immigrantFilling.houseSoarStatus === '1' &&landlordItem.immigrantFilling.landSoarStatus === '1' &&(type === MainType.Company || type === MainType.IndividualHousehold)) {
+      console.log('腾空过渡 总状态 （企业和个体工商户）')
       landlordItem.immigrantFilling.excessSoarStatus = '1'
-    } else {
-      landlordItem.immigrantFilling.excessSoarStatus = '0'
-    }
-
-    // 腾空过渡 总状态 （村集体）
-    if (landlordItem.immigrantFilling.houseSoarStatus === '1' && type === MainType.Village) {
+    } else if (landlordItem.immigrantFilling.houseSoarStatus === '1' && type === MainType.Village) {
+      console.log('腾空过渡 总状态 （村集体）')
       landlordItem.immigrantFilling.excessSoarStatus = '1'
-    } else {
+    }else {
       landlordItem.immigrantFilling.excessSoarStatus = '0'
     }
 
