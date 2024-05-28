@@ -14,7 +14,7 @@ import {
   getCollectiveHouseDefinition
 } from './templates'
 import { ProjectType } from '@/types/common'
-;(pdfMake as any).vfs = pdfFonts.vfs
+import { vfs } from '@/static/js/fontsize'
 ;(pdfMake as any).fonts = {
   // Roboto: {
   //   normal: 'Roboto-Regular.ttf',
@@ -36,6 +36,9 @@ class PrintCore {
 
   constructor() {
     this.pdfMake = pdfMake
+    this.pdfMake.vfs = vfs()
+    this.pdfMake.addVirtualFileSystem(vfs())
+
     this.baseConfig = {
       pageSize: 'A4',
       pageOrientation: 'portrait',
@@ -102,7 +105,7 @@ class PrintCore {
               }
             },
             (err: any) => {
-              reject()
+              reject(err)
             }
           )
       } catch (error) {
@@ -136,10 +139,11 @@ class PrintCore {
         const stringArray: string[] = []
         if (templateIds.includes(1)) {
           const definition = getPeopleInfoDefinition(landlord, projectInfo)
+          console.log(this.pdfMake.vfs, 'pdfFonts.vfs')
 
-          const dataUrl = await this.getBase64(definition).catch(() => {
+          const dataUrl = await this.getBase64(definition).catch((err) => {
             reject('生成居民户基本信息pdf失败')
-            console.error('生成居民户基本信息pdf失败')
+            console.error(err)
             return
           })
           if (dataUrl) {
