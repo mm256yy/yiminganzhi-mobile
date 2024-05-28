@@ -776,6 +776,10 @@ onLoad((option: any) => {
     if (type.value === 'edit') {
       let params = JSON.parse(option.params)
       formData.value = { ...params }
+      let suffixNo ='suffixNo'
+      if (!(suffixNo in formData.value)) {
+          formData.value[suffixNo]=formData.value.doorNo.slice(-4)
+      }
       title.value = '个体工商户基本概况编辑'
       uid.value = option.uid
       console.log(uid.value, '测试传入的uid是什么？')

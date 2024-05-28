@@ -1011,6 +1011,11 @@ onLoad((option: any) => {
       let params = JSON.parse(option.params)
       formData.value = { ...params }
       console.log(formData.value, '测试数据是什么？')
+      let suffixNo ='suffixNo'
+      if (!(suffixNo in formData.value)) {
+          formData.value[suffixNo]=formData.value.doorNo.slice(-4)
+        }
+      console.log(formData.value, '编辑传过来的数据2')
       title.value = '企业基本概况编辑'
       uid.value = option.uid
     } else if (type.value === 'add') {

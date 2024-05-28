@@ -202,6 +202,10 @@ onLoad((option: any) => {
     if (type.value === 'edit') {
       let params = JSON.parse(option.params)
       formData.value = { ...params }
+      let suffixNo ='suffixNo'
+      if (!(suffixNo in formData.value)) {
+          formData.value[suffixNo]=formData.value.doorNo.slice(-4)
+      }
       title.value = '村集体基本情况编辑'
     } else if (type.value === 'add') {
       formData.value.villageType = ''

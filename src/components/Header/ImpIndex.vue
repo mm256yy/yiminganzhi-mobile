@@ -5,7 +5,7 @@
         <view class="name">{{ dataInfo.name }}</view>
         <view class="account-no">{{ dataInfo.showDoorNo }}</view>
         <view class="fill-number">
-          表单填报1&nbsp;
+          表单填报&nbsp;
           <text class="green">{{ getProgressText.count }}</text>
           /{{ getProgressText.total }}
         </view>

@@ -171,6 +171,8 @@
                   v-model="formData.landArea"
                   @focus="inputFocus(2)"
                   @blur="inputBlur"
+                  disabled
+                  style="background-color: #f5f7fa;"
                 />
                 <view class="unit">㎡</view>
               </view>
