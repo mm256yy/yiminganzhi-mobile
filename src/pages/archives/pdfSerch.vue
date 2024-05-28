@@ -55,15 +55,19 @@
               <td align="center" class="uTd">{{ `` }}</td>
             </tr>
             <tr style="height: 100px">
-              <td colspan="5"
-                >户主代表或收委托人(签名)：<img
-                  id="signatureImg"
-                  class="signatureImg"
-                  :src="path"
-                  v-if="path"
-              /></td>
+              <td colspan="5">
+                <div style="display: flex; justify-content: flex-start; align-items: center">
+                  <div>户主代表或受委托人(签名)：</div>
+                  <img id="signatureImg" class="signatureImg" :src="path" v-if="path" />
+                </div>
+              </td>
 
-              <td colspan="1">联系移民干部(签名)：</td>
+              <td colspan="1">
+                <div style="display: flex; justify-content: flex-start; align-items: center">
+                  <div>联系移民干部(签名)：</div>
+                  <img id="signatureImg" class="signatureImg" :src="paths" v-if="paths" />
+                </div>
+              </td>
             </tr>
           </table>
         </view>
@@ -114,12 +118,17 @@
             </tr>
             <tr style="height: 100px">
               <td colspan="3">
-                <div style="display: flex; justify-content: space-between; align-items: center">
-                  <div>户主代表或收委托人(签名)：</div>
+                <div style="display: flex; justify-content: flex-start; align-items: center">
+                  <div>户主代表或受委托人(签名)：</div>
                   <img id="signatureImg" class="signatureImg" :src="path" v-if="path" />
                 </div>
               </td>
-              <td colspan="3">联系移民干部(签名)：</td>
+              <td colspan="3">
+                <div style="display: flex; justify-content: flex-start; align-items: center">
+                  <div>联系移民干部(签名)：</div>
+                  <img id="signatureImg" class="signatureImg" :src="paths" v-if="paths" />
+                </div>
+              </td>
             </tr>
           </table>
         </view>
@@ -168,12 +177,17 @@
             </tr>
             <tr style="height: 100px">
               <td colspan="2">
-                <div style="display: flex; justify-content: space-between; align-items: center">
-                  <div>户主代表或收委托人(签名)：</div>
+                <div style="display: flex; justify-content: flex-start; align-items: center">
+                  <div>户主代表或受委托人(签名)：</div>
                   <img id="signatureImg" class="signatureImg" :src="path" v-if="path" />
                 </div>
               </td>
-              <td colspan="2">联系移民干部(签名)：</td>
+              <td colspan="2">
+                <div style="display: flex; justify-content: flex-start; align-items: center">
+                  <div>联系移民干部(签名)：</div>
+                  <img id="signatureImg" class="signatureImg" :src="paths" v-if="paths" />
+                </div>
+              </td>
             </tr>
           </table>
         </view>
@@ -243,12 +257,17 @@
 
             <tr style="height: 100px">
               <td colspan="4">
-                <div style="display: flex; justify-content: space-between; align-items: center">
-                  <div>户主代表或收委托人(签名)：</div>
+                <div style="display: flex; justify-content: flex-start; align-items: center">
+                  <div>户主代表或受委托人(签名)：</div>
                   <img id="signatureImg" class="signatureImg" :src="path" v-if="path" />
                 </div>
               </td>
-              <td colspan="1">联系移民干部(签名)：</td>
+              <td colspan="1">
+                <div style="display: flex; justify-content: flex-start; align-items: center">
+                  <div>联系移民干部(签名)：</div>
+                  <img id="signatureImg" class="signatureImg" :src="paths" v-if="paths" />
+                </div>
+              </td>
             </tr>
           </table>
         </view>
@@ -299,12 +318,17 @@
             </tr>
             <tr style="height: 100px">
               <td :colspan="id == 6 ? '5' : '4'">
-                <div style="display: flex; justify-content: space-between; align-items: center">
-                  <div>户主代表或收委托人(签名)：</div>
+                <div style="display: flex; justify-content: flex-start; align-items: center">
+                  <div>户主代表或受委托人(签名)：</div>
                   <img id="signatureImg" class="signatureImg" :src="path" v-if="path" />
                 </div>
               </td>
-              <td colspan="1">联系移民干部(签名)：</td>
+              <td colspan="1">
+                <div style="display: flex; justify-content: flex-start; align-items: center">
+                  <div>联系移民干部(签名)：</div>
+                  <img id="signatureImg" class="signatureImg" :src="paths" v-if="paths" />
+                </div>
+              </td>
             </tr>
           </table>
         </view>
@@ -450,14 +474,43 @@
     </div>
     <div class="reportInstrument">
       <div class="reportInstrumentContent1">
-        <button class="reportButton" type="info" @click="render.headelReport" v-if="id < 7"
+        <button
+          class="reportButton"
+          style="font-size: 13px; white-space: nowrap"
+          type="info"
+          @click="render.headelReport"
+          v-if="id < 7"
           >导出PDF</button
         >
-        <button class="reportButton" type="info" @click="render.headelReporst" v-else
+        <button
+          class="reportButton"
+          style="font-size: 13px; white-space: nowrap"
+          type="info"
+          @click="render.headelReporst"
+          v-else
           >导出PDF</button
         >
-        <button class="reportButton" type="info" @click="handleClick">户主 签名</button>
-        <button class="reportButton" type="info" @click="handleClickToymjk">返回</button>
+        <button
+          class="reportButton"
+          style="font-size: 13px; white-space: nowrap"
+          type="info"
+          @click="handleClick(true)"
+          >户主签名</button
+        >
+        <button
+          class="reportButton"
+          style="font-size: 13px; white-space: nowrap"
+          type="info"
+          @click="handleClick(false)"
+          >移民干部签名</button
+        >
+        <button
+          class="reportButton"
+          style="font-size: 13px; white-space: nowrap"
+          type="info"
+          @click="handleClickToymjk"
+          >返回</button
+        >
       </div>
     </div>
   </view>
@@ -852,7 +905,8 @@ export default {
         { value: 'household_move_selfhouse', id: 3 }
       ],
       imageUrlAndBase64Map,
-      urls: ''
+      urls: '',
+      paths: ''
     }
   },
   onLoad(option) {
@@ -918,18 +972,17 @@ export default {
   },
   onShow() {
     let that = this
-    uni.$on('id', function (data) {
+    uni.$on('id', async function (data) {
       //接受参数到ID,随意取名
       that.uid = data.dataInfo //用此页面的参数来存储
       if (data.path) {
-        pathToBase64(data.path)
-          .then((base64) => {
-            console.log('转换成功==>', base64)
-            that.path = base64
-          })
-          .catch((error) => {
-            console.error('转换失败==>', error)
-          })
+        let base64 = await pathToBase64(data.path)
+        console.log(data)
+        if (data.showde == 'true') {
+          that.path = base64
+        } else {
+          that.paths = base64
+        }
       }
     })
   },
@@ -993,8 +1046,8 @@ export default {
       console.log(path, 'path')
       this.saveImage(path)
     },
-    handleClick() {
-      routerForward('pdfqianm', { uid: this.uid })
+    handleClick(e) {
+      routerForward('pdfqianm', { uid: this.uid, showde: e })
     },
     saveImage(url) {
       uni.saveFile({

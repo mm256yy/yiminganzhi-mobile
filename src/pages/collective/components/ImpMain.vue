@@ -9,8 +9,10 @@
       <view class="right">
         <!-- 头部 -->
         <Header :dataInfo="dataInfo" />
-
-        <view class="box">
+        <view class="box" v-if="dataInfo.villageType == 'grave'">
+          <ground :villageId="dataInfo.villageDoorNo" />
+        </view>
+        <view class="box" v-else>
           <!-- 房屋/附属物评估报告 -->
           <house-accessory-eva-report
             v-if="tabVal === 1"
@@ -72,7 +74,9 @@ import houseVacate from '../../common/vacate/house.vue' // 引入腾空 -- 房�
 import relocationAgreement from '../relocationAgreement/index.vue' // 引入动迁协议组件
 import assetDisposal from '../assetDisposal/index.vue' // 引入集体资产处置方法组件
 import createCard from '../createCard/index.vue' // 引入村集体补偿卡组件
-
+import iconGraveSel from '@/static/images/icon_grave_select.png' // 引入坟墓选中 icon
+import iconGraveDef from '@/static/images/icon_grave_default.png' // 引入坟墓默认 icon
+import ground from '@/pages/archives/ground.vue'
 interface PropsType {
   dataInfo: LandlordType
 }
@@ -84,41 +88,65 @@ const emit = defineEmits(['updateData'])
 const tabList = computed(() => {
   const { immigrantFilling } = props.dataInfo
   const arr: any = deepClone(collectiveSidebarList)
-  if (immigrantFilling) {
-    // 房屋/附属物评估状态
-    if (immigrantFilling.appendageStatus === '1') {
-      arr[0].list[0].list[0].filled = true
-    }
+  if (props.dataInfo.villageType == 'grave') {
+    return [
+      {
+        title: '',
+        filled: false,
+        list: [
+          {
+            title: '',
+            filled: false,
+            list: [
+              {
+                label: '坟墓信息',
+                value: 1,
+                filled: false,
+                defIcon: iconGraveDef,
+                selIcon: iconGraveSel
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  } else {
+    if (immigrantFilling) {
+      // 房屋/附属物评估状态
+      if (immigrantFilling.appendageStatus === '1') {
+        arr[0].list[0].list[0].filled = true
+      }
 
-    // 土地/附着物评估状态
-    if (immigrantFilling.landStatus === '1') {
-      arr[0].list[0].list[1].filled = true
-    }
+      // 土地/附着物评估状态
+      if (immigrantFilling.landStatus === '1') {
+        arr[0].list[0].list[1].filled = true
+      }
 
-    // 小型专项及农副业设施评估状态
-    if (immigrantFilling.specialStatus === '1') {
-      arr[0].list[0].list[2].filled = true
-    }
-    // 移民建卡状态
-    if (immigrantFilling.cardStatus === '1') {
-      arr[0].list[1].list[0].filled = true
-    }
-    // 房屋腾空状态
-    if (immigrantFilling.houseSoarStatus === '1') {
-      arr[0].list[2].list[0].filled = true
-    }
+      // 小型专项及农副业设施评估状态
+      if (immigrantFilling.specialStatus === '1') {
+        arr[0].list[0].list[2].filled = true
+      }
+      // 移民建卡状态
+      if (immigrantFilling.cardStatus === '1') {
+        arr[0].list[1].list[0].filled = true
+      }
+      // 房屋腾空状态
+      if (immigrantFilling.houseSoarStatus === '1') {
+        arr[0].list[2].list[0].filled = true
+      }
 
-    // 动迁协议状态
-    if (immigrantFilling.agreementStatus === '1') {
-      arr[0].list[3].list[0].filled = true
-    }
+      // 动迁协议状态
+      if (immigrantFilling.agreementStatus === '1') {
+        arr[0].list[3].list[0].filled = true
+      }
 
-    // 集体资产处置方法状态
-    if (immigrantFilling.disposalMeasuresStatus === '1') {
-      arr[1].list[0].list[0].filled = true
+      // 集体资产处置方法状态
+      if (immigrantFilling.disposalMeasuresStatus === '1') {
+        arr[1].list[0].list[0].filled = true
+      }
     }
+    return [...arr]
   }
-  return [...arr]
 })
 
 const switchTab = (item: any) => {

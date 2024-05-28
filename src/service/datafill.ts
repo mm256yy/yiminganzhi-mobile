@@ -279,3 +279,6 @@ export const updateLandlordEquipmentApi = (uid: string, data: EquipmentType) => 
 export const deleteLandlordEquipmentApi = (uid: string, itemId: string) => {
   return DataFillController.deleteLandlordEquipment(uid, itemId)
 }
+export const getVillageListWithLandlord = (villageId:any) => {
+  return GraveController.getVillageListWithLandlord(villageId)
+}

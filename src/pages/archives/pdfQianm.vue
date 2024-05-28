@@ -30,9 +30,11 @@ var y = 20
 import { routerForward } from '@/utils'
 export default {
   onLoad(option) {
+    console.log(option)
     if (option.uid) {
       this.uid = option.uid
     }
+    this.showde = option.showde
     this.createCanvas()
   },
   data() {
@@ -42,7 +44,8 @@ export default {
       points: [], //路径点集合
       signature: '',
       signImage: '@/static/images/icon_print.png',
-      uid: ''
+      uid: '',
+      showde: null
     }
   },
   methods: {
@@ -125,7 +128,7 @@ export default {
         success: function (res) {
           let paths = res.tempFilePath
           // that.signImage=path
-          uni.$emit('id', { path: paths, dataInfo: that.uid, replace: true })
+          uni.$emit('id', { path: paths, dataInfo: that.uid, replace: true, showde: that.showde })
           uni.navigateBack({
             delta: 1 //返回上一页
           })

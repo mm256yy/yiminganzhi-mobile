@@ -218,7 +218,7 @@ export default {
       options: {}, // 打印配置
       pdfFileCache: {}, // 生成的pdf缓存
       actionType: 'preview', // 操作类型 预览/打印
-      currentPdfItem: null,
+      currentPdfItem: null
     } as DataType
   },
   props: {
@@ -531,6 +531,9 @@ export default {
         type: this.templateType,
         timeStamp: getCurrentTimeStamp()
       }
+      console.log(typeof module, typeof window, typeof global, typeof self, 'type')
+
+      console.log(this.options, 'landlordArray1')
     },
 
     actionPdf(filePath: string) {

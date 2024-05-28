@@ -222,6 +222,27 @@ class Grave extends Common {
       }
     })
   }
+  getVillageListWithLandlord(villageId: any): Promise<GraveType[]> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const array: GraveType[] = []
+        let sql = `select * from ${GraveTableName} where isPadDelete = '0'`
+
+        sql += ` and villageDoorNo = '${villageId}' order by updatedDate desc`
+
+        const list: GraveDDLType[] = await this.db.selectSql(sql)
+        if (this.isArrayAndNotNull(list)) {
+          list.forEach((item) => {
+            array.push(JSON.parse(item.content))
+          })
+        }
+        resolve(array)
+      } catch (error) {
+        console.log(error, 'grave-get-list-error')
+        reject([])
+      }
+    })
+  }
 }
 
 export const GraveController = new Grave()
