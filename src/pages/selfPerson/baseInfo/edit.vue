@@ -1009,22 +1009,24 @@ const submit = () => {
   }
 }
 const updateCommon = () => {
-  let values = {
-    type: MainType.PeasantHousehold,
-    doorNo: formData.value.householderDoorNo
-  }
-  getImpLandlordListBySearchApi(values).then((res) => {
-    console.log(res, '居民户数据')
-    let uid = res[0]?.uid
-    let relateIndividualHouseholdName = formData.value.name
-    updateAssociation({
-      uid: uid,
-      relateIndividualHouseholdName: relateIndividualHouseholdName,
-      type: 'IndividualHousehold'
-    }).then((res) => {
-      console.log(res, '更新关联成功')
+  if (formData.value.householderDoorNo) {
+    let values = {
+      type: MainType.PeasantHousehold,
+      doorNo: formData.value.householderDoorNo
+    }
+    getImpLandlordListBySearchApi(values).then((res) => {
+      console.log(res, '居民户数据')
+      let uid = res[0]?.uid
+      let relateIndividualHouseholdName = formData.value.name
+      updateAssociation({
+        uid: uid,
+        relateIndividualHouseholdName: relateIndividualHouseholdName,
+        type: 'IndividualHousehold'
+      }).then((res) => {
+        console.log(res, '更新关联成功')
+      })
     })
-  })
+  }
 }
 const gotoMap = () => {
   routerForward('map', {

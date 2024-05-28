@@ -1280,6 +1280,7 @@ const submit = () => {
   }
 }
 const updateCommon = () => {
+  if(formData.value.householderDoorNo){
   let values = {
     type: MainType.PeasantHousehold,
     doorNo: formData.value.householderDoorNo
@@ -1294,6 +1295,7 @@ const updateCommon = () => {
       }
     )
   })
+  }
 }
 const gotoMap = () => {
   routerForward('map', {
