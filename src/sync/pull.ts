@@ -214,7 +214,6 @@ class PullData {
         }
         resolve(false)
       })
-      console.log('接口: 项目数据', result)
       if (!result) {
         console.error('项目列表获取失败')
         resolve(false)
@@ -225,7 +224,6 @@ class PullData {
       pullRes && this.count++
       // 重置 释放缓存
       this.state.project = []
-      console.log('拉取: 项目', pullRes)
       resolve(pullRes)
     })
   }
@@ -295,8 +293,6 @@ class PullData {
     ;(this.state.notifyDtoList = notifyDtoList),
       (this.state.landPeasantHouseholdDtoList = landPeasantHouseholdDtoList)
     this.state.landEstimateDtoList = landEstimateDtoList
-    console.log(this.state.landEstimateDtoList, '土地数据')
-    console.log(this.state.notifyDtoList, '测试接口数据')
     this.pullDict().then((res: boolean) => {
       res && this.count++
       // 重置 释放缓存
@@ -378,7 +374,6 @@ class PullData {
               ...peasantHouseholdPushDtoList
             ]
           }
-          console.log('递归:', lastId, this.count)
           // 存储拉取时间
           this.state.pullTime = pullTime
           if (lastId) {
@@ -386,7 +381,6 @@ class PullData {
             this.getLandlordData(false, lastId)
           } else {
             // id不存在 表明数据已经获取完毕，不再需继续请求
-            console.log('接口: 调查对象数据length', this.state.peasantHouseholdPushDtoList.length)
             this.getLandlordDataSuccess()
           }
         } else {
@@ -404,13 +398,10 @@ class PullData {
 
   // 获取调查对象成功处理函数
   private getLandlordDataSuccess() {
-    console.log('接口: 调查对象数据', 'getLandlordDataSuccess')
-
     // 存储调查对象数据
     this.pullLandlord().then((res) => {
       res && this.count++
       this.state.peasantHouseholdPushDtoList = []
-      console.log('拉取: 业主', res)
     })
   }
 
@@ -422,7 +413,6 @@ class PullData {
       }
       this.maxCount = -1
     })
-    console.log('接口: 基础数据', result)
     if (!result) {
       console.error('基础数据获取失败')
       this.maxCount = -1
@@ -514,7 +504,6 @@ class PullData {
       }
       this.maxCount = -1
     })
-    console.log('接口: 统计数据', result)
     // if (!result) {
     //   console.error('统计数据获取失败')
     //   this.maxCount = -1
@@ -604,7 +593,6 @@ class PullData {
     return new Promise(async (resolve, reject) => {
       const sql = `SELECT tbl_name FROM sqlite_master WHERE type = 'table';`
       const res = await db.selectSql(sql)
-      console.log(res, 'res')
       if (res && Array.isArray(res)) {
         const tables = res.filter(
           (item) => item.tbl_name !== 'android_metadata' && item.tbl_name !== 'sqlite_sequence'
@@ -735,7 +723,6 @@ class PullData {
   private pullLandlord(): Promise<boolean> {
     return new Promise(async (resolve) => {
       const { peasantHouseholdPushDtoList: list, peasantHouseholdDtoList: listTwo } = this.state
-      console.log('===========listTwo=============', listTwo?.length, list)
       if (this.isArrayAndNotNull(list)) {
         // 开启事务
         await db.transaction('begin').catch(() => {
@@ -752,7 +739,6 @@ class PullData {
             })
           }
           const values = getLandlordValues(item, 'default')
-          // console.log(values, `企业数据${index}`)
           db.insertOrReplaceData(LandlordTableName, values, landlordFields)
             .then((res) => {
               console.log(res, '插入业主')
@@ -776,7 +762,6 @@ class PullData {
           resolve(false)
         })
         const res = await getLandlordListBySearchApi()
-        // console.log('===========listTwo=============', listTwo, res, list)
         res.forEach((key: any) => {
           let m = false
           listTwo.forEach((item) => {
@@ -784,7 +769,6 @@ class PullData {
               m = true
             }
           })
-          console.log(m, 'begin')
 
           if (!m && key.type != 'LandNoMove') {
             db.deleteTableData(LandlordTableName, 'id', key.id)
@@ -1204,7 +1188,6 @@ class PullData {
         const values = `'${OtherDataType.PgTop}','${JSON.stringify(
           pgTop
         )}','${getCurrentTimeStamp()}'`
-        console.log(values, '测试TOP5首页排行榜')
         db.insertOrReplaceData(OtherTableName, values, fields)
       }
       // 问题反馈
@@ -1229,24 +1212,19 @@ class PullData {
         const values = `'${OtherDataType.notifyDtoList}','${JSON.stringify(
           notifyDtoList
         )}','${getCurrentTimeStamp()}'`
-        console.log(values, '消息通知数据')
         db.insertOrReplaceData(OtherTableName, values, fields)
       }
       //土地数据
       console.error(landEstimateDtoList[0], '测试土地数据')
       if (landEstimateDtoList && landEstimateDtoList.length) {
-        console.log(landEstimateDtoList[0], '测试土地数据')
         landEstimateDtoList.forEach((item) => {
           if (!item.uid) {
             item.uid = guid()
           }
           const values = getLandEstimateDtoListValues(item, 'default')
-          console.log(values)
 
           db.insertOrReplaceData(landEstimateDtoListName, values.valiues, values.keys)
-            .then((res) => {
-              console.log(`成功`, res)
-            })
+            .then((res) => {})
             .catch((err) => {
               console.log(err, '插入土地失败')
             })
@@ -1264,7 +1242,6 @@ class PullData {
         const values = `'${OtherDataType.landPeasantHouseholdDtoList}','${JSON.stringify(
           landPeasantHouseholdDtoList
         )}','${getCurrentTimeStamp()}'`
-        // console.log(values, '测试土地关联用户数据')
         db.insertOrReplaceData(OtherTableName, values, fields)
       }
       await db.transaction('commit').catch(() => {

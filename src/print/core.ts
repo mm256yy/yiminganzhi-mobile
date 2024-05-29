@@ -1,5 +1,4 @@
 const pdfMake = require('@/static/js/pdfmake.min.js')
-const pdfFonts = require('@/static/js/vfs_fonts.js')
 import { LandlordType } from '@/types/sync'
 import { logo } from './config'
 import {
