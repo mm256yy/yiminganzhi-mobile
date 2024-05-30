@@ -54,6 +54,10 @@ export const getSubmitListApi = (data: LandlordQuery) => {
 export const getLandlordListBySearchApi = (data?: LandlordSearchType) => {
   return LandlordController.getLandlordListBySearch(data)
 }
+// 调查对象管理 条件查询
+export const getLandlordListBySearchApicopy = (data?: LandlordSearchType) => {
+  return LandlordController.getLandlordListBySearchcopy(data)
+}
 export const getLandlordListBySearchApiTwo = (data?: LandlordSearchType) => {
   return LandlordController.getLandlordListBySearchTwo(data)
 }

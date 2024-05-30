@@ -64,7 +64,8 @@ export enum MainType {
   Company = 'Company',
   IndividualHousehold = 'IndividualHousehold',
   Village = 'Village',
-  LandNoMove = 'LandNoMove'
+  LandNoMove = 'LandNoMove',
+  PeasantHouseholdorLandNoMove = `other`
 }
 
 export enum DistrictTypeEnum {
@@ -210,7 +211,7 @@ export interface LandlordSearchType {
   warnStatus?: string
   houseAllStatus?: string
   uid?: any
-  code?:any
+  code?: any
 }
 
 // 分页类型

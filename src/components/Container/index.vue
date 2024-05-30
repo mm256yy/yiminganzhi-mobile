@@ -6,6 +6,9 @@
         <view class="back-box" @click="onBack">
           <uni-icons type="back" color="#ffffff" size="14rpx" />
         </view>
+        <slot name="left">
+          <text />
+        </slot>
       </view>
 
       <view class="header-center">

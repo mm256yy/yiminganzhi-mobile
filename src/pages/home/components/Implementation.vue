@@ -18,9 +18,16 @@
             <image class="img" src="@/static/images/icon_resident.png" />
           </view>
           <view class="enter-title">
-            <text class="title-txt">居民户</text>
+            <text class="title-txt">居民户/只征地不搬迁</text>
             <view class="flex">
-              <text class="count-num"> {{ homeCollect.peasantHouseholdNum }} </text>
+              <text class="count-num">
+                {{ homeCollect.peasantHouseholdNum }}
+              </text>
+              <text class="count-unit"> 户 </text>
+              <text class="count-num"> / </text>
+              <text class="count-num">
+                {{ landStatisticsObj?.landNoMoveNum }}
+              </text>
               <text class="count-unit"> 户 </text>
             </view>
           </view>
@@ -206,7 +213,7 @@
         </view>
       </view>
       <!--只征地不搬迁-->
-      <view class="enter-item" @click="toLink('relocateList')">
+      <!-- <view class="enter-item" @click="toLink('relocateList')">
         <view class="title-field">
           <view class="enter-icon">
             <image class="img" src="@/static/images/jt_enter.png" />
@@ -235,7 +242,7 @@
             </view>
           </view>
         </view>
-      </view>
+      </view> -->
     </view>
 
     <view class="group">
@@ -554,7 +561,7 @@ onMounted(() => {
   border-radius: 11rpx;
 
   .enter-item {
-    width: 136rpx;
+    width: 176rpx;
     height: 96rpx;
     padding: 12rpx 6rpx 7rpx 6rpx;
     background: linear-gradient(180deg, #deebf6 0%, #ffffff 100%);
@@ -606,7 +613,7 @@ onMounted(() => {
 
       .field-box {
         display: flex;
-        width: 40rpx;
+        width: 50rpx;
         height: 32rpx;
         padding-top: 4rpx;
         background: linear-gradient(180deg, #ffffff 0%, #e9f5ff 100%);

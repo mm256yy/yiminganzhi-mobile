@@ -238,7 +238,10 @@ export class Landlord extends Common {
         // 预设字段
         const projectInfo = getStorage(StorageKey.PROJECTINFO)
         // survey 采集 review 复核
-        data.reportStatus = projectInfo.status=='survey'?ReportStatusEnum.UnReport:ReportStatusEnum.ReportSucceed
+        data.reportStatus =
+          projectInfo.status == 'survey'
+            ? ReportStatusEnum.UnReport
+            : ReportStatusEnum.ReportSucceed
         data.reportUser = ''
         data.reportDate = ''
         data.company = data.company || {}
@@ -742,7 +745,99 @@ export class Landlord extends Common {
         if (doorNo) {
           sql += ` and doorNo = '${doorNo}'`
         }
-          if (code) {
+        if (code) {
+          sql += ` and villageCode = '${code}'`
+        }
+        if (houseAllStatus) {
+          if (houseAllStatus.length > 1) {
+            const arr = houseAllStatus.split(',')
+            sql += ` and houseAllStatus in (${arr.map((item) => `'${item}'`).join(',')})`
+          } else {
+            sql += ` and houseAllStatus = '${houseAllStatus}'`
+          }
+        }
+        sql += ` order by updatedDate desc limit ${pageSize} offset ${(page - 1) * pageSize}`
+        console.log('sql', sql)
+        const list: LandlordDDLType[] = await this.db.selectSql(sql)
+        console.log(list, 'list')
+
+        if (this.isArrayAndNotNull(list)) {
+          list.forEach((item) => {
+            const landlord = JSON.parse(item.content)
+            array.push(landlord)
+          })
+          const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
+          console.log(array, '测试数据是什么')
+          // 拿到上级行政区划
+          array.forEach((item) => {
+            // townCode: string
+            // villageCode: string
+            // virutalVillageCode: string
+            // areaCode: string
+            // 331102001201 行政村
+            item.virutalVillageCodeText = districtMap[item.virutalVillageCode]
+            item.villageCodeText = districtMap[item.villageCode]
+            item.townCodeText = districtMap[item.townCode]
+            item.areaCodeText = districtMap[item.areaCode]
+          })
+        }
+        resolve(array)
+      } catch (error) {
+        console.log(error, 'getLandlordListBySearch-error')
+        reject([])
+      }
+    })
+  }
+  // 业主列表-根据行政村 和 名称 查询列表
+  getLandlordListBySearchcopy(data?: LandlordSearchType): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const {
+          name,
+          areaCode,
+          townCode,
+          villageCode,
+          virutalVillageCode,
+          type,
+          doorNo,
+          houseAllStatus,
+          pageSize = 10,
+          page = 1,
+          uid,
+          code
+        } = data || {}
+        const array: LandlordType[] = []
+        let sql = `select * from ${LandlordTableName} where isPadDelete = '0'`
+        if (type) {
+          sql += ` and type in (${type == 'other' ? `'PeasantHousehold','LandNoMove'` : `'${type}'`})`
+        }
+        if (uid) {
+          sql += ` and uid = '${uid}'`
+        }
+        if (name) {
+          sql += ` and (name like '%${name}%' or doorNo like '%${name.slice(
+            name.length - 6 < 0 ? 0 : name.length - 6,
+            name.length
+          )}%' or content like '%${name}%')`
+        }
+        if (villageCode) {
+          if (villageCode[0]) {
+            sql += ` and areaCode = '${villageCode[0]}'`
+          }
+          if (villageCode[1]) {
+            sql += ` and townCode = '${villageCode[1]}'`
+          }
+          if (villageCode[2]) {
+            sql += ` and villageCode = '${villageCode[2]}'`
+          }
+          if (villageCode[3]) {
+            sql += ` and virutalVillageCode = '${villageCode[3]}'`
+          }
+        }
+        if (doorNo) {
+          sql += ` and doorNo = '${doorNo}'`
+        }
+        if (code) {
           sql += ` and villageCode = '${code}'`
         }
         if (houseAllStatus) {
@@ -1043,8 +1138,8 @@ export class Landlord extends Common {
           ReportStatusEnum.ReportSucceed
         }',reportDate = '${dayjs().format(this.format)}',reportUser = '${
           realData.reportUser
-          }',content = '${JSON.stringify(realData)}',updatedDate = '${getCurrentTimeStamp()}'`
-        console.log(values,'测试传值？')
+        }',content = '${JSON.stringify(realData)}',updatedDate = '${getCurrentTimeStamp()}'`
+        console.log(values, '测试传值？')
         const sql = `update ${LandlordTableName} set ${values} where uid = '${realData.uid}' and isPadDelete = '0'`
         const res = await this.db.execteSql([sql])
         if (res && res.code) {

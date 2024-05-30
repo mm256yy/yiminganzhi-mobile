@@ -13,6 +13,18 @@
         />
       </view>
     </template>
+    <template #left>
+      <view style="margin-left: 18px">
+        <uni-data-checkbox
+          v-model="selcetEnd"
+          :localdata="sex"
+          :wrap="false"
+          mode="tag"
+          style="transform: scale(1.2)"
+          @change="init"
+        />
+      </view>
+    </template>
 
     <view class="respondents-wrap">
       <view class="search-box">
@@ -146,7 +158,7 @@ import ImpListItem from './impListItem.vue'
 import EvaListItem from './evaListItem.vue'
 import NaturalVillageTreeSelect from '@/components/NaturalVillageTreeSelect/index.vue'
 import {
-  getLandlordListBySearchApi,
+  getLandlordListBySearchApicopy,
   getVillageTreeWithoutNullApi,
   deleteLandlordApi,
   getLandlordItemApi
@@ -178,7 +190,21 @@ const pageSize = ref<number>(50)
 const sourceType = ref<string | null>(null) // 源类型 0已完成  1 预警 2 滞后
 const pgType = ref<string | null>(null) // 源类型 0未评估  1 已评估 2 我的评估
 const statusCount = ref<number>(0)
-
+let selcetEnd = ref(MainType.PeasantHouseholdorLandNoMove)
+let sex = ref([
+  {
+    text: '全部',
+    value: MainType.PeasantHouseholdorLandNoMove
+  },
+  {
+    text: '居民户',
+    value: MainType.PeasantHousehold
+  },
+  {
+    text: '只征地不搬迁',
+    value: MainType.LandNoMove
+  }
+])
 // 角色类型，不同角色跳转不同的页面，默认为实物采集页面
 const roleType = ref<RoleCodeType>(getStorage(StorageKey.USERROLE))
 
@@ -244,7 +270,7 @@ const getList = () => {
     isLoading.value = true
     const params: LandlordSearchType = {
       name: unref(keyWords),
-      type: unref(tabType),
+      type: selcetEnd.value,
       page: page.value,
       pageSize: pageSize.value,
       villageCode: villageCode.value.length > 0 ? villageCode.value : null
@@ -253,19 +279,19 @@ const getList = () => {
     if (sourceType.value) {
       params.warnStatus = sourceType.value
       if (sourceType.value == '1') {
-        const dataList = await getLandlordListBySearchApi(params).catch(() => {
+        const dataList = await getLandlordListBySearchApicopy(params).catch(() => {
           isLoading.value = false
         })
         const res = dataList.filter((item: any) => item.warnStatus == 1)
         getListCommon(res)
       } else if (sourceType.value == '2') {
-        const dataList = await getLandlordListBySearchApi(params).catch(() => {
+        const dataList = await getLandlordListBySearchApicopy(params).catch(() => {
           isLoading.value = false
         })
         const res = dataList.filter((item: any) => item.warnStatus == 2)
         getListCommon(res)
       } else if (sourceType.value == '0') {
-        const dataList = await getLandlordListBySearchApi(params).catch(() => {
+        const dataList = await getLandlordListBySearchApicopy(params).catch(() => {
           isLoading.value = false
         })
         console.log(dataList, 'dataList数据')
@@ -275,14 +301,14 @@ const getList = () => {
     } else if (pgType.value) {
       // params.houseAllStatus = pgType.value
       if (pgType.value == '0') {
-        const res = await getLandlordListBySearchApi({ ...params, houseAllStatus: '0' }).catch(
+        const res = await getLandlordListBySearchApicopy({ ...params, houseAllStatus: '0' }).catch(
           () => {
             isLoading.value = false
           }
         )
         getListCommon(res)
       } else if (pgType.value == '1') {
-        const res = await getLandlordListBySearchApi({ ...params, houseAllStatus: '1,2' }).catch(
+        const res = await getLandlordListBySearchApicopy({ ...params, houseAllStatus: '1,2' }).catch(
           () => {
             isLoading.value = false
           }
@@ -290,7 +316,7 @@ const getList = () => {
         console.log(res, 'dataList数据')
         getListCommon(res)
       } else if (pgType.value == '2') {
-        const res = await getLandlordListBySearchApi({ ...params, houseAllStatus: '2' }).catch(
+        const res = await getLandlordListBySearchApicopy({ ...params, houseAllStatus: '2' }).catch(
           () => {
             isLoading.value = false
           }
@@ -299,7 +325,7 @@ const getList = () => {
         getListCommon(res)
       }
     } else {
-      const res = await getLandlordListBySearchApi(params).catch(() => {
+      const res = await getLandlordListBySearchApicopy(params).catch(() => {
         isLoading.value = false
       })
       console.log(res, '数据列表res')
@@ -345,7 +371,7 @@ const getListAll = () => {
     isLoading.value = true
     const params: LandlordSearchType = {
       name: unref(keyWords),
-      type: unref(tabType),
+      type: selcetEnd.value,
       page: page.value,
       pageSize: pageSize.value
     }
@@ -364,7 +390,7 @@ const getListAll = () => {
         params.virutalVillageCode = unref(villageCode)[3] || ''
       }
     }
-    const res = await getLandlordListBySearchApi(params).catch(() => {
+    const res = await getLandlordListBySearchApicopy(params).catch(() => {
       isLoading.value = false
     })
     isLoading.value = false
@@ -418,8 +444,8 @@ const getRouterName = (roleType: string) => {
 
 // 填报
 const routerMap: any = {
-  [MainType.PeasantHousehold]: getRouterName(roleType.value)
-  // [MainType.IndividualHousehold]: 'selfPersonEva',
+  [MainType.PeasantHousehold]: getRouterName(roleType.value),
+  [MainType.LandNoMove]: 'landNavigation'
   // [MainType.Company]: 'enterpriseEva',
   // [MainType.Village]: 'collectiveEva'
 }
@@ -440,11 +466,17 @@ const addLandlord = () => {
 }
 
 const editLandlord = (item: LandlordType) => {
-  const name = routerMap[tabType.value]
-  routerForward(name, {
-    type: 'edit',
-    uid: item.uid
-  })
+  const name = routerMap[item.type]
+  if (name == 'landNavigation') {
+    routerForward(name, {
+      data: JSON.stringify(item)
+    })
+  } else {
+    routerForward(name, {
+      type: 'edit',
+      uid: item.uid
+    })
+  }
 }
 
 const deleteLandlord = (item: LandlordType) => {

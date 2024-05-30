@@ -162,7 +162,7 @@
         </uni-col>
         <uni-col :span="12">
           <view class="col">
-            <view class="label">全家福照片：</view>
+            <view class="label"><text class="star">*</text>全家福照片：</view>
             <view class="content">
               <upload-file
                 v-model="familyPicStr"
@@ -418,6 +418,10 @@ const submit = () => {
   }
   if (!options.value.homesteadArea) {
     showToast('宅基地总面积（㎡）必填')
+    return
+  }
+  if (familyPicStr.value === '[]') {
+    showToast('全家福照片必传')
     return
   }
   const params: any = {
