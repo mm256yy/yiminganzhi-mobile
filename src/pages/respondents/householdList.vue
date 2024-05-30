@@ -14,7 +14,7 @@
       </view>
     </template>
     <template #left>
-      <view style="margin-left: 18px">
+      <view style="margin-left: 18px" v-if="!sourceType">
         <uni-data-checkbox
           v-model="selcetEnd"
           :localdata="sex"
@@ -210,6 +210,7 @@ const roleType = ref<RoleCodeType>(getStorage(StorageKey.USERROLE))
 
 onLoad((options: any) => {
   if (options && options.type) {
+    selcetEnd.value = MainType.PeasantHousehold
     sourceType.value = options.type
   }
   if (options && options.types) {
@@ -308,11 +309,12 @@ const getList = () => {
         )
         getListCommon(res)
       } else if (pgType.value == '1') {
-        const res = await getLandlordListBySearchApicopy({ ...params, houseAllStatus: '1,2' }).catch(
-          () => {
-            isLoading.value = false
-          }
-        )
+        const res = await getLandlordListBySearchApicopy({
+          ...params,
+          houseAllStatus: '1,2'
+        }).catch(() => {
+          isLoading.value = false
+        })
         console.log(res, 'dataList数据')
         getListCommon(res)
       } else if (pgType.value == '2') {
