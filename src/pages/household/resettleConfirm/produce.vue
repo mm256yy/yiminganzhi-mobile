@@ -33,6 +33,7 @@
       <text>土地信息</text>
     </view>
         <view class="table-wrap">
+           <scroll-view scroll-x="true" style="width: 100%; white-space: nowrap;">
       <uni-table class="table" ref="table" border stripe emptyText="暂无更多数据">
         <uni-tr>
           <uni-th width="28rpx" align="center">序号</uni-th>
@@ -51,27 +52,20 @@
 
         <uni-tr v-for="(item, index) in landEstimateDtoList" :key="index">
           <uni-td>{{ index + 1 }}</uni-td>
-          <uni-td>{{ item.area }}</uni-td>
-          <uni-td>{{ item.inundationRange }}</uni-td>
+          <uni-td>{{ item.areaText }}</uni-td> 
+          <uni-td>{{ item.inundationRangeText}}</uni-td>
           <uni-td>{{ item.sheetNumber }}</uni-td>
           <uni-td>{{ item.landNumber }}</uni-td>
           <uni-td>{{ item.landName }}</uni-td>
           <uni-td>{{ item.rightHolder }}</uni-td>
-          <uni-td>{{ item.landNature }}</uni-td>
-          <uni-td>{{ item.landLevel }}</uni-td>
+          <uni-td>{{ item.landNatureText }}</uni-td>
+          <uni-td>{{ item.landTypeText }}</uni-td>
           <uni-td>{{ item.shapeArea }}</uni-td>
           <uni-td>{{ item.shapeLeng }}</uni-td>
           <uni-td>{{ item.remark }}</uni-td>
-          <uni-td>
-            {{
-              item.needHandle === '0' ? '无须办理' : item.isComplete === '1' ? '已办理' : '未办理'
-            }}
-          </uni-td>
-          <uni-td>
-            {{ item.completeDate ? dayjs(item.completeDate).format('YYYY-MM-DD') : '' }}
-          </uni-td>
         </uni-tr>
       </uni-table>
+       </scroll-view> 
     </view>
     <view class="common-head">
       <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
@@ -107,6 +101,8 @@ import { LandlordType } from '@/types/sync'
 import { PopulationType } from '@/types/datafill'
 import { updateImpLandlordPeopleBatchApi } from '@/service'
 import { routerForward } from '@/utils'
+import {getStorage, StorageKey} from '@/utils'
+// import { formatEmptyText } from '@/utils/format'
 
 interface PropsType {
   dataInfo: LandlordType
@@ -119,7 +115,7 @@ const landEstimateDtoList = computed(() => {
 const props = defineProps<PropsType>()
 const alertDialog = ref<any>(null)
 const emit = defineEmits(['updateData'])
-
+// const dict = getStorage(StorageKey.DICT)
 // .filter((item) => item.name !== '增计人口')
 const demographicList = computed(() => {
   // return props.dataInfo && props.dataInfo.demographicList ? props.dataInfo.demographicList.filter((item) => item.name !== '增计人口') : []
