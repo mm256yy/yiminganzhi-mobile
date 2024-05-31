@@ -155,6 +155,7 @@ export interface SimulateDemographicType {
   settingWay: string
   settingRemark: string
   demographicId: number
+  isProduction?:string
 }
 
 // 搬迁安置确认 immigrantSettle

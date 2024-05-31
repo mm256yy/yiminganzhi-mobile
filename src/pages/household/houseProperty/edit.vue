@@ -20,33 +20,31 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              required
-              label="是否合法"
+              label="建筑面积"
               :label-width="150"
               label-align="right"
-              name="formData.isCompliance"
+              name="formData.landArea"
             >
-              <uni-data-select v-model="formData.isCompliance" :localdata="dict[371]" />
+              {{ formData.landArea}}
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              label="地理位置"
-              name="formData.longitude"
               required
+              label="合法面积(m²)"
               :label-width="150"
               label-align="right"
+              name="formData.landLegalArea"
             >
-              <view class="lg-txt-wrapper">
-                <!-- <uni-data-checkbox v-model="check" :localdata="lgTagList" /> -->
-                <view class="position" @click="gotoMap">
-                  <uni-icons type="map" color="#5D8CF7" size="14rpx" />
-                  <text class="txt">{{
-                    formData.longitude && formData.latitude
-                      ? `${formData.longitude},${formData.latitude}`
-                      : '获取定位'
-                  }}</text>
-                </view>
+              <view :class="['input-wrapper', focusIndex === 2 ? 'focus' : '']">
+                <input
+                  class="input-txt"
+                  placeholder="请输入"
+                  type="number"
+                  v-model="formData.landLegalArea"
+                  @input="changeArea"
+                />
+                <view class="unit">㎡</view>
               </view>
             </uni-forms-item>
           </uni-col>
@@ -54,30 +52,28 @@
         <uni-row>
           <uni-col :span="12">
             <uni-forms-item
-              required
-              label="房屋来源"
+              label="不合法面积(m²)"
               :label-width="150"
               label-align="right"
-              name="formData.houseNature"
+              name="formData.landIllegalArea"
             >
-              <!-- <uni-easyinput v-model="formData.houseNature" type="text" placeholder="请输入" /> -->
-              <uni-data-select v-model="formData.houseNature" :localdata="dict[304]" />
+              {{ formData.landIllegalArea}}
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
               required
-              label="房屋产权人"
+              label="房屋编号"
               :label-width="150"
               label-align="right"
-              name="formData.demographicId"
+              name="formData.houseNo"
             >
-              <uni-data-select v-model="formData.demographicId" :localdata="demographicList" />
+              <uni-easyinput v-model="formData.houseNo" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
         <uni-row>
-          <uni-col :span="12">
+          <!-- <uni-col :span="12">
             <uni-forms-item
               label="共有人"
               :label-width="150"
@@ -100,10 +96,20 @@
                 </view>
               </view>
             </uni-forms-item>
+          </uni-col> -->
+          <uni-col :span="12">
+            <uni-forms-item
+              label="是否分权"
+              :label-width="150"
+              label-align="right"
+              name="formData.separateFlag"
+            >
+               {{ formData.separateFlag == '1' ? '是' : '否' }} 
+            </uni-forms-item>
           </uni-col>
         </uni-row>
         <uni-row>
-          <uni-col :span="12">
+          <!-- <uni-col :span="12">
             <uni-forms-item
               label="其他共有人"
               :label-width="150"
@@ -117,18 +123,50 @@
                 placeholder="请输入"
               />
             </uni-forms-item>
+          </uni-col> -->
+           <uni-col :span="12" v-if="formData.separateFlag == '1' ">
+            <uni-forms-item
+              required
+              label="分权原因"
+              :label-width="150"
+              label-align="right"
+              name="formData.separateReason"            
+            >
+               {{ formData.separateReason  }} 
+            </uni-forms-item>
+          </uni-col>
+          <uni-col :span="12" v-if="formData.separateFlag == '1' ">
+            <uni-forms-item
+              required
+              label="分权备注"
+              :label-width="150"
+              label-align="right"
+              name="formData.separateRemark"
+            >
+                由{{ formData.demographicIdName }}户，{{ formData.houseNo }}幢房屋分权{{ formData.separateRemark }}
+            </uni-forms-item>
           </uni-col>
         </uni-row>
         <uni-row>
-          <uni-col :span="12">
+                    <uni-col :span="12">
             <uni-forms-item
+              label="地理位置"
+              name="formData.longitude"
               required
-              label="房屋编号"
               :label-width="150"
               label-align="right"
-              name="formData.houseNo"
             >
-              <uni-easyinput v-model="formData.houseNo" type="text" placeholder="请输入" />
+              <view class="lg-txt-wrapper">
+                <!-- <uni-data-checkbox v-model="check" :localdata="lgTagList" /> -->
+                <view class="position" @click="gotoMap">
+                  <uni-icons type="map" color="#5D8CF7" size="14rpx" />
+                  <text class="txt">{{
+                    formData.longitude && formData.latitude
+                      ? `${formData.longitude},${formData.latitude}`
+                      : '获取定位'
+                  }}</text>
+                </view>
+              </view>
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -155,7 +193,7 @@
         </uni-row>
 
         <uni-row>
-          <uni-col :span="12">
+          <!-- <uni-col :span="12">
             <uni-forms-item
               required
               label="建筑面积（m²）"
@@ -177,7 +215,7 @@
                 <view class="unit">㎡</view>
               </view>
             </uni-forms-item>
-          </uni-col>
+          </uni-col> -->
           <uni-col :span="12">
             <uni-forms-item
               required
@@ -322,7 +360,8 @@
         <uni-row>
           <uni-col :span="24">
             <uni-forms-item
-              label="其他佐证材料"
+              :required="flag"
+              label="不合法建筑佐证材料："
               :label-width="150"
               label-align="right"
               name="formData.otherProofPic"
@@ -380,6 +419,7 @@ const dict = getStorage(StorageKey.DICT)
 const focusIndex = ref<number>(-1)
 const demographicList = ref<any[]>([]) // 产权人列表
 const showSearch = ref<boolean>(false)
+const flag = ref<boolean>(false)
 
 onLoad((option: any) => {
   if (option) {
@@ -453,6 +493,12 @@ const getLandlordDetail = () => {
       demographicList.value = [...arr]
     }
   })
+}
+
+const changeArea = (val: any) => {
+  console.log(val.detail.value,'合法面积数值')
+  formData.value.landIllegalArea = formData.value.landArea - val.detail.value
+  formData.value.landIllegalArea > 0 ? (flag.value = true) : (flag.value = false)
 }
 
 // 输入框获得焦点事件
@@ -561,7 +607,10 @@ const submit = () => {
   } else if (!formData.value.longitude) {
     showToast('请选择中心经纬度')
     return
-  } else {
+  } else if ((!formData.value.otherProofPic || formData.value.otherProofPic === '[]') && flag.value) {
+    showToast('请上传不合法建筑佐证材料')
+    return
+  }else {
     if (type === 'add') {
       addImpLandlordHouseApi(uid, params)
         .then((res) => {

@@ -53,7 +53,7 @@
           </uni-col>
           <uni-col :span="12" v-if="type == 8||type==9">
             <view class="col">
-              <view class="label">迁前厂址：</view>
+              <view class="label">迁前地址：</view>
               <view class="content">
                 {{ formatStr(dataInfo.beforeAddress) }}
               </view>

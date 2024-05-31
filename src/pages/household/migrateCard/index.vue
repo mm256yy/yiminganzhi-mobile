@@ -123,6 +123,7 @@
             <uni-th align="left" width="140rpx" class="uTitle">身份证号</uni-th>
             <uni-th align="left" width="80rpx" class="uTitle">人口性质</uni-th>
             <uni-th align="left" width="80rpx" class="uTitle">户籍册类别</uni-th>
+            <uni-th align="left" width="80rpx" class="uTitle">增计人口添加原因</uni-th>
           </uni-tr>
           <!-- 表格数据行 -->
           <uni-tr v-for="(item, index) in dataList" :key="index">
@@ -133,6 +134,7 @@
             <uni-td align="left" class="uTd">{{ formatStr(item.card) }}</uni-td>
             <uni-td align="left" class="uTd">{{ formatDict(item.populationNature, 263) }}</uni-td>
             <uni-td align="left" class="uTd">{{ formatDict(item.censusType, 249) }}</uni-td>
+            <uni-td align="left" class="uTd">{{ formatDict(item.incrementAddReason, 436) }}</uni-td>
           </uni-tr>
         </uni-table>
       </view>

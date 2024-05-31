@@ -17,7 +17,7 @@
           </uni-col>
           <uni-col :span="24">
             <uni-forms-item
-              label="迁前厂址"
+              label="迁前地址"
               :label-width="150"
               label-align="right"
               name="formData.beforeAddress"

@@ -28,12 +28,55 @@
           <text class="txt">问题反馈</text>
         </view> -->
     </view>
+    <view class="common-head">
+      <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
+      <text>土地信息</text>
+    </view>
+        <view class="table-wrap">
+      <uni-table class="table" ref="table" border stripe emptyText="暂无更多数据">
+        <uni-tr>
+          <uni-th width="28rpx" align="center">序号</uni-th>
+          <uni-th width="50rpx" align="center">所在区域</uni-th>
+          <uni-th width="40rpx">淹没范围</uni-th>
+          <uni-th width="40rpx">图幅号</uni-th>
+          <uni-th width="40rpx">地块编号</uni-th>
+          <uni-th width="50rpx">地名</uni-th>
+          <uni-th width="40rpx">使用权人</uni-th>
+          <uni-th width="40rpx">土地性质</uni-th>
+          <uni-th width="40rpx">地类</uni-th>
+          <uni-th width="40rpx">面积(亩)</uni-th>
+          <uni-th width="40rpx">周长(米)</uni-th>
+          <uni-th width="40rpx">备注</uni-th>
+        </uni-tr>
 
+        <uni-tr v-for="(item, index) in landEstimateDtoList" :key="index">
+          <uni-td>{{ index + 1 }}</uni-td>
+          <uni-td>{{ item.area }}</uni-td>
+          <uni-td>{{ item.inundationRange }}</uni-td>
+          <uni-td>{{ item.sheetNumber }}</uni-td>
+          <uni-td>{{ item.landNumber }}</uni-td>
+          <uni-td>{{ item.landName }}</uni-td>
+          <uni-td>{{ item.rightHolder }}</uni-td>
+          <uni-td>{{ item.landNature }}</uni-td>
+          <uni-td>{{ item.landLevel }}</uni-td>
+          <uni-td>{{ item.shapeArea }}</uni-td>
+          <uni-td>{{ item.shapeLeng }}</uni-td>
+          <uni-td>{{ item.remark }}</uni-td>
+          <uni-td>
+            {{
+              item.needHandle === '0' ? '无须办理' : item.isComplete === '1' ? '已办理' : '未办理'
+            }}
+          </uni-td>
+          <uni-td>
+            {{ item.completeDate ? dayjs(item.completeDate).format('YYYY-MM-DD') : '' }}
+          </uni-td>
+        </uni-tr>
+      </uni-table>
+    </view>
     <view class="common-head">
       <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
       <text>安置信息</text>
     </view>
-
     <view class="content">
       <PeopleList
         :isEdit="false"
@@ -68,7 +111,11 @@ import { routerForward } from '@/utils'
 interface PropsType {
   dataInfo: LandlordType
 }
-
+// 相关土地表
+const landEstimateDtoList = computed(() => {
+  console.log(props.dataInfo.landEstimateDtoList,'土地数据')
+  return props.dataInfo.landEstimateDtoList || []
+})
 const props = defineProps<PropsType>()
 const alertDialog = ref<any>(null)
 const emit = defineEmits(['updateData'])
@@ -144,6 +191,7 @@ const dialogConfirm = () => {
     if (current) {
       item.settingWay = current.settingWay
       item.settingRemark = current.settingRemark
+      item.isProduction = current.isProduction
     }
     return item
   })

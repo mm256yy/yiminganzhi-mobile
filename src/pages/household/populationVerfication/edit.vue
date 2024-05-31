@@ -42,7 +42,7 @@
               <uni-easyinput v-model="formData.phone" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
-          <uni-col :span="24">
+          <uni-col :span="12">
             <uni-forms-item
               label="备注"
               :label-width="150"
@@ -50,6 +50,17 @@
               name="formData.checkRemark"
             >
               <uni-easyinput v-model="formData.checkRemark" type="textarea" placeholder="请输入" />
+            </uni-forms-item>
+          </uni-col>
+          <uni-col :span="12" v-if="formData.addReason == '3'">
+            <uni-forms-item
+              required
+              label="增计人口添加原因"
+              :label-width="150"
+              label-align="right"
+              name="formData.incrementAddReason"
+            >
+              <uni-data-select v-model="formData.incrementAddReason" :localdata="dict[436]" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -200,7 +211,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref,watch } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { routerBack, getStorage, StorageKey, fmtPicUrl, cardReg } from '@/utils'
 import {
@@ -271,6 +282,20 @@ const getLandlordDetail = () => {
     }
   })
 }
+
+watch(
+  () => formData.value.card,
+  (val) => {
+    if (formData.value.card && cardReg.test(formData.value.card)) {
+      const genderCode = formData.value.card.slice(-2, -1)
+      genderCode % 2 === 0 ? (formData.value.sex = '2') : (formData.value.sex = '1')
+    }
+  },
+  {
+    immediate: true,
+    deep: true
+  }
+)
 
 // 表单提交
 const submit = () => {

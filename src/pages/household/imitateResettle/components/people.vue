@@ -27,7 +27,19 @@
         <view class="label">人口性质：</view>
         <view class="value">{{ formatDict(item.populationNature, 263) }}</view>
       </view>
-
+      <view class="item">
+        <view class="label">是否生产安置：</view>
+        <view class="value">
+          <uni-data-select
+           v-if="props.isEdit"
+            class="select-wrap"
+            v-model="item.isProduction"
+            :localdata="isProductionList"
+             @change="isProductionType"
+          />
+          <text v-else>{{item.isProduction==1?'是':item.isProduction==0?'否':'-'}}</text>
+        </view>
+      </view>
       <view class="item">
         <view class="label">安置方式：</view>
         <view class="value">
@@ -36,6 +48,7 @@
             class="select-wrap"
             v-model="item.settingWay"
             :localdata="filterWay(item)"
+            :disabled="flags"
           />
           <text v-else>{{ formatDict(item.settingWay, 375) }}</text>
         </view>
@@ -67,7 +80,16 @@ import type { LocationType } from '@/types/datafill'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
-
+const isProductionList = ref<any[]>([
+   {
+    text: '是',
+    value: '1'
+  },
+  {
+    text: '否',
+    value: '0'
+  }
+])
 const dataLists = ref<LocationType[]>([])
 // const getDataRequest = (e: any) => {
 //   try {
@@ -154,7 +176,20 @@ landNoList.value = dict[375]
 const tableData = ref<any[]>([])
 const datas = ref<any>([])
 const data = ref<any>([])
-
+const flags = ref<boolean>(false)
+const isProductionType = (e:any) => {
+  console.log(e, '选择的值是什么')
+  e == 0 ? (flags.value = true) : (flags.value = false)
+  console.log(flags.value, '开关')
+  // if (event == 0) {
+  //   rowData.settingWay = ''
+  // }
+  tableData.value.forEach((item: any) => {
+  if (item.isProduction==0) {
+    item.settingWay=''
+  }
+  })
+}
 // 监听安置确认数据问题
 watch(
   () => props.demographicList,
@@ -221,8 +256,13 @@ watch(
 const stepNext = async () => {
   // 校验数据
   const notFillArray = tableData.value.filter((item) => !item.settingWay)
-  if (notFillArray && notFillArray.length) {
+  const isNotProduction = tableData.value.filter((item) => !item.isProduction)
+  if (flags.value==false&&notFillArray && notFillArray.length) {
     showToast('请选择安置方式')
+    return
+  }
+  if (isNotProduction&&isNotProduction.length) {
+    showToast('请选择是否生产安置')
     return
   }
   console.log(datas.value, '传递的测试数据111')
@@ -245,7 +285,7 @@ onMounted(() => {
 
 .population-item {
   display: flex;
-  height: 94rpx;
+  height: 124rpx;
   padding: 9rpx 12rpx;
   margin-top: 9rpx;
   background: #f2f6ff;
@@ -262,7 +302,7 @@ onMounted(() => {
 
     .label {
       flex: none;
-      width: 56rpx;
+      width: 65rpx;
       font-size: 9rpx;
       color: #171718;
       text-align: right;

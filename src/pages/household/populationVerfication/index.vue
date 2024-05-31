@@ -92,6 +92,14 @@
               </view>
             </uni-col>
           </uni-row>
+          <uni-row>
+            <uni-col :span="24" v-if="item.incrementAddReason">
+              <view class="col">
+                <view class="label" style="width:100rpx">增计人口添加原因：</view>
+                <view class="content"> {{formatDict(item.incrementAddReason, 436)}}</view>
+              </view>
+            </uni-col>
+          </uni-row>
         </view>
       </view>
     </view>

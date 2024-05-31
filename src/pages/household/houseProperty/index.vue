@@ -69,8 +69,8 @@
             </uni-col>
             <uni-col :span="12">
               <view class="col">
-                <view class="label">房屋产权人：</view>
-                <view class="content">{{ getPropertyOwner(item.demographicId) }}</view>
+                <view class="label">合法面积(㎡)：</view>
+                <view class="content">{{ formatStr(item.landLegalArea)}}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -86,9 +86,9 @@
             </uni-col>
             <uni-col :span="12">
               <view class="col">
-                <view class="label">共有人：</view>
+                <view class="label">非合法面积(㎡)：</view>
                 <view class="content">
-                  {{ formatStr(item.ownersName) }}
+                  {{ formatStr(item.landIllegalArea) }}
                 </view>
               </view>
             </uni-col>
@@ -96,9 +96,9 @@
           <uni-row>
             <uni-col :span="12">
               <view class="col">
-                <view class="label">是否合法：</view>
+                <view class="label">是否分权：</view>
                 <view class="content">
-                  {{formatDict(item.isCompliance, 371) }} 
+                  {{item.separateFlag=='1'?'是':'否' }} 
                 </view>
               </view>
             </uni-col>
