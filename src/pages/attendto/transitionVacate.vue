@@ -53,7 +53,7 @@
       </view>
 
       <uni-row>
-        <uni-col :span="24">
+        <uni-col :span="12">
           <uni-forms-item
             required
             label="过渡安置地详址："
@@ -69,9 +69,28 @@
             />
           </uni-forms-item>
         </uni-col>
+        <uni-col :span="12">
+          <view class="col">
+            <view class="label">过渡安置人数（人）：</view>
+            <view class="content">{{ formatStr(dataInfo?.name) }}</view>
+          </view>
+        </uni-col>
       </uni-row>
-
-      <uni-row>
+            <uni-row>
+        <uni-col :span="10">
+          <view class="col">
+            <view class="label">补偿单价（元/人·月）</view>
+            <view class="content">{{ formatStr(dataInfo?.name) }}</view>
+          </view>
+        </uni-col>
+        <uni-col :span="14">
+          <view class="col">
+            <view class="label">过渡安置补偿金额（元）：</view>
+            <view class="content">{{ amountPrices }}</view>
+          </view>
+        </uni-col>
+      </uni-row>
+      <!-- <uni-row>
         <uni-col :span="24">
           <uni-forms-item
             required
@@ -94,9 +113,9 @@
             </view>
           </uni-forms-item>
         </uni-col>
-      </uni-row>
+      </uni-row> -->
 
-      <uni-row>
+      <!-- <uni-row>
         <uni-col :span="24">
           <uni-forms-item
             label="过渡结束日期："
@@ -118,7 +137,108 @@
             </view>
           </uni-forms-item>
         </uni-col>
-      </uni-row>
+      </uni-row> -->
+      <view style="display: flex;justify-content: space-between">
+          <view class="title-wrapper">
+            <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
+            <text>过渡安置费</text>
+            <!-- <button @click="add">新增</button> -->
+          </view>
+          <view class="btn blue-btn" @click="add">
+              <text class="txt">新增</text>
+          </view>
+      </view>
+      <view class="list" v-for="item in arrList" :key="item.id"> 
+        <view class="list-item">
+        <view class="list-1">
+          <view class="left">
+            <view class="name">第{{ item.index + 1 }}批过渡安置费</view>
+          </view>
+          <view class="right">
+            <image
+              class="icon m-r-10"
+              src="@/static/images/icon_delete_mini.png"
+              mode="scaleToFill"
+              @click="del(item.id)"
+            />
+          </view>
+        </view>
+        <view class="list-2">
+          <uni-row>
+            <uni-col :span="12">
+              <uni-forms-item
+                required
+                label="过渡开始日期："
+                :label-width="150"
+                label-align="right"
+                name="formData.excessStartDate"
+              >
+                <view class="picker-wrapper">
+                  <picker
+                    mode="date"
+                    :value="item.excessStartDate"
+                    :fields="'date'"
+                    @change="handleStartChange(item.index,$event)"
+                  >
+                    <view :class="['uni-input', item.excessStartDate ? '' : 'select']">
+                      {{ item.excessStartDate ? item.excessStartDate : '请选择' }}
+                    </view>
+                  </picker>
+                </view>
+              </uni-forms-item>
+            </uni-col>
+            <uni-col :span="12">
+              <uni-forms-item
+                label="过渡结束日期："
+                :label-width="150"
+                label-align="right"
+                name="formData.excessEndDate"
+              >
+                <view class="picker-wrapper">
+                  <picker
+                    mode="date"
+                    :value="item.excessEndDate"
+                    :fields="'date'"
+                    @change="handleEndChange(item.index,$event)"
+                  >
+                    <view :class="['uni-input', item.excessEndDate ? '' : 'select']">
+                      {{ item.excessEndDate ? item.excessEndDate : '请选择' }}
+                    </view>
+                  </picker>
+                </view>
+              </uni-forms-item>
+            </uni-col>
+          </uni-row>
+          <uni-row>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">补偿月数（个月）:</view>
+                <view class="content">{{
+                  item.monthNumber
+                }}</view>
+              </view>
+            </uni-col>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">补偿金额（元）：</view>
+                <view class="content">{{ item.compensationAmount }}</view>
+              </view>
+            </uni-col>
+          </uni-row>
+        </view>
+      <uni-popup ref="alertDialog" type="dialog">
+       <uni-popup-dialog
+        type="warn"
+        mode="input"
+        cancelText="取消"
+        confirmText="确认"
+        title="确认删除？"
+        @confirm="del(item.id)"
+        @close="dialogClose"
+       />
+      </uni-popup>
+      </view>
+    </view>              
     </uni-forms>
 
     <image
@@ -144,9 +264,7 @@ interface PropsType {
   dataInfo: LandlordType
   immigrantExcess: ImmigrantExcessType
 }
-
 const props = defineProps<PropsType>()
-
 const formData = ref<ImmigrantExcessType>({
   doorNo: props.dataInfo?.doorNo,
   isExcess: '',
@@ -157,7 +275,12 @@ const formData = ref<ImmigrantExcessType>({
 
 const currentStartDate = ref<any>('')
 const currentEndDate = ref<any>('')
-const emit = defineEmits(['submit'])
+const emit = defineEmits(['submit','deletePopulation'])
+const arrList = ref<any>([])
+const startMonth = ref<any>()
+const endMonth = ref<any>()
+const amountPrices = ref<any>()
+const alertDialog = ref<any>(null)
 
 watch(
   () => props.immigrantExcess,
@@ -195,7 +318,9 @@ const bindStartDateChange = (e: any) => {
 const bindEndDateChange = (e: any) => {
   formData.value.excessEndDate = e.detail.value
 }
-
+const dialogClose = () => {
+  alertDialog.value.close()
+}
 const submit = async () => {
   if (!formData.value.excessAddress) {
     showToast('请填写过渡安置地详细地址')
@@ -224,6 +349,62 @@ const submit = async () => {
     showToast(SUCCESS_MSG)
     emit('submit')
   }
+}
+
+const add = () => {
+  let i = 0
+  arrList.value.push({
+    id: Date.now(),
+    index: arrList.value.length,
+    excessStartDate: '',
+    excessEndDate: '',
+    monthNumber: '',
+    compensationAmount: ''
+  })
+}
+const handleStartChange = (index:any,e: any) => {
+  console.log(index, '索引')
+  console.log(e.detail.value, '开始的日期')
+  let date = new Date(e.detail.value)
+  startMonth.value = date.getMonth() + 1 // getMonth() 返回的月份是从0开始的，所以需要+1
+  console.log(startMonth.value, '选中的月份')
+  if (startMonth.value && endMonth.value) {
+    arrList.value[index].monthNumber = endMonth.value - startMonth.value + 1
+    arrList.value[index].compensationAmount = 2 * 2 * arrList.value[index].monthNumber
+    amountPrices.value = arrList.value.reduce((accumulator:any, currentValue:any) => {
+      return accumulator + currentValue.compensationAmount
+    }, 0)
+  } else {
+    arrList.value[index].monthNumber = ''
+  }
+}
+const handleEndChange = (index:any,e: any) => {
+  console.log(index, '索引')
+  console.log(e.detail.value, '结束的日期')
+  let date = new Date(e.detail.value)
+  endMonth.value = date.getMonth() + 1 // getMonth() 返回的月份是从0开始的，所以需要+1
+  console.log(endMonth.value, '选中的月份')
+  if (startMonth.value && endMonth.value) {
+    arrList.value[index].monthNumber = endMonth.value - startMonth.value + 1
+    arrList.value[index].compensationAmount = 2 * 2 * arrList.value[index].monthNumber
+    amountPrices.value = arrList.value.reduce((accumulator:any, currentValue:any) => {
+      return accumulator + currentValue.compensationAmount
+    }, 0)
+  } else {
+    arrList.value[index].monthNumber = ''
+  }
+}
+const del = (id:any) => {
+  arrList.value = arrList.value.filter((item: any) => item.id !== id)
+    alertDialog.value?.open()
+}
+/**
+ * 删除当前行数据
+ * @param {Object} data 当前行数据
+ */
+const deletePopulation = (data: any) => {
+  alertDialog.value?.open()
+  currentItem.value = { ...data }
 }
 </script>
 
@@ -290,7 +471,7 @@ const submit = async () => {
       border-radius: 5rpx 5rpx 0px 0px;
       flex-direction: row;
       align-items: center;
-
+     
       .icon {
         width: 10rpx;
         height: 10rpx;
@@ -305,7 +486,7 @@ const submit = async () => {
       height: 23rpx;
 
       .label {
-        width: 100rpx;
+        width: 120rpx;
         height: 23rpx;
         margin-right: 9rpx;
         font-size: 9rpx;
@@ -353,4 +534,113 @@ const submit = async () => {
     border-radius: 50%;
   }
 }
+.btn {
+      // display: flex;
+      height: 23rpx;
+      padding: 0 14rpx;
+      margin-left: 6rpx;
+      background: #3e73ec;
+      border-radius: 23rpx;
+      // align-items: center;
+      // justify-content: center;
+      &.green-btn {
+        background-color: #30a952;
+      }
+
+      &.blue-btn {
+        background: #3e73ec;
+      }
+
+      .icon {
+        width: 9rpx;
+        height: 9rpx;
+        margin-right: 3rpx;
+      }
+
+      .txt {
+        font-size: 9rpx;
+        line-height: 11rpx;
+        color: #ffffff;
+        text-align: center;
+        line-height: 23rpx;
+      }
+}
+.list {
+    width: 100%;
+
+    .list-item {
+      margin-bottom: 7rpx;
+      border-radius: 5rpx;
+      box-shadow: 0 1rpx 9rpx -2rpx rgba(0, 0, 0, 0.08);
+
+      .list-1 {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        height: 28rpx;
+        border-bottom: 1rpx dotted #d0cbcb;
+
+        .left {
+          display: flex;
+          align-items: center;
+
+          .icon {
+            display: flex;
+            width: auto;
+            height: 16rpx;
+            padding: 0 5rpx;
+            font-size: 9rpx;
+            color: #fff;
+            background: #faad14;
+            border-top-right-radius: 5rpx;
+            border-bottom-right-radius: 5rpx;
+            box-sizing: border-box;
+            align-items: center;
+            justify-content: center;
+          }
+
+          .name {
+            margin-left: 5rpx;
+            font-size: 9rpx;
+            color: #171718;
+          }
+        }
+
+        .right {
+          display: flex;
+          justify-content: right;
+          .icon {
+            width: 20rpx;
+            height: 20rpx;
+          }
+        }
+      }
+
+      .list-2 {
+        padding: 4rpx 6rpx 6rpx 0;
+        box-sizing: border-box;
+
+        .col {
+          display: flex;
+          flex-direction: row;
+
+          .label {
+            width: 80rpx;
+            height: 16rpx;
+            margin-left: 9rpx;
+            font-size: 9rpx;
+            line-height: 16rpx;
+            color: rgba(23, 23, 24, 0.6);
+          }
+
+          .content {
+            font-size: 9rpx;
+            line-height: 16rpx;
+            color: #171718;
+          }
+        }
+      }
+    }
+  }
 </style>
