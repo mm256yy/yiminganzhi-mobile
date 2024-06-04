@@ -14,7 +14,13 @@
       </view>
     </template>
     <template #left>
-      <view style="margin-left: 18px" v-if="!sourceType">
+      <view
+        style="margin-left: 18px"
+        v-if="
+          !sourceType &&
+          (roleType === RoleCodeType.implementation || roleType === RoleCodeType.implementleader)
+        "
+      >
         <uni-data-checkbox
           v-model="selcetEnd"
           :localdata="sex"
@@ -271,7 +277,11 @@ const getList = () => {
     isLoading.value = true
     const params: LandlordSearchType = {
       name: unref(keyWords),
-      type: selcetEnd.value,
+      type:
+        roleType.value === RoleCodeType.implementation ||
+        roleType.value === RoleCodeType.implementleader
+          ? selcetEnd.value
+          : MainType.PeasantHousehold,
       page: page.value,
       pageSize: pageSize.value,
       villageCode: villageCode.value.length > 0 ? villageCode.value : null
@@ -373,7 +383,11 @@ const getListAll = () => {
     isLoading.value = true
     const params: LandlordSearchType = {
       name: unref(keyWords),
-      type: selcetEnd.value,
+      type:
+        roleType.value === RoleCodeType.implementation ||
+        roleType.value === RoleCodeType.implementleader
+          ? selcetEnd.value
+          : MainType.PeasantHousehold,
       page: page.value,
       pageSize: pageSize.value
     }

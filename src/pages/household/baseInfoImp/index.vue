@@ -88,6 +88,18 @@
             <view class="content">{{ formatDict(dataInfo.inundationRange, 346) }}</view>
           </view>
         </uni-col>
+        <uni-col :span="12" v-if="dataInfo.fhReasonText">
+          <view class="col">
+            <view class="label">分户原因：</view>
+            <view class="content">{{ formatStr(dataInfo.fhReasonText) }}</view>
+          </view>
+        </uni-col>
+        <uni-col :span="12" v-if="dataInfo.mergeReasonText">
+          <view class="col">
+            <view class="label">合户原因：</view>
+            <view class="content">{{ formatStr(dataInfo.mergeReasonText) }}</view>
+          </view>
+        </uni-col>
       </uni-row>
       <!-- <uni-row>
         <uni-col :span="24">

@@ -1191,7 +1191,9 @@ class PullData {
         db.insertOrReplaceData(OtherTableName, values, fields)
       }
       // 问题反馈
-      if (feedbackDtoList && feedbackDtoList.length) {
+      console.log(feedbackDtoList, 'feedbackDtoList')
+
+      if (feedbackDtoList) {
         const fields = "'type','content','updatedDate'"
         const values = `'${OtherDataType.FeedbackDtoList}','${JSON.stringify(
           feedbackDtoList

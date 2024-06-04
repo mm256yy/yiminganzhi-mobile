@@ -85,18 +85,26 @@
                 </view>
               </view>
             </uni-col>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">新增原因：</view>
+                <view class="content">
+                  {{ formatDict(item.addReason, 370) }}
+                </view>
+              </view>
+            </uni-col>
             <uni-col :span="12" v-if="item.deleteReason">
               <view class="col">
                 <view class="label">删除原因：</view>
-                <view class="content"> {{formatDict(item.deleteReason, 367)}}</view>
+                <view class="content"> {{ formatDict(item.deleteReason, 367) }}</view>
               </view>
             </uni-col>
           </uni-row>
           <uni-row>
             <uni-col :span="24" v-if="item.incrementAddReason">
               <view class="col">
-                <view class="label" style="width:100rpx">增计人口添加原因：</view>
-                <view class="content"> {{formatDict(item.incrementAddReason, 436)}}</view>
+                <view class="label" style="width: 100rpx">增计人口添加原因：</view>
+                <view class="content"> {{ formatDict(item.incrementAddReason, 436) }}</view>
               </view>
             </uni-col>
           </uni-row>
@@ -134,12 +142,21 @@
     <uni-popup :show="true" type="center" ref="alertDialog">
       <!-- 提示框主体 -->
       <view class="popup-container">
-        <text style=" font-size: 12rpx;line-height:11rpx;color:rgba(23, 23, 24, 1);text-align: center;font-weight: border">确认删除？</text>
+        <text
+          style="
+            font-size: 12rpx;
+            line-height: 11rpx;
+            color: rgba(23, 23, 24, 1);
+            text-align: center;
+            font-weight: border;
+          "
+          >确认删除？</text
+        >
         <!-- 下拉框 -->
         <uni-data-select v-model="reason" :localdata="dict[367]" />
         <view class="btn-group">
-          <button @click="dialogConfirm" style="color:#fff;">确认</button>
-          <button @click="dialogClose" style="color:#fff;">取消</button>
+          <button @click="dialogConfirm" style="color: #fff">确认</button>
+          <button @click="dialogClose" style="color: #fff">取消</button>
         </view>
       </view>
     </uni-popup>
@@ -151,7 +168,7 @@ import { ref } from 'vue'
 import { updateImpLandlordImmigrantFillingApi } from '@/service'
 import { formatDict, formatStr, routerForward } from '@/utils'
 import { showToast, SUCCESS_MSG, ERROR_MSG } from '@/config'
-import { getStorage, StorageKey} from '@/utils'
+import { getStorage, StorageKey } from '@/utils'
 interface PropsType {
   dataList: any[]
   dataInfo: any
@@ -164,7 +181,7 @@ const currentItem = ref<any>({})
 const reason = ref<string>('') // 删除原因
 // 填报完成
 const onFilled = () => {
-  const dataList=props.dataList.filter((item) => item.isDelete != '1')
+  const dataList = props.dataList.filter((item) => item.isDelete != '1')
   const res = dataList.every((item) => item.populationNature != null)
   console.log(dataList, '测试dataList')
   console.log(res, '测试res')
@@ -195,7 +212,7 @@ const toLink = (type: string, data?: any) => {
   // 增计人口不允许编辑
   if (type === 'edit' && data.addReason !== '3') {
     let params = { type, uid, doorNo, itemUid: data.uid, phone }
-    console.log(params,'传递的参数是什么？')
+    console.log(params, '传递的参数是什么？')
     routerForward('populationVerficationEdit', {
       params: JSON.stringify(params)
     })
@@ -395,22 +412,22 @@ const dialogClose = () => {
     }
   }
   .popup-container {
-  padding: 10px;
-  box-sizing: border-box;
-  background-color: white;
-  border-radius: 2%;
-  width:150%
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: white;
+    border-radius: 2%;
+    width: 150%;
   }
-.btn-group {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
- 
-.btn-group button {
-  margin-left: 10px;
-  background-color: #3e73ec;
-  font-size: 9rpx
-}
+  .btn-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+
+  .btn-group button {
+    margin-left: 10px;
+    background-color: #3e73ec;
+    font-size: 9rpx;
+  }
 }
 </style>

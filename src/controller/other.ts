@@ -14,9 +14,13 @@ class Other extends Common {
       try {
         const sql = `select * from ${OtherTableName} where type = '${type}'`
         const result: OtherDDLType[] = await this.db.selectSql(sql)
-        if (result && result[0]) {
+        if (result) {
           resolve(
-            type === OtherDataType.PullTime ? result[0].content : JSON.parse(result[0].content)
+            type === OtherDataType.PullTime
+              ? result[0].content
+              : result[0]
+              ? JSON.parse(result[0].content)
+              : []
           )
           return
         }
@@ -27,7 +31,7 @@ class Other extends Common {
       }
     })
   }
-  getOtherWithTypeSet(data:any): Promise<any> {
+  getOtherWithTypeSet(data: any): Promise<any> {
     return new Promise(async (resolve, reject) => {
       try {
         const sql = `select * from ${OtherTableName} where type = 'landPeasantHouseholdDtoList'`

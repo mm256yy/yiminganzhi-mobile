@@ -12,7 +12,12 @@
               label-align="right"
               name="formData.houseNo"
             >
-              <uni-easyinput v-model="formData.houseNo" type="text" placeholder="请输入" :disabled="true"/>
+              <uni-easyinput
+                v-model="formData.houseNo"
+                type="text"
+                placeholder="请输入"
+                :disabled="true"
+              />
             </uni-forms-item>
           </uni-col>
           <!-- <uni-col :span="12">
@@ -58,7 +63,11 @@
               label-align="right"
               name="formData.constructionType"
             >
-              <uni-data-select v-model="formData.constructionType" :localdata="dict[252]" :disabled="true"/>
+              <uni-data-select
+                v-model="formData.constructionType"
+                :localdata="dict[252]"
+                :disabled="true"
+              />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -100,13 +109,13 @@
                   v-model="formData.landArea"
                   @focus="inputFocus(2)"
                   @blur="inputBlur"
-                  :disabled='true'
+                  :disabled="true"
                 />
                 <view class="unit">m²</view>
               </view>
             </uni-forms-item>
           </uni-col>
-                    <uni-col :span="12">
+          <uni-col :span="12">
             <uni-forms-item
               label="合法面积"
               :label-width="150"
@@ -121,12 +130,13 @@
                   v-model="formData.landLegalArea"
                   @focus="inputFocus(2)"
                   @blur="inputBlur"
+                  disabled
                 />
                 <view class="unit">m²</view>
               </view>
             </uni-forms-item>
           </uni-col>
-                    <uni-col :span="12">
+          <uni-col :span="12">
             <uni-forms-item
               label="不合法面积"
               :label-width="150"
@@ -141,6 +151,7 @@
                   v-model="formData.landIllegalArea"
                   @focus="inputFocus(2)"
                   @blur="inputBlur"
+                  disabled
                 />
                 <view class="unit">m²</view>
               </view>
@@ -276,14 +287,18 @@
               <uni-easyinput v-model="formData.newnessRate" type="number" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
-            <uni-col :span="12">
+          <uni-col :span="12">
             <uni-forms-item
               label="不合法成新率"
               :label-width="150"
               label-align="right"
               name="formData.illegalNewnessRate"
             >
-              <uni-easyinput v-model="formData.illegalNewnessRate" type="number" placeholder="请输入" />
+              <uni-easyinput
+                v-model="formData.illegalNewnessRate"
+                type="number"
+                placeholder="请输入"
+              />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -472,7 +487,7 @@ const formData = ref<any>({
   valuationAmount: '',
   compensationAmount: '',
   remark: '',
-  occupyArea:''
+  occupyArea: ''
 })
 
 // 获取数据字典
@@ -548,9 +563,23 @@ const inputBlur = () => {
 
 // 计算评估价格
 const countPrice = computed(() => {
-  const { newnessRate, landArea, valuationPrice,landIllegalArea,illegalValuationPrice,illegalNewnessRate } = formData.value
-  if (newnessRate && landArea && valuationPrice&landIllegalArea&illegalValuationPrice&illegalNewnessRate) {
-    return (newnessRate * landArea * valuationPrice+landIllegalArea*illegalValuationPrice*illegalNewnessRate).toFixed(2)
+  const {
+    newnessRate,
+    landArea,
+    valuationPrice,
+    landIllegalArea,
+    illegalValuationPrice,
+    illegalNewnessRate
+  } = formData.value
+  if (
+    newnessRate &&
+    landArea &&
+    valuationPrice & landIllegalArea & illegalValuationPrice & illegalNewnessRate
+  ) {
+    return (
+      newnessRate * landArea * valuationPrice +
+      landIllegalArea * illegalValuationPrice * illegalNewnessRate
+    ).toFixed(2)
   }
   return '0'
 })

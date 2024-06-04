@@ -80,12 +80,12 @@
           <uni-col :span="12">
             <uni-forms-item
               required
-              label="性别"
+              label="身份证号"
               :label-width="150"
               label-align="right"
-              name="formData.sex"
+              name="formData.card"
             >
-              <uni-data-select v-model="formData.sex" :localdata="dict[292]" />
+              <uni-easyinput v-model="formData.card" type="idcard" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -94,12 +94,12 @@
           <uni-col :span="12">
             <uni-forms-item
               required
-              label="身份证号"
+              label="性别"
               :label-width="150"
               label-align="right"
-              name="formData.card"
+              name="formData.sex"
             >
-              <uni-easyinput v-model="formData.card" type="idcard" placeholder="请输入" />
+              <uni-data-select v-model="formData.sex" :localdata="dict[292]" />
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -211,7 +211,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref,watch } from 'vue'
+import { ref, watch } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { routerBack, getStorage, StorageKey, fmtPicUrl, cardReg } from '@/utils'
 import {
@@ -274,7 +274,7 @@ const getLandlordDetail = () => {
       formData.value = {
         ...obj,
         // phone: obj.phone ? obj.phone : commonParams.value.phone,
-        phone:commonParams.value.phone,
+        phone: commonParams.value.phone,
         cardPic: fmtPicUrl(obj.cardPic),
         householdPic: fmtPicUrl(obj.householdPic),
         otherPic: fmtPicUrl(obj.otherPic)
@@ -346,6 +346,9 @@ const submit = () => {
     formData.value.addReason !== '3'
   ) {
     showToast('请上传户口本照片')
+    return
+  } else if (!formData.value.incrementAddReason && formData.value.addReason == '3') {
+    showToast('请选择增计人口添加原因')
     return
   } else {
     if (formData.value.addReason === '3') {

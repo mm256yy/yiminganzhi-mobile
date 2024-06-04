@@ -222,15 +222,15 @@ const getCompensationCardConfig = async () => {
     let data: any = await getLandlordItemApi(props.dataInfo.uid)
     console.log(data, '测试dada数据')
     tableData.value = data.immigrantCompensationCardList
-    tableData.value.forEach((item: any) => {
-      // && !item.hasOwnProperty('isVerify') 暂时去掉，需要的时候再使用
-      if (item.unit == '人' && item.type == '3' && item.isVerify != '1') {
-        console.log('是否走了这个条件')
-        item.number = data.demographicList.length
-      } else if (item.unit == '项' && item.type == '3' && item.isVerify != '1') {
-        item.number = 1
-      }
-    })
+    // tableData.value.forEach((item: any) => {
+    //   // && !item.hasOwnProperty('isVerify') 暂时去掉，需要的时候再使用
+    //   if (item.unit == '人' && item.type == '3' && item.isVerify != '1') {
+    //     console.log('是否走了这个条件')
+    //     item.number = data.demographicList.length
+    //   } else if (item.unit == '项' && item.type == '3' && item.isVerify != '1') {
+    //     item.number = 1
+    //   }
+    // })
     console.log('合并', tableData.value, res, data.immigrantCompensationCardList)
   }
 }

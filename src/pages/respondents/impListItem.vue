@@ -45,6 +45,11 @@
           <view class="label">移民类型:</view>
           <view class="value">只征地不搬迁</view>
         </view>
+        <view class="cont-item" v-if="props.data.type == MainType.LandNoMove">
+          <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
+          <view class="label">类别:</view>
+          <view class="value">{{ formatDict(props.data.landUserType, 418) }}</view>
+        </view>
         <!-- <view class="cont-item">
           <image class="icon" src="@/static/images/people_circle.png" mode="scaleToFill" />
           <view class="label">填报人:</view>
@@ -101,7 +106,7 @@
 </template>
 
 <script lang="ts" setup>
-import { dictOption } from '@/utils'
+import { dictOption, formatDict } from '@/utils'
 import { LandlordType } from '@/types/sync'
 import { yesAndNoEnums } from '@/config/common'
 import { MainType } from '@/types/common'

@@ -21,7 +21,7 @@
             <uni-col :span="12">
               <view class="col">
                 <view class="label">企业编码：</view>
-                <view class="content">{{ formatStr(props.dataInfo.doorNo) }}</view>
+                <view class="content">{{ formatStr(props.dataInfo.showDoorNo) || formatStr(props.dataInfo.doorNo) }}</view>
               </view>
             </uni-col>
           </uni-row>
