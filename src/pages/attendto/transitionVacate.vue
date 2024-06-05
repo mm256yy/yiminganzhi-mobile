@@ -457,7 +457,7 @@ const del = (index:any,id:any) => {
   // arrList.value = arrList.value.filter((item: any) => item.id !== id)
   // alertDialog.value?.open()
   console.log(index, '索引')
-  if (index) {
+  if (index>=0) {
     // arrList.value = arrList.value.filter((item:any) => item.index !== index)
     arrList.value.splice(index,1)
   } else if (id) {
