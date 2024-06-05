@@ -362,7 +362,38 @@
             </uni-forms-item>
           </uni-col>
         </uni-row>
-
+        <uni-row v-if="type != 'add' && mainType === MainType.PeasantHousehold">
+          <uni-col :span="8">
+            <uni-forms-item
+              label="是否分权"
+              :label-width="150"
+              label-align="right"
+              name="formData.separateFlag"
+            >
+              <div style="line-height: 25rpx">{{ formData.separateFlag == '1' ? '是' : '否' }}</div>
+            </uni-forms-item>
+          </uni-col>
+          <uni-col :span="8" v-if="formData.separateFlag == '1'">
+            <uni-forms-item
+              label="分权原因"
+              :label-width="150"
+              label-align="right"
+              name="formData.separateReason"
+            >
+              <div style="line-height: 25rpx">{{ formatDict(formData.separateReason, 435) }}</div>
+            </uni-forms-item>
+          </uni-col>
+          <uni-col :span="8" v-if="formData.separateFlag == '1'">
+            <uni-forms-item
+              label="分权备注"
+              :label-width="150"
+              label-align="right"
+              name="formData.separateRemark"
+            >
+              <div style="line-height: 25rpx">{{ formData.separateRemark }}</div>
+            </uni-forms-item>
+          </uni-col>
+        </uni-row>
         <uni-row>
           <uni-col :span="24">
             <uni-forms-item
@@ -447,7 +478,14 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import dayjs from 'dayjs'
-import { routerBack, getStorage, StorageKey, routerForward, setlocationType } from '@/utils'
+import {
+  routerBack,
+  getStorage,
+  StorageKey,
+  routerForward,
+  setlocationType,
+  formatDict
+} from '@/utils'
 import { addLandlordHouseApi, updateLandlordHouseApi } from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Back from '@/components/Back/Index.vue'

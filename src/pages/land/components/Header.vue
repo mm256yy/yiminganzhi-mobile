@@ -15,10 +15,10 @@
           <image class="icon" src="@/static/images/icon_dangan_upload.png" mode="scaleToFill" />
           <text class="txt">档案上传</text>
         </view>
-        <view class="btn-wrapper blue" @click="onFilled">
+        <!-- <view class="btn-wrapper blue" @click="onFilled">
           <image class="icon" src="@/static/images/icon_report.png" mode="scaleToFill" />
           <text class="txt">填报完成</text>
-        </view>
+        </view> -->
       </view>
     </view>
   </view>

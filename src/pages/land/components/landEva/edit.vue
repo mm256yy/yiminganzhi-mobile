@@ -114,7 +114,7 @@
                 name="formData.getType"
               >
                 <!-- <uni-easyinput v-model="formData.getType" type="text" placeholder="请输入" /> -->
-              <uni-data-select v-model="formData.getType" :localdata="dict[421]" />
+                <uni-data-select v-model="formData.getType" :localdata="dict[421]" />
               </uni-forms-item>
             </uni-col>
           </uni-row>
@@ -233,10 +233,16 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch,nextTick } from 'vue'
+import { ref, computed, watch, nextTick } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { routerBack, getStorage, StorageKey } from '@/utils'
-import { updateImpLandlordAssetLandApi, getEvaLandlordItemApi, updateEstimateFlag,getLandEstimateDtoListApi } from '@/service'
+import {
+  updateImpLandlordAssetLandApi,
+  getEvaLandlordItemApi,
+  updateEstimateFlag,
+  getLandEstimateDtoListApi,
+  updateImpLandlordImmigrantFillingApi
+} from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import Container from '@/components/Container/index.vue'
 import { formatStr } from '@/utils'
@@ -339,7 +345,7 @@ const countPrice = computed(() => {
 const inputChange = (e: any) => {
   console.log('测试通值')
   console.log(e.detail.value, '改变的值')
-  const {shapeArea } = formData.value
+  const { shapeArea } = formData.value
   formData.value.compensationAmount = (e.detail.value * shapeArea).toFixed(2)
 }
 
@@ -349,7 +355,7 @@ watch(
     console.log(newValue, 'valuationPriceCount')
     if (!formData.value.compensationAmount) {
       formData.value.compensationAmount = newValue
-      console.log(formData.value.compensationAmount,'补偿金额')
+      console.log(formData.value.compensationAmount, '补偿金额')
     }
   }
 )
@@ -366,12 +372,18 @@ const submit = () => {
     showToast('补偿金额不能为空')
     return
   }
-  console.log(params,'测试数据')
+  console.log(params, '测试数据')
   updateImpLandlordAssetLandApi(uid, params)
     .then((res) => {
       if (res) {
         showToast(SUCCESS_MSG)
-        updateEstimateApi()
+        if (params.compensationAmount > 0) {
+          updateEstimateApi()
+          updateImpLandlordImmigrantFillingApi(uid, {
+            landStatus: '1' // 土地基本情况评估
+          })
+        }
+
         routerBack()
       }
     })

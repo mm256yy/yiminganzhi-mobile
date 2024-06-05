@@ -902,7 +902,7 @@ export default {
         { value: 'household_address_grave', id: 6 },
         { value: 'household_empty_house', id: 7 },
         { value: 'household_empty_land', id: 8 },
-        { value: 'household_move_selfhouse', id: 3 }
+        { value: 'household_address_house', id: 3 }
       ],
       imageUrlAndBase64Map,
       urls: '',

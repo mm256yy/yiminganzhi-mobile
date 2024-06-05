@@ -278,7 +278,8 @@ import {
   addImpLandlordAssetAppendantApi,
   updateImpLandlordAssetAppendantApi,
   getEvaLandlordItemApi,
-  updateEstimateFlag
+  updateEstimateFlag,
+  updateImpLandlordImmigrantFillingApi
 } from '@/service'
 import { ERROR_MSG, showToast } from '@/config/msg'
 import Container from '@/components/Container/index.vue'
@@ -287,7 +288,6 @@ const title = ref<string>('')
 const commonParams = ref<any>({})
 const landNumberList = ref<any[]>([])
 const landNumberListClone = ref<any[]>([])
-
 
 // 表单数据
 const formData = ref<any>({
@@ -324,7 +324,7 @@ const getLandlordDetail = () => {
     let arr: any = res && res.assetAppendantList ? res.assetAppendantList : []
     if (arr && arr.length) {
       let obj: any = arr.filter((item: any) => item.uid === itemUid)[0]
-      console.log(obj,'详情数据')
+      console.log(obj, '详情数据')
       formData.value = { ...obj }
       // formData.value.landNumber = formData.value.landName
     }
@@ -348,7 +348,7 @@ onLoad((option: any) => {
         value: item.landName
       }
     })
-    console.log(landNumberList.value,'土地列表List')
+    console.log(landNumberList.value, '土地列表List')
     if (type === 'edit') {
       title.value = '土地青苗及附着物评估编辑'
       getLandlordDetail()
@@ -364,8 +364,8 @@ const findLandNumber = (val: any) => {
   return name
 }
 
-const landNumberChange = (index:any) => {
-  console.log(index,'当前的event值')
+const landNumberChange = (index: any) => {
+  console.log(index, '当前的event值')
 }
 // 输入框获得焦点事件
 const inputFocus = (index: number) => {
@@ -403,7 +403,7 @@ const submit = () => {
     ...formData.value,
     landNumber: findLandNumber(formData.value.landNumber)
   }
-  console.log(params,'测试传输数据')
+  console.log(params, '测试传输数据')
   if (!formData.value.householder) {
     showToast('请输入青苗户主')
     return
@@ -445,6 +445,9 @@ const submit = () => {
       .then((res) => {
         if (res) {
           showToast('新增成功')
+          updateImpLandlordImmigrantFillingApi(uid, {
+            landSeedlingStatus: '1' // 土地青苗及附着物评估
+          })
           updateEstimateApi()
           routerBack()
         }
@@ -457,6 +460,9 @@ const submit = () => {
       .then((res) => {
         if (res) {
           showToast('编辑成功')
+          updateImpLandlordImmigrantFillingApi(uid, {
+            landSeedlingStatus: '1' // 土地青苗及附着物评估
+          })
           updateEstimateApi()
           routerBack()
         }
@@ -472,9 +478,9 @@ watch(
   (val) => {
     const { type } = commonParams.value
     // if (type === 'add') {
-      formData.value.landName = landNumberListClone.value?.find((item) => item.text == val).value
-      console.log(landNumberList.value, '1111111')
-      console.log(formData.value.landName, '2222222')
+    formData.value.landName = landNumberListClone.value?.find((item) => item.text == val).value
+    console.log(landNumberList.value, '1111111')
+    console.log(formData.value.landName, '2222222')
     // }
   },
   {
@@ -504,7 +510,7 @@ watch(
     console.log(newValue, 'valuationPriceCount')
     if (!formData.value.compensationAmount) {
       formData.value.compensationAmount = newValue
-      console.log(formData.value.compensationAmount,'补偿金额')
+      console.log(formData.value.compensationAmount, '补偿金额')
     }
   }
 )
