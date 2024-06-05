@@ -30,7 +30,7 @@
             </uni-col>
             <uni-col :span="12">
               <view class="col">
-                <view class="label">成新率：</view>
+                <view class="label">合法成新率：</view>
                 <view class="content">{{ formatStr(item.newnessRate) }}</view>
               </view>
             </uni-col>
@@ -45,7 +45,7 @@
             </uni-col>
             <uni-col :span="12">
               <view class="col">
-                <view class="label">评估单价(元/㎡)：</view>
+                <view class="label">合法面积单价(元/㎡)：</view>
                 <view class="content">{{ formatStr(item.valuationPrice) }}</view>
               </view>
             </uni-col>
@@ -73,7 +73,34 @@
                 <view class="content">{{ formatStr(item.compensationAmount) }}</view>
               </view>
             </uni-col>
-            <uni-col :span="12" />
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">合法面积(㎡)：</view>
+                <view class="content">{{ formatStr(item.landLegalArea) }}</view>
+              </view>
+            </uni-col>
+          </uni-row>
+          <uni-row>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">不合法面积(㎡)：</view>
+                <view class="content">{{ formatStr(item.landIllegalArea) }}</view>
+              </view>
+            </uni-col>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">不合法成新率：</view>
+                <view class="content">{{ formatStr(item.illegalNewnessRate) }}</view>
+              </view>
+            </uni-col>
+          </uni-row>
+          <uni-row>
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">不合法面积单价：</view>
+                <view class="content">{{ formatStr(item.illegalValuationPrice) }}</view>
+              </view>
+            </uni-col>
           </uni-row>
         </view>
       </view>

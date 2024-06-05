@@ -19,9 +19,10 @@
             <!-- <view class="content"> {{ formatStr(dataInfo?.demographicList?.length) }} </view> -->
             <view class="content">
               {{
-                props.dataInfo.demographicList.filter(
-                  (item: any) => item.name != '增计人口' && item.isDelete !== '1'
-                ).length || 1
+                // props.dataInfo.demographicList.filter(
+                //   (item: any) => item.name != '增计人口' && item.isDelete !== '1'
+                // ).length || 1
+                demographicNum
               }}</view
             >
           </view>
@@ -72,7 +73,7 @@
         <uni-col :span="12">
           <view class="col">
             <view class="label">过渡安置人数（人）：</view>
-            <view class="content">{{ formatStr(dataInfo?.name) }}</view>
+            <view class="content">{{ demographicNum}}</view>
           </view>
         </uni-col>
       </uni-row>
@@ -80,13 +81,14 @@
         <uni-col :span="10">
           <view class="col">
             <view class="label">补偿单价（元/人·月）</view>
-            <view class="content">{{ formatStr(dataInfo?.name) }}</view>
+            <view class="content">{{ compensationPrice}}</view>
           </view>
         </uni-col>
         <uni-col :span="14">
           <view class="col">
             <view class="label">过渡安置补偿金额（元）：</view>
-            <view class="content">{{ amountPrices }}</view>
+            <!-- <view class="content">{{ amountPrices }}</view> -->
+             <view class="content">{{ formData.totalCompensationAmount ? formData.totalCompensationAmount : '-'  }}</view>
           </view>
         </uni-col>
       </uni-row>
@@ -138,8 +140,8 @@
           </uni-forms-item>
         </uni-col>
       </uni-row> -->
-      <view style="display: flex;justify-content: space-between">
-          <view class="title-wrapper">
+      <view style="display:flex;">
+          <view class="title-wrapper" style="width: 90%;">
             <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
             <text>过渡安置费</text>
             <!-- <button @click="add">新增</button> -->
@@ -147,19 +149,20 @@
           <view class="btn blue-btn" @click="add">
               <text class="txt">新增</text>
           </view>
+          <!-- <button @click="add">新增</button> -->
       </view>
-      <view class="list" v-for="item in arrList" :key="item.id"> 
+      <view class="list" v-for="(item, index) in arrList" :key="index"> 
         <view class="list-item">
         <view class="list-1">
           <view class="left">
-            <view class="name">第{{ item.index + 1 }}批过渡安置费</view>
+            <view class="name">第{{ item.index + 1 || item.orderNum }}批过渡安置费</view>
           </view>
           <view class="right">
             <image
               class="icon m-r-10"
               src="@/static/images/icon_delete_mini.png"
               mode="scaleToFill"
-              @click="del(item.id)"
+              @click="del(item.index,item.id)"
             />
           </view>
         </view>
@@ -171,7 +174,7 @@
                 label="过渡开始日期："
                 :label-width="150"
                 label-align="right"
-                name="formData.excessStartDate"
+                name="item.excessStartDate"
               >
                 <view class="picker-wrapper">
                   <picker
@@ -192,7 +195,7 @@
                 label="过渡结束日期："
                 :label-width="150"
                 label-align="right"
-                name="formData.excessEndDate"
+                name="item.excessEndDate"
               >
                 <view class="picker-wrapper">
                   <picker
@@ -214,7 +217,7 @@
               <view class="col">
                 <view class="label">补偿月数（个月）:</view>
                 <view class="content">{{
-                  item.monthNumber
+                  item.monthNum
                 }}</view>
               </view>
             </uni-col>
@@ -226,7 +229,7 @@
             </uni-col>
           </uni-row>
         </view>
-      <uni-popup ref="alertDialog" type="dialog">
+      <!-- <uni-popup ref="alertDialog" type="dialog">
        <uni-popup-dialog
         type="warn"
         mode="input"
@@ -236,7 +239,7 @@
         @confirm="del(item.id)"
         @close="dialogClose"
        />
-      </uni-popup>
+      </uni-popup> -->
       </view>
     </view>              
     </uni-forms>
@@ -251,26 +254,35 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted,computed } from 'vue'
+import { onShow } from '@dcloudio/uni-app'
 import dayjs from 'dayjs'
 import { formatStr } from '@/utils'
 import { SUCCESS_MSG, showToast } from '@/config/msg'
 import { updateImpLandlordExcessApi } from '@/service'
 import { ImmigrantExcessType } from '@/types/impDataFill'
 import { LandlordType } from '@/types/sync'
+import { getLandlordItemApi } from '@/service'
 
 interface PropsType {
   uid: string
   dataInfo: LandlordType
-  immigrantExcess: ImmigrantExcessType
+  immigrantExcess: any
 }
 const props = defineProps<PropsType>()
-const formData = ref<ImmigrantExcessType>({
+const formData = ref<any>({
   doorNo: props.dataInfo?.doorNo,
+  // isExcess: '',
+  // excessStartDate: '',
+  // excessEndDate: '',
+  // excessAddress: ''
+  demographicNum: '',
+  compensationPrice: '',
+  totalCompensationAmount: '',
+  excessDateEndFlag: '',
   isExcess: '',
-  excessStartDate: '',
-  excessEndDate: '',
-  excessAddress: ''
+  isComplete: '',
+  immigrantExcessPayList: []
 })
 
 const currentStartDate = ref<any>('')
@@ -281,25 +293,54 @@ const startMonth = ref<any>()
 const endMonth = ref<any>()
 const amountPrices = ref<any>()
 const alertDialog = ref<any>(null)
+const demographicNum = ref<any>()
+const compensationPrice =ref<any>()
+const getCompensationCardConfig = async() => {
+  const { uid } = props
+  console.log(uid,'Uid是什么')
+  console.log(props.dataInfo, '主体数据')
+  let data: any =  await getLandlordItemApi(uid)
+  console.log(data, '测试dada数据')
+  demographicNum.value = data.demographicList.filter((item: any) => item.name != '增计人口' && item.isDelete !== '1').length || 1
+  compensationPrice.value=data.immigrantCompensationCardList.find((item: any)=>item.name=='过渡期生产生活补助款').price
+}
 
+onShow(() => {
+  getCompensationCardConfig()
+  // getDataRequest()
+})
+
+// const demographicNum=computed(() => {
+//    return props.dataInfo.demographicList.filter(
+//                    (item: any) => item.name != '增计人口' && item.isDelete !== '1'
+//                  ).length || 1
+// })
 watch(
   () => props.immigrantExcess,
   (val) => {
     if (val) {
       // 基本信息
-      const { excessStartDate, excessEndDate } = val
+      const { immigrantExcessPayList } = val
       formData.value = {
         ...val,
-        excessStartDate: excessStartDate ? dayjs(excessStartDate).format('YYYY-MM-DD') : '',
-        excessEndDate: excessEndDate ? dayjs(excessEndDate).format('YYYY-MM-DD') : ''
+        // excessStartDate: excessStartDate ? dayjs(excessStartDate).format('YYYY-MM-DD') : '',
+        // excessEndDate: excessEndDate ? dayjs(excessEndDate).format('YYYY-MM-DD') : ''
       }
-
-      if (excessStartDate) {
-        currentStartDate.value = dayjs(excessStartDate).format('YYYY-MM-DD')
+      if (immigrantExcessPayList) {
+          immigrantExcessPayList.forEach((item:any) => {
+            item.excessStartDate = item.excessStartDate ? dayjs(item.excessStartDate).format('YYYY-MM-DD') : ''
+            item.excessEndDate = item.excessEndDate ? dayjs(item.excessEndDate).format('YYYY-MM-DD') : ''
+          })
+          console.log(immigrantExcessPayList,'数组数据')
+          
+          arrList.value = immigrantExcessPayList ? immigrantExcessPayList : []
       }
-      if (excessEndDate) {
-        currentEndDate.value = dayjs(excessEndDate).format('YYYY-MM-DD')
-      }
+      // if (excessStartDate) {
+      //   currentStartDate.value = dayjs(excessStartDate).format('YYYY-MM-DD')
+      // }
+      // if (excessEndDate) {
+      //   currentEndDate.value = dayjs(excessEndDate).format('YYYY-MM-DD')
+      // }
     }
   },
   { immediate: true, deep: true }
@@ -338,12 +379,22 @@ const submit = async () => {
     showToast('开始日期不得大于结束日期')
     return
   }
+  formData.value.immigrantExcessPayList = arrList.value
+  formData.value.immigrantExcessPayList .forEach((item:any) => {
+    item.excessStartDate = item.excessStartDate ? dayjs(item.excessStartDate) : ''
+    item.excessEndDate = item.excessEndDate ? dayjs(item.excessEndDate) : ''
+  })
+  formData.value.demographicNum = demographicNum.value
+  formData.value.compensationPrice=compensationPrice.value
+  
   const params: Partial<ImmigrantExcessType> = {
     ...formData.value,
-    excessStartDate: formData.value.excessStartDate ? dayjs(formData.value.excessStartDate) : '',
-    excessEndDate: formData.value.excessEndDate ? dayjs(formData.value.excessEndDate) : '',
-    isExcess: '1'
+    // excessStartDate: formData.value.excessStartDate ? dayjs(formData.value.excessStartDate) : '',
+    // excessEndDate: formData.value.excessEndDate ? dayjs(formData.value.excessEndDate) : '',
+    isExcess: '1',
+    isComplete:'0'
   }
+  console.log(params,'提交的数据是什么？')
   const res = await updateImpLandlordExcessApi(props.uid, params)
   if (res) {
     showToast(SUCCESS_MSG)
@@ -354,12 +405,13 @@ const submit = async () => {
 const add = () => {
   let i = 0
   arrList.value.push({
-    id: Date.now(),
     index: arrList.value.length,
-    excessStartDate: '',
-    excessEndDate: '',
-    monthNumber: '',
-    compensationAmount: ''
+    excessStartDate: '', //开始日期
+    excessEndDate: '', //结束日期
+    monthNum: '', //补偿月数
+    compensationAmount: '', //补偿金额
+    orderNum: '',//批次
+    isDelete:'0'
   })
 }
 const handleStartChange = (index:any,e: any) => {
@@ -368,14 +420,17 @@ const handleStartChange = (index:any,e: any) => {
   let date = new Date(e.detail.value)
   startMonth.value = date.getMonth() + 1 // getMonth() 返回的月份是从0开始的，所以需要+1
   console.log(startMonth.value, '选中的月份')
+  arrList.value[index].excessStartDate=e.detail.value
   if (startMonth.value && endMonth.value) {
-    arrList.value[index].monthNumber = endMonth.value - startMonth.value + 1
-    arrList.value[index].compensationAmount = 2 * 2 * arrList.value[index].monthNumber
-    amountPrices.value = arrList.value.reduce((accumulator:any, currentValue:any) => {
+    arrList.value[index].monthNum = endMonth.value - startMonth.value + 1
+    arrList.value[index].compensationAmount = demographicNum.value * compensationPrice.value * arrList.value[index].monthNum
+    formData.value.totalCompensationAmount = arrList.value.reduce((accumulator:any, currentValue:any) => {
       return accumulator + currentValue.compensationAmount
     }, 0)
+
+    arrList.value[index].orderNum = index + 1
   } else {
-    arrList.value[index].monthNumber = ''
+    arrList.value[index].monthNum = ''
   }
 }
 const handleEndChange = (index:any,e: any) => {
@@ -384,28 +439,50 @@ const handleEndChange = (index:any,e: any) => {
   let date = new Date(e.detail.value)
   endMonth.value = date.getMonth() + 1 // getMonth() 返回的月份是从0开始的，所以需要+1
   console.log(endMonth.value, '选中的月份')
+  arrList.value[index].excessEndDate=e.detail.value
   if (startMonth.value && endMonth.value) {
-    arrList.value[index].monthNumber = endMonth.value - startMonth.value + 1
-    arrList.value[index].compensationAmount = 2 * 2 * arrList.value[index].monthNumber
-    amountPrices.value = arrList.value.reduce((accumulator:any, currentValue:any) => {
+    arrList.value[index].monthNum = endMonth.value - startMonth.value + 1
+    arrList.value[index].compensationAmount = demographicNum.value * compensationPrice.value * arrList.value[index].monthNum
+    console.log(arrList.value,'数组arr')
+    formData.value.totalCompensationAmount = arrList.value.reduce((accumulator:any, currentValue:any) => {
       return accumulator + currentValue.compensationAmount
     }, 0)
+    console.log(formData.value.totalCompensationAmount,'补偿金额')
+    arrList.value[index].orderNum = index + 1
   } else {
-    arrList.value[index].monthNumber = ''
+    arrList.value[index].monthNum = ''
   }
 }
-const del = (id:any) => {
-  arrList.value = arrList.value.filter((item: any) => item.id !== id)
-    alertDialog.value?.open()
+const del = (index:any,id:any) => {
+  // arrList.value = arrList.value.filter((item: any) => item.id !== id)
+  // alertDialog.value?.open()
+  console.log(index, '索引')
+  if (index) {
+    // arrList.value = arrList.value.filter((item:any) => item.index !== index)
+    arrList.value.splice(index,1)
+  } else if (id) {
+    arrList.value = arrList.value.filter((item:any) => item.id !== id)
+  }
+  formData.value.totalCompensationAmount = arrList.value.reduce((accumulator:any, currentValue:any) => {
+    return accumulator + currentValue.compensationAmount
+  }, 0)
 }
 /**
  * 删除当前行数据
  * @param {Object} data 当前行数据
  */
-const deletePopulation = (data: any) => {
-  alertDialog.value?.open()
-  currentItem.value = { ...data }
-}
+// const deletePopulation = (data: any) => {
+//   alertDialog.value?.open()
+//   currentItem.value = { ...data }
+// }
+// onShow(() => {
+//   console.log(1)
+//   getCompensationCardConfig()
+// })
+// onMounted(() => {
+//   console.log(2)
+//    getCompensationCardConfig()
+// })
 </script>
 
 <style lang="scss" scoped>
@@ -535,14 +612,14 @@ const deletePopulation = (data: any) => {
   }
 }
 .btn {
-      // display: flex;
+      display: flex;
       height: 23rpx;
       padding: 0 14rpx;
       margin-left: 6rpx;
       background: #3e73ec;
       border-radius: 23rpx;
-      // align-items: center;
-      // justify-content: center;
+      align-items: center;
+      justify-content: center;
       &.green-btn {
         background-color: #30a952;
       }
@@ -561,8 +638,6 @@ const deletePopulation = (data: any) => {
         font-size: 9rpx;
         line-height: 11rpx;
         color: #ffffff;
-        text-align: center;
-        line-height: 23rpx;
       }
 }
 .list {

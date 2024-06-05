@@ -18,7 +18,7 @@
           </uni-col>
         </uni-row>
         <uni-row>
-          <uni-col :span="12">
+          <!-- <uni-col :span="12">
             <uni-forms-item
               label="建筑面积"
               :label-width="150"
@@ -27,6 +27,12 @@
             >
               {{ formData.landArea}}
             </uni-forms-item>
+          </uni-col> -->
+          <uni-col :span="12">
+              <view class="col">
+                <view class="label">建筑面积（m²）：</view>
+                <view class="content">{{ formData.landArea}}</view>
+              </view>
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
@@ -50,7 +56,7 @@
           </uni-col>
         </uni-row>
         <uni-row>
-          <uni-col :span="12">
+          <!-- <uni-col :span="12">
             <uni-forms-item
               label="不合法面积(m²)"
               :label-width="150"
@@ -59,6 +65,12 @@
             >
               {{ formData.landIllegalArea}}
             </uni-forms-item>
+          </uni-col> -->
+          <uni-col :span="12">
+              <view class="col">
+                <view class="label">不合法面积(m²)：</view>
+                <view class="content"> {{ formData.landIllegalArea}}</view>
+              </view>
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
@@ -97,7 +109,7 @@
               </view>
             </uni-forms-item>
           </uni-col> -->
-          <uni-col :span="12">
+          <!-- <uni-col :span="12">
             <uni-forms-item
               label="是否分权"
               :label-width="150"
@@ -105,6 +117,23 @@
               name="formData.separateFlag"
             >
                {{ formData.separateFlag == '1' ? '是' : '否' }} 
+            </uni-forms-item>
+          </uni-col> -->
+          <uni-col :span="12">
+              <view class="col">
+                <view class="label">是否分权：</view>
+                <view class="content"> {{ formData.separateFlag == '1' ? '是' : '否' }} </view>
+              </view>
+          </uni-col>
+          <uni-col :span="12">
+            <uni-forms-item
+              required
+              label="房屋来源"
+              :label-width="150"
+              label-align="right"
+              name="formData.houseNature"
+            >
+              <uni-data-select v-model="formData.houseNature" :localdata="dict[304]" />
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -835,4 +864,25 @@ const submit = () => {
     }
   }
 }
+.col {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      height: 23rpx;
+
+      .label {
+        width: 120rpx;
+        height: 23rpx;
+        margin-right: 9rpx;
+        font-size: 10rpx;
+        color: rgba(23, 23, 24, 0.6);
+        text-align: right;
+      }
+
+      .content {
+        height: 23rpx;
+        font-size: 10rpx;
+        color: #171718;
+      }
+    }
 </style>

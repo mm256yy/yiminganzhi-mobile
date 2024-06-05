@@ -303,7 +303,7 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              label="合法评估单价"
+              label="合法面积单价"
               :label-width="150"
               label-align="right"
               name="formData.valuationPrice"
@@ -323,7 +323,7 @@
           </uni-col>
           <uni-col :span="12">
             <uni-forms-item
-              label="不合法评估单价"
+              label="不合法面积单价"
               :label-width="150"
               label-align="right"
               name="formData.illegalValuationPrice"
@@ -408,7 +408,7 @@
               </view>
             </uni-forms-item>
           </uni-col>
-          <uni-col :span="12">
+          <!-- <uni-col :span="12">
             <uni-col :span="12">
               <uni-forms-item
                 label="是否合法"
@@ -423,7 +423,7 @@
                 />
               </uni-forms-item>
             </uni-col>
-          </uni-col>
+          </uni-col> -->
         </uni-row>
         <uni-row>
           <uni-col :span="12">

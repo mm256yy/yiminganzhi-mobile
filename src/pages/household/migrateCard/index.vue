@@ -220,6 +220,7 @@ const getCompensationCardConfig = async () => {
       (item: any) => item.phType == 'Company' && (item.type == '3' || item.type == '1')
     )
     console.log('获取移民建卡奖励费列表', datas)
+    console.log(props.dataInfo.uid,'测试uid')
     let data: any = await getLandlordItemApi(props.dataInfo.uid)
     console.log(data, '测试dada数据')
     tableData.value = data.immigrantCompensationCardList

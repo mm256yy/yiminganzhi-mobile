@@ -51,7 +51,7 @@
             <view class="label">户内人口：</view>
             <view class="content">
               {{
-                props.dataInfo.demographicList.filter(
+                props.dataInfo?.demographicList.filter(
                   (item: any) => item.name != '增计人口' && item.isDelete !== '1'
                 ).length || 1
               }}</view
@@ -114,12 +114,14 @@
     <view class="handle-status" v-if="excessInfo.isExcess === '1'">
       <image src="@/static/images/icon_submit.png" class="icon" />
       <view class="txt">
-        该户过渡安置办理已完成，过渡时间:
-        {{
-          excessInfo.excessStartDate ? dayjs(excessInfo.excessStartDate).format('YYYY-MM-DD') : '-'
+        该户过渡安置办理{{ excessInfo.isComplete == '0' ? '过渡中' : excessInfo.isComplete == '1' ? '过渡完成' : '-' }}
+      </view>
+      <view class="txt" v-for="(item,index) in excessInfo.immigrantExcessPayList" :key="index">
+        第{{item.orderNum}}批过渡时间 :{{
+          item.excessStartDate ? dayjs(item.excessStartDate).format('YYYY-MM-DD') : '-'
         }}
         至
-        {{ excessInfo.excessEndDate ? dayjs(excessInfo.excessEndDate).format('YYYY-MM-DD') : '-' }}
+        {{ item.excessEndDate ? dayjs(item.excessEndDate).format('YYYY-MM-DD') : '-' }}
       </view>
     </view>
   </view>

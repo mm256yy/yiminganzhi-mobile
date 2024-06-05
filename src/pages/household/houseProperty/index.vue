@@ -86,7 +86,7 @@
             </uni-col>
             <uni-col :span="12">
               <view class="col">
-                <view class="label">非合法面积(㎡)：</view>
+                <view class="label">不合法面积(㎡)：</view>
                 <view class="content">
                   {{ formatStr(item.landIllegalArea) }}
                 </view>
