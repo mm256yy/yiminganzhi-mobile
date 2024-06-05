@@ -153,7 +153,7 @@
               />
             </uni-forms-item>
           </uni-col> -->
-           <uni-col :span="12" v-if="formData.separateFlag == '1' ">
+           <!-- <uni-col :span="12" v-if="formData.separateFlag == '1' ">
             <uni-forms-item
               required
               label="分权原因"
@@ -163,8 +163,14 @@
             >
                {{ formData.separateReason  }} 
             </uni-forms-item>
-          </uni-col>
+          </uni-col> -->
           <uni-col :span="12" v-if="formData.separateFlag == '1' ">
+              <view class="col">
+                <view class="label">分权原因：</view>
+                <view class="content">{{ dict[435].filter((item:any) => item.value == formData.separateReason)[0]?.text }}</view>
+              </view>
+          </uni-col>
+          <!-- <uni-col :span="12" v-if="formData.separateFlag == '1' ">
             <uni-forms-item
               required
               label="分权备注"
@@ -174,6 +180,12 @@
             >
                 由{{ formData.demographicIdName }}户，{{ formData.houseNo }}幢房屋分权{{ formData.separateRemark }}
             </uni-forms-item>
+          </uni-col> -->
+          <uni-col :span="12" v-if="formData.separateFlag == '1' ">
+              <view class="col">
+                <view class="label">分权备注：</view>
+                <view class="content">由{{ formData.demographicIdName }}户，{{ formData.houseNo }}幢房屋分权{{ formData.separateRemark }}</view>
+              </view>
           </uni-col>
         </uni-row>
         <uni-row>
@@ -589,6 +601,7 @@ const mapChooseCallBack = (data: any) => {
 
 onMounted(() => {
   uni.$on('chooseMap', mapChooseCallBack)
+  console.log(dict[435],'测试数据')
 })
 
 onBeforeUnmount(() => {

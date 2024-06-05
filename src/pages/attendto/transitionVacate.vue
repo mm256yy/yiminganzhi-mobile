@@ -367,18 +367,18 @@ const submit = async () => {
     showToast('请填写过渡安置地详细地址')
     return
   }
-  if (!formData.value.excessStartDate) {
-    showToast('请选择开始日期')
-    return
-  }
-  if (
-    formData.value.excessStartDate &&
-    formData.value.excessEndDate &&
-    dayjs(formData.value.excessStartDate).valueOf() > dayjs(formData.value.excessEndDate).valueOf()
-  ) {
-    showToast('开始日期不得大于结束日期')
-    return
-  }
+  // if (!formData.value.excessStartDate) {
+  //   showToast('请选择开始日期')
+  //   return
+  // }
+  // if (
+  //   formData.value.excessStartDate &&
+  //   formData.value.excessEndDate &&
+  //   dayjs(formData.value.excessStartDate).valueOf() > dayjs(formData.value.excessEndDate).valueOf()
+  // ) {
+  //   showToast('开始日期不得大于结束日期')
+  //   return
+  // }
   formData.value.immigrantExcessPayList = arrList.value
   formData.value.immigrantExcessPayList .forEach((item:any) => {
     item.excessStartDate = item.excessStartDate ? dayjs(item.excessStartDate) : ''

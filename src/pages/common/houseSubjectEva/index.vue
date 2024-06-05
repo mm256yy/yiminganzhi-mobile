@@ -97,7 +97,7 @@
           <uni-row>
             <uni-col :span="12">
               <view class="col">
-                <view class="label">不合法面积单价：</view>
+                <view class="label">不合法面积单价(元/㎡)：</view>
                 <view class="content">{{ formatStr(item.illegalValuationPrice) }}</view>
               </view>
             </uni-col>
@@ -258,7 +258,7 @@ const toLink = (type: string, itemUid?: number) => {
           flex-direction: row;
 
           .label {
-            width: 80rpx;
+            width: 100rpx;
             height: 16rpx;
             margin-left: 9rpx;
             font-size: 9rpx;

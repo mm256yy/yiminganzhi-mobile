@@ -565,20 +565,23 @@ const inputBlur = () => {
 const countPrice = computed(() => {
   const {
     newnessRate,
-    landArea,
+    landLegalArea,
     valuationPrice,
     landIllegalArea,
     illegalValuationPrice,
     illegalNewnessRate
   } = formData.value
+  console.log(Number(newnessRate), Number(landLegalArea), Number(valuationPrice), Number(landIllegalArea), Number(illegalValuationPrice), Number(illegalNewnessRate), '数据')
+  console.log(formData.value,'测试数据')
   if (
     newnessRate &&
-    landArea &&
-    valuationPrice & landIllegalArea & illegalValuationPrice & illegalNewnessRate
+    landLegalArea &&
+    valuationPrice &&landIllegalArea && illegalValuationPrice && illegalNewnessRate
   ) {
+    console.log('进入')
     return (
-      newnessRate * landArea * valuationPrice +
-      landIllegalArea * illegalValuationPrice * illegalNewnessRate
+      Number(newnessRate) * Number(landLegalArea) * Number(valuationPrice) +
+      Number(landIllegalArea) * Number(illegalValuationPrice) * Number(illegalNewnessRate)
     ).toFixed(2)
   }
   return '0'
@@ -588,6 +591,7 @@ const countPrice = computed(() => {
 const submit = () => {
   const { uid, doorNo, type } = commonParams.value
   formData.value.valuationAmount = countPrice.value
+  formData.value.compensationAmount = countPrice.value
   const params = {
     doorNo,
     ...formData.value,

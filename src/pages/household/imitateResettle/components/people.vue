@@ -48,7 +48,7 @@
             class="select-wrap"
             v-model="item.settingWay"
             :localdata="filterWay(item)"
-            :disabled="flags"
+            :disabled="item.isProduction == '0' || !item.isProduction ? true : false"
           />
           <text v-else>{{ formatDict(item.settingWay, 375) }}</text>
         </view>
