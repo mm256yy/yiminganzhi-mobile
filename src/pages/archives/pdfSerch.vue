@@ -438,27 +438,42 @@
               }}</td>
             </tr>
             <tr>
-              <td class="uTd" colspan="3"
-                >{{
-                  baseInfo.type == 'Company'
-                    ? '企业盖章'
-                    : baseInfo.type == 'IndividualHousehold'
-                    ? '个体户盖章'
-                    : baseInfo.type == 'PeasantHousehold'
-                    ? '移民户主'
-                    : baseInfo.type == 'Village'
-                    ? '村集体盖章'
-                    : '移民户主'
-                }}:<img id="signatureImg" class="signatureImgs" :src="path" v-if="path"
-              /></td>
+              <td class="uTd" colspan="3">
+                <div style="display: flex; justify-content: flex-start; align-items: center">
+                  <div style="white-space: nowrap">
+                    {{
+                      baseInfo.type == 'Company'
+                        ? '企业盖章'
+                        : baseInfo.type == 'IndividualHousehold'
+                        ? '个体户盖章'
+                        : baseInfo.type == 'PeasantHousehold'
+                        ? '移民户主'
+                        : baseInfo.type == 'Village'
+                        ? '村集体盖章'
+                        : '移民户主'
+                    }}:
+                  </div>
+                  <img id="signatureImg" class="signatureImgs" :src="path" v-if="path" />
+                </div>
+              </td>
             </tr>
             <tr>
               <td align="center" class="uTd" rowspan="2">移民工作组验收意见</td>
               <td align="center" class="uTd" colspan="3"></td>
             </tr>
             <tr>
-              <td class="uTd bbq" colspan="1">验收人：</td>
-              <td class="uTd" colspan="2">验收时间:</td>
+              <td class="uTd bbq" colspan="1">
+                <div style="display: flex; justify-content: flex-start; align-items: center">
+                  <div> 验收人： </div>
+                  <!-- <img id="signatureImg" class="signatureImgs" :src="paths" v-if="paths" /> -->
+                </div>
+              </td>
+              <td class="uTd" colspan="2"
+                >验收时间:
+                <span style="font-size: 16px">{{
+                  times ? dayjs(times).format('YYYY年MM月DD日') : ''
+                }}</span></td
+              >
             </tr>
             <tr>
               <td align="center" class="uTd" rowspan="2">乡镇街道审核意见</td>
@@ -906,7 +921,8 @@ export default {
       ],
       imageUrlAndBase64Map,
       urls: '',
-      paths: ''
+      paths: '',
+      times: ''
     }
   },
   onLoad(option) {
@@ -1047,6 +1063,9 @@ export default {
       this.saveImage(path)
     },
     handleClick(e) {
+      if (!e) {
+        this.times = new Date()
+      }
       routerForward('pdfqianm', { uid: this.uid, showde: e })
     },
     saveImage(url) {
@@ -1381,7 +1400,7 @@ export default {
 }
 
 .signatureImgs {
-  width: 50px;
+  width: 100px;
   height: 100%;
   background-color: #fff;
   object-fit: contain;

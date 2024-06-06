@@ -77,8 +77,8 @@
               label-align="right"
               name="formData.storeyNumber"
             >
-              <view :class="['input-wrapper', focusIndex === 1 ? 'focus' : '']">
-                <input
+              <view :class="['input-wrappers', focusIndex === 1 ? 'focus' : '']">
+                <uni-easyinput
                   class="input-txt"
                   placeholder="请输入"
                   type="number"
@@ -101,8 +101,8 @@
               label-align="right"
               name="formData.landArea"
             >
-              <view :class="['input-wrapper', focusIndex === 2 ? 'focus' : '']">
-                <input
+              <view :class="['input-wrappers', focusIndex === 2 ? 'focus' : '']">
+                <uni-easyinput
                   class="input-txt"
                   placeholder="请输入"
                   type="number"
@@ -122,8 +122,8 @@
               label-align="right"
               name="formData.landLegalArea"
             >
-              <view :class="['input-wrapper', focusIndex === 2 ? 'focus' : '']">
-                <input
+              <view :class="['input-wrappers', focusIndex === 2 ? 'focus' : '']">
+                <uni-easyinput
                   class="input-txt"
                   placeholder="请输入"
                   type="number"
@@ -143,8 +143,8 @@
               label-align="right"
               name="formData.landIllegalArea"
             >
-              <view :class="['input-wrapper', focusIndex === 2 ? 'focus' : '']">
-                <input
+              <view :class="['input-wrappers', focusIndex === 2 ? 'focus' : '']">
+                <uni-easyinput
                   class="input-txt"
                   placeholder="请输入"
                   type="number"
@@ -351,8 +351,8 @@
               label-align="right"
               name="formData.valuationAmount"
             >
-              <view :class="['input-wrapper', focusIndex === 7 ? 'focus' : '']">
-                <input
+              <view :class="['input-wrappers', focusIndex === 7 ? 'focus' : '']">
+                <uni-easyinput
                   class="input-txt"
                   placeholder="请输入"
                   type="number"
@@ -571,12 +571,23 @@ const countPrice = computed(() => {
     illegalValuationPrice,
     illegalNewnessRate
   } = formData.value
-  console.log(Number(newnessRate), Number(landLegalArea), Number(valuationPrice), Number(landIllegalArea), Number(illegalValuationPrice), Number(illegalNewnessRate), '数据')
-  console.log(formData.value,'测试数据')
+  console.log(
+    Number(newnessRate),
+    Number(landLegalArea),
+    Number(valuationPrice),
+    Number(landIllegalArea),
+    Number(illegalValuationPrice),
+    Number(illegalNewnessRate),
+    '数据'
+  )
+  console.log(formData.value, '测试数据')
   if (
     newnessRate &&
     landLegalArea &&
-    valuationPrice &&landIllegalArea && illegalValuationPrice && illegalNewnessRate
+    valuationPrice &&
+    landIllegalArea &&
+    illegalValuationPrice &&
+    illegalNewnessRate
   ) {
     console.log('进入')
     return (
@@ -727,6 +738,37 @@ const submit = () => {
           width: 168rpx;
           height: 35px;
           padding-left: 7rpx;
+          font-size: 9rpx;
+          line-height: 35px;
+          color: #171718;
+        }
+
+        .unit {
+          width: 23rpx;
+          height: 35px;
+          font-size: 9rpx;
+          line-height: 35px;
+          color: #171718;
+          text-align: center;
+          background-color: #f5f7fa;
+          border-left: 1px solid #d9d9d9;
+        }
+      }
+      .input-wrappers {
+        display: flex;
+        align-items: center;
+        width: 200rpx;
+        // border: 1px solid #d9d9d9;
+        border-radius: 4px;
+
+        &.focus {
+          border-color: rgb(41, 121, 255);
+        }
+
+        .input-txt {
+          width: 168rpx;
+          height: 35px;
+          // padding-left: 7rpx;
           font-size: 9rpx;
           line-height: 35px;
           color: #171718;
