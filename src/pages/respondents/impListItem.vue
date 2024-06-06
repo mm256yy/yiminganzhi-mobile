@@ -327,7 +327,7 @@ const getProgressText = (data: LandlordType) => {
 }
 const totalStage = computed(() => {
   // 类别为农户时7个阶段，其他4个阶段
-  return props.data.landUserType === 'PeasantHousehold' ? 7 : 4
+  return props.data.landUserType === 'PeasantHousehold' ? 7 : 5
 })
 const fillNumber = computed(() => {
   const { immigrantFilling, landUserType, landEstimateDtoList } = props.data || {}

@@ -203,8 +203,8 @@
               label-align="right"
               name="formData.homesteadArea"
             >
-              <view :class="['input-wrapper', focusIndex === 4 ? 'focus' : '']">
-                <input
+              <view :class="['input-wrappers', focusIndex === 4 ? 'focus' : '']">
+                <uni-easyinput
                   class="input-txt"
                   placeholder="请输入"
                   type="number"
