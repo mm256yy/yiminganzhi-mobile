@@ -166,7 +166,7 @@ const handleClick = () => {
   routerForward('pdfSerch', {
     data: JSON.stringify(props.pdfdata),
     dataInfo: JSON.stringify(props.dataInfo),
-    id: 5,
+    id: 20,
     show: true
   })
 }

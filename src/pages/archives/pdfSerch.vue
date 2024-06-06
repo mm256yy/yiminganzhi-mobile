@@ -143,7 +143,9 @@
           padding: 10px;
         "
       >
-        <h1 style="font-size: 24px; text-align: center">择址确认单</h1>
+        <h1 style="font-size: 24px; text-align: center">{{
+          show ? '建房告知单' : '择址确认单'
+        }}</h1>
         <div style="display: flex; justify-content: space-between">
           <div style="font-size: 16px">
             {{
@@ -917,17 +919,20 @@ export default {
         { value: 'household_address_grave', id: 6 },
         { value: 'household_empty_house', id: 7 },
         { value: 'household_empty_land', id: 8 },
-        { value: 'household_address_house', id: 3 }
+        { value: 'household_address_house', id: 3 },
+        { value: 'household_move_selfhouse', id: 20 }
       ],
       imageUrlAndBase64Map,
       urls: '',
       paths: '',
-      times: ''
+      times: '',
+      idpdf: ''
     }
   },
   onLoad(option) {
     console.log(option)
     this.id = option.id
+    this.idpdf = option.id
     console.log(JSON.parse(option.dataInfo))
     this.dataList = option.data ? JSON.parse(option.data) : []
     this.baseInfo = option.dataInfo ? JSON.parse(option.dataInfo) : []
@@ -945,9 +950,9 @@ export default {
     if (option.show) {
       this.show = true
     }
-    if (this.baseInfo.immigrantConfirmReportList.length > 0) {
+    if (this.baseInfo.immigrantConfirmReportList.length > 0 && option.id != '20') {
       let nevurl = this.baseInfo.immigrantConfirmReportList.filter(
-        (item) => item.type == this.confing.filter((item) => item.id == this.id)[0].value
+        (item) => item.type == this.confing.filter((item) => item.id == this.idpdf)[0].value
       )
       if (nevurl.length > 0 && imageUrlAndBase64Map[JSON.parse(nevurl[0].signFile)[0].url]) {
         console.log(JSON.parse(nevurl[0].signFile)[0].path, '直接进入')
@@ -1049,7 +1054,7 @@ export default {
 
             await updatepic({
               signFile: JSON.stringify(files),
-              type: this.confing.filter((item) => item.id == this.id)[0].value,
+              type: this.confing.filter((item) => item.id == this.idpdf)[0].value,
               fuid: this.baseInfo.uid
             })
           }

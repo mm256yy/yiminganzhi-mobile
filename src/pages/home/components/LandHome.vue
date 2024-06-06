@@ -14,25 +14,35 @@
         <text class="search-txt">更多条件</text>
       </view>
       <view class="search-btn-radius" @click="onReset">
-            <text class="search-txt">重置搜索</text>
+        <text class="search-txt">重置搜索</text>
       </view>
     </view>
     <!-- 具体内容 -->
     <view class="main-enter">
       <view class="operate-segment">
-        <view style="display: flex;">
-        <text class="land-text">{{ types==''?`土地列表（共 ${total} 条土地数据）`:types=='0'?`土地列表（共 ${totals} 条未评估土地数据）`:types=='1'?`土地列表共（${totals} 条已评估土地数据）`:types=='2'?`土地列表共（${totals} 条我的评估土地数据）`:`土地列表（共 ${total} 条土地数据）` }}</text>
-        <view class="right-side">
-          <view class="btn linear-gradient" @click="onSearchs('1')">
-            <text class="txt">已评估</text>
+        <view style="display: flex">
+          <text class="land-text">{{
+            types == ''
+              ? `土地列表（共 ${total} 条土地数据）`
+              : types == '0'
+              ? `土地列表（共 ${totals} 条未评估土地数据）`
+              : types == '1'
+              ? `土地列表共（${totals} 条已评估土地数据）`
+              : types == '2'
+              ? `土地列表共（${totals} 条我的评估土地数据）`
+              : `土地列表（共 ${total} 条土地数据）`
+          }}</text>
+          <view class="right-side">
+            <view class="btn linear-gradient" @click="onSearchs('1')">
+              <text class="txt">已评估</text>
+            </view>
+            <view class="btn linear-gradient" @click="onSearchs('0')">
+              <text class="txt">未评估</text>
+            </view>
+            <view class="btn linear-gradient" @click="onMySearch">
+              <text class="txt">我的评估</text>
+            </view>
           </view>
-          <view class="btn linear-gradient" @click="onSearchs('0')">
-            <text class="txt">未评估</text>
-          </view>
-          <view class="btn linear-gradient" @click="onMySearch">
-            <text class="txt">我的评估</text>
-          </view>
-        </view>
         </view>
         <view class="right-side">
           <view class="btn blue-btn" @click="toTarget('database')">
@@ -54,7 +64,6 @@
           :enable-flex="true"
           @scrolltolower="loadMore"
           @scrolltoupper="onRefresh"
-          v-loading="isLoading"
         >
           <view class="scroll">
             <LandListItem
@@ -104,7 +113,7 @@
 <script lang="ts" setup>
 import { ref, reactive, onMounted, nextTick, computed, onBeforeUnmount } from 'vue'
 import { onShow, onLoad } from '@dcloudio/uni-app'
-import { routerForward, debounce,getStorage,StorageKey } from '@/utils'
+import { routerForward, debounce, getStorage, StorageKey } from '@/utils'
 import {
   getOtherItemApi,
   getLandEstimateDtoListApi,
@@ -137,33 +146,33 @@ let searchParams = reactive({
   areaCode: '',
   ownershipUnitIsNull: '',
   estimateFlag: '',
-  relationBy:''
+  relationBy: ''
 }) // 查询参数
 let total = ref(0)
 const types = ref<string>('')
-const totals =ref(0)
+const totals = ref(0)
 const onSearch = () => {
   searchParams.name = searchName.value
   init()
 }
 
-const onSearchs = (type:any) => {
+const onSearchs = (type: any) => {
   searchParams.estimateFlag = type
   types.value = type
   init()
   nextTick(async () => {
-   totals.value = await getLandlordListBySearchTitleTotleApi(searchParams)
-    console.log(total,'统计的个数1')
+    totals.value = await getLandlordListBySearchTitleTotleApi(searchParams)
+    console.log(total, '统计的个数1')
   })
 }
 const onMySearch = () => {
-   types.value = '2'
-  console.log(getStorage(StorageKey.USERINFO).username,'我的评估')
-  searchParams.relationBy = getStorage(StorageKey.USERINFO).username 
+  types.value = '2'
+  console.log(getStorage(StorageKey.USERINFO).username, '我的评估')
+  searchParams.relationBy = getStorage(StorageKey.USERINFO).username
   init()
   nextTick(async () => {
     totals.value = await getLandlordListBySearchTitleTotleApi(searchParams)
-    console.log(total,'统计的个数2')
+    console.log(total, '统计的个数2')
   })
 }
 const toTarget = (name: any) => {
@@ -176,7 +185,9 @@ const toTarget = (name: any) => {
 
 const getList = () => {
   nextTick(async () => {
-    isLoading.value = true
+    uni.showLoading({
+      title: '加载中'
+    })
 
     const params: any = {
       page: page.value,
@@ -196,7 +207,7 @@ const getList = () => {
         }
       })
       total.value = await getLandlordListBySearchTitleApi()
-      isLoading.value = false
+      uni.hideLoading()
       if (page.value > 1) {
         list.value = [...list.value, ...res]
       } else {
@@ -276,11 +287,11 @@ const onReset = () => {
     areaCode: '',
     ownershipUnitIsNull: '',
     estimateFlag: '',
-    relationBy:''
+    relationBy: ''
   }
   searchName.value = ''
   init()
-  types.value=''
+  types.value = ''
 }
 
 // 更多查询
