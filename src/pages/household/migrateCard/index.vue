@@ -233,6 +233,9 @@ const getCompensationCardConfig = async () => {
       } else if (item.unit == '项' && item.type == '3' && item.isVerify != '1') {
         item.number = 1
       }
+      if (item.name=='过渡期生产生活补助款') {
+        item.totalPrice= data.immigrantExcess.totalCompensationAmount
+      }
     })
     console.log('合并', tableData.value, res, data.immigrantCompensationCardList)
   }

@@ -263,6 +263,7 @@ import { updateImpLandlordExcessApi } from '@/service'
 import { ImmigrantExcessType } from '@/types/impDataFill'
 import { LandlordType } from '@/types/sync'
 import { getLandlordItemApi } from '@/service'
+import { guid } from '@/utils'
 
 interface PropsType {
   uid: string
@@ -302,7 +303,20 @@ const getCompensationCardConfig = async() => {
   let data: any =  await getLandlordItemApi(uid)
   console.log(data, '测试dada数据')
   demographicNum.value = data.demographicList.filter((item: any) => item.name != '增计人口' && item.isDelete !== '1').length || 1
-  compensationPrice.value=data.immigrantCompensationCardList.find((item: any)=>item.name=='过渡期生产生活补助款').price
+  compensationPrice.value = data.immigrantCompensationCardList.find((item: any) => item.name == '过渡期生产生活补助款').price
+  let immigrantExcess = data.immigrantExcess
+      formData.value = {
+        ...data.immigrantExcess,
+      }
+  if (immigrantExcess.immigrantExcessPayList) {
+      immigrantExcess.immigrantExcessPayList.forEach((item:any) => {
+        item.excessStartDate = item.excessStartDate ? dayjs(item.excessStartDate).format('YYYY-MM-DD') : ''
+        item.excessEndDate = item.excessEndDate ? dayjs(item.excessEndDate).format('YYYY-MM-DD') : ''
+      })
+      console.log(immigrantExcess.immigrantExcessPayList,'数组数据')
+      
+      arrList.value = immigrantExcess.immigrantExcessPayList ? immigrantExcess.immigrantExcessPayList : []
+  }
 }
 
 onShow(() => {
@@ -315,36 +329,36 @@ onShow(() => {
 //                    (item: any) => item.name != '增计人口' && item.isDelete !== '1'
 //                  ).length || 1
 // })
-watch(
-  () => props.immigrantExcess,
-  (val) => {
-    if (val) {
-      // 基本信息
-      const { immigrantExcessPayList } = val
-      formData.value = {
-        ...val,
-        // excessStartDate: excessStartDate ? dayjs(excessStartDate).format('YYYY-MM-DD') : '',
-        // excessEndDate: excessEndDate ? dayjs(excessEndDate).format('YYYY-MM-DD') : ''
-      }
-      if (immigrantExcessPayList) {
-          immigrantExcessPayList.forEach((item:any) => {
-            item.excessStartDate = item.excessStartDate ? dayjs(item.excessStartDate).format('YYYY-MM-DD') : ''
-            item.excessEndDate = item.excessEndDate ? dayjs(item.excessEndDate).format('YYYY-MM-DD') : ''
-          })
-          console.log(immigrantExcessPayList,'数组数据')
+// watch(
+//   () => props.immigrantExcess,
+//   (val) => {
+//     if (val) {
+//       // 基本信息
+//       const { immigrantExcessPayList } = val
+//       formData.value = {
+//         ...val,
+//         // excessStartDate: excessStartDate ? dayjs(excessStartDate).format('YYYY-MM-DD') : '',
+//         // excessEndDate: excessEndDate ? dayjs(excessEndDate).format('YYYY-MM-DD') : ''
+//       }
+//       if (immigrantExcessPayList) {
+//           immigrantExcessPayList.forEach((item:any) => {
+//             item.excessStartDate = item.excessStartDate ? dayjs(item.excessStartDate).format('YYYY-MM-DD') : ''
+//             item.excessEndDate = item.excessEndDate ? dayjs(item.excessEndDate).format('YYYY-MM-DD') : ''
+//           })
+//           console.log(immigrantExcessPayList,'数组数据')
           
-          arrList.value = immigrantExcessPayList ? immigrantExcessPayList : []
-      }
-      // if (excessStartDate) {
-      //   currentStartDate.value = dayjs(excessStartDate).format('YYYY-MM-DD')
-      // }
-      // if (excessEndDate) {
-      //   currentEndDate.value = dayjs(excessEndDate).format('YYYY-MM-DD')
-      // }
-    }
-  },
-  { immediate: true, deep: true }
-)
+//           arrList.value = immigrantExcessPayList ? immigrantExcessPayList : []
+//       }
+//       // if (excessStartDate) {
+//       //   currentStartDate.value = dayjs(excessStartDate).format('YYYY-MM-DD')
+//       // }
+//       // if (excessEndDate) {
+//       //   currentEndDate.value = dayjs(excessEndDate).format('YYYY-MM-DD')
+//       // }
+//     }
+//   },
+//   { immediate: true, deep: true }
+// )
 
 /**
  *日期选择
@@ -411,7 +425,8 @@ const add = () => {
     monthNum: '', //补偿月数
     compensationAmount: '', //补偿金额
     orderNum: '',//批次
-    isDelete:'0'
+    isDelete: '0',
+    uid:guid()
   })
 }
 const handleStartChange = (index:any,e: any) => {
