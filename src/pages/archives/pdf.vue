@@ -182,6 +182,7 @@
               <th align="left" class="uTitle">性别</th>
               <th align="left" class="uTitle">户籍册类别</th>
               <th align="left" class="uTitle">人口性质</th>
+              <th align="left" class="uTitle">增计人口添加原因</th>
               <th align="left" class="uTitle">备注</th>
             </tr>
             <!-- 表格数据行 -->
@@ -195,6 +196,7 @@
               <td align="left" class="uTd">{{ formatDict(item.sex, 292) }}</td>
               <td align="left" class="uTd">{{ formatDict(item.censusType, 249) }}</td>
               <td align="left" class="uTd">{{ formatDict(item.populationNature, 263) }}</td>
+              <td align="left" class="uTd">{{ formatDict(item.incrementAddReason, 436) }}</td>
               <td align="left" class="uTd">{{ `` }}</td>
             </tr>
           </table>

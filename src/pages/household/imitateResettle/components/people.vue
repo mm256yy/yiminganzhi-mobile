@@ -257,10 +257,10 @@ const stepNext = async () => {
   // 校验数据
   const notFillArray = tableData.value.filter((item) => !item.settingWay)
   const isNotProduction = tableData.value.filter((item) => !item.isProduction)
-  if (flags.value==false&&notFillArray && notFillArray.length) {
-    showToast('请选择安置方式')
-    return
-  }
+  // if (flags.value==false&&notFillArray && notFillArray.length) {
+  //   showToast('请选择安置方式')
+  //   return
+  // }
   if (isNotProduction&&isNotProduction.length) {
     showToast('请选择是否生产安置')
     return

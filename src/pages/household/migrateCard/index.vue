@@ -207,6 +207,7 @@ const getDataRequest = async () => {
 const props = defineProps<PropsType>()
 const tableData = ref<any[]>([])
 const dataList = computed(() => {
+  console.log(props.dataList,'数据列表')
   return props.dataList.filter((item) => item.isDelete !== '1')
 })
 const targ=ref(false)

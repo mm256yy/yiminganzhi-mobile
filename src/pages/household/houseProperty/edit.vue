@@ -184,7 +184,8 @@
           <uni-col :span="12" v-if="formData.separateFlag == '1' ">
               <view class="col">
                 <view class="label">分权备注：</view>
-                <view class="content">由{{ formData.demographicIdName }}户，{{ formData.houseNo }}幢房屋分权{{ formData.separateRemark }}</view>
+                <!-- 由{{ formData.demographicIdName }}户，{{ formData.houseNo }}幢房屋分权 -->
+                <view class="content">{{ formData.separateRemark }}</view>
               </view>
           </uni-col>
         </uni-row>
@@ -631,20 +632,11 @@ const submit = () => {
   } else if (!formData.value.storeyNumber) {
     showToast('请输入层数')
     return
-  } else if (!formData.value.landArea) {
-    showToast('请输入建筑面积')
-    return
   } else if (!formData.value.constructionType) {
     showToast('请选择房屋结构')
     return
   } else if (!formData.value.houseNature) {
     showToast('请输入房屋性质')
-    return
-  } else if (!formData.value.demographicId) {
-    showToast('请选择房屋产权人')
-    return
-  } else if (!formData.value.isCompliance) {
-    showToast('请选择是否合法')
     return
   } else if (!formData.value.longitude) {
     showToast('请选择中心经纬度')

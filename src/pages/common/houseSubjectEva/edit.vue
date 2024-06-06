@@ -571,31 +571,20 @@ const countPrice = computed(() => {
     illegalValuationPrice,
     illegalNewnessRate
   } = formData.value
-  console.log(
-    Number(newnessRate),
-    Number(landLegalArea),
-    Number(valuationPrice),
-    Number(landIllegalArea),
-    Number(illegalValuationPrice),
-    Number(illegalNewnessRate),
-    '数据'
-  )
-  console.log(formData.value, '测试数据')
-  if (
-    newnessRate &&
-    landLegalArea &&
-    valuationPrice &&
-    landIllegalArea &&
-    illegalValuationPrice &&
-    illegalNewnessRate
-  ) {
+  console.log(Number(newnessRate), Number(landLegalArea), Number(valuationPrice), Number(landIllegalArea), Number(illegalValuationPrice), Number(illegalNewnessRate), '数据')
+  console.log(formData.value,'测试数据')
+  // if (
+  //   newnessRate &&
+  //   landLegalArea &&
+  //   valuationPrice &&landIllegalArea && illegalValuationPrice && illegalNewnessRate
+  // ) {
     console.log('进入')
     return (
       Number(newnessRate) * Number(landLegalArea) * Number(valuationPrice) +
       Number(landIllegalArea) * Number(illegalValuationPrice) * Number(illegalNewnessRate)
     ).toFixed(2)
-  }
-  return '0'
+  // }
+  // return '0'
 })
 
 // 表单提交
