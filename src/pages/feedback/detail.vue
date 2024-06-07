@@ -52,11 +52,11 @@
             </view>
           </uni-col>
         </uni-row>
-        <uni-row :gutter = "5" class  = "row-block">
-        <uni-col :span   = "24" :push = "1">
-        <view    class   = "item-field">
-        <span    class   = "item-label">处理结果：</span>
-        <span    class   = "item-value">{{ query?.statusText }}</span>
+        <uni-row :gutter="5" class="row-block">
+          <uni-col :span="24" :push="1">
+            <view class="item-field">
+              <span class="item-label">处理结果：</span>
+              <span class="item-value">{{ query?.statusText }}</span>
             </view>
           </uni-col>
         </uni-row>
@@ -149,7 +149,7 @@ const formatListData = (params: any) => {
 
   const stepList = params.map((item) => {
     return {
-      title: list.value?.creater,
+      title: item.creater,
       desc: item.remark
     }
   })

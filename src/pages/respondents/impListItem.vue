@@ -14,7 +14,7 @@
       <template v-else>
         <view class="head-rt">
           {{
-            props.data.type == 'PeasantHousehold'
+            props.data.type != 'LandNoMove'
               ? getProgressText(props.data)
               : fillNumber + '/' + totalStage
           }}
