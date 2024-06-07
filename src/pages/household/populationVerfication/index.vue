@@ -186,10 +186,10 @@ const onFilled = () => {
   console.log(dataList, '测试dataList')
   console.log(res, '测试res')
   console.log(props.dataInfo, '测试dataInfo')
-  if (!res) {
-    showToast('请检查带*号必填项')
-    return
-  }
+  // if (!res) {
+  //   showToast('请检查带*号必填项')
+  //   return
+  // }
   const { uid } = props.dataInfo
 
   let params = {

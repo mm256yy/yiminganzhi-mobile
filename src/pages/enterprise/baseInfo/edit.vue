@@ -1029,6 +1029,10 @@ onLoad((option: any) => {
         formData.value.householderDoorNo = option.householderDoorNo
         formData.value.householderName = option.householderName
       }
+      if(option.longitude && option.latitude){
+        formData.value.longitude=option.longitude
+        formData.value.latitude=option.latitude
+      }
     }
     if (!formData.value.registerType) {
       formData.value.registerType = '1'

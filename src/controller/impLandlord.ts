@@ -359,10 +359,11 @@ export class ImpLandlord extends Common {
     }
 
     // 过渡安置
+    //2024年6月6号 宗浩说过渡完成结束时间不做判断条件 
     if (
       immigrantExcess &&
-      immigrantExcess.isExcess === '1' &&
-      immigrantExcess.excessEndDate &&
+      immigrantExcess.isExcess === '1'&& 
+      // immigrantExcess.excessEndDate && 
       this.isNotNullPic(excessVerifyPic)
     ) {
       landlordItem.immigrantFilling.excessStatus = '1'

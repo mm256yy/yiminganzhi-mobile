@@ -154,11 +154,11 @@ const emit = defineEmits(['updateData'])
 
 // 填报完成
 const onFilled = () => {
-  const res=props.dataList.every((item) => item.houseNature!=null&&item.demographicId!=null&&item.isCompliance!=null)
-  if(!res){
-    showToast('请检查带*号必填项')
-    return
-  }
+  // const res=props.dataList.every((item) => item.houseNature!=null&&item.demographicId!=null&&item.isCompliance!=null)
+  // if(!res){
+  //   showToast('请检查带*号必填项')
+  //   return
+  // }
   const { uid } = props.dataInfo
   let params = {
     propertyStatus: '1'

@@ -119,9 +119,9 @@
             <uni-th align="left" width="40rpx" class="uTitle">序号</uni-th>
             <uni-th align="left" width="60rpx" class="uTitle">姓名</uni-th>
             <uni-th align="left" width="70rpx" class="uTitle">与户主关系</uni-th>
-            <uni-th align="left" width="50rpx" class="uTitle">性别</uni-th>
-            <uni-th align="left" width="140rpx" class="uTitle">身份证号</uni-th>
-            <uni-th align="left" width="80rpx" class="uTitle">人口性质</uni-th>
+            <uni-th align="left" width="40rpx" class="uTitle">性别</uni-th>
+            <uni-th align="left" width="120rpx" class="uTitle">身份证号</uni-th>
+            <uni-th align="left" width="70rpx" class="uTitle">人口性质</uni-th>
             <uni-th align="left" width="80rpx" class="uTitle">户籍册类别</uni-th>
             <uni-th align="left" width="80rpx" class="uTitle">增计人口添加原因</uni-th>
           </uni-tr>

@@ -310,7 +310,9 @@ const addLandlord = () => {
   routerForward(name, {
     type: 'add',
     householderDoorNo: props.dataInfo.doorNo,
-    householderName: props.dataInfo.name
+    householderName: props.dataInfo.name,
+    longitude:props.dataInfo.immigrantHouseList[0].longitude,
+    latitude:props.dataInfo.immigrantHouseList[0].latitude
   })
 }
 const addLandlords = () => {
@@ -318,7 +320,9 @@ const addLandlords = () => {
   routerForward(name, {
     type: 'add',
     householderDoorNo: props.dataInfo.doorNo,
-    householderName: props.dataInfo.name
+    householderName: props.dataInfo.name,
+    longitude:props.dataInfo.immigrantHouseList[0].longitude,
+    latitude:props.dataInfo.immigrantHouseList[0].latitude
   })
 }
 const toLink = (type: string) => {
