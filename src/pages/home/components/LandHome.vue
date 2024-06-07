@@ -390,6 +390,7 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  padding-top: var(--status-bar-height);
   overflow: hidden;
 }
 
