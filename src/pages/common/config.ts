@@ -411,6 +411,39 @@ export const enterpriseSidebarList = [
           }
         ]
       },
+      // {
+      //   title: '腾空',
+      //   filled: false,
+      //   list: [
+      //     {
+      //       label: '房屋腾空',
+      //       value: 5,
+      //       filled: false,
+      //       iconDef: iconFwtkDef,
+      //       iconSel: iconFwtkSel
+      //     },
+      //     {
+      //       label: '土地腾让',
+      //       value: 6,
+      //       filled: false,
+      //       iconDef: iconTdtkDef,
+      //       iconSel: iconTdtkSel
+      //     }
+      //   ]
+      // },
+      {
+        title: '',
+        filled: false,
+        list: [
+          {
+            label: '动迁协议',
+            value: 7,
+            filled: false,
+            iconDef: iconDqxyDef,
+            iconSel: iconDqxySel
+          }
+        ]
+      },
       {
         title: '腾空',
         filled: false,
@@ -431,19 +464,6 @@ export const enterpriseSidebarList = [
           }
         ]
       },
-      {
-        title: '',
-        filled: false,
-        list: [
-          {
-            label: '动迁协议',
-            value: 7,
-            filled: false,
-            iconDef: iconDqxyDef,
-            iconSel: iconDqxySel
-          }
-        ]
-      }
     ]
   },
   {
@@ -513,6 +533,39 @@ export const selfPersonSidebarList = [
           }
         ]
       },
+      // {
+      //   title: '腾空',
+      //   filled: false,
+      //   list: [
+      //     {
+      //       label: '房屋腾空',
+      //       value: 5,
+      //       filled: false,
+      //       iconDef: iconFwtkDef,
+      //       iconSel: iconFwtkSel
+      //     },
+      //     {
+      //       label: '土地腾让',
+      //       value: 6,
+      //       filled: false,
+      //       iconDef: iconTdtkDef,
+      //       iconSel: iconTdtkSel
+      //     }
+      //   ]
+      // },
+      {
+        title: '',
+        filled: false,
+        list: [
+          {
+            label: '动迁协议',
+            value: 7,
+            filled: false,
+            iconDef: iconDqxyDef,
+            iconSel: iconDqxySel
+          }
+        ]
+      },
       {
         title: '腾空',
         filled: false,
@@ -533,19 +586,6 @@ export const selfPersonSidebarList = [
           }
         ]
       },
-      {
-        title: '',
-        filled: false,
-        list: [
-          {
-            label: '动迁协议',
-            value: 7,
-            filled: false,
-            iconDef: iconDqxyDef,
-            iconSel: iconDqxySel
-          }
-        ]
-      }
     ]
   },
   {
@@ -615,6 +655,32 @@ export const collectiveSidebarList = [
           }
         ]
       },
+      // {
+      //   title: '腾空',
+      //   filled: false,
+      //   list: [
+      //     {
+      //       label: '房屋腾空',
+      //       value: 5,
+      //       filled: false,
+      //       iconDef: iconFwtkDef,
+      //       iconSel: iconFwtkSel
+      //     }
+      //   ]
+      // },
+      {
+        title: '', //动迁协议放在腾空后面
+        filled: false,
+        list: [
+          {
+            label: '动迁协议',
+            value: 6,
+            filled: false,
+            iconDef: iconDqxyDef,
+            iconSel: iconDqxySel
+          }
+        ]
+      },
       {
         title: '腾空',
         filled: false,
@@ -628,19 +694,6 @@ export const collectiveSidebarList = [
           }
         ]
       },
-      {
-        title: '',
-        filled: false,
-        list: [
-          {
-            label: '动迁协议',
-            value: 6,
-            filled: false,
-            iconDef: iconDqxyDef,
-            iconSel: iconDqxySel
-          }
-        ]
-      }
     ]
   },
   {

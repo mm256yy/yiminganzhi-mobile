@@ -213,7 +213,7 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { routerBack, getStorage, StorageKey, fmtPicUrl, cardReg } from '@/utils'
+import { routerBack, getStorage, StorageKey, fmtPicUrl, cardReg,phoneReg } from '@/utils'
 import {
   addImpLandlordPeopleApi,
   updateImpLandlordPeopleApi,
@@ -316,6 +316,9 @@ const submit = () => {
     return
   } else if (!formData.value.name && formData.value.addReason !== '3') {
     showToast('请输入姓名')
+    return
+  } else if (!phoneReg.test(formData.value.phone)) {
+    showToast('请输入正确的联系方式')
     return
   } else if (!formData.value.sex && formData.value.addReason !== '3') {
     showToast('请选择性别')

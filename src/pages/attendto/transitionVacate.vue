@@ -435,7 +435,11 @@ const handleStartChange = (index:any,e: any) => {
   let date = new Date(e.detail.value)
   startMonth.value = date.getMonth() + 1 // getMonth() 返回的月份是从0开始的，所以需要+1
   console.log(startMonth.value, '选中的月份')
-  arrList.value[index].excessStartDate=e.detail.value
+  arrList.value[index].excessStartDate = e.detail.value
+  if (!endMonth.value) {
+    let date1 = new Date(arrList.value[index].excessEndDate)
+    endMonth.value = date1.getMonth() + 1
+  }
   if (startMonth.value && endMonth.value) {
     arrList.value[index].monthNum = endMonth.value - startMonth.value + 1
     arrList.value[index].compensationAmount = demographicNum.value * compensationPrice.value * arrList.value[index].monthNum
@@ -455,6 +459,10 @@ const handleEndChange = (index:any,e: any) => {
   endMonth.value = date.getMonth() + 1 // getMonth() 返回的月份是从0开始的，所以需要+1
   console.log(endMonth.value, '选中的月份')
   arrList.value[index].excessEndDate=e.detail.value
+  if (!startMonth.value) {
+    let date1 = new Date(arrList.value[index].excessStartDate)
+    startMonth.value = date1.getMonth() + 1
+  }
   if (startMonth.value && endMonth.value) {
     arrList.value[index].monthNum = endMonth.value - startMonth.value + 1
     arrList.value[index].compensationAmount = demographicNum.value * compensationPrice.value * arrList.value[index].monthNum

@@ -284,7 +284,7 @@
               label-align="right"
               name="formData.newnessRate"
             >
-              <uni-easyinput v-model="formData.newnessRate" type="number" placeholder="请输入" />
+              <uni-easyinput :value="formData.newnessRate" type="number" placeholder="请输入"  @input="handleInput"/>
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -295,9 +295,10 @@
               name="formData.illegalNewnessRate"
             >
               <uni-easyinput
-                v-model="formData.illegalNewnessRate"
+                :value="formData.illegalNewnessRate"
                 type="number"
                 placeholder="请输入"
+                @input="handleInputNew"
               />
             </uni-forms-item>
           </uni-col>
@@ -587,6 +588,40 @@ const countPrice = computed(() => {
   // return '0'
 })
 
+//合法成新率
+const handleInput = (newValue:any) => {
+   // 将输入值转换为数字  
+      const value = parseFloat(newValue);   
+      // 检查值是否在0到1之间（包含边界）  
+      if (isNaN(value) || value < 0) {  
+        formData.value.newnessRate = 0; // 如果不是数字或小于0，则设置为0  
+      } else if (value > 1) {  
+        formData.value.newnessRate = 1; // 如果大于1，则设置为1  
+      } else {  
+        formData.value.newnessRate = value; // 如果在范围内，则直接赋值  
+      }  
+  
+      // 如果你希望限制小数位数，可以在这里做处理  
+      // 例如，限制为两位小数  
+  formData.value.newnessRate = parseFloat(formData.value.newnessRate.toFixed(2)); 
+}
+//不合法成新率
+const handleInputNew = (newValue:any) => {
+   // 将输入值转换为数字  
+      const value = parseFloat(newValue);   
+      // 检查值是否在0到1之间（包含边界）  
+      if (isNaN(value) || value < 0) {  
+        formData.value.illegalNewnessRate = 0; // 如果不是数字或小于0，则设置为0  
+      } else if (value > 1) {  
+        formData.value.illegalNewnessRate = 1; // 如果大于1，则设置为1    
+      } else {  
+        formData.value.illegalNewnessRate = value; // 如果在范围内，则直接赋值  
+      }  
+  
+      // 如果你希望限制小数位数，可以在这里做处理  
+      // 例如，限制为两位小数  
+      formData.value.illegalNewnessRate = parseFloat(formData.value.illegalNewnessRate.toFixed(2)); 
+}
 // 表单提交
 const submit = () => {
   const { uid, doorNo, type } = commonParams.value
