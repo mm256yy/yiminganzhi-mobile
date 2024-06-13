@@ -8,8 +8,8 @@
           <uni-th align="left" width="40rpx" class="u-title">指标名称</uni-th>
           <uni-th align="left" width="60rpx" class="u-title">单位</uni-th>
           <uni-th align="left" width="70rpx" class="u-title">数量</uni-th>
-          <uni-th align="left" width="50rpx" class="u-title">补偿单价</uni-th>
-          <uni-th align="left" width="140rpx" class="u-title">补偿金额</uni-th>
+          <uni-th align="left" width="50rpx" class="u-title">补偿单价（元）</uni-th>
+          <uni-th align="left" width="140rpx" class="u-title">补偿金额（元）</uni-th>
           <uni-th align="left" width="80rpx" class="u-title">确认状态</uni-th>
           <uni-th align="left" width="80rpx" class="u-title">备注</uni-th>
           <uni-th align="left" width="80rpx" class="u-title">操作</uni-th>

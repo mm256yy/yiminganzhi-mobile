@@ -91,6 +91,7 @@ import { getOtherItemApi, addVillageApi, updateVillageApi, getVillageItemApi } f
 import { OtherDataType } from '@/database'
 import { onLoad } from '@dcloudio/uni-app'
 import { guidFour, setStorage, getStorage, StorageKey, routerBack, routerForward } from '@/utils'
+import { getVirutalVillageTreeApi } from '@/service'
 
 // 表单数据
 const formData = ref<any>({
@@ -113,6 +114,7 @@ const type = ref<'add' | 'edit'>('add')
 const detail = ref<any>(null)
 
 const districtMap = getStorage(StorageKey.DISTRICTMAP)
+const treeData = ref<any>([])
 
 onLoad((option: any) => {
   if (option) {
@@ -161,6 +163,7 @@ const submit = () => {
     })
   }
   console.log('表单提交', subData)
+  return
   if (uid.value) {
     updateVillageApi({ ...detail.value, ...subData, uid: uid.value }).then((res) => {
       if (res) {
@@ -214,9 +217,14 @@ const mapChooseCallBack = (data: any) => {
     formData.value.latitude = data.latitude
   }
 }
-
+const getTreeData = async () => {
+  const res = await getVirutalVillageTreeApi()
+  treeData.value = res || []
+  console.log('resTree:', res)
+}
 onMounted(() => {
   uni.$on('chooseMap', mapChooseCallBack)
+  getTreeData()
 })
 
 onBeforeUnmount(() => {

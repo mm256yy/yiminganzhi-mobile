@@ -132,12 +132,12 @@ const tabList = computed(() => {
       }
       // 房屋腾空状态
       if (immigrantFilling.houseSoarStatus === '1') {
-        arr[0].list[2].list[0].filled = true
+        arr[0].list[3].list[0].filled = true
       }
 
       // 动迁协议状态
       if (immigrantFilling.agreementStatus === '1') {
-        arr[0].list[3].list[0].filled = true
+        arr[0].list[2].list[0].filled = true
       }
 
       // 集体资产处置方法状态

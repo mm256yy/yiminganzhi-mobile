@@ -113,17 +113,17 @@ const tabList = computed(() => {
 
     // 房屋腾空状态
     if (immigrantFilling.houseSoarStatus === '1') {
-      arr[0].list[2].list[0].filled = true
+      arr[0].list[3].list[0].filled = true
     }
 
     // 土地腾让状态
     if (immigrantFilling.landSoarStatus === '1') {
-      arr[0].list[2].list[1].filled = true
+      arr[0].list[3].list[1].filled = true
     }
 
     // 动迁协议状态
     if (immigrantFilling.agreementStatus === '1') {
-      arr[0].list[3].list[0].filled = true
+      arr[0].list[2].list[0].filled = true
     }
 
     // 相关手续状态

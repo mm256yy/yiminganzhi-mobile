@@ -400,7 +400,12 @@ const submit = async () => {
   })
   formData.value.demographicNum = demographicNum.value
   formData.value.compensationPrice=compensationPrice.value
-  
+  const falg = formData.value.immigrantExcessPayList.every((item: any) => item.excessStartDate && item.excessEndDate)
+  console.log(falg,'过渡开关')
+  if (!falg) {
+    showToast('请选择过渡开始日期和过渡结束日期')
+    return
+  }
   const params: Partial<ImmigrantExcessType> = {
     ...formData.value,
     // excessStartDate: formData.value.excessStartDate ? dayjs(formData.value.excessStartDate) : '',

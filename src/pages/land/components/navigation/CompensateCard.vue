@@ -90,8 +90,8 @@
           <view class="td td-2">指标名称</view>
           <view class="td td-3">单位</view>
           <view class="td td-3">数量</view>
-          <view class="td td-3">补偿单价</view>
-          <view class="td td-3">补偿金额</view>
+          <view class="td td-3">补偿单价（元）</view>
+          <view class="td td-3">补偿金额（元）</view>
           <view class="td td-4">备注</view>
         </view>
         <!--补偿费-->

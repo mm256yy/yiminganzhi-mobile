@@ -22,9 +22,9 @@
           <uni-th width="40rpx">地名</uni-th>
           <uni-th width="50rpx">青苗户主</uni-th>
           <uni-th width="40rpx">品种</uni-th>
-          <uni-th width="40rpx">面积</uni-th>
+          <uni-th width="40rpx">面积（㎡）</uni-th>
           <uni-th width="40rpx">株数</uni-th>
-          <uni-th width="40rpx">金额</uni-th>
+          <uni-th width="40rpx">金额（元）</uni-th>
           <uni-th width="40rpx">备注</uni-th>
         </uni-tr>
 

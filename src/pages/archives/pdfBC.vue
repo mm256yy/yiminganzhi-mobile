@@ -100,8 +100,8 @@
               <th align="left" class="uTitle">指标名称</th>
               <th align="left" class="uTitle">单位</th>
               <th align="left" class="uTitle">数量</th>
-              <th align="left" class="uTitle">补偿单价</th>
-              <th align="left" class="uTitle">补偿金额</th>
+              <th align="left" class="uTitle">补偿单价（元）</th>
+              <th align="left" class="uTitle">补偿金额（元）</th>
               <th align="left" class="uTitle">备注</th>
             </tr>
             <tr v-for="(item, index) in tableData" :key="index">
