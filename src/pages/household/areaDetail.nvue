@@ -35,7 +35,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
+import { onShow } from '@dcloudio/uni-app'
+
 import { OtherDataType } from '../../database'
 import { getResettleDetail } from '../../service'
 import LocationDetail from '../../pages/household/components/LocationDetail.vue'
@@ -57,6 +59,13 @@ const getDataRequest = async () => {
       'data数据======================================================================================================',
       dataList.value
     )
+    dataList.value.forEach((item) => {
+      item.pic = JSON.parse(item?.pic)
+    })
+    console.error(
+      'data数据======================================================================================================',
+      dataList.value
+    )
     tabs.value = data.map((item, index) => {
       return {
         id: index,
@@ -69,7 +78,7 @@ const getDataRequest = async () => {
     console.log('error', error)
   }
 }
-onMounted(() => {
+onShow(() => {
   getDataRequest()
 })
 

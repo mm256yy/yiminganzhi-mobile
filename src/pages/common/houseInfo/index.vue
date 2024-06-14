@@ -1,7 +1,11 @@
 <template>
   <view class="house-info-wrapper">
     <view class="list" v-if="props.dataList && props.dataList.length > 0">
-      <view class="list-item" v-for="item in props.dataList" :key="item.id">
+      <view
+        class="list-item"
+        v-for="item in props.dataList.filter((e) => e.isDelete == '0')"
+        :key="item.id"
+      >
         <view class="list-1">
           <view class="left">{{ formatStr(item.houseNo) }}</view>
           <view class="right">

@@ -53,7 +53,7 @@ export interface PopulationType {
   householdNumber?: string
   reportDate?: string
   reportUser?: number
-  reportUserName?:any
+  reportUserName?: any
   signDate?: string
   signUser?: number
   uid?: string
@@ -485,27 +485,27 @@ export interface UpdateLogType {
   reason?: string
 }
 
-export interface LocationType{
-  createdBy: null,
-  createdDate: null,
-  lastModifiedBy: string,
-  lastModifiedDate: any,
-  id: number,
-  projectId: number,
-  type: number,
-  name: string,
-  residential: string,
-  structure: string,
-  ?landSpace: any,
-  floorSpace: any,
-  greeningRate: any,
-  buildingDensity: any,
-  address: string,
-  traffic: string,
-  business: string,
-  education: string,
-  hospital: string,
-  pic: any[],
+export interface LocationType {
+  createdBy: null
+  createdDate: null
+  lastModifiedBy: string
+  lastModifiedDate: any
+  id: number
+  projectId: number
+  type: number
+  name: string
+  residential: string
+  structure: string
+  landSpace: any
+  floorSpace: any
+  greeningRate: any
+  buildingDensity: any
+  address: string
+  traffic: string
+  business: string
+  education: string
+  hospital: string
+  pic: any
   longitude: any
   latitude: any
   isProductionLand: number

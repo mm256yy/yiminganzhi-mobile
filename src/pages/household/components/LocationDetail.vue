@@ -106,12 +106,12 @@
         <map class="map" :longitude="props.item?.longitude" :latitude="props.item?.latitude"></map>
       </view>
 
-      <view class="common-head">
+      <view class="common-head" v-if="props.item?.type != 1">
         <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
         <text class="txt">户型图</text>
       </view>
 
-      <view class="house-pic">
+      <view class="house-pic" v-if="props.item?.type != 1">
         <view class="house-info">
           <view class="house-info-item">
             <view class="tit"><text class="txt">4室2厅</text></view>
@@ -133,12 +133,23 @@
           <image class="pic-img" src="@/static/images/resettle_house_pic.png" mode="scaleToFill" />
         </view>
       </view>
+      <view class="common-head">
+        <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
+        <text class="txt">规划图</text>
+      </view>
+      <view style="display: flex">
+        <view v-for="e in props.item?.pic" :key="e.name" style="flex: 1">
+          <image :src="e.url" alt="" />
+        </view>
+      </view>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
 import type { LocationType } from '@/types/datafill'
+import { computed } from 'vue'
+
 interface PropsType {
   item: LocationType
 }

@@ -285,7 +285,7 @@
         "
       >
         <h1 style="font-size: 24px; text-align: center">{{
-          id == 6 ? '坟墓择址坟确认单' : '坟墓确认单'
+          id == 6 ? '坟墓择址确认单' : '坟墓确认单'
         }}</h1>
         <div style="display: flex; justify-content: space-between">
           <div style="font-size: 16px">

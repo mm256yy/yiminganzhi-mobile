@@ -356,6 +356,7 @@ const submit = () => {
   } else {
     if (formData.value.addReason === '3') {
       params.name = '增计人口'
+      params.populationNature = '5'
     }
     if (type === 'add') {
       addImpLandlordPeopleApi(uid, params)
