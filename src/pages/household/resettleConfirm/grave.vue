@@ -7,7 +7,7 @@
           <text class="txt">添加</text>
         </view>
       </view>
-      <view style="display:flex">
+      <view style="display: flex">
         <view class="btn green" @click="onFilled">
           <image class="icon" src="@/static/images/icon_sign_white.png" mode="scaleToFill" />
           <text class="txt">填报完成</text>
@@ -32,7 +32,14 @@
     </view>
 
     <view class="table-wrap">
-      <uni-table class="table" ref="table" :loading="loading" border stripe emptyText="暂无更多数据">
+      <uni-table
+        class="table"
+        ref="table"
+        :loading="loading"
+        border
+        stripe
+        emptyText="暂无更多数据"
+      >
         <uni-tr>
           <uni-th width="90rpx">坟墓与登记人关系</uni-th>
           <uni-th width="59rpx">材料</uni-th>
@@ -69,9 +76,14 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { routerForward, formatDict } from '@/utils'
-import { deleteImpLandlordGraveApi, updateImpLandlordImmigrantFillingApi } from '@/service'
+import {
+  deleteImpLandlordGraveApi,
+  updateImpLandlordImmigrantFillingApi,
+  getLandlordListBySearchApicopy
+} from '@/service'
 import { LandlordType } from '@/types/sync'
 import { showToast, SUCCESS_MSG, ERROR_MSG } from '@/config'
+import { MainType } from '@/types/common'
 
 interface PropsType {
   dataInfo: LandlordType
@@ -106,12 +118,27 @@ const onFilled = () => {
     })
 }
 
-const addGrave = () => {
-  routerForward('graveConfirmEdit', {
-    actionType: 'add',
-    uid: '',
-    doorNo: props.dataInfo.doorNo
+const addGrave = async () => {
+  let m = await getLandlordListBySearchApicopy({
+    type: MainType.Village,
+    villageCode: ['', '', props.dataInfo.villageCode, '']
   })
+  let newgrave = []
+  if (m.length > 0) {
+    newgrave = m.filter((item: any) => {
+      return item.villageType == 'grave'
+    })
+  }
+  if (newgrave.length) {
+    routerForward('graveConfirmEdit', {
+      actionType: 'add',
+      uid: '',
+      doorNo: props.dataInfo.doorNo
+    })
+  } else {
+    showToast('没有对应坟墓村集体，不能添加坟墓信息')
+  }
+  console.log(m)
 }
 
 const updateGrave = (uid: string) => {
