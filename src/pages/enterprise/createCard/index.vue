@@ -502,11 +502,11 @@ const toConfirmReward = () => {
         }
 
         &.td-3 {
-          width: 56rpx;
+          width: 100rpx;
         }
 
         &.td-4 {
-          width: 143rpx;
+          width: 125rpx;
         }
       }
     }
@@ -532,11 +532,11 @@ const toConfirmReward = () => {
         }
 
         &.td-3 {
-          width: 56rpx;
+          width: 100rpx;
         }
 
         &.td-4 {
-          width: 143rpx;
+          width: 125rpx;
         }
       }
     }

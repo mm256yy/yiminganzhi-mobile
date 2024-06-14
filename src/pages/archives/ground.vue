@@ -211,11 +211,11 @@ onShow(() => {
         }
 
         &.td-3 {
-          width: 56rpx;
+          width: 100rpx;
         }
 
         &.td-4 {
-          width: 143rpx;
+          width: 125rpx;
         }
       }
     }
@@ -241,11 +241,11 @@ onShow(() => {
         }
 
         &.td-3 {
-          width: 56rpx;
+          width: 100rpx;
         }
 
         &.td-4 {
-          width: 143rpx;
+          width: 125rpx;
         }
       }
     }

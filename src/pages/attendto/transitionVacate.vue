@@ -295,13 +295,16 @@ const endMonth = ref<any>()
 const amountPrices = ref<any>()
 const alertDialog = ref<any>(null)
 const demographicNum = ref<any>()
-const compensationPrice =ref<any>()
+const compensationPrice = ref<any>()
+const time=ref<any>()
 const getCompensationCardConfig = async() => {
   const { uid } = props
   console.log(uid,'Uid是什么')
   console.log(props.dataInfo, '主体数据')
   let data: any =  await getLandlordItemApi(uid)
   console.log(data, '测试dada数据')
+  time.value = data.immigrantHouseEmpty.houseEmptyDate?dayjs(data.immigrantHouseEmpty.houseEmptyDate).format('YYYY-MM-DD'):''
+  console.log(time.value, '时间')
   demographicNum.value = data.demographicList.filter((item: any) => item.name != '增计人口' && item.isDelete !== '1').length || 1
   compensationPrice.value = data.immigrantCompensationCardList.find((item: any) => item.name == '过渡期生产生活补助款').price
   let immigrantExcess = data.immigrantExcess
@@ -420,12 +423,37 @@ const submit = async () => {
     emit('submit')
   }
 }
+const addMonthsToDate = (dateString:any, monthsToAdd:any) => {
+  // 将字符串转换为Date对象
+  let date = new Date(dateString)
 
+  // 设置新的月份，注意月份是从0开始的
+  let newMonth = (date.getMonth() + monthsToAdd) % 12
+  let newYear = date.getFullYear() + Math.floor((date.getMonth() + monthsToAdd) / 12)
+
+  // 如果newMonth为负数，表示需要回退一年并增加月份
+  if (newMonth < 0) {
+    newMonth += 12
+    newYear--
+  }
+
+  // 设置新的年份和月份
+  date.setFullYear(newYear, newMonth, date.getDate())
+
+  // 如果月份变更后日期不存在（例如2月30日），则会自动调整为该月的最后一天
+
+  // 将修改后的日期转换回ISO 8601格式的字符串
+  let dataString= date.toISOString().split('.')[0] + 'Z'
+  return dayjs(dataString).format('YYYY-MM-DD')// 去除毫秒部分
+}
 const add = () => {
   let i = 0
   arrList.value.push({
     index: arrList.value.length,
-    excessStartDate: '', //开始日期
+    excessStartDate:
+      arrList.value.length == 0
+        ? time.value
+        : addMonthsToDate(arrList.value[arrList.value.length - 1].excessEndDate, 1), //开始日期
     excessEndDate: '', //结束日期
     monthNum: '', //补偿月数
     compensationAmount: '', //补偿金额
@@ -441,10 +469,10 @@ const handleStartChange = (index:any,e: any) => {
   startMonth.value = date.getMonth() + 1 // getMonth() 返回的月份是从0开始的，所以需要+1
   console.log(startMonth.value, '选中的月份')
   arrList.value[index].excessStartDate = e.detail.value
-  if (!endMonth.value) {
-    let date1 = new Date(arrList.value[index].excessEndDate)
-    endMonth.value = date1.getMonth() + 1
-  }
+  // if (!endMonth.value) {
+  let date1 = new Date(arrList.value[index].excessEndDate)
+  endMonth.value = date1.getMonth() + 1
+  // }
   if (startMonth.value && endMonth.value) {
     arrList.value[index].monthNum = endMonth.value - startMonth.value + 1
     arrList.value[index].compensationAmount = demographicNum.value * compensationPrice.value * arrList.value[index].monthNum
@@ -464,10 +492,11 @@ const handleEndChange = (index:any,e: any) => {
   endMonth.value = date.getMonth() + 1 // getMonth() 返回的月份是从0开始的，所以需要+1
   console.log(endMonth.value, '选中的月份')
   arrList.value[index].excessEndDate=e.detail.value
-  if (!startMonth.value) {
-    let date1 = new Date(arrList.value[index].excessStartDate)
-    startMonth.value = date1.getMonth() + 1
-  }
+  // if (!startMonth.value) {
+  let date1 = new Date(arrList.value[index].excessStartDate)
+  console.log(date1, '日期')
+  startMonth.value = date1.getMonth() + 1
+  // }
   if (startMonth.value && endMonth.value) {
     arrList.value[index].monthNum = endMonth.value - startMonth.value + 1
     arrList.value[index].compensationAmount = demographicNum.value * compensationPrice.value * arrList.value[index].monthNum

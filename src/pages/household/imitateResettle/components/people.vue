@@ -28,7 +28,7 @@
         <view class="value">{{ formatDict(item.populationNature, 263) }}</view>
       </view>
       <view class="item">
-        <view class="label">是否生产安置移民：</view>
+        <view class="label" style="width: 100rpx;">是否生产安置移民：</view>
         <view class="value">
           <uni-data-select
            v-if="props.isEdit"

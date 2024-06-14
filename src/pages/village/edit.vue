@@ -145,8 +145,28 @@ const getDetail = () => {
       }
     })
   }
-}
-
+} 
+const findNodesByParentId=(nodes:any, parentIdToMatch:any)=>{  
+    const result:any = [];  
+  
+    const traverse=(nodes:any)=> {  
+        for (const node of nodes) {  
+            if (node.code == parentIdToMatch) {  
+                // 当前节点的parentId匹配，将其加入结果数组  
+                result.push(node);  
+            }  
+            // 递归遍历子节点  
+            if (node.children) {  
+                traverse(node.children);  
+            }  
+        }  
+    }  
+  
+    // 开始遍历给定的节点数组  
+    traverse(nodes);  
+  
+    return result;  
+}  
 // 表单提交
 const submit = () => {
   const subData = {
@@ -162,8 +182,16 @@ const submit = () => {
       icon: 'none'
     })
   }
-  console.log('表单提交', subData)
-  return
+  const childrenByParentId = findNodesByParentId(treeData.value, subData.parentCode);  
+  console.log(childrenByParentId, '测试数据');
+  const flag=childrenByParentId[0].children.some((item: any) => item.name==subData.name)
+  if (flag) {
+     uni.showToast({
+          title: '已存在该自然村请勿重新添加',
+          icon: 'error'
+    })
+    return
+  }
   if (uid.value) {
     updateVillageApi({ ...detail.value, ...subData, uid: uid.value }).then((res) => {
       if (res) {
@@ -224,7 +252,7 @@ const getTreeData = async () => {
 }
 onMounted(() => {
   uni.$on('chooseMap', mapChooseCallBack)
-  getTreeData()
+  getTreeData() 
 })
 
 onBeforeUnmount(() => {

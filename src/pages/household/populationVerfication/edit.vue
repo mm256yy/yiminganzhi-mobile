@@ -143,7 +143,7 @@
         <uni-row v-if="formData.addReason !== '3'">
           <uni-col :span="24">
             <uni-forms-item
-              required
+              :required="isLessThan14YearsOld(formData.card)?true:false"
               label="身份证照片"
               :label-width="150"
               label-align="right"
@@ -228,7 +228,35 @@ const commonParams = ref<any>({})
 
 // 获取数据字典
 const dict = getStorage(StorageKey.DICT)
+const isLessThan14YearsOld = (idNumber:any) => {
+  // 假设输入的idNumber是18位身份证号码
+  if (idNumber?.length !== 18 || !idNumber) {
+    // console.error('Invalid ID number length. Expected 18 digits.')
+    return false
+  }
 
+  // 提取出生日期部分（第7位到第14位）
+  let birthDateStr = idNumber.substring(6, 14)
+  let year = parseInt(birthDateStr.substring(0, 4), 10)
+  let month = parseInt(birthDateStr.substring(4, 6), 10) - 1 // 注意月份是从0开始的
+  let day = parseInt(birthDateStr.substring(6, 8), 10)
+
+  // 创建一个表示出生日期的Date对象
+  let birthDate = new Date(year, month, day)
+
+  // 获取当前日期
+  let today = new Date()
+
+  // 计算年龄（这里假设未过生日的情况下也按周岁加一）
+  let age = today.getFullYear() - birthDate.getFullYear()
+  let m = today.getMonth() - birthDate.getMonth()
+  if (m < 0 || (m === 0 && today.getDate() < day)) {
+    age--
+  }
+
+  // 判断是否小于14岁
+  return age >= 14
+}
 onLoad((option: any) => {
   if (option) {
     commonParams.value = JSON.parse(option.params)
@@ -340,7 +368,7 @@ const submit = () => {
     return
   } else if (
     (!formData.value.cardPic || formData.value.cardPic === '[]') &&
-    formData.value.addReason !== '3'
+    formData.value.addReason !== '3'&&isLessThan14YearsOld(formData.value.card)
   ) {
     showToast('请上传身份证照片')
     return
