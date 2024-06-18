@@ -2234,8 +2234,17 @@ class ImpDataFill extends ImpLandlord {
             const index = landlordItem.immigrantCompensationCardList.findIndex(
               (e: any) => e.name == data.name
             )
+            let sumObj: any = landlordItem.immigrantCompensationCardList.find((item: any) => item.isSum == '1' && item.type == data.type)
             if (index > -1) {
               landlordItem.immigrantCompensationCardList[index] = data
+            let sumArr:any = landlordItem.immigrantCompensationCardList.filter((item: any) => item.isSum == '0' && item.type == data.type)
+            console.log(sumObj, '算的数据')
+            console.log(sumArr,'算的数组')
+            if (sumObj) {
+              sumObj.totalPrice = sumArr.reduce((pre: any, cur: any) => {
+                return Number(pre) + Number(cur.price)
+              }, 0)
+            }
             } else {
               console.log(landlordItem.immigrantCompensationCardList, data, '筛查的数据')
               landlordItem.immigrantCompensationCardList.push(data)

@@ -153,7 +153,7 @@
                 }
             }
         },
-        "popGesture": "none"
+        "popGesture" : "none"
     },
     "quickapp" : {},
     "mp-weixin" : {
