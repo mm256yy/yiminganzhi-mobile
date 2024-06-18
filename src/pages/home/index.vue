@@ -140,7 +140,7 @@
 
 <script lang="ts" setup>
 import { onBeforeMount, onMounted, ref, onBeforeUnmount } from 'vue'
-import { onShow } from '@dcloudio/uni-app'
+import { onShow,onBackPress } from '@dcloudio/uni-app'
 import { getStorage, routerForward, resetCache, StorageKey, debounce } from '@/utils'
 import { loginOutApi } from './api'
 import { getImgListApi, getOtherItemApi } from '@/service'
@@ -155,6 +155,7 @@ import { OtherDataType } from '@/database'
 import dayjs from 'dayjs'
 import SyncCompont from '@/components/Sync/Index.vue'
 import { env } from '@/config/env'
+// import { getImpLandlordListByFhSearchApi } from '@/service'
 
 const roleType = ref<RoleCodeType>(getStorage(StorageKey.USERROLE))
 const userInfo = ref<any>(null)
@@ -294,7 +295,9 @@ onBeforeMount(() => {
   console.log(role, '目前是什么角色')
   homeViewType.value = role
 })
-
+onBackPress((e) => {
+    return true
+})
 onBeforeUnmount(() => {
   uni.$off('SyncEnd', onSyncEnd)
 })
@@ -306,6 +309,9 @@ onMounted(() => {
   appVersion.value = systemInfo.appWgtVersion || '1.0.0'
   console.log(getStorage(StorageKey.USERINFO), '测试用户名')
   uni.$on('SyncEnd', onSyncEnd)
+  // getImpLandlordListByFhSearchApi({doorNo:'83758923'}).then((res) => {
+  //     console.log(res, '测试数据222')
+  //   })
 })
 
 onShow(() => {

@@ -232,7 +232,7 @@
               <td align="left" class="uTd">{{ formatStr(item.number) }}</td>
               <td align="left" class="uTd">{{ formatStr(item.price) }}</td>
               <td align="left" class="uTd">
-                <view v-if="item.isUpdate === '0'">{{ formatStr(item.totalPrice) }}</view>
+                <view v-if="item.isUpdate === '0'&& item.isSum == '0'">{{ formatStr(item.totalPrice) }}</view>
                 <view v-else-if="item.isUpdate === '1' && item.isSum === '0'">{{
                   computedTotalPrice(item)
                 }}</view>

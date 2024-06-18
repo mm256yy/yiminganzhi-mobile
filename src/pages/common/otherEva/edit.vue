@@ -105,7 +105,7 @@
               label-align="right"
               name="formData.newnessRate"
             >
-              <uni-easyinput v-model="formData.newnessRate" type="number" placeholder="请输入" />
+              <uni-easyinput v-model="formData.newnessRate" type="number" placeholder="请输入" @change="handleInputNew"/>
             </uni-forms-item>
           </uni-col>
         </uni-row>
@@ -256,6 +256,24 @@ const getLandlordDetail = () => {
       currentYear.value = obj.year ? dayjs(obj.year) : ''
     }
   })
+}
+const handleInputNew = (newValue:any) => {
+  // 将输入值转换为数字  
+   console.log(newValue,'测试输入值')
+  const value = parseFloat(newValue); 
+      console.log(value,'测试值')  
+      // 检查值是否在0到1之间（包含边界）  
+      if (isNaN(value) || value < 0) {  
+        formData.value.newnessRate = 0; // 如果不是数字或小于0，则设置为0  
+      } else if (value > 1) {  
+        formData.value.newnessRate = 1; // 如果大于1，则设置为1  
+      } else {  
+        formData.value.newnessRate = value; // 如果在范围内，则直接赋值  
+      }  
+  
+      // 如果你希望限制小数位数，可以在这里做处理  
+      // 例如，限制为两位小数  
+  formData.value.newnessRate = parseFloat(formData.value.newnessRate.toFixed(2)); 
 }
 
 onLoad((option: any) => {

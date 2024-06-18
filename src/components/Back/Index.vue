@@ -39,6 +39,11 @@ const routerType = ref<'back' | 'home'>('back')
 const props = defineProps<PropsType>()
 
 const goBack = () => {
+    const pages = getCurrentPages(); 
+  console.log(pages,'2') 
+const currentPage = pages[pages.length - 1]; // 假设最后一个页面是当前页面  
+console.log(currentPage.route,'3'); // 输出当前页面的路由
+  console.log('goBack','测试跳转')
   uni.navigateBack({
     delta: 1
   })
@@ -49,6 +54,11 @@ const goHome = () => {
 }
 
 const back = () => {
+    const pages = getCurrentPages(); 
+  console.log(pages,'4') 
+const currentPage = pages[pages.length - 1]; // 假设最后一个页面是当前页面  
+console.log(currentPage.route,'5'); // 输出当前页面的路由
+  console.log('goBack','测试跳转')
   if (props.needConfirm) {
     routerType.value = 'back'
     loginOutPre()

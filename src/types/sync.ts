@@ -370,7 +370,7 @@ export interface StateType {
   upgradation: AppVersionDtoType | null
   immigrantGraveList: GraveType[]
   top5Statistic: Top5Type | null
-
+  printDetailsList:any[]
   peasantHouseholdNum: number
   companyNum: number
   individualNum: number

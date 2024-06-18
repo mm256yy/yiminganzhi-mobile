@@ -1,5 +1,6 @@
 export * from './dbCore'
 export * from './tables/landlord'
+export * from './tables/landlordFh'
 export * from './tables/LandlordHasStatus'
 export * from './tables/familyIncome'
 export * from './tables/resettlement'

@@ -284,7 +284,7 @@
               label-align="right"
               name="formData.newnessRate"
             >
-              <uni-easyinput :value="formData.newnessRate" type="number" placeholder="请输入"  @input="handleInput"/>
+              <uni-easyinput v-model="formData.newnessRate" type="number" placeholder="请输入"  @change="handleInput"/>
             </uni-forms-item>
           </uni-col>
           <uni-col :span="12">
@@ -295,10 +295,10 @@
               name="formData.illegalNewnessRate"
             >
               <uni-easyinput
-                :value="formData.illegalNewnessRate"
+                v-model="formData.illegalNewnessRate"
                 type="number"
                 placeholder="请输入"
-                @input="handleInputNew"
+                @change="handleInputNew"
               />
             </uni-forms-item>
           </uni-col>
@@ -590,8 +590,10 @@ const countPrice = computed(() => {
 
 //合法成新率
 const handleInput = (newValue:any) => {
-   // 将输入值转换为数字  
-      const value = parseFloat(newValue);   
+  // 将输入值转换为数字  
+   console.log(newValue,'测试输入值')
+  const value = parseFloat(newValue); 
+      console.log(value,'测试值')  
       // 检查值是否在0到1之间（包含边界）  
       if (isNaN(value) || value < 0) {  
         formData.value.newnessRate = 0; // 如果不是数字或小于0，则设置为0  
@@ -607,8 +609,12 @@ const handleInput = (newValue:any) => {
 }
 //不合法成新率
 const handleInputNew = (newValue:any) => {
-   // 将输入值转换为数字  
-      const value = parseFloat(newValue);   
+  // 将输入值转换为数字
+   console.log(newValue,'测试输入值')
+     
+  const value = parseFloat(newValue);  
+      console.log(value,'测试值')  
+       
       // 检查值是否在0到1之间（包含边界）  
       if (isNaN(value) || value < 0) {  
         formData.value.illegalNewnessRate = 0; // 如果不是数字或小于0，则设置为0  

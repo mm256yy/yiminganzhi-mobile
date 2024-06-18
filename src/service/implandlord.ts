@@ -35,6 +35,15 @@ export const getImpLandlordListBySearchApi = (data?: LandlordSearchType) => {
 }
 
 /**
+ * // 实施中的复核数据查询
+ * @param data
+ * @returns 列表
+ */
+export const getImpLandlordListByFhSearchApi = (data?: LandlordSearchType) => {
+  return ImpLandlordController.getLandlordListByFhSearch(data)
+}
+
+/**
  * 调查对象管理 基础信息保存
  * @param data
  * @returns boolean

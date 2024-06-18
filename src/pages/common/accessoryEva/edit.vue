@@ -109,6 +109,7 @@
                 @input="inputChange"
                 type="number"
                 placeholder="请输入"
+                @change="handleInputNew"
               />
             </uni-forms-item>
           </uni-col>
@@ -286,6 +287,24 @@ const countPrice = computed(() => {
   return '0'
 })
 
+const handleInputNew = (newValue:any) => {
+  // 将输入值转换为数字  
+   console.log(newValue,'测试输入值')
+  const value = parseFloat(newValue); 
+      console.log(value,'测试值')  
+      // 检查值是否在0到1之间（包含边界）  
+      if (isNaN(value) || value < 0) {  
+        formData.value.discountRate = 0; // 如果不是数字或小于0，则设置为0  
+      } else if (value > 1) {  
+        formData.value.discountRate = 1; // 如果大于1，则设置为1  
+      } else {  
+        formData.value.discountRate = value; // 如果在范围内，则直接赋值  
+      }  
+  
+      // 如果你希望限制小数位数，可以在这里做处理  
+      // 例如，限制为两位小数  
+  formData.value.discountRate = parseFloat(formData.value.discountRate.toFixed(2)); 
+}
 // 表单提交
 const submit = () => {
   const { uid, doorNo, type } = commonParams.value

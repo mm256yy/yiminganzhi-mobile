@@ -2,7 +2,7 @@
  * 提供业主相关的增删改查功能
  */
 
-import { LandlordTableName, LandlordDDLType, getLandlordSqlValues } from '@/database'
+import { LandlordTableName, LandlordDDLType, getLandlordSqlValues,LandlordTableNameFh } from '@/database'
 import { Common } from './common'
 import { LandlordType } from '@/types/sync'
 import { getStorage, StorageKey, guid } from '@/utils'
@@ -992,6 +992,75 @@ export class ImpLandlord extends Common {
         } = data || {}
         const array: LandlordType[] = []
         let sql = `select * from ${LandlordTableName} where isPadDelete = '0'`
+        if (type) {
+          sql += ` and type = '${type}'`
+        }
+        if (name) {
+          sql += ` and (name like '%${name}%' or doorNo like '%${name.slice(
+            name.length - 6 < 0 ? 0 : name.length - 6,
+            name.length
+          )}%' or content like '%${name}%')`
+        }
+        if (areaCode) {
+          sql += ` and areaCode = '${areaCode}'`
+        }
+        if (townCode) {
+          sql += ` and townCode = '${townCode}'`
+        }
+        if (villageCode) {
+          sql += ` and villageCode = '${villageCode}'`
+        }
+        if (virutalVillageCode) {
+          sql += ` and virutalVillageCode = '${virutalVillageCode}'`
+        }
+        if (warnStatus) {
+          sql += ` and warnStatus = '${warnStatus}'`
+        }
+        if (doorNo) {
+          sql += ` and doorNo = '${doorNo}'`
+        }
+        sql += ` order by updatedDate desc limit ${pageSize} offset ${(page - 1) * pageSize}`
+        // console.log('sql', sql)
+        const list: LandlordDDLType[] = await this.db.selectSql(sql)
+        if (this.isArrayAndNotNull(list)) {
+          list.forEach((item) => {
+            const landlord = JSON.parse(item.content)
+            array.push(landlord)
+          })
+          const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
+          // 拿到上级行政区划
+          array.forEach((item) => {
+            item.virutalVillageCodeText = districtMap[item.virutalVillageCode]
+            item.villageCodeText = districtMap[item.villageCode]
+            item.townCodeText = districtMap[item.townCode]
+            item.areaCodeText = districtMap[item.areaCode]
+          })
+        }
+        resolve(array)
+      } catch (error) {
+        console.log(error, 'getLandlordListBySearch-error')
+        reject([])
+      }
+    })
+  }
+  // 调查对象-根据行政村 和 名称 查询列表
+  getLandlordListByFhSearch(data?: LandlordSearchType): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const {
+          name,
+          areaCode,
+          townCode,
+          villageCode,
+          virutalVillageCode,
+          type,
+          warnStatus,
+          doorNo,
+          pageSize = 10,
+          page = 1
+        } = data || {}
+        const array: LandlordType[] = []
+        let sql = `select * from ${LandlordTableNameFh} where isPadDelete = '0'`
         if (type) {
           sql += ` and type = '${type}'`
         }

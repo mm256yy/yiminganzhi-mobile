@@ -39,6 +39,11 @@ interface PropsType {
 const props = defineProps<PropsType>()
 
 const onBack = () => {
+  const pages = getCurrentPages(); 
+  console.log(pages,'0') 
+const currentPage = pages[pages.length - 1]; // 假设最后一个页面是当前页面  
+console.log(currentPage.route,'1'); // 输出当前页面的路由
+  console.log('onBack')
   props.onBack ? props.onBack() : routerBack()
 }
 </script>

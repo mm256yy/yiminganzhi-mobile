@@ -10,7 +10,9 @@ import {
   DistrictDDL,
   VillageDDL,
   AppendantDDL,
+  LandlordDDLFh,
   LandlordTableName,
+  LandlordTableNameFh,
   LandlordHasStatusTableName,
   DictionariesTableName,
   FamilyIncomeTableName,
@@ -28,6 +30,8 @@ import {
   GraveTableName,
   getLandlordValues,
   landlordFields,
+  getLandlordValuesFh,
+  landlordFieldsFh,
   getLandlordHasStatusValues,
   LandlordHasStatusDDL,
   landlordHasStatusFields,
@@ -41,7 +45,8 @@ import {
   getBaseDataApi,
   getConfigDataApi,
   getCollectApi,
-  getPullLandlordListApi
+  getPullLandlordListApi,
+  getPrintDetailsApi
 } from './api'
 import { StateType, ImgItemType, LandlordWithPageType } from '@/types/sync'
 import { getCurrentTimeStamp, getStorage, setStorage, StorageKey, guid } from '@/utils'
@@ -77,7 +82,7 @@ class PullData {
     this.count = 0
     this.maxCount = baseMaxCount
     // 需要拉取的数据的数量
-    this.needPullCount = 12
+    this.needPullCount = 13
     this.quality = 100
 
     this.state = {
@@ -94,6 +99,7 @@ class PullData {
       districtList: [],
       villageList: [],
       collectList: [],
+      printDetailsList:[],
       professionalTree: [],
       populationSortTree: [],
       treeConfigDtoList: [],
@@ -166,6 +172,9 @@ class PullData {
 
     // 统计数据
     this.getCollect()
+   
+    //获取居民户打印数据
+    this.getPrintDetails()
   }
 
   public pullAll() {
@@ -519,6 +528,30 @@ class PullData {
     })
   }
 
+    // 获取打印居民户报表信息数据
+  public async getPrintDetails() {
+    const result = await getPrintDetailsApi().catch((error) => {
+      if (error && !this.pullError) {
+        this.pullError = error
+      }
+      this.maxCount = -1
+    })
+    // if (!result) {
+    //   console.error('统计数据获取失败')
+    //   this.maxCount = -1
+    //   return
+    // }
+    this.state.printDetailsList = result.peasantHouseholdPushDtoList ? result.peasantHouseholdPushDtoList : []
+    console.log(this.state.printDetailsList,'统计数据获取成功')
+    this.pullPrintDetails().then((res) => {
+      res && this.count++
+      // 重置 释放缓存
+      this.state.printDetailsList = []
+
+      console.log('拉取: 打印居民户报表信息数据', res)
+    })
+  }
+
   public createTable() {
     console.log('==创建表===========开始====')
     // 创建表
@@ -527,6 +560,7 @@ class PullData {
         db.createTableWithDDL(ProjectDDL),
         db.createTableWithDDL(DictionariesDDL),
         db.createTableWithDDL(LandlordDDL),
+        db.createTableWithDDL(LandlordDDLFh),
         db.createTableWithDDL(LandlordHasStatusDDL),
         db.createTableWithDDL(landEstimateDtoListDDL),
         db.createTableWithDDL(ResettlementDDL),
@@ -1027,6 +1061,44 @@ class PullData {
     })
   }
 
+   /** 打印居民户数据 */
+  private pullPrintDetails(): Promise<boolean> {
+    return new Promise(async (resolve) => {
+      const { printDetailsList: list } = this.state
+      if (this.isArrayAndNotNull(list)) {
+        // 开启事务
+        await db.transaction('begin').catch(() => {
+          resolve(false)
+        })
+        list.forEach((item, index) => {
+          if (this.isArrayAndNotNull(item.immigrantBuildOneselfList)) {
+            // 自建房增加uid
+            item.immigrantBuildOneselfList = item.immigrantBuildOneselfList.map((ytem:any) => {
+              if (!ytem.uid) {
+                ytem.uid = guid()
+              }
+              return ytem
+            })
+          }
+          const values = getLandlordValuesFh(item, 'default')
+          db.insertOrReplaceData(LandlordTableNameFh, values, landlordFieldsFh)
+            .then((res) => {
+              console.log(res, '插入业主')
+            })
+            .catch((err) => {
+              console.log(err, '插入业主')
+            })
+        })
+        await db.transaction('commit').catch(() => {
+          resolve(false)
+        })
+        resolve(true)
+      } else {
+        // 数据为空 不需要拉取
+        resolve(true)
+      }
+    })
+  }
   /** 其他 */
   private pullOther(): Promise<boolean> {
     return new Promise(async (resolve) => {

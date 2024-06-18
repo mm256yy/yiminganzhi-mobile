@@ -4,7 +4,10 @@
       "name": "home",
       "path": "pages/home/index",
       "style": {
-        "navigationBarTitleText": "首页"
+        "navigationBarTitleText": "首页",
+        "app-plus": {  
+          "popGesture": "none" 
+        } 
       }
     },
     {
@@ -158,7 +161,10 @@
       "name": "householdList",
       "path": "pages/respondents/householdList",
       "style": {
-        "navigationBarTitleText": "居民户列表"
+        "navigationBarTitleText": "居民户列表",
+        "app-plus": {  
+          "popGesture": "none" 
+        } 
       }
     },
     {

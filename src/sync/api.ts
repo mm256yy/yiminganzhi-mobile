@@ -51,6 +51,16 @@ export const getCollectApi = () => {
   })
 }
 
+// 获取打印居民户报表信息数据
+export const getPrintDetailsApi = () => {
+  return request.get({
+    url: '/pad/printDetails',
+    data: {
+      status: 'review'
+    }
+  })
+}
+
 // 推送
 export const pushDataApi = (data: PushStateType) => {
   return request.post({
