@@ -187,8 +187,8 @@ const submit = () => {
   const flag=childrenByParentId[0].children.some((item: any) => item.name==subData.name)
   if (flag) {
      uni.showToast({
-          title: '已存在该自然村请勿重新添加',
-          icon: 'error'
+          title: '已存在该自然村请勿重复',
+          icon: 'none'
     })
     return
   }

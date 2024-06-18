@@ -189,6 +189,59 @@ export const householdSidebarList = [
           }
         ]
       },
+      // {
+      //   title: '择址确认',
+      //   filled: false,
+      //   list: [
+      //     {
+      //       label: '生产用地',
+      //       value: 10,
+      //       filled: false,
+      //       iconDef: iconScydDef,
+      //       iconSel: iconScydSel
+      //     },
+      //     {
+      //       label: '选房择址',
+      //       value: 11,
+      //       filled: false,
+      //       iconDef: iconXfzzDef,
+      //       iconSel: iconXfzzSel
+      //     },
+      //     {
+      //       label: '坟墓择址',
+      //       value: 12,
+      //       filled: false,
+      //       iconDef: iconFmzzDef,
+      //       iconSel: iconFmzzSel
+      //     }
+      //   ]
+      // },
+      {
+        title: '',
+        filled: false,
+        list: [
+          {
+            label: '移民建卡',
+            value: 13,
+            filled: false,
+            iconDef: iconYmjkDef,
+            iconSel: iconYmjkSel
+          }
+        ]
+      },
+      {
+        title: '',
+        filled: false,
+        list: [
+          {
+            label: '动迁协议',
+            value: 17,
+            filled: false,
+            iconDef: iconDqxyDef,
+            iconSel: iconDqxySel
+          }
+        ]
+      },
       {
         title: '择址确认',
         filled: false,
@@ -213,32 +266,6 @@ export const householdSidebarList = [
             filled: false,
             iconDef: iconFmzzDef,
             iconSel: iconFmzzSel
-          }
-        ]
-      },
-      {
-        title: '',
-        filled: false,
-        list: [
-          {
-            label: '移民建卡',
-            value: 13,
-            filled: false,
-            iconDef: iconYmjkDef,
-            iconSel: iconYmjkSel
-          }
-        ]
-      },
-      {
-        title: '',
-        filled: false,
-        list: [
-          {
-            label: '动迁协议',
-            value: 17,
-            filled: false,
-            iconDef: iconDqxyDef,
-            iconSel: iconDqxySel
           }
         ]
       },

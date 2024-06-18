@@ -40,7 +40,7 @@
             <!-- 表格数据行 -->
             <tr
               v-for="(item, index) in dataList.filter(
-                (item) => item.name != '增计人口' && item.isDelete != '1'
+                (item) => item.name != '增计人口' && item.isDelete != '1'&&item.isProduction == '1'
               )"
               :key="index"
             >

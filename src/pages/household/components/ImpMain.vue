@@ -264,27 +264,27 @@ const tabList = computed(() => {
 
     // 生产用地状态
     if (immigrantFilling.landUseStatus === '1') {
-      arr[1].list[4].list[0].filled = true
+      arr[1].list[6].list[0].filled = true
     }
 
     // 选房择址状态
     if (immigrantFilling.chooseHouseStatus === '1') {
-      arr[1].list[4].list[1].filled = true
+      arr[1].list[6].list[1].filled = true
     }
 
     // 坟墓择址状态
     if (immigrantFilling.chooseGraveStatus === '1') {
       console.log('测试状态问题')
-      arr[1].list[4].list[2].filled = true
+      arr[1].list[6].list[2].filled = true
     }
 
     // 移民建卡状态
     if (immigrantFilling.cardStatus === '1') {
-      arr[1].list[5].list[0].filled = true
+      arr[1].list[4].list[0].filled = true
     }
     // 动迁协议状态
     if (immigrantFilling.agreementStatus === '1') {
-      arr[1].list[6].list[0].filled = true
+      arr[1].list[5].list[0].filled = true
     }
     // 房屋腾空状态
     if (immigrantFilling.houseSoarStatus === '1') {
