@@ -51,35 +51,35 @@ export const formatDict = (val: any, id: number) => {
   return str
 }
 
-export const calculateAgeFromIdCard =(idCard:any) => {  
-    // 验证身份证号码格式  
-    const idCardRegex = /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}([0-9]|X|x)$/;  
-    if (!idCardRegex.test(idCard)) {  
-        throw new Error('无效的身份证号码');  
-    }  
-  
-    // 提取出生年月日  
-    const birthdateStr = idCard.substr(6, 8);  
-    const year = parseInt(birthdateStr.substr(0, 4), 10);  
-    const month = parseInt(birthdateStr.substr(4, 2), 10);  
-    const day = parseInt(birthdateStr.substr(6, 2), 10);  
-  
-    // 创建出生日期对象  
-    const birthdate = new Date(year, month - 1, day);  
-  
-    // 获取当前日期对象  
-    const today = new Date();  
-  
-    // 计算年龄  
-    let age = today.getFullYear() - birthdate.getFullYear();  
-    const m = today.getMonth() - birthdate.getMonth();  
-    if (m < 0 || (m === 0 && today.getDate() < birthdate.getDate())) {  
-        age--;  
-    }  
-  
-    return age;  
-}  
+export const calculateAgeFromIdCard = (idCard: any) => {
+  // 验证身份证号码格式
+  const idCardRegex =
+    /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}([0-9]|X|x)$/
+  if (!idCardRegex.test(idCard)) {
+    throw new Error('无效的身份证号码')
+  }
 
+  // 提取出生年月日
+  const birthdateStr = idCard.substr(6, 8)
+  const year = parseInt(birthdateStr.substr(0, 4), 10)
+  const month = parseInt(birthdateStr.substr(4, 2), 10)
+  const day = parseInt(birthdateStr.substr(6, 2), 10)
+
+  // 创建出生日期对象
+  const birthdate = new Date(year, month - 1, day)
+
+  // 获取当前日期对象
+  const today = new Date()
+
+  // 计算年龄
+  let age = today.getFullYear() - birthdate.getFullYear()
+  const m = today.getMonth() - birthdate.getMonth()
+  if (m < 0 || (m === 0 && today.getDate() < birthdate.getDate())) {
+    age--
+  }
+
+  return age
+}
 
 /**
  * 字符串处理
@@ -350,9 +350,9 @@ export const formatEmptyText = (text: string) => {
   return text ? (text === 'null' ? '' : text) : ''
 }
 export const filterViewDoorNoShow = (data: any): string => {
-  const { doorNo, type } = data || {}
-  if (!doorNo) {
+  const { doorNo, type, showDoorNo } = data || {}
+  if (!showDoorNo) {
     return ''
   }
-  return doorNo.includes('jl') ? doorNo.substr(2) : doorNo
+  return showDoorNo
 }

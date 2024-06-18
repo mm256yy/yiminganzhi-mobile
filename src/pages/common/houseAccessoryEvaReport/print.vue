@@ -3,41 +3,11 @@
     <view class="list-header-rt">
       <view class="list-header-right">
         <view class="btn-wrapper print" v-if="showPrint" @click="printFile">
-          <text class="txt">打印</text>
+          <text class="txt">查看实物成果</text>
         </view>
       </view>
     </view>
 
-    <uni-popup ref="listDataPopup" :is-mask-click="false">
-      <view class="tips-wrappers">
-        <view class="tips-title">进度上报</view>
-        <view class="tips-content">
-          <view class="file-list" :prop="options" :change:prop="print.getPdf">
-            <view
-              class="file-items"
-              v-if="!dataInfo.signStatus || dataInfo.signStatus === 'UnSign'"
-              @click="tableSign"
-            >
-              <image class="icon" src="@/static/images/qianzi_icon.png" mode="scaleToFill" />
-              <view class="name">报表签字</view>
-            </view>
-            <view
-              class="file-items"
-              v-if="
-                !dataInfo.reportStatus || dataInfo.reportStatus === 'UnReport' || type == 'survey'
-              "
-              @click="reportDataCheck"
-            >
-              <image class="icon" src="@/static/images/icon_report.png" mode="scaleToFill" />
-              <view class="name">填报完成</view>
-            </view>
-          </view>
-        </view>
-        <view class="btn-wrapper">
-          <view class="btn cancel" @click="handelclose">取消</view>
-        </view>
-      </view>
-    </uni-popup>
     <!-- 填报完成 -->
     <uni-popup ref="reportDataPopup" :is-mask-click="false">
       <view class="tips-wrappers">
@@ -190,9 +160,6 @@ export default {
           return 9
           break
       }
-    },
-    type: function () {
-      return projectInfo?.status
     },
     fillNumber: function () {
       const {
@@ -599,33 +566,6 @@ export default {
         this.options.landlords = []
         ;(this.$refs.printPopup as any)?.close()
       }
-    },
-    handelopen() {
-      ;(this.$refs.listDataPopup as any)?.open()
-    },
-    handelclose() {
-      ;(this.$refs.listDataPopup as any)?.close()
-    },
-    async editLandlords(index: any) {
-      const params: any = {
-        type: 'PeasantHousehold',
-        doorNo: this.dataInfo.householderDoorNo.split(',')[index],
-        page: 1,
-        pageSize: 9999
-      }
-      const res = await getLandlordListBySearchApi(params).catch(() => {})
-      let individualHouseholdUid = res.find(
-        (item: any) => item.name == this.dataInfo.householderName.split(',')[index]
-      )
-      if (individualHouseholdUid) {
-        routerForward('household', {
-          type: 'edit',
-          uid: individualHouseholdUid.uid
-        })
-      } else {
-        showToast('查无此人')
-      }
-      // console.log(individualHouseholdUid.uid, '个体工商户uid是什么')
     }
   }
 }
@@ -705,7 +645,7 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     flex: 1;
     height: 33rpx;
 
@@ -754,7 +694,7 @@ export default {
         flex-direction: row;
         align-items: center;
         justify-content: center;
-        width: 68rpx;
+        width: 78rpx;
         height: 23rpx;
         border-radius: 11rpx;
 

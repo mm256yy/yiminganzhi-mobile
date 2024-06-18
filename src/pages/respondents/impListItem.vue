@@ -200,7 +200,7 @@ const getProgressText = (data: LandlordType) => {
   const { type, immigrantFilling } = data
   let count = 0
   let total = 0
-  console.log(immigrantFilling, 'immigrantFilling')
+  // console.log(immigrantFilling, 'immigrantFilling')
   if (type === MainType.PeasantHousehold) {
     // 居民户信息
     if (immigrantFilling) {

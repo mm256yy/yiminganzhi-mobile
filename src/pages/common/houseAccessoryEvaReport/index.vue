@@ -5,7 +5,7 @@
       <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
       房屋/附属物评估报告
     </view>
-    <print/>
+    <print v-if="show" :dataInfo="baseInfo" :type="baseInfo.type" :templateType="templateType" />
     <!-- <view class="row" v-if="houseEstimatePicStr && houseEstimatePicStr !== '[]'">
       <uni-row class="m-t-10">
         <uni-col :span="12">
@@ -38,30 +38,47 @@ import { ref, watch } from 'vue'
 import { MainType, PrintType } from '@/types/common'
 import HouseholdItem from './household/index.vue'
 import print from '@/pages/common/houseAccessoryEvaReport/print.vue'
+import { getImpLandlordListByFhSearchApi } from '@/service'
+import { showToast } from '@/config/msg'
+
 interface PropsType {
   dataInfo: any
   baseInfo: any
 }
 
 const props = defineProps<PropsType>()
-const houseEstimatePicStr = ref<string>('[]') // 房屋/附属物评估报告照片
-
-watch(
-  () => props.dataInfo,
-  (val) => {
-    if (val) {
-      const { houseEstimatePic } = val
-      if (houseEstimatePic) {
-        houseEstimatePicStr.value = houseEstimatePic
-      }
-    }
-  },
-  { immediate: true, deep: true }
-)
+const houseEstimatePicStr = ref<any>() // 房屋/附属物评估报告照片
+let show = ref(false)
+let templateType = ref(PrintType.print)
 watch(
   () => props.baseInfo,
-  (val) => {
-    
+  async (val) => {
+    let data = await getImpLandlordListByFhSearchApi({ doorNo: val.doorNo })
+    if (data.length > 0) {
+      houseEstimatePicStr.value = data[0]
+      show.value = true
+      switch (val.type) {
+        case MainType.PeasantHousehold:
+          templateType.value = PrintType.print
+          break
+        case MainType.Company:
+          templateType.value = PrintType.printCompany
+          break
+        case MainType.IndividualHousehold:
+          templateType.value = PrintType.printIndividualHousehold
+          break
+        case MainType.Village:
+          templateType.value = PrintType.printCollective
+          break
+        default:
+          templateType.value = PrintType.print
+          break
+      }
+    } else {
+      showToast('暂无评估数据')
+      show.value = false
+    }
+    console.error(data)
   },
   { immediate: true, deep: true }
 )

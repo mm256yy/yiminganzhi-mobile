@@ -316,7 +316,7 @@ export const getCollectiveInfoDefinition = (landlord: LandlordType, projectInfo:
       getFushuwu(landlord),
       getTree(landlord),
       getVillageEquipment(landlord),
-      getGrave(landlord)
+      landlord.immigrantGraveList ? getGrave(landlord) : null
     ],
     footer: getFooter
   }
