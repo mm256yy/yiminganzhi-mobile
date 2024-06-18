@@ -5,7 +5,7 @@
       <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
       房屋/附属物评估报告
     </view>
-
+    <print/>
     <!-- <view class="row" v-if="houseEstimatePicStr && houseEstimatePicStr !== '[]'">
       <uni-row class="m-t-10">
         <uni-col :span="12">
@@ -35,8 +35,9 @@
 
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
-import UploadFile from '@/components/UploadFile/index.vue'
+import { MainType, PrintType } from '@/types/common'
 import HouseholdItem from './household/index.vue'
+import print from '@/pages/common/houseAccessoryEvaReport/print.vue'
 interface PropsType {
   dataInfo: any
   baseInfo: any
@@ -54,6 +55,13 @@ watch(
         houseEstimatePicStr.value = houseEstimatePic
       }
     }
+  },
+  { immediate: true, deep: true }
+)
+watch(
+  () => props.baseInfo,
+  (val) => {
+    
   },
   { immediate: true, deep: true }
 )

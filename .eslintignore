@@ -7,3 +7,4 @@
 /dist*
 src/static/js
 src/components/Header/Index.vue
+src/pages/common/houseAccessoryEvaReport/print.vue
