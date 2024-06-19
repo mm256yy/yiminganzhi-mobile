@@ -303,7 +303,7 @@ const getCompensationCardConfig = async() => {
   console.log(props.dataInfo, '主体数据')
   let data: any =  await getLandlordItemApi(uid)
   console.log(data, '测试dada数据')
-  time.value = data.immigrantHouseEmpty.houseEmptyDate?dayjs(data.immigrantHouseEmpty.houseEmptyDate).format('YYYY-MM-DD'):''
+  time.value = data.immigrantHouseEmpty?.houseEmptyDate?dayjs(data.immigrantHouseEmpty.houseEmptyDate).format('YYYY-MM-DD'):''
   console.log(time.value, '时间')
   demographicNum.value = data.demographicList.filter((item: any) => item.name != '增计人口' && item.isDelete !== '1').length || 1
   compensationPrice.value = data.immigrantCompensationCardList.find((item: any) => item.name == '过渡期生产生活补助款').price
