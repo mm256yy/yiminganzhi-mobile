@@ -397,10 +397,17 @@ const submit = async () => {
   //   return
   // }
   formData.value.immigrantExcessPayList = arrList.value
-  formData.value.immigrantExcessPayList .forEach((item:any) => {
+  formData.value.immigrantExcessPayList.forEach((item:any) => {
     item.excessStartDate = item.excessStartDate ? dayjs(item.excessStartDate) : ''
     item.excessEndDate = item.excessEndDate ? dayjs(item.excessEndDate) : ''
   })
+  let targ = formData.value.immigrantExcessPayList.every(
+        (item:any) => new Date(item.excessStartDate) < new Date(item.excessEndDate)
+      )
+  if (!targ) {
+        showToast('开始日期不得大于结束日期')
+        return
+      }
   formData.value.demographicNum = demographicNum.value
   formData.value.compensationPrice=compensationPrice.value
   const falg = formData.value.immigrantExcessPayList.every((item: any) => item.excessStartDate && item.excessEndDate)
