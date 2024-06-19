@@ -5,7 +5,12 @@
       <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
       房屋/附属物评估报告
     </view>
-    <print v-if="show" :dataInfo="baseInfo" :type="baseInfo.type" :templateType="templateType" />
+    <print
+      v-if="show"
+      :dataInfo="houseEstimatePicStr"
+      :type="baseInfo.type"
+      :templateType="templateType"
+    />
     <!-- <view class="row" v-if="houseEstimatePicStr && houseEstimatePicStr !== '[]'">
       <uni-row class="m-t-10">
         <uni-col :span="12">

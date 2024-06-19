@@ -82,7 +82,13 @@
 
 <script lang="ts">
 import { StorageKey, getCurrentTimeStamp, getStorage } from '@/utils'
-import { reportDataApi, getPrintTemplatesApi, getPrintLandlordApi, signDataApi } from '@/service'
+import {
+  reportDataApi,
+  getPrintTemplatesApi,
+  getPrintLandlordfhApi,
+  getPrintLandlordApi,
+  signDataApi
+} from '@/service'
 import { ERROR_MSG, SUCCESS_MSG, showToast } from '@/config/msg'
 import { MainType, PrintType } from '@/types/common'
 import { base64ToPath } from 'image-tools'
@@ -400,7 +406,7 @@ export default {
      * 打印pdf
      */
     async getData(peasantHouseholdIds: string[], templateIds: number[]) {
-      const landlordArray = await getPrintLandlordApi(peasantHouseholdIds, templateIds).catch(
+      const landlordArray = await getPrintLandlordfhApi(peasantHouseholdIds, templateIds).catch(
         (err) => {
           console.log(err, 'getDat-err')
           uni.hideLoading()
@@ -411,6 +417,8 @@ export default {
           return
         }
       )
+      console.log(landlordArray)
+
       if (!landlordArray || !landlordArray.length) {
         uni.hideLoading()
         uni.showToast({

@@ -310,7 +310,7 @@ const getInfo = (landlord: LandlordType) => {
         { text: `村编码：${landlord.villageCode}` },
         { text: `联系方式：${landlord.phone || ''}`, style: 'td' }
       ],
-      [{ text: `个体工商户编码：${landlord.doorNo}` }, { text: ``, style: 'td' }]
+      [{ text: `个体工商户编码：${landlord.showDoorNo}` }, { text: ``, style: 'td' }]
     ]
   }
 }

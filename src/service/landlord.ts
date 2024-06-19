@@ -87,3 +87,7 @@ export const signDataApi = (uid: string) => {
 export const getPrintLandlordApi = (uids: string[], templateIds: number[]) => {
   return LandlordController.getLandlordByUidWithPrint(uids, templateIds)
 }
+// 打印数据获取FH
+export const getPrintLandlordfhApi = (uids: string[], templateIds: number[]) => {
+  return LandlordController.getLandlordByUidWithPrintfh(uids, templateIds)
+}

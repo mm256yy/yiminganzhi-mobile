@@ -9,7 +9,8 @@ import {
   landlordFields,
   getLandlordValues,
   LandlordHasStatusTableName,
-  LandlordHasStatusDDLType
+  LandlordHasStatusDDLType,
+  LandlordTableNameFh
 } from '@/database'
 import { Common } from './common'
 import { LandlordType } from '@/types/sync'
@@ -505,6 +506,7 @@ export class Landlord extends Common {
         const result: LandlordDDLType[] = await this.db.selectSql(sql)
         const landlordArray: LandlordType[] = result.map((item) => JSON.parse(item.content))
         const realLandlordArr: LandlordType[] = []
+        console.log(result)
 
         for (let i = 0; i < landlordArray.length; i++) {
           const res = landlordArray[i]
@@ -809,7 +811,9 @@ export class Landlord extends Common {
         const array: LandlordType[] = []
         let sql = `select * from ${LandlordTableName} where isPadDelete = '0'`
         if (type) {
-          sql += ` and type in (${type == 'other' ? `'PeasantHousehold','LandNoMove'` : `'${type}'`})`
+          sql += ` and type in (${
+            type == 'other' ? `'PeasantHousehold','LandNoMove'` : `'${type}'`
+          })`
         }
         if (uid) {
           sql += ` and uid = '${uid}'`
@@ -1218,6 +1222,219 @@ export class Landlord extends Common {
       } catch (error) {
         console.log(error, 'landlord-getVillageCodes-error')
         reject([])
+      }
+    })
+  }
+  // 业主列表-uid查询单个数据-打印使用
+  getLandlordByUidWithPrintfh(
+    uids: string[],
+    templateIds: number[]
+  ): Promise<LandlordType[] | null> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!uids || !uids.length) {
+          reject(null)
+          return
+        }
+        let uidsString = `'${uids[0]}'`
+        uids.forEach((uid, index) => {
+          if (index > 0) {
+            uidsString += `,'${uid}'`
+          }
+        })
+        const sql = `select * from ${LandlordTableNameFh} where uid in (${uidsString})`
+        const network = await networkCheck()
+        const result: LandlordDDLType[] = await this.db.selectSql(sql)
+        const landlordArray: LandlordType[] = result.map((item) => JSON.parse(item.content))
+        const realLandlordArr: LandlordType[] = []
+        console.log(result)
+
+        for (let i = 0; i < landlordArray.length; i++) {
+          const res = landlordArray[i]
+          // 获取坟墓信息
+          const graveList = await GraveController.getListWithLandlord(res.type, res.doorNo).catch(
+            (err) => {
+              console.log(err, '获取坟墓失败')
+            }
+          )
+          if (res && res.uid) {
+            // 坟墓赋值
+            res.immigrantGraveList = graveList || []
+
+            if (res.company && res.company.uid) {
+              res.company.industryTypeText = formatDict(res.company.industryType, 215)
+              res.company.registerTypeText = formatDict(res.company.registerType, 219)
+              res.company.licenceTypeText = formatDict(res.company.licenceType, 217)
+              res.company.treatmentSchemeText = formatDict(res.company.treatmentScheme, 210)
+              res.company.informationInvolvedText = formatDict(res.company.informationInvolved, 209)
+              res.company.managementStatusText = formatDict(res.company.managementStatus, 213)
+              res.company.establishDateText = res.company.establishDate
+                ? dayjs(res.company.establishDate).format('YYYY-MM-DD')
+                : ''
+              res.company.companyTypeText = formatDict(res.company.companyType, 216)
+              res.company.taxPeriodValidity
+                ? dayjs(res.company.taxPeriodValidity)
+                : res.company.taxPeriodValidity
+            }
+            if (res.demographicList && res.demographicList.length) {
+              res.demographicList.forEach((item) => {
+                item.relationText = formatDict(item.relation, 307)
+                item.sexText = formatDict(item.sex, 292)
+                item.nationText = formatDict(item.nation, 278)
+                item.maritalText = formatDict(item.marital, 260)
+                item.populationTypeText = formatDict(item.populationType, 244)
+              })
+              res.demographicList = res.demographicList.filter((item) => item.isPadDelete !== '1')
+            }
+            if (res.immigrantAppendantList && res.immigrantAppendantList.length) {
+              res.immigrantAppendantList = res.immigrantAppendantList.filter(
+                (item) => item.isPadDelete !== '1'
+              )
+            }
+            if (res.immigrantGraveList && res.immigrantGraveList.length) {
+              res.immigrantGraveList.forEach((item) => {
+                item.graveTypeText = formatDict(item.graveType, 345)
+                item.materialsText = formatDict(item.materials, 295)
+              })
+              res.immigrantGraveList = res.immigrantGraveList.filter(
+                (item) => item.isPadDelete !== '1'
+              )
+            }
+
+            // 存放房屋图片链接-离线
+            const landlordHouseImageList: string[] = []
+            // 在线图片保存
+            const images: string[] = []
+            if (res.immigrantHouseList && res.immigrantHouseList.length) {
+              res.immigrantHouseList = res.immigrantHouseList.filter(
+                (item) => item.isPadDelete !== '1'
+              )
+
+              res.immigrantHouseList.forEach((item) => {
+                item.houseTypeText = formatDict(item.houseType, 266)
+                item.propertyTypeText = formatDict(item.propertyType, 284)
+                item.usageTypeText = formatDict(item.usageType, 265)
+                item.constructionTypeText = formatDict(item.constructionType, 252)
+                item.completedTimeText = item.completedTime
+                  ? dayjs(item.completedTime).format('YYYY-MM')
+                  : ''
+
+                if (item.housePic) {
+                  // 处理房屋图片相关
+                  const houseImgs = JSON.parse(item.housePic)
+                  if (houseImgs && houseImgs.length) {
+                    houseImgs.forEach((imgItem: any) => {
+                      if (/\.(jpg|jpeg|png|JPG|PNG|JPEG)/.test(imgItem.url)) {
+                        if (imageUrlAndBase64Map[imgItem.url]) {
+                          landlordHouseImageList.push(imageUrlAndBase64Map[imgItem.url].path)
+                        } else {
+                          if (network) {
+                            images.push(
+                              // 处理图片链接
+                              imgItem.url.replace(
+                                'https://zdwp.oss-cn-hangzhou.aliyuncs.com/',
+                                // 'https://oss.zdwp.tech/'
+                                'https://zdwp.oss-cn-hangzhou.aliyuncs.com/'
+                              )
+                            )
+                          }
+                        }
+                      }
+                    })
+                  }
+                }
+              })
+            }
+            // 图片字段赋值-在线
+            res.images = images
+            // 图片字段赋值-离线
+            res.houseImageList = []
+            /**
+             * 房屋图片相关的处理
+             * 2 居民户房屋模版id
+             * 102 企业房屋模版id
+             * 202 个体户房屋模版id
+             * 301 村集体房屋模板id
+             */
+
+            // 只有在打印房屋示意图时需要处理图片
+            if ([2, 102, 202, 301].includes(templateIds[0])) {
+              // 拿到房屋图片的base64
+              if (landlordHouseImageList && landlordHouseImageList.length) {
+                const imgsRes = await Promise.all(
+                  landlordHouseImageList.map((item) => pathToBase64(item))
+                ).catch((imgErr) => {
+                  res.houseImageList = []
+                  console.log(imgErr, 'imgErr')
+                })
+                res.houseImageList = imgsRes
+              } else {
+                res.houseImageList = []
+              }
+            }
+
+            if (res.immigrantIncomeList && res.immigrantIncomeList.length) {
+              res.immigrantIncomeList = res.immigrantIncomeList.filter(
+                (item) => item.isPadDelete !== '1'
+              )
+            }
+            if (res.immigrantTreeList && res.immigrantTreeList.length) {
+              res.immigrantTreeList.forEach((item) => {
+                item.usageTypeText = formatDict(item.usageType, 325)
+                item.sizeText = formatDict(item.size, 269)
+                item.unitText = formatDict(item.unit, 264)
+              })
+              res.immigrantTreeList = res.immigrantTreeList.filter(
+                (item) => item.isPadDelete !== '1'
+              )
+            }
+
+            if (res.immigrantManagementList && res.immigrantManagementList.length) {
+              res.immigrantManagementList = res.immigrantManagementList.filter(
+                (item) => item.isPadDelete !== '1'
+              )
+            }
+
+            if (res.immigrantEquipmentList && res.immigrantEquipmentList.length) {
+              res.immigrantEquipmentList.forEach((item) => {
+                item.yearText = item.year ? dayjs(item.year).format('YYYY年') : ''
+                item.moveTypeText = formatDict(item.moveType, 221)
+                item.unitText = formatDict(item.unit, 268)
+              })
+              res.immigrantEquipmentList = res.immigrantEquipmentList.filter(
+                (item) => item.isPadDelete !== '1'
+              )
+            }
+
+            if (res.immigrantFacilitiesList && res.immigrantFacilitiesList.length) {
+              res.immigrantFacilitiesList.forEach((item) => {
+                item.facilitiesTypeText = formatDict(item.facilitiesType, 236)
+                item.locationTypeText = formatDict(item.locationType, 326)
+                item.unitText = formatDict(item.unit, 268)
+              })
+              res.immigrantFacilitiesList = res.immigrantFacilitiesList.filter(
+                (item) => item.isPadDelete !== '1'
+              )
+            }
+
+            const districtMap = getStorage(StorageKey.DISTRICTMAP) || {}
+            // 拿到上级行政区划
+            res.virutalVillageCodeText = districtMap[res.virutalVillageCode]
+            res.villageCodeText = districtMap[res.villageCode]
+            res.townCodeText = districtMap[res.townCode]
+            res.areaCodeText = districtMap[res.areaCode]
+            res.locationTypeText = formatDict(res.locationType, 326)
+            // 调查时间
+            res.reportDateText = res.reportDate ? dayjs(res.reportDate).format('YYYY-MM-DD') : ''
+
+            realLandlordArr.push(res)
+          }
+        }
+
+        resolve(realLandlordArr)
+      } catch (error) {
+        console.log(error, 'getLandlordByUid-error')
+        reject(null)
       }
     })
   }
