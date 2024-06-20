@@ -297,6 +297,7 @@ const alertDialog = ref<any>(null)
 const demographicNum = ref<any>()
 const compensationPrice = ref<any>()
 const time=ref<any>()
+const displayWithIsDeleteArrList = ref<any>([])
 const getCompensationCardConfig = async() => {
   const { uid } = props
   console.log(uid,'Uid是什么')
@@ -318,7 +319,9 @@ const getCompensationCardConfig = async() => {
       })
       console.log(immigrantExcess.immigrantExcessPayList,'数组数据')
       
-      arrList.value = immigrantExcess.immigrantExcessPayList ? immigrantExcess.immigrantExcessPayList : []
+    arrList.value = immigrantExcess.immigrantExcessPayList ? immigrantExcess.immigrantExcessPayList.filter((item: any) => item.isDelete !== '1') : []
+    displayWithIsDeleteArrList.value =immigrantExcess.immigrantExcessPayList ? immigrantExcess.immigrantExcessPayList.filter((item: any) => item.isDelete !== '1') : []
+      
   }
 }
 
@@ -396,7 +399,8 @@ const submit = async () => {
   //   showToast('开始日期不得大于结束日期')
   //   return
   // }
-  formData.value.immigrantExcessPayList = arrList.value
+  // formData.value.immigrantExcessPayList = arrList.value
+  formData.value.immigrantExcessPayList = displayWithIsDeleteArrList.value
   formData.value.immigrantExcessPayList.forEach((item:any) => {
     item.excessStartDate = item.excessStartDate ? dayjs(item.excessStartDate) : ''
     item.excessEndDate = item.excessEndDate ? dayjs(item.excessEndDate) : ''
@@ -468,6 +472,7 @@ const add = () => {
     isDelete: '0',
     uid:guid()
   })
+  displayWithIsDeleteArrList.value = arrList.value
 }
 const handleStartChange = (index:any,e: any) => {
   console.log(index, '索引')
@@ -523,9 +528,22 @@ const del = (index:any,id:any) => {
   console.log(index, '索引')
   if (index>=0) {
     // arrList.value = arrList.value.filter((item:any) => item.index !== index)
-    arrList.value.splice(index,1)
+    // arrList.value.splice(index, 1)
+        arrList.value[index].isDelete = 1
+    displayWithIsDeleteArrList.value[index].isDelete = 1
+    arrList.value = arrList.value.filter((item:any) => item.isDelete != 1)
+    console.log(arrList.value, '前端删除')
   } else if (id) {
-    arrList.value = arrList.value.filter((item:any) => item.id !== id)
+    // arrList.value = arrList.value.filter((item:any) => item.id !== id)
+        displayWithIsDeleteArrList.value.forEach((item:any) => {
+      if (id == item.id) {
+        item.isDelete = 1
+      }
+    })
+    // displayWithIsDeleteArrList.value = arrList.value
+    arrList.value = arrList.value.filter((item:any) => item.isDelete != 1)
+    console.log(displayWithIsDeleteArrList.value, arrList.value, '后端数据删除')
+    // targ.value = true
   }
   formData.value.totalCompensationAmount = arrList.value.reduce((accumulator:any, currentValue:any) => {
     return accumulator + currentValue.compensationAmount
