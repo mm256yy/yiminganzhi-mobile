@@ -39,9 +39,13 @@ onLoad((option) => {
  * @param(object) uid
  */
 const getLandlordDetail = (uid: string) => {
+  uni.showLoading({
+    title: '加载中'
+  })
   getImpLandlordItemApi(uid).then((res: any) => {
     dataInfo.value = { ...res }
     console.log('测试数据-获取业主详情', res)
+    uni.hideLoading()
   })
 }
 </script>
