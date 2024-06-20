@@ -28,9 +28,9 @@
           </view>
           <view class="info-item">
             <view class="label"><text class="txt">地理位置：</text></view>
-            <view class="value"
-              ><text class="txt">{{ props.item?.address?.trim() }}</text></view
-            >
+            <view class="value">
+              <text class="txt">{{ props.item?.address?.trim() }}</text>
+            </view>
           </view>
           <view class="info-item">
             <view class="label"><text class="txt">安置点类型:</text></view>
@@ -196,7 +196,7 @@ const props = defineProps<PropsType>()
         display: flex;
         flex-direction: row;
         align-items: center;
-        width: 175rpx;
+        width: 305rpx;
 
         .txt {
           font-size: 9rpx;
