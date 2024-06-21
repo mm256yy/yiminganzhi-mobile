@@ -43,7 +43,7 @@
               <uni-easyinput v-model="formData.situated" type="text" placeholder="请输入" />
             </uni-forms-item>
           </uni-col>
-          <uni-col :span="12">
+          <!-- <uni-col :span="12">
             <uni-forms-item
               label="房屋类别"
               :label-width="150"
@@ -51,6 +51,16 @@
               name="formData.houseType"
             >
               <uni-data-select v-model="formData.houseType" :localdata="dict[266]" />
+            </uni-forms-item>
+          </uni-col> -->
+          <uni-col :span="12">
+            <uni-forms-item
+              label="用途类型"
+              :label-width="150"
+              label-align="right"
+              name="formData.houseTypeCategory"
+            >
+              <uni-data-select v-model="formData.houseTypeCategory" :localdata="dict[439]" />
             </uni-forms-item>
           </uni-col>
         </uni-row>

@@ -20,11 +20,19 @@
         </view>
         <view class="list-2" @click="toLink('edit', item.uid)">
           <uni-row>
-            <uni-col :span="12">
+            <!-- <uni-col :span="12">
               <view class="col">
                 <view class="label">房屋类别：</view>
                 <view class="content">
                   {{ formatDict(item.houseType, 266) }}
+                </view>
+              </view>
+            </uni-col> -->
+            <uni-col :span="12">
+              <view class="col">
+                <view class="label">用途类型：</view>
+                <view class="content">
+                  {{ formatDict(item.houseTypeCategory, 439) }}
                 </view>
               </view>
             </uni-col>
