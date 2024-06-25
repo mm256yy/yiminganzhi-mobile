@@ -6,61 +6,60 @@
         <text class="txt">A地块基本信息</text>
       </view>
 
-      <view class="base-info">
-        <view class="base-column">
-          <view class="info-item">
-            <view class="label"><text class="txt">小区名称：</text></view>
-            <view class="value"
-              ><text class="txt">{{ props.item?.residential?.trim() }}</text></view
-            >
-          </view>
-          <view class="info-item">
-            <view class="label"><text class="txt">结构类型：</text></view>
-            <view class="value"
-              ><text class="txt">{{ props.item?.structure?.trim() }}</text></view
-            >
-          </view>
-          <view class="info-item">
-            <view class="label"><text class="txt">用地面积(㎡)：</text></view>
-            <view class="value"
-              ><text class="txt">{{ props.item?.landSpace?.trim() }}</text></view
-            >
-          </view>
-          <view class="info-item">
-            <view class="label"><text class="txt">地理位置：</text></view>
-            <view class="value">
-              <text class="txt">{{ props.item?.address?.trim() }}</text>
-            </view>
-          </view>
-          <view class="info-item">
-            <view class="label"><text class="txt">安置点类型:</text></view>
-            <view class="value"
-              ><text class="txt">{{ props.item?.type == 1 ? '宅基地' : '公寓房' }}</text></view
-            >
+      <view class="base-column">
+        <view class="info-item">
+          <view class="label"><text class="txt">小区名称：</text></view>
+          <view class="value"
+            ><text class="txt">{{ props.item?.residential?.trim() }}</text></view
+          >
+        </view>
+        <view class="info-item">
+          <view class="label"><text class="txt">结构类型：</text></view>
+          <view class="value"
+            ><text class="txt">{{ props.item?.structure?.trim() }}</text></view
+          >
+        </view>
+        <view class="info-item">
+          <view class="label"><text class="txt">用地面积(㎡)：</text></view>
+          <view class="value"
+            ><text class="txt">{{ props.item?.landSpace?.trim() }}</text></view
+          >
+        </view>
+        <view class="info-item">
+          <view class="label"><text class="txt">地理位置：</text></view>
+          <view class="value">
+            <text class="txt">{{ props.item?.address?.trim() }}</text>
           </view>
         </view>
-
-        <view class="base-column">
-          <view class="info-item">
-            <view class="label"><text class="txt">绿化率：</text></view>
-            <view class="value"
-              ><text class="txt">{{ props.item?.greeningRate?.trim() }}</text></view
-            >
-          </view>
-          <view class="info-item">
-            <view class="label"><text class="txt">建筑密度：</text></view>
-            <view class="value"
-              ><text class="txt">{{ props.item?.buildingDensity?.trim() }}</text></view
-            >
-          </view>
-          <view class="info-item">
-            <view class="label"><text class="txt">建筑面积（㎡）：</text></view>
-            <view class="value"
-              ><text class="txt">{{ props.item?.floorSpace?.trim() }}</text></view
-            >
-          </view>
+        <view class="info-item">
+          <view class="label"><text class="txt">安置点类型:</text></view>
+          <view class="value"
+            ><text class="txt">{{ props.item?.type == 1 ? '宅基地' : '公寓房' }}</text></view
+          >
+        </view>
+        <view class="info-item">
+          <view class="label"><text class="txt">绿化率：</text></view>
+          <view class="value"
+            ><text class="txt">{{ props.item?.greeningRate?.trim() }}</text></view
+          >
+        </view>
+        <view class="info-item">
+          <view class="label"><text class="txt">建筑密度：</text></view>
+          <view class="value"
+            ><text class="txt">{{ props.item?.buildingDensity?.trim() }}</text></view
+          >
+        </view>
+        <view class="info-item">
+          <view class="label"><text class="txt">建筑面积（㎡）：</text></view>
+          <view class="value"
+            ><text class="txt">{{ props.item?.floorSpace?.trim() }}</text></view
+          >
         </view>
       </view>
+
+      <!-- <view class="base-column">
+    
+        </view> -->
 
       <view class="common-head">
         <image class="icon" src="@/static/images/icon_title.png" mode="scaleToFill" />
@@ -163,45 +162,38 @@ const props = defineProps<PropsType>()
   flex-direction: column;
 }
 
-.base-info {
+.base-column {
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
 
-  .base-column {
-    flex: 0.5;
+  .info-item {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+    height: 13rpx;
+    margin-bottom: 6rpx;
 
-    .info-item {
+    .label {
       display: flex;
       flex-direction: row;
       align-items: center;
-      height: 13rpx;
-      margin-bottom: 6rpx;
+      width: 75rpx;
 
-      .label {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        width: 75rpx;
-
-        .txt {
-          font-size: 9rpx;
-          color: rgba(19, 19, 19, 0.4);
-        }
+      .txt {
+        font-size: 9rpx;
+        color: rgba(19, 19, 19, 0.4);
       }
+    }
 
-      .value {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        width: 305rpx;
+    .value {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      width: 305rpx;
 
-        .txt {
-          font-size: 9rpx;
-          color: #171718;
-        }
+      .txt {
+        font-size: 9rpx;
+        color: #171718;
       }
     }
   }
