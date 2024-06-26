@@ -12,11 +12,11 @@
         <view class="th">
           <view class="td">户主姓名</view>
           <view class="td">户号</view>
-          <view class="td">坟墓与登记人关系</view>
+          <view class="td-7">坟墓与登记人关系</view>
           <view class="td">穴位</view>
           <view class="td">数量</view>
           <view class="td">处理方式</view>
-          <view class="td">安置公墓/择址地址</view>
+          <view class="td-7">安置公墓/择址地址</view>
           <view class="td">坟墓编号</view>
           <view class="td">备注</view>
         </view>
@@ -24,11 +24,11 @@
         <view class="tb-content" v-for="(item, index) in tableData" :key="index">
           <view class="td">{{ item.registrantName }}</view>
           <view class="td">{{ item.registrantShowDoorNo }}</view>
-          <view class="td">{{ item.relationText }}</view>
+          <view class="td-7">{{ item.relationText }}</view>
           <view class="td">{{ item.graveTypeText }}</view>
           <view class="td">{{ item.number }}</view>
           <view class="td">{{ item.handleWayText }}</view>
-          <view class="td">{{ item.settingGraveText }}</view>
+          <view class="td-7">{{ item.settingGraveText }}</view>
           <view class="td">{{ item.graveNo }}</view>
           <view class="td">{{ item.remark }}</view>
         </view>
@@ -183,71 +183,66 @@ onShow(() => {
       color: #171718;
     }
   }
+}
+.row-3 {
+  border: 0.5rpx solid #ebebeb;
 
-  .row-3 {
-    border: 0.5rpx solid #ebebeb;
+  .th {
+    display: flex;
+    height: 28rpx;
+    font-size: 10rpx;
+    font-weight: 400;
+    line-height: 28rpx;
+    color: #737374;
+    background: #ebebeb;
 
-    .th {
-      display: flex;
-      height: 28rpx;
-      font-size: 10rpx;
-      font-weight: 400;
-      line-height: 28rpx;
-      color: #737374;
-      background: #ebebeb;
+    .td {
+      flex: 1;
 
-      .td {
-        padding-left: 10rpx;
-        font-size: 9rpx;
-        text-align: left;
-        border: 0.5rpx solid #ebebeb;
-
-        &.td-1 {
-          width: 53rpx;
-        }
-
-        &.td-2 {
-          width: 100rpx;
-        }
-
-        &.td-3 {
-          width: 100rpx;
-        }
-
-        &.td-4 {
-          width: 125rpx;
-        }
-      }
+      padding-left: 10rpx;
+      font-size: 9rpx;
+      text-align: left;
+      border: 0.5rpx solid #ebebeb;
     }
+    .td-7 {
+      width: 75rpx;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 28rpx;
+      padding-left: 10rpx;
+      font-size: 9rpx;
+      vertical-align: middle;
+      border: 0.5rpx solid #ebebeb;
+    }
+  }
 
-    .tb-content {
-      display: table;
+  .tb-content {
+    display: flex;
 
-      .td {
-        display: table-cell;
-        height: 28rpx;
-        padding-left: 10rpx;
-        font-size: 9rpx;
-        color: #171718;
-        vertical-align: middle;
-        border: 0.5rpx solid #ebebeb;
-
-        &.td-1 {
-          width: 53rpx;
-        }
-
-        &.td-2 {
-          width: 100rpx;
-        }
-
-        &.td-3 {
-          width: 100rpx;
-        }
-
-        &.td-4 {
-          width: 125rpx;
-        }
-      }
+    .td {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 28rpx;
+      padding-left: 10rpx;
+      font-size: 9rpx;
+      color: #171718;
+      vertical-align: middle;
+      border: 0.5rpx solid #ebebeb;
+    }
+    .td-7 {
+      width: 75rpx;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 28rpx;
+      padding-left: 10rpx;
+      font-size: 9rpx;
+      color: #171718;
+      vertical-align: middle;
+      border: 0.5rpx solid #ebebeb;
     }
   }
 }

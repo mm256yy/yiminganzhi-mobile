@@ -10,7 +10,7 @@
         <!-- 头部 -->
         <Header :dataInfo="dataInfo" />
         <view class="box" v-if="dataInfo.villageType == 'grave'">
-          <ground :villageId="dataInfo.villageDoorNo" />
+          <ground :villageId="dataInfo.doorNo" />
         </view>
         <view class="box" v-else>
           <!-- 房屋/附属物评估报告 -->
